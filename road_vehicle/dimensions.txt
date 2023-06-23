@@ -1,0 +1,17 @@
+V2 resolution (WIP)
+===================
+Width: 3.47 cm / voxel
+Height: 4.58 cm / voxel
+Length: 4.58 cm / voxel
+
+Current resolution
+==================
+Width: 3.47 cm / voxel
+Height: 4.58 cm / voxel
+Length: 4.58 cm / voxel
+
+Previous resolution (Based on Timberwolf's RV 2x)
+=================================================
+Width: 3.47 cm / voxel
+Height: 4.58 cm / voxel
+Length: 5.14 cm / voxel
