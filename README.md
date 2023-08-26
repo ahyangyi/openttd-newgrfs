@@ -26,7 +26,7 @@ A generic vehicle set loosely based on vehicles in China, especially those used 
 # Licensing
 The released newGRFs will be GPLv2. Everything created by me (that is, anything not in a path containing `third_party`) will be licensed GPLv2+.
 
-# Contribution
+# Contributing
 Contribution is welcome; contributed code must also be licensed GPLv2+.
 
 If signicant contribution is made to a NewGRF that begins with `Ahyangyi's`, I will change it to a recursive acronym. For example, "Ahyangyi’s Road Vehicles" becomes "ARV Road Vehicles".
