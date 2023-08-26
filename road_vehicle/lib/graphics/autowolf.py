@@ -131,7 +131,7 @@ class AutoWolf:
             ent2=(31,),
         )
 
-    def callbacks(self, my_id, cargo_capacity, feature, fast=False):
+    def callbacks(self, my_id, cargo_capacity, feature):
         seg_map = {}
         for i, seg in enumerate(self.segments):
             if seg is not None:
@@ -164,10 +164,10 @@ class AutoWolf:
             "graphics": grf.Switch(
                 ranges={
                     i: grf.Switch(
-                        ranges={0: self.graphics[i].get_action(self.xdiff[i], self.shifts[i], feature, fast)},
+                        ranges={0: self.graphics[i].get_action(self.xdiff[i], self.shifts[i], feature)},
                         default=self.graphics[i]
                         .get_default_graphics()
-                        .get_action(self.xdiff[i], self.shifts[i], feature, fast),
+                        .get_action(self.xdiff[i], self.shifts[i], feature),
                         code="extra_callback_info1_byte",
                     )
                     for i, seg in enumerate(self.segments)

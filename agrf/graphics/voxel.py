@@ -151,13 +151,7 @@ class LazyVoxel(Config):
         render(self, voxel_path, os.path.join(self.prefix, self.name))
 
     @functools.cache
-    def spritesheet(self, xdiff, shift, fast):
-        if fast:
-            bpps = [32]
-            scales = [1]
-        else:
-            bpps = [8, 32]
-            scales = [1, 2, 4]
+    def spritesheet(self, xdiff, shift):
         return spritesheet_template(
             xdiff,
             os.path.join(self.prefix, self.name),
@@ -165,14 +159,14 @@ class LazyVoxel(Config):
             bbox=self.config["size"],
             bbox_joggle=self.config.get("agrf_bbox_joggle", None),
             ydiff=self.config.get("agrf_zdiff", 0) * 0.5 * self.config["agrf_scale"],
-            bpps=bpps,
-            scales=scales,
+            bpps=self.config["agrf_bpps"],
+            scales=self.config["agrf_scales"],
             shift=shift,
         )
 
     @functools.cache
-    def get_action(self, xdiff, shift, feature, fast):
-        return FakeReferencingGenericSpriteLayout(feature, (self.spritesheet(xdiff, shift, fast),))
+    def get_action(self, xdiff, shift, feature):
+        return FakeReferencingGenericSpriteLayout(feature, (self.spritesheet(xdiff, shift),))
 
     def get_default_graphics(self):
         return self
@@ -194,13 +188,11 @@ class LazyAlternatives:
         return method
 
     @functools.cache
-    def get_action(self, xdiff, shift, feature, fast):
+    def get_action(self, xdiff, shift, feature):
         return FakeReferencingGenericSpriteLayout(
             feature,
-            tuple(x.spritesheet(xdiff, shift, fast) for x in self.sprites),
-            None
-            if self.loading_sprites is None
-            else tuple(x.spritesheet(xdiff, shift, fast) for x in self.loading_sprites),
+            tuple(x.spritesheet(xdiff, shift) for x in self.sprites),
+            None if self.loading_sprites is None else tuple(x.spritesheet(xdiff, shift) for x in self.loading_sprites),
         )
 
     def get_default_graphics(self):
@@ -228,10 +220,10 @@ class LazySwitch:
         self.default.render()
 
     @functools.cache
-    def get_action(self, xdiff, shift, feature, fast):
+    def get_action(self, xdiff, shift, feature):
         return grf.Switch(
-            ranges={k: v.get_action(xdiff, shift, feature, fast) for k, v in self.ranges.items()},
-            default=self.default.get_action(xdiff, shift, feature, fast),
+            ranges={k: v.get_action(xdiff, shift, feature) for k, v in self.ranges.items()},
+            default=self.default.get_action(xdiff, shift, feature),
             code=self.code,
         )
 
