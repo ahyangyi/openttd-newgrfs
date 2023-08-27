@@ -9,6 +9,8 @@ rvf: clean_rv
 
 house: clean_house house.grf
 
+road: clean_road road.grf
+
 md: road_vehicle.md
 
 clean_rv:
@@ -16,6 +18,9 @@ clean_rv:
 
 clean_house:
 	rm -f house.grf
+
+clean_road:
+	rm -f road.grf
 
 clean:
 	rm -f *.grf

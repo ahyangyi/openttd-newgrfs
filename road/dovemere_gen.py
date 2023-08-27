@@ -8,5 +8,8 @@ g = grf.NewGRF(
     id_map_file="road/id_map.json",
     sprite_cache_path="road/.cache",
 )
+import road.road_types.wolf_a
+
+g.add(road.road_types.wolf_a.the_road)
 
 g.write("road.grf")
