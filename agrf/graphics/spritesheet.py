@@ -41,12 +41,14 @@ scale_to_zoom = {
 }
 
 
-def spritesheet_template(diff, path, dimens, bbox, bbox_joggle=None, bpps=[8, 32], scales=[1, 2, 4], ydiff=0, shift=0):
+def spritesheet_template(
+    diff, path, dimens, angles, bbox, bbox_joggle=None, bpps=[8, 32], scales=[1, 2, 4], ydiff=0, shift=0
+):
     guessed_dimens = []
-    for i in range(8):
+    for i in range(len(dimens)):
         x, y = dimens[i]
         if y == 0:
-            y, _ = guess_dimens(x, i * 45, bbox)
+            y, _ = guess_dimens(x, angles[i], bbox)
         guessed_dimens.append((x, y))
 
     def get_rels(direction, diff, scale):
@@ -93,6 +95,6 @@ def spritesheet_template(diff, path, dimens, bbox, bbox_joggle=None, bpps=[8, 32
                 for scale in scales
             )
         )
-        for idx in range(8)
-        for i in [(idx + shift) % 8]
+        for idx in range(len(dimens))
+        for i in [(idx + shift) % len(dimens)]
     ]

@@ -155,10 +155,11 @@ class LazyVoxel(Config):
         return spritesheet_template(
             xdiff,
             os.path.join(self.prefix, self.name),
-            [(x["width"], x["height"]) for x in self.config["sprites"]],
+            [(x["width"], x.get("height", 0)) for x in self.config["sprites"]],
+            [x["angle"] for x in self.config["sprites"]],
             bbox=self.config["size"],
             bbox_joggle=self.config.get("agrf_bbox_joggle", None),
-            ydiff=self.config.get("agrf_zdiff", 0) * 0.5 * self.config["agrf_scale"],
+            ydiff=self.config.get("agrf_zdiff", 0) * 0.5 * self.config.get("agrf_scale", 1),
             bpps=self.config["agrf_bpps"],
             scales=self.config["agrf_scales"],
             shift=shift,

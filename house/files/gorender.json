@@ -36,5 +36,7 @@
             "width": 64,
             "flip": true
         }
-    ]
+    ],
+    "agrf_bpps": [8, 32],
+    "agrf_scales": [1, 2, 4]
 }
