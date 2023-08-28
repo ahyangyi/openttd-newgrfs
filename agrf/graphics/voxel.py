@@ -173,6 +173,31 @@ class LazyVoxel(Config):
         return self
 
 
+class LazySpriteSheet:
+    def __init__(self, sprites, indices):
+        self.sprites = sprites
+        self.indices = indices
+
+    def __getattr__(self, name):
+        def method(*args, **kwargs):
+            call = lambda x: getattr(x, name)(*args, **kwargs)
+            return LazySpriteSheet(tuple(call(x) for x in self.sprites), self.indices)
+
+        return method
+
+    @functools.cache
+    def spritesheet(self, xdiff, shift):
+        spritesheets = [x.spritesheet(xdiff, shift) for x in self.sprites]
+        return [spritesheets[i][j] for (i, j) in self.indices]
+
+    @functools.cache
+    def get_action(self, xdiff, shift, feature):
+        return FakeReferencingGenericSpriteLayout(feature, (self.spritesheet(xdiff, shift),))
+
+    def get_default_graphics(self):
+        return self
+
+
 class LazyAlternatives:
     def __init__(self, sprites, loading_sprites=None):
         self.sprites = sprites
