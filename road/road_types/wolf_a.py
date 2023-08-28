@@ -1,5 +1,5 @@
 from road.lib import ARoadType
-from pygorender import Config, render
+from datetime import date
 import grf
 from agrf.graphics.voxel import LazyVoxel, LazySpriteSheet
 
@@ -40,9 +40,9 @@ spritesheet.render()
 
 
 the_road = ARoadType(
-    id=0x80,
-    name="RoadType",
+    id=0x01,
+    name="Wolf A",
+    label=b"WOLF",
+    introduction_date=date(1920, 1, 1),
     sprites=spritesheet.spritesheet(0, 0),
-    flags=0x1,
-    availability_mask=0xF81F,
 )
