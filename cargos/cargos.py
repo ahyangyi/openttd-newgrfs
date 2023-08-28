@@ -13,7 +13,18 @@ cargo_info = {
             [(ColourRange(3, 8), ColourRange(75, 80))],
         )
     },
-    "GRVL": {},
+    "GRVL": {
+        "COAL": ColourMap(
+            "gravel",
+            [
+                (ColourRange(3, 3), ColourRange(18, 18)),
+                (ColourRange(4, 4), ColourRange(57, 57)),
+                (ColourRange(5, 5), ColourRange(20, 20)),
+                (ColourRange(6, 6), ColourRange(58, 58)),
+                (ColourRange(7, 8), ColourRange(22, 23)),
+            ],
+        )
+    },
     "SAND": {},
     "AORE": {},
     "CORE": {
