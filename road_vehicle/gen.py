@@ -14,6 +14,7 @@ def gen(fast):
         id_map_file="road_vehicle/id_map.json",
         sprite_cache_path="road_vehicle/.cache",
     )
+    g.strings.import_lang_dir("road_vehicle/lang", default_lang_file="english-uk.lng")
 
     # Parameter 0
     g.add_int_parameter(
