@@ -1,2 +1,7 @@
 ##grflangid 0x01
-STR_GRF_NAME			:Ahyangyi's Road Vehicle Set
+STR_GRF_NAME                    :Ahyangyi's Road Vehicle Set
+STR_GRF_DESC                    :A road vehicle set, based on vehicles used in China.
+STR_PARAM_VANILLA_RV            :Vanilla road vehicles
+STR_PARAM_VANILLA_RV_DESC       :Whether to disable vanilla road vehicles
+STR_PARAM_VANILLA_RV_DISABLED   :Disabled
+STR_PARAM_VANILLA_RV_ENABLED    :Enabled

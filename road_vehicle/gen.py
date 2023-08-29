@@ -7,22 +7,25 @@ import struct
 
 
 def gen(fast):
+    s = grf.StringManager()
+    s.import_lang_dir("road_vehicle/lang", default_lang_file="english-uk.lng")
+
     g = grf.NewGRF(
         grfid=b"\xE5\xBC\x8B0",
-        name="Ahyangyi's Road Vehicle Set",
-        description="A generic road vehicle set, based on vehicles used in China.",
+        name=s["STR_GRF_NAME"],
+        description=s["STR_GRF_DESC"],
         id_map_file="road_vehicle/id_map.json",
         sprite_cache_path="road_vehicle/.cache",
+        strings=s,
     )
-    g.strings.import_lang_dir("road_vehicle/lang", default_lang_file="english-uk.lng")
 
     # Parameter 0
     g.add_int_parameter(
-        name="Vanilla road vehicles",
-        description="Whether to disable vanilla road vehicles",
+        name=s["STR_PARAM_VANILLA_RV"],
+        description=s["STR_PARAM_VANILLA_RV_DESC"],
         default=0,
         limits=(0, 1),
-        enum={0: "Disabled", 1: "Enabled"},
+        # enum={0: "Disabled", 1: "Enabled"},
     )
     g.add(grf.If(is_static=True, variable=0, condition=0x02, value=1, skip=1, varsize=4))
     g.add(grf.DefineMultiple(feature=grf.RV, first_id=0, props={"climates_available": [0] * 88}))
