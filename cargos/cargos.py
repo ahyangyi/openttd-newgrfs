@@ -116,7 +116,16 @@ cargo_info = {
     },
     "FERT": {},
     "PIPE": {},
-    "SALT": {},
+    "SALT": {
+        "COAL": ColourMap(
+            "salt",
+            [
+                (ColourRange(3), ColourRange(11)),
+                (ColourRange(4, 5), ColourRange(0x87, 0x88)),
+                (ColourRange(6, 8), ColourRange(14, 16)),
+            ],
+        )
+    },
     "CBLK": {},
     "CHLO": {},
     "VPTS": {},
