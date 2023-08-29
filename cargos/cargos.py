@@ -17,10 +17,10 @@ cargo_info = {
         "COAL": ColourMap(
             "gravel",
             [
-                (ColourRange(3, 3), ColourRange(18, 18)),
-                (ColourRange(4, 4), ColourRange(57, 57)),
-                (ColourRange(5, 5), ColourRange(20, 20)),
-                (ColourRange(6, 6), ColourRange(58, 58)),
+                (ColourRange(3), ColourRange(18)),
+                (ColourRange(4), ColourRange(57)),
+                (ColourRange(5), ColourRange(20)),
+                (ColourRange(6), ColourRange(58)),
                 (ColourRange(7, 8), ColourRange(22, 23)),
             ],
         )
@@ -101,7 +101,19 @@ cargo_info = {
     "SASH": {},
     "CMNT": {},
     "COKE": {},
-    "KAOL": {},
+    "KAOL": {
+        "COAL": ColourMap(
+            "kaolin",
+            [
+                (ColourRange(3), ColourRange(0x79)),
+                (ColourRange(4), ColourRange(0x79)),
+                (ColourRange(5), ColourRange(0x7A)),
+                (ColourRange(6), ColourRange(0x7A)),
+                (ColourRange(7), ColourRange(0x7B)),
+                (ColourRange(8), ColourRange(0x7B)),
+            ],
+        )
+    },
     "FERT": {},
     "PIPE": {},
     "SALT": {},

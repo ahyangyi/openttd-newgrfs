@@ -1,5 +1,7 @@
 class ColourRange:
-    def __init__(self, a, b):
+    def __init__(self, a, b=None):
+        if b is None:
+            b = a
         self.a = a
         self.b = b
 
