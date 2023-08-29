@@ -5,3 +5,5 @@ STR_PARAM_VANILLA_RV            :Vanilla road vehicles
 STR_PARAM_VANILLA_RV_DESC       :Whether to disable vanilla road vehicles
 STR_PARAM_VANILLA_RV_DISABLED   :Disabled
 STR_PARAM_VANILLA_RV_ENABLED    :Enabled
+STR_PARAM_NIGHT_MODE            :Night mode
+STR_PARAM_NIGHT_MODE_DESC       :Use night graphics suitable for NightGFX

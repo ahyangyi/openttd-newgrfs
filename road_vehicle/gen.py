@@ -25,15 +25,15 @@ def gen(fast):
         description=s["STR_PARAM_VANILLA_RV_DESC"],
         default=0,
         limits=(0, 1),
-        # enum={0: "Disabled", 1: "Enabled"},
+        enum={0: "Disabled", 1: "Enabled"},
     )
     g.add(grf.If(is_static=True, variable=0, condition=0x02, value=1, skip=1, varsize=4))
     g.add(grf.DefineMultiple(feature=grf.RV, first_id=0, props={"climates_available": [0] * 88}))
 
     # Parameter 1
     g.add_int_parameter(
-        name="Night mode",
-        description="Use night graphics suitable for NightGFX",
+        name=s["STR_PARAM_NIGHT_MODE"],
+        description=s["STR_PARAM_NIGHT_MODE_DESC"],
         default=0,
         limits=(0, 2),
         enum={0: "Auto-Detect", 1: "Enabled", 2: "Disabled"},
