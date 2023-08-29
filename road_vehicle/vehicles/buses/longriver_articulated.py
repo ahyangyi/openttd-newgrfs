@@ -16,7 +16,6 @@ variant = AVariant(
     techclass="articulated_bus",
     tractive_effort_coefficient=53,
     cargo_capacity=130,
-    default_cargo_type=0,
     real_dimensions=(14.74, 2.48, 2.95),
     real_x_dimensions=(1.51, 4.7, 5.54, 2.99),
     axle_track=(1.91, 1.80),

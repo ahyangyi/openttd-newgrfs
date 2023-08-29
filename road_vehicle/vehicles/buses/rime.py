@@ -16,7 +16,6 @@ variant = AVariant(
     weight=5.0,
     techclass="bus",
     cargo_capacity=80,
-    default_cargo_type=0,
     real_dimensions=(8.2, 2.5, 3.05),  # No data for width/height, using BK640
     real_x_dimensions=(0, 4.46, 0),  # No data, using BK640
     axle_track=(1.70, 1.74),  # No data, using CA10

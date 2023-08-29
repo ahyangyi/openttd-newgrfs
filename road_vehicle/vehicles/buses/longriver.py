@@ -16,7 +16,6 @@ variant = AVariant(
     full_weight=11.58,
     techclass="bus",
     cargo_capacity=85,
-    default_cargo_type=0,
     additional_text="Longriver company was the first one to build buses on a custom chassis instead of modifying Freedom trucks. It was hugely popular in the 1980s and 1990s.",
     real_dimensions=(9.20, 2.48, 2.95),
     voxel_dimensions=(200, 72, 64),

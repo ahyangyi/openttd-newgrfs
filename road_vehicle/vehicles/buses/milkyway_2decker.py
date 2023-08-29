@@ -1,5 +1,5 @@
 from datetime import date
-from road_vehicle.lib import ABus
+from road_vehicle.lib import ABus, RadialTire
 from road_vehicle.lib.graphics.autowolf import AutoWolf
 from road_vehicle.lib.graphics.voxel import LazyVoxel
 from agrf.variant import AVariant
@@ -17,7 +17,10 @@ variant = AVariant(
     weight=12,
     techclass="2decker",
     cargo_capacity=95,
-    default_cargo_type=0,
+    real_dimensions=(11.31, 2.55, 4.14),
+    real_x_dimensions=(2.548, 5.500, 3.262),
+    axle_track=(2.063, 1.860),
+    tire=RadialTire(275, 70, 22.5),
     tags={"air conditioner"},
     graphics_helper=AutoWolf("placeholder"),
     real_class=ABus,

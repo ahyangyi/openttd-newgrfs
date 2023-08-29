@@ -16,7 +16,6 @@ variant = AVariant(
     weight=10.6,
     techclass="2decker",
     cargo_capacity=90,
-    default_cargo_type=0,
     real_dimensions=(10.49, 2.48, 4.18),
     real_x_dimensions=(2.32, 5.00, 3.17),
     axle_track=(2.02, 1.86),

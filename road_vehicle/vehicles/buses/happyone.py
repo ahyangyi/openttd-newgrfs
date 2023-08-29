@@ -16,7 +16,6 @@ variant = AVariant(
     tags={"sanctioned"},
     techclass="bus",
     cargo_capacity=45,
-    default_cargo_type=0,
     real_dimensions=(6, 2.50, 3),
     axle_track=(1.791, 1.753),
     tire=BiasPlyTire(10.5, 20),
