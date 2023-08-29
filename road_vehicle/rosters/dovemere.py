@@ -6,6 +6,7 @@ from ..vehicles.buses import (
     longriver_articulated,
     longriver_2decker,
     raregem,
+    milkyway_2decker,
 )
 from ..vehicles.lorries import freedom, freedom_mkii, shield, happyone as happyone_truck
 from ..vehicles.debug import visible_serpent
@@ -20,6 +21,7 @@ roster = Roster(
     longriver_articulated,
     longriver_2decker,
     raregem,
+    milkyway_2decker,
     happyone_truck,
     freedom,
     freedom_mkii,
