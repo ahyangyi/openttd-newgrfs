@@ -2,7 +2,7 @@ import grf
 from copy import deepcopy
 
 
-class FakeReferencedAction(grf.LazyBaseSprite, grf.ReferenceableAction):
+class FakeReferencedAction(grf.LazyAction, grf.ReferenceableAction):
     def __init__(self, action, feature, ref_id=None):
         super().__init__()
         self.action = action

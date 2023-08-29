@@ -4,7 +4,7 @@ import grf
 g = grf.NewGRF(
     grfid=b"\xE5\xBC\x8Bh",
     name="Ahyangyi's Dovemere Houses",
-    description="TBD.",
+    description="A house set modeled after buildings in Wuhu, Anhui, China.",
     id_map_file="house/id_map.json",
     sprite_cache_path="house/.cache",
 )

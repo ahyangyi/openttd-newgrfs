@@ -2,45 +2,45 @@ import grf
 
 
 class ARoadType(grf.SpriteGenerator):
-    def __init__(self, *, id, name, sprites, flags, callbacks={}, **props):
+    def __init__(self, *, id, name, sprites, toolbar_caption=None, callbacks={}, **props):
         super().__init__()
         self.id = id
         self.name = name
         self.sprites = sprites
-        self.flags = flags
-        self.callbacks = grf.make_callback_manager(grf.HOUSE, callbacks)
+        self.toolbar_caption = toolbar_caption
+        self.callbacks = grf.make_callback_manager(grf.ROADTYPE, callbacks)
         self._props = props
 
     def get_sprites(self, g):
+        if self.toolbar_caption and "toolbar_caption" not in self._props:
+            self._props["toolbar_caption"] = g.strings.add(self.toolbar_caption).get_global_id()
+
         res = []
 
         if self.sprites:
             layouts = []
             for i, sprite in enumerate(self.sprites):
                 layouts.append(
-                    grf.BasicSpriteLayout(
-                        ground={"sprite": grf.SpriteRef(3924, is_global=True)},
-                        building={
-                            "sprite": grf.SpriteRef(i, is_global=False),
-                            "offset": (0, 0),
-                            "extent": (16, 16, 16),
-                        },
-                        feature=grf.HOUSE,
+                    grf.GenericSpriteLayout(
+                        ent1=(i,),
+                        ent2=(i,),
+                        feature=grf.ROADTYPE,
                     )
                 )
             self.callbacks.graphics = layouts[0]
 
-        res.append(
-            definition := grf.Define(
-                feature=grf.HOUSE, id=self.id, props={"substitute": 0x06, "flags": self.flags, **self._props}
-            )
-        )
+        if isinstance(self.name, grf.StringRef):
+            name_action = self.name.get_actions(grf.ROADTYPE, self.id)
+        else:
+            name_action = g.strings.add(self.name).get_actions(grf.ROADTYPE, self.id)
+        res.extend(name_action)
+        res.append(definition := grf.Define(feature=grf.ROADTYPE, id=self.id, props={**self._props}))
         if self.sprites:
             res.append(
                 grf.Action1(
-                    feature=grf.HOUSE,
+                    feature=grf.ROADTYPE,
                     set_count=len(self.sprites),
-                    sprite_count=1,
+                    sprite_count=19,
                 )
             )
 
