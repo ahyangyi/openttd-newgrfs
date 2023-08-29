@@ -13,7 +13,7 @@ class ARoadType(grf.SpriteGenerator):
 
     def get_sprites(self, g):
         if self.toolbar_caption and "toolbar_caption" not in self._props:
-            self._props["toolbar_caption"] = g.strings.add(self.toolbar_caption).get_global_id()
+            self._props["toolbar_caption"] = g.strings.add(self.toolbar_caption).get_persistent_id(grf.ROADTYPE)
 
         res = []
 
