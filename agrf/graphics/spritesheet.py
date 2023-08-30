@@ -2,7 +2,7 @@ import grf
 import math
 
 
-def guess_dimens(width, angle, bbox):
+def guess_dimens(width, height, angle, bbox):
     radian = math.radians(angle)
     cos, sin = math.cos(radian), math.sin(radian)
 
@@ -13,14 +13,18 @@ def guess_dimens(width, angle, bbox):
 
     horizontal_height = (xcom + ycom) * 0.5  # 30 deg
 
-    # XXX: formula doesn't make sense, but is how gorender works
-    ratio = (horizontal_height + z) / (pxcom + pycom)
-    height_float = ratio * width
+    if height == 0:
+        ratio = (horizontal_height + z) / (pxcom + pycom)
+        height_float = ratio * width
+        height = math.ceil(height_float)
 
-    height = math.ceil(height_float)
-    delta = height - height_float
+    real_ratio = (horizontal_height + z * 3**0.5 / 2) / (pxcom + pycom)
+    real_height_float = real_ratio * width
+    z = (z * 3**0.5 / 2) / (pxcom + pycom) * width
 
-    return height, delta
+    delta = height - real_height_float
+
+    return height, delta, z
 
 
 deltas = [
@@ -42,22 +46,36 @@ scale_to_zoom = {
 
 
 def spritesheet_template(
-    diff, path, dimens, angles, bbox, bbox_joggle=None, bpps=[8, 32], scales=[1, 2, 4], ydiff=0, shift=0
+    diff,
+    path,
+    dimens,
+    angles,
+    bbox,
+    bbox_joggle=None,
+    bpps=[8, 32],
+    scales=[1, 2, 4],
+    xdiff=0,
+    ydiff=0,
+    shift=0,
+    road_mode=False,
 ):
     guessed_dimens = []
     for i in range(len(dimens)):
         x, y = dimens[i]
-        if y == 0:
-            y, _ = guess_dimens(x, angles[i], bbox)
-        guessed_dimens.append((x, y))
+        y, z_ydiff, z_height = guess_dimens(x, y, angles[i], bbox)
+        guessed_dimens.append((x, y, z_ydiff, z_height))
 
     def get_rels(direction, diff, scale):
-        w, h = guessed_dimens[direction][0] * scale, guessed_dimens[direction][1] * scale
+        w, h, z_ydiff, z_height = map(lambda a: a * scale, guessed_dimens[direction])
         xrel = -w / 2
-        yrel = -h / 2
+        if road_mode:
+            yrel = -z_height
+        else:
+            yrel = -h / 2
 
-        yrel -= 2 * scale
+        xrel += xdiff * scale
         yrel += ydiff * scale
+        yrel -= z_ydiff
 
         xrel += deltas[direction][0] * diff * scale
         yrel += deltas[direction][1] * diff * scale

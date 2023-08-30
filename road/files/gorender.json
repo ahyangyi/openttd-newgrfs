@@ -42,5 +42,6 @@
         }
     ],
     "agrf_bpps": [8, 32],
-    "agrf_scales": [1, 2, 4]
+    "agrf_scales": [1, 2, 4],
+    "agrf_road_mode": true
 }
