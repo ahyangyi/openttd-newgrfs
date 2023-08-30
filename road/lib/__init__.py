@@ -2,13 +2,12 @@ import grf
 
 
 class ARoadType(grf.SpriteGenerator):
-    def __init__(self, *, id, name, sprites, toolbar_caption=None, callbacks={}, **props):
+    def __init__(self, *, id, name, sprites, toolbar_caption=None, **props):
         super().__init__()
         self.id = id
         self.name = name
         self.sprites = sprites
         self.toolbar_caption = toolbar_caption
-        self.callbacks = grf.make_callback_manager(grf.ROADTYPE, callbacks)
         self._props = props
 
     def get_sprites(self, g):
@@ -27,19 +26,19 @@ class ARoadType(grf.SpriteGenerator):
                         feature=grf.ROADTYPE,
                     )
                 )
-            self.callbacks.graphics = layouts[0]
 
         if isinstance(self.name, grf.StringRef):
             name_action = self.name.get_actions(grf.ROADTYPE, self.id)
         else:
             name_action = g.strings.add(self.name).get_actions(grf.ROADTYPE, self.id)
+
         res.extend(name_action)
         res.append(definition := grf.Define(feature=grf.ROADTYPE, id=self.id, props={**self._props}))
         if self.sprites:
             res.append(
                 grf.Action1(
                     feature=grf.ROADTYPE,
-                    set_count=len(self.sprites),
+                    set_count=1,
                     sprite_count=19,
                 )
             )
@@ -47,6 +46,14 @@ class ARoadType(grf.SpriteGenerator):
             for s in self.sprites:
                 res.append(s)
 
-        res.append(self.callbacks.make_map_action(definition))
+        res.append(
+            grf.Map(
+                definition=definition,
+                maps={
+                    0x02: layouts[0],
+                },
+                default=layouts[0],
+            )
+        )
 
         return res
