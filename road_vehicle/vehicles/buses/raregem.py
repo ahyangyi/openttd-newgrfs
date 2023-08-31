@@ -9,6 +9,7 @@ import cargos
 variant = AVariant(
     id=0x1030,
     name="Raregem Bus",
+    translation_name="RAREGEM",
     introduction_date=date(2020, 1, 1),
     vehicle_life=15,
     model_life=127,

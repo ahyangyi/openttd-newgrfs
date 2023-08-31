@@ -8,6 +8,7 @@ variant = AVariant(
     real_class=ABus,
     id=0x1040,
     name="Rime Bus",
+    translation_name="RIME",
     introduction_date=date(1957, 1, 1),
     vehicle_life=15,
     model_life=30,

@@ -7,6 +7,7 @@ from agrf.variant import AVariant
 variant = AVariant(
     id=0x1008,
     name="Longriver Articulated Bus",
+    translation_name="LONGRIVER_ARTICULATED",
     introduction_date=date(1980, 1, 1),
     vehicle_life=15,
     model_life=30,

@@ -37,7 +37,7 @@ class ARoadVehicle(grf.RoadVehicle, HogCostMixin):
         callbacks={},
         misc_flags=0,
         translation_name=None,
-        **kwargs
+        **kwargs,
     ):
         self.weight_empty = weight
         self.capacity_in_tons = capacity_in_tons
@@ -51,6 +51,7 @@ class ARoadVehicle(grf.RoadVehicle, HogCostMixin):
         assert techclass in supported_techclasses
         self.techclass = techclass
         self.graphics_helper = graphics_helper
+        self.translation_name = translation_name
         if graphics_helper is not None:
             # FIXME: merge cb
             callbacks = graphics_helper.callbacks(
@@ -73,6 +74,8 @@ class ARoadVehicle(grf.RoadVehicle, HogCostMixin):
     def get_sprites(self, g):
         if self.graphics_helper is not None:
             self.graphics_helper.generate_graphics()
+        if self.translation_name is not None:
+            self.name = g.strings[f"STR_RV_{self.translation_name}_NAME"]
         return super().get_sprites(g)
 
     @staticmethod

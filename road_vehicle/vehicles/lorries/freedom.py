@@ -40,6 +40,7 @@ lowside_switch = LazySwitch(
 variant = AVariant(
     id=0x2000,
     name="Freedom Open Truck",
+    translation_name="FREEDOM",
     additional_text="A very versatile military truck, but also widely used for civilian purposes.",
     introduction_date=date(1956, 7, 13),
     vehicle_life=15,
@@ -65,6 +66,7 @@ variant = AVariant(
         dict(
             id=0x2001,
             name="Freedom Tanker",
+            translation_name="FREEDOM_TANKER",
             refittable_cargo_classes=cargos.TANKER_CARGO_CLASSES,
             graphics_helper=AutoWolf(
                 LazyVoxel(
@@ -79,6 +81,7 @@ variant = AVariant(
         dict(
             id=0x2002,
             name="Freedom Tarpaulin Truck",
+            translation_name="FREEDOM_TARPAULIN",
             refittable_cargo_classes=cargos.TARPAULIN_CARGO_CLASSES,
             graphics_helper=AutoWolf(
                 LazyVoxel(
