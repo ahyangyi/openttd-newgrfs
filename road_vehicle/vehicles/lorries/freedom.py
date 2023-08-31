@@ -3,8 +3,8 @@ from road_vehicle.lib import ALorry, BiasPlyTire
 from road_vehicle.lib.graphics.autowolf import AutoWolf
 from road_vehicle.lib.graphics.voxel import LazyVoxel, LazyAlternatives, LazySwitch
 from agrf.variant import AVariant
-
 import cargos
+from agrf.graphics.recolour import *
 
 lowside = LazyVoxel(
     "freedom",
@@ -64,7 +64,9 @@ variant = AVariant(
     ),
     variants=[
         dict(
-            id=0x2001,
+            id=0x2010,
+            variant_group=0x2000,
+            extra_flags=0xB,
             name="Freedom Tanker",
             translation_name="FREEDOM_TANKER",
             refittable_cargo_classes=cargos.TANKER_CARGO_CLASSES,
@@ -77,9 +79,61 @@ variant = AVariant(
                 ),
                 flags=("noflipY",),
             ),
+            variants=[
+                dict(
+                    id=0x2011,
+                    variant_group=0x2010,
+                    extra_flags=0xB,
+                    graphics_helper=AutoWolf(
+                        LazyVoxel(
+                            "freedom",
+                        )
+                        .compose(
+                            "road_vehicle/voxels/parts/tanker.vox",
+                            "tanker",
+                        )
+                        .self_compose("cc1_black", CC1_BLACK),
+                        flags=("noflipY",),
+                    ),
+                ),
+                dict(
+                    id=0x2012,
+                    variant_group=0x2010,
+                    extra_flags=0xB,
+                    graphics_helper=AutoWolf(
+                        LazyVoxel(
+                            "freedom",
+                        )
+                        .compose(
+                            "road_vehicle/voxels/parts/tanker.vox",
+                            "tanker",
+                        )
+                        .self_compose("cc2_black", CC2_BLACK),
+                        flags=("noflipY",),
+                    ),
+                ),
+                dict(
+                    id=0x2013,
+                    variant_group=0x2010,
+                    extra_flags=0xB,
+                    graphics_helper=AutoWolf(
+                        LazyVoxel(
+                            "freedom",
+                        )
+                        .compose(
+                            "road_vehicle/voxels/parts/tanker.vox",
+                            "tanker",
+                        )
+                        .self_compose("cc1_black+cc2_black", CC1_BLACK + CC2_BLACK),
+                        flags=("noflipY",),
+                    ),
+                ),
+            ],
         ),
         dict(
-            id=0x2002,
+            id=0x2020,
+            variant_group=0x2000,
+            extra_flags=0xB,
             name="Freedom Tarpaulin Truck",
             translation_name="FREEDOM_TARPAULIN",
             refittable_cargo_classes=cargos.TARPAULIN_CARGO_CLASSES,

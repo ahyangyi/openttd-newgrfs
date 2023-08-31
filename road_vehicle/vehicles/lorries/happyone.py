@@ -23,5 +23,5 @@ variant = AVariant(
     axle_track=(1.791, 1.753),
     real_x_dimensions=(0.965, 3.41, 1.143),
     tire=BiasPlyTire(10.5, 20),
-    graphics_helper=AutoWolf("placeholder"),
+    graphics_helper=AutoWolf("happyone"),
 )

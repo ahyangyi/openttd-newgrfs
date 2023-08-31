@@ -6,7 +6,7 @@ from agrf.variant import AVariant
 
 variant = AVariant(
     real_class=ALorry,
-    id=0x2020,
+    id=0x20C0,
     name="Freedom Plus Truck",
     additional_text="A very versatile truck.",
     introduction_date=date(1982, 1, 1),
