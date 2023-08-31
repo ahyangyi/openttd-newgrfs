@@ -2,11 +2,11 @@ import grf
 
 
 class ARoadType(grf.SpriteGenerator):
-    def __init__(self, *, id, name, sprites, toolbar_caption=None, **props):
+    def __init__(self, *, id, name, underlay, toolbar_caption=None, **props):
         super().__init__()
         self.id = id
         self.name = name
-        self.sprites = sprites
+        self.underlay = underlay
         self.toolbar_caption = toolbar_caption
         self._props = props
 
@@ -16,9 +16,9 @@ class ARoadType(grf.SpriteGenerator):
 
         res = []
 
-        if self.sprites:
+        if self.underlay:
             layouts = []
-            for i, sprite in enumerate(self.sprites):
+            for i, sprite in enumerate(self.underlay):
                 layouts.append(
                     grf.GenericSpriteLayout(
                         ent1=(i,),
@@ -34,7 +34,7 @@ class ARoadType(grf.SpriteGenerator):
 
         res.extend(name_action)
         res.append(definition := grf.Define(feature=grf.ROADTYPE, id=self.id, props={**self._props}))
-        if self.sprites:
+        if self.underlay:
             res.append(
                 grf.Action1(
                     feature=grf.ROADTYPE,
@@ -43,7 +43,7 @@ class ARoadType(grf.SpriteGenerator):
                 )
             )
 
-            for s in self.sprites:
+            for s in self.underlay:
                 res.append(s)
 
         res.append(

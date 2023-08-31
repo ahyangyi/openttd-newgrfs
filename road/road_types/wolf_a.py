@@ -45,6 +45,6 @@ the_road = ARoadType(
     name="Wolf A",
     label=b"WOLF",
     introduction_date=date(1920, 1, 1),
-    sprites=spritesheet.spritesheet(0, 0),
+    underlay=spritesheet.spritesheet(0, 0),
     toolbar_caption="Wolf A Road",
 )
