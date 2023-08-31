@@ -33,10 +33,10 @@ class ColourMap:
 
 CC1_BLACK = ColourMap(
     "cc1_black",
-    [(ColourRange(0xC8, 0xCF), ColourRange(3, 10))],
+    [(ColourRange(0xC8, 0xCF), ColourRange(3, 8))],
 )
 
 CC2_BLACK = ColourMap(
     "cc2_black",
-    [(ColourRange(0x52, 0x59), ColourRange(3, 10))],
+    [(ColourRange(0x52, 0x59), ColourRange(3, 8))],
 )
