@@ -7,3 +7,7 @@ STR_PARAM_VANILLA_RV_DISABLED   :Disabled
 STR_PARAM_VANILLA_RV_ENABLED    :Enabled
 STR_PARAM_NIGHT_MODE            :Night mode
 STR_PARAM_NIGHT_MODE_DESC       :Use night graphics suitable for NightGFX
+
+STR_RV_LONGRIVER_NAME           :Changjiang CJ640B Bus (gasoline)
+STR_RV_LONGRIVER_2DECKER_NAME   :Changjiang CJ6100SGCH Double-Decker Bus (diesel)
+STR_RV_RAREGEM_NAME             :Chery Wanda WD6110CHEVG01 Bus (PHEV)

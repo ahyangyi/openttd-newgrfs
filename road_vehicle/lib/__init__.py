@@ -36,6 +36,7 @@ class ARoadVehicle(grf.RoadVehicle, HogCostMixin):
         graphics_helper=None,
         callbacks={},
         misc_flags=0,
+        translation_name=None,
         **kwargs
     ):
         self.weight_empty = weight
