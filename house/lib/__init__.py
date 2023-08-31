@@ -28,7 +28,15 @@ class AHouse(grf.SpriteGenerator):
                         feature=grf.HOUSE,
                     )
                 )
-            self.callbacks.graphics = layouts[0]
+            assert len(layouts) == 4
+            self.callbacks.graphics = grf.RandomSwitch(
+                feature=grf.HOUSE,
+                scope="self",
+                triggers=0,
+                lowest_bit=0,
+                cmp_all=False,
+                groups=layouts,
+            )
 
         res.append(
             definition := grf.Define(

@@ -1,7 +1,7 @@
 from house.lib import AHouse
 from pygorender import Config, render
 import grf
-from agrf.graphics.voxel import LazyVoxel
+from agrf.graphics.voxel import LazyVoxel, LazySpriteSheet
 
 vox = LazyVoxel(
     "dovemere_gable",
@@ -10,12 +10,13 @@ vox = LazyVoxel(
     load_from="house/files/gorender.json",
 )
 vox.render()
+rotated_voxels = [LazySpriteSheet([vox], [(0, i)]) for i in range(4)]
 
 
 the_house = AHouse(
     id=0x80,
     name="House",
-    sprites=vox.spritesheet(0, 0),
+    sprites=[s for v in rotated_voxels for s in v.spritesheet(0, 0)],
     flags=0x1,
     availability_mask=0xF81F,
 )
