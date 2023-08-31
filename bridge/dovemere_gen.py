@@ -1,12 +1,21 @@
 #!/usr/bin/env python
 import grf
 
-g = grf.NewGRF(
-    grfid=b"\xE5\xBC\x8Bb",
-    name="Ahyangyi's Dovemere Bridges",
-    description="TBD.",
-    id_map_file="bridge/id_map.json",
-    sprite_cache_path="bridge/.cache",
-)
 
-g.write("bridge.grf")
+def main():
+    s = grf.StringManager()
+    s.import_lang_dir("bridge/lang", default_lang_file="english-uk.lng")
+
+    g = grf.NewGRF(
+        grfid=b"\xE5\xBC\x8Bb",
+        name=s["STR_GRF_NAME"],
+        description=s["STR_GRF_DESC"],
+        id_map_file="bridge/id_map.json",
+        sprite_cache_path="bridge/.cache",
+    )
+
+    g.write("bridge.grf")
+
+
+if __name__ == "__main__":
+    main()
