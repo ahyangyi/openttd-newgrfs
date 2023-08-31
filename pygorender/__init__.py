@@ -57,6 +57,14 @@ def hill_positor_1(vox_path, new_path, degree):
     positor(config, vox_path, new_path)
 
 
+def stairstep(vox_path, new_path, x_steps):
+    config = {
+        "operations": [{"name": "", "type": "stairstep", "x_steps": x_steps, "z_steps": 1}],
+    }
+
+    positor(config, vox_path, new_path)
+
+
 def compose(vox_path, subvox_path, new_path, extra_config):
     config = {
         "operations": [

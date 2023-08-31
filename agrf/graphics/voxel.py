@@ -2,7 +2,7 @@ import math
 import os
 import grf
 import functools
-from pygorender import Config, render, hill_positor_1, compose, self_compose, produce_empty
+from pygorender import Config, render, hill_positor_1, stairstep, compose, self_compose, produce_empty
 from agrf.graphics.rotator import unnatural_dimens
 from agrf.graphics.spritesheet import spritesheet_template
 from copy import deepcopy
@@ -61,6 +61,26 @@ class LazyVoxel(Config):
         new_config["agrf_zdiff"] = new_config.get("agrf_zdiff", 0.0) + new_config.get(
             "agrf_real_x", new_config["size"]["x"]
         ) / 2 * math.sin(math.radians(abs(delta)))
+
+        return LazyVoxel(
+            self.name,
+            prefix=os.path.join(self.prefix, suffix),
+            voxel_getter=voxel_getter,
+            config=new_config,
+        )
+
+    @functools.cache
+    def stairstep(self, x_steps, suffix):
+        def voxel_getter():
+            old_path = self.voxel_getter()
+            new_path = os.path.join(self.prefix, suffix)
+            stairstep(old_path, new_path, x_steps)
+            return os.path.join(new_path, f"{self.name}.vox")
+
+        new_config = deepcopy(self.config)
+        new_config["agrf_zdiff"] = new_config.get("agrf_zdiff", 0.0) + new_config.get(
+            "agrf_real_x", new_config["size"]["x"]
+        ) / 2 * math.tan(math.radians(abs(x_steps)))
 
         return LazyVoxel(
             self.name,

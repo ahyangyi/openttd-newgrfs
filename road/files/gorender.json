@@ -9,7 +9,7 @@
     "solid_base": true,
     "sampler": "disc",
     "accuracy": 7,
-    "overlap": 0,
+    "overlap": 0.05,
     "brightness": -0.05,
     "contrast": 0.1,
     "max_colour_push": 0,
