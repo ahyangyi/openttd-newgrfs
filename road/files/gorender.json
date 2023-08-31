@@ -1,5 +1,5 @@
 {
-    "lighting_angle": 60,
+    "lighting_angle": 50,
     "lighting_elevation": 65,
     "depth_influence": 0,
     "tiled_normals": true,
@@ -10,6 +10,8 @@
     "sampler": "disc",
     "accuracy": 7,
     "overlap": 0,
+    "brightness": -0.05,
+    "contrast": 0.1,
     "max_colour_push": 0,
     "fosterise": true,
     "suppress_edge_fosterisation": true,
@@ -47,5 +49,6 @@
     ],
     "agrf_bpps": [8, 32],
     "agrf_scales": [1, 2, 4],
-    "agrf_road_mode": true
+    "agrf_road_mode": true,
+    "agrf_real_x": 0
 }

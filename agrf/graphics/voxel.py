@@ -58,9 +58,9 @@ class LazyVoxel(Config):
             return os.path.join(new_path, f"{self.name}.vox")
 
         new_config = deepcopy(self.config)
-        new_config["agrf_zdiff"] = new_config.get("agrf_zdiff", 0.0) + new_config["agrf_real_x"] / 2 * math.sin(
-            math.radians(abs(delta))
-        )
+        new_config["agrf_zdiff"] = new_config.get("agrf_zdiff", 0.0) + new_config.get(
+            "agrf_real_x", new_config["size"]["x"]
+        ) / 2 * math.sin(math.radians(abs(delta)))
 
         return LazyVoxel(
             self.name,

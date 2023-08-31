@@ -12,6 +12,8 @@ voxels = [
     )
     for k in ["straight", "crossroad", "junction", "curve", "end"]
 ]
+voxels.append(voxels[0].change_pitch(11.536959, "hill_2"))
+voxels.append(voxels[0].change_pitch(-11.536959, "hill_-2"))
 spritesheet = LazySpriteSheet(
     voxels,
     [
@@ -26,10 +28,10 @@ spritesheet = LazySpriteSheet(
         (3, 0),
         (3, 1),
         (3, 2),
-        (0, 0),
-        (0, 1),
-        (0, 2),
-        (0, 3),
+        (5, 0),
+        (5, 1),
+        (6, 0),
+        (6, 1),
         (4, 3),
         (4, 0),
         (4, 1),
