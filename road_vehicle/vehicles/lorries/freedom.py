@@ -41,7 +41,6 @@ variant = AVariant(
     id=0x2000,
     name="Freedom Open Truck",
     translation_name="FREEDOM",
-    additional_text="A very versatile military truck, but also widely used for civilian purposes.",
     introduction_date=date(1956, 7, 13),
     vehicle_life=15,
     model_life=30,

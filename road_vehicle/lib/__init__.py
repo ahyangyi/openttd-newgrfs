@@ -25,7 +25,6 @@ class ARoadVehicle(grf.RoadVehicle, HogCostMixin):
         name,
         weight=0,
         capacity_in_tons=0,
-        additional_text="",
         real_dimensions=None,
         voxel_dimensions=None,
         real_x_dimensions=None,
@@ -65,7 +64,6 @@ class ARoadVehicle(grf.RoadVehicle, HogCostMixin):
                 "weight": weight,
                 "climates_available": grf.ALL_CLIMATES,
                 "misc_flags": misc_flags | grf.RVFlags.USE_2CC | grf.RVFlags.AUTOREFIT | grf.RVFlags.USE_SPRITE_STACK,
-                "additional_text": "{SILVER}" + additional_text,
                 "callbacks": callbacks,
                 **kwargs,
             },
@@ -76,6 +74,7 @@ class ARoadVehicle(grf.RoadVehicle, HogCostMixin):
             self.graphics_helper.generate_graphics()
         if self.translation_name is not None:
             self.name = g.strings[f"STR_RV_{self.translation_name}_NAME"]
+            self.additional_text = g.strings[f"STR_RV_{self.translation_name}_DESC"]
         return super().get_sprites(g)
 
     @staticmethod

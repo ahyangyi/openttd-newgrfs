@@ -8,7 +8,6 @@ variant = AVariant(
     real_class=ALorry,
     id=0x20C0,
     name="Freedom Plus Truck",
-    additional_text="A very versatile truck.",
     introduction_date=date(1982, 1, 1),
     vehicle_life=15,
     model_life=15,

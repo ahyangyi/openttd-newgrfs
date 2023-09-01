@@ -24,3 +24,20 @@ STR_RV_FREEDOM_TARPAULIN_NAME   :FAW Jiefang CA10 Covered Wagon Truck (gasoline)
 STR_RV_FREEDOM_MK_II_NAME       :FAW Jiefang CA15 Truck (gasoline)
 STR_RV_YELLOWRIVER_NAME         :Huanghe JN150 Truck (diesel)
 STR_RV_SHIELD_NAME              :C&C U+550 Truck (diesel)
+
+STR_RV_HAPPYONE_BUS_DESC        :{SILVER}
+STR_RV_RIME_DESC                :{SILVER}After the mass-production of the FAW Jiefang CA 10 trucks, many factories started to produce buses by installing a bus body on the chassis.{}{}Songhuajiang Type-57 was produced by the Weijian State-owned Machinery Factory in Harbin.
+STR_RV_LONGRIVER_DESC           :{SILVER}
+STR_RV_LONGRIVER_ARTICULATED_DESC :{SILVER}
+STR_RV_LONGRIVER_COACH_DESC     :{SILVER}
+STR_RV_LONGRIVER_2DECKER_DESC   :{SILVER}
+STR_RV_RAREGEM_DESC             :{SILVER}
+STR_RV_MILKYWAY_2DECKER_DESC    :{SILVER}
+
+STR_RV_HAPPYONE_DESC            :{SILVER}
+STR_RV_FREEDOM_DESC             :{SILVER}A licensed variant of the Soviet ZIS-150. The first mass-produced automobile in China.
+STR_RV_FREEDOM_TANKER_DESC      :{SILVER}A licensed variant of the Soviet ZIS-150. The first mass-produced automobile in China.
+STR_RV_FREEDOM_TARPAULIN_DESC   :{SILVER}A licensed variant of the Soviet ZIS-150. The first mass-produced automobile in China.
+STR_RV_FREEDOM_MK_II_DESC       :{SILVER}
+STR_RV_YELLOWRIVER_DESC         :{SILVER}Based on reverse-engineered Škoda 706 RT. The first heavy-duty truck produced in China.
+STR_RV_SHIELD_DESC              :{SILVER}
