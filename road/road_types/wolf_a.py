@@ -1,45 +1,7 @@
 from road.lib import ARoadType
+from road.lib.graphics.underlay import get_spritesheet
 from datetime import date
 import grf
-from agrf.graphics.voxel import LazyVoxel, LazySpriteSheet
-
-voxels = [
-    LazyVoxel(
-        k,
-        prefix=f"road/voxels/render/wolf_a",
-        voxel_getter=lambda k=k: f"road/voxels/wolf_a/{k}.vox",
-        load_from="road/files/gorender.json",
-    )
-    for k in ["straight", "crossroad", "junction", "curve", "end"]
-]
-# XXX: logically this should be 32 * 2**0.5 / 8 / (3**0.5 / 2)
-# but it doesn't really fit
-voxels.append(voxels[0].stairstep(32 * 2**0.5 / 8, "hill"))
-spritesheet = LazySpriteSheet(
-    voxels,
-    [
-        (0, 1),
-        (0, 0),
-        (1, 0),
-        (2, 3),
-        (2, 2),
-        (2, 1),
-        (2, 0),
-        (3, 3),
-        (3, 0),
-        (3, 1),
-        (3, 2),
-        (5, 0),
-        (5, 1),
-        (5, 2),
-        (5, 3),
-        (4, 3),
-        (4, 0),
-        (4, 1),
-        (4, 2),
-    ],
-)
-spritesheet.render()
 
 
 the_road = ARoadType(
@@ -47,6 +9,6 @@ the_road = ARoadType(
     name="Wolf A",
     label=b"WOLF",
     introduction_date=date(1920, 1, 1),
-    underlay=spritesheet.spritesheet(0, 0),
+    underlay=get_spritesheet("wolf_a"),
     toolbar_caption="Wolf A Road",
 )
