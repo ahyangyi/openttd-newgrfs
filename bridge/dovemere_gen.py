@@ -12,6 +12,7 @@ def main():
         description=s["STR_GRF_DESC"],
         id_map_file="bridge/id_map.json",
         sprite_cache_path="bridge/.cache",
+        bpp=32,
     )
 
     from bridge.bridges import test

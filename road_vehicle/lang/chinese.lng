@@ -1,12 +1,17 @@
 ##grflangid 0x56
 STR_GRF_NAME                    :Ahyangyi 的汽车模组
 STR_GRF_DESC                    :以中国的汽车为基础的汽车模组。
+
 STR_PARAM_VANILLA_RV            :原版汽车
 STR_PARAM_VANILLA_RV_DESC       :是否保留原版汽车
 STR_PARAM_VANILLA_RV_DISABLED   :不保留
 STR_PARAM_VANILLA_RV_ENABLED    :保留
+
 STR_PARAM_NIGHT_MODE            :夜景模式
 STR_PARAM_NIGHT_MODE_DESC       :使用适配 NightGFX 的夜景图像
+STR_PARAM_NIGHT_MODE_AUTO_DETECT:自动检测
+STR_PARAM_NIGHT_MODE_DISABLED   :不使用
+STR_PARAM_NIGHT_MODE_ENABLED    :使用
 
 STR_RV_HAPPYONE_BUS_NAME        :福特 F-60 加拿大军用型卡车改装公交车 (汽油)
 STR_RV_RIME_NAME                :松花江五七式公交车 (汽油)

@@ -1,12 +1,17 @@
 ##grflangid 0x00
 STR_GRF_NAME                    :Ahyangyi's Road Vehicle Set
 STR_GRF_DESC                    :A road vehicle set, based on vehicles used in China.
+
 STR_PARAM_VANILLA_RV            :Vanilla road vehicles
 STR_PARAM_VANILLA_RV_DESC       :Whether to disable vanilla road vehicles
 STR_PARAM_VANILLA_RV_DISABLED   :Disabled
 STR_PARAM_VANILLA_RV_ENABLED    :Enabled
+
 STR_PARAM_NIGHT_MODE            :Night mode
 STR_PARAM_NIGHT_MODE_DESC       :Use night graphics suitable for NightGFX
+STR_PARAM_NIGHT_MODE_AUTO_DETECT:Auto Detect
+STR_PARAM_NIGHT_MODE_DISABLED   :Disabled
+STR_PARAM_NIGHT_MODE_ENABLED    :Enabled
 
 STR_RV_HAPPYONE_BUS_NAME        :Ford F-60 Canadian Military Pattern Combination Bus (gasoline)
 STR_RV_RIME_NAME                :Songhuajiang Type-57 Bus (gasoline)

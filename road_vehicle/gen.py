@@ -17,6 +17,7 @@ def gen(fast):
         id_map_file="road_vehicle/id_map.json",
         sprite_cache_path="road_vehicle/.cache",
         strings=s,
+        bpp=32,
     )
 
     # Parameter 0
@@ -25,7 +26,7 @@ def gen(fast):
         description=s["STR_PARAM_VANILLA_RV_DESC"],
         default=0,
         limits=(0, 1),
-        enum={0: "Disabled", 1: "Enabled"},
+        enum={0: s["STR_PARAM_VANILLA_RV_DISABLED"], 1: s["STR_PARAM_VANILLA_RV_ENABLED"]},
     )
     g.add(grf.If(is_static=True, variable=0, condition=0x02, value=1, skip=1, varsize=4))
     g.add(grf.DefineMultiple(feature=grf.RV, first_id=0, props={"climates_available": [0] * 88}))
@@ -36,7 +37,11 @@ def gen(fast):
         description=s["STR_PARAM_NIGHT_MODE_DESC"],
         default=0,
         limits=(0, 2),
-        enum={0: "Auto-Detect", 1: "Enabled", 2: "Disabled"},
+        enum={
+            0: s["STR_PARAM_NIGHT_MODE_AUTO_DETECT"],
+            1: s["STR_PARAM_NIGHT_MODE_ENABLED"],
+            2: s["STR_PARAM_NIGHT_MODE_DISABLED"],
+        },
     )
     nightgfx_id = struct.unpack("<I", b"\xffOTN")[0]
     g.add(grf.ComputeParameters(target=0x41, operation=0x00, if_undefined=False, source1=0xFF, source2=0xFF, value=1))

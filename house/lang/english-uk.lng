@@ -1,5 +1,8 @@
 ##grflangid 0x00
 STR_GRF_NAME                    :Ahyangyi's Chinese House Set
 STR_GRF_DESC                    :A house set, based on houses in Wuhu, Anhui, China.
+
 STR_PARAM_VANILLA               :Vanilla houses
 STR_PARAM_VANILLA_DESC          :Whether to disable vanilla houses
+STR_PARAM_VANILLA_DISABLED      :Disabled
+STR_PARAM_VANILLA_ENABLED       :Enabled

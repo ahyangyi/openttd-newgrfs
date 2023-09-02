@@ -12,6 +12,7 @@ def main():
         description=s["STR_GRF_DESC"],
         id_map_file="house/id_map.json",
         sprite_cache_path="house/.cache",
+        bpp=32,
     )
 
     g.add_int_parameter(
@@ -19,7 +20,7 @@ def main():
         description=s["STR_PARAM_VANILLA_DESC"],
         default=0,
         limits=(0, 1),
-        enum={0: "Disabled", 1: "Enabled"},
+        enum={0: s["STR_PARAM_VANILLA_DISABLED"], 1: s["STR_PARAM_VANILLA_ENABLED"]},
     )
     g.add(grf.If(is_static=True, variable=0, condition=0x02, value=1, skip=1, varsize=4))
     g.add(grf.DefineMultiple(feature=grf.HOUSE, first_id=0, props={"substitute": [0xFF] * 0x6E}))

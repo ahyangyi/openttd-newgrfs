@@ -11,6 +11,7 @@ def main():
         name=s["STR_GRF_NAME"],
         description=s["STR_GRF_DESC"],
         id_map_file="industry/id_map.json",
+        bpp=32,
     )
 
     g.write("aegis.grf")
