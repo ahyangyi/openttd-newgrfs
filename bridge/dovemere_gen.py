@@ -14,6 +14,10 @@ def main():
         sprite_cache_path="bridge/.cache",
     )
 
+    from bridge.bridges import test
+
+    g.add(test.the_bridge)
+
     g.write("bridge.grf")
 
 

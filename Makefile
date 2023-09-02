@@ -13,6 +13,8 @@ road: clean_road road.grf
 
 md: road_vehicle.md
 
+bridge: clean_bridge bridge.grf
+
 clean_rv:
 	rm -f road_vehicle.grf
 
@@ -21,6 +23,9 @@ clean_house:
 
 clean_road:
 	rm -f road.grf
+
+clean_bridge:
+	rm -f bridge.grf
 
 clean:
 	rm -f *.grf

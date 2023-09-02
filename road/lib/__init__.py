@@ -11,8 +11,9 @@ class ARoadType(grf.SpriteGenerator):
         self._props = props
 
     def get_sprites(self, g):
-        if self.toolbar_caption and "toolbar_caption" not in self._props:
-            self._props["toolbar_caption"] = g.strings.add(self.toolbar_caption).get_persistent_id()
+        extra_props = {}
+        if self.toolbar_caption:
+            extra_props["toolbar_caption"] = g.strings.add(self.toolbar_caption).get_persistent_id()
 
         res = []
 
@@ -33,7 +34,7 @@ class ARoadType(grf.SpriteGenerator):
             name_action = g.strings.add(self.name).get_actions(grf.ROADTYPE, self.id)
 
         res.extend(name_action)
-        res.append(definition := grf.Define(feature=grf.ROADTYPE, id=self.id, props={**self._props}))
+        res.append(definition := grf.Define(feature=grf.ROADTYPE, id=self.id, props={**self._props, **extra_props}))
         if self.underlay:
             res.append(
                 grf.Action1(
