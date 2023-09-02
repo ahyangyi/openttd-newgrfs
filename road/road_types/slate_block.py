@@ -5,10 +5,10 @@ import grf
 
 
 the_road = ARoadType(
-    id=0x1F,
-    name="Wolf A",
-    label=b"WOLF",
-    introduction_date=date(1920, 1, 1),
+    id=0x01,
+    name="Slate Block Road",
+    label=b"SLAT",
+    introduction_date=date(170, 1, 1),
     underlay=get_spritesheet("wolf_a"),
-    toolbar_caption="Build Wolf A Road",
+    toolbar_caption="Build Slate Block Road",
 )
