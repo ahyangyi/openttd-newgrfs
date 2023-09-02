@@ -12,7 +12,9 @@ voxels = [
     )
     for k in ["straight", "crossroad", "junction", "curve", "end"]
 ]
-voxels.append(voxels[0].stairstep(4.898979485566356, "hill"))
+# XXX: logically this should be 32 * 2**0.5 / 8 / (3**0.5 / 2)
+# but it doesn't really fit
+voxels.append(voxels[0].stairstep(32 * 2**0.5 / 8, "hill"))
 spritesheet = LazySpriteSheet(
     voxels,
     [

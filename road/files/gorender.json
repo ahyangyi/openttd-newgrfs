@@ -25,30 +25,27 @@
         {
             "angle": 45,
             "width": 64,
-            "offset_y": -1,
             "flip": true
         },
         {
             "angle": 135,
             "width": 64,
-            "offset_y": -1,
             "flip": true
         },
         {
             "angle": 225,
             "width": 64,
-            "offset_y": -1,
             "flip": true
         },
         {
             "angle": 315,
             "width": 64,
-            "offset_y": -1,
             "flip": true
         }
     ],
+    "agrf_scale": 0.3535533905932738,
     "agrf_bpps": [8, 32],
     "agrf_scales": [1, 2, 4],
     "agrf_road_mode": true,
-    "agrf_real_x": 0
+    "agrf_real_x": 148
 }
