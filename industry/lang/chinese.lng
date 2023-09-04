@@ -1,3 +1,10 @@
 ##grflangid 0x56
 STR_GRF_NAME                    :Ahyangyi 的扩展泛用工业包 (AEGIS)
 STR_GRF_DESC                    :一个模块化的工业包，包含了用以支持各种玩法的选项
+
+STR_PARAM_ECONOMY               :经济
+STR_PARAM_ECONOMY_DESC          :每种经济都提供了一套不同的工业和货物的组合。一些其他选项也会对可用的工业和货物进一步产生影响。
+STR_PARAM_ECONOMY_VANILLA_TEMPERATE:原版温带
+STR_PARAM_ECONOMY_VANILLA_SUBARCTIC:原版寒带
+STR_PARAM_ECONOMY_VANILLA_SUBTROPICAL:原版热带
+STR_PARAM_ECONOMY_TOYLAND       :奇幻（玩具城）

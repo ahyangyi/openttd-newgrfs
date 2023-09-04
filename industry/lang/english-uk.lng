@@ -1,3 +1,10 @@
 ##grflangid 0x00
 STR_GRF_NAME                    :Ahyangyi's Extended Generic Industry Set
 STR_GRF_DESC                    :A modular industry set with options to support various playstyles.
+
+STR_PARAM_ECONOMY               :Economy
+STR_PARAM_ECONOMY_DESC          :Each economy provides a different combination of cargos and industries, which might be further modified by other parameters.
+STR_PARAM_ECONOMY_VANILLA_TEMPERATE:Vanilla Temperate
+STR_PARAM_ECONOMY_VANILLA_SUBARCTIC:Vanilla Sub-Arctic
+STR_PARAM_ECONOMY_VANILLA_SUBTROPICAL:Vanilla Sub-Tropical
+STR_PARAM_ECONOMY_TOYLAND       :Toyland

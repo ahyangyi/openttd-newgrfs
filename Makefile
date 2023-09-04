@@ -15,6 +15,8 @@ md: road_vehicle.md
 
 bridge: clean_bridge bridge.grf
 
+aegis: clean_aegis aegis.grf
+
 clean_rv:
 	rm -f road_vehicle.grf
 
@@ -26,6 +28,9 @@ clean_road:
 
 clean_bridge:
 	rm -f bridge.grf
+
+clean_aegis:
+	rm -f aegis.grf
 
 clean:
 	rm -f *.grf
