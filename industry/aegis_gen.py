@@ -11,7 +11,7 @@ def main():
         name=s["STR_GRF_NAME"],
         description=s["STR_GRF_DESC"],
         id_map_file="industry/id_map.json",
-        bpp=32,
+        preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
 
     # Parameter 0
@@ -29,6 +29,10 @@ def main():
     )
     g.add(grf.If(is_static=True, variable=0, condition=0x02, value=1, skip=1, varsize=4))
     g.add(grf.DefineMultiple(feature=grf.RV, first_id=0, props={"climates_available": [0] * 88}))
+
+    from industry.industries import clay_pit
+
+    g.add(clay_pit.the_industry)
 
     g.write("aegis.grf")
 

@@ -17,7 +17,7 @@ def gen(fast):
         id_map_file="road_vehicle/id_map.json",
         sprite_cache_path="road_vehicle/.cache",
         strings=s,
-        bpp=32,
+        preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
 
     # Parameter 0
