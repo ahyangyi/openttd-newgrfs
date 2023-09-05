@@ -15,11 +15,11 @@ def main():
         strings=s,
         preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
-    import road.road_types.slate_block
-    import road.road_types.main_asphalt
+    from road.road_types import slate_block, main_asphalt, highway
 
-    g.add(road.road_types.slate_block.the_road)
-    g.add(road.road_types.main_asphalt.the_road)
+    g.add(slate_block.the_road)
+    g.add(main_asphalt.the_road)
+    g.add(highway.the_road)
 
     g.write("road.grf")
 

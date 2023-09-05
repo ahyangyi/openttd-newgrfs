@@ -7,3 +7,6 @@ STR_RT_MAIN_ASPHALT_NAME        :沥青主干路
 
 STR_RT_SLATE_BLOCK_CONS         :青石板路建设
 STR_RT_SLATE_BLOCK_NAME         :青石板路
+
+STR_RT_HIGHWAY_CONS             :高速公路建设
+STR_RT_HIGHWAY_NAME             :高速公路
