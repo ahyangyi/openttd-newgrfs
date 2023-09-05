@@ -12,6 +12,7 @@ def main():
         description=s["STR_GRF_DESC"],
         id_map_file="road/id_map.json",
         sprite_cache_path="road/.cache",
+        strings=s,
         preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
     import road.road_types.slate_block

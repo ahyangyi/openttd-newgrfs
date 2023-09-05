@@ -10,6 +10,5 @@ the_road = ARoadType(
     label=b"ASP3",
     introduction_date=date(1940, 1, 1),
     underlay=get_spritesheet("wolf_a"),
-    toolbar_caption="Main Road (Asphalt) Construction",
-    menu_text="Main Road (Asphalt) Construction",
+    translation_name="MAIN_ASPHALT",
 )

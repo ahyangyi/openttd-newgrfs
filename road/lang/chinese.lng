@@ -1,3 +1,9 @@
 ##grflangid 0x56
 STR_GRF_NAME                    :Ahyangyi 的中国道路模组
 STR_GRF_DESC                    :以中国的道路为主题的模组
+
+STR_RT_MAIN_ASPHALT_CONS        :沥青主干路建设
+STR_RT_MAIN_ASPHALT_NAME        :沥青主干路
+
+STR_RT_SLATE_BLOCK_CONS         :青石板路建设
+STR_RT_SLATE_BLOCK_NAME         :青石板路
