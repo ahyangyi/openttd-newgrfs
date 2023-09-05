@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import grf
+import struct
 
 
 def main():
@@ -27,8 +28,23 @@ def main():
             3: s["STR_PARAM_ECONOMY_TOYLAND"],
         },
     )
-    g.add(grf.If(is_static=True, variable=0, condition=0x02, value=1, skip=1, varsize=4))
-    g.add(grf.DefineMultiple(feature=grf.RV, first_id=0, props={"climates_available": [0] * 88}))
+
+    # Parameter 1
+    g.add_int_parameter(
+        name=s["STR_PARAM_NIGHT_MODE"],
+        description=s["STR_PARAM_NIGHT_MODE_DESC"],
+        default=0,
+        limits=(0, 2),
+        enum={
+            0: s["STR_PARAM_NIGHT_MODE_AUTO_DETECT"],
+            1: s["STR_PARAM_NIGHT_MODE_ENABLED"],
+            2: s["STR_PARAM_NIGHT_MODE_DISABLED"],
+        },
+    )
+    nightgfx_id = struct.unpack("<I", b"\xffOTN")[0]
+    g.add(grf.ComputeParameters(target=0x41, operation=0x00, if_undefined=False, source1=0xFF, source2=0xFF, value=1))
+    g.add(grf.If(is_static=False, variable=0x88, condition=0x06, value=nightgfx_id, skip=1, varsize=4))
+    g.add(grf.ComputeParameters(target=0x41, operation=0x00, if_undefined=False, source1=0xFF, source2=0xFF, value=0))
 
     from industry.industries import clay_pit
 

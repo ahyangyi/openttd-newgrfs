@@ -29,7 +29,7 @@ def gen(fast):
         enum={0: s["STR_PARAM_VANILLA_RV_DISABLED"], 1: s["STR_PARAM_VANILLA_RV_ENABLED"]},
     )
     g.add(grf.If(is_static=True, variable=0, condition=0x02, value=1, skip=1, varsize=4))
-    g.add(grf.DefineMultiple(feature=grf.RV, first_id=0, props={"climates_available": [0] * 88}))
+    g.add(grf.DisableDefault(grf.RV, range(88)))
 
     # Parameter 1
     g.add_int_parameter(
