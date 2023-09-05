@@ -47,5 +47,6 @@
     "agrf_bpps": [8, 32],
     "agrf_scales": [1, 2, 4],
     "agrf_road_mode": true,
-    "agrf_real_x": 148
+    "agrf_real_x": 148,
+    "agrf_palette": "road/render_templates/ttd_palette.json"
 }

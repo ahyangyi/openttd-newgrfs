@@ -8,7 +8,7 @@ def get_spritesheet(name):
             k,
             prefix=f"road/voxels/render/{name}",
             voxel_getter=lambda k=k: f"road/voxels/{name}/{k}.vox",
-            load_from="road/files/gorender.json",
+            load_from="road/render_templates/gorender.json",
         )
         for k in ["straight", "crossroad", "junction", "curve", "end"]
     ]

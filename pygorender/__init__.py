@@ -30,10 +30,17 @@ def render(config, vox_path, output_path=None):
         subprocess.run(["gorender", "-s", "4,2,1", "-p"] + output_clause + [vox_path], check=True)
         return
 
+    if config.config.get("agrf_palette"):
+        palette_clause = ["-palette", config.config.get("agrf_palette")]
+    else:
+        palette_clause = []
+
     with tempfile.NamedTemporaryFile("w") as f:
         json.dump(config.config, f)
         f.flush()
-        subprocess.run(["gorender", "-s", "4,2,1", "-m", f.name, "-p"] + output_clause + [vox_path], check=True)
+        subprocess.run(
+            ["gorender", "-s", "4,2,1", "-m", f.name, "-p"] + palette_clause + output_clause + [vox_path], check=True
+        )
 
 
 def positor(config, vox_path, new_path):
