@@ -10,5 +10,6 @@ the_road = ARoadType(
     label=b"SLAT",
     introduction_date=date(170, 1, 1),
     underlay=get_spritesheet("wolf_a"),
-    toolbar_caption="Build Slate Block Road",
+    toolbar_caption="Slate block road construction",
+    menu_text="Slate block road construction",
 )

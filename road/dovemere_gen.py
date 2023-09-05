@@ -15,10 +15,10 @@ def main():
         preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
     import road.road_types.slate_block
-    import road.road_types.wolf_a
+    import road.road_types.main_asphalt
 
     g.add(road.road_types.slate_block.the_road)
-    g.add(road.road_types.wolf_a.the_road)
+    g.add(road.road_types.main_asphalt.the_road)
 
     g.write("road.grf")
 
