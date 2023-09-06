@@ -8,5 +8,5 @@ STR_RT_MAIN_ASPHALT_NAME        :Main Road (Asphalt)
 STR_RT_SLATE_BLOCK_CONS         :Slate Block Road Construction
 STR_RT_SLATE_BLOCK_NAME         :Slate Block Road
 
-STR_RT_HIGHWAY_CONS             :Highway Construction
-STR_RT_HIGHWAY_NAME             :Highway
+STR_RT_MOTORWAY_CONS            :Motorway Construction
+STR_RT_MOTORWAY_NAME            :Motorway
