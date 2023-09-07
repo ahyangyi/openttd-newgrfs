@@ -20,6 +20,7 @@ nova_f = LazyVoxel(
 variant = AVariant(
     id=0x3000,
     name="Nova",
+    translation_name="NOVA",
     introduction_date=date(2010, 1, 1),
     vehicle_life=30,
     model_life=40,

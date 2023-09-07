@@ -1,3 +1,4 @@
+import os
 import math
 from tabulate import tabulate
 from road_vehicle.lib import ARoadVehicle, supported_techclasses
@@ -191,3 +192,23 @@ class Roster:
                 self.in_game_dimension_cli(),
             ]
         )
+
+    def gen_docs(self, string_manager):
+        prefix = "docs/road_vehicle/vehicles"
+        for i, entry in enumerate(self.entries):
+            v = entry.variant
+            translated_names = string_manager["STR_RV_" + v["translation_name"] + "_NAME"].get_pairs()
+            [translation] = [s.decode() for (lang_id, s) in translated_names if lang_id == 0x7F]
+            with open(os.path.join(prefix, f'{v["translation_name"]}.md'), "w") as f:
+                print(
+                    f"""---
+layout: default
+title: {translation}
+parent: Vehicles
+grand_parent: Ahyangyi's Road Vehicles (ARV)
+nav_order: {i+1}
+---
+Blablabla
+""",
+                    file=f,
+                )

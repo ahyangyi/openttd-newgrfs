@@ -6,9 +6,14 @@ import grf
 import struct
 
 
-def gen(fast):
+def get_string_manager():
     s = grf.StringManager()
     s.import_lang_dir("road_vehicle/lang", default_lang_file="english-uk.lng")
+    return s
+
+
+def gen(fast):
+    s = get_string_manager()
 
     g = grf.NewGRF(
         grfid=b"\xE5\xBC\x8B0",
@@ -76,6 +81,8 @@ def main():
 
     if args.cmd == "gen":
         gen(args.fast)
+    elif args.cmd == "doc":
+        dovemere.roster.gen_docs(get_string_manager())
     else:
         print("\n" + dovemere.roster.cli())
 

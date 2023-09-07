@@ -43,6 +43,9 @@ road_vehicle.grf:
 road_vehicle.md:
 	python3 -m road_vehicle.gen print
 
+doc.rv:
+	python3 -m road_vehicle.gen doc
+
 aegis.grf:
 	python3 -m industry.aegis_gen
 
