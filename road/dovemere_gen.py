@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import grf
+import argparse
 
 
 def main():
@@ -22,6 +23,17 @@ def main():
     g.add(motorway.the_road)
 
     g.write("road.grf")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("cmd")
+    args = parser.parse_args()
+
+    if args.cmd == "gen":
+        main()
+    else:
+        print("Hello, world!")
 
 
 if __name__ == "__main__":

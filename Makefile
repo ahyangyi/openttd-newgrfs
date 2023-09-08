@@ -11,6 +11,8 @@ house: clean_house house.grf
 
 road: clean_road road.grf
 
+road_csv: road.csv
+
 md: road_vehicle.md
 
 bridge: clean_bridge bridge.grf
@@ -52,3 +54,6 @@ house.grf:
 
 road.grf:
 	python3 -m road.dovemere_gen
+
+road.csv:
+	python3 -m road.dovemere_gen csv
