@@ -14,7 +14,7 @@ def get_string_manager():
     return s
 
 
-def main():
+def gen():
     s = get_string_manager()
 
     g = grf.NewGRF(
@@ -39,7 +39,7 @@ def main():
     args = parser.parse_args()
 
     if args.cmd == "gen":
-        main()
+        gen()
     else:
         string_manager = get_string_manager()
         prefix = "docs/road/"
