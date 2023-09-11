@@ -1,11 +1,21 @@
 #!/usr/bin/env python
 import grf
 import argparse
+import os
+from road.road_types import slate_block, main_asphalt, motorway
+
+road_types = [slate_block, main_asphalt, motorway]
+
+
+def get_string_manager():
+    s = grf.StringManager()
+    s.import_lang_dir("road/lang", default_lang_file="english-uk.lng")
+
+    return s
 
 
 def main():
-    s = grf.StringManager()
-    s.import_lang_dir("road/lang", default_lang_file="english-uk.lng")
+    s = get_string_manager()
 
     g = grf.NewGRF(
         grfid=b"\xE5\xBC\x8Br",
@@ -16,11 +26,9 @@ def main():
         strings=s,
         preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
-    from road.road_types import slate_block, main_asphalt, motorway
 
-    g.add(slate_block.the_road)
-    g.add(main_asphalt.the_road)
-    g.add(motorway.the_road)
+    for road_type in road_types:
+        g.add(road_type.the_road)
 
     g.write("road.grf")
 
@@ -33,7 +41,24 @@ def main():
     if args.cmd == "gen":
         main()
     else:
-        print("Hello, world!")
+        string_manager = get_string_manager()
+        prefix = "docs/road/"
+        for i, entry in enumerate(road_types):
+            v = entry.the_road
+            translated_names = string_manager["STR_RT_" + v.translation_name + "_NAME"].get_pairs()
+            [translation] = [s.decode() for (lang_id, s) in translated_names if lang_id == 0x7F]
+            with open(os.path.join(prefix, f"{v.translation_name}.md"), "w") as f:
+                print(
+                    f"""---
+layout: default
+title: {translation}
+parent: Ahyangyi's Chinese Road Set (ACRS)
+nav_order: {i+1}
+---
+Blablabla
+""",
+                    file=f,
+                )
 
 
 if __name__ == "__main__":

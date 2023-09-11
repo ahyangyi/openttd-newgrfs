@@ -46,6 +46,9 @@ road_vehicle.md:
 doc.rv:
 	python3 -m road_vehicle.gen doc
 
+doc.rt:
+	python3 -m road.dovemere_gen doc
+
 aegis.grf:
 	python3 -m industry.aegis_gen
 
