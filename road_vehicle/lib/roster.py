@@ -199,6 +199,12 @@ class Roster:
             v = entry.variant
             translated_names = string_manager["STR_RV_" + v["translation_name"] + "_NAME"].get_pairs()
             [translation] = [s.decode() for (lang_id, s) in translated_names if lang_id == 0x7F]
+            translated_descriptions = string_manager["STR_RV_" + v["translation_name"] + "_DESC"].get_pairs()
+            [desc_translation] = [
+                "" if s.startswith(b"\xc3\x9e") else s.replace(b"\x89", b"").decode()
+                for (lang_id, s) in translated_descriptions
+                if lang_id == 0x7F
+            ]
             with open(os.path.join(prefix, f'{v["translation_name"]}.md'), "w") as f:
                 print(
                     f"""---
@@ -208,7 +214,7 @@ parent: Vehicles
 grand_parent: Ahyangyi's Road Vehicles (ARV)
 nav_order: {i+1}
 ---
-Blablabla
+{desc_translation}
 """,
                     file=f,
                 )
