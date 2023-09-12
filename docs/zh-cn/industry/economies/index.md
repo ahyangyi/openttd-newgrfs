@@ -1,7 +1,7 @@
 ---
 layout: default
-title: 工业
+title: Economies
 parent: Ahyangyi's Extended Generic Industry Set (AEGIS)
 has_children: True
-nav_order: 1
+nav_order: 2
 ---
