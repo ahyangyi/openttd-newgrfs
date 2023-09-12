@@ -5,3 +5,4 @@ baseurl: "/openttd-newgrfs"
 url: "https://ahyangyi.github.io/"
 github_username:  ahyangyi
 theme: just-the-docs
+languages: ["en-GB", "zh-CN"]
