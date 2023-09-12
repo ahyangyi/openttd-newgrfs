@@ -18,6 +18,16 @@ def round_sign(x):
     return str(int(x + 0.5)) + ("+" if x > int(x + 0.5) else "-")
 
 
+def get_pairs(stringref):
+    from nml import grfstrings
+
+    stringref.manager.set_nml_globals()
+    ns = stringref.string_nmlexpr
+    strings = [(lang_id, grfstrings.get_translation(ns, lang_id)) for lang_id in grfstrings.get_translations(ns)]
+    strings = [(0x7F, grfstrings.get_translation(ns))] + strings
+    return strings
+
+
 class Roster:
     def __init__(self, *entries):
         self.entries = entries
@@ -199,12 +209,8 @@ class Roster:
             v = entry.variant
             translated_names = string_manager["STR_RV_" + v["translation_name"] + "_NAME"].get_pairs()
             [translation] = [s.decode() for (lang_id, s) in translated_names if lang_id == 0x7F]
-            translated_descriptions = string_manager["STR_RV_" + v["translation_name"] + "_DESC"].get_pairs()
-            [desc_translation] = [
-                "" if s.startswith(b"\xc3\x9e") else s.replace(b"\x89", b"").decode()
-                for (lang_id, s) in translated_descriptions
-                if lang_id == 0x7F
-            ]
+            translated_descriptions = get_pairs(string_manager["STR_RV_" + v["translation_name"] + "_DESC"])
+            [desc_translation] = [s.replace("\89", "") for (lang_id, s) in translated_descriptions if lang_id == 0x7F]
             with open(os.path.join(prefix, f'{v["translation_name"]}.md'), "w") as f:
                 print(
                     f"""---
@@ -215,6 +221,8 @@ grand_parent: Ahyangyi's Road Vehicles (ARV)
 nav_order: {i+1}
 ---
 {desc_translation}
+
+# Datasheet
 """,
                     file=f,
                 )
