@@ -45,7 +45,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Install ruby deps
-        run: sudo gem install bundler:2.3.26 && cd docs && bundle install
+        run: sudo gem install bundler:2.3.26 && cd docs && sudo bundle install --system
       - name: Build with Jekyll
         run: cd docs && bundle exec jekyll build
       - name: Build with Jekyll (zh-cn)
