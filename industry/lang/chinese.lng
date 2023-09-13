@@ -2,14 +2,14 @@
 STR_GRF_NAME                    :Ahyangyi 的扩展泛用工业包 (AEGIS)
 STR_GRF_DESC                    :一个模块化的工业包，包含了用以支持各种玩法的选项
 
-STR_PARAM_ECONOMY               :经济
+STR_PARAM_ECONOMY               :全局选项 - 经济类型
 STR_PARAM_ECONOMY_DESC          :每种经济都提供了一套不同的工业和货物的组合。一些其他选项也会对可用的工业和货物进一步产生影响。
 STR_PARAM_ECONOMY_VANILLA_TEMPERATE:原版温带
 STR_PARAM_ECONOMY_VANILLA_SUBARCTIC:原版寒带
 STR_PARAM_ECONOMY_VANILLA_SUBTROPICAL:原版热带
 STR_PARAM_ECONOMY_TOYLAND       :奇幻（玩具城）
 
-STR_PARAM_PRESET                :预设选项
+STR_PARAM_PRESET                :全局选项 - 预设玩法
 STR_PARAM_PRESET_DESC           :选择一个预设选项来快速决定整体玩法。{}{}玩法的各个具体方面可以通过后面的参数来覆盖调节。
 STR_PARAM_PRESET_AEGIS          :AEGIS
 STR_PARAM_PRESET_VANILLA        :原版
@@ -17,7 +17,17 @@ STR_PARAM_PRESET_FIRS           :FIRS
 STR_PARAM_PRESET_YETI           :YETI
 STR_PARAM_PRESET_ITI            :ITI
 
-STR_PARAM_NIGHT_MODE            :夜景模式
+STR_PARAM_POLICY                :宏观经济 - 政策
+STR_PARAM_POLICY_DESC           :选择整体的经济政策。{}{}消费：运输大部分商品都能获得利润{}出口：只有运输出口商品才能获得利润
+STR_PARAM_POLICY_CONSUMER       :消费
+STR_PARAM_POLICY_EXPORT         :出口
+
+STR_PARAM_PAYMENT               :宏观经济 - 运费
+STR_PARAM_PAYMENT_DESC          :选择运费和运输距离的关系
+STR_PARAM_PAYMENT_LINEAR        :线性
+STR_PARAM_PAYMENT_CONSTANT      :常数
+
+STR_PARAM_NIGHT_MODE            :画面 - 夜景模式
 STR_PARAM_NIGHT_MODE_DESC       :使用适配 NightGFX 的夜景图像
 STR_PARAM_NIGHT_MODE_AUTO_DETECT:自动检测
 STR_PARAM_NIGHT_MODE_DISABLED   :不使用

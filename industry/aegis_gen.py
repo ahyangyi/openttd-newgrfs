@@ -61,6 +61,30 @@ def gen():
 
     # Parameter 2
     g.add_int_parameter(
+        name=s["STR_PARAM_POLICY"],
+        description=s["STR_PARAM_POLICY_DESC"],
+        default=0,
+        limits=(0, 1),
+        enum={
+            0: s["STR_PARAM_POLICY_CONSUMER"],
+            1: s["STR_PARAM_POLICY_EXPORT"],
+        },
+    )
+
+    # Parameter 3
+    g.add_int_parameter(
+        name=s["STR_PARAM_PAYMENT"],
+        description=s["STR_PARAM_PAYMENT_DESC"],
+        default=0,
+        limits=(0, 1),
+        enum={
+            0: s["STR_PARAM_PAYMENT_LINEAR"],
+            1: s["STR_PARAM_PAYMENT_CONSTANT"],
+        },
+    )
+
+    # Parameter 4
+    g.add_int_parameter(
         name=s["STR_PARAM_NIGHT_MODE"],
         description=s["STR_PARAM_NIGHT_MODE_DESC"],
         default=0,
