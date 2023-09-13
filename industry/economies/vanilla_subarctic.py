@@ -1,4 +1,4 @@
-from industry.lib.economy import BaseEconomy
+from industry.lib.economy import Economy
 from industry.industries import (
     bank,
     coal_mine,
@@ -14,8 +14,8 @@ from industry.industries import (
 )
 
 
-class Economy(BaseEconomy):
-    INDUSTRIES = [
+the_economy = Economy(
+    industries=[
         bank,
         coal_mine,
         food_processing_plant,
@@ -28,4 +28,4 @@ class Economy(BaseEconomy):
         power_station,
         gold_mine,
     ]
-    CARGOS = []
+)

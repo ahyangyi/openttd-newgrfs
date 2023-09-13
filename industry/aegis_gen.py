@@ -3,9 +3,13 @@ import os
 import grf
 import struct
 import argparse
-from industry.industries import clay_pit
+from industry.economies import vanilla_subarctic
 
-all_industries = [clay_pit]
+all_economies = [vanilla_subarctic]
+all_industries = []
+for economy in all_economies:
+    for industry in economy.the_economy.industries:
+        all_industries.append(industry)
 
 
 def get_string_manager():
