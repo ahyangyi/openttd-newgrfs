@@ -77,7 +77,7 @@ def gen():
     g.add(grf.ComputeParameters(target=0x41, operation=0x00, if_undefined=False, source1=0xFF, source2=0xFF, value=0))
 
     for industry in all_industries:
-        g.add(industry.the_industry)
+        g.add(industry)
 
     g.write("aegis.grf")
 
