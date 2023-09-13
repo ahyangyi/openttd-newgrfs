@@ -1,6 +1,4 @@
 from house.lib import AHouse
-from pygorender import Config, render
-import grf
 from agrf.graphics.voxel import LazyVoxel, LazySpriteSheet
 
 vox = LazyVoxel(

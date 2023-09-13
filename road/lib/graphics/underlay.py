@@ -1,4 +1,3 @@
-from road.lib import ARoadType
 from agrf.graphics.voxel import LazyVoxel, LazySpriteSheet
 
 
