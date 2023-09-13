@@ -121,6 +121,7 @@ grand_parent: Ahyangyi's Extended Generic Industry Set (AEGIS)
 nav_order: {i+1}
 ---
 # Flowchart
+
 | In | Industry | Out |
 |----|----------|-----|""",
                     file=f,
