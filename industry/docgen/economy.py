@@ -20,5 +20,7 @@ nav_order: {i+1}
 |----------|---------|----------|""",
                 file=f,
             )
-            for industry in v.industries:
-                print(f"| {industry.name} | | |", file=f)
+            for industry, (i, o) in v.graph.items():
+                accepts = ",".join(x.name for x in i)
+                produces = ",".join(x.name for x in o)
+                print(f"| {industry.name} | {accepts} | {produces} |", file=f)

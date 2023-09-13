@@ -1,3 +1,3 @@
 from industry.lib.cargo import ACargo
 
-the_cargo = ACargo("GOOD")
+the_cargo = ACargo("Goods", "GOOD")
