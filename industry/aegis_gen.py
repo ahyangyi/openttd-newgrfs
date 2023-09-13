@@ -94,17 +94,16 @@ def main():
 
         prefix = "docs/industry/industries"
         for i, entry in enumerate(all_industries):
-            v = entry.the_industry
-            with open(os.path.join(prefix, f"{v.name}.md"), "w") as f:
+            with open(os.path.join(prefix, f"{entry.name}.md"), "w") as f:
                 print(
                     f"""---
 layout: default
-title: {v.name}
+title: {entry.name}
 parent: Industries
 grand_parent: Ahyangyi's Extended Generic Industry Set (AEGIS)
 nav_order: {i+1}
 ---
-Blablabla
+# Datasheet
 """,
                     file=f,
                 )
@@ -121,10 +120,14 @@ parent: Economies
 grand_parent: Ahyangyi's Extended Generic Industry Set (AEGIS)
 nav_order: {i+1}
 ---
-Blablabla
+# Flowchart
+| In | Industry | Out |
+|----|----------|-----|
 """,
                     file=f,
                 )
+                for industry in v.industries:
+                    print(f"|| {industry.name} ||", file=f)
 
 
 if __name__ == "__main__":
