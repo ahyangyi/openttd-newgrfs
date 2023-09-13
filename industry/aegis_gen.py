@@ -122,12 +122,12 @@ nav_order: {i+1}
 ---
 # Flowchart
 
-| In | Industry | Out |
-|----|----------|-----|""",
+| Industry | Accepts | Produces |
+|----------|---------|----------|""",
                     file=f,
                 )
                 for industry in v.industries:
-                    print(f"|| {industry.name} ||", file=f)
+                    print(f"| {industry.name} | | |", file=f)
 
 
 if __name__ == "__main__":
