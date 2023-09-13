@@ -46,6 +46,21 @@ def gen():
 
     # Parameter 1
     g.add_int_parameter(
+        name=s["STR_PARAM_PRESET"],
+        description=s["STR_PARAM_PRESET_DESC"],
+        default=0,
+        limits=(0, 4),
+        enum={
+            0: s["STR_PARAM_PRESET_AEGIS"],
+            1: s["STR_PARAM_PRESET_VANILLA"],
+            2: s["STR_PARAM_PRESET_FIRS"],
+            3: s["STR_PARAM_PRESET_YETI"],
+            4: s["STR_PARAM_PRESET_ITI"],
+        },
+    )
+
+    # Parameter 2
+    g.add_int_parameter(
         name=s["STR_PARAM_NIGHT_MODE"],
         description=s["STR_PARAM_NIGHT_MODE_DESC"],
         default=0,

@@ -53,7 +53,7 @@ doc.aegis:
 	python3 -m industry.aegis_gen doc
 
 aegis.grf:
-	python3 -m industry.aegis_gen
+	python3 -m industry.aegis_gen gen
 
 bridge.grf:
 	python3 -m bridge.dovemere_gen

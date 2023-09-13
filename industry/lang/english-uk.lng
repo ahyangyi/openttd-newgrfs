@@ -9,6 +9,14 @@ STR_PARAM_ECONOMY_VANILLA_SUBARCTIC:Vanilla Sub-Arctic
 STR_PARAM_ECONOMY_VANILLA_SUBTROPICAL:Vanilla Sub-Tropical
 STR_PARAM_ECONOMY_TOYLAND       :Toyland
 
+STR_PARAM_PRESET                :Preset
+STR_PARAM_PRESET_DESC           :Choose a preset that determines the overall playstyle.{}{}You can also override aspects of gameplay with the following parameters.
+STR_PARAM_PRESET_AEGIS          :AEGIS
+STR_PARAM_PRESET_VANILLA        :VANILLA
+STR_PARAM_PRESET_FIRS           :FIRS
+STR_PARAM_PRESET_YETI           :YETI
+STR_PARAM_PRESET_ITI            :ITI
+
 STR_PARAM_NIGHT_MODE            :Night mode
 STR_PARAM_NIGHT_MODE_DESC       :Use night graphics suitable for NightGFX
 STR_PARAM_NIGHT_MODE_AUTO_DETECT:Auto Detect
