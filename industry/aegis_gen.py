@@ -8,7 +8,8 @@ all_economies = [vanilla_temperate, vanilla_subarctic]
 all_industries = []
 for economy in all_economies:
     for industry in economy.the_economy.industries:
-        all_industries.append(industry)
+        if industry not in all_industries:
+            all_industries.append(industry)
 
 
 def get_string_manager():

@@ -31,6 +31,7 @@ STR_RV_YELLOWRIVER_NAME         :Huanghe JN150 Truck (diesel)
 STR_RV_SHIELD_NAME              :C&C U+550 Truck (diesel)
 
 STR_RV_NOVA_NAME                :CRRC Puzhen Alstom Innovia Monorail 300 (EMU)
+STR_TRAIN_NOVA_NAME             :CRRC Puzhen Alstom Innovia Monorail 300 (EMU)
 
 STR_RV_HAPPYONE_BUS_DESC        :{SILVER}
 STR_RV_RIME_DESC                :{SILVER}After the mass-production of the FAW Jiefang CA 10 trucks, many factories started to produce buses by installing a bus body on the chassis.{}{}Songhuajiang Type-57 was produced by the Weijian State-owned Machinery Factory in Harbin.
@@ -50,3 +51,4 @@ STR_RV_YELLOWRIVER_DESC         :{SILVER}Based on reverse-engineered Škoda 706 
 STR_RV_SHIELD_DESC              :{SILVER}
 
 STR_RV_NOVA_DESC                :{SILVER}
+STR_TRAIN_NOVA_DESC             :{SILVER}

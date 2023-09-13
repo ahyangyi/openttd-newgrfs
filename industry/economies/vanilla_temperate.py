@@ -17,18 +17,18 @@ from industry.industries import (
 
 the_economy = Economy(
     name="Vanilla Temperate",
-    industries=[
-        bank,
-        coal_mine,
-        factory,
-        farm,
-        forest,
-        iron_ore_mine,
-        oil_refinery,
-        oil_rig,
-        oil_wells,
-        power_station,
-        sawmill,
-        steel_mill,
-    ],
+    graph={
+        bank: ((), ()),
+        coal_mine: ((), ()),
+        factory: ((), ()),
+        farm: ((), ()),
+        forest: ((), ()),
+        iron_ore_mine: ((), ()),
+        oil_refinery: ((), ()),
+        oil_rig: ((), ()),
+        oil_wells: ((), ()),
+        power_station: ((), ()),
+        sawmill: ((), ()),
+        steel_mill: ((), ()),
+    },
 )

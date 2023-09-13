@@ -12,10 +12,12 @@ class ATrain(grf.Train):
         techclass="unknown",
         graphics_helper=None,
         callbacks=None,
-        **kwargs
+        translation_name=None,
+        **kwargs,
     ):
         self.graphics_helper = graphics_helper
         self.techclass = techclass
+        self.translation_name = translation_name
         if graphics_helper is not None:
             # FIXME: merge cb
             callbacks = graphics_helper.callbacks(
@@ -38,6 +40,9 @@ class ATrain(grf.Train):
     def get_sprites(self, g):
         if self.graphics_helper is not None:
             self.graphics_helper.generate_graphics()
+        if self.translation_name is not None:
+            self.name = g.strings[f"STR_TRAIN_{self.translation_name}_NAME"]
+            self.additional_text = g.strings[f"STR_TRAIN_{self.translation_name}_DESC"]
         return super().get_sprites(g)
 
     def real_speed(self):
