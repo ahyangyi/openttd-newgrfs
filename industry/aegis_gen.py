@@ -3,9 +3,9 @@ import os
 import grf
 import struct
 import argparse
-from industry.economies import vanilla_subarctic
+from industry.economies import vanilla_temperate, vanilla_subarctic
 
-all_economies = [vanilla_subarctic]
+all_economies = [vanilla_subarctic, vanilla_temperate]
 all_industries = []
 for economy in all_economies:
     for industry in economy.the_economy.industries:
