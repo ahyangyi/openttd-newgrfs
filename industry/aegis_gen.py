@@ -76,6 +76,7 @@ def main():
         gen()
     else:
         string_manager = get_string_manager()
+
         prefix = "docs/industry/industries"
         for i, entry in enumerate(all_industries):
             v = entry.the_industry
@@ -85,6 +86,23 @@ def main():
 layout: default
 title: {v.name}
 parent: Industries
+grand_parent: Ahyangyi's Extended Generic Industry Set (AEGIS)
+nav_order: {i+1}
+---
+Blablabla
+""",
+                    file=f,
+                )
+
+        prefix = "docs/industry/economies"
+        for i, entry in enumerate(all_economies):
+            v = entry.the_economy
+            with open(os.path.join(prefix, f"{v.name}.md"), "w") as f:
+                print(
+                    f"""---
+layout: default
+title: {v.name}
+parent: Economies
 grand_parent: Ahyangyi's Extended Generic Industry Set (AEGIS)
 nav_order: {i+1}
 ---

@@ -15,6 +15,7 @@ from industry.industries import (
 
 
 the_economy = Economy(
+    name="Vanilla Sub-Arctic",
     industries=[
         bank,
         coal_mine,
@@ -27,5 +28,5 @@ the_economy = Economy(
         oil_wells,
         power_station,
         gold_mine,
-    ]
+    ],
 )
