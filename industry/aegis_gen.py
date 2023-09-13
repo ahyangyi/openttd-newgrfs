@@ -1,11 +1,10 @@
 #!/usr/bin/env python
-import os
 import grf
 import struct
 import argparse
 from industry.economies import vanilla_temperate, vanilla_subarctic
 
-all_economies = [vanilla_subarctic, vanilla_temperate]
+all_economies = [vanilla_temperate, vanilla_subarctic]
 all_industries = []
 for economy in all_economies:
     for industry in economy.the_economy.industries:
@@ -116,42 +115,13 @@ def main():
     else:
         string_manager = get_string_manager()
 
-        prefix = "docs/industry/industries"
-        for i, entry in enumerate(all_industries):
-            with open(os.path.join(prefix, f"{entry.name}.md"), "w") as f:
-                print(
-                    f"""---
-layout: default
-title: {entry.name}
-parent: Industries
-grand_parent: Ahyangyi's Extended Generic Industry Set (AEGIS)
-nav_order: {i+1}
----
-# Datasheet
-""",
-                    file=f,
-                )
+        from industry.docgen.economy import gen_economy_doc
 
-        prefix = "docs/industry/economies"
-        for i, entry in enumerate(all_economies):
-            v = entry.the_economy
-            with open(os.path.join(prefix, f"{v.name}.md"), "w") as f:
-                print(
-                    f"""---
-layout: default
-title: {v.name}
-parent: Economies
-grand_parent: Ahyangyi's Extended Generic Industry Set (AEGIS)
-nav_order: {i+1}
----
-# Flowchart
+        gen_economy_doc(all_economies, string_manager)
 
-| Industry | Accepts | Produces |
-|----------|---------|----------|""",
-                    file=f,
-                )
-                for industry in v.industries:
-                    print(f"| {industry.name} | | |", file=f)
+        from industry.docgen.industry import gen_industry_doc
+
+        gen_industry_doc(all_industries, string_manager)
 
 
 if __name__ == "__main__":
