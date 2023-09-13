@@ -122,8 +122,7 @@ nav_order: {i+1}
 ---
 # Flowchart
 | In | Industry | Out |
-+----+----------+-----+
-""",
+|----|----------|-----|""",
                     file=f,
                 )
                 for industry in v.industries:
