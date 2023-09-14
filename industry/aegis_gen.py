@@ -6,10 +6,14 @@ from industry.economies import vanilla_temperate, vanilla_subarctic
 
 all_economies = [vanilla_temperate, vanilla_subarctic]
 all_industries = []
+all_cargos = []
 for economy in all_economies:
-    for industry in economy.the_economy.industries:
+    for industry, (i, o) in economy.the_economy.graph.items():
         if industry not in all_industries:
             all_industries.append(industry)
+        for cargo in i + o:
+            if cargo not in all_cargos:
+                all_cargos.append(cargo)
 
 
 def get_string_manager():
@@ -143,6 +147,10 @@ def main():
         from industry.docgen.industry import gen_industry_doc
 
         gen_industry_doc(all_industries, string_manager)
+
+        from industry.docgen.cargo import gen_cargo_doc
+
+        gen_cargo_doc(all_cargos, string_manager)
 
 
 if __name__ == "__main__":
