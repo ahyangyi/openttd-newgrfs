@@ -1,4 +1,15 @@
 from industry.lib.economy import Economy
+from industry.cargos import (
+    valuables,
+    coal,
+    grain,
+    livestock,
+    steel,
+    goods,
+    wood,
+    iron_ore,
+    oil,
+)
 from industry.industries import (
     bank,
     coal_mine,
@@ -18,17 +29,17 @@ from industry.industries import (
 the_economy = Economy(
     name="Vanilla Temperate",
     graph={
-        bank: ((), ()),
-        coal_mine: ((), ()),
-        factory: ((), ()),
-        farm: ((), ()),
-        forest: ((), ()),
-        iron_ore_mine: ((), ()),
-        oil_refinery: ((), ()),
-        oil_rig: ((), ()),
-        oil_wells: ((), ()),
-        power_station: ((), ()),
-        sawmill: ((), ()),
-        steel_mill: ((), ()),
+        bank: ((valuables,), (valuables,)),
+        coal_mine: ((), (coal,)),
+        factory: ((grain, livestock, steel), (goods,)),
+        farm: ((), (grain,)),
+        forest: ((), (wood,)),
+        iron_ore_mine: ((), (iron_ore,)),
+        oil_refinery: ((oil,), (goods,)),
+        oil_rig: ((), (oil,)),
+        oil_wells: ((), (oil,)),
+        power_station: ((coal,), ()),
+        sawmill: ((wood,), (goods,)),
+        steel_mill: ((iron_ore,), (steel,)),
     },
 )
