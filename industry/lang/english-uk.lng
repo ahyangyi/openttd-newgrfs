@@ -18,8 +18,10 @@ STR_PARAM_PRESET_YETI           :YETI
 STR_PARAM_PRESET_ITI            :ITI
 
 STR_PARAM_POLICY                :Macroeconomics - Policy
-STR_PARAM_POLICY_DESC           :Choose the overall economy policy.{}{}Consumer: most goods turn a profit{}Export: only exported goods turn a profut
-STR_PARAM_POLICY_CONSUMER       :Consumer
+STR_PARAM_POLICY_DESC           :Choose the overall economy policy.{}{}Self-Sufficient: no trade{}Free Trade: has trade and most goods turn a profit{}Export: only exported goods turn a profut
+STR_PARAM_POLICY_PRESET         :Preset
+STR_PARAM_POLICY_SELF_SUFFICIENT:Self-Sufficient
+STR_PARAM_POLICY_FREE_TRADE     :Free Trade
 STR_PARAM_POLICY_EXPORT         :Export
 
 STR_PARAM_PAYMENT               :Macroeconomics - Payment
