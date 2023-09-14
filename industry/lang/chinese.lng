@@ -26,6 +26,7 @@ STR_PARAM_POLICY_EXPORT         :出口
 
 STR_PARAM_PAYMENT               :宏观经济 - 运费
 STR_PARAM_PAYMENT_DESC          :选择运费和运输距离的关系
+STR_PARAM_PAYMENT_PRESET        :预设
 STR_PARAM_PAYMENT_LINEAR        :线性
 STR_PARAM_PAYMENT_CONSTANT      :常数
 

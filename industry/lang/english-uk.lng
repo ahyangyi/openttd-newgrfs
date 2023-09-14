@@ -26,6 +26,7 @@ STR_PARAM_POLICY_EXPORT         :Export
 
 STR_PARAM_PAYMENT               :Macroeconomics - Payment
 STR_PARAM_PAYMENT_DESC          :Choose how the payment depends on the distance.
+STR_PARAM_PAYMENT_PRESET        :Preset
 STR_PARAM_PAYMENT_LINEAR        :Linear
 STR_PARAM_PAYMENT_CONSTANT      :Constant
 

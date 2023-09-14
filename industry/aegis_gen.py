@@ -78,10 +78,11 @@ def gen():
         name=s["STR_PARAM_PAYMENT"],
         description=s["STR_PARAM_PAYMENT_DESC"],
         default=0,
-        limits=(0, 1),
+        limits=(0, 2),
         enum={
-            0: s["STR_PARAM_PAYMENT_LINEAR"],
-            1: s["STR_PARAM_PAYMENT_CONSTANT"],
+            0: s["STR_PARAM_POLICY_PRESET"],
+            1: s["STR_PARAM_PAYMENT_LINEAR"],
+            2: s["STR_PARAM_PAYMENT_CONSTANT"],
         },
     )
 
