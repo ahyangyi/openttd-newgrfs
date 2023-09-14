@@ -35,12 +35,15 @@ def gen():
         name=s["STR_PARAM_ECONOMY"],
         description=s["STR_PARAM_ECONOMY_DESC"],
         default=0,
-        limits=(0, 3),
+        limits=(0, 6),
         enum={
             0: s["STR_PARAM_ECONOMY_VANILLA_TEMPERATE"],
             1: s["STR_PARAM_ECONOMY_VANILLA_SUBARCTIC"],
             2: s["STR_PARAM_ECONOMY_VANILLA_SUBTROPICAL"],
             3: s["STR_PARAM_ECONOMY_TOYLAND"],
+            4: s["STR_PARAM_ECONOMY_BASIC_TEMPERATE"],
+            5: s["STR_PARAM_ECONOMY_BASIC_SUBARCTIC"],
+            6: s["STR_PARAM_ECONOMY_BASIC_SUBTROPICAL"],
         },
     )
 
@@ -80,13 +83,27 @@ def gen():
         default=0,
         limits=(0, 2),
         enum={
-            0: s["STR_PARAM_POLICY_PRESET"],
+            0: s["STR_PARAM_PAYMENT_PRESET"],
             1: s["STR_PARAM_PAYMENT_LINEAR"],
             2: s["STR_PARAM_PAYMENT_CONSTANT"],
         },
     )
 
     # Parameter 4
+    g.add_int_parameter(
+        name=s["STR_PARAM_WORKER"],
+        description=s["STR_PARAM_WORKER_DESC"],
+        default=0,
+        limits=(0, 3),
+        enum={
+            0: s["STR_PARAM_WORKER_PRESET"],
+            1: s["STR_PARAM_WORKER_NONE"],
+            2: s["STR_PARAM_WORKER_PASSENGER"],
+            3: s["STR_PARAM_WORKER_CENTER"],
+        },
+    )
+
+    # Parameter 5
     g.add_int_parameter(
         name=s["STR_PARAM_NIGHT_MODE"],
         description=s["STR_PARAM_NIGHT_MODE_DESC"],

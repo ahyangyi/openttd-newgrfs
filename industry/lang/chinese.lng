@@ -8,6 +8,9 @@ STR_PARAM_ECONOMY_VANILLA_TEMPERATE:原版温带
 STR_PARAM_ECONOMY_VANILLA_SUBARCTIC:原版寒带
 STR_PARAM_ECONOMY_VANILLA_SUBTROPICAL:原版热带
 STR_PARAM_ECONOMY_TOYLAND       :奇幻（玩具城）
+STR_PARAM_ECONOMY_BASIC_TEMPERATE:基础温带
+STR_PARAM_ECONOMY_BASIC_SUBARCTIC:基础寒带
+STR_PARAM_ECONOMY_BASIC_SUBTROPICAL:基础热带
 
 STR_PARAM_PRESET                :全局选项 - 预设玩法
 STR_PARAM_PRESET_DESC           :选择一个预设选项来快速决定整体玩法。{}{}玩法的各个具体方面可以通过后面的参数来覆盖调节。
@@ -19,16 +22,23 @@ STR_PARAM_PRESET_ITI            :ITI
 
 STR_PARAM_POLICY                :宏观经济 - 政策
 STR_PARAM_POLICY_DESC           :选择整体的经济政策。{}{}自给自足：没有贸易工业{}自由贸易：有贸易工业，运输大部分商品都能获得利润{}出口：只有运输出口商品才能获得利润
-STR_PARAM_POLICY_PRESET         :预设
+STR_PARAM_POLICY_PRESET         :使用预设玩法
 STR_PARAM_POLICY_SELF_SUFFICIENT:自给自足
 STR_PARAM_POLICY_FREE_TRADE     :自由贸易
 STR_PARAM_POLICY_EXPORT         :出口
 
 STR_PARAM_PAYMENT               :宏观经济 - 运费
 STR_PARAM_PAYMENT_DESC          :选择运费和运输距离的关系
-STR_PARAM_PAYMENT_PRESET        :预设
+STR_PARAM_PAYMENT_PRESET        :使用预设玩法
 STR_PARAM_PAYMENT_LINEAR        :线性
 STR_PARAM_PAYMENT_CONSTANT      :常数
+
+STR_PARAM_WORKER                :城镇 - 工人
+STR_PARAM_WORKER_DESC           :选择如何产生工人。
+STR_PARAM_WORKER_PRESET         :使用预设玩法
+STR_PARAM_WORKER_NONE           :无
+STR_PARAM_WORKER_PASSENGER      :工人代替旅客
+STR_PARAM_WORKER_CENTER         :劳工之家
 
 STR_PARAM_NIGHT_MODE            :画面 - 夜景模式
 STR_PARAM_NIGHT_MODE_DESC       :使用适配 NightGFX 的夜景图像
