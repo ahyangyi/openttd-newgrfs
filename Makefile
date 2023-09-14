@@ -62,7 +62,7 @@ house.grf:
 	python3 -m house.dovemere_gen
 
 road.grf:
-	python3 -m road.dovemere_gen
+	python3 -m road.dovemere_gen gen
 
 road.csv:
 	python3 -m road.dovemere_gen csv
