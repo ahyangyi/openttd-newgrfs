@@ -1,4 +1,5 @@
 import os
+from agrf.strings import get_translation
 
 
 def gen_economy_doc(all_economies, string_manager):
@@ -21,6 +22,7 @@ nav_order: {i+1}
                 file=f,
             )
             for industry, (i, o) in v.graph.items():
-                accepts = ", ".join(x.name for x in i)
-                produces = ", ".join(x.name for x in o)
+                translate = lambda x: get_translation(string_manager["STR_CARGO_" + x], 0x7F)
+                accepts = ", ".join(translate(x.label) for x in i)
+                produces = ", ".join(translate(x.label) for x in o)
                 print(f"| {industry.name} | {accepts} | {produces} |", file=f)

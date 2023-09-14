@@ -35,3 +35,19 @@ STR_PARAM_NIGHT_MODE_DESC       :Use night graphics suitable for NightGFX
 STR_PARAM_NIGHT_MODE_AUTO_DETECT:Auto Detect
 STR_PARAM_NIGHT_MODE_DISABLED   :Disabled
 STR_PARAM_NIGHT_MODE_ENABLED    :Enabled
+
+STR_CARGO_PASS                  :Passengers
+STR_CARGO_COAL                  :Coal
+STR_CARGO_MAIL                  :Mail
+STR_CARGO_OIL_                  :Oil
+STR_CARGO_LVST                  :Livestock
+STR_CARGO_GOOD                  :Goods
+STR_CARGO_GRAI                  :Grain
+STR_CARGO_WOOD                  :Wood
+STR_CARGO_IORE                  :Iron Ore
+STR_CARGO_STEL                  :Steel
+STR_CARGO_VALU                  :Valuables
+STR_CARGO_PAPR                  :Paper
+STR_CARGO_FOOD                  :Food
+STR_CARGO_GOLD                  :Gold
+STR_CARGO_WHEA                  :Wheat
