@@ -30,22 +30,22 @@ from industry.industries import (
 the_economy = Economy(
     name="Vanilla Sub-Arctic",
     graph={
-        bank: ((gold,), ()),
-        coal_mine: ((), (coal,)),
+        bank: (gold, ()),
+        coal_mine: ((), coal),
         food_processing_plant: (
             (
                 livestock,
                 wheat,
             ),
-            (food,),
+            food,
         ),
-        farm: ((), (wheat,)),
-        forest: ((), (wood,)),
-        paper_mill: ((wood,), (paper,)),
-        oil_refinery: ((oil,), (goods,)),
-        printing_works: ((paper,), (goods,)),
-        oil_wells: ((), (oil,)),
-        power_station: ((coal,), ()),
-        gold_mine: ((), (gold,)),
+        farm: ((), wheat),
+        forest: ((), wood),
+        paper_mill: (wood, paper),
+        oil_refinery: (oil, goods),
+        printing_works: (paper, goods),
+        oil_wells: ((), oil),
+        power_station: (coal, ()),
+        gold_mine: ((), gold),
     },
 )
