@@ -27,7 +27,7 @@ grand_parent: Ahyangyi's Extended Generic Industry Set (AEGIS)
 nav_order: {i+1}
 ---
 # Datasheet
-Cargo Class: {cargo_class(entry.cargo_class)}
+**Cargo Class**: {cargo_class(entry.cargo_class)}
 """,
                 file=f,
             )
