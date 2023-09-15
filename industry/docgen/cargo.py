@@ -28,7 +28,9 @@ nav_order: {i+1}
 ---
 # Datasheet
 **Cargo Class**: {cargo_class(entry.cargo_class)}
+
 **Capacity Multiplier**: {entry.capacity_multiplier / 0x100}
+
 **Weight**: {entry.weight / 16}
 """,
                 file=f,
