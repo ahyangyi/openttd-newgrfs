@@ -1,5 +1,16 @@
 import os
+import grf
 from agrf.strings import get_translation
+
+
+def cargo_class(c):
+    results = []
+    for x in dir(grf.CargoClass):
+        if x.startswith("_"):
+            continue
+        if getattr(grf.CargoClass, x) & c:
+            results.append(x)
+    return ", ".join(results)
 
 
 def gen_cargo_doc(all_cargos, string_manager):
@@ -15,6 +26,8 @@ parent: Cargos
 grand_parent: Ahyangyi's Extended Generic Industry Set (AEGIS)
 nav_order: {i+1}
 ---
+# Datasheet
+Cargo Class: {cargo_class(entry.cargo_class)}
 """,
                 file=f,
             )
