@@ -4,11 +4,11 @@ import struct
 import argparse
 from industry.economies import vanilla_temperate, vanilla_subarctic
 
-all_economies = [vanilla_temperate, vanilla_subarctic]
+all_economies = [x.the_economy for x in [vanilla_temperate, vanilla_subarctic]]
 all_industries = []
 all_cargos = []
 for economy in all_economies:
-    for industry, (i, o) in economy.the_economy.graph.items():
+    for industry, (i, o) in economy.graph.items():
         if industry not in all_industries:
             all_industries.append(industry)
         for cargo in i + o:

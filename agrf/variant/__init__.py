@@ -1,4 +1,8 @@
 class AVariant(dict):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__dict__ = self
+
     def modified_copy(self, *, variants=[], **kwargs):
         return AVariant(**{**self, "variants": variants, **kwargs})
 
