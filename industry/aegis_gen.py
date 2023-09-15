@@ -109,6 +109,23 @@ def gen():
 
     # Parameter 5
     g.add_int_parameter(
+        name=s["STR_PARAM_INDUSTRY_SIZE"],
+        description=s["STR_PARAM_INDUSTRY_SIZE_DESC"],
+        default=2,
+        limits=(0, 6),
+        enum={
+            0: s["STR_PARAM_INDUSTRY_SIZE_EXTRA_LARGE"],
+            1: s["STR_PARAM_INDUSTRY_SIZE_LARGE"],
+            2: s["STR_PARAM_INDUSTRY_SIZE_REGULAR"],
+            3: s["STR_PARAM_INDUSTRY_SIZE_SMALL"],
+            4: s["STR_PARAM_INDUSTRY_SIZE_TINY"],
+            5: s["STR_PARAM_INDUSTRY_SIZE_ONE_TILE"],
+            6: s["STR_PARAM_INDUSTRY_SIZE_ONE_TILE_FLAT"],
+        },
+    )
+
+    # Parameter 6
+    g.add_int_parameter(
         name=s["STR_PARAM_NIGHT_MODE"],
         description=s["STR_PARAM_NIGHT_MODE_DESC"],
         default=0,
