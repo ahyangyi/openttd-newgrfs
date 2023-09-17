@@ -144,6 +144,10 @@ def gen():
     for industry in all_industries:
         g.add(industry)
 
+    from industry.industry_tiles import one_tile_flat
+
+    g.add(one_tile_flat.the_industry_tile)
+
     g.write("aegis.grf")
 
 
