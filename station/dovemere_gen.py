@@ -7,7 +7,7 @@ def main():
     s.import_lang_dir("station/lang", default_lang_file="english-uk.lng")
 
     g = grf.NewGRF(
-        grfid=b"\xE5\xBC\x8Bb",
+        grfid=b"\xE5\xBC\x8Bs",
         name=s["STR_GRF_NAME"],
         description=s["STR_GRF_DESC"],
         id_map_file="station/id_map.json",
