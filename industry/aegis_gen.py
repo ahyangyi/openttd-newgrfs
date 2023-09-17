@@ -126,6 +126,21 @@ def gen():
 
     # Parameter 6
     g.add_int_parameter(
+        name=s["STR_PARAM_COLOUR_SCHEME"],
+        description=s["STR_PARAM_COLOUR_SCHEME_DESC"],
+        default=0,
+        limits=(0, 4),
+        enum={
+            0: s["STR_PARAM_COLOUR_SCHEME_TWO"],
+            1: s["STR_PARAM_COLOUR_SCHEME_ONE"],
+            2: s["STR_PARAM_COLOUR_SCHEME_FIXED"],
+            3: s["STR_PARAM_COLOUR_SCHEME_FIRS_3"],
+            4: s["STR_PARAM_COLOUR_SCHEME_FIRS_4"],
+        },
+    )
+
+    # Parameter 7
+    g.add_int_parameter(
         name=s["STR_PARAM_NIGHT_MODE"],
         description=s["STR_PARAM_NIGHT_MODE_DESC"],
         default=0,
