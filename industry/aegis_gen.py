@@ -132,9 +132,9 @@ def gen():
         default=0,
         limits=(0, 2),
         enum={
-            0: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_PRESET"],
-            1: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DISABLED"],
-            2: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_ENABLED"],
+            0: s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_PRESET"],
+            1: s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DISABLED"],
+            2: s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_ENABLED"],
         },
     )
 
