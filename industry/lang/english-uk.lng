@@ -51,6 +51,12 @@ STR_PARAM_PRIMARY_INDUSTRY_GROWTH_WORKERS           :Workers
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DISCRETE          :Discrete
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_CONTINUOUS        :Continuous
 
+STR_PARAM_PRIMARY_INDUSTRY_CLOSURE                  :Primary Industry - Closure
+STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DESC             :Choose whether closure is possible for primary industry
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_PRESET            :Preset
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DISABLED          :Disabled
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_ENABLED           :Enabled
+
 STR_PARAM_INDUSTRY_SIZE         :Graphics - Industry Size
 STR_PARAM_INDUSTRY_SIZE_DESC    :Choose the visual size of the industries
 STR_PARAM_INDUSTRY_SIZE_EXTRA_LARGE:Extra Large

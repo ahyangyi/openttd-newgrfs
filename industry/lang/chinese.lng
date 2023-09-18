@@ -41,15 +41,15 @@ STR_PARAM_WORKER_NONE           :无
 STR_PARAM_WORKER_PASSENGER      :工人代替旅客
 STR_PARAM_WORKER_CENTER         :劳工之家
 
-STR_PARAM_PRIMARY_INDUSTRY_GROWTH                   :Primary Industry - Growth
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH                   :第一产业 - 增长
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DESC              :Choose how does primary industries change their production.{}{}None - No change{}Generic Supplies - productions are boosted when supplied with Farming/Engineering Supplies{}Specific Supplies - productions are boosted when supplied with specific cargos{}Workers - productions are boosted when supplied with workers{}Discrete - productions change randomly, depending on whether its output is used{}Continuous - production change randomly, with many levels possible.
-STR_PARAM_PRIMARY_INDUSTRY_GROWTH_PRESET            :Preset
-STR_PARAM_PRIMARY_INDUSTRY_GROWTH_NONE              :None
-STR_PARAM_PRIMARY_INDUSTRY_GROWTH_GENERIC_SUPPLIES  :Generic Supplies
-STR_PARAM_PRIMARY_INDUSTRY_GROWTH_SPECIFIC_SUPPLIES :Specific Supplies
-STR_PARAM_PRIMARY_INDUSTRY_GROWTH_WORKERS           :Workers
-STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DISCRETE          :Discrete
-STR_PARAM_PRIMARY_INDUSTRY_GROWTH_CONTINUOUS        :Continuous
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_PRESET            :预设
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_NONE              :无
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_GENERIC_SUPPLIES  :通用供给
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_SPECIFIC_SUPPLIES :专用供给
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_WORKERS           :工人
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DISCRETE          :离散
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_CONTINUOUS        :连续
 
 STR_PARAM_INDUSTRY_SIZE         :画面 - 工业大小
 STR_PARAM_INDUSTRY_SIZE_DESC    :选择工业的占地大小

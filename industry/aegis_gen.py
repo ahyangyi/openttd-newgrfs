@@ -127,6 +127,19 @@ def gen():
 
     # Parameter 5
     g.add_int_parameter(
+        name=s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE"],
+        description=s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DESC"],
+        default=0,
+        limits=(0, 2),
+        enum={
+            0: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_PRESET"],
+            1: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DISABLED"],
+            2: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_ENABLED"],
+        },
+    )
+
+    # Parameter 5
+    g.add_int_parameter(
         name=s["STR_PARAM_INDUSTRY_SIZE"],
         description=s["STR_PARAM_INDUSTRY_SIZE_DESC"],
         default=2,
