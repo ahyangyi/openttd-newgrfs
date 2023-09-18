@@ -71,12 +71,13 @@ def gen():
         name=s["STR_PARAM_POLICY"],
         description=s["STR_PARAM_POLICY_DESC"],
         default=0,
-        limits=(0, 3),
+        limits=(0, 4),
         enum={
             0: s["STR_PARAM_POLICY_PRESET"],
-            1: s["STR_PARAM_POLICY_SELF_SUFFICIENT"],
-            2: s["STR_PARAM_POLICY_FREE_TRADE"],
-            3: s["STR_PARAM_POLICY_EXPORT"],
+            1: s["STR_PARAM_POLICY_AUTARKY"],
+            2: s["STR_PARAM_POLICY_SELF_SUFFICIENT"],
+            3: s["STR_PARAM_POLICY_FREE_TRADE"],
+            4: s["STR_PARAM_POLICY_EXPORT"],
         },
     )
 

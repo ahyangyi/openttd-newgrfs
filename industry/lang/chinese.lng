@@ -21,8 +21,9 @@ STR_PARAM_PRESET_YETI           :YETI
 STR_PARAM_PRESET_ITI            :ITI
 
 STR_PARAM_POLICY                :宏观经济 - 政策
-STR_PARAM_POLICY_DESC           :选择整体的经济政策。{}{}自给自足：没有贸易工业{}自由贸易：有贸易工业，运输大部分商品都能获得利润{}出口：只有运输出口商品才能获得利润
+STR_PARAM_POLICY_DESC           :选择整体的经济政策。{}{}封闭经济：没有贸易工业{}自给自足：不通过贸易也能生产一切，但是也可以贸易{}自由贸易：有贸易工业，运输大部分商品都能获得利润{}出口：只有运输出口商品才能获得利润
 STR_PARAM_POLICY_PRESET         :使用预设玩法
+STR_PARAM_POLICY_AUTARKY        :封闭经济
 STR_PARAM_POLICY_SELF_SUFFICIENT:自给自足
 STR_PARAM_POLICY_FREE_TRADE     :自由贸易
 STR_PARAM_POLICY_EXPORT         :出口
