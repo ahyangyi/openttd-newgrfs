@@ -193,6 +193,8 @@ def gen():
 
     for industry in all_industries:
         g.add(industry)
+    for cargo in all_cargos:
+        g.add(cargo)
 
     from industry.industry_tiles import one_tile_flat
 
