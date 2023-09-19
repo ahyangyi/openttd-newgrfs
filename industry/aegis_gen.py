@@ -160,13 +160,17 @@ def gen():
         name=s["STR_PARAM_COLOUR_SCHEME"],
         description=s["STR_PARAM_COLOUR_SCHEME_DESC"],
         default=0,
-        limits=(0, 4),
+        limits=(0, 8),
         enum={
             0: s["STR_PARAM_COLOUR_SCHEME_TWO"],
             1: s["STR_PARAM_COLOUR_SCHEME_ONE"],
-            2: s["STR_PARAM_COLOUR_SCHEME_FIXED"],
-            3: s["STR_PARAM_COLOUR_SCHEME_FIRS_3"],
-            4: s["STR_PARAM_COLOUR_SCHEME_FIRS_4"],
+            2: s["STR_PARAM_COLOUR_SCHEME_FIRS_3"],
+            3: s["STR_PARAM_COLOUR_SCHEME_FIRS_4"],
+            4: s["STR_PARAM_COLOUR_SCHEME_TWO_PER_INDUSTRY"],
+            5: s["STR_PARAM_COLOUR_SCHEME_ONE_PER_INDUSTRY"],
+            6: s["STR_PARAM_COLOUR_SCHEME_TWO_GLOBAL"],
+            7: s["STR_PARAM_COLOUR_SCHEME_ONE_GLOBAL"],
+            8: s["STR_PARAM_COLOUR_SCHEME_FIXED"],
         },
     )
 

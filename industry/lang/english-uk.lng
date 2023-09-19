@@ -74,6 +74,10 @@ STR_PARAM_COLOUR_SCHEME_ONE     :One Colour
 STR_PARAM_COLOUR_SCHEME_FIXED   :Fixed
 STR_PARAM_COLOUR_SCHEME_FIRS_3  :FIRS 3
 STR_PARAM_COLOUR_SCHEME_FIRS_4  :FIRS 4
+STR_PARAM_COLOUR_SCHEME_TWO_PER_INDUSTRY    :Two Colours (per industry)
+STR_PARAM_COLOUR_SCHEME_ONE_PER_INDUSTRY    :One Colour (per industry)
+STR_PARAM_COLOUR_SCHEME_TWO_GLOBAL          :Two Colours (per industry type)
+STR_PARAM_COLOUR_SCHEME_ONE_GLOBAL          :One Colour (per industry type)
 
 STR_PARAM_NIGHT_MODE            :Graphics - Night mode
 STR_PARAM_NIGHT_MODE_DESC       :Use night graphics suitable for NightGFX
