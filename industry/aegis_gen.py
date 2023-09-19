@@ -56,13 +56,15 @@ def gen():
         name=s["STR_PARAM_PRESET"],
         description=s["STR_PARAM_PRESET_DESC"],
         default=0,
-        limits=(0, 4),
+        limits=(0, 6),
         enum={
             0: s["STR_PARAM_PRESET_AEGIS"],
             1: s["STR_PARAM_PRESET_VANILLA"],
             2: s["STR_PARAM_PRESET_FIRS"],
             3: s["STR_PARAM_PRESET_YETI"],
-            4: s["STR_PARAM_PRESET_ITI"],
+            4: s["STR_PARAM_PRESET_CARIBBEAN"],
+            5: s["STR_PARAM_PRESET_LUMBERJACK"],
+            6: s["STR_PARAM_PRESET_ITI"],
         },
     )
 
