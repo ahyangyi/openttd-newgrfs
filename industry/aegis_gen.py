@@ -193,14 +193,14 @@ def gen():
     g.add(grf.If(is_static=False, variable=0x88, condition=0x06, value=nightgfx_id, skip=1, varsize=4))
     g.add(grf.ComputeParameters(target=0x41, operation=0x00, if_undefined=False, source1=0xFF, source2=0xFF, value=0))
 
+    from industry.industry_tiles import one_tile_flat
+
+    g.add(one_tile_flat.the_industry_tile)
+
     for industry in all_industries:
         g.add(industry)
     for cargo in all_cargos:
         g.add(cargo)
-
-    from industry.industry_tiles import one_tile_flat
-
-    g.add(one_tile_flat.the_industry_tile)
 
     g.write("aegis.grf")
 
