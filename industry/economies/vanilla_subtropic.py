@@ -50,5 +50,5 @@ the_economy = Economy(
         power_station: (copper_ore, ()),
         diamond_mine: ((), diamonds),
     },
-    town_industries=(passengers, mail, food, goods),
+    town_cargos=(passengers, mail, food, goods),
 )

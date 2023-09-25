@@ -24,3 +24,6 @@ class ACargo(grf.SpriteGenerator):
         res.append(self.callbacks.make_map_action(definition))
 
         return res
+
+    def __repr__(self):
+        return f"<Cargo:{self.label}>"

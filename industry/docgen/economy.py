@@ -27,6 +27,6 @@ nav_order: {i+1}
                 print(f"| {industry.name} | {accepts} | {produces} |", file=f)
 
             # Town industry
-            accepts = ", ".join(translate(x.label) for x in entry.town_industries if x is not None)
-            produces = ", ".join(translate(x.label) for x in entry.town_industries[:2] if x is not None)
+            accepts = ", ".join(translate(x.label) for x in entry.town_cargos if x is not None)
+            produces = ", ".join(translate(x.label) for x in entry.town_cargos[:2] if x is not None)
             print(f"| Towns | {accepts} | {produces} |", file=f)

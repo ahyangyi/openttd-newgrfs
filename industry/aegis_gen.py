@@ -212,6 +212,11 @@ def main():
 
     if args.cmd == "gen":
         gen()
+    elif args.cmd == "test":
+        from industry.lib.validator import check_reachability
+
+        for economy in all_economies:
+            check_reachability(economy)
     else:
         string_manager = get_string_manager()
 

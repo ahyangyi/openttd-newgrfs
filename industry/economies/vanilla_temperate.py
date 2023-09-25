@@ -34,7 +34,7 @@ the_economy = Economy(
         bank: (valuables, valuables),
         coal_mine: ((), coal),
         factory: ((grain, livestock, steel), goods),
-        farm: ((), grain),
+        farm: ((), (grain, livestock)),
         forest: ((), wood),
         iron_ore_mine: ((), iron_ore),
         oil_refinery: (oil, goods),
@@ -44,5 +44,5 @@ the_economy = Economy(
         sawmill: (wood, goods),
         steel_mill: (iron_ore, steel),
     },
-    town_industries=(passengers, mail, None, goods),
+    town_cargos=(passengers, mail, None, goods),
 )

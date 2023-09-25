@@ -57,6 +57,9 @@ doc.rt:
 doc.aegis:
 	python3 -m industry.aegis_gen doc
 
+test.aegis:
+	python3 -m industry.aegis_gen test
+
 aegis.grf:
 	python3 -m industry.aegis_gen gen
 
