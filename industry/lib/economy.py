@@ -20,4 +20,6 @@ class Economy:
     @property
     def cargos(self):
         a = [i + o for i, o in self.graph.values()] + [x for x in self.town_cargos if x is not None]
-        return list(set([i + o for i, o in self.graph.values()] + [x for x in self.town_cargos if x is not None]))
+        return list(
+            set([x for i, o in self.graph.values() for x in i + o] + [x for x in self.town_cargos if x is not None])
+        )
