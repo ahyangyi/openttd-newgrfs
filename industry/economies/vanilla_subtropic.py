@@ -1,52 +1,52 @@
 from industry.lib.economy import Economy
 from industry.cargos import (
-    coal,
+    copper_ore,
     food,
     goods,
-    gold,
+    diamonds,
     livestock,
     mail,
     oil,
     paper,
     passengers,
-    wheat,
+    maize,
     wood,
 )
 from industry.industries import (
     bank,
-    coal_mine,
+    copper_ore_mine,
     food_processing_plant,
     farm,
-    forest,
+    lumber_mill,
     paper_mill,
     oil_refinery,
     printing_works,
     oil_wells,
     power_station,
-    gold_mine,
+    diamond_mine,
 )
 
 
 the_economy = Economy(
-    name="Vanilla Sub-Arctic",
+    name="Vanilla Sub-Tropic",
     graph={
-        bank: (gold, ()),
-        coal_mine: ((), coal),
+        bank: (diamonds, ()),
+        copper_ore_mine: ((), copper_ore),
         food_processing_plant: (
             (
                 livestock,
-                wheat,
+                maize,
             ),
             food,
         ),
-        farm: ((), (livestock, wheat)),
-        forest: ((), wood),
+        farm: ((), maize),
+        lumber_mill: ((), wood),
         paper_mill: (wood, paper),
         oil_refinery: (oil, goods),
         printing_works: (paper, goods),
         oil_wells: ((), oil),
-        power_station: (coal, ()),
-        gold_mine: ((), gold),
+        power_station: (copper_ore, ()),
+        diamond_mine: ((), diamonds),
     },
     town_industries=(passengers, mail, food, goods),
 )

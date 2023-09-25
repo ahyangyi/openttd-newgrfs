@@ -102,3 +102,6 @@ STR_CARGO_PAPR                  :Paper
 STR_CARGO_FOOD                  :Food
 STR_CARGO_GOLD                  :Gold
 STR_CARGO_WHEA                  :Wheat
+STR_CARGO_DIAM                  :Diamonds
+STR_CARGO_MAIZ                  :Maize
+STR_CARGO_CORE                  :Copper Ore
