@@ -9,6 +9,8 @@ from industry.cargos import (
     wood,
     iron_ore,
     oil,
+    passengers,
+    mail,
 )
 from industry.industries import (
     bank,
@@ -42,4 +44,5 @@ the_economy = Economy(
         sawmill: (wood, goods),
         steel_mill: (iron_ore, steel),
     },
+    town_industries=(passengers, mail, None, goods),
 )

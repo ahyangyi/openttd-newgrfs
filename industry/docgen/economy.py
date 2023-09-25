@@ -20,8 +20,13 @@ nav_order: {i+1}
 |----------|---------|----------|""",
                 file=f,
             )
+            translate = lambda x: get_translation(string_manager["STR_CARGO_" + x.decode()], 0x7F)
             for industry, (i, o) in entry.graph.items():
-                translate = lambda x: get_translation(string_manager["STR_CARGO_" + x], 0x7F)
                 accepts = ", ".join(translate(x.label) for x in i)
                 produces = ", ".join(translate(x.label) for x in o)
                 print(f"| {industry.name} | {accepts} | {produces} |", file=f)
+
+            # Town industry
+            accepts = ", ".join(translate(x.label) for x in entry.town_industries if x is not None)
+            produces = ", ".join(translate(x.label) for x in entry.town_industries[:2] if x is not None)
+            print(f"| Towns | {accepts} | {produces} |", file=f)

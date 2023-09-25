@@ -16,7 +16,7 @@ def cargo_class(c):
 def gen_cargo_doc(all_cargos, string_manager):
     prefix = "docs/industry/cargos"
     for i, entry in enumerate(all_cargos):
-        cargo_name = get_translation(string_manager["STR_CARGO_" + entry.label], 0x7F)
+        cargo_name = get_translation(string_manager["STR_CARGO_" + entry.label.decode()], 0x7F)
         with open(os.path.join(prefix, f"{cargo_name}.md"), "w") as f:
             print(
                 f"""---

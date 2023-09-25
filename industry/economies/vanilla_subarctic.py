@@ -48,4 +48,5 @@ the_economy = Economy(
         power_station: (coal, ()),
         gold_mine: ((), gold),
     },
+    town_industries=(passengers, mail, food, goods),
 )
