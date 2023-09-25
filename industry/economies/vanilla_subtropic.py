@@ -4,7 +4,6 @@ from industry.cargos import (
     food,
     goods,
     diamonds,
-    livestock,
     mail,
     oil,
     passengers,
@@ -36,7 +35,7 @@ the_economy = Economy(
         copper_ore_mine: ((), copper_ore),
         food_processing_plant: (
             (
-                livestock,
+                fruit,
                 maize,
             ),
             food,
