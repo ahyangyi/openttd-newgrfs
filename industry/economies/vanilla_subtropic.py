@@ -23,7 +23,6 @@ from industry.industries import (
     oil_refinery,
     factory,
     oil_wells,
-    power_station,
     diamond_mine,
     towns,
 )
@@ -34,7 +33,6 @@ the_economy = Economy(
     graph={
         copper_ore_mine: PrimaryIndustry(copper_ore),
         oil_wells: PrimaryIndustry(oil),
-        power_station: PrimaryIndustry(copper_ore),
         diamond_mine: PrimaryIndustry(diamonds),
         farm: PrimaryIndustry(maize),
         lumber_mill: PrimaryIndustry(wood),

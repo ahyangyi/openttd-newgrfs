@@ -35,7 +35,7 @@ the_economy = Economy(
         farm: PrimaryIndustry((livestock, wheat)),
         forest: PrimaryIndustry(wood),
         oil_wells: PrimaryIndustry(oil),
-        gold_mine: PrimaryIndustry((), gold),
+        gold_mine: PrimaryIndustry(gold),
         food_processing_plant: SecondaryIndustry(
             (
                 livestock,
