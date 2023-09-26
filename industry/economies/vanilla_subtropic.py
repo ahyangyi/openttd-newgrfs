@@ -1,4 +1,4 @@
-from industry.lib.economy import Economy
+from industry.lib.economy import Economy, PrimaryIndustry, SecondaryIndustry, TertiaryIndustry, Town
 from industry.cargos import (
     copper_ore,
     food,
@@ -25,30 +25,25 @@ from industry.industries import (
     oil_wells,
     power_station,
     diamond_mine,
+    towns,
 )
 
 
 the_economy = Economy(
     name="Vanilla Sub-Tropic",
     graph={
-        bank: (diamonds, ()),
-        copper_ore_mine: ((), copper_ore),
-        food_processing_plant: (
-            (
-                fruit,
-                maize,
-            ),
-            food,
-        ),
-        farm: ((), maize),
-        lumber_mill: ((), wood),
-        fruit_plantation: ((), fruit),
-        rubber_plantation: ((), rubber),
-        oil_refinery: (oil, goods),
-        factory: ((rubber, copper_ore, wood), goods),
-        oil_wells: ((), oil),
-        power_station: (copper_ore, ()),
-        diamond_mine: ((), diamonds),
+        copper_ore_mine: PrimaryIndustry(copper_ore),
+        oil_wells: PrimaryIndustry(oil),
+        power_station: PrimaryIndustry(copper_ore),
+        diamond_mine: PrimaryIndustry(diamonds),
+        farm: PrimaryIndustry(maize),
+        lumber_mill: PrimaryIndustry(wood),
+        fruit_plantation: PrimaryIndustry(fruit),
+        rubber_plantation: PrimaryIndustry(rubber),
+        food_processing_plant: SecondaryIndustry((fruit, maize), food),
+        oil_refinery: SecondaryIndustry(oil, goods),
+        factory: SecondaryIndustry((rubber, copper_ore, wood), goods),
+        bank: TertiaryIndustry(diamonds),
+        towns: Town(passengers, mail, food, goods),
     },
-    town_cargos=(passengers, mail, food, goods),
 )

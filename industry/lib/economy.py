@@ -4,27 +4,40 @@ def make_tuple(x):
     return (x,)
 
 
-class PrimaryIndustryIO:
-    def __init__(self, accepts=(), produces=()):
-        self.accepts = accepts
-        self.produces = produces
+class PrimaryIndustry:
+    def __init__(self, produces=(), accepts=()):
+        self.produces = make_tuple(produces)
+        self.accepts = make_tuple(accepts)
 
     @property
     def consumes(self):
         return ()
 
 
-class SecondaryIndustryIO:
+class SecondaryIndustry:
     def __init__(self, consumes=(), produces=()):
-        self.consumes = consumes
-        self.produces = produces
+        self.consumes = make_tuple(consumes)
+        self.produces = make_tuple(produces)
 
     @property
     def accepts(self):
         return self.consumes
 
 
-class TownIO:
+class TertiaryIndustry:
+    def __init__(self, consumes=()):
+        self.consumes = make_tuple(consumes)
+
+    @property
+    def accepts(self):
+        return self.consumes
+
+    @property
+    def produces(self):
+        return ()
+
+
+class Town:
     def __init__(self, passengers, mail, food, goods):
         self.passengers = passengers
         self.mail = mail
@@ -47,13 +60,9 @@ class TownIO:
 
 
 class Economy:
-    def __init__(self, name, graph, town_cargos):
+    def __init__(self, name, graph):
         self.name = name
-        self.graph = {
-            x.the_industry: (make_tuple(i), make_tuple(o))
-            for x, (i, o) in graph.items()
-        }
-        self.town_cargos = town_cargos
+        self.graph = graph
 
     @property
     def industries(self):
@@ -61,7 +70,4 @@ class Economy:
 
     @property
     def cargos(self):
-        a = [i + o for i, o in self.graph.values()] + [x for x in self.town_cargos if x is not None]
-        return list(
-            set([x for i, o in self.graph.values() for x in i + o] + [x for x in self.town_cargos if x is not None])
-        )
+        return list(set(x.accepts + x.produces for x in self.graph.values()))

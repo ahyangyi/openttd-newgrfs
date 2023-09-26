@@ -1,4 +1,4 @@
-from industry.lib.economy import Economy
+from industry.lib.economy import Economy, PrimaryIndustry, SecondaryIndustry, TertiaryIndustry, Town
 from industry.cargos import (
     coal,
     food,
@@ -24,29 +24,30 @@ from industry.industries import (
     oil_wells,
     power_station,
     gold_mine,
+    towns,
 )
 
 
 the_economy = Economy(
     name="Vanilla Sub-Arctic",
     graph={
-        bank: (gold, ()),
-        coal_mine: ((), coal),
-        food_processing_plant: (
+        coal_mine: PrimaryIndustry(coal),
+        farm: PrimaryIndustry((livestock, wheat)),
+        forest: PrimaryIndustry(wood),
+        oil_wells: PrimaryIndustry(oil),
+        gold_mine: PrimaryIndustry((), gold),
+        food_processing_plant: SecondaryIndustry(
             (
                 livestock,
                 wheat,
             ),
             food,
         ),
-        farm: ((), (livestock, wheat)),
-        forest: ((), wood),
-        paper_mill: (wood, paper),
-        oil_refinery: (oil, goods),
-        printing_works: (paper, goods),
-        oil_wells: ((), oil),
-        power_station: (coal, ()),
-        gold_mine: ((), gold),
+        paper_mill: SecondaryIndustry(wood, paper),
+        oil_refinery: SecondaryIndustry(oil, goods),
+        printing_works: SecondaryIndustry(paper, goods),
+        power_station: TertiaryIndustry(coal),
+        bank: TertiaryIndustry(gold),
+        towns: Town(passengers, mail, food, goods),
     },
-    town_cargos=(passengers, mail, food, goods),
 )

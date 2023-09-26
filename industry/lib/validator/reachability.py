@@ -3,7 +3,9 @@ def check_reachability(economy):
     while True:
         changed = False
 
-        for i, o in economy.graph.values():
+        for industry in economy.graph.values():
+            i = industry.consumes
+            o = industry.produces
             if all(x in can_be_produced for x in i):
                 for x in o:
                     if x not in can_be_produced:
