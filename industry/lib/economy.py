@@ -4,14 +4,56 @@ def make_tuple(x):
     return (x,)
 
 
+class PrimaryIndustryIO:
+    def __init__(self, accepts=(), produces=()):
+        self.accepts = accepts
+        self.produces = produces
+
+    @property
+    def consumes(self):
+        return ()
+
+
+class SecondaryIndustryIO:
+    def __init__(self, consumes=(), produces=()):
+        self.consumes = consumes
+        self.produces = produces
+
+    @property
+    def accepts(self):
+        return self.consumes
+
+
+class TownIO:
+    def __init__(self, passengers, mail, food, goods):
+        self.passengers = passengers
+        self.mail = mail
+        self.food = food
+        self.goods = goods
+
+    @property
+    def accepts(self):
+        make_tuple = lambda x: () if x is None else (x,)
+        return tuple(y for x in (self.passengers, self.mail, self.food, self.goods) for y in make_tuple(x))
+
+    @property
+    def consumes(self):
+        return ()
+
+    @property
+    def produces(self):
+        make_tuple = lambda x: () if x is None else (x,)
+        return tuple(y for x in (self.passengers, self.mail) for y in make_tuple(x))
+
+
 class Economy:
     def __init__(self, name, graph, town_cargos):
         self.name = name
         self.graph = {
-            x.the_industry: (tuple(x.the_cargo for x in make_tuple(i)), tuple(x.the_cargo for x in make_tuple(o)))
+            x.the_industry: (make_tuple(i), make_tuple(o))
             for x, (i, o) in graph.items()
         }
-        self.town_cargos = tuple(None if x is None else x.the_cargo for x in town_cargos)
+        self.town_cargos = town_cargos
 
     @property
     def industries(self):
