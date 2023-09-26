@@ -70,4 +70,4 @@ class Economy:
 
     @property
     def cargos(self):
-        return list(set(x.accepts + x.produces for x in self.graph.values()))
+        return list(set(y for x in self.graph.values() for y in x.accepts + x.produces))
