@@ -21,7 +21,7 @@ nav_order: {i+1}
                 file=f,
             )
             translate = lambda x: get_translation(string_manager["STR_CARGO_" + x.decode()], 0x7F)
-            link = lambda x: f"[{translate(x.label)}](/openttd-newgrfs/industry/cargos/{{x.label.decode()}}.html)"
+            link = lambda x: f"[{translate(x.label)}](/openttd-newgrfs/industry/cargos/{x.label.decode()}.html)"
             for industry, flow in entry.graph.items():
                 accepts = ", ".join(link(x) for x in flow.accepts)
                 produces = ", ".join(link(x) for x in flow.produces)
