@@ -217,7 +217,8 @@ def main():
         from industry.lib.validator import check_reachability
 
         for economy in all_economies:
-            check_reachability(economy)
+            for variation in economy.iterate_variations():
+                check_reachability(variation)
     else:
         string_manager = get_string_manager()
 
