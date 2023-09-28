@@ -7,3 +7,4 @@ github_username:  ahyangyi
 theme: just-the-docs
 languages: ["en-GB", "zh-CN"]
 markdown: kramdown
+color_scheme: definibus
