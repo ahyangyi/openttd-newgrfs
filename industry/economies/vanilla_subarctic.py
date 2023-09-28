@@ -30,11 +30,13 @@ from industry.industries import (
 )
 
 
-class SubArcticEconomy(Economy):
+class TheEconomy:
     def __init__(self):
-        super().__init__(
-            name="Vanilla Sub-Arctic",
-            graph={
+        self.name = "Vanilla Sub-Arctic"
+
+    def get_economy(self, parameters):
+        ret = Economy(
+            {
                 coal_mine: PrimaryIndustry(coal),
                 farm: PrimaryIndustry((livestock, wheat)),
                 forest: PrimaryIndustry(wood),
@@ -54,20 +56,12 @@ class SubArcticEconomy(Economy):
                 bank: TertiaryIndustry(gold),
                 towns: Town(passengers, mail, food, goods),
             },
+            parameters,
         )
-
-    def set_economy_policy(self, policy):
-        super().set_economy_policy(policy)
-
-    def set_economy_booster(self, booster):
-        super().set_economy_booster(booster)
-
-        if booster == "generic":
-            self.graph[coal_mine].booster = engineering_supplies
-            self.graph[oil_wells].booster = engineering_supplies
-            self.graph[gold_mine].booster = engineering_supplies
-            self.graph[farm].booster = farm_supplies
-            self.graph[forest].booster = farm_supplies
-
-
-the_economy = SubArcticEconomy()
+        if parameters["BOOSTER"] == "GENERIC":
+            ret.graph[coal_mine].booster = engineering_supplies
+            ret.graph[oil_wells].booster = engineering_supplies
+            ret.graph[gold_mine].booster = engineering_supplies
+            ret.graph[farm].booster = farm_supplies
+            ret.graph[forest].booster = farm_supplies
+        return ret

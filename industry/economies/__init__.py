@@ -12,5 +12,5 @@ for p in glob.glob("industry/economies/*.py"):
     _imported_economy = importlib.import_module(f"industry.economies.{p}")
 
     __all__.append(p)
-    setattr(module, p, _imported_economy.the_economy)
+    setattr(module, p, _imported_economy.TheEconomy())
     del _imported_economy

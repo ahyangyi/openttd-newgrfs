@@ -28,20 +28,25 @@ from industry.industries import (
 )
 
 
-the_economy = Economy(
-    name="Vanilla Sub-Tropic",
-    graph={
-        copper_ore_mine: PrimaryIndustry(copper_ore),
-        oil_wells: PrimaryIndustry(oil),
-        diamond_mine: PrimaryIndustry(diamonds),
-        farm: PrimaryIndustry(maize),
-        lumber_mill: PrimaryIndustry(wood),
-        fruit_plantation: PrimaryIndustry(fruit),
-        rubber_plantation: PrimaryIndustry(rubber),
-        food_processing_plant: SecondaryIndustry((fruit, maize), food),
-        oil_refinery: SecondaryIndustry(oil, goods),
-        factory: SecondaryIndustry((rubber, copper_ore, wood), goods),
-        bank: TertiaryIndustry(diamonds),
-        towns: Town(passengers, mail, food, goods),
-    },
-)
+class TheEconomy:
+    def __init__(self):
+        self.name = "Vanilla Sub-Tropic"
+
+    def get_economy(self, parameters):
+        return Economy(
+            {
+                copper_ore_mine: PrimaryIndustry(copper_ore),
+                oil_wells: PrimaryIndustry(oil),
+                diamond_mine: PrimaryIndustry(diamonds),
+                farm: PrimaryIndustry(maize),
+                lumber_mill: PrimaryIndustry(wood),
+                fruit_plantation: PrimaryIndustry(fruit),
+                rubber_plantation: PrimaryIndustry(rubber),
+                food_processing_plant: SecondaryIndustry((fruit, maize), food),
+                oil_refinery: SecondaryIndustry(oil, goods),
+                factory: SecondaryIndustry((rubber, copper_ore, wood), goods),
+                bank: TertiaryIndustry(diamonds),
+                towns: Town(passengers, mail, food, goods),
+            },
+            parameters,
+        )

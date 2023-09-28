@@ -107,3 +107,5 @@ STR_CARGO_MAIZ                  :Maize
 STR_CARGO_CORE                  :Copper Ore
 STR_CARGO_FRUT                  :Fruit
 STR_CARGO_RUBR                  :Rubber
+STR_CARGO_FMSP                  :Farm Supplies
+STR_CARGO_ENSP                  :Engineering Supplies

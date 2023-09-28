@@ -2,19 +2,22 @@
 import grf
 import struct
 import argparse
-
 from industry.economies import vanilla_temperate, vanilla_subarctic, vanilla_subtropic
+from industry.lib.parameters import iterate_variations
 
 all_economies = [vanilla_temperate, vanilla_subarctic, vanilla_subtropic]
 all_industries = []
 all_cargos = []
-for economy in all_economies:
-    for industry in economy.industries:
-        if industry not in all_industries:
-            all_industries.append(industry)
-    for cargo in economy.cargos:
-        if cargo not in all_cargos:
-            all_cargos.append(cargo)
+# FIXME: need to collect industry/cargo information in better ways
+for meta_economy in all_economies:
+    for variation in iterate_variations():
+        economy = meta_economy.get_economy(variation)
+        for industry in economy.industries:
+            if industry not in all_industries:
+                all_industries.append(industry)
+        for cargo in economy.cargos:
+            if cargo not in all_cargos:
+                all_cargos.append(cargo)
 
 
 def get_string_manager():
@@ -216,9 +219,10 @@ def main():
     elif args.cmd == "test":
         from industry.lib.validator import check_reachability
 
-        for economy in all_economies:
-            for variation in economy.iterate_variations():
-                check_reachability(variation)
+        for meta_economy in all_economies:
+            for variation in iterate_variations():
+                economy = meta_economy.get_economy(variation)
+                check_reachability(economy)
     else:
         string_manager = get_string_manager()
 
