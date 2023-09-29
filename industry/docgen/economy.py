@@ -1,6 +1,6 @@
 import os
 from agrf.strings import get_translation
-from industry.lib.parameters import iterate_variations
+from industry.lib.parameters import parameter_choices, iterate_variations
 
 
 def gen_economy_doc(all_economies, string_manager):
@@ -37,3 +37,17 @@ nav_exclude: true"""
                     accepts = ", ".join(link(x) for x in flow.accepts)
                     produces = ", ".join(link(x) for x in flow.produces)
                     print(f"| {industry.name} | {accepts} | {produces} |", file=f)
+                print(
+                    """# Variations
+""",
+                    file=f,
+                )
+                for param, choices in parameter_choices:
+                    print(
+                        f"{param}: "
+                        + " | ".join(
+                            f"[{choice}](/openttd-newgrfs/industry/economies/{meta_economy.name}_{variation_desc}.md)"
+                            for choice in choices
+                        ) + "\n",
+                        file=f,
+                    )
