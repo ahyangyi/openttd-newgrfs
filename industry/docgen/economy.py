@@ -38,16 +38,18 @@ nav_exclude: true"""
                     produces = ", ".join(link(x) for x in flow.produces)
                     print(f"| {industry.name} | {accepts} | {produces} |", file=f)
                 print(
-                    """# Variations
+                    """
+# Variations
 """,
                     file=f,
                 )
                 for param, choices in parameter_choices:
                     print(
                         f"{param}: "
-                        + " | ".join(
+                        + " \| ".join(
                             f"[{choice}](/openttd-newgrfs/industry/economies/{meta_economy.name}_{variation_desc}.md)"
                             for choice in choices
-                        ) + "\n",
+                        )
+                        + "\n",
                         file=f,
                     )
