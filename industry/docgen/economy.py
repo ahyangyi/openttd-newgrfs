@@ -43,12 +43,12 @@ nav_exclude: true"""
 """,
                     file=f,
                 )
-                for param, choices in parameter_choices:
+                for i, (param, choices) in enumerate(parameter_choices):
                     print(
                         f"{param}: "
                         + " \| ".join(
-                            f"[{choice}](/openttd-newgrfs/industry/economies/{meta_economy.name}_{variation_desc}.md)"
-                            for choice in choices
+                            f"[{choice}](/openttd-newgrfs/industry/economies/{meta_economy.name}_{variation_desc[:i]}{j}{variation_desc[i+1:]}.md)"
+                            for j, choice in enumerate(choices)
                         )
                         + "\n",
                         file=f,
