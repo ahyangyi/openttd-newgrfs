@@ -47,7 +47,7 @@ nav_exclude: true"""
                     print(
                         f"{param}: "
                         + " \| ".join(
-                            f"[{choice}](/openttd-newgrfs/industry/economies/{meta_economy.name}_{variation_desc[:i]}{j}{variation_desc[i+1:]}.md)"
+                            f"[{choice}](/openttd-newgrfs/industry/economies/{meta_economy.name}_{variation_desc[:i]}{j}{variation_desc[i+1:]}.html)"
                             for j, choice in enumerate(choices)
                         )
                         + "\n",
