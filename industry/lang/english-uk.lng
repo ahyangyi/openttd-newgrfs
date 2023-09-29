@@ -55,9 +55,9 @@ STR_PARAM_PRIMARY_INDUSTRY_GROWTH_CONTINUOUS        :Continuous
 
 STR_PARAM_PRIMARY_INDUSTRY_CLOSURE                  :Primary Industry - Closure
 STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DESC             :Choose whether closure is possible for primary industry
-STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_PRESET            :Preset
-STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DISABLED          :Disabled
-STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_ENABLED           :Enabled
+STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_PRESET           :Preset
+STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DISABLED         :Disabled
+STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_ENABLED          :Enabled
 
 STR_PARAM_INDUSTRY_SIZE         :Graphics - Industry Size
 STR_PARAM_INDUSTRY_SIZE_DESC    :Choose the visual size of the industries

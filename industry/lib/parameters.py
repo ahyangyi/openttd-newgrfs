@@ -1,6 +1,17 @@
 parameter_choices = [
-    ("POLICY", ["AUTARKY"]),
-    ("BOOSTER", ["NONE", "GENERIC"]),
+    ("POLICY", ["AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
+    ("BOOSTER", ["NONE", "UNIVERSAL", "GENERIC", "SPECIFIC"]),
+    (
+        "WORKER",
+        [
+            "NONE",
+            "PASSENGER",
+            "YETI",
+            "YETI_TIRED_WORKER",
+            "YETI_PASSENGERS",
+            "YETI_MAIL",
+        ],
+    ),
 ]
 
 
