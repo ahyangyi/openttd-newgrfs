@@ -47,12 +47,15 @@ nav_exclude: true"""
                     file=f,
                 )
                 for i, (param, choices) in enumerate(parameter_choices):
+                    choices_text = []
+                    for j, choice in enumerate(choices):
+                        if variation[param] == choice:
+                            choices_text.append(f"{choice}")
+                        else:
+                            choices_text.append(
+                                f"[{choice}](/openttd-newgrfs/industry/economies/{meta_economy.name}_{variation_desc[:i]}{j}{variation_desc[i+1:]}.html)"
+                            )
                     print(
-                        f"{param}: "
-                        + " \| ".join(
-                            f"[{choice}](/openttd-newgrfs/industry/economies/{meta_economy.name}_{variation_desc[:i]}{j}{variation_desc[i+1:]}.html)"
-                            for j, choice in enumerate(choices)
-                        )
-                        + "\n",
+                        f"{param}: " + " \| ".join(choices_text) + "\n",
                         file=f,
                     )
