@@ -12,6 +12,7 @@ parameter_choices = [
             "YETI_MAIL",
         ],
     ),
+    ("LAND_PORTS", ["ORGANIC", "LAND_ONLY", "BOTH", "SEA_ONLY"]),
 ]
 
 

@@ -3,13 +3,16 @@ from agrf.strings import get_translation
 from industry.lib.parameters import parameter_choices, iterate_variations
 
 
+default_variation = "0" * len(parameter_choices)
+
+
 def gen_economy_doc(all_economies, string_manager):
     prefix = "docs/industry/economies"
     for i, meta_economy in enumerate(all_economies):
         for variation in iterate_variations():
             economy = meta_economy.get_economy(variation)
             variation_desc = economy.parameter_desc
-            if variation_desc == "00":
+            if variation_desc == default_variation:
                 header = f"""---
 layout: default
 title: {meta_economy.name}
