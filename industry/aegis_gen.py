@@ -222,7 +222,13 @@ def main():
         for meta_economy in all_economies:
             for variation in iterate_variations():
                 economy = meta_economy.get_economy(variation)
-                check_reachability(economy)
+                try:
+                    check_reachability(economy)
+                except AssertionError as e:
+                    print(f"Economy: {meta_economy.name}")
+                    for k, v in variation.items():
+                        print(f"{k}: {v}")
+                    raise
     else:
         string_manager = get_string_manager()
 
