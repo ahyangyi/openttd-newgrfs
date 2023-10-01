@@ -11,6 +11,8 @@ from industry.cargos import (
     wood,
     fruit,
     rubber,
+    farm_supplies,
+    engineering_supplies,
 )
 from industry.industries import (
     bank,

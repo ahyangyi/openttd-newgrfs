@@ -11,6 +11,8 @@ from industry.cargos import (
     oil,
     passengers,
     mail,
+    farm_supplies,
+    engineering_supplies,
 )
 from industry.industries import (
     bank,
