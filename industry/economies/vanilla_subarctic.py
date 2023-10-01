@@ -58,7 +58,13 @@ class TheEconomy:
             },
             parameters,
         )
-        if parameters["BOOSTER"] == "GENERIC":
+        if parameters["BOOSTER"] == "UNIVERSAL":
+            ret.graph[coal_mine].booster = engineering_supplies
+            ret.graph[oil_wells].booster = engineering_supplies
+            ret.graph[gold_mine].booster = engineering_supplies
+            ret.graph[farm].booster = engineering_supplies
+            ret.graph[forest].booster = engineering_supplies
+        elif parameters["BOOSTER"] == "GENERIC":
             ret.graph[coal_mine].booster = engineering_supplies
             ret.graph[oil_wells].booster = engineering_supplies
             ret.graph[gold_mine].booster = engineering_supplies
