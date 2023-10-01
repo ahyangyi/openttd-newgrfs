@@ -17,3 +17,11 @@ class AIndustry(grf.SpriteGenerator):
         res.append(self.callbacks.make_map_action(definition))
 
         return res
+
+
+class ADummyIndustry(AIndustry):
+    def __init__(self, *, id, name, callbacks={}, **props):
+        super().__init__(id=id, name=name, callbacks=callbacks, **props)
+
+    def get_sprites(self, g):
+        return []
