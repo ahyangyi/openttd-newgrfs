@@ -206,7 +206,7 @@ class Roster:
 
             # Prepare graphics
             sprite = v.graphics_helper.doc_graphics()
-            img, bpp = sprite.get_zoom(grf.ZOOM_NORMAL).get_image()
+            img, bpp = sprite.get_zoom_bpp(grf.ZOOM_NORMAL, 32).get_image()
             img.save(os.path.join(prefix, "img", f'{v["translation_name"]}.png'))
 
             # Dump
