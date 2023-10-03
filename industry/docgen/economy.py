@@ -35,7 +35,7 @@ nav_exclude: true"""
                     file=f,
                 )
                 translate = lambda x: get_translation(string_manager["STR_CARGO_" + x.decode()], 0x7F)
-                industrylink = lambda x: f"[{translate(x.label)}](../industries/{x}.html)"
+                industrylink = lambda x: f"[{x}](../industries/{x}.html)"
                 cargolink = lambda x: f"[{translate(x.label)}](../cargos/{x.label.decode()}.html)"
                 for industry, flow in economy.graph.items():
                     accepts = ", ".join(cargolink(x) for x in flow.accepts)
