@@ -27,6 +27,8 @@ from industry.industries import (
     power_station,
     gold_mine,
     towns,
+    port,
+    trading_centre,
 )
 
 
@@ -58,6 +60,12 @@ class TheEconomy:
             },
             parameters,
         )
+        if parameters["POLICY"] == "SELF_SUFFICIENT":
+            ret.graph[port] = SecondaryIndustry(wood, paper)
+        elif parameters["POLICY"] in ("FREE_TRADE", "EXPORT"):
+            ret.graph[port] = SecondaryIndustry(wood, paper)
+            del ret.graph[paper_mill]
+
         if parameters["BOOSTER"] == "UNIVERSAL":
             ret.graph[coal_mine].booster = engineering_supplies
             ret.graph[oil_wells].booster = engineering_supplies
@@ -75,4 +83,12 @@ class TheEconomy:
 
             ret.graph[printing_works].produces += (engineering_supplies,)
             ret.graph[oil_refinery].produces += (farm_supplies,)
+
+        if port in ret.graph:
+            if parameters["LAND_PORTS"] == "LAND_ONLY":
+                ret.graph[trading_centre] = ret.graph[port]
+                del ret.graph[port]
+            elif parameters["LAND_PORTS"] == "BOTH":
+                ret.graph[trading_centre] = ret.graph[port]
+
         return ret
