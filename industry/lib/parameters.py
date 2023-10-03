@@ -13,6 +13,7 @@ parameter_choices = [
         ],
     ),
     ("LAND_PORTS", ["ORGANIC", "LAND_ONLY", "BOTH", "SEA_ONLY"]),
+    ("TOWN_GOODS", ["ORGANIC", "NONE", "SUBARCTIC", "SUBTROPICAL"]),
 ]
 
 
