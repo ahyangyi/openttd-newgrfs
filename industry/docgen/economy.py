@@ -23,7 +23,8 @@ nav_order: {i+1}"""
                 header = f"""---
 layout: default
 title: {meta_economy.name}
-nav_exclude: true"""
+nav_exclude: true
+search_exclude: true"""
             with open(os.path.join(prefix, f"{meta_economy.name}_{variation_desc}.md"), "w") as f:
                 print(
                     f"""{header}

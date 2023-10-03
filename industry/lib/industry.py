@@ -2,8 +2,11 @@ import grf
 
 
 class AIndustry(grf.SpriteGenerator):
-    def __init__(self, *, id, name, callbacks={}, **props):
+    def __init__(self, *, name, id=None, callbacks={}, **props):
         super().__init__()
+        if "substitute_type" in props:
+            assert id is None
+            id = props["substitute_type"]
         self.id = id
         self.name = name
         self._props = props
@@ -20,8 +23,8 @@ class AIndustry(grf.SpriteGenerator):
 
 
 class ADummyIndustry(AIndustry):
-    def __init__(self, *, id, name, callbacks={}, **props):
-        super().__init__(id=id, name=name, callbacks=callbacks, **props)
+    def __init__(self, *, name):
+        super().__init__(id=0xFF, name=name, callbacks={})
 
     def get_sprites(self, g):
         return []

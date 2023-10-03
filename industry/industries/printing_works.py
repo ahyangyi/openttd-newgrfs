@@ -1,4 +1,4 @@
 from industry.lib.industry import AIndustry
 
 
-the_industry = AIndustry(id=0x2C, name="Printing Works", substitute_type=0x07)
+the_industry = AIndustry(name="Printing Works", substitute_type=0x07)

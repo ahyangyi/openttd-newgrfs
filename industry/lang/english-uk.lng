@@ -59,6 +59,12 @@ STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_PRESET           :Preset
 STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DISABLED         :Disabled
 STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_ENABLED          :Enabled
 
+STR_PARAM_PRIMARY_INDUSTRY_ZONING                   :Primary Industry - Zoning
+STR_PARAM_PRIMARY_INDUSTRY_ZONING_DESC              :Choose whether limit primary industries to particular zones of the world
+STR_PARAM_PRIMARY_INDUSTRY_ZONING_PRESET            :Preset
+STR_PARAM_PRIMARY_INDUSTRY_ZONING_DISABLED          :Disabled
+STR_PARAM_PRIMARY_INDUSTRY_ZONING_ENABLED           :Enabled
+
 STR_PARAM_INDUSTRY_SIZE         :Graphics - Industry Size
 STR_PARAM_INDUSTRY_SIZE_DESC    :Choose the visual size of the industries
 STR_PARAM_INDUSTRY_SIZE_EXTRA_LARGE:Extra Large
