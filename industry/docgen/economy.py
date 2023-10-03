@@ -35,11 +35,12 @@ nav_exclude: true"""
                     file=f,
                 )
                 translate = lambda x: get_translation(string_manager["STR_CARGO_" + x.decode()], 0x7F)
-                link = lambda x: f"[{translate(x.label)}](/openttd-newgrfs/industry/cargos/{x.label.decode()}.html)"
+                industrylink = lambda x: f"[{translate(x.label)}](../industries/{x}.html)"
+                cargolink = lambda x: f"[{translate(x.label)}](../cargos/{x.label.decode()}.html)"
                 for industry, flow in economy.graph.items():
-                    accepts = ", ".join(link(x) for x in flow.accepts)
-                    produces = ", ".join(link(x) for x in flow.produces)
-                    print(f"| {industry.name} | {accepts} | {produces} |", file=f)
+                    accepts = ", ".join(cargolink(x) for x in flow.accepts)
+                    produces = ", ".join(cargolink(x) for x in flow.produces)
+                    print(f"| {industrylink(industry.name)} | {accepts} | {produces} |", file=f)
                 print(
                     """
 # Variations
@@ -53,7 +54,7 @@ nav_exclude: true"""
                             choices_text.append(f"{choice}")
                         else:
                             choices_text.append(
-                                f"[{choice}](/openttd-newgrfs/industry/economies/{meta_economy.name}_{variation_desc[:i]}{j}{variation_desc[i+1:]}.html)"
+                                f"[{choice}]({meta_economy.name}_{variation_desc[:i]}{j}{variation_desc[i+1:]}.html)"
                             )
                     print(
                         f"{param}: " + " \| ".join(choices_text) + "\n",
