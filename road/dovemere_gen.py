@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import grf
 import argparse
-import os
 from road.road_types import slate_block, main_asphalt, motorway
 
 road_types = [slate_block, main_asphalt, motorway]
@@ -41,23 +40,9 @@ def main():
     if args.cmd == "gen":
         gen()
     else:
-        string_manager = get_string_manager()
-        prefix = "docs/road/"
-        for i, road_type in enumerate(road_types):
-            translated_names = string_manager["STR_RT_" + road_type.translation_name + "_NAME"].get_pairs()
-            [translation] = [s.decode() for (lang_id, s) in translated_names if lang_id == 0x7F]
-            with open(os.path.join(prefix, f"{road_type.translation_name}.md"), "w") as f:
-                print(
-                    f"""---
-layout: default
-title: {translation}
-parent: Ahyangyi's Chinese Road Set (ACRS)
-nav_order: {i+1}
----
-Blablabla
-""",
-                    file=f,
-                )
+        from road.lib.docgen import gen_docs
+
+        gen_docs(get_string_manager(), road_types)
 
 
 if __name__ == "__main__":
