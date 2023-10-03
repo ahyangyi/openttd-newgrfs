@@ -58,10 +58,15 @@ class TheEconomy:
             ret.graph[copper_ore_mine].booster = engineering_supplies
             ret.graph[farm].booster = engineering_supplies
             ret.graph[lumber_mill].booster = engineering_supplies
+
+            ret.graph[factory].produces += (engineering_supplies,)
         elif parameters["BOOSTER"] == "GENERIC":
             ret.graph[diamond_mine].booster = engineering_supplies
             ret.graph[oil_wells].booster = engineering_supplies
             ret.graph[copper_ore_mine].booster = engineering_supplies
             ret.graph[farm].booster = farm_supplies
             ret.graph[lumber_mill].booster = farm_supplies
+
+            ret.graph[factory].produces += (engineering_supplies,)
+            ret.graph[oil_refinery].produces += (farm_supplies,)
         return ret
