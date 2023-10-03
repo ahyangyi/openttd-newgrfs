@@ -23,6 +23,6 @@ variant = AVariant(
     axle_track=(2.063, 1.860),
     tire=RadialTire(275, 70, 22.5),
     tags={"air conditioner"},
-    graphics_helper=AutoWolf("placeholder"),
+    graphics_helper=AutoWolf("milkyway_2decker"),
     real_class=ABus,
 )
