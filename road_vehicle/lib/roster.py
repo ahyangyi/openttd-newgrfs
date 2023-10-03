@@ -1,5 +1,6 @@
 import os
 import math
+import grf
 from tabulate import tabulate
 from road_vehicle.lib import ARoadVehicle, supported_techclasses
 from agrf.strings import get_translation
@@ -196,10 +197,19 @@ class Roster:
 
     def gen_docs(self, string_manager):
         prefix = "docs/road_vehicle/vehicles"
+        os.makedirs(os.path.join(prefix, "img"), exist_ok=True)
         for i, entry in enumerate(self.entries):
+            # Prepare text
             v = entry.variant
             translation = get_translation(string_manager["STR_RV_" + v["translation_name"] + "_NAME"], 0x7F)
             desc_translation = get_translation(string_manager["STR_RV_" + v["translation_name"] + "_DESC"], 0x7F)
+
+            # Prepare graphics
+            sprite = v.graphics_helper.doc_graphics()
+            img, bpp = sprite.get_zoom(grf.ZOOM_NORMAL).get_image()
+            img.save(os.path.join(prefix, "img", f'{v["translation_name"]}.png'))
+
+            # Dump
             with open(os.path.join(prefix, f'{v["translation_name"]}.md'), "w") as f:
                 print(
                     f"""---
@@ -210,6 +220,7 @@ grand_parent: Ahyangyi's Road Vehicles (ARV)
 nav_order: {i+1}
 ---
 # Introduction
+![](img/{v["translation_name"]}.png)
 {desc_translation}
 
 # Datasheet

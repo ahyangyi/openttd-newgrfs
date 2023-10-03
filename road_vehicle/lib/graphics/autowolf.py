@@ -121,6 +121,14 @@ class AutoWolf:
             self.graphics[i] = switch
             self.shifts[i] = 4 if shadow_rotate else 0
 
+    def doc_graphics(self):
+        ret = []
+        for v in self.graphics.values():
+            v = v.get_default_graphics()
+            v.render()
+            ret.append(v.spritesheet(0, 0))
+        return ret[0][3]
+
     def generate_graphics(self):
         for v in self.graphics.values():
             v.render()
