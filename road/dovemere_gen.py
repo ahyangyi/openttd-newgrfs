@@ -28,7 +28,7 @@ def gen():
     )
 
     for road_type in road_types:
-        g.add(road_type.the_road)
+        g.add(road_type)
 
     g.write("road.grf")
 
@@ -43,11 +43,10 @@ def main():
     else:
         string_manager = get_string_manager()
         prefix = "docs/road/"
-        for i, entry in enumerate(road_types):
-            v = entry.the_road
-            translated_names = string_manager["STR_RT_" + v.translation_name + "_NAME"].get_pairs()
+        for i, road_type in enumerate(road_types):
+            translated_names = string_manager["STR_RT_" + road_type.translation_name + "_NAME"].get_pairs()
             [translation] = [s.decode() for (lang_id, s) in translated_names if lang_id == 0x7F]
-            with open(os.path.join(prefix, f"{v.translation_name}.md"), "w") as f:
+            with open(os.path.join(prefix, f"{road_type.translation_name}.md"), "w") as f:
                 print(
                     f"""---
 layout: default

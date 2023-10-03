@@ -4,7 +4,7 @@ from datetime import date
 import grf
 
 
-the_road = ARoadType(
+the_road_type = ARoadType(
     id=0x04,
     name="Main Road (Asphalt)",
     label=b"ASP3",
