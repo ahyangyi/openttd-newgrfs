@@ -37,7 +37,7 @@ jobs:
       - name: Install python deps
         run: pip install -r requirements.txt
       - name: Generate docs (RV)
-        run: make doc.rv
+        run: PATH=${PWD}/gopath/bin:${PATH} make doc.rv
       - name: Generate docs (RT)
         run: PATH=${PWD}/gopath/bin:${PATH} make doc.rt
       - name: Generate docs (AEGIS)
