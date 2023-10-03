@@ -1,6 +1,6 @@
 parameter_choices = [
     ("POLICY", ["AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
-    ("BOOSTER", ["NONE", "UNIVERSAL", "GENERIC", "SPECIFIC"]),
+    ("BOOSTER", ["NONE", "UNIVERSAL", "GENERIC", "GENERIC_PASSENGERS"]),
     (
         "WORKER",
         [

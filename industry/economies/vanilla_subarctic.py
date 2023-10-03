@@ -13,6 +13,7 @@ from industry.cargos import (
     wood,
     farm_supplies,
     engineering_supplies,
+    water,
 )
 from industry.industries import (
     bank,
@@ -29,6 +30,8 @@ from industry.industries import (
     towns,
     port,
     trading_centre,
+    water_supply,
+    water_tower,
 )
 
 
@@ -83,6 +86,15 @@ class TheEconomy:
 
             ret.graph[printing_works].produces += (engineering_supplies,)
             ret.graph[oil_refinery].produces += (farm_supplies,)
+        elif parameters["BOOSTER"] == "GENERIC_PASSENGERS":
+            ret.graph[coal_mine].booster = engineering_supplies
+            ret.graph[oil_wells].booster = passengers
+            ret.graph[gold_mine].booster = engineering_supplies
+            ret.graph[farm].booster = farm_supplies
+            ret.graph[forest].booster = farm_supplies
+
+            ret.graph[printing_works].produces += (engineering_supplies,)
+            ret.graph[oil_refinery].produces += (farm_supplies,)
 
         if port in ret.graph:
             if parameters["LAND_PORTS"] == "LAND_ONLY":
@@ -90,5 +102,9 @@ class TheEconomy:
                 del ret.graph[port]
             elif parameters["LAND_PORTS"] == "BOTH":
                 ret.graph[trading_centre] = ret.graph[port]
+
+        if parameters["TOWN_GOODS"] == "TROPICAL":
+            ret.graph[water_supply] = PrimaryIndustry(water)
+            ret.graph[water_tower] = TertiaryIndustry(water)
 
         return ret
