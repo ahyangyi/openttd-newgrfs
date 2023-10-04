@@ -121,15 +121,16 @@ def gen():
         name=s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH"],
         description=s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DESC"],
         default=0,
-        limits=(0, 6),
+        limits=(0, 7),
         enum={
             0: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_PRESET"],
             1: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_NONE"],
             2: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_GENERIC_SUPPLIES"],
             3: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_SPECIFIC_SUPPLIES"],
-            4: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_WORKERS"],
-            5: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DISCRETE"],
-            6: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_CONTINUOUS"],
+            4: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_TOWN_POPULATION"],
+            5: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_WORKERS"],
+            6: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DISCRETE"],
+            7: s["STR_PARAM_PRIMARY_INDUSTRY_GROWTH_CONTINUOUS"],
         },
     )
 
@@ -138,11 +139,12 @@ def gen():
         name=s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE"],
         description=s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DESC"],
         default=0,
-        limits=(0, 2),
+        limits=(0, 3),
         enum={
             0: s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_PRESET"],
             1: s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DISABLED"],
             2: s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_ENABLED"],
+            3: s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_CAPACITY"],
         },
     )
 

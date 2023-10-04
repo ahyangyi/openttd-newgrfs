@@ -50,14 +50,16 @@ STR_PARAM_PRIMARY_INDUSTRY_GROWTH_NONE              :None
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_GENERIC_SUPPLIES  :Generic Supplies
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_SPECIFIC_SUPPLIES :Specific Supplies
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_WORKERS           :Workers
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_TOWN_POPULATION   :Town Population
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DISCRETE          :Discrete
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_CONTINUOUS        :Continuous
 
 STR_PARAM_PRIMARY_INDUSTRY_CLOSURE                  :Primary Industry - Closure
-STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DESC             :Choose whether closure is possible for primary industry
+STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DESC             :Choose whether closure is possible for primary industry.{}{}Disabled - primary industries never close{}Enabled - primary industries might close randomly; the exact behavior depends on the previous parameter.{}Limited by reserve - primary industries have preset reserve
 STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_PRESET           :Preset
 STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DISABLED         :Disabled
 STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_ENABLED          :Enabled
+STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_RESERVE          :Limited by reserve
 
 STR_PARAM_PRIMARY_INDUSTRY_ZONING                   :Primary Industry - Zoning
 STR_PARAM_PRIMARY_INDUSTRY_ZONING_DESC              :Choose whether limit primary industries to particular zones of the world
