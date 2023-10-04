@@ -26,3 +26,7 @@ def check_reachability(economy):
     assert can_produce.issubset(
         can_accept
     ), f"The following cargos can be produced but not accepted by any industry: {', '.join(str(x) for x in can_produce if x not in can_accept)}"
+
+    assert can_accept.issubset(
+        can_produce
+    ), f"The following cargos can be accepted but not produced by any industry: {', '.join(str(x) for x in can_accept if x not in can_produce)}"
