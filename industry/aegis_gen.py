@@ -2,10 +2,12 @@
 import grf
 import struct
 import argparse
-from industry.economies import vanilla_temperate, vanilla_subarctic, vanilla_subtropic
+from industry.economies import vanilla_temperate, vanilla_subarctic, vanilla_subtropical
 from industry.lib.parameters import iterate_variations
+from industry.lib.validator import validate
 
-all_economies = [vanilla_temperate, vanilla_subarctic, vanilla_subtropic]
+
+all_economies = [vanilla_temperate, vanilla_subarctic, vanilla_subtropical]
 all_industries = []
 all_cargos = []
 # FIXME: need to collect industry/cargo information in better ways
@@ -230,13 +232,11 @@ def main():
     if args.cmd == "gen":
         gen()
     elif args.cmd == "test":
-        from industry.lib.validator import check_reachability
-
         for meta_economy in all_economies:
             for variation in iterate_variations():
                 economy = meta_economy.get_economy(variation)
                 try:
-                    check_reachability(economy)
+                    validate(economy)
                 except AssertionError as e:
                     print(f"Economy: {meta_economy.name}")
                     for k, v in variation.items():
