@@ -11,6 +11,7 @@ from industry.cargos import (
     wood,
     fruit,
     rubber,
+    water,
     farm_supplies,
     engineering_supplies,
 )
@@ -27,6 +28,8 @@ from industry.industries import (
     oil_wells,
     diamond_mine,
     towns,
+    water_supply,
+    water_tower,
 )
 
 
@@ -69,4 +72,9 @@ class TheEconomy:
 
             ret.graph[factory].produces += (engineering_supplies,)
             ret.graph[oil_refinery].produces += (farm_supplies,)
+
+        if parameters["TOWN_GOODS"] in ("ORGANIC", "SUBTROPICAL"):
+            ret.graph[water_supply] = PrimaryIndustry(water)
+            ret.graph[water_tower] = TertiaryIndustry(water)
+
         return ret

@@ -13,6 +13,8 @@ from industry.cargos import (
     mail,
     farm_supplies,
     engineering_supplies,
+    food,
+    water,
 )
 from industry.industries import (
     bank,
@@ -28,6 +30,9 @@ from industry.industries import (
     sawmill,
     steel_mill,
     towns,
+    food_processing_plant,
+    water_supply,
+    water_tower,
 )
 
 
@@ -73,4 +78,19 @@ class TheEconomy:
 
             ret.graph[factory].produces += (engineering_supplies,)
             ret.graph[oil_refinery].produces += (farm_supplies,)
+
+        if parameters["TOWN_GOODS"] in ("SUBARCTIC", "SUBTROPICAL"):
+            ret.graph[food_processing_plant] = SecondaryIndustry(
+                (
+                    livestock,
+                    grain,
+                ),
+                food,
+            )
+            ret.graph[factory].consumes = tuple(x for x in ret.graph[factory].consumes if x not in [livestock, grain])
+            ret.graph[towns].food = food
+        if parameters["TOWN_GOODS"] == "SUBTROPICAL":
+            ret.graph[water_supply] = PrimaryIndustry(water)
+            ret.graph[water_tower] = TertiaryIndustry(water)
+
         return ret

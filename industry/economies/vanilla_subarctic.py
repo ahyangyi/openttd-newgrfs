@@ -111,7 +111,7 @@ class TheEconomy:
             elif parameters["LAND_PORTS"] == "BOTH":
                 ret.graph[trading_centre] = ret.graph[port]
 
-        if parameters["TOWN_GOODS"] == "TROPICAL":
+        if parameters["TOWN_GOODS"] == "SUBTROPICAL":
             ret.graph[water_supply] = PrimaryIndustry(water)
             ret.graph[water_tower] = TertiaryIndustry(water)
 
