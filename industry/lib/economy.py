@@ -1,4 +1,4 @@
-from industry.lib.parameters import parameter_choices
+from industry.lib.parameters import parameter_choices, parameter_desc
 
 
 def make_tuple(x):
@@ -98,4 +98,4 @@ class Economy:
 
     @property
     def parameter_desc(self):
-        return "".join(str(options.index(self.parameters[i])) for i, options in parameter_choices)
+        return parameter_desc(self.parameters)

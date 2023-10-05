@@ -144,7 +144,7 @@ def gen():
             0: s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_PRESET"],
             1: s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DISABLED"],
             2: s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_ENABLED"],
-            3: s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_CAPACITY"],
+            3: s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_RESERVE"],
         },
     )
 
@@ -158,6 +158,19 @@ def gen():
             0: s["STR_PARAM_PRIMARY_INDUSTRY_ZONING_PRESET"],
             1: s["STR_PARAM_PRIMARY_INDUSTRY_ZONING_DISABLED"],
             2: s["STR_PARAM_PRIMARY_INDUSTRY_ZONING_ENABLED"],
+        },
+    )
+
+    # Parameter 5
+    g.add_int_parameter(
+        name=s["STR_PARAM_SECONDARY_INDUSTRY_PROCESSING"],
+        description=s["STR_PARAM_SECONDARY_INDUSTRY_PROCESSING_DESC"],
+        default=0,
+        limits=(0, 2),
+        enum={
+            0: s["STR_PARAM_SECONDARY_INDUSTRY_PROCESSING_PRESET"],
+            1: s["STR_PARAM_SECONDARY_INDUSTRY_PROCESSING_STRICT"],
+            2: s["STR_PARAM_SECONDARY_INDUSTRY_PROCESSING_NORMAL"],
         },
     )
 

@@ -1,6 +1,6 @@
 import os
 from agrf.strings import get_translation
-from industry.lib.parameters import parameter_choices, iterate_variations
+from industry.lib.parameters import parameter_choices, iterate_variations, parameter_desc, PRESETS
 
 
 default_variation = "0" * len(parameter_choices)
@@ -48,6 +48,19 @@ search_exclude: true"""
 """,
                     file=f,
                 )
+
+                choices_text = []
+                for preset, preset_params in PRESETS.items():
+                    preset_desc = parameter_desc(preset_params)
+                    if preset_desc == variation_desc:
+                        choices_text.append(f"{preset}")
+                    else:
+                        choices_text.append(f"[{preset}]({meta_economy.name}_{preset_desc}.html)")
+                print(
+                    f"Presets: " + " \| ".join(choices_text) + "\n",
+                    file=f,
+                )
+
                 for i, (param, choices) in enumerate(parameter_choices):
                     choices_text = []
                     for j, choice in enumerate(choices):
