@@ -44,7 +44,7 @@ search_exclude: true"""
                     print(f"| {industrylink(industry.name)} | {accepts} | {produces} |", file=f)
                 print(
                     """
-# Variations
+# Presets
 """,
                     file=f,
                 )
@@ -56,8 +56,11 @@ search_exclude: true"""
                         choices_text.append(f"{preset}")
                     else:
                         choices_text.append(f"[{preset}]({meta_economy.name}_{preset_desc}.html)")
+                choices_text = " \| ".join(choices_text)
                 print(
-                    f"Presets: " + " \| ".join(choices_text) + "\n",
+                    f"""{choices_text}
+
+# Variations""",
                     file=f,
                 )
 

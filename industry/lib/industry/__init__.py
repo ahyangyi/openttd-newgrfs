@@ -1,4 +1,6 @@
 import grf
+from .transcriber import transcribe
+from .symmetrizer import symmetrize
 
 
 class AIndustry(grf.SpriteGenerator):
