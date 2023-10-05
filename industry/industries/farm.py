@@ -1,22 +1,32 @@
 import grf
-from industry.lib.industry import AIndustry, transcribe, symmetrize
+from industry.lib.industry import AIndustry, SplitDefinition, transcribe, symmetrize
 
-medium_set = [
-    (
-        "eed",
-        "abd",
-        "cff",
-    ),
-    (
-        "cddc",
-        "eabf",
-        "eeff",
-    ),
-    (
-        "ddee",
-        "cffe",
-        "abec",
-    ),
+medium_set = symmetrize(
+    [
+        (
+            "eed",
+            "abd",
+            "cff",
+        ),
+        (
+            "cddc",
+            "eabf",
+            "eeff",
+        ),
+        (
+            "ddee",
+            "cffe",
+            "abec",
+        ),
+    ]
+)
+
+tiny_set = [
+    ("ab",),
+]
+
+one_tile_set = [
+    ("a",),
 ]
 
 tile_map = {
@@ -31,6 +41,15 @@ tile_map = {
 the_industry = AIndustry(
     name="Farm",
     substitute_type=0x09,
-    #    layouts=[[{"xofs": i, "yofs": j, "gfx": grf.NewIndustryTileID(0x23)} for i in range(4) for j in range(4)]],
-    layouts=transcribe(symmetrize(medium_set), tile_map),
+    layouts=SplitDefinition(
+        {
+            0: transcribe(medium_set, tile_map),
+            1: transcribe(medium_set, tile_map),
+            2: transcribe(medium_set, tile_map),
+            3: transcribe(medium_set, tile_map),
+            4: transcribe(tiny_set, tile_map),
+            5: transcribe(one_tile_set, tile_map),
+            6: [[{"xofs": 0, "yofs": 0, "gfx": grf.NewIndustryTileID(0x23)}]],
+        }
+    ),
 )
