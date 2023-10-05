@@ -3,6 +3,11 @@ from .transcriber import transcribe
 from .symmetrizer import symmetrize
 
 
+class SplitDefinition:
+    def __init__(self, branches):
+        self.branches = branches
+
+
 class AIndustry(grf.SpriteGenerator):
     def __init__(self, *, name, id=None, callbacks={}, **props):
         super().__init__()
@@ -17,7 +22,24 @@ class AIndustry(grf.SpriteGenerator):
     def get_sprites(self, g):
         res = []
         name_id = g.strings.add(self.name).get_persistent_id()
-        res.append(definition := grf.Define(feature=grf.INDUSTRY, id=self.id, props={**self._props, "name": name_id}))
+        if isinstance(self._props.get("layouts", 0), SplitDefinition):
+            for i in range(7):
+                res.append(grf.If(is_static=True, variable=9, condition=0x03, value=i, skip=1, varsize=4))
+                res.append(
+                    definition := grf.Define(
+                        feature=grf.INDUSTRY,
+                        id=self.id,
+                        props={**self._props, "name": name_id, "layouts": self._props["layouts"].branches[i]},
+                    )
+                )
+        else:
+            res.append(
+                definition := grf.Define(
+                    feature=grf.INDUSTRY,
+                    id=self.id,
+                    props={**self._props, "name": name_id},
+                )
+            )
         self.callbacks.graphics = 0
         res.append(self.callbacks.make_map_action(definition))
 

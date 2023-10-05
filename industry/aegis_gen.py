@@ -136,7 +136,7 @@ def gen():
         },
     )
 
-    # Parameter 5
+    # Parameter 6
     g.add_int_parameter(
         name=s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE"],
         description=s["STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DESC"],
@@ -150,7 +150,7 @@ def gen():
         },
     )
 
-    # Parameter 5
+    # Parameter 7
     g.add_int_parameter(
         name=s["STR_PARAM_PRIMARY_INDUSTRY_ZONING"],
         description=s["STR_PARAM_PRIMARY_INDUSTRY_ZONING_DESC"],
@@ -163,7 +163,7 @@ def gen():
         },
     )
 
-    # Parameter 5
+    # Parameter 8
     g.add_int_parameter(
         name=s["STR_PARAM_SECONDARY_INDUSTRY_PROCESSING"],
         description=s["STR_PARAM_SECONDARY_INDUSTRY_PROCESSING_DESC"],
@@ -176,7 +176,7 @@ def gen():
         },
     )
 
-    # Parameter 5
+    # Parameter 9
     g.add_int_parameter(
         name=s["STR_PARAM_INDUSTRY_SIZE"],
         description=s["STR_PARAM_INDUSTRY_SIZE_DESC"],
@@ -193,7 +193,7 @@ def gen():
         },
     )
 
-    # Parameter 6
+    # Parameter 10
     g.add_int_parameter(
         name=s["STR_PARAM_COLOUR_SCHEME"],
         description=s["STR_PARAM_COLOUR_SCHEME_DESC"],
@@ -212,7 +212,7 @@ def gen():
         },
     )
 
-    # Parameter 7
+    # Parameter 11
     g.add_int_parameter(
         name=s["STR_PARAM_NIGHT_MODE"],
         description=s["STR_PARAM_NIGHT_MODE_DESC"],
