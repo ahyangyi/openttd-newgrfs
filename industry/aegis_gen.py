@@ -40,6 +40,8 @@ def gen():
         preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
 
+    g.add(grf.DefineMultiple(feature=grf.INDUSTRY, first_id=0, props={"substitute_type": [0xFF] * 0x25}))
+
     # Parameter 0
     g.add_int_parameter(
         name=s["STR_PARAM_ECONOMY"],
