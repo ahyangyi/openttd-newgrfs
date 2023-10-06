@@ -3,10 +3,14 @@ from industry.cargos import (
     ammonia,
     pyrite_ore,
     peat,
-    coal,
+    china_clay,
+    phosphate,
+    zinc,
+    timber,
     food,
     goods,
-    gold,
+    pyrite_ore,
+    sulphur,
     livestock,
     mail,
     oil,
@@ -21,8 +25,10 @@ from industry.cargos import (
 )
 from industry.industries import (
     peatlands,
-    bank,
-    coal_mine,
+    pyrite_mine,
+    phosphate_mine,
+    pyrite_smelter,
+    sawmill,
     food_processing_plant,
     farm,
     forest,
@@ -31,7 +37,7 @@ from industry.industries import (
     printing_works,
     oil_wells,
     power_station,
-    gold_mine,
+    pyrite_mine,
     towns,
     port,
     trading_centre,
@@ -48,12 +54,14 @@ class TheEconomy:
     def get_economy(self, parameters):
         ret = Economy(
             {
-                coal_mine: PrimaryIndustry(coal),
                 farm: PrimaryIndustry((livestock, wheat)),
                 forest: PrimaryIndustry(wood),
                 oil_wells: PrimaryIndustry(oil),
-                gold_mine: PrimaryIndustry(gold),
+                pyrite_mine: PrimaryIndustry(pyrite_ore),
+                phosphate_mine: PrimaryIndustry(phosphate),
                 peatlands: PrimaryIndustry(peat),
+                pyrite_smelter: SecondaryIndustry(pyrite_ore, (sulphur, zinc)),
+                sawmill: SecondaryIndustry(wood, timber),
                 food_processing_plant: SecondaryIndustry(
                     (
                         livestock,
@@ -64,8 +72,7 @@ class TheEconomy:
                 paper_mill: SecondaryIndustry(wood, paper),
                 oil_refinery: SecondaryIndustry(oil, goods),
                 printing_works: SecondaryIndustry(paper, goods),
-                power_station: TertiaryIndustry(coal),
-                bank: TertiaryIndustry(gold),
+                power_station: TertiaryIndustry(peat),
                 towns: Town(passengers, mail, food, goods),
             },
             parameters,
@@ -77,26 +84,26 @@ class TheEconomy:
             del ret.graph[paper_mill]
 
         if parameters["BOOSTER"] == "UNIVERSAL":
-            ret.graph[coal_mine].booster = engineering_supplies
+            ret.graph[peatlands].booster = engineering_supplies
             ret.graph[oil_wells].booster = engineering_supplies
-            ret.graph[gold_mine].booster = engineering_supplies
+            ret.graph[pyrite_mine].booster = engineering_supplies
             ret.graph[farm].booster = engineering_supplies
             ret.graph[forest].booster = engineering_supplies
 
             ret.graph[printing_works].produces += (engineering_supplies,)
         elif parameters["BOOSTER"] == "GENERIC":
-            ret.graph[coal_mine].booster = engineering_supplies
+            ret.graph[peatlands].booster = engineering_supplies
             ret.graph[oil_wells].booster = engineering_supplies
-            ret.graph[gold_mine].booster = engineering_supplies
+            ret.graph[pyrite_mine].booster = engineering_supplies
             ret.graph[farm].booster = farm_supplies
             ret.graph[forest].booster = farm_supplies
 
             ret.graph[printing_works].produces += (engineering_supplies,)
             ret.graph[oil_refinery].produces += (farm_supplies,)
         elif parameters["BOOSTER"] == "GENERIC_PASSENGERS":
-            ret.graph[coal_mine].booster = engineering_supplies
+            ret.graph[peatlands].booster = engineering_supplies
             ret.graph[oil_wells].booster = passengers
-            ret.graph[gold_mine].booster = engineering_supplies
+            ret.graph[pyrite_mine].booster = engineering_supplies
             ret.graph[farm].booster = farm_supplies
             ret.graph[forest].booster = farm_supplies
 
@@ -107,7 +114,7 @@ class TheEconomy:
             ret.graph[worker_yard] = PrimaryIndustry(workers)
 
             # FIXME
-            ret.graph[coal_mine].booster = workers
+            ret.graph[peatlands].booster = workers
 
         if port in ret.graph:
             if parameters["LAND_PORTS"] == "LAND_ONLY":
