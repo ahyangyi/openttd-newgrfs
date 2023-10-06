@@ -1,6 +1,24 @@
 import grf
 from industry.lib.industry import AIndustry, SplitDefinition, transcribe, symmetrize
 
+large_set = symmetrize(
+    [
+        (
+            "cddc",
+            "cddc",
+            "cabc",
+            "eeff",
+            "eeff",
+        ),
+        (
+            "ddeec",
+            "ddefc",
+            "cffff",
+            "abecf",
+        ),
+    ]
+)
+
 medium_set = symmetrize(
     [
         (
@@ -52,8 +70,8 @@ the_industry = AIndustry(
     substitute_type=0x09,
     layouts=SplitDefinition(
         {
-            0: transcribe(medium_set, tile_map),
-            1: transcribe(medium_set, tile_map),
+            0: transcribe(large_set, tile_map),
+            1: transcribe(large_set, tile_map),
             2: transcribe(medium_set, tile_map),
             3: transcribe(small_set, tile_map),
             4: transcribe(tiny_set, tile_map),
