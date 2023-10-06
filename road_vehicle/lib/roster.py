@@ -4,6 +4,7 @@ import grf
 from tabulate import tabulate
 from road_vehicle.lib import ARoadVehicle, supported_techclasses
 from agrf.strings import get_translation
+from agrf.graphics.blend import blend
 
 
 def dimens_repr(dimensions):
@@ -206,8 +207,11 @@ class Roster:
 
             # Prepare graphics
             sprite = v.graphics_helper.doc_graphics()
-            img, bpp = sprite.get_zoom_bpp(grf.ZOOM_NORMAL, 32).get_image()
-            img.save(os.path.join(prefix, "img", f'{v["translation_name"]}.png'))
+            masked_sprite = sprite.get_zoom_bpp(grf.ZOOM_NORMAL, 32)
+            img, _ = masked_sprite.get_image()
+            mask, _ = masked_sprite.mask.get_image()
+            masked_img = blend(img, mask)
+            masked_img.save(os.path.join(prefix, "img", f'{v["translation_name"]}.png'))
 
             # Dump
             with open(os.path.join(prefix, f'{v["translation_name"]}.md'), "w") as f:

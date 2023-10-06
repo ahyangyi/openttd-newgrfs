@@ -21,6 +21,15 @@ medium_set = symmetrize(
     ]
 )
 
+small_set = symmetrize(
+    [
+        (
+            "abd",
+            "ecf",
+        ),
+    ]
+)
+
 tiny_set = [
     ("ab",),
 ]
@@ -46,7 +55,7 @@ the_industry = AIndustry(
             0: transcribe(medium_set, tile_map),
             1: transcribe(medium_set, tile_map),
             2: transcribe(medium_set, tile_map),
-            3: transcribe(medium_set, tile_map),
+            3: transcribe(small_set, tile_map),
             4: transcribe(tiny_set, tile_map),
             5: transcribe(one_tile_set, tile_map),
             6: [[{"xofs": 0, "yofs": 0, "gfx": grf.NewIndustryTileID(0x23)}]],
