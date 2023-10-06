@@ -2,12 +2,12 @@
 import grf
 import struct
 import argparse
-from industry.economies import vanilla_temperate, vanilla_subarctic, vanilla_subtropical
+from industry.economies import vanilla_temperate, vanilla_subarctic, vanilla_subtropical, firs_arctic
 from industry.lib.parameters import iterate_variations
 from industry.lib.validator import validate
 
 
-all_economies = [vanilla_temperate, vanilla_subarctic, vanilla_subtropical]
+all_economies = [vanilla_temperate, vanilla_subarctic, vanilla_subtropical, firs_arctic]
 all_industries = []
 all_cargos = []
 # FIXME: need to collect industry/cargo information in better ways
