@@ -1,6 +1,6 @@
 from industry.lib.industry import AIndustry
 
 the_industry = AIndustry(
-    id=0x2C,
-    name="Pyrite Smelter",
+    id=0x2A,
+    name="Herding Co-op",
 )
