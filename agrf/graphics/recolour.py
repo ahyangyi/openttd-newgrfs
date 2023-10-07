@@ -1,3 +1,4 @@
+import grf
 import functools
 
 
@@ -29,6 +30,17 @@ class ColourMap:
             f"({self.name}+{o.name})",
             self.colour_map + o.colour_map,
         )
+
+    def to_sprite(self):
+        triplets = []
+        for f, t in self.colour_map:
+            if f.a == f.b:
+                triplets.append((f.a, f.a, t.a))
+            else:
+                for i in range(f.a, f.b + 1):
+                    # FIXME: round instead of floor
+                    triplets.append((i, i, (i - f.a) * (t.b - t.a) // (f.b - f.a) + t.a))
+        return grf.PaletteRemap(triplets)
 
 
 CC1_BLACK = ColourMap(
