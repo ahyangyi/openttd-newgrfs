@@ -13,6 +13,7 @@ from ..vehicles.monorail import nova
 from road_vehicle.lib.roster import Roster
 
 roster = Roster(
+    "Dovemere",
     happyone,
     rime,
     longriver,

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import road_vehicle.rosters.dovemere as dovemere
+import road_vehicle.rosters.norbury as norbury
 from cargos import cargos
 import argparse
 import grf
@@ -82,7 +83,9 @@ def main():
     if args.cmd == "gen":
         gen(args.fast)
     elif args.cmd == "doc":
-        dovemere.roster.gen_docs(get_string_manager())
+        from road_vehicle.docgen import gen_docs
+
+        gen_docs(get_string_manager(), [dovemere.roster, norbury.roster])
     else:
         print("\n" + dovemere.roster.cli())
 
