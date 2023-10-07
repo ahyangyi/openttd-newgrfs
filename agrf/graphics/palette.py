@@ -1,4 +1,5 @@
 import json
+from .recolour import ColourMap, ColourRange
 
 with open("files/ttd_palette.json") as f:
     PALETTE = json.load(f)["entries"]
@@ -21,3 +22,11 @@ class CompanyColour:
     BROWN = 0x20
     GREY = 0x4
     WHITE = 0x8
+
+
+def company_colour_remap(cc1, cc2):
+    return ColourMap(
+        f"cc{cc1}_{cc2}",
+        [(ColourRange(CompanyColour.DARK_BLUE + 2, CompanyColour.DARK_BLUE + 9), ColourRange(cc1 + 2, cc1 + 9))],
+        [(ColourRange(CompanyColour.PALE_GREEN + 2, CompanyColour.PALE_GREEN + 9), ColourRange(cc2 + 2, cc2 + 9))],
+    )
