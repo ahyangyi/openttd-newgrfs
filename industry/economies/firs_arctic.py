@@ -7,13 +7,14 @@ from industry.cargos import (
     phosphate,
     zinc,
     timber,
+    explosives,
+    fertiliser,
     food,
     goods,
     pyrite_ore,
     sulphur,
     livestock,
     mail,
-    oil,
     paper,
     passengers,
     wheat,
@@ -29,13 +30,10 @@ from industry.industries import (
     phosphate_mine,
     pyrite_smelter,
     sawmill,
-    food_processing_plant,
     farm,
     forest,
     paper_mill,
-    oil_refinery,
-    printing_works,
-    oil_wells,
+    chemical_plant,
     power_station,
     pyrite_mine,
     towns,
@@ -56,22 +54,16 @@ class TheEconomy:
             {
                 farm: PrimaryIndustry((livestock, wheat)),
                 forest: PrimaryIndustry(wood),
-                oil_wells: PrimaryIndustry(oil),
                 pyrite_mine: PrimaryIndustry(pyrite_ore),
                 phosphate_mine: PrimaryIndustry(phosphate),
                 peatlands: PrimaryIndustry(peat),
                 pyrite_smelter: SecondaryIndustry(pyrite_ore, (sulphur, zinc)),
                 sawmill: SecondaryIndustry(wood, timber),
-                food_processing_plant: SecondaryIndustry(
-                    (
-                        livestock,
-                        wheat,
-                    ),
-                    food,
+                chemical_plant: SecondaryIndustry(
+                    (phosphate, sulphur, ammonia),
+                    (explosives, fertiliser),
                 ),
                 paper_mill: SecondaryIndustry(wood, paper),
-                oil_refinery: SecondaryIndustry(oil, goods),
-                printing_works: SecondaryIndustry(paper, goods),
                 power_station: TertiaryIndustry(peat),
                 towns: Town(passengers, mail, food, goods),
             },
@@ -81,34 +73,31 @@ class TheEconomy:
             ret.graph[port] = SecondaryIndustry(wood, paper)
         elif parameters["POLICY"] in ("FREE_TRADE", "EXPORT"):
             ret.graph[port] = SecondaryIndustry(wood, paper)
-            del ret.graph[paper_mill]
+            # del ret.graph[paper_mill]
 
         if parameters["BOOSTER"] == "UNIVERSAL":
             ret.graph[peatlands].booster = engineering_supplies
-            ret.graph[oil_wells].booster = engineering_supplies
             ret.graph[pyrite_mine].booster = engineering_supplies
             ret.graph[farm].booster = engineering_supplies
             ret.graph[forest].booster = engineering_supplies
 
-            ret.graph[printing_works].produces += (engineering_supplies,)
+            ret.graph[paper_mill].produces += (engineering_supplies,)
         elif parameters["BOOSTER"] == "GENERIC":
             ret.graph[peatlands].booster = engineering_supplies
-            ret.graph[oil_wells].booster = engineering_supplies
             ret.graph[pyrite_mine].booster = engineering_supplies
             ret.graph[farm].booster = farm_supplies
             ret.graph[forest].booster = farm_supplies
 
-            ret.graph[printing_works].produces += (engineering_supplies,)
-            ret.graph[oil_refinery].produces += (farm_supplies,)
+            ret.graph[paper_mill].produces += (engineering_supplies,)
+            ret.graph[chemical_plant].produces += (farm_supplies,)
         elif parameters["BOOSTER"] == "GENERIC_PASSENGERS":
             ret.graph[peatlands].booster = engineering_supplies
-            ret.graph[oil_wells].booster = passengers
             ret.graph[pyrite_mine].booster = engineering_supplies
             ret.graph[farm].booster = farm_supplies
             ret.graph[forest].booster = farm_supplies
 
-            ret.graph[printing_works].produces += (engineering_supplies,)
-            ret.graph[oil_refinery].produces += (farm_supplies,)
+            ret.graph[paper_mill].produces += (engineering_supplies,)
+            ret.graph[chemical_plant].produces += (farm_supplies,)
 
         if parameters["WORKER"].startswith("YETI"):
             ret.graph[worker_yard] = PrimaryIndustry(workers)
