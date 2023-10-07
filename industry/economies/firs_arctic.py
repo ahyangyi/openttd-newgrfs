@@ -1,48 +1,49 @@
 from industry.lib.economy import Economy, PrimaryIndustry, SecondaryIndustry, TertiaryIndustry, Town
 from industry.cargos import (
     ammonia,
-    pyrite_ore,
-    peat,
     china_clay,
-    phosphate,
-    zinc,
-    timber,
+    engineering_supplies,
     explosives,
+    farm_supplies,
     fertiliser,
     food,
     goods,
-    pyrite_ore,
-    sulphur,
-    livestock,
     mail,
     paper,
     passengers,
-    wheat,
-    wood,
-    farm_supplies,
-    engineering_supplies,
+    peat,
+    phosphate,
+    potash,
+    pyrite_ore,
+    pyrite_ore,
+    sulphur,
+    timber,
     water,
+    wood,
     workers,
+    zinc,
 )
 from industry.industries import (
     ammonia_plant,
+    chemical_plant,
+    clay_pit,
+    forest,
+    general_store,
+    herding_coop,
+    paper_mill,
     peatlands,
-    pyrite_mine,
     phosphate_mine,
+    port,
+    potash_mine,
+    power_station,
+    pyrite_mine,
+    pyrite_mine,
     pyrite_smelter,
     sawmill,
-    forest,
-    paper_mill,
-    chemical_plant,
-    power_station,
-    herding_coop,
-    pyrite_mine,
     towns,
-    port,
     trading_centre,
     water_supply,
     water_tower,
-    general_store,
     worker_yard,
 )
 
@@ -55,18 +56,20 @@ class TheEconomy:
         ret = Economy(
             {
                 ammonia_plant: PrimaryIndustry(ammonia),
+                clay_pit: PrimaryIndustry(china_clay),
                 forest: PrimaryIndustry(wood),
                 pyrite_mine: PrimaryIndustry(pyrite_ore),
                 phosphate_mine: PrimaryIndustry(phosphate),
+                potash_mine: PrimaryIndustry(potash),
                 peatlands: PrimaryIndustry(peat),
                 herding_coop: PrimaryIndustry(food),
                 pyrite_smelter: SecondaryIndustry(pyrite_ore, (sulphur, zinc)),
                 sawmill: SecondaryIndustry(wood, timber),
                 chemical_plant: SecondaryIndustry(
-                    (phosphate, sulphur, ammonia),
+                    (phosphate, sulphur, ammonia, potash),
                     (explosives, fertiliser),
                 ),
-                paper_mill: SecondaryIndustry(wood, paper),
+                paper_mill: SecondaryIndustry((wood, sulphur, china_clay), paper),
                 power_station: TertiaryIndustry(peat),
                 general_store: TertiaryIndustry((explosives, fertiliser, zinc, timber)),
                 towns: Town(passengers, mail, food, paper),
@@ -74,10 +77,10 @@ class TheEconomy:
             parameters,
         )
         if parameters["POLICY"] == "SELF_SUFFICIENT":
-            ret.graph[port] = SecondaryIndustry(wood, paper)
+            ret.graph[port] = SecondaryIndustry(timber, china_clay)
         elif parameters["POLICY"] in ("FREE_TRADE", "EXPORT"):
-            ret.graph[port] = SecondaryIndustry(wood, paper)
-            # del ret.graph[paper_mill]
+            ret.graph[port] = SecondaryIndustry(timber, china_clay)
+            del ret.graph[clay_pit]
 
         if parameters["BOOSTER"] == "UNIVERSAL":
             ret.graph[ammonia_plant].booster = engineering_supplies

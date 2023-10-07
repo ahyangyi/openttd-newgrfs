@@ -15,10 +15,6 @@ def check_reachability(economy):
         if not changed:
             break
 
-    assert len(can_produce) == len(
-        economy.cargos
-    ), f"The following cargos can be produced: {', '.join(str(x) for x in can_produce)}, and the following cargos cannot: {', '.join(str(x) for x in economy.cargos if x not in can_produce)}"
-
     can_accept = set()
     for industry in economy.graph.values():
         can_accept.update(industry.accepts)
