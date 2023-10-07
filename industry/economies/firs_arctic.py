@@ -42,6 +42,7 @@ from industry.industries import (
     trading_centre,
     water_supply,
     water_tower,
+    general_store,
     worker_yard,
 )
 
@@ -67,7 +68,8 @@ class TheEconomy:
                 ),
                 paper_mill: SecondaryIndustry(wood, paper),
                 power_station: TertiaryIndustry(peat),
-                towns: Town(passengers, mail, food, None),
+                general_store: TertiaryIndustry((explosives, fertiliser, zinc, timber)),
+                towns: Town(passengers, mail, food, paper),
             },
             parameters,
         )
