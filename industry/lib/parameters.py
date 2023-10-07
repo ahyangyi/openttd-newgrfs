@@ -20,8 +20,19 @@ parameter_choices = [
 
 
 docs_parameter_choices = copy.deepcopy(parameter_choices)
-docs_parameter_choices[-2] = ("LAND_PORTS", ["ORGANIC"])
-docs_parameter_choices[-1] = ("TOWN_GOODS", ["ORGANIC"])
+
+
+def fix_docs_params(cat, options):
+    [(idx, all_options)] = [
+        (i, the_options) for i, (the_cat, the_options) in enumerate(docs_parameter_choices) if the_cat == cat
+    ]
+    assert all(o in all_options for o in options)
+    docs_parameter_choices[idx] = (cat, options)
+
+
+fix_docs_params("WORKER", ["NONE", "PASSENGERS", "YETI"])
+fix_docs_params("LAND_PORTS", ["ORGANIC"])
+fix_docs_params("TOWN_GOODS", ["ORGANIC"])
 
 PRESETS = {
     "VANILLA": {
