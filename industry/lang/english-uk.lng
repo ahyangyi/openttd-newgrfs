@@ -134,3 +134,5 @@ STR_CARGO_WDPR                  :Timber
 STR_CARGO_NH3_                  :Ammonia
 STR_CARGO_BOOM                  :Explosives
 STR_CARGO_FERT                  :Fertiliser
+STR_CARGO_KAOL                  :China Clay
+STR_CARGO_POTA                  :Potash
