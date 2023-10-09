@@ -1,4 +1,4 @@
 import grf
 from industry.lib.cargo import ACargo
 
-the_cargo = ACargo(b"BOOM", grf.CargoClass.EXPRESS | grf.CargoClass.PIECE_GOODS)
+the_cargo = ACargo(0x17, b"BOOM", grf.CargoClass.EXPRESS | grf.CargoClass.PIECE_GOODS)

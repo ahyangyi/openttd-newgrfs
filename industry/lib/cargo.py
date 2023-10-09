@@ -3,7 +3,8 @@ import struct
 
 
 class ACargo(grf.SpriteGenerator):
-    def __init__(self, label, cargo_class, capacity_multiplier=0x100, weight=16, **props):
+    def __init__(self, id, label, cargo_class, capacity_multiplier=0x100, weight=16, **props):
+        self.id = id
         self.label = label
         self.cargo_class = cargo_class
         self.capacity_multiplier = capacity_multiplier
@@ -19,7 +20,7 @@ class ACargo(grf.SpriteGenerator):
 
     def get_sprites(self, g):
         res = []
-        res.append(definition := grf.Define(feature=grf.CARGO, id=0, props=self._props))
+        res.append(definition := grf.Define(feature=grf.CARGO, id=self.id, props=self._props))
         self.callbacks.graphics = 0
         res.append(self.callbacks.make_map_action(definition))
 
