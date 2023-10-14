@@ -48,6 +48,27 @@ search_exclude: true"""
                     accepts = ", ".join(cargolink(x) for x in flow.accepts)
                     produces = ", ".join(cargolink(x) for x in flow.produces)
                     print(f"| {industrylink(industry.name)} | {accepts} | {produces} |", file=f)
+
+                # Cargos
+                print(
+                    """
+# Cargos
+
+| Cargo | Class | Capacity Multiplier | Weight |
+|-------|-------|---------------------|--------|""",
+                    file=f,
+                )
+                for cargo in economy.cargos:
+                    from .cargo import cargo_class
+
+                    cargo_path = cargo.label.decode()
+                    cargo_name = get_translation(string_manager["STR_CARGO_" + cargo_path], 0x7F)
+                    print(
+                        f"| {cargo_name} | {cargo_class(cargo.cargo_class)} | {cargo.capacity_multiplier / 0x100} | {cargo.weight / 16} |",
+                        file=f,
+                    )
+
+                # Links: presets & variations
                 print(
                     """
 # Presets
