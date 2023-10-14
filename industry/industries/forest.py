@@ -131,6 +131,7 @@ the_industry = AIndustry(
     name="Forest",
     substitute_type=0x03,
     layouts=SplitDefinition(
+        9,
         {
             0: transcribe(huge_set, tile_map),
             1: transcribe(large_set, tile_map),
@@ -139,6 +140,6 @@ the_industry = AIndustry(
             4: transcribe(tiny_set, tile_map),
             5: transcribe(one_grid_set, tile_map),
             6: transcribe(one_grid_set, tile_map),
-        }
+        },
     ),
 )

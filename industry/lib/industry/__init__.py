@@ -4,7 +4,8 @@ from .symmetrizer import symmetrize
 
 
 class SplitDefinition:
-    def __init__(self, branches):
+    def __init__(self, variable, branches):
+        self.variable = variable
         self.branches = branches
 
 

@@ -82,6 +82,7 @@ the_industry = AIndustry(
     name="Oil Wells",
     substitute_type=0x0B,
     layouts=SplitDefinition(
+        9,
         {
             0: transcribe(large_set, tile_map),
             1: transcribe(large_set, tile_map),
@@ -90,6 +91,6 @@ the_industry = AIndustry(
             4: transcribe(tiny_set, tile_map),
             5: transcribe(one_tile_set, tile_map),
             6: [[{"xofs": 0, "yofs": 0, "gfx": grf.NewIndustryTileID(0x23)}]],
-        }
+        },
     ),
 )
