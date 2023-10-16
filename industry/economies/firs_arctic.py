@@ -48,6 +48,7 @@ from industry.industries import (
     trading_centre,
     water_supply,
     water_tower,
+    wharf,
     worker_yard,
 )
 
@@ -85,12 +86,16 @@ class TheEconomy:
         )
         if parameters["POLICY"] == "SELF_SUFFICIENT":
             ret.graph[port] = SecondaryIndustry(timber, china_clay)
+            ret.graph[wharf] = SecondaryIndustry(timber, ammonia)
         elif parameters["POLICY"] in ("FREE_TRADE", "EXPORT"):
             ret.graph[port] = SecondaryIndustry(timber, china_clay)
+            ret.graph[wharf] = SecondaryIndustry(timber, ammonia)
+            del ret.graph[ammonia_plant]
             del ret.graph[clay_pit]
 
         if parameters["BOOSTER"] == "UNIVERSAL":
-            ret.graph[ammonia_plant].booster = engineering_supplies
+            if ammonia_plant in ret.graph:
+                ret.graph[ammonia_plant].booster = engineering_supplies
             if clay_pit in ret.graph:
                 ret.graph[clay_pit].booster = engineering_supplies
             ret.graph[peatlands].booster = engineering_supplies
@@ -104,7 +109,8 @@ class TheEconomy:
 
             ret.graph[paper_mill].produces += (engineering_supplies,)
         elif parameters["BOOSTER"] == "GENERIC":
-            ret.graph[ammonia_plant].booster = engineering_supplies
+            if ammonia_plant in ret.graph:
+                ret.graph[ammonia_plant].booster = engineering_supplies
             if clay_pit in ret.graph:
                 ret.graph[clay_pit].booster = engineering_supplies
             ret.graph[peatlands].booster = engineering_supplies
@@ -119,7 +125,8 @@ class TheEconomy:
             ret.graph[paper_mill].produces += (engineering_supplies,)
             ret.graph[chemical_plant].produces += (farm_supplies,)
         elif parameters["BOOSTER"] == "GENERIC_PASSENGERS":
-            ret.graph[ammonia_plant].booster = engineering_supplies
+            if ammonia_plant in ret.graph:
+                ret.graph[ammonia_plant].booster = engineering_supplies
             if clay_pit in ret.graph:
                 ret.graph[clay_pit].booster = engineering_supplies
             ret.graph[peatlands].booster = engineering_supplies
