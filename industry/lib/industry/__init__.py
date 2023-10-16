@@ -38,13 +38,18 @@ class AIndustry(grf.SpriteGenerator):
 
     def dynamic_definitions(self, all_choices, parameters, i=0):
         if i == len(all_choices):
-            return [
-                grf.Define(
-                    feature=grf.INDUSTRY,
-                    id=self.id,
-                    props=self.resolve_props(parameters),
-                )
-            ]
+            resolved_props = self.resolve_props(parameters)
+            exists = resolved_props.pop("exists", True)
+            if exists:
+                return [
+                    grf.Define(
+                        feature=grf.INDUSTRY,
+                        id=self.id,
+                        props=resolved_props,
+                    )
+                ]
+            else:
+                return []
         ret = []
         var_id, choices = all_choices[i]
         for choice in range(choices):
