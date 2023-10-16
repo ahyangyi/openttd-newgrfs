@@ -20,27 +20,47 @@ class AIndustry(grf.SpriteGenerator):
         self._props = props
         self.callbacks = grf.make_callback_manager(grf.INDUSTRY, callbacks)
 
-    def get_sprites(self, g):
-        res = []
-        name_id = g.strings.add(self.name).get_persistent_id()
-        if isinstance(self._props.get("layouts", 0), SplitDefinition):
-            for i in range(7):
-                res.append(grf.If(is_static=True, variable=9, condition=0x03, value=i, skip=1, varsize=4))
-                res.append(
-                    definition := grf.Define(
-                        feature=grf.INDUSTRY,
-                        id=self.id,
-                        props={**self._props, "name": name_id, "layouts": self._props["layouts"].branches[i]},
-                    )
-                )
-        else:
-            res.append(
-                definition := grf.Define(
+    @property
+    def dynamic_prop_variables(self):
+        ret = {}
+        for p in self._props.values():
+            if isinstance(p, SplitDefinition):
+                ret[p.variable] = len(p.branches)
+        return list(ret.items())
+
+    def resolve_props(self, parameters):
+        new_props = {}
+        for k, v in self._props.items():
+            while isinstance(v, SplitDefinition):
+                v = v.branches[parameters[v.variable]]
+            new_props[k] = v
+        return new_props
+
+    def dynamic_definitions(self, all_choices, parameters, i=0):
+        if i == len(all_choices):
+            return [
+                grf.Define(
                     feature=grf.INDUSTRY,
                     id=self.id,
-                    props={**self._props, "name": name_id},
+                    props=self.resolve_props(parameters),
                 )
+            ]
+        ret = []
+        var_id, choices = all_choices[i]
+        for choice in range(choices):
+            parameters[var_id] = choice
+            actions = self.dynamic_definitions(all_choices, parameters, i + 1)
+            ret.append(
+                grf.If(is_static=True, variable=var_id, condition=0x03, value=choice, skip=len(actions), varsize=4)
             )
+            ret.extend(actions)
+        del parameters[var_id]
+        return ret
+
+    def get_sprites(self, g):
+        name_id = g.strings.add(self.name).get_persistent_id()
+        res = self.dynamic_definitions(self.dynamic_prop_variables, {}, 0)
+        definition = res[-1]
         self.callbacks.graphics = 0
         res.append(self.callbacks.make_map_action(definition))
 
