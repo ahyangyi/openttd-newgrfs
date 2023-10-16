@@ -14,6 +14,7 @@ from industry.cargos import (
     water,
     farm_supplies,
     engineering_supplies,
+    workers,
 )
 from industry.industries import (
     bank,
@@ -30,6 +31,7 @@ from industry.industries import (
     towns,
     water_supply,
     water_tower,
+    worker_yard,
 )
 
 
@@ -72,6 +74,11 @@ class TheEconomy:
 
             ret.graph[factory].produces += (engineering_supplies,)
             ret.graph[oil_refinery].produces += (farm_supplies,)
+
+        if parameters["WORKER"].startswith("YETI"):
+            ret.graph[worker_yard] = PrimaryIndustry(workers)
+            # FIXME
+            ret.graph[diamond_mine].booster = workers
 
         if parameters["TOWN_GOODS"] in ("ORGANIC", "SUBTROPICAL"):
             ret.graph[water_supply] = PrimaryIndustry(water)
