@@ -13,7 +13,7 @@ class SplitDefinition:
         self.branches = branches
 
 
-VARLEN = {9: 7}
+VARLEN = {0: 4, 9: 7}
 
 
 class AIndustry(grf.SpriteGenerator):
@@ -64,6 +64,8 @@ class AIndustry(grf.SpriteGenerator):
         for choice in range(choices):
             parameters[var_id] = choice
             actions = self.dynamic_definitions(all_choices, parameters, i + 1)
+            if len(actions) == 0:
+                continue
             ret.append(
                 grf.If(is_static=True, variable=var_id, condition=0x03, value=choice, skip=len(actions), varsize=4)
             )
@@ -74,6 +76,8 @@ class AIndustry(grf.SpriteGenerator):
     def get_sprites(self, g):
         name_id = g.strings.add(self.name).get_persistent_id()
         res = self.dynamic_definitions(self.dynamic_prop_variables, {}, 0)
+        if len(res) == 0:
+            return []
         definition = res[-1]
         self.callbacks.graphics = 0
         res.append(self.callbacks.make_map_action(definition))

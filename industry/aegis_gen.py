@@ -13,6 +13,9 @@ all_cargos = []
 
 
 def initialize_metadata():
+    from industry.lib.industry import SplitDefinition
+
+    # Make up the lists
     for meta_economy in all_economies:
         for variation in iterate_variations():
             economy = meta_economy.get_economy(variation)
@@ -22,6 +25,19 @@ def initialize_metadata():
             for cargo in economy.cargos:
                 if cargo not in all_cargos:
                     all_cargos.append(cargo)
+
+    for industry in all_industries:
+        industry._props["exists"] = SplitDefinition((0,), {})
+
+    for i, meta_economy in enumerate(all_economies):
+        for variation in iterate_variations():
+            economy = meta_economy.get_economy(variation)
+            for industry in all_industries:
+                if industry in economy.industries:
+                    industry._props["exists"].branches[(i,)] = True
+                else:
+                    industry._props["exists"].branches[(i,)] = False
+            break
 
 
 def get_string_manager():
@@ -49,15 +65,15 @@ def gen():
         name=s["STR_PARAM_ECONOMY"],
         description=s["STR_PARAM_ECONOMY_DESC"],
         default=0,
-        limits=(0, 6),
+        limits=(0, 3),
         enum={
             0: s["STR_PARAM_ECONOMY_VANILLA_TEMPERATE"],
             1: s["STR_PARAM_ECONOMY_VANILLA_SUBARCTIC"],
             2: s["STR_PARAM_ECONOMY_VANILLA_SUBTROPICAL"],
-            3: s["STR_PARAM_ECONOMY_TOYLAND"],
-            4: s["STR_PARAM_ECONOMY_BASIC_TEMPERATE"],
-            5: s["STR_PARAM_ECONOMY_BASIC_SUBARCTIC"],
-            6: s["STR_PARAM_ECONOMY_BASIC_SUBTROPICAL"],
+            3: s["STR_PARAM_ECONOMY_BASIC_SUBARCTIC"],
+            # ?: s["STR_PARAM_ECONOMY_TOYLAND"],
+            # ?: s["STR_PARAM_ECONOMY_BASIC_TEMPERATE"],
+            # ?: s["STR_PARAM_ECONOMY_BASIC_SUBTROPICAL"],
         },
     )
 
