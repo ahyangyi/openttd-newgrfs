@@ -8,18 +8,20 @@ from industry.lib.validator import validate
 
 
 all_economies = [vanilla_temperate, vanilla_subarctic, vanilla_subtropical, firs_arctic]
-all_industries = []
-all_cargos = []
-# FIXME: need to collect industry/cargo information in better ways
-for meta_economy in all_economies:
-    for variation in iterate_variations():
-        economy = meta_economy.get_economy(variation)
-        for industry in economy.industries:
-            if industry not in all_industries:
-                all_industries.append(industry)
-        for cargo in economy.cargos:
-            if cargo not in all_cargos:
-                all_cargos.append(cargo)
+
+
+def initialize_metadata():
+    all_industries = []
+    all_cargos = []
+    for meta_economy in all_economies:
+        for variation in iterate_variations():
+            economy = meta_economy.get_economy(variation)
+            for industry in economy.industries:
+                if industry not in all_industries:
+                    all_industries.append(industry)
+            for cargo in economy.cargos:
+                if cargo not in all_cargos:
+                    all_cargos.append(cargo)
 
 
 def get_string_manager():
@@ -246,6 +248,7 @@ def main():
     parser.add_argument("cmd")
     args = parser.parse_args()
 
+    initialize_metadata()
     if args.cmd == "gen":
         gen()
     elif args.cmd == "test":
