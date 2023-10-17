@@ -8,11 +8,11 @@ from industry.lib.validator import validate
 
 
 all_economies = [vanilla_temperate, vanilla_subarctic, vanilla_subtropical, firs_arctic]
+all_industries = []
+all_cargos = []
 
 
 def initialize_metadata():
-    all_industries = []
-    all_cargos = []
     for meta_economy in all_economies:
         for variation in iterate_variations():
             economy = meta_economy.get_economy(variation)
