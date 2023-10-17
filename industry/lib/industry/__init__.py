@@ -4,9 +4,16 @@ from .symmetrizer import symmetrize
 
 
 class SplitDefinition:
-    def __init__(self, variable, branches):
-        self.variable = variable
+    def __init__(self, variables, branches):
+        if isinstance(variables, int):
+            # Legacy format
+            variables = (variables,)
+            branches = {(i,): b for i, b in branches.items()}
+        self.variables = variables
         self.branches = branches
+
+
+VARLEN = {9: 7}
 
 
 class AIndustry(grf.SpriteGenerator):
@@ -25,14 +32,16 @@ class AIndustry(grf.SpriteGenerator):
         ret = {}
         for p in self._props.values():
             if isinstance(p, SplitDefinition):
-                ret[p.variable] = len(p.branches)
+                for v in p.variables:
+                    ret[v] = VARLEN[v]
         return list(ret.items())
 
     def resolve_props(self, parameters):
         new_props = {}
         for k, v in self._props.items():
             while isinstance(v, SplitDefinition):
-                v = v.branches[parameters[v.variable]]
+                branch_key = tuple(parameters[var] for var in v.variables)
+                v = v.branches[branch_key]
             new_props[k] = v
         return new_props
 
