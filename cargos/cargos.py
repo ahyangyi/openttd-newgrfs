@@ -182,7 +182,8 @@ cargo_info = {
     "OTI2": {},
 }
 
-cargos = list(k.encode() for k in cargo_info.keys())
+cargo_info = {k.encode(): v for k, v in cargo_info.items()}
+cargos = list(cargo_info.keys())
 
 
 assert len(cargos) == len(set(cargos))
