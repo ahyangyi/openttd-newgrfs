@@ -142,4 +142,6 @@ the_industry = AIndustry(
             6: transcribe(one_grid_set, tile_map),
         },
     ),
+    mapgen_probability=10,
+    ingame_probability=4,
 )

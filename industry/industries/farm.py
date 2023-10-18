@@ -80,4 +80,6 @@ the_industry = AIndustry(
             6: [[{"xofs": 0, "yofs": 0, "gfx": grf.NewIndustryTileID(0x23)}]],
         },
     ),
+    mapgen_probability=15,
+    ingame_probability=4,
 )
