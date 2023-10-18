@@ -1,6 +1,3 @@
-from industry.lib.parameters import parameter_choices, parameter_desc
-
-
 def make_tuple(x):
     if isinstance(x, tuple):
         return x
@@ -98,4 +95,6 @@ class Economy:
 
     @property
     def parameter_desc(self):
+        from industry.lib.parameters import parameter_desc
+
         return parameter_desc(self.parameters)
