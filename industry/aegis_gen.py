@@ -58,7 +58,7 @@ def gen():
         preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
 
-    from cargos import cargos as cargo_table
+    from industry.lib.cargo import cargo_table
 
     g.set_cargo_table(cargo_table)
 

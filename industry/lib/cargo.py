@@ -1,5 +1,6 @@
 import grf
 import struct
+from cargos import cargos as cargo_table
 
 
 class ACargo(grf.SpriteGenerator):
@@ -25,6 +26,10 @@ class ACargo(grf.SpriteGenerator):
         res.append(self.callbacks.make_map_action(definition))
 
         return res
+
+    @property
+    def translated_id(self):
+        return cargo_table.index(self.label)
 
     def __repr__(self):
         return f"<Cargo:{self.label}>"

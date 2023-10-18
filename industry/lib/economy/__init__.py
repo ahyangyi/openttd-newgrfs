@@ -10,7 +10,17 @@ def optional_to_tuple(x):
     return (x,)
 
 
-class PrimaryIndustry:
+class Industry:
+    @property
+    def translated_accepts(self):
+        return tuple(cargo.translated_id for cargo in self.accepts)
+
+    @property
+    def translated_produces(self):
+        return tuple(cargo.translated_id for cargo in self.produces)
+
+
+class PrimaryIndustry(Industry):
     def __init__(self, produces=(), extra_accepts=(), booster=None):
         self.produces = make_tuple(produces)
         self.extra_accepts = make_tuple(extra_accepts)
@@ -28,7 +38,7 @@ class PrimaryIndustry:
         return ()
 
 
-class SecondaryIndustry:
+class SecondaryIndustry(Industry):
     def __init__(self, consumes=(), produces=()):
         self.consumes = make_tuple(consumes)
         self.produces = make_tuple(produces)
@@ -41,7 +51,7 @@ class SecondaryIndustry:
         return self.consumes
 
 
-class TertiaryIndustry:
+class TertiaryIndustry(Industry):
     def __init__(self, consumes=()):
         self.consumes = make_tuple(consumes)
 
@@ -57,7 +67,7 @@ class TertiaryIndustry:
         return ()
 
 
-class Town:
+class Town(Industry):
     def __init__(self, passengers, mail, food, goods):
         self.passengers = passengers
         self.mail = mail

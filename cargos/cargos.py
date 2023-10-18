@@ -40,6 +40,9 @@ cargo_info = {
     "GOOD": {},
     "FOOD": {},
     "STEL": {},
+    "VALU": {},
+    "GOLD": {},
+    "DIAM": {},
     "FMSP": {},
     "ENSP": {},
     "BEER": {},
@@ -174,9 +177,12 @@ cargo_info = {
     # YETI
     "YETI": {},
     "YETY": {},
+    # OTIS
+    "OTI1": {},
+    "OTI2": {},
 }
 
-cargos = list(cargo_info.keys())
+cargos = list(k.encode() for k in cargo_info.keys())
 
 
 assert len(cargos) == len(set(cargos))
