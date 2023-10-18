@@ -58,6 +58,10 @@ def gen():
         preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
 
+    from cargos import cargos as cargo_table
+
+    g.set_cargo_table(cargo_table)
+
     g.add(grf.DefineMultiple(feature=grf.INDUSTRY, first_id=0, props={"substitute_type": [0xFF] * 0x25}))
 
     # Parameter 0
