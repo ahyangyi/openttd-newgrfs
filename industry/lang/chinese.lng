@@ -45,7 +45,7 @@ STR_PARAM_WORKER_CENTER         :劳工之家
 
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH                   :第一产业 - 增长
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DESC              :Choose how does primary industries change their production.{}{}None - No change{}Generic Supplies - productions are boosted when supplied with Farming/Engineering Supplies{}Specific Supplies - productions are boosted when supplied with specific cargos{}Workers - productions are boosted when supplied with workers{}Discrete - productions change randomly, depending on whether its output is used{}Continuous - production change randomly, with many levels possible.
-STR_PARAM_PRIMARY_INDUSTRY_GROWTH_PRESET            :预设
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_PRESET            :使用预设玩法
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_NONE              :无
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_GENERIC_SUPPLIES  :通用供给
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_SPECIFIC_SUPPLIES :专用供给
@@ -55,20 +55,27 @@ STR_PARAM_PRIMARY_INDUSTRY_GROWTH_CONTINUOUS        :连续
 
 STR_PARAM_PRIMARY_INDUSTRY_CLOSURE                  :第一产业 - 关闭
 STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DESC             :选择第一产业是否可能关闭。{}{}不可能关闭 - 第一产业不可能关闭{}随机关闭 - 第一产业可能随机关闭，具体机制取决于前一个参数{}以储量关闭 - 第一产业有储量限制。
-STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_PRESET           :预设
+STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_PRESET           :使用预设玩法
 STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_DISABLED         :不可能关闭
 STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_ENABLED          :随机关闭
 STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_RESERVE          :以储量关闭
 
 STR_PARAM_PRIMARY_INDUSTRY_ZONING                   :第一产业 - 分区
 STR_PARAM_PRIMARY_INDUSTRY_ZONING_DESC              :选择是否限制每种第一产业到地图的某个区域内。
-STR_PARAM_PRIMARY_INDUSTRY_ZONING_PRESET            :预设
+STR_PARAM_PRIMARY_INDUSTRY_ZONING_PRESET            :使用预设玩法
 STR_PARAM_PRIMARY_INDUSTRY_ZONING_DISABLED          :否
 STR_PARAM_PRIMARY_INDUSTRY_ZONING_ENABLED           :是
 
+STR_PARAM_SECONDARY_INDUSTRY_PROCESSING             :第二产业 - 加工
+STR_PARAM_SECONDARY_INDUSTRY_PROCESSING_DESC        :选择有多个输入货物类型的第二产业如何加工。
+STR_PARAM_SECONDARY_INDUSTRY_PROCESSING_PRESET      :使用预设玩法
+STR_PARAM_SECONDARY_INDUSTRY_PROCESSING_STRICT      :严格
+STR_PARAM_SECONDARY_INDUSTRY_PROCESSING_NORMAL      :正常
+
 STR_PARAM_INDUSTRY_SIZE         :画面 - 工业大小
 STR_PARAM_INDUSTRY_SIZE_DESC    :选择工业的占地大小
-STR_PARAM_INDUSTRY_SIZE_EXTRA_LARGE:特大
+STR_PARAM_INDUSTRY_SIZE_ENORMOUS:大得离谱
+STR_PARAM_INDUSTRY_SIZE_HUGE    :巨大
 STR_PARAM_INDUSTRY_SIZE_LARGE   :大
 STR_PARAM_INDUSTRY_SIZE_REGULAR :中
 STR_PARAM_INDUSTRY_SIZE_SMALL   :小

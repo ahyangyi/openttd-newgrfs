@@ -198,16 +198,17 @@ def gen():
     g.add_int_parameter(
         name=s["STR_PARAM_INDUSTRY_SIZE"],
         description=s["STR_PARAM_INDUSTRY_SIZE_DESC"],
-        default=2,
-        limits=(0, 6),
+        default=3,
+        limits=(0, 7),
         enum={
-            0: s["STR_PARAM_INDUSTRY_SIZE_EXTRA_LARGE"],
-            1: s["STR_PARAM_INDUSTRY_SIZE_LARGE"],
-            2: s["STR_PARAM_INDUSTRY_SIZE_REGULAR"],
-            3: s["STR_PARAM_INDUSTRY_SIZE_SMALL"],
-            4: s["STR_PARAM_INDUSTRY_SIZE_TINY"],
-            5: s["STR_PARAM_INDUSTRY_SIZE_ONE_TILE"],
-            6: s["STR_PARAM_INDUSTRY_SIZE_ONE_TILE_FLAT"],
+            0: s["STR_PARAM_INDUSTRY_SIZE_ENORMOUS"],
+            1: s["STR_PARAM_INDUSTRY_SIZE_HUGE"],
+            2: s["STR_PARAM_INDUSTRY_SIZE_LARGE"],
+            3: s["STR_PARAM_INDUSTRY_SIZE_REGULAR"],
+            4: s["STR_PARAM_INDUSTRY_SIZE_SMALL"],
+            5: s["STR_PARAM_INDUSTRY_SIZE_TINY"],
+            6: s["STR_PARAM_INDUSTRY_SIZE_ONE_TILE"],
+            7: s["STR_PARAM_INDUSTRY_SIZE_ONE_TILE_FLAT"],
         },
     )
 
