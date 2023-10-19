@@ -1,57 +1,9 @@
 import grf
 from industry.lib.industry import AIndustry, SplitDefinition, transcribe, symmetrize
+from .huge import huge_set
+from .large import large_set
+from .medium import medium_set
 
-
-large_set = symmetrize(
-    [
-        (
-            "x   ",
-            "x   ",
-            "xx  ",
-            " xxx",
-        ),
-        (
-            "xx  ",
-            "x  x",
-            "  xx",
-            "  x ",
-        ),
-    ]
-)
-medium_set = symmetrize(
-    [
-        (
-            "x  ",
-            "x  ",
-            "xxx",
-        ),
-        (
-            "x  ",
-            "xx ",
-            " xx",
-        ),
-        (
-            "x   ",
-            "xx  ",
-            "  xx",
-        ),
-        (
-            " x  ",
-            "xxx ",
-            "   x",
-        ),
-        (
-            " x  ",
-            "x x ",
-            "x  x",
-        ),
-        (
-            "x   ",
-            "x   ",
-            "x xx",
-        ),
-    ]
-)
 
 small_set = symmetrize(
     [
@@ -84,8 +36,8 @@ the_industry = AIndustry(
     layouts=SplitDefinition(
         9,
         {
-            0: transcribe(large_set, tile_map),
-            1: transcribe(large_set, tile_map),
+            0: transcribe(huge_set, tile_map),
+            1: transcribe(huge_set, tile_map),
             2: transcribe(large_set, tile_map),
             3: transcribe(medium_set, tile_map),
             4: transcribe(small_set, tile_map),
