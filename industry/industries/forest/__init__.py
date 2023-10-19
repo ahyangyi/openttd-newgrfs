@@ -16,7 +16,7 @@ tile_map = {"x": grf.OldIndustryTileID(0x10)}
 
 the_industry = AIndustry(
     name="Forest",
-    substitute_type=0x03,
+    override_type=0x03,
     layouts=SplitDefinition(
         9,
         {

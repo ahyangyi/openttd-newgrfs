@@ -19,9 +19,14 @@ VARLEN = {0: 4, 9: 7}
 class AIndustry(grf.SpriteGenerator):
     def __init__(self, *, name, id=None, callbacks={}, **props):
         super().__init__()
-        if "substitute_type" in props:
+        if "override_type" in props:
             assert id is None
-            id = props["substitute_type"]
+            id = props["override_type"]
+            if "substitute_type" not in props:
+                props["substitute_type"] = id
+            del props["override_type"]
+        if "substitute_type" not in props:
+            props["substitute_type"] = 0x0
         self.id = id
         self.name = name
         self._props = props
@@ -50,6 +55,10 @@ class AIndustry(grf.SpriteGenerator):
             new_props[k] = v
         if new_props.get("exists", True):
             assert not miss
+
+            # XXX: substitute_type needs to be first
+            if "substitute_type" in new_props:
+                new_props = {"substitute_type": new_props["substitute_type"], **new_props}
         return new_props
 
     def dynamic_definitions(self, all_choices, parameters, i=0):

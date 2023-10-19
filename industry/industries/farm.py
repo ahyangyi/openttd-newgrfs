@@ -67,7 +67,7 @@ tile_map = {
 
 the_industry = AIndustry(
     name="Farm",
-    substitute_type=0x09,
+    override_type=0x09,
     layouts=SplitDefinition(
         9,
         {

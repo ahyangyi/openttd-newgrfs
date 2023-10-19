@@ -80,7 +80,7 @@ tile_map = {"x": grf.OldIndustryTileID(0x1D)}
 
 the_industry = AIndustry(
     name="Oil Wells",
-    substitute_type=0x0B,
+    override_type=0x0B,
     layouts=SplitDefinition(
         9,
         {
