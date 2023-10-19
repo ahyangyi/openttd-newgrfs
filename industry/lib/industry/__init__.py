@@ -90,6 +90,7 @@ class AIndustry(grf.SpriteGenerator):
 
     def get_sprites(self, g):
         name_id = g.strings.add(self.name).get_persistent_id()
+        self._props["name"] = name_id
         res = self.dynamic_definitions(self.dynamic_prop_variables, {}, 0)
         if len(res) == 0:
             return []
