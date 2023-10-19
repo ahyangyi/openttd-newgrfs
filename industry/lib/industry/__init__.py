@@ -24,7 +24,6 @@ class AIndustry(grf.SpriteGenerator):
             id = props["override_type"]
             if "substitute_type" not in props:
                 props["substitute_type"] = id
-            del props["override_type"]
         if "substitute_type" not in props:
             props["substitute_type"] = 0x0
         self.id = id
