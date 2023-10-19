@@ -21,7 +21,9 @@ class ACargo(grf.SpriteGenerator):
 
     def get_sprites(self, g):
         res = []
-        res.append(definition := grf.Define(feature=grf.CARGO, id=self.id, props=self._props))
+        res.append(
+            definition := grf.Define(feature=grf.CARGO, id=self.id, props={**self._props, "bit_number": self.id})
+        )
         self.callbacks.graphics = 0
         res.append(self.callbacks.make_map_action(definition))
 
