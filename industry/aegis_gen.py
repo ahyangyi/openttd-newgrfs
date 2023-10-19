@@ -28,6 +28,8 @@ def initialize_metadata():
 
     for industry in all_industries:
         industry._props["exists"] = SplitDefinition((0,), {})
+        industry._props["production_types"] = SplitDefinition((0,), {})
+        industry._props["acceptance_types"] = SplitDefinition((0,), {})
 
     for i, meta_economy in enumerate(all_economies):
         for variation in iterate_variations():
@@ -37,6 +39,9 @@ def initialize_metadata():
                     industry._props["exists"].branches[(i,)] = True
                 else:
                     industry._props["exists"].branches[(i,)] = False
+            for industry, flow_desc in economy.graph.items():
+                industry._props["production_types"].branches[(i,)] = flow_desc.translated_produces
+                industry._props["acceptance_types"].branches[(i,)] = flow_desc.translated_accepts
             break
 
 

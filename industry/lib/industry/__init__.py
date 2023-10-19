@@ -38,11 +38,18 @@ class AIndustry(grf.SpriteGenerator):
 
     def resolve_props(self, parameters):
         new_props = {}
+        miss = False
         for k, v in self._props.items():
             while isinstance(v, SplitDefinition):
                 branch_key = tuple(parameters[var] for var in v.variables)
-                v = v.branches[branch_key]
+                if branch_key in v.branches:
+                    v = v.branches[branch_key]
+                else:
+                    miss = True
+                    break
             new_props[k] = v
+        if new_props.get("exists", True):
+            assert not miss
         return new_props
 
     def dynamic_definitions(self, all_choices, parameters, i=0):

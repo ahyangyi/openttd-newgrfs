@@ -13,11 +13,11 @@ def optional_to_tuple(x):
 class Industry:
     @property
     def translated_accepts(self):
-        return tuple(cargo.translated_id for cargo in self.accepts)
+        return bytes(cargo.translated_id for cargo in self.accepts)
 
     @property
     def translated_produces(self):
-        return tuple(cargo.translated_id for cargo in self.produces)
+        return bytes(cargo.translated_id for cargo in self.produces)
 
 
 class PrimaryIndustry(Industry):
