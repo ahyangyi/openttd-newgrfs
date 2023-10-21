@@ -16,6 +16,7 @@ class ACargo(Cargo):
             },
         )
         self.label = label
+        self.cargo_class = cargo_class
 
     def get_sprites(self, g):
         s = g.strings
@@ -27,6 +28,14 @@ class ACargo(Cargo):
         self._props["bit_number"] = self.id
         self._props["label"] = struct.unpack("<I", self.label)[0]
         return super().get_sprites(g)
+
+    @property
+    def capacity_multiplier(self):
+        return self._props["capacity_mult"]
+
+    @property
+    def weight(self):
+        return self._props["weight"]
 
     @property
     def translated_id(self):
