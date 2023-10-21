@@ -33,7 +33,7 @@ nav_order: {i+1}
 
         # Prepare graphics
         sprite = v.graphics_helper.doc_graphics()
-        masked_sprite = sprite.get_zoom_bpp(grf.ZOOM_NORMAL, 32)
+        masked_sprite = sprite.get_sprite(zoom=grf.ZOOM_NORMAL, bpp=32)
         img, _ = masked_sprite.get_image()
         mask, _ = masked_sprite.mask.get_image()
         cc1_mask = cc1_remap.remap_image(mask)

@@ -1,33 +1,32 @@
 import grf
 import struct
+from agrf.lib.cargo import Cargo
 from cargos import cargos as cargo_table
 
 
-class ACargo(grf.SpriteGenerator):
+class ACargo(Cargo):
     def __init__(self, id, label, cargo_class, capacity_multiplier=0x100, weight=16, **props):
-        self.id = id
+        super().__init__(
+            id,
+            **{
+                "classes": cargo_class,
+                "capacity_mult": capacity_multiplier,
+                "weight": weight,
+                **props,
+            },
+        )
         self.label = label
-        self.cargo_class = cargo_class
-        self.capacity_multiplier = capacity_multiplier
-        self.weight = weight
-        self._props = {
-            "label": struct.unpack("<I", label)[0],
-            "classes": cargo_class,
-            "capacity_mult": capacity_multiplier,
-            "weight": weight,
-            **props,
-        }
-        self.callbacks = grf.make_callback_manager(grf.CARGO, {})
 
     def get_sprites(self, g):
-        res = []
-        res.append(
-            definition := grf.Define(feature=grf.CARGO, id=self.id, props={**self._props, "bit_number": self.id})
-        )
-        self.callbacks.graphics = 0
-        res.append(self.callbacks.make_map_action(definition))
-
-        return res
+        s = g.strings
+        self._props["type_text"] = s[f"STR_CARGO_{self.label.decode()}"]
+        self._props["unit_text"] = s[f"STR_CARGO_{self.label.decode()}"]
+        self._props["one_text"] = s[f"STR_CARGO_{self.label.decode()}"]
+        self._props["many_text"] = s[f"STR_CARGO_{self.label.decode()}"]
+        self._props["abbr_text"] = s[f"STR_CARGO_{self.label.decode()}"]
+        self._props["bit_number"] = self.id
+        self._props["label"] = struct.unpack("<I", self.label)[0]
+        return super().get_sprites(g)
 
     @property
     def translated_id(self):
