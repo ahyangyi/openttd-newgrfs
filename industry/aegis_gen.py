@@ -68,6 +68,7 @@ def gen():
     g.set_cargo_table(cargo_table)
 
     g.add(grf.DefineMultiple(feature=grf.INDUSTRY, first_id=0, props={"substitute_type": [0xFF] * 0x25}))
+    g.add(grf.DefineMultiple(feature=grf.CARGO, first_id=0, props={"label": [0] * 12, "bit_number": [0xFF] * 12}))
 
     # Parameter 0
     g.add_int_parameter(
