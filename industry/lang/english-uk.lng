@@ -138,3 +138,8 @@ STR_CARGO_FERT                  :Fertiliser
 STR_CARGO_KAOL                  :China Clay
 STR_CARGO_POTA                  :Potash
 STR_CARGO_FISH                  :Fish
+STR_CARGO_SCMT                  :Scrap Metal
+STR_CARGO_RFPR                  :Chemicals
+STR_CARGO_MILK                  :Milk
+STR_CARGO_SAND                  :Sand
+STR_CARGO_BEER                  :Alcohol

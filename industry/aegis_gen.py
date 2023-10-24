@@ -2,12 +2,12 @@
 import grf
 import struct
 import argparse
-from industry.economies import vanilla_temperate, vanilla_subarctic, vanilla_subtropical, firs_arctic
+from industry.economies import vanilla_temperate, vanilla_subarctic, vanilla_subtropical, firs_temperate, firs_arctic
 from industry.lib.parameters import iterate_variations
 from industry.lib.validator import validate
 
 
-all_economies = [vanilla_temperate, vanilla_subarctic, vanilla_subtropical, firs_arctic]
+all_economies = [vanilla_temperate, vanilla_subarctic, vanilla_subtropical, firs_temperate, firs_arctic]
 all_industries = []
 all_cargos = []
 
@@ -80,9 +80,9 @@ def gen():
             0: s["STR_PARAM_ECONOMY_VANILLA_TEMPERATE"],
             1: s["STR_PARAM_ECONOMY_VANILLA_SUBARCTIC"],
             2: s["STR_PARAM_ECONOMY_VANILLA_SUBTROPICAL"],
-            3: s["STR_PARAM_ECONOMY_BASIC_SUBARCTIC"],
+            3: s["STR_PARAM_ECONOMY_BASIC_TEMPERATE"],
+            4: s["STR_PARAM_ECONOMY_BASIC_SUBARCTIC"],
             # ?: s["STR_PARAM_ECONOMY_TOYLAND"],
-            # ?: s["STR_PARAM_ECONOMY_BASIC_TEMPERATE"],
             # ?: s["STR_PARAM_ECONOMY_BASIC_SUBTROPICAL"],
         },
     )

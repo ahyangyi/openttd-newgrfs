@@ -1,3 +1,6 @@
 def check_id_uniqueness(economy):
-    industry_ids = [industry.id for industry in economy.industries]
-    assert len(industry_ids) == len(set(industry_ids))
+    for industry in economy.industries:
+        for another_industry in economy.industries:
+            assert (
+                industry is another_industry or industry.id != another_industry.id
+            ), f"Industries {industry.name} and {another_industry.name} have the same ID!"
