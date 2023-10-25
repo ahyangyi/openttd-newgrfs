@@ -9,8 +9,8 @@ STR_PARAM_ECONOMY_VANILLA_SUBARCTIC:Vanilla Sub-Arctic
 STR_PARAM_ECONOMY_VANILLA_SUBTROPICAL:Vanilla Sub-Tropical
 STR_PARAM_ECONOMY_TOYLAND       :Toyland
 STR_PARAM_ECONOMY_BASIC_TEMPERATE:Basic Temperate
-STR_PARAM_ECONOMY_BASIC_SUBARCTIC:Basic Sub-Arctic
-STR_PARAM_ECONOMY_BASIC_SUBTROPICAL:Basic Sub-Tropical
+STR_PARAM_ECONOMY_BASIC_ARCTIC  :Basic Arctic
+STR_PARAM_ECONOMY_BASIC_TROPICAL:Basic Tropical
 
 STR_PARAM_PRESET                :Global - Preset
 STR_PARAM_PRESET_DESC           :Choose a preset that determines the overall playstyle.{}{}You can also override aspects of gameplay with the following parameters.

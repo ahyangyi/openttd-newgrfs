@@ -25,6 +25,9 @@ class ParameterList:
         for p in self.parameters:
             p.add(g, s)
 
+    def index(self, name):
+        return [i for i, p in enumerate(self.parameters) if p.name == name][0]
+
 
 parameter_list = ParameterList(
     [
@@ -36,7 +39,7 @@ parameter_list = ParameterList(
                 1: "VANILLA_SUBARCTIC",
                 2: "VANILLA_SUBTROPICAL",
                 3: "BASIC_TEMPERATE",
-                4: "BASIC_SUBARCTIC",
+                4: "BASIC_ARCTIC",
                 # ?: "TOYLAND",
                 # ?: "BASIC_SUBTROPICAL",
             },

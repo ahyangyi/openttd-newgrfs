@@ -9,8 +9,8 @@ STR_PARAM_ECONOMY_VANILLA_SUBARCTIC:原版寒带
 STR_PARAM_ECONOMY_VANILLA_SUBTROPICAL:原版热带
 STR_PARAM_ECONOMY_TOYLAND       :奇幻（玩具城）
 STR_PARAM_ECONOMY_BASIC_TEMPERATE:基础温带
-STR_PARAM_ECONOMY_BASIC_SUBARCTIC:基础寒带
-STR_PARAM_ECONOMY_BASIC_SUBTROPICAL:基础热带
+STR_PARAM_ECONOMY_BASIC_ARCTIC  :基础寒带
+STR_PARAM_ECONOMY_BASIC_TROPICAL:基础热带
 
 STR_PARAM_PRESET                :全局选项 - 预设玩法
 STR_PARAM_PRESET_DESC           :选择一个预设选项来快速决定整体玩法。{}{}玩法的各个具体方面可以通过后面的参数来覆盖调节。
@@ -44,7 +44,7 @@ STR_PARAM_WORKER_PASSENGER      :工人代替旅客
 STR_PARAM_WORKER_CENTER         :劳工之家
 
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH                   :第一产业 - 增长
-STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DESC              :Choose how does primary industries change their production.{}{}None - No change{}Generic Supplies - productions are boosted when supplied with Farming/Engineering Supplies{}Specific Supplies - productions are boosted when supplied with specific cargos{}Workers - productions are boosted when supplied with workers{}Discrete - productions change randomly, depending on whether its output is used{}Continuous - production change randomly, with many levels possible.
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DESC              :选择第一产业的产量受何因素影响。{}{}无 - 不会发生变化{}通用供给 - 产量会在提供农用供给和工程供给时上升{}专用供给 - 产量会在提供特定的供给时上升{}工人 - 产量在有工人时上升{}离散 - 产量依据该产业产出是否被运走而随机变化{}连续 - 同上，但是变化的级别更多。
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_PRESET            :使用预设玩法
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_NONE              :无
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_GENERIC_SUPPLIES  :通用供给
