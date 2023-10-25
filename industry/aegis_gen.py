@@ -70,10 +70,9 @@ def gen():
     g.add(grf.DefineMultiple(feature=grf.INDUSTRY, first_id=0, props={"substitute_type": [0xFF] * 0x25}))
     g.add(grf.DefineMultiple(feature=grf.CARGO, first_id=0, props={"label": [0] * 12, "bit_number": [0xFF] * 12}))
 
-    from industry.lib.parameters import overall_list
+    from industry.lib.parameters import parameter_list
 
-    for p in overall_list:
-        p.add(g, s)
+    parameter_list.add(g, s)
 
     nightgfx_id = struct.unpack("<I", b"\xffOTN")[0]
     g.add(grf.ComputeParameters(target=0x41, operation=0x00, if_undefined=False, source1=0xFF, source2=0xFF, value=1))
