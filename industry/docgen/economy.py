@@ -41,9 +41,8 @@ search_exclude: true"""
 |----------|---------|----------|""",
                     file=f,
                 )
-                translate = lambda x: get_translation(string_manager["STR_CARGO_" + x.decode()], 0x7F)
                 industrylink = lambda x: f"[{x}](../industries/{x}.html)"
-                cargolink = lambda x: f"[{translate(x.label)}](../cargos/{x.label.decode()}.html)"
+                cargolink = lambda x: f"[{x.name(string_manager)}](../cargos/{x.label.decode()}.html)"
                 for industry, flow in economy.graph.items():
                     accepts = ", ".join(cargolink(x) for x in flow.accepts)
                     produces = ", ".join(cargolink(x) for x in flow.produces)
@@ -61,10 +60,8 @@ search_exclude: true"""
                 for cargo in economy.cargos:
                     from .cargo import cargo_class
 
-                    cargo_path = cargo.label.decode()
-                    cargo_name = get_translation(string_manager["STR_CARGO_" + cargo_path], 0x7F)
                     print(
-                        f"| {cargo_name} | {cargo_class(cargo.cargo_class)} | {cargo.capacity_multiplier / 0x100} | {cargo.weight / 16} |",
+                        f"| {cargo.name(string_manager)} | {cargo_class(cargo.cargo_class)} | {cargo.capacity_multiplier / 0x100} | {cargo.weight / 16} |",
                         file=f,
                     )
 

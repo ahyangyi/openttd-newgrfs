@@ -2,6 +2,7 @@ import grf
 import struct
 from agrf.lib.cargo import Cargo
 from cargos import cargos as cargo_table
+from agrf.strings import get_translation
 
 
 class ACargo(Cargo):
@@ -20,11 +21,11 @@ class ACargo(Cargo):
 
     def get_sprites(self, g):
         s = g.strings
-        self._props["type_text"] = s[f"STR_CARGO_{self.label.decode()}"]
-        self._props["unit_text"] = s[f"STR_CARGO_{self.label.decode()}"]
-        self._props["one_text"] = s[f"STR_CARGO_{self.label.decode()}"]
-        self._props["many_text"] = s[f"STR_CARGO_{self.label.decode()}"]
-        self._props["abbr_text"] = s[f"STR_CARGO_{self.label.decode()}"]
+        self._props["type_text"] = s[f"STR_CARGO_NAME_{self.label.decode()}"]
+        self._props["unit_text"] = s[f"STR_CARGO_NAME_{self.label.decode()}"]
+        self._props["one_text"] = s[f"STR_CARGO_UNIT_{self.label.decode()}"]
+        self._props["many_text"] = s[f"STR_CARGO_UNIT_{self.label.decode()}"]
+        self._props["abbr_text"] = s[f"STR_CARGO_NAME_{self.label.decode()}"]
         self._props["bit_number"] = self.id
         self._props["label"] = struct.unpack("<I", self.label)[0]
         return super().get_sprites(g)
@@ -43,3 +44,6 @@ class ACargo(Cargo):
 
     def __repr__(self):
         return f"<Cargo:{self.label}>"
+
+    def name(self, string_manager, lang_id=0x7F):
+        return get_translation(string_manager[f"STR_CARGO_NAME_{self.label.decode()}"], 0x7F)

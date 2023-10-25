@@ -15,24 +15,22 @@ def cargo_class(c):
 
 def gen_cargo_doc(all_cargos, string_manager):
     prefix = "docs/industry/cargos"
-    for i, entry in enumerate(all_cargos):
-        cargo_path = entry.label.decode()
-        cargo_name = get_translation(string_manager["STR_CARGO_" + cargo_path], 0x7F)
-        with open(os.path.join(prefix, f"{cargo_path}.md"), "w") as f:
+    for i, cargo in enumerate(all_cargos):
+        with open(os.path.join(prefix, f"{cargo.label.decode()}.md"), "w") as f:
             print(
                 f"""---
 layout: default
-title: {cargo_name}
+title: {cargo.name(string_manager)}
 parent: Cargos
 grand_parent: Ahyangyi's Extended Generic Industry Set (AEGIS)
 nav_order: {i+1}
 ---
 # Datasheet
-**Cargo Class**: {cargo_class(entry.cargo_class)}
+**Cargo Class**: {cargo_class(cargo.cargo_class)}
 
-**Capacity Multiplier**: {entry.capacity_multiplier / 0x100}
+**Capacity Multiplier**: {cargo.capacity_multiplier / 0x100}
 
-**Weight**: {entry.weight / 16}
+**Weight**: {cargo.weight / 16}
 """,
                 file=f,
             )

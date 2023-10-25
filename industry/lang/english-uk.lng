@@ -1,4 +1,6 @@
 ##grflangid 0x00
+##plural 0
+
 STR_GRF_NAME                    :AEGIS - Ahyangyi's Extended Generic Industry Set
 STR_GRF_DESC                    :A modular industry set with options to support various playstyles.
 
@@ -102,44 +104,86 @@ STR_PARAM_NIGHT_MODE_AUTO_DETECT:Auto Detect
 STR_PARAM_NIGHT_MODE_DISABLED   :Disabled
 STR_PARAM_NIGHT_MODE_ENABLED    :Enabled
 
-STR_CARGO_PASS                  :Passengers
-STR_CARGO_COAL                  :Coal
-STR_CARGO_MAIL                  :Mail
-STR_CARGO_OIL_                  :Oil
-STR_CARGO_LVST                  :Livestock
-STR_CARGO_GOOD                  :Goods
-STR_CARGO_GRAI                  :Grain
-STR_CARGO_WOOD                  :Wood
-STR_CARGO_IORE                  :Iron Ore
-STR_CARGO_STEL                  :Steel
-STR_CARGO_VALU                  :Valuables
-STR_CARGO_PAPR                  :Paper
-STR_CARGO_FOOD                  :Food
-STR_CARGO_GOLD                  :Gold
-STR_CARGO_WHEA                  :Wheat
-STR_CARGO_DIAM                  :Diamonds
-STR_CARGO_MAIZ                  :Maize
-STR_CARGO_CORE                  :Copper Ore
-STR_CARGO_FRUT                  :Fruit
-STR_CARGO_RUBR                  :Rubber
-STR_CARGO_FMSP                  :Farm Supplies
-STR_CARGO_ENSP                  :Engineering Supplies
-STR_CARGO_WATR                  :Water
-STR_CARGO_OTI1                  :Workers
-STR_CARGO_PORE                  :Pyrite Ore
-STR_CARGO_PHOS                  :Phosphate
-STR_CARGO_PEAT                  :Peat
-STR_CARGO_SULP                  :Sulphur
-STR_CARGO_ZINC                  :Zinc
-STR_CARGO_WDPR                  :Timber
-STR_CARGO_NH3_                  :Ammonia
-STR_CARGO_BOOM                  :Explosives
-STR_CARGO_FERT                  :Fertiliser
-STR_CARGO_KAOL                  :China Clay
-STR_CARGO_POTA                  :Potash
-STR_CARGO_FISH                  :Fish
-STR_CARGO_SCMT                  :Scrap Metal
-STR_CARGO_RFPR                  :Chemicals
-STR_CARGO_MILK                  :Milk
-STR_CARGO_SAND                  :Sand
-STR_CARGO_BEER                  :Alcohol
+STR_CARGO_NAME_BEER                  :Alcohol
+STR_CARGO_NAME_BOOM                  :Explosives
+STR_CARGO_NAME_COAL                  :Coal
+STR_CARGO_NAME_CORE                  :Copper Ore
+STR_CARGO_NAME_DIAM                  :Diamonds
+STR_CARGO_NAME_ENSP                  :Engineering Supplies
+STR_CARGO_NAME_FERT                  :Fertiliser
+STR_CARGO_NAME_FISH                  :Fish
+STR_CARGO_NAME_FMSP                  :Farm Supplies
+STR_CARGO_NAME_FOOD                  :Food
+STR_CARGO_NAME_FRUT                  :Fruit
+STR_CARGO_NAME_GOLD                  :Gold
+STR_CARGO_NAME_GOOD                  :Goods
+STR_CARGO_NAME_GRAI                  :Grain
+STR_CARGO_NAME_IORE                  :Iron Ore
+STR_CARGO_NAME_KAOL                  :China Clay
+STR_CARGO_NAME_LVST                  :Livestock
+STR_CARGO_NAME_MAIL                  :Mail
+STR_CARGO_NAME_MAIZ                  :Maize
+STR_CARGO_NAME_MILK                  :Milk
+STR_CARGO_NAME_NH3_                  :Ammonia
+STR_CARGO_NAME_OIL_                  :Oil
+STR_CARGO_NAME_OTI1                  :Workers
+STR_CARGO_NAME_PAPR                  :Paper
+STR_CARGO_NAME_PASS                  :Passengers
+STR_CARGO_NAME_PEAT                  :Peat
+STR_CARGO_NAME_PHOS                  :Phosphate
+STR_CARGO_NAME_PORE                  :Pyrite Ore
+STR_CARGO_NAME_POTA                  :Potash
+STR_CARGO_NAME_RFPR                  :Chemicals
+STR_CARGO_NAME_RUBR                  :Rubber
+STR_CARGO_NAME_SAND                  :Sand
+STR_CARGO_NAME_SCMT                  :Scrap Metal
+STR_CARGO_NAME_STEL                  :Steel
+STR_CARGO_NAME_SULP                  :Sulphur
+STR_CARGO_NAME_VALU                  :Valuables
+STR_CARGO_NAME_WATR                  :Water
+STR_CARGO_NAME_WDPR                  :Timber
+STR_CARGO_NAME_WHEA                  :Wheat
+STR_CARGO_NAME_WOOD                  :Wood
+STR_CARGO_NAME_ZINC                  :Zinc
+
+STR_CARGO_UNIT_BEER                  :{VOLUME} of alcohol
+STR_CARGO_UNIT_BOOM                  :{WEIGHT} of explosives
+STR_CARGO_UNIT_COAL                  :{WEIGHT} of coal
+STR_CARGO_UNIT_CORE                  :{WEIGHT} of copper ore
+STR_CARGO_UNIT_DIAM                  :{WEIGHT} of diamonds
+STR_CARGO_UNIT_ENSP                  :{WEIGHT} of engineering supplies
+STR_CARGO_UNIT_FERT                  :{WEIGHT} of fertiliser
+STR_CARGO_UNIT_FISH                  :{WEIGHT} of fish
+STR_CARGO_UNIT_FMSP                  :{WEIGHT} of farm supplies
+STR_CARGO_UNIT_FOOD                  :{WEIGHT} of food
+STR_CARGO_UNIT_FRUT                  :{WEIGHT} of fruit
+STR_CARGO_UNIT_GOLD                  :{WEIGHT} of gold
+STR_CARGO_UNIT_GOOD                  :{WEIGHT} of goods
+STR_CARGO_UNIT_GRAI                  :{WEIGHT} of grain
+STR_CARGO_UNIT_IORE                  :{WEIGHT} of iron ore
+STR_CARGO_UNIT_KAOL                  :{WEIGHT} of china clay
+STR_CARGO_UNIT_LVST                  :{WEIGHT} of livestock
+STR_CARGO_UNIT_MAIL                  :{WEIGHT} of mail
+STR_CARGO_UNIT_MAIZ                  :{WEIGHT} of maize
+STR_CARGO_UNIT_MILK                  :{VOLUME} of milk
+STR_CARGO_UNIT_NH3_                  :{VOLUME} ammonia
+STR_CARGO_UNIT_OIL_                  :{VOLUME} of oil
+STR_CARGO_UNIT_OTI1                  :{SIGNED_WORD} worker{P 0 "" s}
+STR_CARGO_UNIT_PAPR                  :{WEIGHT} of paper
+STR_CARGO_UNIT_PASS                  :{SIGNED_WORD} passenger{P 0 "" s}
+STR_CARGO_UNIT_PEAT                  :{WEIGHT} of peat
+STR_CARGO_UNIT_PHOS                  :{WEIGHT} of phosphate
+STR_CARGO_UNIT_PORE                  :{WEIGHT} of pyrite ore
+STR_CARGO_UNIT_POTA                  :{WEIGHT} of potash
+STR_CARGO_UNIT_RFPR                  :{VOLUME} of chemicals
+STR_CARGO_UNIT_RUBR                  :{WEIGHT} of rubber
+STR_CARGO_UNIT_SAND                  :{WEIGHT} of sand
+STR_CARGO_UNIT_SCMT                  :{WEIGHT} of scrap metal
+STR_CARGO_UNIT_STEL                  :{WEIGHT} of steel
+STR_CARGO_UNIT_SULP                  :{WEIGHT} of sulphur
+STR_CARGO_UNIT_VALU                  :{WEIGHT} of valuables
+STR_CARGO_UNIT_WATR                  :{VOLUME} of water
+STR_CARGO_UNIT_WDPR                  :{WEIGHT} of timber
+STR_CARGO_UNIT_WHEA                  :{WEIGHT} of wheat
+STR_CARGO_UNIT_WOOD                  :{WEIGHT} of wood
+STR_CARGO_UNIT_ZINC                  :{WEIGHT} of zinc
