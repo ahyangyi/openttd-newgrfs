@@ -33,12 +33,12 @@ class AIndustry(grf.SpriteGenerator):
 
     @property
     def dynamic_prop_variables(self):
-        ret = {}
+        ret = set()
         for p in self._props.values():
             if isinstance(p, SplitDefinition):
                 for v in p.variables:
-                    ret[v] = VARLEN[v]
-        return list(ret.items())
+                    ret.add(v)
+        return list(sorted(ret))
 
     def resolve_props(self, parameters):
         new_props = {}
@@ -75,8 +75,8 @@ class AIndustry(grf.SpriteGenerator):
             else:
                 return []
         ret = []
-        var_id, choices = all_choices[i]
-        for choice in range(choices):
+        var_id = all_choices[i]
+        for choice in range(VARLEN[var_id]):
             parameters[var_id] = choice
             actions = self.dynamic_definitions(all_choices, parameters, i + 1)
             if len(actions) == 0:

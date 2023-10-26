@@ -176,42 +176,56 @@ parameter_list = ParameterList(
     ]
 )
 
-parameter_choices = [
-    ("POLICY", ["AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
-    ("BOOSTER", ["NONE", "UNIVERSAL", "GENERIC", "GENERIC_PASSENGERS"]),
-    (
-        "WORKFORCE",
-        [
-            "ABSTRACT",
-            "PROFESSIONAL",
-            "PROFESSIONAL_PASSENGERS",
-            "PROFESSIONAL_MAIL",
-            "PROFESSIONAL_TIRED",
-            "YETI",
-            "YETI_PASSENGERS",
-            "YETI_MAIL",
-            "YETI_TIRED",
-        ],
-    ),
-    ("LAND_PORTS", ["ORGANIC", "LAND_ONLY", "BOTH", "SEA_ONLY"]),
-    ("TOWN_GOODS", ["ORGANIC", "NONE", "SUBARCTIC", "SUBTROPICAL"]),
-]
+
+class SearchSpace:
+    def __init__(self, choices, parameter_list):
+        self.choices = choices
+        self.parameter_list = parameter_list
+
+    def copy(self):
+        return SearchSpace(copy.deepcopy(self.choices), parameter_list)
+
+    def fix_docs_params(self, cat, options):
+        [(idx, all_options)] = [
+            (i, the_options) for i, (the_cat, the_options) in enumerate(self.choices) if the_cat == cat
+        ]
+        assert all(o in all_options for o in options)
+        self.choices[idx] = (cat, options)
 
 
-docs_parameter_choices = copy.deepcopy(parameter_choices)
+parameter_choices = SearchSpace(
+    [
+        ("POLICY", ["AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
+        ("BOOSTER", ["NONE", "UNIVERSAL", "GENERIC", "GENERIC_PASSENGERS"]),
+        (
+            "WORKFORCE",
+            [
+                "ABSTRACT",
+                "PROFESSIONAL",
+                "PROFESSIONAL_PASSENGERS",
+                "PROFESSIONAL_MAIL",
+                "PROFESSIONAL_TIRED",
+                "YETI",
+                "YETI_PASSENGERS",
+                "YETI_MAIL",
+                "YETI_TIRED",
+            ],
+        ),
+        ("LAND_PORTS", ["ORGANIC", "LAND_ONLY", "BOTH", "SEA_ONLY"]),
+        ("TOWN_GOODS", ["ORGANIC", "NONE", "SUBARCTIC", "SUBTROPICAL"]),
+    ],
+    parameter_list,
+)
 
 
-def fix_docs_params(cat, options):
-    [(idx, all_options)] = [
-        (i, the_options) for i, (the_cat, the_options) in enumerate(docs_parameter_choices) if the_cat == cat
-    ]
-    assert all(o in all_options for o in options)
-    docs_parameter_choices[idx] = (cat, options)
+docs_parameter_choices = parameter_choices.copy()
+docs_parameter_choices.fix_docs_params("WORKFORCE", ["ABSTRACT", "PROFESSIONAL", "YETI"])
+docs_parameter_choices.fix_docs_params("LAND_PORTS", ["ORGANIC"])
+docs_parameter_choices.fix_docs_params("TOWN_GOODS", ["ORGANIC"])
 
 
-fix_docs_params("WORKFORCE", ["ABSTRACT", "PROFESSIONAL", "YETI"])
-fix_docs_params("LAND_PORTS", ["ORGANIC"])
-fix_docs_params("TOWN_GOODS", ["ORGANIC"])
+parameter_choices = parameter_choices.choices
+docs_parameter_choices = docs_parameter_choices.choices
 
 PRESETS = {
     "VANILLA": {
