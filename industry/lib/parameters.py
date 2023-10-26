@@ -84,11 +84,11 @@ parameter_list = ParameterList(
                 0: "PRESET",
                 1: "ABSTRACT",
                 2: "PROFESSIONAL",
-                3: "PROFESSIONAL_PASSENGER",
+                3: "PROFESSIONAL_PASSENGERS",
                 4: "PROFESSIONAL_MAIL",
                 5: "PROFESSIONAL_TIRED",
                 6: "YETI",
-                7: "YETI_PASSENGER",
+                7: "YETI_PASSENGERS",
                 8: "YETI_MAIL",
                 9: "YETI_TIRED",
             },
@@ -102,7 +102,7 @@ parameter_list = ParameterList(
                 2: "GENERIC_SUPPLIES",
                 3: "SPECIFIC_SUPPLIES",
                 4: "TOWN_POPULATION",
-                5: "WORKERS",
+                5: "WORKFORCES",
                 6: "DISCRETE",
                 7: "CONTINUOUS",
             },
@@ -180,14 +180,17 @@ parameter_choices = [
     ("POLICY", ["AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
     ("BOOSTER", ["NONE", "UNIVERSAL", "GENERIC", "GENERIC_PASSENGERS"]),
     (
-        "WORKER",
+        "WORKFORCE",
         [
-            "NONE",
-            "PASSENGERS",
+            "ABSTRACT",
+            "PROFESSIONAL",
+            "PROFESSIONAL_PASSENGERS",
+            "PROFESSIONAL_MAIL",
+            "PROFESSIONAL_TIRED",
             "YETI",
-            "YETI_TIRED_WORKER",
             "YETI_PASSENGERS",
             "YETI_MAIL",
+            "YETI_TIRED",
         ],
     ),
     ("LAND_PORTS", ["ORGANIC", "LAND_ONLY", "BOTH", "SEA_ONLY"]),
@@ -206,7 +209,7 @@ def fix_docs_params(cat, options):
     docs_parameter_choices[idx] = (cat, options)
 
 
-fix_docs_params("WORKER", ["NONE", "PASSENGERS", "YETI"])
+fix_docs_params("WORKFORCE", ["ABSTRACT", "PROFESSIONAL", "YETI"])
 fix_docs_params("LAND_PORTS", ["ORGANIC"])
 fix_docs_params("TOWN_GOODS", ["ORGANIC"])
 
@@ -214,35 +217,35 @@ PRESETS = {
     "VANILLA": {
         "POLICY": "AUTARKY",
         "BOOSTER": "NONE",
-        "WORKER": "NONE",
+        "WORKFORCE": "ABSTRACT",
         "LAND_PORTS": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
     "FIRS": {
         "POLICY": "FREE_TRADE",
         "BOOSTER": "GENERIC",
-        "WORKER": "NONE",
+        "WORKFORCE": "ABSTRACT",
         "LAND_PORTS": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
     "YETI": {
         "POLICY": "AUTARKY",
         "BOOSTER": "UNIVERSAL",
-        "WORKER": "YETI",
+        "WORKFORCE": "YETI",
         "LAND_PORTS": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
     "CARIBBEAN": {
         "POLICY": "EXPORT",
         "BOOSTER": "GENERIC",
-        "WORKER": "PASSENGERS",
+        "WORKFORCE": "ABSTRACT",
         "LAND_PORTS": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
     "LUMBERJACK": {
         "POLICY": "AUTARKY",
         "BOOSTER": "GENERIC",
-        "WORKER": "PASSENGERS",
+        "WORKFORCE": "ABSTRACT",
         "LAND_PORTS": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },

@@ -75,7 +75,7 @@ class TheEconomy:
             ret.graph[factory].produces += (engineering_supplies,)
             ret.graph[oil_refinery].produces += (farm_supplies,)
 
-        if parameters["WORKER"].startswith("YETI"):
+        if parameters["WORKFORCE"].startswith("YETI"):
             ret.graph[worker_yard] = PrimaryIndustry(workers)
             # FIXME
             ret.graph[diamond_mine].booster = workers

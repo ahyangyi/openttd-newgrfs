@@ -43,11 +43,11 @@ STR_PARAM_WORKFORCE_DESC        :Choose how workers are produced.
 STR_PARAM_WORKFORCE_PRESET      :Preset
 STR_PARAM_WORKFORCE_ABSTRACT    :Abstract
 STR_PARAM_WORKFORCE_PROFESSIONAL            :Professional
-STR_PARAM_WORKFORCE_PROFESSIONAL_PASSENGER  :Professional (Passengers)
+STR_PARAM_WORKFORCE_PROFESSIONAL_PASSENGERS :Professional (Passengers)
 STR_PARAM_WORKFORCE_PROFESSIONAL_MAIL       :Professional (Mail)
 STR_PARAM_WORKFORCE_PROFESSIONAL_TIRED      :Professional (Tired Worker)
 STR_PARAM_WORKFORCE_YETI                    :Exclusive
-STR_PARAM_WORKFORCE_YETI_PASSENGER          :Exclusive (Passengers)
+STR_PARAM_WORKFORCE_YETI_PASSENGERS         :Exclusive (Passengers)
 STR_PARAM_WORKFORCE_YETI_MAIL               :Exclusive (Mail)
 STR_PARAM_WORKFORCE_YETI_TIRED              :Exclusive (Tired Worker)
 
