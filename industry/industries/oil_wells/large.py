@@ -4,16 +4,18 @@ from industry.lib.industry import symmetrize
 large_set = symmetrize(
     [
         (
-            "x    ",
-            "x    ",
-            "xx   ",
-            "  xxx",
+            "x     ",
+            "x     ",
+            "x     ",
+            " x    ",
+            "   xxx",
         ),
         (
-            "xx   ",
-            "x  xx",
-            "   x ",
-            "  x  ",
+            " x    ",
+            "x    x",
+            "    x ",
+            "    x ",
+            "  xx  ",
         ),
     ]
 )

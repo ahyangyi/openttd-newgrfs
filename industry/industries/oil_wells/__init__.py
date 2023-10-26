@@ -1,6 +1,7 @@
 import grf
 from industry.lib.industry import AIndustry, SplitDefinition, transcribe, symmetrize
-from .huge import huge_set
+from .enormous import enormous_set
+from .enormous import enormous_set
 from .large import large_set
 from .medium import medium_set
 
@@ -36,7 +37,7 @@ the_industry = AIndustry(
     layouts=SplitDefinition(
         9,
         {
-            0: transcribe(huge_set, tile_map),
+            0: transcribe(enormous_set, tile_map),
             1: transcribe(huge_set, tile_map),
             2: transcribe(large_set, tile_map),
             3: transcribe(medium_set, tile_map),
