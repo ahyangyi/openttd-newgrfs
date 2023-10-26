@@ -3,19 +3,17 @@ from agrf.strings import get_translation
 from industry.lib.parameters import (
     docs_parameter_choices,
     parameter_choices,
-    iterate_variations,
-    parameter_desc,
     PRESETS,
 )
 
 
-default_variation = "0" * len(parameter_choices)
+default_variation = "0" * len(parameter_choices.choices)
 
 
 def gen_economy_doc(all_economies, string_manager):
     prefix = "docs/industry/economies"
     for i, meta_economy in enumerate(all_economies):
-        for variation in iterate_variations(parameter_choices=docs_parameter_choices):
+        for variation in docs_parameter_choices.iterate_variations():
             economy = meta_economy.get_economy(variation)
             variation_desc = economy.parameter_desc
             if variation_desc == default_variation:
@@ -75,7 +73,7 @@ search_exclude: true"""
 
                 choices_text = []
                 for preset, preset_params in PRESETS.items():
-                    preset_desc = parameter_desc(preset_params)
+                    preset_desc = parameter_choices.desc(preset_params)
                     if preset_desc == variation_desc:
                         choices_text.append(f"{preset}")
                     else:
@@ -88,7 +86,7 @@ search_exclude: true"""
                     file=f,
                 )
 
-                for i, (param, choices) in enumerate(docs_parameter_choices):
+                for i, (param, choices) in enumerate(docs_parameter_choices.choices):
                     if len(choices) == 1:
                         continue
                     choices_text = []

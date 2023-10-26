@@ -105,6 +105,6 @@ class Economy:
 
     @property
     def parameter_desc(self):
-        from industry.lib.parameters import parameter_desc
+        from industry.lib.parameters import parameter_choices
 
-        return parameter_desc(self.parameters)
+        return parameter_choices.desc(self.parameters)

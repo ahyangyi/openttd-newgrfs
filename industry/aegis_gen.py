@@ -3,7 +3,7 @@ import grf
 import struct
 import argparse
 from industry.economies import vanilla_temperate, vanilla_subarctic, vanilla_subtropical, firs_temperate, firs_arctic
-from industry.lib.parameters import iterate_variations
+from industry.lib.parameters import parameter_choices
 from industry.lib.validator import validate
 
 
@@ -17,7 +17,7 @@ def initialize_metadata():
 
     # Make up the lists
     for meta_economy in all_economies:
-        for variation in iterate_variations():
+        for variation in parameter_choices.iterate_variations():
             economy = meta_economy.get_economy(variation)
             for industry in economy.industries:
                 if industry not in all_industries:
@@ -32,7 +32,7 @@ def initialize_metadata():
         industry._props["acceptance_types"] = SplitDefinition((0,), {})
 
     for i, meta_economy in enumerate(all_economies):
-        for variation in iterate_variations():
+        for variation in parameter_choices.iterate_variations():
             economy = meta_economy.get_economy(variation)
             for industry in all_industries:
                 if industry in economy.industries:
@@ -101,7 +101,7 @@ def main():
         gen()
     elif args.cmd == "test":
         for meta_economy in all_economies:
-            for variation in iterate_variations():
+            for variation in parameter_choices.iterate_variations():
                 economy = meta_economy.get_economy(variation)
                 try:
                     validate(economy)

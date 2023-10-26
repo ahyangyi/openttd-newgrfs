@@ -192,6 +192,19 @@ class SearchSpace:
         assert all(o in all_options for o in options)
         self.choices[idx] = (cat, options)
 
+    def iterate_variations(self, i=0, params={}):
+        if i == len(self.choices):
+            yield params
+        else:
+            for j in self.choices[i][1]:
+                new_params = params.copy()
+                new_params[self.choices[i][0]] = j
+                for variation in self.iterate_variations(i + 1, new_params):
+                    yield variation
+
+    def desc(self, params):
+        return "".join(str(options.index(params[i])) for i, options in self.choices)
+
 
 parameter_choices = SearchSpace(
     [
@@ -223,9 +236,6 @@ docs_parameter_choices.fix_docs_params("WORKFORCE", ["ABSTRACT", "PROFESSIONAL",
 docs_parameter_choices.fix_docs_params("LAND_PORTS", ["ORGANIC"])
 docs_parameter_choices.fix_docs_params("TOWN_GOODS", ["ORGANIC"])
 
-
-parameter_choices = parameter_choices.choices
-docs_parameter_choices = docs_parameter_choices.choices
 
 PRESETS = {
     "VANILLA": {
@@ -264,18 +274,3 @@ PRESETS = {
         "TOWN_GOODS": "ORGANIC",
     },
 }
-
-
-def iterate_variations(i=0, params={}, parameter_choices=parameter_choices):
-    if i == len(parameter_choices):
-        yield params
-    else:
-        for j in parameter_choices[i][1]:
-            new_params = params.copy()
-            new_params[parameter_choices[i][0]] = j
-            for variation in iterate_variations(i + 1, new_params, parameter_choices=parameter_choices):
-                yield variation
-
-
-def parameter_desc(params):
-    return "".join(str(options.index(params[i])) for i, options in parameter_choices)
