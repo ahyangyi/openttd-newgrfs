@@ -36,12 +36,19 @@ STR_PARAM_PAYMENT_PRESET        :使用预设玩法
 STR_PARAM_PAYMENT_LINEAR        :线性
 STR_PARAM_PAYMENT_CONSTANT      :常数
 
-STR_PARAM_WORKER                :城镇 - 工人
-STR_PARAM_WORKER_DESC           :选择如何产生工人。
-STR_PARAM_WORKER_PRESET         :使用预设玩法
-STR_PARAM_WORKER_NONE           :无
-STR_PARAM_WORKER_PASSENGER      :工人代替旅客
-STR_PARAM_WORKER_CENTER         :劳工之家
+STR_PARAM_WORKFORCE             :宏观经济 - 劳动力
+STR_PARAM_WORKFORCE_DESC        :选择如何产生工人
+STR_PARAM_WORKFORCE_PRESET      :使用预设玩法
+STR_PARAM_WORKFORCE_ABSTRACT    :抽象
+STR_PARAM_WORKFORCE_PROFESSIONAL            :职业
+STR_PARAM_WORKFORCE_PROFESSIONAL_PASSENGER  :职业 (Passengers)
+STR_PARAM_WORKFORCE_PROFESSIONAL_MAIL       :职业 (Mail)
+STR_PARAM_WORKFORCE_PROFESSIONAL_TIRED      :职业 (Tired Worker)
+STR_PARAM_WORKFORCE_YETI                    :专属
+STR_PARAM_WORKFORCE_YETI_PASSENGER          :专属 (Passengers)
+STR_PARAM_WORKFORCE_YETI_MAIL               :专属 (Mail)
+STR_PARAM_WORKFORCE_YETI_TIRED              :专属(Tired Worker)
+
 
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH                   :第一产业 - 增长
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DESC              :选择第一产业的产量受何因素影响。{}{}无 - 不会发生变化{}通用供给 - 产量会在提供农用供给和工程供给时上升{}专用供给 - 产量会在提供特定的供给时上升{}工人 - 产量在有工人时上升{}离散 - 产量依据该产业产出是否被运走而随机变化{}连续 - 同上，但是变化的级别更多。

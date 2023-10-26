@@ -38,12 +38,18 @@ STR_PARAM_PAYMENT_PRESET        :Preset
 STR_PARAM_PAYMENT_LINEAR        :Linear
 STR_PARAM_PAYMENT_CONSTANT      :Constant
 
-STR_PARAM_WORKER                :Towns - Worker
-STR_PARAM_WORKER_DESC           :Choose how workers are produced.
-STR_PARAM_WORKER_PRESET         :Preset
-STR_PARAM_WORKER_NONE           :None
-STR_PARAM_WORKER_PASSENGER      :In place of Passengers
-STR_PARAM_WORKER_CENTER         :Workers Yard
+STR_PARAM_WORKFORCE             :Macroeconomics - Workforce
+STR_PARAM_WORKFORCE_DESC        :Choose how workers are produced.
+STR_PARAM_WORKFORCE_PRESET      :Preset
+STR_PARAM_WORKFORCE_ABSTRACT    :Abstract
+STR_PARAM_WORKFORCE_PROFESSIONAL            :Professional
+STR_PARAM_WORKFORCE_PROFESSIONAL_PASSENGER  :Professional (Passengers)
+STR_PARAM_WORKFORCE_PROFESSIONAL_MAIL       :Professional (Mail)
+STR_PARAM_WORKFORCE_PROFESSIONAL_TIRED      :Professional (Tired Worker)
+STR_PARAM_WORKFORCE_YETI                    :Exclusive
+STR_PARAM_WORKFORCE_YETI_PASSENGER          :Exclusive (Passengers)
+STR_PARAM_WORKFORCE_YETI_MAIL               :Exclusive (Mail)
+STR_PARAM_WORKFORCE_YETI_TIRED              :Exclusive (Tired Worker)
 
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH                   :Primary Industry - Growth
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DESC              :Choose how does primary industries change their production.{}{}None - No change{}Generic Supplies - productions are boosted when supplied with Farming/Engineering Supplies{}Specific Supplies - productions are boosted when supplied with specific cargos{}Workers - productions are boosted when supplied with workers{}Discrete - productions change randomly, depending on whether its output is used{}Continuous - production change randomly, with many levels possible.

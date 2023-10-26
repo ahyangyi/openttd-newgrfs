@@ -77,15 +77,20 @@ parameter_list = ParameterList(
                 2: "CONSTANT",
             },
         ),
-        # FIXME
         Parameter(
-            "WORKER",
+            "WORKFORCE",
             0,
             {
                 0: "PRESET",
-                1: "NONE",
-                2: "PASSENGER",
-                3: "CENTER",
+                1: "ABSTRACT",
+                2: "PROFESSIONAL",
+                3: "PROFESSIONAL_PASSENGER",
+                4: "PROFESSIONAL_MAIL",
+                5: "PROFESSIONAL_TIRED",
+                6: "YETI",
+                7: "YETI_PASSENGER",
+                8: "YETI_MAIL",
+                9: "YETI_TIRED",
             },
         ),
         Parameter(
