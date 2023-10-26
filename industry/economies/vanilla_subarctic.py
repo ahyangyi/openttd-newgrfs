@@ -1,4 +1,4 @@
-from industry.lib.economy import Economy, PrimaryIndustry, SecondaryIndustry, TertiaryIndustry, Town
+from industry.lib.economy import Economy, PrimaryIndustry, WorkerYard, SecondaryIndustry, TertiaryIndustry, Town
 from industry.cargos import (
     coal,
     food,
@@ -72,37 +72,37 @@ class TheEconomy:
             del ret.graph[paper_mill]
 
         if parameters["BOOSTER"] == "UNIVERSAL":
-            ret.graph[coal_mine].booster = engineering_supplies
-            ret.graph[oil_wells].booster = engineering_supplies
-            ret.graph[gold_mine].booster = engineering_supplies
-            ret.graph[farm].booster = engineering_supplies
-            ret.graph[forest].booster = engineering_supplies
+            ret.graph[coal_mine].boosters = engineering_supplies
+            ret.graph[oil_wells].boosters = engineering_supplies
+            ret.graph[gold_mine].boosters = engineering_supplies
+            ret.graph[farm].boosters = engineering_supplies
+            ret.graph[forest].boosters = engineering_supplies
 
             ret.graph[printing_works].produces += (engineering_supplies,)
         elif parameters["BOOSTER"] == "GENERIC":
-            ret.graph[coal_mine].booster = engineering_supplies
-            ret.graph[oil_wells].booster = engineering_supplies
-            ret.graph[gold_mine].booster = engineering_supplies
-            ret.graph[farm].booster = farm_supplies
-            ret.graph[forest].booster = farm_supplies
+            ret.graph[coal_mine].boosters = engineering_supplies
+            ret.graph[oil_wells].boosters = engineering_supplies
+            ret.graph[gold_mine].boosters = engineering_supplies
+            ret.graph[farm].boosters = farm_supplies
+            ret.graph[forest].boosters = farm_supplies
 
             ret.graph[printing_works].produces += (engineering_supplies,)
             ret.graph[oil_refinery].produces += (farm_supplies,)
         elif parameters["BOOSTER"] == "GENERIC_PASSENGERS":
-            ret.graph[coal_mine].booster = engineering_supplies
-            ret.graph[oil_wells].booster = passengers
-            ret.graph[gold_mine].booster = engineering_supplies
-            ret.graph[farm].booster = farm_supplies
-            ret.graph[forest].booster = farm_supplies
+            ret.graph[coal_mine].boosters = engineering_supplies
+            ret.graph[oil_wells].boosters = passengers
+            ret.graph[gold_mine].boosters = engineering_supplies
+            ret.graph[farm].boosters = farm_supplies
+            ret.graph[forest].boosters = farm_supplies
 
             ret.graph[printing_works].produces += (engineering_supplies,)
             ret.graph[oil_refinery].produces += (farm_supplies,)
 
         if parameters["WORKFORCE"].startswith("YETI"):
-            ret.graph[worker_yard] = PrimaryIndustry(workers)
+            ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, gold))
 
             # FIXME
-            ret.graph[coal_mine].booster = workers
+            ret.graph[coal_mine].boosters = workers
 
         if port in ret.graph:
             if parameters["LAND_PORTS"] == "LAND_ONLY":

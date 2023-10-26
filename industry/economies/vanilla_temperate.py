@@ -1,4 +1,4 @@
-from industry.lib.economy import Economy, PrimaryIndustry, SecondaryIndustry, TertiaryIndustry, Town
+from industry.lib.economy import Economy, PrimaryIndustry, WorkerYard, SecondaryIndustry, TertiaryIndustry, Town
 from industry.cargos import (
     valuables,
     coal,
@@ -62,29 +62,29 @@ class TheEconomy:
             parameters,
         )
         if parameters["BOOSTER"] == "UNIVERSAL":
-            ret.graph[coal_mine].booster = engineering_supplies
-            ret.graph[oil_wells].booster = engineering_supplies
-            ret.graph[oil_rig].booster = engineering_supplies
-            ret.graph[iron_ore_mine].booster = engineering_supplies
-            ret.graph[farm].booster = engineering_supplies
-            ret.graph[forest].booster = engineering_supplies
+            ret.graph[coal_mine].boosters = engineering_supplies
+            ret.graph[oil_wells].boosters = engineering_supplies
+            ret.graph[oil_rig].boosters = engineering_supplies
+            ret.graph[iron_ore_mine].boosters = engineering_supplies
+            ret.graph[farm].boosters = engineering_supplies
+            ret.graph[forest].boosters = engineering_supplies
 
             ret.graph[factory].produces += (engineering_supplies,)
         elif parameters["BOOSTER"] == "GENERIC":
-            ret.graph[coal_mine].booster = engineering_supplies
-            ret.graph[oil_wells].booster = engineering_supplies
-            ret.graph[oil_rig].booster = engineering_supplies
-            ret.graph[iron_ore_mine].booster = engineering_supplies
-            ret.graph[farm].booster = farm_supplies
-            ret.graph[forest].booster = farm_supplies
+            ret.graph[coal_mine].boosters = engineering_supplies
+            ret.graph[oil_wells].boosters = engineering_supplies
+            ret.graph[oil_rig].boosters = engineering_supplies
+            ret.graph[iron_ore_mine].boosters = engineering_supplies
+            ret.graph[farm].boosters = farm_supplies
+            ret.graph[forest].boosters = farm_supplies
 
             ret.graph[factory].produces += (engineering_supplies,)
             ret.graph[oil_refinery].produces += (farm_supplies,)
 
         if parameters["WORKFORCE"].startswith("YETI"):
-            ret.graph[worker_yard] = PrimaryIndustry(workers)
+            ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, valuables))
             # FIXME
-            ret.graph[coal_mine].booster = workers
+            ret.graph[coal_mine].boosters = workers
 
         if parameters["TOWN_GOODS"] in ("SUBARCTIC", "SUBTROPICAL"):
             ret.graph[food_processing_plant] = SecondaryIndustry(

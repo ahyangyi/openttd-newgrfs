@@ -21,21 +21,34 @@ class Industry:
 
 
 class PrimaryIndustry(Industry):
-    def __init__(self, produces=(), extra_accepts=(), booster=None):
+    def __init__(self, produces=(), extra_accepts=(), boosters=()):
         self.produces = make_tuple(produces)
         self.extra_accepts = make_tuple(extra_accepts)
-        self.booster = booster
+        self._boosters = make_tuple(boosters)
 
     def copy(self):
-        return PrimaryIndustry(self.produces, self.extra_accepts, self.booster)
+        return PrimaryIndustry(self.produces, self.extra_accepts, self.boosters)
 
     @property
     def accepts(self):
-        return self.extra_accepts + optional_to_tuple(self.booster)
+        return self.extra_accepts + self.boosters
 
     @property
     def consumes(self):
         return ()
+
+    @property
+    def boosters(self):
+        return self._boosters
+
+    @boosters.setter
+    def boosters(self, new_boosters):
+        self._boosters = make_tuple(new_boosters)
+
+
+class WorkerYard(PrimaryIndustry):
+    def __init__(self, produces=(), extra_accepts=(), boosters=()):
+        super().__init__(produces, extra_accepts, boosters)
 
 
 class SecondaryIndustry(Industry):

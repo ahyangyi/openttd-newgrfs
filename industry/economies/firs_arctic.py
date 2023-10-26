@@ -1,4 +1,4 @@
-from industry.lib.economy import Economy, PrimaryIndustry, SecondaryIndustry, TertiaryIndustry, Town
+from industry.lib.economy import Economy, PrimaryIndustry, WorkerYard, SecondaryIndustry, TertiaryIndustry, Town
 from industry.cargos import (
     ammonia,
     china_clay,
@@ -93,57 +93,57 @@ class TheEconomy:
 
         if parameters["BOOSTER"] == "UNIVERSAL":
             if ammonia_plant in ret.graph:
-                ret.graph[ammonia_plant].booster = engineering_supplies
+                ret.graph[ammonia_plant].boosters = engineering_supplies
             if clay_pit in ret.graph:
-                ret.graph[clay_pit].booster = engineering_supplies
-            ret.graph[peatlands].booster = engineering_supplies
-            ret.graph[phosphate_mine].booster = engineering_supplies
-            ret.graph[potash_mine].booster = engineering_supplies
-            ret.graph[pyrite_mine].booster = engineering_supplies
+                ret.graph[clay_pit].boosters = engineering_supplies
+            ret.graph[peatlands].boosters = engineering_supplies
+            ret.graph[phosphate_mine].boosters = engineering_supplies
+            ret.graph[potash_mine].boosters = engineering_supplies
+            ret.graph[pyrite_mine].boosters = engineering_supplies
 
-            ret.graph[fish_farm].booster = engineering_supplies
-            ret.graph[forest].booster = engineering_supplies
-            ret.graph[herding_coop].booster = engineering_supplies
+            ret.graph[fish_farm].boosters = engineering_supplies
+            ret.graph[forest].boosters = engineering_supplies
+            ret.graph[herding_coop].boosters = engineering_supplies
 
             ret.graph[paper_mill].produces += (engineering_supplies,)
         elif parameters["BOOSTER"] == "GENERIC":
             if ammonia_plant in ret.graph:
-                ret.graph[ammonia_plant].booster = engineering_supplies
+                ret.graph[ammonia_plant].boosters = engineering_supplies
             if clay_pit in ret.graph:
-                ret.graph[clay_pit].booster = engineering_supplies
-            ret.graph[peatlands].booster = engineering_supplies
-            ret.graph[phosphate_mine].booster = engineering_supplies
-            ret.graph[potash_mine].booster = engineering_supplies
-            ret.graph[pyrite_mine].booster = engineering_supplies
+                ret.graph[clay_pit].boosters = engineering_supplies
+            ret.graph[peatlands].boosters = engineering_supplies
+            ret.graph[phosphate_mine].boosters = engineering_supplies
+            ret.graph[potash_mine].boosters = engineering_supplies
+            ret.graph[pyrite_mine].boosters = engineering_supplies
 
-            ret.graph[fish_farm].booster = farm_supplies
-            ret.graph[forest].booster = farm_supplies
-            ret.graph[herding_coop].booster = farm_supplies
+            ret.graph[fish_farm].boosters = farm_supplies
+            ret.graph[forest].boosters = farm_supplies
+            ret.graph[herding_coop].boosters = farm_supplies
 
             ret.graph[paper_mill].produces += (engineering_supplies,)
             ret.graph[chemical_plant].produces += (farm_supplies,)
         elif parameters["BOOSTER"] == "GENERIC_PASSENGERS":
             if ammonia_plant in ret.graph:
-                ret.graph[ammonia_plant].booster = engineering_supplies
+                ret.graph[ammonia_plant].boosters = engineering_supplies
             if clay_pit in ret.graph:
-                ret.graph[clay_pit].booster = engineering_supplies
-            ret.graph[peatlands].booster = engineering_supplies
-            ret.graph[phosphate_mine].booster = engineering_supplies
-            ret.graph[potash_mine].booster = engineering_supplies
-            ret.graph[pyrite_mine].booster = engineering_supplies
+                ret.graph[clay_pit].boosters = engineering_supplies
+            ret.graph[peatlands].boosters = engineering_supplies
+            ret.graph[phosphate_mine].boosters = engineering_supplies
+            ret.graph[potash_mine].boosters = engineering_supplies
+            ret.graph[pyrite_mine].boosters = engineering_supplies
 
-            ret.graph[fish_farm].booster = farm_supplies
-            ret.graph[forest].booster = farm_supplies
-            ret.graph[herding_coop].booster = farm_supplies
+            ret.graph[fish_farm].boosters = farm_supplies
+            ret.graph[forest].boosters = farm_supplies
+            ret.graph[herding_coop].boosters = farm_supplies
 
             ret.graph[paper_mill].produces += (engineering_supplies,)
             ret.graph[chemical_plant].produces += (farm_supplies,)
 
         if parameters["WORKFORCE"].startswith("YETI"):
-            ret.graph[worker_yard] = PrimaryIndustry(workers)
+            ret.graph[worker_yard] = WorkerYard(workers, boosters=(paper, zinc))
 
             # FIXME
-            ret.graph[peatlands].booster = workers
+            ret.graph[peatlands].boosters = workers
 
         if port in ret.graph:
             if parameters["LAND_PORTS"] == "LAND_ONLY":

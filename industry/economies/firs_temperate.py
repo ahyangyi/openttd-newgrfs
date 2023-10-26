@@ -1,4 +1,4 @@
-from industry.lib.economy import Economy, PrimaryIndustry, SecondaryIndustry, TertiaryIndustry, Town
+from industry.lib.economy import Economy, PrimaryIndustry, WorkerYard, SecondaryIndustry, TertiaryIndustry, Town
 from industry.cargos import (
     alcohol,
     chemicals,
@@ -88,29 +88,29 @@ class TheEconomy:
             # del ret.graph[clay_pit]
 
         if parameters["BOOSTER"] == "UNIVERSAL":
-            ret.graph[clay_pit].booster = engineering_supplies
-            ret.graph[fish_farm].booster = engineering_supplies
-            ret.graph[orchard_and_piggery].booster = engineering_supplies
+            ret.graph[clay_pit].boosters = engineering_supplies
+            ret.graph[fish_farm].boosters = engineering_supplies
+            ret.graph[orchard_and_piggery].boosters = engineering_supplies
 
             ret.graph[cider_mill].produces += (engineering_supplies,)
         elif parameters["BOOSTER"] == "GENERIC":
-            ret.graph[clay_pit].booster = engineering_supplies
-            ret.graph[fish_farm].booster = farm_supplies
-            ret.graph[orchard_and_piggery].booster = farm_supplies
+            ret.graph[clay_pit].boosters = engineering_supplies
+            ret.graph[fish_farm].boosters = farm_supplies
+            ret.graph[orchard_and_piggery].boosters = farm_supplies
 
             ret.graph[cider_mill].produces += (engineering_supplies, farm_supplies)
         elif parameters["BOOSTER"] == "GENERIC_PASSENGERS":
-            ret.graph[clay_pit].booster = engineering_supplies
-            ret.graph[fish_farm].booster = farm_supplies
-            ret.graph[orchard_and_piggery].booster = farm_supplies
+            ret.graph[clay_pit].boosters = engineering_supplies
+            ret.graph[fish_farm].boosters = farm_supplies
+            ret.graph[orchard_and_piggery].boosters = farm_supplies
 
             ret.graph[cider_mill].produces += (engineering_supplies, farm_supplies)
 
         if parameters["WORKFORCE"].startswith("YETI"):
-            ret.graph[worker_yard] = PrimaryIndustry(workers)
+            ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, alcohol))
 
             # FIXME
-            ret.graph[orchard_and_piggery].booster = workers
+            ret.graph[orchard_and_piggery].boosters = workers
 
         if port in ret.graph:
             if parameters["LAND_PORTS"] == "LAND_ONLY":
