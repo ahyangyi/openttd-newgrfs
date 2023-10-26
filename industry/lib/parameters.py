@@ -102,7 +102,7 @@ parameter_list = ParameterList(
                 2: "GENERIC_SUPPLIES",
                 3: "SPECIFIC_SUPPLIES",
                 4: "TOWN_POPULATION",
-                5: "WORKFORCES",
+                5: "WORKERS",
                 6: "DISCRETE",
                 7: "CONTINUOUS",
             },
