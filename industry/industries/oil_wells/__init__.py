@@ -1,7 +1,7 @@
 import grf
 from industry.lib.industry import AIndustry, SplitDefinition, transcribe, symmetrize
 from .enormous import enormous_set
-from .enormous import enormous_set
+from .huge import huge_set
 from .large import large_set
 from .medium import medium_set
 
