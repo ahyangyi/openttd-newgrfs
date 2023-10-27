@@ -19,9 +19,6 @@ class SplitDefinition:
         self.branches = branches
 
 
-VARLEN = {0: 4, 9: 7}
-
-
 class AIndustry(grf.SpriteGenerator):
     def __init__(self, *, name, id=None, callbacks={}, **props):
         super().__init__()
@@ -82,7 +79,7 @@ class AIndustry(grf.SpriteGenerator):
                 return []
         ret = []
         var_id = all_choices[i]
-        for choice in range(VARLEN[var_id]):
+        for choice in range(len(parameter_list.parameters[var_id].enum)):
             parameters[var_id] = choice
             actions = self.dynamic_definitions(all_choices, parameters, i + 1)
             if len(actions) == 0:

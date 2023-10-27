@@ -12,9 +12,25 @@ class Parameter:
             name=s[f"STR_PARAM_{self.name}"],
             description=s[f"STR_PARAM_{self.name}_DESC"],
             default=self.default,
-            limits=(min(self.enum.keys()), max(self.enum.keys())),
+            limits=self.limits,
             enum={k: s[f"STR_PARAM_{self.name}_{v}"] for k, v in self.enum.items()},
         )
+
+    @property
+    def min_value(self):
+        return min(self.enum.keys())
+
+    @property
+    def max_value(self):
+        return max(self.enum.keys())
+
+    @property
+    def limits(self):
+        return (self.min_value, self.max_value)
+
+    @property
+    def range(self):
+        return (self.min_value, self.max_value + 1)
 
     def set_index(self, index):
         self.index = index
