@@ -1,4 +1,5 @@
 import grf
+from industry.lib.parameters import parameter_list
 from .transcriber import transcribe
 from .symmetrizer import symmetrize
 
@@ -9,6 +10,11 @@ class SplitDefinition:
             # Legacy format
             variables = (variables,)
             branches = {(i,): b for i, b in branches.items()}
+        if isinstance(variables, str):
+            idx = parameter_list.index(variables)
+            p = parameter_list.parameters[idx]
+            variables = (idx,)
+            branches = {(next(k for k, v in p.enum.items() if v == i),): b for i, b in branches.items()}
         self.variables = variables
         self.branches = branches
 

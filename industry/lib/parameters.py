@@ -114,7 +114,7 @@ parameter_list = ParameterList(
                 0: "ENORMOUS",
                 1: "HUGE",
                 2: "LARGE",
-                3: "REGULAR",
+                3: "MEDIUM",
                 4: "SMALL",
                 5: "TINY",
                 6: "ONE_TILE",

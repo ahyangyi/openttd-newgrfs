@@ -16,10 +16,15 @@ class Parameter:
             enum={k: s[f"STR_PARAM_{self.name}_{v}"] for k, v in self.enum.items()},
         )
 
+    def set_index(self, index):
+        self.index = index
+
 
 class ParameterList:
     def __init__(self, parameters):
         self.parameters = parameters
+        for i, p in enumerate(parameters):
+            p.set_index(i)
 
     def add(self, g, s):
         for p in self.parameters:
