@@ -5,6 +5,15 @@ from cargos import cargos as cargo_table
 from agrf.strings import get_translation
 
 
+class CargoUnit:
+    PASSENGER = 0x4F
+    TONNE = 0x50
+    BAG = 0x51
+    LITRE = 0x52
+    ITEM = 0x53
+    CRATE = 0x54
+
+
 class ACargo(Cargo):
     def __init__(self, id, label, cargo_class, capacity_multiplier=0x100, weight=16, **props):
         super().__init__(

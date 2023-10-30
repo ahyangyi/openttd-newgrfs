@@ -1,6 +1,10 @@
 import grf
-from industry.lib.cargo import ACargo
+from industry.lib.cargo import ACargo, CargoUnit
 
 the_cargo = ACargo(
-    0x38, b"RFPR", grf.CargoClass.LIQUID | grf.CargoClass.PIECE_GOODS | grf.CargoClass.HAZARDOUS, weight=19
+    0x38,
+    b"RFPR",
+    grf.CargoClass.LIQUID | grf.CargoClass.PIECE_GOODS | grf.CargoClass.HAZARDOUS,
+    weight=19,
+    units_text=CargoUnit.LITRE,
 )
