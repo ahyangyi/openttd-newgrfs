@@ -39,8 +39,6 @@ from industry.industries import (
     metal_workshop,
     orchard_and_piggery,
     port,
-    power_station,
-    sawmill,
     scrap_yard,
     steel_mill,
     stockyard,
