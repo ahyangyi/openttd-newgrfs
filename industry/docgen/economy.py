@@ -78,7 +78,7 @@ search_exclude: true"""
                         choices_text.append(f"{preset}")
                     else:
                         choices_text.append(f"[{preset}]({meta_economy.name}_{preset_desc}.html)")
-                choices_text = " \| ".join(choices_text)
+                choices_text = " \\| ".join(choices_text)
                 print(
                     f"""{choices_text}
 
@@ -98,6 +98,6 @@ search_exclude: true"""
                                 f"[{choice}]({meta_economy.name}_{variation_desc[:i]}{j}{variation_desc[i+1:]}.html)"
                             )
                     print(
-                        f"{param}: " + " \| ".join(choices_text) + "\n",
+                        f"{param}: " + " \\| ".join(choices_text) + "\n",
                         file=f,
                     )

@@ -11,3 +11,5 @@ def check_yeti(economy):
 
         if economy.parameters["WORKFORCE"] == "YETI":
             assert len(conf.boosters) == 2
+        else:
+            assert len(conf.boosters) == 3

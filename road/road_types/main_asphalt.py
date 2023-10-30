@@ -1,7 +1,6 @@
 from road.lib import ARoadType
 from road.lib.graphics.underlay import get_spritesheet
 from datetime import date
-import grf
 
 
 the_road_type = ARoadType(

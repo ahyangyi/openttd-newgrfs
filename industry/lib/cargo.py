@@ -1,4 +1,3 @@
-import grf
 import struct
 from agrf.lib.cargo import Cargo
 from cargos import cargos as cargo_table
