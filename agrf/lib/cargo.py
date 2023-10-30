@@ -1,5 +1,4 @@
 import grf
-import struct
 
 
 class Cargo(grf.SpriteGenerator):

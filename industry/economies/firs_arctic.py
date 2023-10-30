@@ -8,7 +8,6 @@ from industry.cargos import (
     fertiliser,
     fish,
     food,
-    goods,
     mail,
     paper,
     passengers,
