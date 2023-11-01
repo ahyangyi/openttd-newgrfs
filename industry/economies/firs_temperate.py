@@ -14,7 +14,6 @@ from industry.cargos import (
     livestock,
     mail,
     milk,
-    paper,
     passengers,
     sand,
     scrap_metal,

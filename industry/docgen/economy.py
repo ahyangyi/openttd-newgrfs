@@ -1,5 +1,4 @@
 import os
-from agrf.strings import get_translation
 from industry.lib.parameters import (
     docs_parameter_choices,
     parameter_choices,
