@@ -1,20 +1,21 @@
 from industry.lib.economy import Economy, PrimaryIndustry, WorkerYard, SecondaryIndustry, TertiaryIndustry, Town
 from industry.cargos import (
-    valuables,
     coal,
-    grain,
-    livestock,
-    steel,
+    engineering_supplies,
+    farm_supplies,
+    food,
     goods,
-    wood,
+    grain,
     iron_ore,
+    livestock,
+    mail,
     oil,
     passengers,
-    mail,
-    farm_supplies,
-    engineering_supplies,
-    food,
+    steel,
+    tired_workers,
+    valuables,
     water,
+    wood,
     workers,
 )
 from industry.industries import (
@@ -22,6 +23,7 @@ from industry.industries import (
     coal_mine,
     factory,
     farm,
+    food_processing_plant,
     forest,
     iron_ore_mine,
     oil_refinery,
@@ -31,7 +33,6 @@ from industry.industries import (
     sawmill,
     steel_mill,
     towns,
-    food_processing_plant,
     water_supply,
     water_tower,
     worker_yard,
@@ -82,7 +83,15 @@ class TheEconomy:
             ret.graph[oil_refinery].produces += (farm_supplies,)
 
         if parameters["WORKFORCE"].startswith("YETI"):
-            ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, valuables))
+            if parameters["WORKFORCE"] == "YETI":
+                ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, valuables))
+            elif parameters["WORKFORCE"] == "YETI_PASSENGERS":
+                ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, valuables, passengers))
+            elif parameters["WORKFORCE"] == "YETI_MAIL":
+                ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, valuables, mail))
+            elif parameters["WORKFORCE"] == "YETI_TIRED":
+                ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, valuables, tired_workers))
+                ret.graph[coal_mine].produces += (tired_workers,)
             # FIXME
             ret.graph[coal_mine].boosters = workers
 

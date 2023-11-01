@@ -17,6 +17,7 @@ from industry.cargos import (
     pyrite_ore,
     sulphur,
     timber,
+    tired_workers,
     water,
     wood,
     workers,
@@ -139,7 +140,15 @@ class TheEconomy:
             ret.graph[chemical_plant].produces += (farm_supplies,)
 
         if parameters["WORKFORCE"].startswith("YETI"):
-            ret.graph[worker_yard] = WorkerYard(workers, boosters=(paper, zinc))
+            if parameters["WORKFORCE"] == "YETI":
+                ret.graph[worker_yard] = WorkerYard(workers, boosters=(paper, zinc))
+            elif parameters["WORKFORCE"] == "YETI_PASSENGERS":
+                ret.graph[worker_yard] = WorkerYard(workers, boosters=(paper, zinc, passengers))
+            elif parameters["WORKFORCE"] == "YETI_MAIL":
+                ret.graph[worker_yard] = WorkerYard(workers, boosters=(paper, zinc, mail))
+            elif parameters["WORKFORCE"] == "YETI_TIRED":
+                ret.graph[worker_yard] = WorkerYard(workers, boosters=(paper, zinc, tired_workers))
+                ret.graph[peatlands].produces += (tired_workers,)
 
             # FIXME
             ret.graph[peatlands].boosters = workers

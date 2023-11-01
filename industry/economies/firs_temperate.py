@@ -18,6 +18,7 @@ from industry.cargos import (
     sand,
     scrap_metal,
     steel,
+    tired_workers,
     water,
     workers,
 )
@@ -104,7 +105,15 @@ class TheEconomy:
             ret.graph[cider_mill].produces += (engineering_supplies, farm_supplies)
 
         if parameters["WORKFORCE"].startswith("YETI"):
-            ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, alcohol))
+            if parameters["WORKFORCE"] == "YETI":
+                ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, alcohol))
+            elif parameters["WORKFORCE"] == "YETI_PASSENGERS":
+                ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, alcohol, passengers))
+            elif parameters["WORKFORCE"] == "YETI_MAIL":
+                ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, alcohol, mail))
+            elif parameters["WORKFORCE"] == "YETI_TIRED":
+                ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, alcohol, tired_workers))
+                ret.graph[orchard_and_piggery].produces += (tired_workers,)
 
             # FIXME
             ret.graph[orchard_and_piggery].boosters = workers

@@ -146,6 +146,7 @@ STR_CARGO_NAME_SAND                  :Sand
 STR_CARGO_NAME_SCMT                  :Scrap Metal
 STR_CARGO_NAME_STEL                  :Steel
 STR_CARGO_NAME_SULP                  :Sulphur
+STR_CARGO_NAME_TRWK                  :Tired Workers
 STR_CARGO_NAME_VALU                  :Valuables
 STR_CARGO_NAME_WATR                  :Water
 STR_CARGO_NAME_WDPR                  :Timber
@@ -188,6 +189,7 @@ STR_CARGO_UNIT_SAND                  :{WEIGHT} of sand
 STR_CARGO_UNIT_SCMT                  :{WEIGHT} of scrap metal
 STR_CARGO_UNIT_STEL                  :{WEIGHT} of steel
 STR_CARGO_UNIT_SULP                  :{WEIGHT} of sulphur
+STR_CARGO_UNIT_TRWK                  :{SIGNED_WORD} tired worker{P 0 "" s}
 STR_CARGO_UNIT_VALU                  :{WEIGHT} of valuables
 STR_CARGO_UNIT_WATR                  :{VOLUME} of water
 STR_CARGO_UNIT_WDPR                  :{WEIGHT} of timber
