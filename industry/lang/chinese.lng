@@ -51,9 +51,10 @@ STR_PARAM_WORKFORCE_YETI_TIRED              :专属(Tired Worker)
 
 
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH                   :第一产业 - 增长
-STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DESC              :选择第一产业的产量受何因素影响。{}{}无 - 不会发生变化{}通用供给 - 产量会在提供农用供给和工程供给时上升{}专用供给 - 产量会在提供特定的供给时上升{}工人 - 产量在有工人时上升{}离散 - 产量依据该产业产出是否被运走而随机变化{}连续 - 同上，但是变化的级别更多。
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DESC              :选择第一产业的产量受何因素影响。{}{}无 - 不会发生变化{}普适供给 - 产量会在提供某种万能的供给物资时上升{}通用供给 - 产量会在提供农用供给和工程供给时上升{}专用供给 - 产量会在提供特定的供给时上升{}工人 - 产量在有工人时上升{}离散 - 产量依据该产业产出是否被运走而随机变化{}连续 - 同上，但是变化的级别更多。
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_PRESET            :使用预设玩法
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_NONE              :无
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_UNIVERSAL_SUPPLIES:万用供给
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_GENERIC_SUPPLIES  :通用供给
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_SPECIFIC_SUPPLIES :专用供给
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_WORKERS           :工人
