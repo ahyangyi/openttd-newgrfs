@@ -69,9 +69,10 @@ class SearchSpace:
         if i == len(self.choices):
             yield params
         else:
-            for j in self.choices[i][1]:
+            parameter_name, available_choices = self.choices[i]
+            for j in available_choices:
                 new_params = params.copy()
-                new_params[self.choices[i][0]] = j
+                new_params[parameter_name] = j
                 for variation in self.iterate_variations(i + 1, new_params):
                     yield variation
 

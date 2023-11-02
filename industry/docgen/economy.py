@@ -72,7 +72,7 @@ search_exclude: true"""
 
                 choices_text = []
                 for preset, preset_params in PRESETS.items():
-                    preset_desc = docs_parameter_choices.desc(preset_params)
+                    preset_desc = parameter_choices.desc(preset_params)
                     if preset_desc == variation_desc:
                         choices_text.append(f"{preset}")
                     else:
@@ -89,12 +89,12 @@ search_exclude: true"""
                     if len(choices) == 1:
                         continue
                     choices_text = []
-                    for j, choice in enumerate(choices):
+                    for choice in choices:
                         if variation[param] == choice:
                             choices_text.append(f"{choice}")
                         else:
                             choices_text.append(
-                                f"[{choice}]({meta_economy.name}_{variation_desc[:i]}{j}{variation_desc[i+1:]}.html)"
+                                f"[{choice}]({meta_economy.name}_{parameter_choices.desc({**variation, param: choice})}.html)"
                             )
                     print(
                         f"{param}: " + " \\| ".join(choices_text) + "\n",
