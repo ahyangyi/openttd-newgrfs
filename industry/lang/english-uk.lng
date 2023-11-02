@@ -133,7 +133,6 @@ STR_CARGO_NAME_MAIZ                  :Maize
 STR_CARGO_NAME_MILK                  :Milk
 STR_CARGO_NAME_NH3_                  :Ammonia
 STR_CARGO_NAME_OIL_                  :Oil
-STR_CARGO_NAME_OTI1                  :Workers
 STR_CARGO_NAME_PAPR                  :Paper
 STR_CARGO_NAME_PASS                  :Passengers
 STR_CARGO_NAME_PEAT                  :Peat
@@ -152,6 +151,7 @@ STR_CARGO_NAME_WATR                  :Water
 STR_CARGO_NAME_WDPR                  :Timber
 STR_CARGO_NAME_WHEA                  :Wheat
 STR_CARGO_NAME_WOOD                  :Wood
+STR_CARGO_NAME_WRKR                  :Workers
 STR_CARGO_NAME_ZINC                  :Zinc
 
 STR_CARGO_UNIT_BEER                  :{VOLUME} of alcohol
@@ -176,7 +176,6 @@ STR_CARGO_UNIT_MAIZ                  :{WEIGHT} of maize
 STR_CARGO_UNIT_MILK                  :{VOLUME} of milk
 STR_CARGO_UNIT_NH3_                  :{VOLUME} ammonia
 STR_CARGO_UNIT_OIL_                  :{VOLUME} of oil
-STR_CARGO_UNIT_OTI1                  :{SIGNED_WORD} worker{P 0 "" s}
 STR_CARGO_UNIT_PAPR                  :{WEIGHT} of paper
 STR_CARGO_UNIT_PASS                  :{SIGNED_WORD} passenger{P 0 "" s}
 STR_CARGO_UNIT_PEAT                  :{WEIGHT} of peat
@@ -195,4 +194,5 @@ STR_CARGO_UNIT_WATR                  :{VOLUME} of water
 STR_CARGO_UNIT_WDPR                  :{WEIGHT} of timber
 STR_CARGO_UNIT_WHEA                  :{WEIGHT} of wheat
 STR_CARGO_UNIT_WOOD                  :{WEIGHT} of wood
+STR_CARGO_UNIT_WRKR                  :{SIGNED_WORD} worker{P 0 "" s}
 STR_CARGO_UNIT_ZINC                  :{WEIGHT} of zinc
