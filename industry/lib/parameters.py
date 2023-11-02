@@ -176,9 +176,9 @@ parameter_choices = SearchSpace(
 
 
 docs_parameter_choices = parameter_choices.copy()
-docs_parameter_choices.fix_docs_params("WORKFORCE", ["ABSTRACT", "PROFESSIONAL", "YETI"])
-docs_parameter_choices.fix_docs_params("LAND_PORTS", ["ORGANIC"])
-docs_parameter_choices.fix_docs_params("TOWN_GOODS", ["ORGANIC"])
+docs_parameter_choices.update_params("WORKFORCE", ["ABSTRACT", "PROFESSIONAL", "YETI"])
+docs_parameter_choices.update_params("LAND_PORTS", ["ORGANIC"])
+docs_parameter_choices.update_params("TOWN_GOODS", ["ORGANIC"])
 
 
 PRESETS = {

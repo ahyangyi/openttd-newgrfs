@@ -72,7 +72,7 @@ search_exclude: true"""
 
                 choices_text = []
                 for preset, preset_params in PRESETS.items():
-                    preset_desc = parameter_choices.desc(preset_params)
+                    preset_desc = docs_parameter_choices.desc(preset_params)
                     if preset_desc == variation_desc:
                         choices_text.append(f"{preset}")
                     else:

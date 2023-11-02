@@ -58,7 +58,7 @@ class SearchSpace:
     def copy(self):
         return SearchSpace(copy.deepcopy(self.choices), self.parameter_list)
 
-    def fix_docs_params(self, cat, options):
+    def update_params(self, cat, options):
         [(idx, all_options)] = [
             (i, the_options) for i, (the_cat, the_options) in enumerate(self.choices) if the_cat == cat
         ]
