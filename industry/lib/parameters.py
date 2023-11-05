@@ -66,6 +66,17 @@ parameter_list = ParameterList(
             },
         ),
         Parameter(
+            "TOWN_GOODS",
+            0,
+            {
+                0: "PRESET",
+                1: "ORGANIC",
+                2: "NONE",
+                3: "FOOD",
+                4: "FOOD_AND_WATER",
+            },
+        ),
+        Parameter(
             "PRIMARY_INDUSTRY_GROWTH",
             0,
             {
