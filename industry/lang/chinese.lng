@@ -49,6 +49,14 @@ STR_PARAM_WORKFORCE_YETI_PASSENGERS         :专属 (Passengers)
 STR_PARAM_WORKFORCE_YETI_MAIL               :专属 (Mail)
 STR_PARAM_WORKFORCE_YETI_TIRED              :专属(Tired Worker)
 
+STR_PARAM_TOWN_GOODS            :城镇 - 增长需求
+STR_PARAM_TOWN_GOODS_DESC       :选择城镇人口是否需要食物和水来增长。注意：这选项只有在合适的气候才会发挥作用。
+STR_PARAM_TOWN_GOODS_PRESET     :使用预设玩法
+STR_PARAM_TOWN_GOODS_ORGANIC    :自然
+STR_PARAM_TOWN_GOODS_NONE       :无
+STR_PARAM_TOWN_GOODS_FOOD       :食物
+STR_PARAM_TOWN_GOODS_FOOD_AND_WATER:食物和水
+
 
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH                   :第一产业 - 增长
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DESC              :选择第一产业的产量受何因素影响。{}{}无 - 不会发生变化{}普适供给 - 产量会在提供某种万能的供给物资时上升{}通用供给 - 产量会在提供农用供给和工程供给时上升{}专用供给 - 产量会在提供特定的供给时上升{}工人 - 产量在有工人时上升{}离散 - 产量依据该产业产出是否被运走而随机变化{}连续 - 同上，但是变化的级别更多。

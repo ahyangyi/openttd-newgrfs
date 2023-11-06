@@ -2,7 +2,7 @@ import grf
 from industry.lib.cargo import ACargo, CargoUnit
 
 the_cargo = ACargo(
-    0x40,
+    0x3F,
     b"TRWK",
     grf.CargoClass.PASSENGERS,
     capacity_multiplier=0x400,
