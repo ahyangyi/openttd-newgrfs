@@ -90,6 +90,15 @@ STR_PARAM_SECONDARY_INDUSTRY_PROCESSING_PRESET      :Preset
 STR_PARAM_SECONDARY_INDUSTRY_PROCESSING_STRICT      :Strict
 STR_PARAM_SECONDARY_INDUSTRY_PROCESSING_NORMAL      :Normal
 
+STR_PARAM_SEA_INDUSTRY                              :Sea Industry
+STR_PARAM_SEA_INDUSTRY_DESC                         :Some industries have a land and a sea version. Choose which version(s) to use.
+STR_PARAM_SEA_INDUSTRY_PRESET                       :Preset
+STR_PARAM_SEA_INDUSTRY_ORGANIC                      :Organic
+STR_PARAM_SEA_INDUSTRY_LAND_ONLY                    :Land Only
+STR_PARAM_SEA_INDUSTRY_BOTH                         :Both
+STR_PARAM_SEA_INDUSTRY_EITHER                       :Either
+STR_PARAM_SEA_INDUSTRY_SEA_ONLY                     :Sea Only
+
 STR_PARAM_INDUSTRY_SIZE         :Graphics - Industry Size
 STR_PARAM_INDUSTRY_SIZE_DESC    :Choose the visual size of the industries
 STR_PARAM_INDUSTRY_SIZE_ENORMOUS:Enormous

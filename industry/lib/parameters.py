@@ -120,6 +120,18 @@ parameter_list = ParameterList(
             },
         ),
         Parameter(
+            "SEA_INDUSTRY",
+            0,
+            {
+                0: "PRESET",
+                1: "ORGANIC",
+                2: "LAND_ONLY",
+                3: "BOTH",
+                4: "EITHER",
+                5: "SEA_ONLY",
+            },
+        ),
+        Parameter(
             "INDUSTRY_SIZE",
             3,
             {
@@ -179,7 +191,7 @@ parameter_choices = SearchSpace(
                 "YETI_TIRED",
             ],
         ),
-        ("LAND_PORTS", ["ORGANIC", "LAND_ONLY", "BOTH", "SEA_ONLY"]),
+        ("SEA_INDUSTRY", ["ORGANIC", "LAND_ONLY", "BOTH", "SEA_ONLY"]),
         ("TOWN_GOODS", ["ORGANIC", "NONE", "SUBARCTIC", "SUBTROPICAL"]),
     ],
     parameter_list,
@@ -188,7 +200,7 @@ parameter_choices = SearchSpace(
 
 docs_parameter_choices = parameter_choices.copy()
 docs_parameter_choices.update_params("WORKFORCE", ["ABSTRACT", "PROFESSIONAL", "YETI"])
-docs_parameter_choices.update_params("LAND_PORTS", ["ORGANIC"])
+docs_parameter_choices.update_params("SEA_INDUSTRY", ["ORGANIC"])
 docs_parameter_choices.update_params("TOWN_GOODS", ["ORGANIC"])
 
 
@@ -197,35 +209,35 @@ PRESETS = {
         "POLICY": "AUTARKY",
         "BOOSTER": "NONE",
         "WORKFORCE": "ABSTRACT",
-        "LAND_PORTS": "ORGANIC",
+        "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
     "FIRS": {
         "POLICY": "FREE_TRADE",
         "BOOSTER": "GENERIC",
         "WORKFORCE": "ABSTRACT",
-        "LAND_PORTS": "ORGANIC",
+        "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
     "YETI": {
         "POLICY": "AUTARKY",
         "BOOSTER": "UNIVERSAL",
         "WORKFORCE": "YETI",
-        "LAND_PORTS": "ORGANIC",
+        "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
     "CARIBBEAN": {
         "POLICY": "EXPORT",
         "BOOSTER": "GENERIC",
         "WORKFORCE": "ABSTRACT",
-        "LAND_PORTS": "ORGANIC",
+        "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
     "LUMBERJACK": {
         "POLICY": "AUTARKY",
         "BOOSTER": "GENERIC",
         "WORKFORCE": "ABSTRACT",
-        "LAND_PORTS": "ORGANIC",
+        "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
 }

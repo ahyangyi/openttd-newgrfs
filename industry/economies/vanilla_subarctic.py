@@ -115,10 +115,10 @@ class TheEconomy:
             ret.graph[coal_mine].boosters = workers
 
         if port in ret.graph:
-            if parameters["LAND_PORTS"] == "LAND_ONLY":
+            if parameters["SEA_INDUSTRY"] == "LAND_ONLY":
                 ret.graph[trading_centre] = ret.graph[port]
                 del ret.graph[port]
-            elif parameters["LAND_PORTS"] == "BOTH":
+            elif parameters["SEA_INDUSTRY"] == "BOTH":
                 ret.graph[trading_centre] = ret.graph[port]
 
         if parameters["TOWN_GOODS"] == "SUBTROPICAL":
