@@ -80,6 +80,15 @@ STR_PARAM_SECONDARY_INDUSTRY_PROCESSING_PRESET      :使用预设玩法
 STR_PARAM_SECONDARY_INDUSTRY_PROCESSING_STRICT      :严格
 STR_PARAM_SECONDARY_INDUSTRY_PROCESSING_NORMAL      :正常
 
+STR_PARAM_SEA_INDUSTRY                              :海上工业
+STR_PARAM_SEA_INDUSTRY_DESC                         :有些工业有陆地和海上版本，选择你要用哪一种。
+STR_PARAM_SEA_INDUSTRY_PRESET                       :使用预设玩法
+STR_PARAM_SEA_INDUSTRY_ORGANIC                      :自然
+STR_PARAM_SEA_INDUSTRY_LAND_ONLY                    :仅陆地
+STR_PARAM_SEA_INDUSTRY_BOTH                         :两种都用
+STR_PARAM_SEA_INDUSTRY_EITHER                       :只用一种
+STR_PARAM_SEA_INDUSTRY_SEA_ONLY                     :仅海上
+
 STR_PARAM_INDUSTRY_SIZE         :画面 - 工业大小
 STR_PARAM_INDUSTRY_SIZE_DESC    :选择工业的占地大小
 STR_PARAM_INDUSTRY_SIZE_ENORMOUS:大得离谱
