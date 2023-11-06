@@ -10,11 +10,17 @@ class SplitDefinition:
             # Legacy format
             variables = (variables,)
             branches = {(i,): b for i, b in branches.items()}
-        if isinstance(variables, str):
+        elif isinstance(variables, str):
             idx = parameter_list.index(variables)
             p = parameter_list.parameters[idx]
             variables = (idx,)
-            branches = {(next(k for k, v in p.enum.items() if v == i),): b for i, b in branches.items()}
+            branches = {(p.enum_index(i),): b for i, b in branches.items()}
+        elif isinstance(variables[0], str):
+            variables = tuple(parameter_list.index(idx) for idx in variables)
+            branches = {
+                tuple(parameter_list.index(idx).enum_index(s) for idx, s in zip(variables, i)): b
+                for i, b in branches.items()
+            }
         self.variables = variables
         self.branches = branches
 

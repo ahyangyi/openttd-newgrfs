@@ -35,6 +35,9 @@ class Parameter:
     def set_index(self, index):
         self.index = index
 
+    def enum_index(self, name):
+        return [k for k, v in self.enum.items() if v == name][0]
+
 
 class ParameterList:
     def __init__(self, parameters):

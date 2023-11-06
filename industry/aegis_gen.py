@@ -27,9 +27,9 @@ def initialize_metadata():
                     all_cargos.append(cargo)
 
     for industry in all_industries:
-        industry._props["exists"] = SplitDefinition((0,), {})
-        industry._props["production_types"] = SplitDefinition((0,), {})
-        industry._props["acceptance_types"] = SplitDefinition((0,), {})
+        industry._props["exists"] = SplitDefinition(("ECONOMY",), {})
+        industry._props["production_types"] = SplitDefinition(("ECONOMY",), {})
+        industry._props["acceptance_types"] = SplitDefinition(("ECONOMY",), {})
 
     for i, meta_economy in enumerate(all_economies):
         for variation in parameter_choices.iterate_variations():
