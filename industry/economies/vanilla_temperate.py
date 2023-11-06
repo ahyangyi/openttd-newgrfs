@@ -62,7 +62,7 @@ class TheEconomy:
             },
             parameters,
         )
-        if parameters["BOOSTER"] == "UNIVERSAL":
+        if parameters["PRIMARY_INDUSTRY_GROWTH"] == "UNIVERSAL_SUPPLIES":
             ret.graph[coal_mine].boosters = engineering_supplies
             ret.graph[oil_wells].boosters = engineering_supplies
             ret.graph[oil_rig].boosters = engineering_supplies
@@ -71,7 +71,7 @@ class TheEconomy:
             ret.graph[forest].boosters = engineering_supplies
 
             ret.graph[factory].produces += (engineering_supplies,)
-        elif parameters["BOOSTER"] == "GENERIC":
+        elif parameters["PRIMARY_INDUSTRY_GROWTH"] == "GENERIC_SUPPLIES":
             ret.graph[coal_mine].boosters = engineering_supplies
             ret.graph[oil_wells].boosters = engineering_supplies
             ret.graph[oil_rig].boosters = engineering_supplies

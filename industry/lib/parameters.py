@@ -176,7 +176,7 @@ parameter_list = ParameterList(
 parameter_choices = SearchSpace(
     [
         ("POLICY", ["AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
-        ("BOOSTER", ["NONE", "UNIVERSAL", "GENERIC", "GENERIC_PASSENGERS"]),
+        ("PRIMARY_INDUSTRY_GROWTH", ["NONE", "UNIVERSAL_SUPPLIES", "GENERIC_SUPPLIES", "SPECIFIC_SUPPLIES"]),
         (
             "WORKFORCE",
             [
@@ -207,35 +207,35 @@ docs_parameter_choices.update_params("TOWN_GOODS", ["ORGANIC"])
 PRESETS = {
     "VANILLA": {
         "POLICY": "AUTARKY",
-        "BOOSTER": "NONE",
+        "PRIMARY_INDUSTRY_GROWTH": "NONE",
         "WORKFORCE": "ABSTRACT",
         "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
     "FIRS": {
         "POLICY": "FREE_TRADE",
-        "BOOSTER": "GENERIC",
+        "PRIMARY_INDUSTRY_GROWTH": "GENERIC_SUPPLIES",
         "WORKFORCE": "ABSTRACT",
         "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
     "YETI": {
         "POLICY": "AUTARKY",
-        "BOOSTER": "UNIVERSAL",
+        "PRIMARY_INDUSTRY_GROWTH": "UNIVERSAL_SUPPLIES",
         "WORKFORCE": "YETI",
         "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
     "CARIBBEAN": {
         "POLICY": "EXPORT",
-        "BOOSTER": "GENERIC",
+        "PRIMARY_INDUSTRY_GROWTH": "GENERIC_SUPPLIES",
         "WORKFORCE": "ABSTRACT",
         "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
     "LUMBERJACK": {
         "POLICY": "AUTARKY",
-        "BOOSTER": "GENERIC",
+        "PRIMARY_INDUSTRY_GROWTH": "GENERIC_SUPPLIES",
         "WORKFORCE": "ABSTRACT",
         "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",

@@ -91,7 +91,7 @@ class TheEconomy:
             del ret.graph[ammonia_plant]
             del ret.graph[clay_pit]
 
-        if parameters["BOOSTER"] == "UNIVERSAL":
+        if parameters["PRIMARY_INDUSTRY_GROWTH"] == "UNIVERSAL_SUPPLIES":
             if ammonia_plant in ret.graph:
                 ret.graph[ammonia_plant].boosters = engineering_supplies
             if clay_pit in ret.graph:
@@ -106,7 +106,7 @@ class TheEconomy:
             ret.graph[herding_coop].boosters = engineering_supplies
 
             ret.graph[paper_mill].produces += (engineering_supplies,)
-        elif parameters["BOOSTER"] == "GENERIC":
+        elif parameters["PRIMARY_INDUSTRY_GROWTH"] == "GENERIC_SUPPLIES":
             if ammonia_plant in ret.graph:
                 ret.graph[ammonia_plant].boosters = engineering_supplies
             if clay_pit in ret.graph:
@@ -122,7 +122,7 @@ class TheEconomy:
 
             ret.graph[paper_mill].produces += (engineering_supplies,)
             ret.graph[chemical_plant].produces += (farm_supplies,)
-        elif parameters["BOOSTER"] == "GENERIC_PASSENGERS":
+        elif parameters["PRIMARY_INDUSTRY_GROWTH"] == "GENERIC_SUPPLIES_PASSENGERS":
             if ammonia_plant in ret.graph:
                 ret.graph[ammonia_plant].boosters = engineering_supplies
             if clay_pit in ret.graph:

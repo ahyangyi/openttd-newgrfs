@@ -72,7 +72,7 @@ class TheEconomy:
             ret.graph[port] = SecondaryIndustry(wood, paper)
             del ret.graph[paper_mill]
 
-        if parameters["BOOSTER"] == "UNIVERSAL":
+        if parameters["PRIMARY_INDUSTRY_GROWTH"] == "UNIVERSAL_SUPPLIES":
             ret.graph[coal_mine].boosters = engineering_supplies
             ret.graph[oil_wells].boosters = engineering_supplies
             ret.graph[gold_mine].boosters = engineering_supplies
@@ -80,7 +80,7 @@ class TheEconomy:
             ret.graph[forest].boosters = engineering_supplies
 
             ret.graph[printing_works].produces += (engineering_supplies,)
-        elif parameters["BOOSTER"] == "GENERIC":
+        elif parameters["PRIMARY_INDUSTRY_GROWTH"] == "GENERIC_SUPPLIES":
             ret.graph[coal_mine].boosters = engineering_supplies
             ret.graph[oil_wells].boosters = engineering_supplies
             ret.graph[gold_mine].boosters = engineering_supplies
@@ -89,7 +89,7 @@ class TheEconomy:
 
             ret.graph[printing_works].produces += (engineering_supplies,)
             ret.graph[oil_refinery].produces += (farm_supplies,)
-        elif parameters["BOOSTER"] == "GENERIC_PASSENGERS":
+        elif parameters["PRIMARY_INDUSTRY_GROWTH"] == "GENERIC_SUPPLIES_PASSENGERS":
             ret.graph[coal_mine].boosters = engineering_supplies
             ret.graph[oil_wells].boosters = passengers
             ret.graph[gold_mine].boosters = engineering_supplies

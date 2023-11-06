@@ -85,19 +85,19 @@ class TheEconomy:
             ret.graph[port] = SecondaryIndustry(china_clay, chemicals)
             # del ret.graph[clay_pit]
 
-        if parameters["BOOSTER"] == "UNIVERSAL":
+        if parameters["PRIMARY_INDUSTRY_GROWTH"] == "UNIVERSAL_SUPPLIES":
             ret.graph[clay_pit].boosters = engineering_supplies
             ret.graph[fish_farm].boosters = engineering_supplies
             ret.graph[orchard_and_piggery].boosters = engineering_supplies
 
             ret.graph[cider_mill].produces += (engineering_supplies,)
-        elif parameters["BOOSTER"] == "GENERIC":
+        elif parameters["PRIMARY_INDUSTRY_GROWTH"] == "GENERIC_SUPPLIES":
             ret.graph[clay_pit].boosters = engineering_supplies
             ret.graph[fish_farm].boosters = farm_supplies
             ret.graph[orchard_and_piggery].boosters = farm_supplies
 
             ret.graph[cider_mill].produces += (engineering_supplies, farm_supplies)
-        elif parameters["BOOSTER"] == "GENERIC_PASSENGERS":
+        elif parameters["PRIMARY_INDUSTRY_GROWTH"] == "GENERIC_SUPPLIES_PASSENGERS":
             ret.graph[clay_pit].boosters = engineering_supplies
             ret.graph[fish_farm].boosters = farm_supplies
             ret.graph[orchard_and_piggery].boosters = farm_supplies
