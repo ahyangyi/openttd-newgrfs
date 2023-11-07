@@ -175,11 +175,26 @@ parameter_list = ParameterList(
 
 parameter_choices = SearchSpace(
     [
-        ("POLICY", ["AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
-        ("PRIMARY_INDUSTRY_GROWTH", ["NONE", "UNIVERSAL_SUPPLIES", "GENERIC_SUPPLIES", "SPECIFIC_SUPPLIES"]),
+        # FIXME: handle preset
+        ("POLICY", ["PRESET", "AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
+        (
+            "PRIMARY_INDUSTRY_GROWTH",
+            [
+                "PRESET",
+                "NONE",
+                "UNIVERSAL_SUPPLIES",
+                "GENERIC_SUPPLIES",
+                "SPECIFIC_SUPPLIES",
+                "TOWN_POPULATION",
+                "WORKERS",
+                "DISCRETE",
+                "CONTINUOUS",
+            ],
+        ),
         (
             "WORKFORCE",
             [
+                "PRESET",
                 "ABSTRACT",
                 "PROFESSIONAL",
                 "PROFESSIONAL_PASSENGERS",
@@ -191,8 +206,8 @@ parameter_choices = SearchSpace(
                 "YETI_TIRED",
             ],
         ),
-        ("SEA_INDUSTRY", ["ORGANIC", "LAND_ONLY", "BOTH", "SEA_ONLY"]),
-        ("TOWN_GOODS", ["ORGANIC", "NONE", "SUBARCTIC", "SUBTROPICAL"]),
+        ("SEA_INDUSTRY", ["PRESET", "ORGANIC", "LAND_ONLY", "BOTH", "EITHER", "SEA_ONLY"]),
+        ("TOWN_GOODS", ["PRESET", "ORGANIC", "NONE", "FOOD", "FOOD_AND_WATER"]),
     ],
     parameter_list,
 )

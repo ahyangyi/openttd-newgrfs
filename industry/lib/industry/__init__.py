@@ -6,23 +6,24 @@ from .symmetrizer import symmetrize
 
 class SplitDefinition:
     def __init__(self, variables, branches):
-        if isinstance(variables, int):
-            # Legacy format
-            variables = (variables,)
-            branches = {(i,): b for i, b in branches.items()}
-        elif isinstance(variables, str):
-            idx = parameter_list.index(variables)
-            p = parameter_list.parameters[idx]
-            variables = (idx,)
-            branches = {(p.enum_index(i),): b for i, b in branches.items()}
-        elif isinstance(variables[0], str):
-            variables = tuple(parameter_list.index(idx) for idx in variables)
-            branches = {
-                tuple(parameter_list.index(idx).enum_index(s) for idx, s in zip(variables, i)): b
-                for i, b in branches.items()
-            }
         self.variables = variables
         self.branches = branches
+
+    def fixup(self):
+        if isinstance(self.variables, int):
+            # Legacy format
+            self.variables = (self.variables,)
+            self.branches = {(i,): b for i, b in self.branches.items()}
+        elif isinstance(self.variables, str):
+            idx = parameter_list.index(self.variables)
+            self.variables = (idx,)
+            self.branches = {(parameter_list.parameters[idx].enum_index(i),): b for i, b in self.branches.items()}
+        elif isinstance(self.variables[0], str):
+            self.variables = tuple(parameter_list.index(idx) for idx in self.variables)
+            self.branches = {
+                tuple(parameter_list.parameters[idx].enum_index(s) for idx, s in zip(self.variables, i)): b
+                for i, b in self.branches.items()
+            }
 
 
 class AIndustry(grf.SpriteGenerator):
@@ -45,6 +46,7 @@ class AIndustry(grf.SpriteGenerator):
         ret = set()
         for p in self._props.values():
             if isinstance(p, SplitDefinition):
+                p.fixup()
                 for v in p.variables:
                     ret.add(v)
         return list(sorted(ret))
@@ -54,6 +56,7 @@ class AIndustry(grf.SpriteGenerator):
         miss = False
         for k, v in self._props.items():
             while isinstance(v, SplitDefinition):
+                v.fixup()
                 branch_key = tuple(parameters[var] for var in v.variables)
                 if branch_key in v.branches:
                     v = v.branches[branch_key]

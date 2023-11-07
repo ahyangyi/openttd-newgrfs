@@ -180,6 +180,9 @@ cargo_info = {
     # OTIS
     "OTI1": {},
     "OTI2": {},
+    # AEGIS
+    "WRKR": {},
+    "TRWK": {},
 }
 
 cargo_info = {k.encode(): v for k, v in cargo_info.items()}

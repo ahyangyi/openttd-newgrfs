@@ -95,7 +95,7 @@ class TheEconomy:
             # FIXME
             ret.graph[coal_mine].boosters = workers
 
-        if parameters["TOWN_GOODS"] in ("SUBARCTIC", "SUBTROPICAL"):
+        if parameters["TOWN_GOODS"] in ("FOOD", "FOOD_AND_WATER"):
             ret.graph[food_processing_plant] = SecondaryIndustry(
                 (
                     livestock,
@@ -105,7 +105,7 @@ class TheEconomy:
             )
             ret.graph[factory].consumes = tuple(x for x in ret.graph[factory].consumes if x not in [livestock, grain])
             ret.graph[towns].food = food
-        if parameters["TOWN_GOODS"] == "SUBTROPICAL":
+        if parameters["TOWN_GOODS"] == "FOOD_AND_WATER":
             ret.graph[water_supply] = PrimaryIndustry(water)
             ret.graph[water_tower] = TertiaryIndustry(water)
 

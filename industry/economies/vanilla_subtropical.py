@@ -89,7 +89,7 @@ class TheEconomy:
             # FIXME
             ret.graph[diamond_mine].boosters = workers
 
-        if parameters["TOWN_GOODS"] in ("ORGANIC", "SUBTROPICAL"):
+        if parameters["TOWN_GOODS"] in ("ORGANIC", "FOOD_AND_WATER"):
             ret.graph[water_supply] = PrimaryIndustry(water)
             ret.graph[water_tower] = TertiaryIndustry(water)
 

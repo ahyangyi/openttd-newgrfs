@@ -27,22 +27,39 @@ def initialize_metadata():
                     all_cargos.append(cargo)
 
     for industry in all_industries:
-        industry._props["exists"] = SplitDefinition(("ECONOMY",), {})
-        industry._props["production_types"] = SplitDefinition(("ECONOMY",), {})
-        industry._props["acceptance_types"] = SplitDefinition(("ECONOMY",), {})
+        industry._props["exists"] = SplitDefinition(
+            ("ECONOMY", "POLICY", "PRIMARY_INDUSTRY_GROWTH", "WORKFORCE", "SEA_INDUSTRY", "TOWN_GOODS"), {}
+        )
+        industry._props["production_types"] = SplitDefinition(
+            ("ECONOMY", "POLICY", "PRIMARY_INDUSTRY_GROWTH", "WORKFORCE", "SEA_INDUSTRY", "TOWN_GOODS"), {}
+        )
+        industry._props["acceptance_types"] = SplitDefinition(
+            ("ECONOMY", "POLICY", "PRIMARY_INDUSTRY_GROWTH", "WORKFORCE", "SEA_INDUSTRY", "TOWN_GOODS"), {}
+        )
 
     for i, meta_economy in enumerate(all_economies):
         for variation in parameter_choices.iterate_variations():
             economy = meta_economy.get_economy(variation)
+            index = (
+                {
+                    # FIXME
+                    0: "VANILLA_TEMPERATE",
+                    1: "VANILLA_SUBARCTIC",
+                    2: "VANILLA_SUBTROPICAL",
+                    3: "BASIC_TEMPERATE",
+                    4: "BASIC_ARCTIC",
+                }[i],
+            ) + tuple(
+                variation[i] for i in ("POLICY", "PRIMARY_INDUSTRY_GROWTH", "WORKFORCE", "SEA_INDUSTRY", "TOWN_GOODS")
+            )
             for industry in all_industries:
                 if industry in economy.industries:
-                    industry._props["exists"].branches[(i,)] = True
+                    industry._props["exists"].branches[index] = True
                 else:
-                    industry._props["exists"].branches[(i,)] = False
+                    industry._props["exists"].branches[index] = False
             for industry, flow_desc in economy.graph.items():
-                industry._props["production_types"].branches[(i,)] = flow_desc.translated_produces
-                industry._props["acceptance_types"].branches[(i,)] = flow_desc.translated_accepts
-            break
+                industry._props["production_types"].branches[index] = flow_desc.translated_produces
+                industry._props["acceptance_types"].branches[index] = flow_desc.translated_accepts
 
 
 def get_string_manager():
