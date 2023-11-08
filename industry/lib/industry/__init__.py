@@ -99,9 +99,18 @@ class AIndustry(grf.SpriteGenerator):
                 )
         del parameters[var_id]
 
-        # TODO: merge small groups here
+        compressed_ret = []
+        cur_group = []
+        for group in ret:
+            if len(cur_group) + len(group) + i <= 255:
+                cur_group.extend(group)
+            else:
+                compressed_ret.append(cur_group)
+                cur_group = group
+        if len(cur_group) > 0:
+            compressed_ret.append(cur_group)
 
-        return ret
+        return compressed_ret
 
     def get_sprites(self, g):
         name_id = g.strings.add(self.name).get_persistent_id()
