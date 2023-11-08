@@ -90,7 +90,6 @@ class AIndustry(grf.SpriteGenerator):
             resolved_props = self.resolve_props(parameters)
             exists = resolved_props.pop("exists", True)
             if exists:
-                print(resolved_props)
                 return [
                     [
                         grf.Define(

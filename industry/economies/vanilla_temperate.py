@@ -29,6 +29,7 @@ from industry.industries import (
     oil_refinery,
     oil_rig,
     oil_wells,
+    port,
     power_station,
     sawmill,
     steel_mill,
@@ -62,6 +63,12 @@ class TheEconomy:
             },
             parameters,
         )
+        if parameters["POLICY"] == "SELF_SUFFICIENT":
+            ret.graph[port] = SecondaryIndustry(wood, valuables)
+        elif parameters["POLICY"] in ("FREE_TRADE", "EXPORT"):
+            ret.graph[port] = SecondaryIndustry(wood, valuables)
+            ret.graph[bank] = TertiaryIndustry(valuables)
+
         if parameters["PRIMARY_INDUSTRY_GROWTH"] == "UNIVERSAL_SUPPLIES":
             ret.graph[coal_mine].boosters = engineering_supplies
             ret.graph[oil_wells].boosters = engineering_supplies
