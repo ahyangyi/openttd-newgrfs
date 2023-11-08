@@ -70,6 +70,8 @@ class AIndustry(grf.SpriteGenerator):
             # XXX: substitute_type needs to be first
             if "substitute_type" in new_props:
                 new_props = {"substitute_type": new_props["substitute_type"], **new_props}
+        else:
+            new_props = {"exists": False}
         return new_props
 
     def dynamic_definitions(self, all_choices, parameters, i=0):
@@ -77,6 +79,7 @@ class AIndustry(grf.SpriteGenerator):
             resolved_props = self.resolve_props(parameters)
             exists = resolved_props.pop("exists", True)
             if exists:
+                print(resolved_props)
                 return [
                     [
                         grf.Define(
@@ -85,19 +88,38 @@ class AIndustry(grf.SpriteGenerator):
                             props=resolved_props,
                         )
                     ]
-                ]
+                ], hash(
+                    tuple(
+                        sorted(
+                            [
+                                (k, (tuple(tuple(sorted(y.items()) for y in x) for x in v) if k == "layouts" else v))
+                                for k, v in resolved_props.items()
+                            ]
+                        )
+                    )
+                )
             else:
-                return []
+                return [], 0
         ret = []
         var_id = all_choices[i]
+        sublists = []
+        hashes = []
         for choice in range(len(parameter_list.parameters[var_id].enum)):
             parameters[var_id] = choice
-            actions = self.dynamic_definitions(all_choices, parameters, i + 1)
-            for g in actions:
+            sublist, h = self.dynamic_definitions(all_choices, parameters, i + 1)
+            sublists.append(sublist)
+            hashes.append(h)
+        del parameters[var_id]
+
+        if all(hashes[0] == h for h in hashes):
+            return sublists[0], hash(tuple(hashes))
+
+        for choice in range(len(parameter_list.parameters[var_id].enum)):
+            sublist = sublists[choice]
+            for g in sublist:
                 ret.append(
                     [grf.If(is_static=True, variable=var_id, condition=0x03, value=choice, skip=len(g), varsize=4)] + g
                 )
-        del parameters[var_id]
 
         compressed_ret = []
         cur_group = []
@@ -110,12 +132,12 @@ class AIndustry(grf.SpriteGenerator):
         if len(cur_group) > 0:
             compressed_ret.append(cur_group)
 
-        return compressed_ret
+        return compressed_ret, hash(tuple(hashes))
 
     def get_sprites(self, g):
         name_id = g.strings.add(self.name).get_persistent_id()
         self._props["name"] = name_id
-        res = self.dynamic_definitions(self.dynamic_prop_variables, {}, 0)
+        res, _ = self.dynamic_definitions(self.dynamic_prop_variables, {}, 0)
         res = [sprite for sprite_group in res for sprite in sprite_group]
         if len(res) == 0:
             return []
