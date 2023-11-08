@@ -6,7 +6,7 @@ from industry.lib.parameters import (
 )
 
 
-default_variation = "0" * len(parameter_choices.choices)
+default_variation = "2" * len(parameter_choices.choices)
 
 
 def gen_economy_doc(all_economies, string_manager):
