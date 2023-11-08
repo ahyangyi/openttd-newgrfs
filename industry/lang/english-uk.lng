@@ -6,12 +6,12 @@ STR_GRF_DESC                    :A modular industry set with options to support 
 
 STR_PARAM_ECONOMY               :Global - Economy
 STR_PARAM_ECONOMY_DESC          :Each economy provides a different combination of cargos and industries, which might be further modified by other parameters.
-STR_PARAM_ECONOMY_VANILLA_TEMPERATE:Vanilla Temperate
-STR_PARAM_ECONOMY_VANILLA_SUBARCTIC:Vanilla Sub-Arctic
-STR_PARAM_ECONOMY_VANILLA_SUBTROPICAL:Vanilla Sub-Tropical
+STR_PARAM_ECONOMY_VANILLA_TEMPERATE:Factory & Refinery (Vanilla Temperate)
+STR_PARAM_ECONOMY_VANILLA_SUBARCTIC:Paper Mill & Gold (Vanilla Sub-Arctic)
+STR_PARAM_ECONOMY_VANILLA_SUBTROPICAL:Factory & Diamonds (Vanilla Sub-Tropical)
 STR_PARAM_ECONOMY_TOYLAND       :Toyland
-STR_PARAM_ECONOMY_BASIC_TEMPERATE:Basic Temperate
-STR_PARAM_ECONOMY_BASIC_ARCTIC  :Basic Arctic
+STR_PARAM_ECONOMY_BASIC_TEMPERATE:Steelwork & Sand (Basic Temperate)
+STR_PARAM_ECONOMY_BASIC_ARCTIC  :Paper Mill & Chemical Plant (Basic Arctic)
 STR_PARAM_ECONOMY_BASIC_TROPICAL:Basic Tropical
 
 STR_PARAM_PRESET                :Global - Preset
@@ -33,7 +33,7 @@ STR_PARAM_POLICY_FREE_TRADE     :Free Trade
 STR_PARAM_POLICY_EXPORT         :Export
 
 STR_PARAM_PAYMENT               :Macroeconomics - Payment
-STR_PARAM_PAYMENT_DESC          :Choose how the payment depends on the distance.
+STR_PARAM_PAYMENT_DESC          :Choose how the payment depends on the distance.{}{}Linear: the longer the distance, the higher the payment{}Constant: payment is not affected by the distance
 STR_PARAM_PAYMENT_PRESET        :Preset
 STR_PARAM_PAYMENT_LINEAR        :Linear
 STR_PARAM_PAYMENT_CONSTANT      :Constant
@@ -52,7 +52,7 @@ STR_PARAM_WORKFORCE_YETI_MAIL               :Exclusive (Mail)
 STR_PARAM_WORKFORCE_YETI_TIRED              :Exclusive (Tired Worker)
 
 STR_PARAM_TOWN_GOODS            :Towns - Growth Requirements
-STR_PARAM_TOWN_GOODS_DESC       :Choose whether food and/or water are required for town growth. Note that this only functions in the appropriate climate.
+STR_PARAM_TOWN_GOODS_DESC       :Choose whether food and/or water are required for town growth. Note that this only functions in the appropriate climate (e.g., if you choose "Food and Water" but play in Subarctic, then still only food is required for towns above snowlines).
 STR_PARAM_TOWN_GOODS_PRESET     :Preset
 STR_PARAM_TOWN_GOODS_ORGANIC    :Organic
 STR_PARAM_TOWN_GOODS_NONE       :None
@@ -79,7 +79,7 @@ STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_ENABLED          :Enabled
 STR_PARAM_PRIMARY_INDUSTRY_CLOSURE_RESERVE          :Limited by reserve
 
 STR_PARAM_PRIMARY_INDUSTRY_ZONING                   :Primary Industry - Zoning
-STR_PARAM_PRIMARY_INDUSTRY_ZONING_DESC              :Choose whether limit primary industries to particular zones of the world
+STR_PARAM_PRIMARY_INDUSTRY_ZONING_DESC              :Choose whether limit primary industries to particular zones of the world.
 STR_PARAM_PRIMARY_INDUSTRY_ZONING_PRESET            :Preset
 STR_PARAM_PRIMARY_INDUSTRY_ZONING_DISABLED          :Disabled
 STR_PARAM_PRIMARY_INDUSTRY_ZONING_ENABLED           :Enabled
