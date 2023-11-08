@@ -83,11 +83,13 @@ class TheEconomy:
             parameters,
         )
         if parameters["POLICY"] == "SELF_SUFFICIENT":
-            ret.graph[port] = SecondaryIndustry(timber, (china_clay, ammonia))
-            ret.graph[wharf] = SecondaryIndustry(timber, potash)
+            ret.graph[port] = SecondaryIndustry((zinc, fertiliser, paper), (china_clay, ammonia))
+            ret.graph[wharf] = SecondaryIndustry((peat, timber, explosives), potash)
+            del ret.graph[general_store]  # FIXME
         elif parameters["POLICY"] in ("FREE_TRADE", "EXPORT"):
-            ret.graph[port] = SecondaryIndustry(timber, (china_clay, ammonia))
-            ret.graph[wharf] = SecondaryIndustry(timber, potash)
+            ret.graph[port] = SecondaryIndustry((zinc, fertiliser, paper), (china_clay, ammonia))
+            ret.graph[wharf] = SecondaryIndustry((peat, timber, explosives), potash)
+            del ret.graph[general_store]  # FIXME
             del ret.graph[potash_mine]
             del ret.graph[ammonia_plant]
             del ret.graph[clay_pit]
