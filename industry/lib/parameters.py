@@ -214,6 +214,17 @@ parameter_choices = SearchSpace(
 
 
 docs_parameter_choices = parameter_choices.copy()
+docs_parameter_choices.update_params("POLICY", ["AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
+docs_parameter_choices.update_params(
+    "PRIMARY_INDUSTRY_GROWTH",
+    [
+        "NONE",
+        "UNIVERSAL_SUPPLIES",
+        "GENERIC_SUPPLIES",
+        "SPECIFIC_SUPPLIES",
+        "WORKERS",
+    ],
+)
 docs_parameter_choices.update_params("WORKFORCE", ["ABSTRACT", "PROFESSIONAL", "YETI"])
 docs_parameter_choices.update_params("SEA_INDUSTRY", ["ORGANIC"])
 docs_parameter_choices.update_params("TOWN_GOODS", ["ORGANIC"])
