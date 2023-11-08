@@ -78,11 +78,13 @@ class AIndustry(grf.SpriteGenerator):
             exists = resolved_props.pop("exists", True)
             if exists:
                 return [
-                    grf.Define(
-                        feature=grf.INDUSTRY,
-                        id=self.id,
-                        props=resolved_props,
-                    )
+                    [
+                        grf.Define(
+                            feature=grf.INDUSTRY,
+                            id=self.id,
+                            props=resolved_props,
+                        )
+                    ]
                 ]
             else:
                 return []
@@ -91,19 +93,21 @@ class AIndustry(grf.SpriteGenerator):
         for choice in range(len(parameter_list.parameters[var_id].enum)):
             parameters[var_id] = choice
             actions = self.dynamic_definitions(all_choices, parameters, i + 1)
-            if len(actions) == 0:
-                continue
-            ret.append(
-                grf.If(is_static=True, variable=var_id, condition=0x03, value=choice, skip=len(actions), varsize=4)
-            )
-            ret.extend(actions)
+            for g in actions:
+                ret.append(
+                    [grf.If(is_static=True, variable=var_id, condition=0x03, value=choice, skip=len(g), varsize=4)] + g
+                )
         del parameters[var_id]
+
+        # TODO: merge small groups here
+
         return ret
 
     def get_sprites(self, g):
         name_id = g.strings.add(self.name).get_persistent_id()
         self._props["name"] = name_id
         res = self.dynamic_definitions(self.dynamic_prop_variables, {}, 0)
+        res = [sprite for sprite_group in res for sprite in sprite_group]
         if len(res) == 0:
             return []
         definition = res[-1]
