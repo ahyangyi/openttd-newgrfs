@@ -4,6 +4,17 @@ from .transcriber import transcribe
 from .symmetrizer import symmetrize
 
 
+def props_hash(parameters):
+    ret = []
+    for k, v in sorted(parameters.items()):
+        if k == "layouts":
+            # FIXME
+            pass
+        else:
+            ret.append((k, v))
+    return hash(tuple(ret))
+
+
 class SplitDefinition:
     def __init__(self, variables, branches):
         self.variables = variables
@@ -88,16 +99,7 @@ class AIndustry(grf.SpriteGenerator):
                             props=resolved_props,
                         )
                     ]
-                ], hash(
-                    tuple(
-                        sorted(
-                            [
-                                (k, (tuple(tuple(sorted(y.items()) for y in x) for x in v) if k == "layouts" else v))
-                                for k, v in resolved_props.items()
-                            ]
-                        )
-                    )
-                )
+                ], props_hash(resolved_props)
             else:
                 return [], 0
         ret = []
