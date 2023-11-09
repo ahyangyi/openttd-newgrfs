@@ -167,7 +167,7 @@ STR_CARGO_NAME_VALU                  :Valuables
 STR_CARGO_NAME_WATR                  :Water
 STR_CARGO_NAME_WDPR                  :Timber
 STR_CARGO_NAME_WHEA                  :Wheat
-STR_CARGO_NAME_WOOD                  :Wood
+STR_CARGO_NAME_WOOD                  :Logs
 STR_CARGO_NAME_WRKR                  :Workers
 STR_CARGO_NAME_ZINC                  :Zinc
 
@@ -210,6 +210,6 @@ STR_CARGO_UNIT_VALU                  :{WEIGHT} of valuables
 STR_CARGO_UNIT_WATR                  :{VOLUME} of water
 STR_CARGO_UNIT_WDPR                  :{WEIGHT} of timber
 STR_CARGO_UNIT_WHEA                  :{WEIGHT} of wheat
-STR_CARGO_UNIT_WOOD                  :{WEIGHT} of wood
+STR_CARGO_UNIT_WOOD                  :{WEIGHT} of logs
 STR_CARGO_UNIT_WRKR                  :{SIGNED_WORD} worker{P 0 "" s}
 STR_CARGO_UNIT_ZINC                  :{WEIGHT} of zinc
