@@ -51,6 +51,11 @@ class WorkerYard(PrimaryIndustry):
         super().__init__(produces, extra_accepts, boosters)
 
 
+class FreePort(PrimaryIndustry):
+    def __init__(self, boosters=(), produces=(), extra_accepts=()):
+        super().__init__(produces, extra_accepts, boosters)
+
+
 class SecondaryIndustry(Industry):
     def __init__(self, consumes=(), produces=()):
         self.consumes = make_tuple(consumes)
