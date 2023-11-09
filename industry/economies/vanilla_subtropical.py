@@ -1,4 +1,12 @@
-from industry.lib.economy import Economy, PrimaryIndustry, WorkerYard, SecondaryIndustry, TertiaryIndustry, Town
+from industry.lib.economy import (
+    Economy,
+    PrimaryIndustry,
+    WorkerYard,
+    FreePort,
+    SecondaryIndustry,
+    TertiaryIndustry,
+    Town,
+)
 from industry.cargos import (
     copper_ore,
     diamonds,
@@ -28,6 +36,7 @@ from industry.industries import (
     lumber_mill,
     oil_refinery,
     oil_wells,
+    port,
     rubber_plantation,
     towns,
     water_supply,
@@ -58,6 +67,11 @@ class TheEconomy:
             },
             parameters,
         )
+        if parameters["POLICY"] == "SELF_SUFFICIENT":
+            ret.graph[port] = FreePort(diamonds, oil)
+        elif parameters["POLICY"] in ("FREE_TRADE", "EXPORT"):
+            ret.graph[port] = FreePort(diamonds, oil)
+
         if parameters["PRIMARY_INDUSTRY_GROWTH"] == "UNIVERSAL_SUPPLIES":
             ret.graph[diamond_mine].boosters = engineering_supplies
             ret.graph[oil_wells].boosters = engineering_supplies

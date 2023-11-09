@@ -1,4 +1,12 @@
-from industry.lib.economy import Economy, PrimaryIndustry, WorkerYard, SecondaryIndustry, TertiaryIndustry, Town
+from industry.lib.economy import (
+    Economy,
+    PrimaryIndustry,
+    WorkerYard,
+    FreePort,
+    SecondaryIndustry,
+    TertiaryIndustry,
+    Town,
+)
 from industry.cargos import (
     coal,
     engineering_supplies,
@@ -67,9 +75,9 @@ class TheEconomy:
             parameters,
         )
         if parameters["POLICY"] == "SELF_SUFFICIENT":
-            ret.graph[port] = SecondaryIndustry(wood, paper)
+            ret.graph[port] = FreePort(wood, paper)
         elif parameters["POLICY"] in ("FREE_TRADE", "EXPORT"):
-            ret.graph[port] = SecondaryIndustry(wood, paper)
+            ret.graph[port] = FreePort(wood, paper)
             del ret.graph[paper_mill]
 
         if parameters["PRIMARY_INDUSTRY_GROWTH"] == "UNIVERSAL_SUPPLIES":

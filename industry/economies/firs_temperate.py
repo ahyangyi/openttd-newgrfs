@@ -1,4 +1,12 @@
-from industry.lib.economy import Economy, PrimaryIndustry, WorkerYard, SecondaryIndustry, TertiaryIndustry, Town
+from industry.lib.economy import (
+    Economy,
+    PrimaryIndustry,
+    WorkerYard,
+    FreePort,
+    SecondaryIndustry,
+    TertiaryIndustry,
+    Town,
+)
 from industry.cargos import (
     alcohol,
     chemicals,
@@ -30,7 +38,6 @@ from industry.industries import (
     dairy,
     dairy_farm,
     dredging_site,
-    fish_farm,
     fishing_grounds,
     fishing_harbor,
     general_store,
@@ -62,7 +69,6 @@ class TheEconomy:
                 dredging_site: PrimaryIndustry(sand),
                 iron_ore_mine: PrimaryIndustry(iron_ore),
                 scrap_yard: PrimaryIndustry(scrap_metal),
-                fish_farm: PrimaryIndustry(fish),
                 fishing_grounds: PrimaryIndustry(fish),
                 dairy_farm: PrimaryIndustry((milk, livestock)),
                 orchard_and_piggery: PrimaryIndustry((fruit, livestock)),
@@ -80,29 +86,46 @@ class TheEconomy:
             parameters,
         )
         if parameters["POLICY"] == "SELF_SUFFICIENT":
-            ret.graph[port] = SecondaryIndustry(china_clay, chemicals)
+            ret.graph[port] = FreePort((goods, food, china_clay), chemicals)
         elif parameters["POLICY"] in ("FREE_TRADE", "EXPORT"):
-            ret.graph[port] = SecondaryIndustry(china_clay, chemicals)
-            # del ret.graph[clay_pit]
+            ret.graph[port] = FreePort((goods, food, china_clay), chemicals)
+            del ret.graph[chemical_plant]
 
         if parameters["PRIMARY_INDUSTRY_GROWTH"] == "UNIVERSAL_SUPPLIES":
             ret.graph[clay_pit].boosters = engineering_supplies
-            ret.graph[fish_farm].boosters = engineering_supplies
+            ret.graph[coal_mine].boosters = engineering_supplies
+            ret.graph[iron_ore_mine].boosters = engineering_supplies
+            ret.graph[dairy_farm].boosters = engineering_supplies
             ret.graph[orchard_and_piggery].boosters = engineering_supplies
 
-            ret.graph[cider_mill].produces += (engineering_supplies,)
+            if parameters["POLICY"] in ("SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"):
+                ret.graph[port].produces += (engineering_supplies,)
+            else:
+                ret.graph[metal_workshop].produces += (engineering_supplies,)
         elif parameters["PRIMARY_INDUSTRY_GROWTH"] == "GENERIC_SUPPLIES":
             ret.graph[clay_pit].boosters = engineering_supplies
-            ret.graph[fish_farm].boosters = farm_supplies
+            ret.graph[coal_mine].boosters = engineering_supplies
+            ret.graph[iron_ore_mine].boosters = engineering_supplies
+            ret.graph[dairy_farm].boosters = farm_supplies
             ret.graph[orchard_and_piggery].boosters = farm_supplies
 
-            ret.graph[cider_mill].produces += (engineering_supplies, farm_supplies)
+            if parameters["POLICY"] in ("SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"):
+                ret.graph[port].produces += (engineering_supplies, farm_supplies)
+            else:
+                ret.graph[metal_workshop].produces += (engineering_supplies,)
+                ret.graph[glass_works].produces += (farm_supplies,)
         elif parameters["PRIMARY_INDUSTRY_GROWTH"] == "GENERIC_SUPPLIES_PASSENGERS":
             ret.graph[clay_pit].boosters = engineering_supplies
-            ret.graph[fish_farm].boosters = farm_supplies
+            ret.graph[coal_mine].boosters = engineering_supplies
+            ret.graph[iron_ore_mine].boosters = engineering_supplies
+            ret.graph[dairy_farm].boosters = farm_supplies
             ret.graph[orchard_and_piggery].boosters = farm_supplies
 
-            ret.graph[cider_mill].produces += (engineering_supplies, farm_supplies)
+            if parameters["POLICY"] in ("SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"):
+                ret.graph[port].produces += (engineering_supplies, farm_supplies)
+            else:
+                ret.graph[metal_workshop].produces += (engineering_supplies,)
+                ret.graph[glass_works].produces += (farm_supplies,)
 
         if parameters["WORKFORCE"].startswith("YETI"):
             if parameters["WORKFORCE"] == "YETI":
