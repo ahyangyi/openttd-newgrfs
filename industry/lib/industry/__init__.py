@@ -136,8 +136,7 @@ class AIndustry(grf.SpriteGenerator):
         return compressed_ret, hash(tuple(hashes))
 
     def get_sprites(self, g):
-        name_id = g.strings.add(self.name).get_persistent_id()
-        self._props["name"] = name_id
+        self._props["name"] = g.strings[f"STR_INDUSTRY_NAME_{self.translation_name}"].get_persistent_id()
         res, _ = self.dynamic_definitions(self.dynamic_prop_variables, {}, 0)
         res = [sprite for sprite_group in res for sprite in sprite_group]
         if len(res) == 0:
