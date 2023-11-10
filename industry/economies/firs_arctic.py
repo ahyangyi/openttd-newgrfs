@@ -156,8 +156,7 @@ class TheEconomy:
                 ret.graph[worker_yard] = WorkerYard(workers, boosters=(paper, zinc, tired_workers))
                 ret.graph[peatlands].produces += (tired_workers,)
 
-            # FIXME
-            ret.graph[peatlands].boosters = workers
+            ret.graph[fishing_grounds].boosters = workers
 
         if port in ret.graph:
             if parameters["SEA_INDUSTRY"] == "LAND_ONLY":

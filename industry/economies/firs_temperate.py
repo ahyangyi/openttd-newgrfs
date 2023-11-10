@@ -94,6 +94,7 @@ class TheEconomy:
         if parameters["PRIMARY_INDUSTRY_GROWTH"] == "UNIVERSAL_SUPPLIES":
             ret.graph[clay_pit].boosters = engineering_supplies
             ret.graph[coal_mine].boosters = engineering_supplies
+            ret.graph[dredging_site].boosters = engineering_supplies
             ret.graph[iron_ore_mine].boosters = engineering_supplies
             ret.graph[dairy_farm].boosters = engineering_supplies
             ret.graph[orchard_and_piggery].boosters = engineering_supplies
@@ -105,6 +106,7 @@ class TheEconomy:
         elif parameters["PRIMARY_INDUSTRY_GROWTH"] == "GENERIC_SUPPLIES":
             ret.graph[clay_pit].boosters = engineering_supplies
             ret.graph[coal_mine].boosters = engineering_supplies
+            ret.graph[dredging_site].boosters = engineering_supplies
             ret.graph[iron_ore_mine].boosters = engineering_supplies
             ret.graph[dairy_farm].boosters = farm_supplies
             ret.graph[orchard_and_piggery].boosters = farm_supplies
@@ -117,6 +119,7 @@ class TheEconomy:
         elif parameters["PRIMARY_INDUSTRY_GROWTH"] == "GENERIC_SUPPLIES_PASSENGERS":
             ret.graph[clay_pit].boosters = engineering_supplies
             ret.graph[coal_mine].boosters = engineering_supplies
+            ret.graph[dredging_site].boosters = engineering_supplies
             ret.graph[iron_ore_mine].boosters = engineering_supplies
             ret.graph[dairy_farm].boosters = farm_supplies
             ret.graph[orchard_and_piggery].boosters = farm_supplies
@@ -138,8 +141,7 @@ class TheEconomy:
                 ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, alcohol, tired_workers))
                 ret.graph[orchard_and_piggery].produces += (tired_workers,)
 
-            # FIXME
-            ret.graph[orchard_and_piggery].boosters = workers
+            ret.graph[fishing_grounds].boosters = workers
 
         if port in ret.graph:
             if parameters["SEA_INDUSTRY"] == "LAND_ONLY":
