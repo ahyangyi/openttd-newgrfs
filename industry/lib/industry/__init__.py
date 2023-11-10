@@ -2,6 +2,7 @@ import grf
 from industry.lib.parameters import parameter_list
 from .transcriber import transcribe
 from .symmetrizer import symmetrize
+from agrf.strings import get_translation
 
 
 def props_hash(parameters):

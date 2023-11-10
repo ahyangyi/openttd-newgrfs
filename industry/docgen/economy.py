@@ -38,12 +38,12 @@ search_exclude: true"""
 |----------|---------|----------|""",
                     file=f,
                 )
-                industrylink = lambda x: f"[{x}](../industries/{x}.html)"
+                industrylink = lambda x: f"[{x.name(string_manager)}](../industries/{x.translation_name}.html)"
                 cargolink = lambda x: f"[{x.name(string_manager)}](../cargos/{x.label.decode()}.html)"
                 for industry, flow in economy.graph.items():
                     accepts = ", ".join(cargolink(x) for x in flow.accepts)
                     produces = ", ".join(cargolink(x) for x in flow.produces)
-                    print(f"| {industrylink(industry.name)} | {accepts} | {produces} |", file=f)
+                    print(f"| {industrylink(industry)} | {accepts} | {produces} |", file=f)
 
                 # Cargos
                 print(
