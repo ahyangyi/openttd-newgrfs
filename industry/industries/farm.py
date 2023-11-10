@@ -66,7 +66,7 @@ tile_map = {
 }
 
 the_industry = AIndustry(
-    name="Farm",
+    translation_name="FARM",
     override_type=0x09,
     layouts=SplitDefinition(
         9,

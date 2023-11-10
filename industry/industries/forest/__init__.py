@@ -15,7 +15,7 @@ one_grid_set = [
 tile_map = {"x": grf.OldIndustryTileID(0x10)}
 
 the_industry = AIndustry(
-    name="Forest",
+    translation_name="FOREST",
     override_type=0x03,
     layouts=SplitDefinition(
         "INDUSTRY_SIZE",

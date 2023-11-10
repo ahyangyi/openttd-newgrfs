@@ -32,7 +32,7 @@ one_tile_set = [
 tile_map = {"x": grf.OldIndustryTileID(0x1D)}
 
 the_industry = AIndustry(
-    name="Oil Wells",
+    translation_name="OIL_WELLS",
     override_type=0x0B,
     layouts=SplitDefinition(
         9,

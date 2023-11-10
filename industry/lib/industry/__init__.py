@@ -38,7 +38,7 @@ class SplitDefinition:
 
 
 class AIndustry(grf.SpriteGenerator):
-    def __init__(self, *, name, id=None, callbacks={}, **props):
+    def __init__(self, *, translation_name, id=None, callbacks={}, **props):
         super().__init__()
         if "override_type" in props:
             assert id is None
@@ -48,7 +48,7 @@ class AIndustry(grf.SpriteGenerator):
         if "substitute_type" not in props:
             props["substitute_type"] = 0x0
         self.id = id
-        self.name = name
+        self.translation_name = translation_name
         self._props = props
         self.callbacks = grf.make_callback_manager(grf.INDUSTRY, callbacks)
 
@@ -148,10 +148,13 @@ class AIndustry(grf.SpriteGenerator):
 
         return res
 
+    def name(self, string_manager, lang_id=0x7F):
+        return get_translation(string_manager[f"STR_INDUSTRY_NAME_{self.translation_name}"], 0x7F)
+
 
 class ADummyIndustry(AIndustry):
-    def __init__(self, *, name):
-        super().__init__(id=0xFF, name=name, callbacks={})
+    def __init__(self, *, translation_name):
+        super().__init__(id=0xFF, translation_name=translation_name, callbacks={})
 
     def get_sprites(self, g):
         return []
