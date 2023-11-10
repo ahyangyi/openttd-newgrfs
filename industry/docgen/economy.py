@@ -28,11 +28,12 @@ layout: default
 title: {meta_economy.name}
 nav_exclude: true
 search_exclude: true"""
+
             with open(os.path.join(prefix, f"{meta_economy.name}_{variation_desc}.md"), "w") as f:
                 print(
                     f"""{header}
 ---
-# Flowchart
+# Industries
 
 | Industry | Accepts | Produces |
 |----------|---------|----------|""",
@@ -56,9 +57,10 @@ search_exclude: true"""
                 )
                 for cargo in economy.cargos:
                     from .cargo import cargo_class
+                    cargolink = lambda x: f"[{x.name(string_manager)}](../cargos/{x.label.decode()}.html)"
 
                     print(
-                        f"| {cargo.name(string_manager)} | {cargo_class(cargo.cargo_class)} | {cargo.capacity_multiplier / 0x100} | {cargo.weight / 16} |",
+                        f"| {cargolink(cargo)} | {cargo_class(cargo.cargo_class)} | {cargo.capacity_multiplier / 0x100} | {cargo.weight / 16} |",
                         file=f,
                     )
 
