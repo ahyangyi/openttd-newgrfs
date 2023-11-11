@@ -13,7 +13,7 @@ def gen_docs(string_manager, rosters):
         os.makedirs(prefix, exist_ok=True)
 
     for i, roster in enumerate(rosters):
-        prefix = f"docs/_i18n/{language}/road_vehicle/rosters"
+        prefix = f"docs/road_vehicle/rosters"
         with open(os.path.join(prefix, f"{roster.name}.md"), "w") as f:
             print(
                 f"""---
@@ -28,16 +28,10 @@ nav_order: {i+1}
             )
 
         for language in ["en-GB", "zh-CN"]:
-            prefix = f"docs/_i18n/{language}/road_vehicle/rosters"
-            with open(os.path.join(prefix, f"{roster.name}.md"), "w") as f:
+            langprefix = f"docs/_i18n/{language}/road_vehicle/rosters"
+            with open(os.path.join(langprefix, f"{roster.name}.md"), "w") as f:
                 print(
-                    f"""---
-layout: default
-title: {roster.name}
-parent: Rosters
-grand_parent: Ahyangyi's Road Vehicles (ARV)
-nav_order: {i+1}
----
+                    f"""
 """,
                     file=f,
                 )
@@ -47,7 +41,6 @@ nav_order: {i+1}
     cc1_remap = company_colour_remap(CompanyColour.BLUE, CompanyColour.BLUE).to_sprite()
     cc2_remap = company_colour_remap(CompanyColour.WHITE, CompanyColour.RED).to_sprite()
     for i, entry in enumerate(rosters[0].entries):
-
         # Prepare text
         v = entry.variant
         translation = get_translation(string_manager["STR_RV_" + v["translation_name"] + "_NAME"], 0x7F)
@@ -89,7 +82,7 @@ nav_order: {i+1}
 
             with open(os.path.join(langprefix, f'{v["translation_name"]}.md'), "w") as f:
                 print(
-                    f"""---
+                    f"""
 # {INTRODUCTION}
 ![](img/{v["translation_name"]}_cc1.png)
 ![](img/{v["translation_name"]}_cc2.png)
