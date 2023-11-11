@@ -59,12 +59,12 @@ STR_PARAM_TOWN_GOODS_FOOD_AND_WATER:食物和水
 
 
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH                   :第一产业 - 增长
-STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DESC              :选择第一产业的产量受何因素影响。{}{}无 - 不会发生变化{}普适供给 - 产量会在提供某种万能的供给物资时上升{}通用供给 - 产量会在提供农用供给和工程供给时上升{}专用供给 - 产量会在提供特定的供给时上升{}工人 - 产量在有工人时上升{}离散 - 产量依据该产业产出是否被运走而随机变化{}连续 - 同上，但是变化的级别更多。
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DESC              :选择第一产业的产量受何因素影响。{}{}无 - 不会发生变化{}普适物资 - 产量会在提供某种万能的物资物资时上升{}通用物资 - 产量会在提供农用物资和工程物资时上升{}专用物资 - 产量会在提供特定的物资时上升{}工人 - 产量在有工人时上升{}离散 - 产量依据该产业产出是否被运走而随机变化{}连续 - 同上，但是变化的级别更多。
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_PRESET            :使用预设玩法
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_NONE              :无
-STR_PARAM_PRIMARY_INDUSTRY_GROWTH_UNIVERSAL_SUPPLIES:万用供给
-STR_PARAM_PRIMARY_INDUSTRY_GROWTH_GENERIC_SUPPLIES  :通用供给
-STR_PARAM_PRIMARY_INDUSTRY_GROWTH_SPECIFIC_SUPPLIES :专用供给
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_UNIVERSAL_SUPPLIES:万用物资
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_GENERIC_SUPPLIES  :通用物资
+STR_PARAM_PRIMARY_INDUSTRY_GROWTH_SPECIFIC_SUPPLIES :专用物资
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_WORKERS           :工人
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_DISCRETE          :离散
 STR_PARAM_PRIMARY_INDUSTRY_GROWTH_CONTINUOUS        :连续
@@ -121,6 +121,49 @@ STR_PARAM_NIGHT_MODE_DESC       :使用适配 NightGFX 的夜景图像
 STR_PARAM_NIGHT_MODE_AUTO_DETECT:自动检测
 STR_PARAM_NIGHT_MODE_DISABLED   :不使用
 STR_PARAM_NIGHT_MODE_ENABLED    :使用
+
+STR_CARGO_NAME_BEER                  :酒
+STR_CARGO_NAME_BOOM                  :炸药
+STR_CARGO_NAME_COAL                  :煤炭
+STR_CARGO_NAME_CORE                  :铜矿石
+STR_CARGO_NAME_DIAM                  :钻石
+STR_CARGO_NAME_ENSP                  :工程物资
+STR_CARGO_NAME_FERT                  :化肥
+STR_CARGO_NAME_FISH                  :鱼
+STR_CARGO_NAME_FMSP                  :农用物资
+STR_CARGO_NAME_FOOD                  :食品
+STR_CARGO_NAME_FRUT                  :水果
+STR_CARGO_NAME_GOLD                  :黄金
+STR_CARGO_NAME_GOOD                  :货物
+STR_CARGO_NAME_GRAI                  :谷物
+STR_CARGO_NAME_IORE                  :铁矿石
+STR_CARGO_NAME_KAOL                  :高岭土
+STR_CARGO_NAME_LVST                  :牲畜
+STR_CARGO_NAME_MAIL                  :邮件
+STR_CARGO_NAME_MAIZ                  :玉米
+STR_CARGO_NAME_MILK                  :牛奶
+STR_CARGO_NAME_NH3_                  :氨
+STR_CARGO_NAME_OIL_                  :原油
+STR_CARGO_NAME_PAPR                  :纸张
+STR_CARGO_NAME_PASS                  :旅客
+STR_CARGO_NAME_PEAT                  :泥煤
+STR_CARGO_NAME_PHOS                  :磷酸矿
+STR_CARGO_NAME_PORE                  :黄铁矿
+STR_CARGO_NAME_POTA                  :钾碱
+STR_CARGO_NAME_RFPR                  :化工品
+STR_CARGO_NAME_RUBR                  :橡胶
+STR_CARGO_NAME_SAND                  :沙子
+STR_CARGO_NAME_SCMT                  :废金属
+STR_CARGO_NAME_STEL                  :钢材
+STR_CARGO_NAME_SULP                  :硫磺
+STR_CARGO_NAME_TRWK                  :疲劳的工人
+STR_CARGO_NAME_VALU                  :贵重品
+STR_CARGO_NAME_WATR                  :饮用水
+STR_CARGO_NAME_WDPR                  :木料
+STR_CARGO_NAME_WHEA                  :小麦
+STR_CARGO_NAME_WOOD                  :木材
+STR_CARGO_NAME_WRKR                  :工人
+STR_CARGO_NAME_ZINC                  :锌
 
 STR_INDUSTRY_NAME_AMMONIA_PLANT     :制氨厂
 STR_INDUSTRY_NAME_BANK              :银行
