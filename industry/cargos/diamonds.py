@@ -2,7 +2,7 @@ import grf
 from industry.lib.cargo import ACargo, CargoUnit
 
 the_cargo = ACargo(
-    0x15,
+    0x0A,
     b"DIAM",
     grf.CargoClass.ARMOURED,
     weight=2,

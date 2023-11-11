@@ -2,7 +2,7 @@ import grf
 from industry.lib.cargo import ACargo, CargoUnit
 
 the_cargo = ACargo(
-    0x36,
+    0x09,
     b"STEL",
     grf.CargoClass.PIECE_GOODS,
     units_text=CargoUnit.TONNE,
