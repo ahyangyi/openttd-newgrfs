@@ -6,8 +6,14 @@ from agrf.graphics.palette import CompanyColour, company_colour_remap
 
 
 def gen_docs(string_manager, rosters):
-    prefix = "docs/road_vehicle/rosters"
+    for language in ["en-GB", "zh-CN"]:
+        prefix = f"docs/_i18n/{language}/road_vehicle/rosters"
+        os.makedirs(prefix, exist_ok=True)
+        prefix = f"docs/_i18n/{language}/road_vehicle/vehicles"
+        os.makedirs(prefix, exist_ok=True)
+
     for i, roster in enumerate(rosters):
+        prefix = f"docs/_i18n/{language}/road_vehicle/rosters"
         with open(os.path.join(prefix, f"{roster.name}.md"), "w") as f:
             print(
                 f"""---
@@ -21,11 +27,27 @@ nav_order: {i+1}
                 file=f,
             )
 
-    prefix = "docs/road_vehicle/vehicles"
+        for language in ["en-GB", "zh-CN"]:
+            prefix = f"docs/_i18n/{language}/road_vehicle/rosters"
+            with open(os.path.join(prefix, f"{roster.name}.md"), "w") as f:
+                print(
+                    f"""---
+layout: default
+title: {roster.name}
+parent: Rosters
+grand_parent: Ahyangyi's Road Vehicles (ARV)
+nav_order: {i+1}
+---
+""",
+                    file=f,
+                )
+
+    prefix = f"docs/road_vehicle/vehicles"
     os.makedirs(os.path.join(prefix, "img"), exist_ok=True)
     cc1_remap = company_colour_remap(CompanyColour.BLUE, CompanyColour.BLUE).to_sprite()
     cc2_remap = company_colour_remap(CompanyColour.WHITE, CompanyColour.RED).to_sprite()
     for i, entry in enumerate(rosters[0].entries):
+
         # Prepare text
         v = entry.variant
         translation = get_translation(string_manager["STR_RV_" + v["translation_name"] + "_NAME"], 0x7F)
@@ -43,7 +65,7 @@ nav_order: {i+1}
         cc2_masked_img = blend(img, cc2_mask)
         cc2_masked_img.save(os.path.join(prefix, "img", f'{v["translation_name"]}_cc2.png'))
 
-        # Dump
+        # Dump template
         with open(os.path.join(prefix, f'{v["translation_name"]}.md'), "w") as f:
             print(
                 f"""---
@@ -53,12 +75,27 @@ parent: Vehicles
 grand_parent: Ahyangyi's Road Vehicles (ARV)
 nav_order: {i+1}
 ---
-# Introduction
+
+{{% translate_file road_vehicle/vehicles/{v["translation_name"]}.md %}}
+""",
+                file=f,
+            )
+
+        # Dump
+        for language in ["en-GB", "zh-CN"]:
+            langprefix = f"docs/_i18n/{language}/road_vehicle/vehicles"
+            INTRODUCTION = {"en-GB": "Introduction", "zh-CN": "介绍"}[language]
+            DATASHEET = {"en-GB": "Datasheet", "zh-CN": "数据"}[language]
+
+            with open(os.path.join(langprefix, f'{v["translation_name"]}.md'), "w") as f:
+                print(
+                    f"""---
+# {INTRODUCTION}
 ![](img/{v["translation_name"]}_cc1.png)
 ![](img/{v["translation_name"]}_cc2.png)
 {desc_translation}
 
-# Datasheet
+# {DATASHEET}
 """,
-                file=f,
-            )
+                    file=f,
+                )

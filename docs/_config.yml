@@ -5,6 +5,9 @@ baseurl: "/openttd-newgrfs"
 url: "https://ahyangyi.github.io/"
 github_username:  ahyangyi
 theme: just-the-docs
+plugins:
+  - jekyll-multiple-languages-plugin
 languages: ["en-GB", "zh-CN"]
+exclude_from_localizations: ["js", "imgs", "css"]
 markdown: kramdown
 color_scheme: definibus
