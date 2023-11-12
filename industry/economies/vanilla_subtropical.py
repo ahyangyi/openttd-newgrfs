@@ -1,4 +1,5 @@
 from industry.lib.economy import (
+    MetaEconomy,
     Economy,
     PrimaryIndustry,
     WorkerYard,
@@ -45,9 +46,9 @@ from industry.industries import (
 )
 
 
-class TheEconomy:
+class TheEconomy(MetaEconomy):
     def __init__(self):
-        self.name = "Vanilla Sub-Tropical"
+        super().__init__("VANILLA_SUBTROPICAL")
 
     def get_economy(self, parameters):
         ret = Economy(

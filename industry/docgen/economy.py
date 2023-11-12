@@ -18,18 +18,18 @@ def gen_economy_doc(all_economies, string_manager):
             if variation_desc == default_variation:
                 header = f"""---
 layout: default
-title: {meta_economy.name}
+title: {meta_economy.name(string_manager)}
 parent: Economies
 grand_parent: Ahyangyi's Extended Generic Industry Set (AEGIS)
 nav_order: {i+1}"""
             else:
                 header = f"""---
 layout: default
-title: {meta_economy.name}
+title: {meta_economy.name(string_manager)}
 nav_exclude: true
 search_exclude: true"""
 
-            with open(os.path.join(prefix, f"{meta_economy.name}_{variation_desc}.md"), "w") as f:
+            with open(os.path.join(prefix, f"{meta_economy.translation_name}_{variation_desc}.md"), "w") as f:
                 # Flowchart
                 print(
                     f"""{header}
@@ -99,7 +99,7 @@ flowchart LR;""",
                     if preset_desc == variation_desc:
                         choices_text.append(f"{preset}")
                     else:
-                        choices_text.append(f"[{preset}]({meta_economy.name}_{preset_desc}.html)")
+                        choices_text.append(f"[{preset}]({meta_economy.translation_name}_{preset_desc}.html)")
                 choices_text = " \\| ".join(choices_text)
                 print(
                     f"""{choices_text}
@@ -117,7 +117,7 @@ flowchart LR;""",
                             choices_text.append(f"{choice}")
                         else:
                             choices_text.append(
-                                f"[{choice}]({meta_economy.name}_{parameter_choices.desc({**variation, param: choice})}.html)"
+                                f"[{choice}]({meta_economy.translation_name}_{parameter_choices.desc({**variation, param: choice})}.html)"
                             )
                     print(
                         f"{param}: " + " \\| ".join(choices_text) + "\n",

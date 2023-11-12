@@ -1,3 +1,6 @@
+from agrf.strings import get_translation
+
+
 def make_tuple(x):
     if isinstance(x, tuple):
         return x
@@ -126,3 +129,11 @@ class Economy:
         from industry.lib.parameters import parameter_choices
 
         return parameter_choices.desc(self.parameters)
+
+
+class MetaEconomy:
+    def __init__(self, translation_name):
+        self.translation_name = translation_name
+
+    def name(self, string_manager, lang_id=0x7F):
+        return get_translation(string_manager[f"STR_PARAM_ECONOMY_{self.translation_name}"], 0x7F)
