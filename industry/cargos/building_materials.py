@@ -6,4 +6,7 @@ the_cargo = ACargo(
     b"BDMT",
     grf.CargoClass.BULK | grf.CargoClass.PIECE_GOODS,
     units_text=CargoUnit.CRATE,
+    penalty1=12,
+    penalty2=255,
+    base_price=133,
 )
