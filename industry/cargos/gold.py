@@ -7,4 +7,8 @@ the_cargo = ACargo(
     grf.CargoClass.ARMOURED,
     weight=8,
     units_text=CargoUnit.BAG,
+    is_freight=1,
+    penalty1=30,
+    penalty2=255,
+    base_price=152,
 )

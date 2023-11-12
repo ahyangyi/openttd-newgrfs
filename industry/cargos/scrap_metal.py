@@ -6,4 +6,8 @@ the_cargo = ACargo(
     b"SCMT",
     grf.CargoClass.BULK | grf.CargoClass.NON_POURABLE,
     units_text=CargoUnit.TONNE,
+    is_freight=1,
+    penalty1=36,
+    penalty2=255,
+    base_price=107,
 )

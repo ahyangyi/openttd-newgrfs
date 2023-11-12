@@ -8,7 +8,8 @@ the_cargo = ACargo(
     capacity_multiplier=0x400,
     weight=1,
     units_text=CargoUnit.PASSENGER,
+    is_freight=0,
     penalty1=0,
     penalty2=22,
-    base_price=46,
+    base_price=137,
 )

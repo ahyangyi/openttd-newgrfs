@@ -6,4 +6,8 @@ the_cargo = ACargo(
     b"IORE",
     grf.CargoClass.BULK,
     units_text=CargoUnit.TONNE,
+    is_freight=1,
+    penalty1=40,
+    penalty2=255,
+    base_price=90,
 )

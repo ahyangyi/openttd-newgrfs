@@ -7,4 +7,8 @@ the_cargo = ACargo(
     grf.CargoClass.LIQUID,
     weight=14,
     units_text=CargoUnit.LITRE,
+    is_freight=1,
+    penalty1=30,
+    penalty2=255,
+    base_price=101,
 )

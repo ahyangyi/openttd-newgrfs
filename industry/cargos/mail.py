@@ -8,4 +8,8 @@ the_cargo = ACargo(
     capacity_multiplier=0x200,
     weight=4,
     units_text=CargoUnit.BAG,
+    is_freight=0,
+    penalty1=6,
+    penalty2=24,
+    base_price=167,
 )
