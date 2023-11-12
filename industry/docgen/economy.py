@@ -30,9 +30,29 @@ nav_exclude: true
 search_exclude: true"""
 
             with open(os.path.join(prefix, f"{meta_economy.name}_{variation_desc}.md"), "w") as f:
+                # Flowchart
                 print(
                     f"""{header}
 ---
+# Flowchart
+{{% mermaid %}}
+flowchart LR;""",
+                    file=f,
+                )
+                for industry in economy.industries:
+                    print(f"INDUSTRY_{industry.translation_name}[{industry.name(string_manager)}];", file=f)
+                for cargo in economy.cargos:
+                    print(f"CARGO_{cargo.label.decode()}(({cargo.name(string_manager)}));", file=f)
+                for industry, flow in economy.graph.items():
+                    for cargo in flow.accepts:
+                        print(f"CARGO_{cargo.label.decode()} --> INDUSTRY_{industry.translation_name};", file=f)
+                    for cargo in flow.produces:
+                        print(f"INDUSTRY_{industry.translation_name} --> CARGO_{cargo.label.decode()};", file=f)
+
+                # Industries
+                print(
+                    f"""{{% endmermaid %}}
+
 # Industries
 
 | Industry | Accepts | Produces |

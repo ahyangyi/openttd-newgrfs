@@ -7,6 +7,9 @@ github_username:  ahyangyi
 theme: just-the-docs
 plugins:
   - jekyll-multiple-languages-plugin
+  - jekyll-mermaid
+mermaid:
+  src: 'https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js'
 languages: ["en-GB", "zh-CN"]
 exclude_from_localizations: ["js", "imgs", "css"]
 markdown: kramdown
