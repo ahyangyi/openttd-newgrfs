@@ -10,7 +10,7 @@ def props_hash(parameters):
     for k, v in sorted(parameters.items()):
         if k == "layouts":
             # FIXME
-            pass
+            ret.append((k, id(v)))
         else:
             ret.append((k, v))
     return hash(tuple(ret))
