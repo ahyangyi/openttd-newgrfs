@@ -35,7 +35,7 @@ the_industry = AIndustry(
     translation_name="OIL_WELLS",
     override_type=0x0B,
     layouts=SplitDefinition(
-        9,
+        "INDUSTRY_SIZE",
         {
             0: transcribe(enormous_set, tile_map),
             1: transcribe(huge_set, tile_map),

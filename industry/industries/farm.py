@@ -69,7 +69,7 @@ the_industry = AIndustry(
     translation_name="FARM",
     override_type=0x09,
     layouts=SplitDefinition(
-        9,
+        "INDUSTRY_SIZE",
         {
             0: transcribe(large_set, tile_map),
             1: transcribe(large_set, tile_map),
