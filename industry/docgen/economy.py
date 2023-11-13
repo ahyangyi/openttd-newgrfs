@@ -71,8 +71,8 @@ flowchart LR;""",
                     """
 # Cargos
 
-| Cargo | Class | Capacity Multiplier | Weight |
-|-------|-------|---------------------|--------|""",
+| Cargo | Class | Capacity Multiplier | Weight | Penalty1 | Penalty2 | Base Price |
+|-------|-------|---------------------|--------|----------|----------|------------|""",
                     file=f,
                 )
                 for cargo in economy.cargos:
@@ -81,7 +81,7 @@ flowchart LR;""",
                     cargolink = lambda x: f"[{x.name(string_manager)}](../cargos/{x.label.decode()}.html)"
 
                     print(
-                        f"| {cargolink(cargo)} | {cargo_class(cargo.cargo_class)} | {cargo.capacity_multiplier / 0x100} | {cargo.weight / 16} |",
+                        f"| {cargolink(cargo)} | {cargo_class(cargo.cargo_class)} | {cargo.capacity_multiplier / 0x100} | {cargo.weight / 16} | {cargo.penalty1} | {cargo.penalty2} | {cargo.base_price} |",
                         file=f,
                     )
 
