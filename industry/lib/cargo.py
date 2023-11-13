@@ -55,3 +55,15 @@ class ACargo(Cargo):
 
     def name(self, string_manager, lang_id=0x7F):
         return get_translation(string_manager[f"STR_CARGO_NAME_{self.label.decode()}"], 0x7F)
+
+    @property
+    def penalty1(self):
+        return self._props["penalty1"]
+
+    @property
+    def penalty2(self):
+        return self._props["penalty2"]
+
+    @property
+    def base_price(self):
+        return self._props["base_price"]
