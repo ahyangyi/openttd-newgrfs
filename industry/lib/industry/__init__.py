@@ -22,15 +22,7 @@ class SplitDefinition:
         self.branches = branches
 
     def fixup(self):
-        if isinstance(self.variables, int):
-            # Legacy format
-            self.variables = (self.variables,)
-            self.branches = {(i,): b for i, b in self.branches.items()}
-        elif isinstance(self.variables, str):
-            idx = parameter_list.index(self.variables)
-            self.variables = (idx,)
-            self.branches = {(parameter_list.parameters[idx].enum_index(i),): b for i, b in self.branches.items()}
-        elif isinstance(self.variables[0], str):
+        if isinstance(self.variables[0], str):
             self.variables = tuple(parameter_list.index(idx) for idx in self.variables)
             self.branches = {
                 tuple(parameter_list.parameters[idx].enum_index(s) for idx, s in zip(self.variables, i)): b
