@@ -3,6 +3,7 @@ from industry.lib.parameters import parameter_list
 from .transcriber import transcribe
 from .symmetrizer import symmetrize
 from agrf.strings import get_translation
+from agrf.split_action import SplitDefinition
 
 
 def props_hash(parameters):
@@ -14,20 +15,6 @@ def props_hash(parameters):
         else:
             ret.append((k, v))
     return hash(tuple(ret))
-
-
-class SplitDefinition:
-    def __init__(self, variables, branches):
-        self.variables = variables
-        self.branches = branches
-
-    def fixup(self):
-        if isinstance(self.variables[0], str):
-            self.variables = tuple(parameter_list.index(idx) for idx in self.variables)
-            self.branches = {
-                tuple(parameter_list.parameters[idx].enum_index(s) for idx, s in zip(self.variables, i)): b
-                for i, b in self.branches.items()
-            }
 
 
 class AIndustry(grf.SpriteGenerator):
@@ -50,7 +37,7 @@ class AIndustry(grf.SpriteGenerator):
         ret = set()
         for p in self._props.values():
             if isinstance(p, SplitDefinition):
-                p.fixup()
+                p.fixup(parameter_list)
                 for v in p.variables:
                     ret.add(v)
         return list(sorted(ret))
@@ -60,7 +47,7 @@ class AIndustry(grf.SpriteGenerator):
         miss = False
         for k, v in self._props.items():
             while isinstance(v, SplitDefinition):
-                v.fixup()
+                v.fixup(parameter_list)
                 branch_key = tuple(parameters[var] for var in v.variables)
                 if branch_key in v.branches:
                     v = v.branches[branch_key]
