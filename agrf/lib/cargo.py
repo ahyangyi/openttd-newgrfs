@@ -7,8 +7,9 @@ class Cargo(grf.SpriteGenerator):
         self._props = props
         self.callbacks = grf.make_callback_manager(grf.CARGO, {})
 
-    def get_sprites(self, g):
-        extra_props = {}
+    @staticmethod
+    def translate_strings(props, g):
+        props = props.copy()
         for p in [
             "type_text",
             "unit_text",
@@ -16,15 +17,22 @@ class Cargo(grf.SpriteGenerator):
             "many_text",
             "abbr_text",
         ]:
-            if self._props.get(p):
-                s = self._props[p]
+            if props.get(p):
+                s = props[p]
                 if isinstance(s, grf.StringRef):
-                    extra_props[p] = s.get_persistent_id()
+                    props[p] = s.get_persistent_id()
                 else:
-                    extra_props[p] = g.strings.add(s).get_persistent_id()
+                    props[p] = g.strings.add(s).get_persistent_id()
+        return props
 
-        res = []
-        res.append(definition := grf.Define(feature=grf.CARGO, id=self.id, props={**self._props, **extra_props}))
+    def get_definitions(self, g):
+        return [grf.Define(feature=grf.CARGO, id=self.id, props=Cargo.translate_strings(self._props, g))]
+
+    def get_sprites(self, g):
+        res = self.get_definitions(g)
+        if len(res) == 0:
+            return []
+        definition = res[-1]
         self.callbacks.graphics = 0
         res.append(self.callbacks.make_map_action(definition))
 

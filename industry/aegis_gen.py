@@ -37,6 +37,11 @@ def initialize_metadata():
             ("ECONOMY", "POLICY", "PRIMARY_INDUSTRY_GROWTH", "WORKFORCE", "SEA_INDUSTRY", "TOWN_GOODS"), {}
         )
 
+    for cargo in all_cargos:
+        cargo._props["exists"] = SplitDefinition(
+            ("ECONOMY", "POLICY", "PRIMARY_INDUSTRY_GROWTH", "WORKFORCE", "SEA_INDUSTRY", "TOWN_GOODS"), {}
+        )
+
     for i, meta_economy in enumerate(all_economies):
         for variation in parameter_choices.iterate_variations():
             economy = meta_economy.get_economy(variation)
@@ -57,6 +62,11 @@ def initialize_metadata():
                     industry._props["exists"].branches[index] = True
                 else:
                     industry._props["exists"].branches[index] = False
+            for cargo in all_cargos:
+                if cargo in economy.cargos:
+                    cargo._props["exists"].branches[index] = True
+                else:
+                    cargo._props["exists"].branches[index] = False
             for industry, flow_desc in economy.graph.items():
                 industry._props["production_types"].branches[index] = flow_desc.translated_produces
                 industry._props["acceptance_types"].branches[index] = flow_desc.translated_accepts

@@ -17,9 +17,9 @@ def props_hash(parameters):
     return hash(tuple(ret))
 
 
-class AIndustry(MetaSpriteMixin, grf.SpriteGenerator):
+class AIndustry(grf.SpriteGenerator, MetaSpriteMixin):
     def __init__(self, *, translation_name, id=None, callbacks={}, **props):
-        super().__init__(grf.INDUSTRY, props_hash, parameter_list, ("substitute_type",))
+        MetaSpriteMixin.__init__(self, grf.INDUSTRY, props_hash, parameter_list)
         if "override_type" in props:
             assert id is None
             id = props["override_type"]
@@ -31,6 +31,9 @@ class AIndustry(MetaSpriteMixin, grf.SpriteGenerator):
         self.translation_name = translation_name
         self._props = props
         self.callbacks = grf.make_callback_manager(grf.INDUSTRY, callbacks)
+
+    def postprocess_props(self, props):
+        return {"substitute_type": props["substitute_type"], **props}
 
     def get_sprites(self, g):
         self._props["name"] = g.strings[f"STR_INDUSTRY_NAME_{self.translation_name}"].get_persistent_id()

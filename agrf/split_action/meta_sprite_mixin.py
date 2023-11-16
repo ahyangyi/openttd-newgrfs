@@ -3,12 +3,10 @@ from .split_definition import SplitDefinition
 
 
 class MetaSpriteMixin:
-    # FIXME: handle make this an actual mixin
-    def __init__(self, feature, props_hash, parameter_list, priority_props=()):
+    def __init__(self, feature, props_hash, parameter_list):
         self.feature = feature
         self.props_hash = props_hash
         self._parameter_list = parameter_list
-        self._priority_props = priority_props
 
     @property
     def dynamic_prop_variables(self):
@@ -19,6 +17,9 @@ class MetaSpriteMixin:
                 for v in p.variables:
                     ret.add(v)
         return list(sorted(ret))
+
+    def postprocess_props(self, props):
+        return props
 
     def resolve_props(self, parameters):
         new_props = {}
@@ -35,7 +36,6 @@ class MetaSpriteMixin:
             new_props[k] = v
         if new_props.get("exists", True):
             assert not miss
-            new_props = {**{p: new_props[p] for p in self._priority_props if p in new_props}, **new_props}
         else:
             new_props = {"exists": False}
         return new_props
@@ -50,7 +50,7 @@ class MetaSpriteMixin:
                         grf.Define(
                             feature=self.feature,
                             id=self.id,
-                            props=resolved_props,
+                            props=self.postprocess_props(resolved_props),
                         )
                     ]
                 ], self.props_hash(resolved_props)

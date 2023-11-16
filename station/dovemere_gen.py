@@ -15,6 +15,10 @@ def main():
         preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
 
+    import station.stations.dovemere_2018
+
+    g.add(station.stations.dovemere_2018.the_station)
+
     g.write("station.grf")
 
 
