@@ -51,6 +51,14 @@ STR_PARAM_WORKFORCE_YETI_PASSENGERS         :Exclusive (Passengers)
 STR_PARAM_WORKFORCE_YETI_MAIL               :Exclusive (Mail)
 STR_PARAM_WORKFORCE_YETI_TIRED              :Exclusive (Tired Worker)
 
+STR_PARAM_WORKER_PARTICIPATION      :Macroeconomics - Worker Participation
+STR_PARAM_WORKER_PARTICIPATION_DESC :Choose what industries workers influence.
+STR_PARAM_WORKER_PARTICIPATION_PRESET :Preset
+STR_PARAM_WORKER_PARTICIPATION_NONE :None
+STR_PARAM_WORKER_PARTICIPATION_PRIMARY_INDUSTRY :Primary Industries
+STR_PARAM_WORKER_PARTICIPATION_SECONDARY_INDUSTRY :Secondary Industries
+STR_PARAM_WORKER_PARTICIPATION_BOTH :Both
+
 STR_PARAM_TOWN_GOODS            :Towns - Growth Requirements
 STR_PARAM_TOWN_GOODS_DESC       :Choose whether food and/or water are required for town growth. Note that this only functions in the appropriate climate (e.g., if you choose "Food and Water" but play in Subarctic, then still only food is required for towns above snowlines).
 STR_PARAM_TOWN_GOODS_PRESET     :Preset

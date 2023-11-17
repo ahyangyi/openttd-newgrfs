@@ -66,6 +66,17 @@ parameter_list = ParameterList(
             },
         ),
         Parameter(
+            "WORKER_PARTICIPATION",
+            0,
+            {
+                0: "PRESET",
+                1: "NONE",
+                2: "PRIMARY_INDUSTRY",
+                3: "SECONDARY_INDUSTRY",
+                4: "BOTH",
+            },
+        ),
+        Parameter(
             "TOWN_GOODS",
             0,
             {
@@ -85,8 +96,6 @@ parameter_list = ParameterList(
                 2: "UNIVERSAL_SUPPLIES",
                 3: "GENERIC_SUPPLIES",
                 4: "SPECIFIC_SUPPLIES",
-                5: "TOWN_POPULATION",
-                6: "WORKERS",
                 7: "DISCRETE",
                 8: "CONTINUOUS",
             },
@@ -185,8 +194,6 @@ parameter_choices = SearchSpace(
                 "UNIVERSAL_SUPPLIES",
                 "GENERIC_SUPPLIES",
                 "SPECIFIC_SUPPLIES",
-                "TOWN_POPULATION",
-                "WORKERS",
                 "DISCRETE",
                 "CONTINUOUS",
             ],
@@ -206,6 +213,16 @@ parameter_choices = SearchSpace(
                 "YETI_TIRED",
             ],
         ),
+        (
+            "WORKER_PARTICIPATION",
+            [
+                "PRESET",
+                "NONE",
+                "PRIMARY_INDUSTRY",
+                "SECONDARY_INDUSTRY",
+                "BOTH",
+            ],
+        ),
         ("SEA_INDUSTRY", ["PRESET", "ORGANIC", "LAND_ONLY", "BOTH", "EITHER", "SEA_ONLY"]),
         ("TOWN_GOODS", ["PRESET", "ORGANIC", "NONE", "FOOD", "FOOD_AND_WATER"]),
     ],
@@ -222,7 +239,6 @@ docs_parameter_choices.update_params(
         "UNIVERSAL_SUPPLIES",
         "GENERIC_SUPPLIES",
         "SPECIFIC_SUPPLIES",
-        "WORKERS",
     ],
 )
 docs_parameter_choices.update_params("WORKFORCE", ["ABSTRACT", "PROFESSIONAL", "YETI"])
