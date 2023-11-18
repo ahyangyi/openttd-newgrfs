@@ -28,18 +28,54 @@ def initialize_metadata():
 
     for industry in all_industries:
         industry._props["exists"] = SplitDefinition(
-            ("ECONOMY", "POLICY", "PRIMARY_INDUSTRY_GROWTH", "WORKFORCE", "SEA_INDUSTRY", "TOWN_GOODS"), {}
+            (
+                "ECONOMY",
+                "POLICY",
+                "PRIMARY_INDUSTRY_GROWTH",
+                "WORKFORCE",
+                "WORKER_PARTICIPATION",
+                "SEA_INDUSTRY",
+                "TOWN_GOODS",
+            ),
+            {},
         )
         industry._props["production_types"] = SplitDefinition(
-            ("ECONOMY", "POLICY", "PRIMARY_INDUSTRY_GROWTH", "WORKFORCE", "SEA_INDUSTRY", "TOWN_GOODS"), {}
+            (
+                "ECONOMY",
+                "POLICY",
+                "PRIMARY_INDUSTRY_GROWTH",
+                "WORKFORCE",
+                "WORKER_PARTICIPATION",
+                "SEA_INDUSTRY",
+                "TOWN_GOODS",
+            ),
+            {},
         )
         industry._props["acceptance_types"] = SplitDefinition(
-            ("ECONOMY", "POLICY", "PRIMARY_INDUSTRY_GROWTH", "WORKFORCE", "SEA_INDUSTRY", "TOWN_GOODS"), {}
+            (
+                "ECONOMY",
+                "POLICY",
+                "PRIMARY_INDUSTRY_GROWTH",
+                "WORKFORCE",
+                "WORKER_PARTICIPATION",
+                "SEA_INDUSTRY",
+                "TOWN_GOODS",
+            ),
+            {},
         )
 
     for cargo in all_cargos:
         cargo._props["exists"] = SplitDefinition(
-            ("ECONOMY", "POLICY", "PRIMARY_INDUSTRY_GROWTH", "WORKFORCE", "SEA_INDUSTRY", "TOWN_GOODS"), {}
+            (
+                "ECONOMY",
+                "POLICY",
+                "PRIMARY_INDUSTRY_GROWTH",
+                "WORKFORCE",
+                "WORKER_PARTICIPATION",
+                "SEA_INDUSTRY",
+                "TOWN_GOODS",
+            ),
+            {},
         )
 
     for i, meta_economy in enumerate(all_economies):
@@ -55,7 +91,15 @@ def initialize_metadata():
                     4: "BASIC_ARCTIC",
                 }[i],
             ) + tuple(
-                variation[i] for i in ("POLICY", "PRIMARY_INDUSTRY_GROWTH", "WORKFORCE", "SEA_INDUSTRY", "TOWN_GOODS")
+                variation[i]
+                for i in (
+                    "POLICY",
+                    "PRIMARY_INDUSTRY_GROWTH",
+                    "WORKFORCE",
+                    "WORKER_PARTICIPATION",
+                    "SEA_INDUSTRY",
+                    "TOWN_GOODS",
+                )
             )
             for industry in all_industries:
                 if industry in economy.industries:

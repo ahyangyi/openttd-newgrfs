@@ -242,6 +242,7 @@ docs_parameter_choices.update_params(
     ],
 )
 docs_parameter_choices.update_params("WORKFORCE", ["ABSTRACT", "PROFESSIONAL", "YETI"])
+docs_parameter_choices.update_params("WORKER_PARTICIPATION", ["NONE", "PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY"])
 docs_parameter_choices.update_params("SEA_INDUSTRY", ["ORGANIC"])
 docs_parameter_choices.update_params("TOWN_GOODS", ["ORGANIC"])
 
@@ -251,6 +252,7 @@ PRESETS = {
         "POLICY": "AUTARKY",
         "PRIMARY_INDUSTRY_GROWTH": "NONE",
         "WORKFORCE": "ABSTRACT",
+        "WORKER_PARTICIPATION": "NONE",
         "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
@@ -258,6 +260,7 @@ PRESETS = {
         "POLICY": "FREE_TRADE",
         "PRIMARY_INDUSTRY_GROWTH": "GENERIC_SUPPLIES",
         "WORKFORCE": "ABSTRACT",
+        "WORKER_PARTICIPATION": "NONE",
         "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
@@ -265,6 +268,7 @@ PRESETS = {
         "POLICY": "AUTARKY",
         "PRIMARY_INDUSTRY_GROWTH": "UNIVERSAL_SUPPLIES",
         "WORKFORCE": "YETI",
+        "WORKER_PARTICIPATION": "PRIMARY_INDUSTRY",
         "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
@@ -272,6 +276,7 @@ PRESETS = {
         "POLICY": "EXPORT",
         "PRIMARY_INDUSTRY_GROWTH": "GENERIC_SUPPLIES",
         "WORKFORCE": "ABSTRACT",
+        "WORKER_PARTICIPATION": "SECONDARY_INDUSTRY",
         "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },
@@ -279,6 +284,7 @@ PRESETS = {
         "POLICY": "AUTARKY",
         "PRIMARY_INDUSTRY_GROWTH": "GENERIC_SUPPLIES",
         "WORKFORCE": "ABSTRACT",
+        "WORKER_PARTICIPATION": "SECONDARY_INDUSTRY",
         "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",
     },

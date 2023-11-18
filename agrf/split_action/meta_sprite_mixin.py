@@ -60,7 +60,7 @@ class MetaSpriteMixin:
         var_id = all_choices[i]
         sublists = []
         hashes = []
-        for choice in range(len(self._parameter_list.parameters[var_id].enum)):
+        for choice in self._parameter_list.parameters[var_id].enum.keys():
             parameters[var_id] = choice
             sublist, h = self.dynamic_definitions(all_choices, parameters, i + 1)
             sublists.append(sublist)
