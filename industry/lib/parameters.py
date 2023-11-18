@@ -241,7 +241,7 @@ docs_parameter_choices.update_params(
         "SPECIFIC_SUPPLIES",
     ],
 )
-docs_parameter_choices.update_params("WORKFORCE", ["ABSTRACT", "PROFESSIONAL", "YETI"])
+docs_parameter_choices.update_params("WORKFORCE", ["ABSTRACT", "PROFESSIONAL", "YETI_TIRED"])
 docs_parameter_choices.update_params("WORKER_PARTICIPATION", ["NONE", "PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY"])
 docs_parameter_choices.update_params("SEA_INDUSTRY", ["ORGANIC"])
 docs_parameter_choices.update_params("TOWN_GOODS", ["ORGANIC"])
@@ -267,7 +267,7 @@ PRESETS = {
     "YETI": {
         "POLICY": "AUTARKY",
         "PRIMARY_INDUSTRY_GROWTH": "UNIVERSAL_SUPPLIES",
-        "WORKFORCE": "YETI",
+        "WORKFORCE": "YETI_TIRED",
         "WORKER_PARTICIPATION": "PRIMARY_INDUSTRY",
         "SEA_INDUSTRY": "ORGANIC",
         "TOWN_GOODS": "ORGANIC",

@@ -48,6 +48,9 @@ class PrimaryIndustry(Industry):
     def boosters(self, new_boosters):
         self._boosters = make_tuple(new_boosters)
 
+    def to_secondary(self, consumes):
+        return FakePrimaryIndustry(consumes, self.produces, self.extra_accepts, self.boosters)
+
 
 class WorkerYard(PrimaryIndustry):
     def __init__(self, produces=(), extra_accepts=(), boosters=()):
@@ -60,16 +63,23 @@ class FreePort(PrimaryIndustry):
 
 
 class SecondaryIndustry(Industry):
-    def __init__(self, consumes=(), produces=()):
+    def __init__(self, consumes=(), produces=(), extra_accepts=(), boosters=()):
         self.consumes = make_tuple(consumes)
         self.produces = make_tuple(produces)
+        self.extra_accepts = make_tuple(extra_accepts)
+        self.boosters = make_tuple(boosters)
 
     def copy(self):
-        return SecondaryIndustry(self.consumes, self.produces)
+        return SecondaryIndustry(self.consumes, self.produces, self.extra_accepts)
 
     @property
     def accepts(self):
-        return self.consumes
+        return self.consumes + self.extra_accepts + self.boosters
+
+
+class FakePrimaryIndustry(SecondaryIndustry):
+    def __init__(self, consumes=(), produces=(), extra_accepts=(), boosters=()):
+        super().__init__(consumes, produces, extra_accepts, boosters)
 
 
 class TertiaryIndustry(Industry):

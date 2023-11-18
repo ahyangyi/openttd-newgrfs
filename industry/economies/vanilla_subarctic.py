@@ -108,7 +108,7 @@ class TheEconomy(MetaEconomy):
             ret.graph[printing_works].produces += (engineering_supplies,)
             ret.graph[oil_refinery].produces += (farm_supplies,)
 
-        if parameters["WORKFORCE"].startswith("YETI"):
+        if parameters["WORKFORCE"].startswith("YETI") and parameters["WORKER_PARTICIPATION"] != "NONE":
             ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, gold))
             if parameters["WORKFORCE"] == "YETI":
                 ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, gold))
@@ -118,10 +118,14 @@ class TheEconomy(MetaEconomy):
                 ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, gold, mail))
             elif parameters["WORKFORCE"] == "YETI_TIRED":
                 ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, gold, tired_workers))
-                ret.graph[coal_mine].produces += (tired_workers,)
 
             # FIXME
             ret.graph[coal_mine].boosters = workers
+            if parameters["WORKER_PARTICIPATION"] == "PRIMARY_INDUSTRY":
+                for i in [coal_mine, oil_wells, gold_mine, farm, forest]:
+                    ret.graph[i] = ret.graph[i].to_secondary(workers)
+                    if parameters["WORKFORCE"] == "YETI_TIRED":
+                        ret.graph[i].produces += (tired_workers,)
 
         if port in ret.graph:
             if parameters["SEA_INDUSTRY"] == "LAND_ONLY":
