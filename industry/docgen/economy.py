@@ -35,7 +35,7 @@ search_exclude: true"""
                     f"""{header}
 ---
 # Flowchart
-{{% mermaid %}}
+```mermaid
 flowchart LR;""",
                     file=f,
                 )
@@ -63,7 +63,7 @@ flowchart LR;""",
 
                 # Industries
                 print(
-                    f"""{{% endmermaid %}}
+                    f"""```
 
 # Industries
 
