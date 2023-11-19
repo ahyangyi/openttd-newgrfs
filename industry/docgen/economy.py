@@ -36,13 +36,14 @@ search_exclude: true"""
 ---
 # Flowchart
 {{% mermaid %}}
-flowchart LR;""",
+flowchart LR;
+classDef cargo fill:none""",
                     file=f,
                 )
                 for industry in economy.industries:
                     print(f"INDUSTRY_{industry.translation_name}[{industry.name(string_manager)}];", file=f)
                 for cargo in economy.cargos:
-                    print(f"CARGO_{cargo.label.decode()}(({cargo.name(string_manager)}));", file=f)
+                    print(f"CARGO_{cargo.label.decode()}:::cargo(({cargo.name(string_manager)}));", file=f)
                 for industry, flow in economy.graph.items():
                     for cargo in flow.accepts:
                         print(f"CARGO_{cargo.label.decode()} --> INDUSTRY_{industry.translation_name};", file=f)
