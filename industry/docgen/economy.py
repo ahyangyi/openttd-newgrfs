@@ -36,19 +36,30 @@ search_exclude: true"""
 ---
 # Flowchart
 {{% mermaid %}}
-flowchart LR;
-classDef cargo fill:none""",
+flowchart LR;""",
                     file=f,
                 )
+                collapsed_cargos = economy.collapsed_cargos
                 for industry in economy.industries:
-                    print(f"INDUSTRY_{industry.translation_name}[{industry.name(string_manager)}];", file=f)
+                    extra_desc = []
+                    for cargo in flow.accepts:
+                        if cargo in collapsed_cargos:
+                            extra_desc.append(f"Accepts {cargo.name(string_manager)}")
+                    for cargo in flow.produces:
+                        if cargo in collapsed_cargos:
+                            extra_desc.append(f"Produces {cargo.name(string_manager)}")
+                    desc = "\n".join([industry.name(string_manager)] + extra_desc)
+                    print(f'INDUSTRY_{industry.translation_name}["`{desc}`"];', file=f)
                 for cargo in economy.cargos:
-                    print(f"CARGO_{cargo.label.decode()}:::cargo(({cargo.name(string_manager)}));", file=f)
+                    if cargo not in collapsed_cargos:
+                        print(f"CARGO_{cargo.label.decode()}(({cargo.name(string_manager)}));", file=f)
                 for industry, flow in economy.graph.items():
                     for cargo in flow.accepts:
-                        print(f"CARGO_{cargo.label.decode()} --> INDUSTRY_{industry.translation_name};", file=f)
+                        if cargo not in collapsed_cargos:
+                            print(f"CARGO_{cargo.label.decode()} --> INDUSTRY_{industry.translation_name};", file=f)
                     for cargo in flow.produces:
-                        print(f"INDUSTRY_{industry.translation_name} --> CARGO_{cargo.label.decode()};", file=f)
+                        if cargo not in collapsed_cargos:
+                            print(f"INDUSTRY_{industry.translation_name} --> CARGO_{cargo.label.decode()};", file=f)
 
                 # Industries
                 print(
@@ -72,8 +83,8 @@ classDef cargo fill:none""",
                     """
 # Cargos
 
-| Cargo | Class | Capacity Multiplier | Weight | Penalty1 | Penalty2 | Base Price |
-|-------|-------|---------------------|--------|----------|----------|------------|""",
+| Cargo | Class | Capacity Multiplier | Weight | Price |
+|-------|-------|---------------------|--------|-------|""",
                     file=f,
                 )
                 for cargo in economy.cargos:
@@ -82,7 +93,7 @@ classDef cargo fill:none""",
                     cargolink = lambda x: f"[{x.name(string_manager)}](../cargos/{x.label.decode()}.html)"
 
                     print(
-                        f"| {cargolink(cargo)} | {cargo_class(cargo.cargo_class)} | {cargo.capacity_multiplier / 0x100} | {cargo.weight / 16} | {cargo.penalty1} | {cargo.penalty2} | {cargo.base_price} |",
+                        f"| {cargolink(cargo)} | {cargo_class(cargo.cargo_class)} | {cargo.capacity_multiplier / 0x100} | {cargo.weight / 16} | {cargo.base_price} \\| {cargo.penalty1} \\| {cargo.penalty2} |  |",
                         file=f,
                     )
 

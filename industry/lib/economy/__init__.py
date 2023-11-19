@@ -1,4 +1,5 @@
 from agrf.strings import get_translation
+from industry.cargos import engineering_supplies, farm_supplies, tired_workers, workers
 
 
 def make_tuple(x):
@@ -139,6 +140,10 @@ class Economy:
         from industry.lib.parameters import parameter_choices
 
         return parameter_choices.desc(self.parameters)
+
+    @property
+    def collapsed_cargos(self):
+        return [x for x in [engineering_supplies, farm_supplies, workers, tired_workers] if x in self.cargos]
 
 
 class MetaEconomy:
