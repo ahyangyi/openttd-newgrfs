@@ -119,15 +119,12 @@ class TheEconomy(MetaEconomy):
             elif parameters["WORKFORCE"] == "YETI_TIRED":
                 ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, gold, tired_workers))
 
-            if parameters["WORKER_PARTICIPATION"] == "NONE":
+            # FIXME: remove PRESET; support SECONDARY
+            if parameters["WORKER_PARTICIPATION"] in ("PRESET", "NONE"):
                 ret.graph[coal_mine].boosters = workers
-            elif parameters["WORKER_PARTICIPATION"] == "PRIMARY_INDUSTRY":
-                for i in [coal_mine, oil_wells, gold_mine, farm, forest]:
-                    ret.graph[i] = ret.graph[i].to_secondary(workers)
-                    if parameters["WORKFORCE"] == "YETI_TIRED":
-                        ret.graph[i].produces += (tired_workers,)
-            elif parameters["WORKER_PARTICIPATION"] == "SECONDARY_INDUSTRY":
-                # FIXME
+                if parameters["WORKFORCE"] == "YETI_TIRED":
+                    ret.graph[coal_mine].produces += (tired_workers,)
+            if parameters["WORKER_PARTICIPATION"] in ("PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY", "BOTH"):
                 for i in [coal_mine, oil_wells, gold_mine, farm, forest]:
                     ret.graph[i] = ret.graph[i].to_secondary(workers)
                     if parameters["WORKFORCE"] == "YETI_TIRED":

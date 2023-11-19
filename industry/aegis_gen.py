@@ -177,7 +177,7 @@ def main():
                 try:
                     validate(economy)
                 except AssertionError:
-                    print(f"Economy: {meta_economy.name}")
+                    print(f"Economy: {meta_economy.translation_name}")
                     for k, v in variation.items():
                         print(f"{k}: {v}")
                     raise
