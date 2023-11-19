@@ -40,7 +40,7 @@ flowchart LR;""",
                     file=f,
                 )
                 collapsed_cargos = economy.collapsed_cargos
-                for industry in economy.industries:
+                for industry, flow in economy.graph.items():
                     extra_desc = []
                     for cargo in flow.accepts:
                         if cargo in collapsed_cargos:
