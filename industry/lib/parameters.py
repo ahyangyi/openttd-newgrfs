@@ -12,8 +12,8 @@ parameter_list = ParameterList(
                 2: "VANILLA_SUBTROPICAL",
                 3: "BASIC_TEMPERATE",
                 4: "BASIC_ARCTIC",
+                5: "BASIC_TROPICAL",
                 # ?: "TOYLAND",
-                # ?: "BASIC_SUBTROPICAL",
             },
         ),
         Parameter(

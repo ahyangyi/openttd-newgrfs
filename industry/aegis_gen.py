@@ -2,12 +2,19 @@
 import grf
 import struct
 import argparse
-from industry.economies import vanilla_temperate, vanilla_subarctic, vanilla_subtropical, firs_temperate, firs_arctic
-from industry.lib.parameters import parameter_choices
+from industry.economies import (
+    vanilla_temperate,
+    vanilla_subarctic,
+    vanilla_subtropical,
+    firs_temperate,
+    firs_arctic,
+    firs_tropical,
+)
+from industry.lib.parameters import parameter_list, parameter_choices
 from industry.lib.validator import validate
 
 
-all_economies = [vanilla_temperate, vanilla_subarctic, vanilla_subtropical, firs_temperate, firs_arctic]
+all_economies = [vanilla_temperate, vanilla_subarctic, vanilla_subtropical, firs_temperate, firs_arctic, firs_tropical]
 all_industries = []
 all_cargos = []
 
@@ -81,16 +88,7 @@ def initialize_metadata():
     for i, meta_economy in enumerate(all_economies):
         for variation in parameter_choices.iterate_variations():
             economy = meta_economy.get_economy(variation)
-            index = (
-                {
-                    # FIXME
-                    0: "VANILLA_TEMPERATE",
-                    1: "VANILLA_SUBARCTIC",
-                    2: "VANILLA_SUBTROPICAL",
-                    3: "BASIC_TEMPERATE",
-                    4: "BASIC_ARCTIC",
-                }[i],
-            ) + tuple(
+            index = (parameter_list["ECONOMY"].enum[i],) + tuple(
                 variation[i]
                 for i in (
                     "POLICY",

@@ -52,6 +52,9 @@ class ParameterList:
     def index(self, name):
         return [i for i, p in enumerate(self.parameters) if p.name == name][0]
 
+    def __getitem__(self, name):
+        return self.parameters[self.index(name)]
+
 
 class SearchSpace:
     def __init__(self, choices, parameter_list):
