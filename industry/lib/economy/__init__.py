@@ -71,7 +71,7 @@ class SecondaryIndustry(Industry):
         self.boosters = make_tuple(boosters)
 
     def copy(self):
-        return SecondaryIndustry(self.consumes, self.produces, self.extra_accepts)
+        return SecondaryIndustry(self.consumes, self.produces, self.extra_accepts, self.boosters)
 
     @property
     def accepts(self):

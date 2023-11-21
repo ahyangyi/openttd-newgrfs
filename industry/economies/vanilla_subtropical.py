@@ -106,9 +106,14 @@ class TheEconomy(MetaEconomy):
                 ret.graph[diamond_mine].boosters = workers
                 if parameters["WORKFORCE"] == "YETI_TIRED":
                     ret.graph[diamond_mine].produces += (tired_workers,)
-            if parameters["WORKER_PARTICIPATION"] in ("PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY", "BOTH"):
+            if parameters["WORKER_PARTICIPATION"] in ("SECONDARY_INDUSTRY", "BOTH"):
                 for i in [diamond_mine, oil_wells, copper_ore_mine, farm, lumber_mill]:
                     ret.graph[i] = ret.graph[i].to_secondary(workers)
+                    if parameters["WORKFORCE"] == "YETI_TIRED":
+                        ret.graph[i].produces += (tired_workers,)
+            if parameters["WORKER_PARTICIPATION"] in ("PRIMARY_INDUSTRY", "BOTH"):
+                for i in [food_processing_plant, oil_refinery, factory]:
+                    ret.graph[i].boosters += (workers,)
                     if parameters["WORKFORCE"] == "YETI_TIRED":
                         ret.graph[i].produces += (tired_workers,)
 
