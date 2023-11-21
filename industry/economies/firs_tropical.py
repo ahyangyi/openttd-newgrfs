@@ -95,37 +95,35 @@ class TheEconomy(MetaEconomy):
             ret.graph[general_store].consumes = (alcohol, food, wool, copper, coffee)
 
         if parameters["PRIMARY_INDUSTRY_GROWTH"] == "UNIVERSAL_SUPPLIES":
-            if nitrate_mine in ret.graph:
-                ret.graph[nitrate_mine].boosters = engineering_supplies
-            ret.graph[oil_wells].boosters = engineering_supplies
             ret.graph[copper_ore_mine].boosters = engineering_supplies
+            ret.graph[nitrate_mine].boosters = engineering_supplies
+            ret.graph[oil_wells].boosters = engineering_supplies
 
-            ret.graph[vineyard].boosters = engineering_supplies
             ret.graph[arable_farm].boosters = engineering_supplies
             ret.graph[coffee_estate].boosters = engineering_supplies
             ret.graph[ranch].boosters = engineering_supplies
+            ret.graph[vineyard].boosters = engineering_supplies
 
             if parameters["POLICY"] in ("SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"):
                 ret.graph[port].produces += (engineering_supplies,)
             else:
-                ret.graph[chemical_plant].produces += (engineering_supplies,)
+                ret.graph[copper_smelter].produces += (engineering_supplies,)
 
         elif parameters["PRIMARY_INDUSTRY_GROWTH"] == "GENERIC_SUPPLIES":
-            if nitrate_mine in ret.graph:
-                ret.graph[nitrate_mine].boosters = engineering_supplies
-            ret.graph[oil_wells].boosters = engineering_supplies
             ret.graph[copper_ore_mine].boosters = engineering_supplies
+            ret.graph[nitrate_mine].boosters = engineering_supplies
+            ret.graph[oil_wells].boosters = engineering_supplies
 
-            ret.graph[vineyard].boosters = farm_supplies
             ret.graph[arable_farm].boosters = farm_supplies
             ret.graph[coffee_estate].boosters = farm_supplies
             ret.graph[ranch].boosters = farm_supplies
+            ret.graph[vineyard].boosters = farm_supplies
 
+            ret.graph[nitrate_mine].produces += (farm_supplies,)
             if parameters["POLICY"] in ("SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"):
                 ret.graph[port].produces += (engineering_supplies, farm_supplies)
             else:
                 ret.graph[copper_smelter].produces += (engineering_supplies,)
-                ret.graph[chemical_plant].produces += (farm_supplies,)
 
         if parameters["WORKFORCE"].startswith("YETI"):
             if parameters["WORKFORCE"] == "YETI":
@@ -144,12 +142,14 @@ class TheEconomy(MetaEconomy):
                     ret.graph[fishing_grounds].produces += (tired_workers,)
             if parameters["WORKER_PARTICIPATION"] in ("PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY", "BOTH"):
                 for i in [
+                    copper_ore_mine,
                     nitrate_mine,
                     oil_wells,
-                    copper_ore_mine,
-                    vineyard,
                     arable_farm,
+                    coffee_estate,
+                    fishing_grounds,
                     ranch,
+                    vineyard,
                 ]:
                     if i in ret.graph:
                         ret.graph[i] = ret.graph[i].to_secondary(workers)
