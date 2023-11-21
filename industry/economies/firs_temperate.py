@@ -146,10 +146,24 @@ class TheEconomy(MetaEconomy):
                 ret.graph[fishing_grounds].boosters = workers
                 if parameters["WORKFORCE"] == "YETI_TIRED":
                     ret.graph[fishing_grounds].produces += (tired_workers,)
-            if parameters["WORKER_PARTICIPATION"] in ("PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY", "BOTH"):
-                for i in [clay_pit, coal_mine, dredging_site, iron_ore_mine, dairy_farm, orchard_and_piggery]:
+            if parameters["WORKER_PARTICIPATION"] in ("SECONDARY_INDUSTRY", "BOTH"):
+                for i in [
+                    chemical_plant,
+                    clay_pit,
+                    coal_mine,
+                    dredging_site,
+                    iron_ore_mine,
+                    dairy_farm,
+                    orchard_and_piggery,
+                ]:
                     if i in ret.graph:
                         ret.graph[i] = ret.graph[i].to_secondary(workers)
+                        if parameters["WORKFORCE"] == "YETI_TIRED":
+                            ret.graph[i].produces += (tired_workers,)
+            if parameters["WORKER_PARTICIPATION"] in ("PRIMARY_INDUSTRY", "BOTH"):
+                for i in [metal_workshop, steel_mill, glass_works, cider_mill, stockyard, fishing_harbor, dairy]:
+                    if i in ret.graph:
+                        ret.graph[i].boosters += (workers,)
                         if parameters["WORKFORCE"] == "YETI_TIRED":
                             ret.graph[i].produces += (tired_workers,)
 

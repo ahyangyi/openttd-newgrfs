@@ -31,7 +31,6 @@ from industry.cargos import (
     water,
     wool,
     workers,
-    zinc,
 )
 from industry.industries import (
     arable_farm,
@@ -153,6 +152,19 @@ class TheEconomy(MetaEconomy):
                 ]:
                     if i in ret.graph:
                         ret.graph[i] = ret.graph[i].to_secondary(workers)
+                        if parameters["WORKFORCE"] == "YETI_TIRED":
+                            ret.graph[i].produces += (tired_workers,)
+            if parameters["WORKER_PARTICIPATION"] in ("PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY", "BOTH"):
+                for i in [
+                    chemical_plant,
+                    copper_smelter,
+                    fishing_harbor,
+                    flour_mill,
+                    stockyard,
+                    food_processing_plant,
+                ]:
+                    if i in ret.graph:
+                        ret.graph[i].boosters += (workers,)
                         if parameters["WORKFORCE"] == "YETI_TIRED":
                             ret.graph[i].produces += (tired_workers,)
 
