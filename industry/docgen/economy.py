@@ -94,7 +94,7 @@ classDef cargo fill:none,stroke:none;""",
                     cargolink = lambda x: f"[{x.name(string_manager)}](../cargos/{x.label.decode()}.html)"
 
                     print(
-                        f"| {cargolink(cargo)} | {cargo_class(cargo.cargo_class)} | {cargo.capacity_multiplier / 0x100} | {cargo.weight / 16} | {cargo.base_price} \\| {cargo.penalty1} \\| {cargo.penalty2} |  |",
+                        f"| {cargolink(cargo)} | {cargo_class(cargo.cargo_class)} | {cargo.capacity_multiplier / 0x100} | {cargo.weight / 16} | {cargo.base_price} \\| {cargo.penalty1} \\| {cargo.penalty2} |",
                         file=f,
                     )
 
