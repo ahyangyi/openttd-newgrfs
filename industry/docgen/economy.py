@@ -37,7 +37,7 @@ search_exclude: true"""
 # Flowchart
 ```mermaid
 flowchart LR;
-classDef cargo stroke:none;""",
+classDef cargo fill:none,stroke:none;""",
                     file=f,
                 )
                 collapsed_cargos = economy.collapsed_cargos
@@ -50,10 +50,10 @@ classDef cargo stroke:none;""",
                         if cargo in collapsed_cargos:
                             extra_desc.append(f"Produces {cargo.name(string_manager)}")
                     desc = "\n".join([industry.name(string_manager)] + extra_desc)
-                    print(f'INDUSTRY_{industry.translation_name}:::cargo["`{desc}`"];', file=f)
+                    print(f'INDUSTRY_{industry.translation_name}["`{desc}`"];', file=f)
                 for cargo in economy.cargos:
                     if cargo not in collapsed_cargos:
-                        print(f"CARGO_{cargo.label.decode()}(({cargo.name(string_manager)}));", file=f)
+                        print(f"CARGO_{cargo.label.decode()}({cargo.name(string_manager)}):::cargo;", file=f)
                 for industry, flow in economy.graph.items():
                     for cargo in flow.accepts:
                         if cargo not in collapsed_cargos:
