@@ -6,12 +6,12 @@ STR_GRF_DESC                    :A modular industry set with options to support 
 
 STR_PARAM_ECONOMY               :Global - Economy
 STR_PARAM_ECONOMY_DESC          :Each economy provides a different combination of cargos and industries, which might be further modified by other parameters.
-STR_PARAM_ECONOMY_VANILLA_TEMPERATE:Factory & Refinery (Vanilla Temperate)
-STR_PARAM_ECONOMY_VANILLA_SUBARCTIC:Paper Mill & Gold (Vanilla Sub-Arctic)
-STR_PARAM_ECONOMY_VANILLA_SUBTROPICAL:Factory & Diamonds (Vanilla Sub-Tropical)
+STR_PARAM_ECONOMY_VANILLA_TEMPERATE:Goods & Oil (Vanilla Temperate)
+STR_PARAM_ECONOMY_VANILLA_SUBARCTIC:Paper & Gold (Vanilla Sub-Arctic)
+STR_PARAM_ECONOMY_VANILLA_SUBTROPICAL:Goods & Diamonds (Vanilla Sub-Tropical)
 STR_PARAM_ECONOMY_TOYLAND       :Toyland
-STR_PARAM_ECONOMY_BASIC_TEMPERATE:Steelwork & Sand (Basic Temperate)
-STR_PARAM_ECONOMY_BASIC_ARCTIC  :Paper Mill & Chemical Plant (Basic Arctic)
+STR_PARAM_ECONOMY_BASIC_TEMPERATE:Steel & Sand (Basic Temperate)
+STR_PARAM_ECONOMY_BASIC_ARCTIC  :Paper & Explosives (Basic Arctic)
 STR_PARAM_ECONOMY_BASIC_TROPICAL:Coffee & Alcohol (Basic Tropical)
 
 STR_PARAM_PRESET                :Global - Preset
