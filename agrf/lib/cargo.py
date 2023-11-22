@@ -10,13 +10,7 @@ class Cargo(grf.SpriteGenerator):
     @staticmethod
     def translate_strings(props, g):
         props = props.copy()
-        for p in [
-            "type_text",
-            "unit_text",
-            "one_text",
-            "many_text",
-            "abbr_text",
-        ]:
+        for p in ["type_text", "unit_text", "one_text", "many_text", "abbr_text"]:
             if props.get(p):
                 s = props[p]
                 if isinstance(s, grf.StringRef):

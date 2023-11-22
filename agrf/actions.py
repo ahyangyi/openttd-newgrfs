@@ -43,10 +43,7 @@ class FakeReferencingGenericSpriteLayout(grf.GenericSpriteLayout, grf.Referencin
             [
                 FakeReferencedAction(
                     grf.Action1(
-                        feature=feature,
-                        first_set=ent1[0],
-                        set_count=len(sprites),
-                        sprite_count=len(sprites[0]),
+                        feature=feature, first_set=ent1[0], set_count=len(sprites), sprite_count=len(sprites[0])
                     ),
                     feature=feature,
                 )

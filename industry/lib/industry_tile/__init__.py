@@ -27,23 +27,12 @@ class AIndustryTile(grf.SpriteGenerator):
                 )
             assert len(layouts) == 4
             self.callbacks.graphics = grf.RandomSwitch(
-                feature=grf.INDUSTRY_TILE,
-                scope="self",
-                triggers=0,
-                lowest_bit=0,
-                cmp_all=False,
-                groups=layouts,
+                feature=grf.INDUSTRY_TILE, scope="self", triggers=0, lowest_bit=0, cmp_all=False, groups=layouts
             )
         res.append(definition := grf.Define(feature=grf.INDUSTRY_TILE, id=self.id, props=self._props))
 
         if self.sprites:
-            res.append(
-                grf.Action1(
-                    feature=grf.INDUSTRY_TILE,
-                    set_count=len(self.sprites),
-                    sprite_count=1,
-                )
-            )
+            res.append(grf.Action1(feature=grf.INDUSTRY_TILE, set_count=len(self.sprites), sprite_count=1))
 
             for s in self.sprites:
                 res.append(s)

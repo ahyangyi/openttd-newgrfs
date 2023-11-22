@@ -17,38 +17,10 @@ parameter_list = ParameterList(
             },
         ),
         Parameter(
-            "PRESET",
-            0,
-            {
-                0: "AEGIS",
-                1: "VANILLA",
-                2: "FIRS",
-                3: "YETI",
-                4: "CARIBBEAN",
-                5: "LUMBERJACK",
-                6: "ITI",
-            },
+            "PRESET", 0, {0: "AEGIS", 1: "VANILLA", 2: "FIRS", 3: "YETI", 4: "CARIBBEAN", 5: "LUMBERJACK", 6: "ITI"}
         ),
-        Parameter(
-            "POLICY",
-            0,
-            {
-                0: "PRESET",
-                1: "AUTARKY",
-                2: "SELF_SUFFICIENT",
-                3: "FREE_TRADE",
-                4: "EXPORT",
-            },
-        ),
-        Parameter(
-            "PAYMENT",
-            0,
-            {
-                0: "PRESET",
-                1: "LINEAR",
-                2: "CONSTANT",
-            },
-        ),
+        Parameter("POLICY", 0, {0: "PRESET", 1: "AUTARKY", 2: "SELF_SUFFICIENT", 3: "FREE_TRADE", 4: "EXPORT"}),
+        Parameter("PAYMENT", 0, {0: "PRESET", 1: "LINEAR", 2: "CONSTANT"}),
         Parameter(
             "WORKFORCE",
             0,
@@ -68,25 +40,9 @@ parameter_list = ParameterList(
         Parameter(
             "WORKER_PARTICIPATION",
             0,
-            {
-                0: "PRESET",
-                1: "NONE",
-                2: "PRIMARY_INDUSTRY",
-                3: "SECONDARY_INDUSTRY",
-                4: "BOTH",
-            },
+            {0: "PRESET", 1: "NONE", 2: "PRIMARY_INDUSTRY", 3: "SECONDARY_INDUSTRY", 4: "BOTH"},
         ),
-        Parameter(
-            "TOWN_GOODS",
-            0,
-            {
-                0: "PRESET",
-                1: "ORGANIC",
-                2: "NONE",
-                3: "FOOD",
-                4: "FOOD_AND_WATER",
-            },
-        ),
+        Parameter("TOWN_GOODS", 0, {0: "PRESET", 1: "ORGANIC", 2: "NONE", 3: "FOOD", 4: "FOOD_AND_WATER"}),
         Parameter(
             "PRIMARY_INDUSTRY_GROWTH",
             0,
@@ -100,45 +56,11 @@ parameter_list = ParameterList(
                 8: "CONTINUOUS",
             },
         ),
+        Parameter("PRIMARY_INDUSTRY_CLOSURE", 0, {0: "PRESET", 1: "DISABLED", 2: "ENABLED", 3: "RESERVE"}),
+        Parameter("PRIMARY_INDUSTRY_ZONING", 0, {0: "PRESET", 1: "DISABLED", 2: "ENABLED"}),
+        Parameter("SECONDARY_INDUSTRY_PROCESSING", 0, {0: "PRESET", 1: "STRICT", 2: "NORMAL"}),
         Parameter(
-            "PRIMARY_INDUSTRY_CLOSURE",
-            0,
-            {
-                0: "PRESET",
-                1: "DISABLED",
-                2: "ENABLED",
-                3: "RESERVE",
-            },
-        ),
-        Parameter(
-            "PRIMARY_INDUSTRY_ZONING",
-            0,
-            {
-                0: "PRESET",
-                1: "DISABLED",
-                2: "ENABLED",
-            },
-        ),
-        Parameter(
-            "SECONDARY_INDUSTRY_PROCESSING",
-            0,
-            {
-                0: "PRESET",
-                1: "STRICT",
-                2: "NORMAL",
-            },
-        ),
-        Parameter(
-            "SEA_INDUSTRY",
-            0,
-            {
-                0: "PRESET",
-                1: "ORGANIC",
-                2: "LAND_ONLY",
-                3: "BOTH",
-                4: "EITHER",
-                5: "SEA_ONLY",
-            },
+            "SEA_INDUSTRY", 0, {0: "PRESET", 1: "ORGANIC", 2: "LAND_ONLY", 3: "BOTH", 4: "EITHER", 5: "SEA_ONLY"}
         ),
         Parameter(
             "INDUSTRY_SIZE",
@@ -169,15 +91,7 @@ parameter_list = ParameterList(
                 8: "FIXED",
             },
         ),
-        Parameter(
-            "NIGHT_MODE",
-            0,
-            {
-                0: "AUTO_DETECT",
-                1: "ENABLED",
-                2: "DISABLED",
-            },
-        ),
+        Parameter("NIGHT_MODE", 0, {0: "AUTO_DETECT", 1: "ENABLED", 2: "DISABLED"}),
     ]
 )
 
@@ -188,15 +102,7 @@ parameter_choices = SearchSpace(
         ("POLICY", ["PRESET", "AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
         (
             "PRIMARY_INDUSTRY_GROWTH",
-            [
-                "PRESET",
-                "NONE",
-                "UNIVERSAL_SUPPLIES",
-                "GENERIC_SUPPLIES",
-                "SPECIFIC_SUPPLIES",
-                "DISCRETE",
-                "CONTINUOUS",
-            ],
+            ["PRESET", "NONE", "UNIVERSAL_SUPPLIES", "GENERIC_SUPPLIES", "SPECIFIC_SUPPLIES", "DISCRETE", "CONTINUOUS"],
         ),
         (
             "WORKFORCE",
@@ -213,16 +119,7 @@ parameter_choices = SearchSpace(
                 "YETI_TIRED",
             ],
         ),
-        (
-            "WORKER_PARTICIPATION",
-            [
-                "PRESET",
-                "NONE",
-                "PRIMARY_INDUSTRY",
-                "SECONDARY_INDUSTRY",
-                "BOTH",
-            ],
-        ),
+        ("WORKER_PARTICIPATION", ["PRESET", "NONE", "PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY", "BOTH"]),
         ("SEA_INDUSTRY", ["PRESET", "ORGANIC", "LAND_ONLY", "BOTH", "EITHER", "SEA_ONLY"]),
         ("TOWN_GOODS", ["PRESET", "ORGANIC", "NONE", "FOOD", "FOOD_AND_WATER"]),
     ],
@@ -233,13 +130,7 @@ parameter_choices = SearchSpace(
 docs_parameter_choices = parameter_choices.copy()
 docs_parameter_choices.update_params("POLICY", ["AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
 docs_parameter_choices.update_params(
-    "PRIMARY_INDUSTRY_GROWTH",
-    [
-        "NONE",
-        "UNIVERSAL_SUPPLIES",
-        "GENERIC_SUPPLIES",
-        "SPECIFIC_SUPPLIES",
-    ],
+    "PRIMARY_INDUSTRY_GROWTH", ["NONE", "UNIVERSAL_SUPPLIES", "GENERIC_SUPPLIES", "SPECIFIC_SUPPLIES"]
 )
 docs_parameter_choices.update_params("WORKFORCE", ["ABSTRACT", "PROFESSIONAL", "YETI_TIRED"])
 docs_parameter_choices.update_params("WORKER_PARTICIPATION", ["NONE", "PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY"])

@@ -27,22 +27,9 @@ def guess_dimens(width, height, angle, bbox):
     return height, delta, z
 
 
-deltas = [
-    [0, -2],
-    [2, -1],
-    [4, 0],
-    [2, 1],
-    [0, 2],
-    [-2, 1],
-    [-4, 0],
-    [-2, -1],
-]
+deltas = [[0, -2], [2, -1], [4, 0], [2, 1], [0, 2], [-2, 1], [-4, 0], [-2, -1]]
 
-scale_to_zoom = {
-    1: grf.ZOOM_4X,
-    2: grf.ZOOM_2X,
-    4: grf.ZOOM_NORMAL,
-}
+scale_to_zoom = {1: grf.ZOOM_4X, 2: grf.ZOOM_2X, 4: grf.ZOOM_NORMAL}
 
 
 def spritesheet_template(

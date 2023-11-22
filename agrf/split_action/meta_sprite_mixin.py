@@ -46,13 +46,7 @@ class MetaSpriteMixin:
             exists = resolved_props.pop("exists", True)
             if exists:
                 return [
-                    [
-                        grf.Define(
-                            feature=self.feature,
-                            id=self.id,
-                            props=self.postprocess_props(resolved_props),
-                        )
-                    ]
+                    [grf.Define(feature=self.feature, id=self.id, props=self.postprocess_props(resolved_props))]
                 ], self.props_hash(resolved_props)
             else:
                 return [], 0

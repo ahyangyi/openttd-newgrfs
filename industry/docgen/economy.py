@@ -1,9 +1,5 @@
 import os
-from industry.lib.parameters import (
-    docs_parameter_choices,
-    parameter_choices,
-    PRESETS,
-)
+from industry.lib.parameters import docs_parameter_choices, parameter_choices, PRESETS
 
 
 default_variation = "1" * len(parameter_choices.choices)
@@ -132,7 +128,4 @@ classDef cargo fill:none,stroke:none;""",
                             choices_text.append(
                                 f"[{choice}]({meta_economy.translation_name}_{parameter_choices.desc({**variation, param: choice})}.html)"
                             )
-                    print(
-                        f"{param}: " + " \\| ".join(choices_text) + "\n",
-                        file=f,
-                    )
+                    print(f"{param}: " + " \\| ".join(choices_text) + "\n", file=f)

@@ -27,13 +27,7 @@ def props_hash(parameters):
 class ACargo(Cargo, MetaSpriteMixin):
     def __init__(self, id, label, cargo_class, capacity_multiplier=0x100, weight=16, **props):
         super().__init__(
-            id=id,
-            **{
-                "classes": cargo_class,
-                "capacity_mult": capacity_multiplier,
-                "weight": weight,
-                **props,
-            },
+            id=id, **{"classes": cargo_class, "capacity_mult": capacity_multiplier, "weight": weight, **props}
         )
         MetaSpriteMixin.__init__(self, grf.CARGO, props_hash, parameter_list)
         self.label = label

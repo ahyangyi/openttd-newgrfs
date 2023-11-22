@@ -55,29 +55,19 @@ def positor(config, vox_path, new_path):
 
 
 def hill_positor_1(vox_path, new_path, degree):
-    config = {
-        "operations": [
-            {"name": "", "type": "rotate_y", "angle": degree},
-        ],
-    }
+    config = {"operations": [{"name": "", "type": "rotate_y", "angle": degree}]}
 
     positor(config, vox_path, new_path)
 
 
 def stairstep(vox_path, new_path, x_steps):
-    config = {
-        "operations": [{"name": "", "type": "stairstep", "x_steps": x_steps, "z_steps": 1}],
-    }
+    config = {"operations": [{"name": "", "type": "stairstep", "x_steps": x_steps, "z_steps": 1}]}
 
     positor(config, vox_path, new_path)
 
 
 def compose(vox_path, subvox_path, new_path, extra_config):
-    config = {
-        "operations": [
-            {"name": "", "type": "repeat", "n": 1, "file": subvox_path, **extra_config},
-        ],
-    }
+    config = {"operations": [{"name": "", "type": "repeat", "n": 1, "file": subvox_path, **extra_config}]}
 
     positor(config, vox_path, new_path)
 
@@ -93,18 +83,14 @@ def self_compose(vox_path, new_path, extra_config):
                 "ignore_mask": True,
                 "overwrite": True,
                 **extra_config,
-            },
-        ],
+            }
+        ]
     }
 
     positor(config, vox_path, new_path)
 
 
 def produce_empty(vox_path, new_path):
-    config = {
-        "operations": [
-            {"name": "", "type": "produce_empty"},
-        ],
-    }
+    config = {"operations": [{"name": "", "type": "produce_empty"}]}
 
     positor(config, vox_path, new_path)

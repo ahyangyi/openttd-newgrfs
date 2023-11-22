@@ -140,11 +140,7 @@ class ABus(ARoadVehicle):
             id=id,
             name=name,
             capacity_in_tons=cargo_capacity / 16,
-            **{
-                "weight": ARoadVehicle.ton(weight),
-                "cargo_capacity": cargo_capacity,
-                **kwargs,
-            },
+            **{"weight": ARoadVehicle.ton(weight), "cargo_capacity": cargo_capacity, **kwargs},
         )
         super().assign_hog_costs()
 

@@ -59,14 +59,7 @@ def gen(fast):
 
     # Put a permanent empty sprite at 31
     for feature in [grf.RV, grf.TRAIN]:
-        g.add(
-            grf.Action1(
-                feature=feature,
-                first_set=31,
-                set_count=1,
-                sprite_count=8,
-            )
-        )
+        g.add(grf.Action1(feature=feature, first_set=31, set_count=1, sprite_count=8))
         for _ in range(8):
             g.add(grf.EMPTY_SPRITE)
 

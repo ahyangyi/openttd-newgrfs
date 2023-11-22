@@ -59,13 +59,7 @@ class TheEconomy(MetaEconomy):
                 forest: PrimaryIndustry(wood),
                 oil_wells: PrimaryIndustry(oil),
                 gold_mine: PrimaryIndustry(gold),
-                food_processing_plant: SecondaryIndustry(
-                    (
-                        livestock,
-                        wheat,
-                    ),
-                    food,
-                ),
+                food_processing_plant: SecondaryIndustry((livestock, wheat), food),
                 paper_mill: SecondaryIndustry(wood, paper),
                 oil_refinery: SecondaryIndustry(oil, goods),
                 printing_works: SecondaryIndustry(paper, goods),

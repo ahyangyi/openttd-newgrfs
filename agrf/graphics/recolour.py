@@ -26,10 +26,7 @@ class ColourMap:
 
     @functools.cache
     def __add__(self, o):
-        return ColourMap(
-            f"({self.name}+{o.name})",
-            self.colour_map + o.colour_map,
-        )
+        return ColourMap(f"({self.name}+{o.name})", self.colour_map + o.colour_map)
 
     def to_sprite(self):
         triplets = []
@@ -43,12 +40,6 @@ class ColourMap:
         return grf.PaletteRemap(triplets)
 
 
-CC1_BLACK = ColourMap(
-    "cc1_black",
-    [(ColourRange(0xC8, 0xCF), ColourRange(3, 8))],
-)
+CC1_BLACK = ColourMap("cc1_black", [(ColourRange(0xC8, 0xCF), ColourRange(3, 8))])
 
-CC2_BLACK = ColourMap(
-    "cc2_black",
-    [(ColourRange(0x52, 0x59), ColourRange(3, 8))],
-)
+CC2_BLACK = ColourMap("cc2_black", [(ColourRange(0x52, 0x59), ColourRange(3, 8))])

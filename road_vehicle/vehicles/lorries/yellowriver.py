@@ -6,30 +6,15 @@ from agrf.variant import AVariant
 import cargos
 from agrf.graphics.recolour import *
 
-lowside = LazyVoxel(
-    "freedom",
-).compose(
-    "road_vehicle/voxels/parts/open.vox",
-    "open",
-)
+lowside = LazyVoxel("freedom").compose("road_vehicle/voxels/parts/open.vox", "open")
 
 empty = lowside.produce_empty("empty")
-coal = lowside.compose(
-    "road_vehicle/voxels/parts/cargo/coal.vox",
-    "coal",
-)
+coal = lowside.compose("road_vehicle/voxels/parts/cargo/coal.vox", "coal")
 
 lowside_switch = LazySwitch(
     ranges={
         cargos.cargos.index(k): LazyAlternatives(
-            (
-                empty,
-                lowside.compose(
-                    "road_vehicle/voxels/parts/cargo/coal.vox",
-                    v.name,
-                    colour_map=v,
-                ),
-            )
+            (empty, lowside.compose("road_vehicle/voxels/parts/cargo/coal.vox", v.name, colour_map=v))
         )
         for k, v in cargos.coal_remaps.items()
     },
@@ -52,8 +37,5 @@ variant = AVariant(
     default_cargo_type=0,
     refittable_cargo_classes=cargos.OPEN_CARGO_CLASSES,
     real_class=ALorry,
-    graphics_helper=AutoWolf(
-        lowside_switch,
-        flags=("noflipY",),
-    ),
+    graphics_helper=AutoWolf(lowside_switch, flags=("noflipY",)),
 )

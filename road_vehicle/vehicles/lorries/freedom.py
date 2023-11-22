@@ -6,30 +6,15 @@ from agrf.variant import AVariant
 import cargos
 from agrf.graphics.recolour import *
 
-lowside = LazyVoxel(
-    "freedom",
-).compose(
-    "road_vehicle/voxels/parts/open.vox",
-    "open",
-)
+lowside = LazyVoxel("freedom").compose("road_vehicle/voxels/parts/open.vox", "open")
 
 empty = lowside.produce_empty("empty")
-coal = lowside.compose(
-    "road_vehicle/voxels/parts/cargo/coal.vox",
-    "coal",
-)
+coal = lowside.compose("road_vehicle/voxels/parts/cargo/coal.vox", "coal")
 
 lowside_switch = LazySwitch(
     ranges={
         cargos.cargos.index(k): LazyAlternatives(
-            (
-                empty,
-                lowside.compose(
-                    "road_vehicle/voxels/parts/cargo/coal.vox",
-                    v.name,
-                    colour_map=v,
-                ),
-            )
+            (empty, lowside.compose("road_vehicle/voxels/parts/cargo/coal.vox", v.name, colour_map=v))
         )
         for k, v in cargos.coal_remaps.items()
     },
@@ -57,10 +42,7 @@ variant = AVariant(
     real_x_dimensions=(0.874, 4.00, 1.786),
     tire=BiasPlyTire(9, 20),
     real_class=ALorry,
-    graphics_helper=AutoWolf(
-        lowside_switch,
-        flags=("noflipY",),
-    ),
+    graphics_helper=AutoWolf(lowside_switch, flags=("noflipY",)),
     variants=[
         dict(
             id=0x2010,
@@ -70,13 +52,7 @@ variant = AVariant(
             translation_name="FREEDOM_TANKER",
             refittable_cargo_classes=cargos.TANKER_CARGO_CLASSES,
             graphics_helper=AutoWolf(
-                LazyVoxel(
-                    "freedom",
-                ).compose(
-                    "road_vehicle/voxels/parts/tanker.vox",
-                    "tanker",
-                ),
-                flags=("noflipY",),
+                LazyVoxel("freedom").compose("road_vehicle/voxels/parts/tanker.vox", "tanker"), flags=("noflipY",)
             ),
             variants=[
                 dict(
@@ -84,13 +60,8 @@ variant = AVariant(
                     variant_group=0x2010,
                     extra_flags=0xB,
                     graphics_helper=AutoWolf(
-                        LazyVoxel(
-                            "freedom",
-                        )
-                        .compose(
-                            "road_vehicle/voxels/parts/tanker.vox",
-                            "tanker",
-                        )
+                        LazyVoxel("freedom")
+                        .compose("road_vehicle/voxels/parts/tanker.vox", "tanker")
                         .self_compose("cc1_black", CC1_BLACK),
                         flags=("noflipY",),
                     ),
@@ -100,13 +71,8 @@ variant = AVariant(
                     variant_group=0x2010,
                     extra_flags=0xB,
                     graphics_helper=AutoWolf(
-                        LazyVoxel(
-                            "freedom",
-                        )
-                        .compose(
-                            "road_vehicle/voxels/parts/tanker.vox",
-                            "tanker",
-                        )
+                        LazyVoxel("freedom")
+                        .compose("road_vehicle/voxels/parts/tanker.vox", "tanker")
                         .self_compose("cc2_black", CC2_BLACK),
                         flags=("noflipY",),
                     ),
@@ -116,13 +82,8 @@ variant = AVariant(
                     variant_group=0x2010,
                     extra_flags=0xB,
                     graphics_helper=AutoWolf(
-                        LazyVoxel(
-                            "freedom",
-                        )
-                        .compose(
-                            "road_vehicle/voxels/parts/tanker.vox",
-                            "tanker",
-                        )
+                        LazyVoxel("freedom")
+                        .compose("road_vehicle/voxels/parts/tanker.vox", "tanker")
                         .self_compose("cc1_black+cc2_black", CC1_BLACK + CC2_BLACK),
                         flags=("noflipY",),
                     ),
@@ -137,13 +98,7 @@ variant = AVariant(
             translation_name="FREEDOM_TARPAULIN",
             refittable_cargo_classes=cargos.TARPAULIN_CARGO_CLASSES,
             graphics_helper=AutoWolf(
-                LazyVoxel(
-                    "freedom",
-                ).compose(
-                    "road_vehicle/voxels/parts/tarpaulin.vox",
-                    "tarpaulin",
-                ),
-                flags=("noflipY",),
+                LazyVoxel("freedom").compose("road_vehicle/voxels/parts/tarpaulin.vox", "tarpaulin"), flags=("noflipY",)
             ),
         ),
     ],

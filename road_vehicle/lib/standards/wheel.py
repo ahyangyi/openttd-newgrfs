@@ -20,10 +20,7 @@ class StandardProfileRadialTire:
     def __str__(self):
         return f"{self.width_in_inches}R{self.rim_in_inches}"
 
-    lut = {
-        (11, 20): (293, 1085),
-        (11, 22.5): (279, 1054),
-    }
+    lut = {(11, 20): (293, 1085), (11, 22.5): (279, 1054)}
 
     @property
     def equivalent_width_in_inches(self):
@@ -46,10 +43,7 @@ class StandardProfileRadialTire:
         return self.guess_15d()
 
     def look_up(self):
-        return self.lut.get(
-            (self.width_in_inches, self.rim_in_inches),
-            self.guess(),
-        )
+        return self.lut.get((self.width_in_inches, self.rim_in_inches), self.guess())
 
     @property
     def diameter(self):
@@ -68,15 +62,10 @@ class BiasPlyTire:
     def __str__(self):
         return f"{self.width_in_inches:.2f}-{self.rim_in_inches}"
 
-    lut = {
-        (9, 20): (259, 1018),
-    }
+    lut = {(9, 20): (259, 1018)}
 
     def look_up(self):
-        return self.lut.get(
-            (self.width_in_inches, self.rim_in_inches),
-            self.guess(),
-        )
+        return self.lut.get((self.width_in_inches, self.rim_in_inches), self.guess())
 
     @property
     def equivalent_width_in_inches(self):

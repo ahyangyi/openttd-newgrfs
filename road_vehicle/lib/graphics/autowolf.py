@@ -6,12 +6,7 @@ ALLOWED_FLAGS = ["noflipX", "noflipY", "debug_bbox"]
 
 class AutoWolf:
     def __init__(
-        self,
-        name,
-        lengths=(1, 1, 4, 1, 1),
-        segments=(None, None, (0, 8), None, None),
-        rotation_steps=1,
-        flags=tuple(),
+        self, name, lengths=(1, 1, 4, 1, 1), segments=(None, None, (0, 8), None, None), rotation_steps=1, flags=tuple()
     ):
         if type(name) is not list and type(name) is not tuple:
             name = [name]
@@ -55,12 +50,7 @@ class AutoWolf:
 
             # Make hill switches
             hill_voxels = [switch.change_pitch(pitch, f"hill{hil}") for hil, pitch in self.hill_variants]
-            ranges = {
-                (-127, -3): 0,
-                (-2, -1): 1,
-                (1, 2): 3,
-                (3, 127): 4,
-            }
+            ranges = {(-127, -3): 0, (-2, -1): 1, (1, 2): 3, (3, 127): 4}
             if shadow_rotate:
                 assert all(a == -c and b == -d for (a, b), (c, d) in zip(self.hill_variants, self.hill_variants[::-1]))
                 ranges = {k: len(self.hill_variants) - 1 - v for k, v in ranges.items()}
@@ -86,10 +76,7 @@ class AutoWolf:
             back_d = "(var(0x62, param=0x01, shift=0, and=0x0000000f))"
 
             switch = LazySwitch(
-                ranges={
-                    (4, 7): rot_voxels[0],
-                    (1, 3): rot_voxels[2],
-                },
+                ranges={(4, 7): rot_voxels[0], (1, 3): rot_voxels[2]},
                 default=rot_voxels[1],
                 code=f"({front_d} - {back_d}) & 0x7",
             )
@@ -97,10 +84,7 @@ class AutoWolf:
             # Make night switches
             night_voxels = switch.update_config({"lighting_weight": 0.3}, "night")
             switch = LazySwitch(
-                ranges={
-                    1: night_voxels,
-                    (4, 5): night_voxels,
-                },
+                ranges={1: night_voxels, (4, 5): night_voxels},
                 default=switch,
                 code="(var(0x7F, param=0x1, shift=1, and=0x00000006)) + (var(0x7F, param=0x41, shift=0, and=0x00000001))",
             )
@@ -108,13 +92,7 @@ class AutoWolf:
             # Make flipped switches
             flipped_voxels = switch.flip("flip")
             if "noflipY" not in self.flags:
-                switch = LazySwitch(
-                    ranges={
-                        0: switch,
-                    },
-                    default=flipped_voxels,
-                    code="traffic_side",
-                )
+                switch = LazySwitch(ranges={0: switch}, default=flipped_voxels, code="traffic_side")
             else:
                 switch = flipped_voxels
 
@@ -134,10 +112,7 @@ class AutoWolf:
             v.render()
 
     def empty(self):
-        return grf.GenericSpriteLayout(
-            ent1=(31,),
-            ent2=(31,),
-        )
+        return grf.GenericSpriteLayout(ent1=(31,), ent2=(31,))
 
     def callbacks(self, my_id, cargo_capacity, feature):
         seg_map = {}
@@ -156,9 +131,7 @@ class AutoWolf:
             ),
             "properties": {
                 "shorten_by": grf.Switch(
-                    ranges={i: 8 - l for i, l in enumerate(self.lengths)},
-                    default=0,
-                    code="position_in_articulated_veh",
+                    ranges={i: 8 - l for i, l in enumerate(self.lengths)}, default=0, code="position_in_articulated_veh"
                 ),
                 "cargo_capacity": grf.DualCallback(
                     default=grf.Switch(

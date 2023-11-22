@@ -36,11 +36,7 @@ def wolf_template(length, scale, func):
     ]
 
 
-scale_to_zoom = {
-    1: grf.ZOOM_4X,
-    2: grf.ZOOM_2X,
-    4: grf.ZOOM_NORMAL,
-}
+scale_to_zoom = {1: grf.ZOOM_4X, 2: grf.ZOOM_2X, 4: grf.ZOOM_NORMAL}
 
 
 def wolf_alternative_template(length, scales, path):

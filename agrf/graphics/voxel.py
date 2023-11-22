@@ -10,15 +10,7 @@ from agrf.actions import FakeReferencingGenericSpriteLayout
 
 
 class LazyVoxel(Config):
-    def __init__(
-        self,
-        name,
-        *,
-        prefix=None,
-        voxel_getter=None,
-        load_from=None,
-        config=None,
-    ):
+    def __init__(self, name, *, prefix=None, voxel_getter=None, load_from=None, config=None):
         super().__init__(load_from=load_from, config=config)
         self.name = name
         self.prefix = prefix
@@ -43,10 +35,7 @@ class LazyVoxel(Config):
         for x in new_config["sprites"]:
             x["angle"] += delta
         return LazyVoxel(
-            self.name,
-            prefix=os.path.join(self.prefix, suffix),
-            voxel_getter=self.voxel_getter,
-            config=new_config,
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=self.voxel_getter, config=new_config
         )
 
     @functools.cache
@@ -63,10 +52,7 @@ class LazyVoxel(Config):
         ) / 2 * math.sin(math.radians(abs(delta)))
 
         return LazyVoxel(
-            self.name,
-            prefix=os.path.join(self.prefix, suffix),
-            voxel_getter=voxel_getter,
-            config=new_config,
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=new_config
         )
 
     @functools.cache
@@ -84,10 +70,7 @@ class LazyVoxel(Config):
         new_config["agrf_zdiff"] = new_config.get("agrf_zdiff", 0.0) + real_x / 2 / abs(x_steps)
 
         return LazyVoxel(
-            self.name,
-            prefix=os.path.join(self.prefix, suffix),
-            voxel_getter=voxel_getter,
-            config=new_config,
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=new_config
         )
 
     def update_config(self, new_config, suffix):
@@ -104,10 +87,7 @@ class LazyVoxel(Config):
         for x in new_config["sprites"]:
             x["flip"] = not x.get("flip", False)
         return LazyVoxel(
-            self.name,
-            prefix=os.path.join(self.prefix, suffix),
-            voxel_getter=self.voxel_getter,
-            config=new_config,
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=self.voxel_getter, config=new_config
         )
 
     @functools.cache
@@ -127,10 +107,7 @@ class LazyVoxel(Config):
             return os.path.join(new_path, f"{self.name}.vox")
 
         return LazyVoxel(
-            self.name,
-            prefix=os.path.join(self.prefix, suffix),
-            voxel_getter=voxel_getter,
-            config=deepcopy(self.config),
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=deepcopy(self.config)
         )
 
     @functools.cache
@@ -146,10 +123,7 @@ class LazyVoxel(Config):
             return os.path.join(new_path, f"{self.name}.vox")
 
         return LazyVoxel(
-            self.name,
-            prefix=os.path.join(self.prefix, suffix),
-            voxel_getter=voxel_getter,
-            config=deepcopy(self.config),
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=deepcopy(self.config)
         )
 
     @functools.cache
@@ -161,10 +135,7 @@ class LazyVoxel(Config):
             return os.path.join(new_path, f"{self.name}.vox")
 
         return LazyVoxel(
-            self.name,
-            prefix=os.path.join(self.prefix, suffix),
-            voxel_getter=voxel_getter,
-            config=deepcopy(self.config),
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=deepcopy(self.config)
         )
 
     def render(self):

@@ -30,12 +30,7 @@ class AHouse(grf.SpriteGenerator):
                 )
             assert len(layouts) == 4
             self.callbacks.graphics = grf.RandomSwitch(
-                feature=grf.HOUSE,
-                scope="self",
-                triggers=0,
-                lowest_bit=0,
-                cmp_all=False,
-                groups=layouts,
+                feature=grf.HOUSE, scope="self", triggers=0, lowest_bit=0, cmp_all=False, groups=layouts
             )
 
         res.append(
@@ -44,13 +39,7 @@ class AHouse(grf.SpriteGenerator):
             )
         )
         if self.sprites:
-            res.append(
-                grf.Action1(
-                    feature=grf.HOUSE,
-                    set_count=len(self.sprites),
-                    sprite_count=1,
-                )
-            )
+            res.append(grf.Action1(feature=grf.HOUSE, set_count=len(self.sprites), sprite_count=1))
 
             for s in self.sprites:
                 res.append(s)

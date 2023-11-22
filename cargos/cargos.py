@@ -7,12 +7,7 @@ cargo_info = {
     "TOUR": {},
     "MAIL": {},
     "COAL": {},
-    "IORE": {
-        "COAL": ColourMap(
-            "iron-ore",
-            [(ColourRange(3, 8), ColourRange(75, 80))],
-        )
-    },
+    "IORE": {"COAL": ColourMap("iron-ore", [(ColourRange(3, 8), ColourRange(75, 80))])},
     "GRVL": {
         "COAL": ColourMap(
             "gravel",
@@ -27,12 +22,7 @@ cargo_info = {
     },
     "SAND": {},
     "AORE": {},
-    "CORE": {
-        "COAL": ColourMap(
-            "copper",
-            [(ColourRange(3, 8), ColourRange(72, 77))],
-        )
-    },
+    "CORE": {"COAL": ColourMap("copper", [(ColourRange(3, 8), ColourRange(72, 77))])},
     "CLAY": {},
     "SCMT": {},
     "WOOD": {},
@@ -62,24 +52,14 @@ cargo_info = {
     "FICR": {},
     "FRVG": {},
     "FRUT": {},
-    "GRAI": {
-        "COAL": ColourMap(
-            "grain",
-            [(ColourRange(3, 8), ColourRange(34, 39))],
-        )
-    },
+    "GRAI": {"COAL": ColourMap("grain", [(ColourRange(3, 8), ColourRange(34, 39))])},
     "LVST": {},
     "MAIZ": {},
     "MILK": {},
     "RUBR": {},
     "SGBT": {},
     "SGCN": {},
-    "WHEA": {
-        "COAL": ColourMap(
-            "wheat",
-            [(ColourRange(3, 8), ColourRange(116, 121))],
-        )
-    },
+    "WHEA": {"COAL": ColourMap("wheat", [(ColourRange(3, 8), ColourRange(116, 121))])},
     "WOOL": {},
     "OLSD": {},
     "SUGR": {},

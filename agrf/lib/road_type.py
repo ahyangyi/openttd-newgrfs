@@ -30,35 +30,15 @@ class RoadType(grf.SpriteGenerator):
         if self.underlay:
             layouts = []
             for i, sprite in enumerate(self.underlay):
-                layouts.append(
-                    grf.GenericSpriteLayout(
-                        ent1=(i,),
-                        ent2=(i,),
-                        feature=grf.ROADTYPE,
-                    )
-                )
+                layouts.append(grf.GenericSpriteLayout(ent1=(i,), ent2=(i,), feature=grf.ROADTYPE))
 
         res.append(definition := grf.Define(feature=grf.ROADTYPE, id=self.id, props={**self._props, **extra_props}))
         if self.underlay:
-            res.append(
-                grf.Action1(
-                    feature=grf.ROADTYPE,
-                    set_count=1,
-                    sprite_count=19,
-                )
-            )
+            res.append(grf.Action1(feature=grf.ROADTYPE, set_count=1, sprite_count=19))
 
             for s in self.underlay:
                 res.append(s)
 
-        res.append(
-            grf.Map(
-                definition=definition,
-                maps={
-                    0x02: layouts[0],
-                },
-                default=layouts[0],
-            )
-        )
+        res.append(grf.Map(definition=definition, maps={0x02: layouts[0]}, default=layouts[0]))
 
         return res

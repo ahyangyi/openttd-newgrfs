@@ -124,49 +124,13 @@ class TheEconomy(MetaEconomy):
             else:
                 ret.graph[copper_smelter].produces += (engineering_supplies,)
 
-        if parameters["WORKFORCE"].startswith("YETI"):
-            if parameters["WORKFORCE"] == "YETI":
-                ret.graph[worker_yard] = WorkerYard(workers, boosters=(food, wool))
-            elif parameters["WORKFORCE"] == "YETI_PASSENGERS":
-                ret.graph[worker_yard] = WorkerYard(workers, boosters=(food, wool, passengers))
-            elif parameters["WORKFORCE"] == "YETI_MAIL":
-                ret.graph[worker_yard] = WorkerYard(workers, boosters=(food, wool, mail))
-            elif parameters["WORKFORCE"] == "YETI_TIRED":
-                ret.graph[worker_yard] = WorkerYard(workers, boosters=(food, wool, tired_workers))
-
-            # FIXME: remove PRESET; support SECONDARY
-            if parameters["WORKER_PARTICIPATION"] in ("PRESET", "NONE"):
-                ret.graph[fishing_grounds].boosters = workers
-                if parameters["WORKFORCE"] == "YETI_TIRED":
-                    ret.graph[fishing_grounds].produces += (tired_workers,)
-            if parameters["WORKER_PARTICIPATION"] in ("PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY", "BOTH"):
-                for i in [
-                    copper_ore_mine,
-                    nitrate_mine,
-                    oil_wells,
-                    arable_farm,
-                    coffee_estate,
-                    fishing_grounds,
-                    ranch,
-                    vineyard,
-                ]:
-                    if i in ret.graph:
-                        ret.graph[i] = ret.graph[i].to_secondary(workers)
-                        if parameters["WORKFORCE"] == "YETI_TIRED":
-                            ret.graph[i].produces += (tired_workers,)
-            if parameters["WORKER_PARTICIPATION"] in ("PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY", "BOTH"):
-                for i in [
-                    chemical_plant,
-                    copper_smelter,
-                    fishing_harbor,
-                    flour_mill,
-                    stockyard,
-                    food_processing_plant,
-                ]:
-                    if i in ret.graph:
-                        ret.graph[i].boosters += (workers,)
-                        if parameters["WORKFORCE"] == "YETI_TIRED":
-                            ret.graph[i].produces += (tired_workers,)
+        self.default_worker_support(
+            ret,
+            (food, wool),
+            (fishing_grounds,),
+            (copper_ore_mine, nitrate_mine, oil_wells, arable_farm, coffee_estate, fishing_grounds, ranch, vineyard),
+            (chemical_plant, copper_smelter, fishing_harbor, flour_mill, stockyard, food_processing_plant),
+        )
 
         if port in ret.graph:
             if parameters["SEA_INDUSTRY"] == "LAND_ONLY":

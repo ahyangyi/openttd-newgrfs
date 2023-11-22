@@ -7,15 +7,9 @@ from train.lib import ATrain
 import grf
 
 
-nova = LazyVoxel(
-    "nova",
-    config={"agrf_unnaturalness": 1},
-)
+nova = LazyVoxel("nova", config={"agrf_unnaturalness": 1})
 
-nova_f = LazyVoxel(
-    "nova_f",
-    config={"agrf_unnaturalness": 1},
-)
+nova_f = LazyVoxel("nova_f", config={"agrf_unnaturalness": 1})
 
 variant = AVariant(
     id=0x3000,

@@ -1,8 +1,6 @@
 import grf
 
-wolf_default_road_vehicle_offsets = {
-    6: ((0, 0), (-10, -11), (0, 0), (-5, -11), (0, 0), (-20, -11), (0, 0), (-18, -18)),
-}
+wolf_default_road_vehicle_offsets = {6: ((0, 0), (-10, -11), (0, 0), (-5, -11), (0, 0), (-20, -11), (0, 0), (-18, -18))}
 wolf_spritesheet_bounding_boxes = (
     (0, 1, 1),
     (0, 26, 24),
@@ -29,11 +27,7 @@ def wolf_template(length, scale, func):
     ]
 
 
-scale_to_zoom = {
-    1: grf.ZOOM_4X,
-    2: grf.ZOOM_2X,
-    4: grf.ZOOM_NORMAL,
-}
+scale_to_zoom = {1: grf.ZOOM_4X, 2: grf.ZOOM_2X, 4: grf.ZOOM_NORMAL}
 
 
 def wolf_hill_alternative_template(length, scales, path):

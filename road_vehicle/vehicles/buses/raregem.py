@@ -27,24 +27,14 @@ variant = AVariant(
     graphics_helper=AutoWolf("raregem"),
     real_class=ABus,
     variants=[
-        dict(
-            id=0x1031,
-            variant_group=0x1030,
-            extra_flags=0xB,
-            graphics_helper=AutoWolf("raregem03"),
-        ),
+        dict(id=0x1031, variant_group=0x1030, extra_flags=0xB, graphics_helper=AutoWolf("raregem03")),
         # XXX
         dict(
             id=0x1032,
             name="Raregem Bus - Night Test",
             variant_group=0x1030,
             extra_flags=0xB,
-            graphics_helper=AutoWolf(
-                LazyVoxel("raregem").self_compose(
-                    "night_lights",
-                    colour_map=cargos.NIGHT,
-                )
-            ),
+            graphics_helper=AutoWolf(LazyVoxel("raregem").self_compose("night_lights", colour_map=cargos.NIGHT)),
         ),
     ],
 )

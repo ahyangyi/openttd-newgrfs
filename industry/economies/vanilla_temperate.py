@@ -125,13 +125,7 @@ class TheEconomy(MetaEconomy):
                         ret.graph[i].produces += (tired_workers,)
 
         if parameters["TOWN_GOODS"] in ("FOOD", "FOOD_AND_WATER"):
-            ret.graph[food_processing_plant] = SecondaryIndustry(
-                (
-                    livestock,
-                    grain,
-                ),
-                food,
-            )
+            ret.graph[food_processing_plant] = SecondaryIndustry((livestock, grain), food)
             ret.graph[factory].consumes = tuple(x for x in ret.graph[factory].consumes if x not in [livestock, grain])
             ret.graph[towns].food = food
         if parameters["TOWN_GOODS"] == "FOOD_AND_WATER":

@@ -87,14 +87,7 @@ class Roster:
 
     @staticmethod
     def hogscost_header():
-        return [
-            "Name",
-            "Power",
-            "Speed",
-            "Date",
-            "Capacity",
-            "Hog Points",
-        ]
+        return ["Name", "Power", "Speed", "Date", "Capacity", "Hog Points"]
 
     def hogscost_cli(self):
         return tabulate(self.hogscost_table(), self.hogscost_header())
@@ -109,13 +102,7 @@ class Roster:
 
     @staticmethod
     def dimension_header():
-        return [
-            "Name",
-            "Dimension",
-            "FOverhang / Wheelbase / ROverhang",
-            "Axle Track",
-            "Tire",
-        ]
+        return ["Name", "Dimension", "FOverhang / Wheelbase / ROverhang", "Axle Track", "Tire"]
 
     def dimension_cli(self):
         return tabulate(self.dimension_table(), self.dimension_header())
@@ -185,10 +172,5 @@ class Roster:
 
     def cli(self):
         return "\n\n".join(
-            [
-                self.gameplay_cli(),
-                self.hogscost_cli(),
-                self.dimension_cli(),
-                self.in_game_dimension_cli(),
-            ]
+            [self.gameplay_cli(), self.hogscost_cli(), self.dimension_cli(), self.in_game_dimension_cli()]
         )
