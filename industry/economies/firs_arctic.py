@@ -182,6 +182,7 @@ class TheEconomy(MetaEconomy):
                     chemical_plant,
                     fishing_harbor,
                     paper_mill,
+                    pyrite_smelter,
                     sawmill,
                 ]:
                     ret.graph[i].boosters += (workers,)
