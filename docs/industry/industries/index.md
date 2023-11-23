@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Industries
-parent: Ahyangyi's Extended Generic Industry Set (AEGIS)
+parent: AEGIS - Ahyangyi's Extended Generic Industry Set
 has_children: True
 nav_order: 2
 ---
