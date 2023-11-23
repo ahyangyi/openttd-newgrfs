@@ -31,6 +31,7 @@ class WorkerMixin:
                             economy.graph[i].produces += (tired_workers,)
             if parameters["WORKER_PARTICIPATION"] in ("SECONDARY_INDUSTRY", "BOTH"):
                 for i in secondary_industries:
-                    economy.graph[i].boosters += (workers,)
-                    if parameters["WORKFORCE"] == "YETI_TIRED":
-                        economy.graph[i].produces += (tired_workers,)
+                    if i in economy.graph:
+                        economy.graph[i].boosters += (workers,)
+                        if parameters["WORKFORCE"] == "YETI_TIRED":
+                            economy.graph[i].produces += (tired_workers,)

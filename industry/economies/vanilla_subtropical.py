@@ -91,31 +91,13 @@ class TheEconomy(MetaEconomy):
             ret.graph[factory].produces += (engineering_supplies,)
             ret.graph[oil_refinery].produces += (farm_supplies,)
 
-        if parameters["WORKFORCE"].startswith("YETI"):
-            if parameters["WORKFORCE"] == "YETI":
-                ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, diamonds))
-            elif parameters["WORKFORCE"] == "YETI_PASSENGERS":
-                ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, diamonds, passengers))
-            elif parameters["WORKFORCE"] == "YETI_MAIL":
-                ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, diamonds, mail))
-            elif parameters["WORKFORCE"] == "YETI_TIRED":
-                ret.graph[worker_yard] = WorkerYard(workers, boosters=(goods, diamonds, tired_workers))
-
-            # FIXME: remove PRESET; support SECONDARY
-            if parameters["WORKER_PARTICIPATION"] in ("PRESET", "NONE"):
-                ret.graph[diamond_mine].boosters = workers
-                if parameters["WORKFORCE"] == "YETI_TIRED":
-                    ret.graph[diamond_mine].produces += (tired_workers,)
-            if parameters["WORKER_PARTICIPATION"] in ("SECONDARY_INDUSTRY", "BOTH"):
-                for i in [diamond_mine, oil_wells, copper_ore_mine, farm, lumber_mill]:
-                    ret.graph[i] = ret.graph[i].to_secondary(workers)
-                    if parameters["WORKFORCE"] == "YETI_TIRED":
-                        ret.graph[i].produces += (tired_workers,)
-            if parameters["WORKER_PARTICIPATION"] in ("PRIMARY_INDUSTRY", "BOTH"):
-                for i in [food_processing_plant, oil_refinery, factory]:
-                    ret.graph[i].boosters += (workers,)
-                    if parameters["WORKFORCE"] == "YETI_TIRED":
-                        ret.graph[i].produces += (tired_workers,)
+        self.default_worker_support(
+            ret,
+            (goods, diamonds),
+            (diamond_mine,),
+            (diamond_mine, oil_wells, copper_ore_mine, farm, lumber_mill),
+            (food_processing_plant, oil_refinery, factory),
+        )
 
         if parameters["TOWN_GOODS"] in ("ORGANIC", "FOOD_AND_WATER"):
             ret.graph[water_supply] = PrimaryIndustry(water)
