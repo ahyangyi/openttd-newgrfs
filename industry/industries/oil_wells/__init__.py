@@ -1,5 +1,12 @@
 import grf
-from industry.lib.industry import AIndustry, SplitDefinition, transcribe, symmetrize
+from industry.lib.industry import (
+    AIndustry,
+    SplitDefinition,
+    transcribe,
+    symmetrize,
+    OldIndustryTileID,
+    NewIndustryTileID,
+)
 from .enormous import enormous_set
 from .huge import huge_set
 from .large import large_set
@@ -29,7 +36,7 @@ one_tile_set = [
     ("x",),
 ]
 
-tile_map = {"x": grf.OldIndustryTileID(0x1D)}
+tile_map = {"x": OldIndustryTileID(0x1D)}
 
 the_industry = AIndustry(
     translation_name="OIL_WELLS",
@@ -44,7 +51,7 @@ the_industry = AIndustry(
             ("SMALL",): transcribe(small_set, tile_map),
             ("TINY",): transcribe(tiny_set, tile_map),
             ("ONE_TILE",): transcribe(one_tile_set, tile_map),
-            ("ONE_TILE_FLAT",): [[{"xofs": 0, "yofs": 0, "gfx": grf.NewIndustryTileID(0x23)}]],
+            ("ONE_TILE_FLAT",): [grf.IndustryLayout([NewIndustryTileID(0x23)(0, 0)])],
         },
     ),
     mapgen_probability=6,

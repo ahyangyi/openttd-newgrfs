@@ -1,5 +1,12 @@
 import grf
-from industry.lib.industry import AIndustry, SplitDefinition, transcribe, symmetrize
+from industry.lib.industry import (
+    AIndustry,
+    SplitDefinition,
+    transcribe,
+    symmetrize,
+    OldIndustryTileID,
+    NewIndustryTileID,
+)
 
 large_set = symmetrize(
     [
@@ -57,12 +64,12 @@ one_tile_set = [
 ]
 
 tile_map = {
-    "a": grf.OldIndustryTileID(0x21),  # house (left)
-    "b": grf.OldIndustryTileID(0x22),  # house (right)
-    "c": grf.OldIndustryTileID(0x23),  # warehouse with straws
-    "d": grf.OldIndustryTileID(0x24),  # warehouse
-    "e": grf.OldIndustryTileID(0x25),  # silo
-    "f": grf.OldIndustryTileID(0x26),  # piggery
+    "a": OldIndustryTileID(0x21),  # house (left)
+    "b": OldIndustryTileID(0x22),  # house (right)
+    "c": OldIndustryTileID(0x23),  # warehouse with straws
+    "d": OldIndustryTileID(0x24),  # warehouse
+    "e": OldIndustryTileID(0x25),  # silo
+    "f": OldIndustryTileID(0x26),  # piggery
 }
 
 the_industry = AIndustry(
@@ -78,7 +85,7 @@ the_industry = AIndustry(
             ("SMALL",): transcribe(small_set, tile_map),
             ("TINY",): transcribe(tiny_set, tile_map),
             ("ONE_TILE",): transcribe(one_tile_set, tile_map),
-            ("ONE_TILE_FLAT",): [[{"xofs": 0, "yofs": 0, "gfx": grf.NewIndustryTileID(0x23)}]],
+            ("ONE_TILE_FLAT",): [grf.IndustryLayout([NewIndustryTileID(0x23)(0, 0)])],
         },
     ),
     mapgen_probability=15,

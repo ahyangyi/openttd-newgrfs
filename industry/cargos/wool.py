@@ -6,9 +6,9 @@ the_cargo = ACargo(
     b"WOOL",
     grf.CargoClass.PIECE_GOODS | grf.CargoClass.COVERED,
     weight=3,
-    units_text=CargoUnit.ITEM,
+    units_of_cargo=CargoUnit.ITEM,
     is_freight=1,
-    penalty1=8,
-    penalty2=48,
+    penalty_lowerbound=8,
+    single_penalty_length=48,
     base_price=111,
 )

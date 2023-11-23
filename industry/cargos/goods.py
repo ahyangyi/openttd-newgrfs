@@ -7,9 +7,9 @@ the_cargo = ACargo(
     grf.CargoClass.EXPRESS,
     capacity_multiplier=0x200,
     weight=8,
-    units_text=CargoUnit.CRATE,
+    units_of_cargo=CargoUnit.CRATE,
     is_freight=1,
-    penalty1=10,
-    penalty2=56,
+    penalty_lowerbound=10,
+    single_penalty_length=56,
     base_price=163,
 )

@@ -7,9 +7,9 @@ the_cargo = ACargo(
     grf.CargoClass.MAIL,
     capacity_multiplier=0x200,
     weight=4,
-    units_text=CargoUnit.BAG,
+    units_of_cargo=CargoUnit.BAG,
     is_freight=0,
-    penalty1=6,
-    penalty2=24,
+    penalty_lowerbound=6,
+    single_penalty_length=24,
     base_price=167,
 )

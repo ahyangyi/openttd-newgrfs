@@ -27,7 +27,8 @@ def props_hash(parameters):
 class ACargo(Cargo, MetaSpriteMixin):
     def __init__(self, id, label, cargo_class, capacity_multiplier=0x100, weight=16, **props):
         super().__init__(
-            id=id, **{"classes": cargo_class, "capacity_mult": capacity_multiplier, "weight": weight, **props}
+            id=id,
+            **{"cargo_classes": cargo_class, "capacity_multiplier": capacity_multiplier, "weight": weight, **props},
         )
         MetaSpriteMixin.__init__(self, grf.CARGO, props_hash, parameter_list)
         self.label = label
@@ -42,11 +43,11 @@ class ACargo(Cargo, MetaSpriteMixin):
 
     def get_sprites(self, g):
         s = g.strings
-        self._props["type_text"] = s[f"STR_CARGO_NAME_{self.label.decode()}"]
-        self._props["unit_text"] = s[f"STR_CARGO_NAME_{self.label.decode()}"]
+        self._props["type_name"] = s[f"STR_CARGO_NAME_{self.label.decode()}"]
+        self._props["unit_name"] = s[f"STR_CARGO_NAME_{self.label.decode()}"]
         self._props["one_text"] = s[f"STR_CARGO_UNIT_{self.label.decode()}"]
         self._props["many_text"] = s[f"STR_CARGO_UNIT_{self.label.decode()}"]
-        self._props["abbr_text"] = s[f"STR_CARGO_NAME_{self.label.decode()}"]
+        self._props["type_abbreviation"] = s[f"STR_CARGO_NAME_{self.label.decode()}"]
         self._props["bit_number"] = self.id
         self._props["label"] = struct.unpack("<I", self.label)[0]
         self._g = g  # FIXME?

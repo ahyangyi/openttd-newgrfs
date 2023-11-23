@@ -5,9 +5,9 @@ the_cargo = ACargo(
     0x35,
     b"SCMT",
     grf.CargoClass.BULK | grf.CargoClass.NON_POURABLE,
-    units_text=CargoUnit.TONNE,
+    units_of_cargo=CargoUnit.TONNE,
     is_freight=1,
-    penalty1=36,
-    penalty2=255,
+    penalty_lowerbound=36,
+    single_penalty_length=255,
     base_price=107,
 )

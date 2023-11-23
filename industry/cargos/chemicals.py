@@ -6,9 +6,9 @@ the_cargo = ACargo(
     b"RFPR",
     grf.CargoClass.LIQUID | grf.CargoClass.PIECE_GOODS | grf.CargoClass.HAZARDOUS,
     weight=19,
-    units_text=CargoUnit.LITRE,
+    units_of_cargo=CargoUnit.LITRE,
     is_freight=1,
-    penalty1=20,
-    penalty2=255,
+    penalty_lowerbound=20,
+    single_penalty_length=255,
     base_price=115,
 )

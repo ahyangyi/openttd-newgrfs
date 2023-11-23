@@ -5,9 +5,9 @@ the_cargo = ACargo(
     0x2D,
     b"SULP",
     grf.CargoClass.BULK | grf.CargoClass.LIQUID | grf.CargoClass.COVERED,
-    units_text=CargoUnit.TONNE,
+    units_of_cargo=CargoUnit.TONNE,
     is_freight=1,
-    penalty1=30,
-    penalty2=255,
+    penalty_lowerbound=30,
+    single_penalty_length=255,
     base_price=105,
 )

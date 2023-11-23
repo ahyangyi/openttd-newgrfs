@@ -6,9 +6,9 @@ the_cargo = ACargo(
     b"MILK",
     grf.CargoClass.EXPRESS | grf.CargoClass.LIQUID | grf.CargoClass.REFRIGERATED,
     weight=18,
-    units_text=CargoUnit.LITRE,
+    units_of_cargo=CargoUnit.LITRE,
     is_freight=1,
-    penalty1=0,
-    penalty2=16,
+    penalty_lowerbound=0,
+    single_penalty_length=16,
     base_price=131,
 )

@@ -5,9 +5,9 @@ the_cargo = ACargo(
     0x06,
     b"MAIZ",
     grf.CargoClass.BULK,
-    units_text=CargoUnit.TONNE,
+    units_of_cargo=CargoUnit.TONNE,
     is_freight=1,
-    penalty1=4,
-    penalty2=40,
+    penalty_lowerbound=4,
+    single_penalty_length=40,
     base_price=111,
 )

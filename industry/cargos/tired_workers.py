@@ -7,9 +7,9 @@ the_cargo = ACargo(
     grf.CargoClass.PASSENGERS,
     capacity_multiplier=0x400,
     weight=1,
-    units_text=CargoUnit.PASSENGER,
+    units_of_cargo=CargoUnit.PASSENGER,
     is_freight=0,
-    penalty1=0,
-    penalty2=18,
+    penalty_lowerbound=0,
+    single_penalty_length=18,
     base_price=96,
 )

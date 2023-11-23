@@ -6,9 +6,9 @@ the_cargo = ACargo(
     b"LVST",
     grf.CargoClass.PIECE_GOODS,
     weight=3,
-    units_text=CargoUnit.ITEM,
+    units_of_cargo=CargoUnit.ITEM,
     is_freight=1,
-    penalty1=0,
-    penalty2=15,
+    penalty_lowerbound=0,
+    single_penalty_length=15,
     base_price=122,
 )

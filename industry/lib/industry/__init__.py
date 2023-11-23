@@ -1,6 +1,6 @@
 import grf
 from industry.lib.parameters import parameter_list
-from .transcriber import transcribe
+from .transcriber import transcribe, OldIndustryTileID, NewIndustryTileID
 from .symmetrizer import symmetrize
 from agrf.strings import get_translation
 from agrf.split_action import SplitDefinition, MetaSpriteMixin

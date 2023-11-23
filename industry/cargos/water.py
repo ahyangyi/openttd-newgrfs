@@ -5,9 +5,9 @@ the_cargo = ACargo(
     0x0F,
     b"WATR",
     grf.CargoClass.LIQUID,
-    units_text=CargoUnit.LITRE,
+    units_of_cargo=CargoUnit.LITRE,
     is_freight=1,
-    penalty1=20,
-    penalty2=80,
+    penalty_lowerbound=20,
+    single_penalty_length=80,
     base_price=93,
 )
