@@ -1,6 +1,6 @@
 ---
 layout: default
-title: ARV - Ahyangyi's Road Vehicles
+title: ACRVS - Ahyangyi's Chinese Road Vehicle Set
 has_children: True
 nav_order: 1
 ---
