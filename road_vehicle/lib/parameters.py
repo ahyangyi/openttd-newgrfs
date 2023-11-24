@@ -24,7 +24,17 @@ parameter_list = ParameterList(
         ),
         Parameter(
             "EARLY_IMPORTED_VEHICLES",
-            1,
+            2,
+            {
+                0: "DISABLED",
+                1: "ENABLED_CHEAP",
+                2: "ENABLED",
+                3: "ENABLED_COSTLY",
+            },
+        ),
+        Parameter(
+            "FANTASY_FREIGHT_TRAMS",
+            0,
             {
                 0: "DISABLED",
                 1: "ENABLED",

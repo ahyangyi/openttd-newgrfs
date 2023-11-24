@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Ahyangyi's Road Vehicles (ARV)
+title: ARV - Ahyangyi's Road Vehicles
 has_children: True
 nav_order: 1
 ---

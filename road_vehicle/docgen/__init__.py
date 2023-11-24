@@ -20,7 +20,7 @@ def gen_docs(string_manager, rosters):
 layout: default
 title: {roster.name}
 parent: Rosters
-grand_parent: Ahyangyi's Road Vehicles (ARV)
+grand_parent: ARV - Ahyangyi's Road Vehicles
 nav_order: {i+1}
 ---
 """,
@@ -65,7 +65,7 @@ nav_order: {i+1}
 layout: default
 title: {translation}
 parent: Vehicles
-grand_parent: Ahyangyi's Road Vehicles (ARV)
+grand_parent: ARV - Ahyangyi's Road Vehicles
 nav_order: {i+1}
 ---
 

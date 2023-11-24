@@ -19,10 +19,17 @@ STR_PARAM_ALL                   :China
 STR_PARAM_DOVEMERE              :Wuhu
 STR_PARAM_NORBURY               :Beijing
 
-STR_PARAM_EARLY_IMPORTED_VEHICLES       :Early Imported Vehicles
-STR_PARAM_EARLY_IMPORTED_VEHICLES_DESC  :Whether to include imported vehicles for the early game
-STR_PARAM_EARLY_IMPORTED_VEHICLES_DISABLED:Disabled
-STR_PARAM_EARLY_IMPORTED_VEHICLES_ENABLED:Enabled
+STR_PARAM_EARLY_IMPORTED_VEHICLES               :Early Imported Vehicles
+STR_PARAM_EARLY_IMPORTED_VEHICLES_DESC          :Whether to include imported vehicles for the early game.
+STR_PARAM_EARLY_IMPORTED_VEHICLES_DISABLED      :Disabled
+STR_PARAM_EARLY_IMPORTED_VEHICLES_ENABLED_CHEAP :Enabled - Cheaper
+STR_PARAM_EARLY_IMPORTED_VEHICLES_ENABLED       :Enabled
+STR_PARAM_EARLY_IMPORTED_VEHICLES_ENABLED_COSTLY:Enabled - Costly
+
+STR_PARAM_EARLY_IMPORTED_FANTASY_FREIGHT_TRAMS      :Fantasy - Freighter Trams
+STR_PARAM_EARLY_IMPORTED_FANTASY_FREIGHT_TRAMS_DESC :Whether to include freighter variations for passenger-only trams/metros/monorails.
+STR_PARAM_EARLY_IMPORTED_FANTASY_DISABLED           :Disabled
+STR_PARAM_EARLY_IMPORTED_FANTASY_ENABLED            :Enabled
 
 STR_RV_HAPPYONE_BUS_NAME        :Ford F-60 Canadian Military Pattern Combination Bus (gasoline)
 STR_RV_RIME_NAME                :Songhuajiang Type-57 Bus (gasoline)

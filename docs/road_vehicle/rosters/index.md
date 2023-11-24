@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Rosters
-parent: Ahyangyi's Road Vehicles (ARV)
+parent: ARV - Ahyangyi's Road Vehicles
 has_children: True
 nav_order: 2
 ---
