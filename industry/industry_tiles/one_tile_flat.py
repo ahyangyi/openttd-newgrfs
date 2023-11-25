@@ -12,5 +12,5 @@ rotated_voxels = [LazySpriteSheet([vox], [(0, i)]) for i in range(4)]
 
 
 the_industry_tile = AIndustryTile(
-    id=0x23, sprites=[s for v in rotated_voxels for s in v.spritesheet(0, 0)], building_type=0
+    id=0x23, sprites=[s for v in rotated_voxels for s in v.spritesheet(0, 0)], substitute_type=0
 )
