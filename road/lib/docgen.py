@@ -15,7 +15,7 @@ def gen_docs(string_manager, road_types):
                 f"""---
 layout: default
 title: {translation}
-parent: Ahyangyi's Chinese Road Set (ACRS)
+parent: ACRS - Ahyangyi's Chinese Road Set
 nav_order: {i+1}
 ---
 ![](img/{road_type.translation_name}.png)
