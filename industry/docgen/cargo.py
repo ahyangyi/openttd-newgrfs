@@ -21,7 +21,7 @@ def gen_cargo_doc(all_cargos, string_manager):
 layout: default
 title: {cargo.name(string_manager)}
 parent: Cargos
-grand_parent: Ahyangyi's Extended Generic Industry Set (AEGIS)
+grand_parent: AEGIS - Ahyangyi's Extended Generic Industry Set
 nav_order: {i+1}
 ---
 # Datasheet

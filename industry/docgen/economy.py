@@ -16,7 +16,7 @@ def gen_economy_doc(all_economies, string_manager):
 layout: default
 title: {meta_economy.name(string_manager)}
 parent: Economies
-grand_parent: Ahyangyi's Extended Generic Industry Set (AEGIS)
+grand_parent: AEGIS - Ahyangyi's Extended Generic Industry Set
 nav_order: {i+1}"""
             else:
                 header = f"""---
