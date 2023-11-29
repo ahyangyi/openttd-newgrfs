@@ -14,11 +14,11 @@ def gen_docs(string_manager, rosters):
 
     for i, roster in enumerate(rosters):
         prefix = f"docs/road_vehicle/rosters"
-        with open(os.path.join(prefix, f"{roster.name(string_manager)}.md"), "w") as f:
+        with open(os.path.join(prefix, f"{roster.translation_name}.md"), "w") as f:
             print(
                 f"""---
 layout: default
-title: {roster.name}
+title: {roster.name(string_manager)}
 parent: Rosters
 grand_parent: ACRVS - Ahyangyi's Chinese Road Vehicle Set
 nav_order: {i+1}
@@ -29,7 +29,7 @@ nav_order: {i+1}
 
         for language in ["en-GB", "zh-CN"]:
             langprefix = f"docs/_i18n/{language}/road_vehicle/rosters"
-            with open(os.path.join(langprefix, f"{roster.name(string_manager)}.md"), "w") as f:
+            with open(os.path.join(langprefix, f"{roster.translation_name}.md"), "w") as f:
                 print(
                     f"""
 """,
