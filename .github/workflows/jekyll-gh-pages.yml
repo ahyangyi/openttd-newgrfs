@@ -36,8 +36,6 @@ jobs:
         run: sudo apt update && sudo apt install python3-ply python3-pil
       - name: Install python deps
         run: pip install -r requirements.txt
-      - name: Examine installation
-        run: ls -lar /home/runner/.local/lib/python3.10/site-packages/grf
       - name: Generate docs (RV)
         run: PATH=${PWD}/gopath/bin:${PATH} make doc.rv
       - name: Generate docs (RT)
