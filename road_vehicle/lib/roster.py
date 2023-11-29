@@ -1,6 +1,7 @@
 import math
 from tabulate import tabulate
 from road_vehicle.lib import ARoadVehicle, supported_techclasses
+from agrf.strings import get_translation
 
 
 def dimens_repr(dimensions):
@@ -18,8 +19,8 @@ def round_sign(x):
 
 
 class Roster:
-    def __init__(self, name, *entries):
-        self.name = name
+    def __init__(self, translation_name, *entries):
+        self.translation_name = translation_name
         self.entries = entries
         variants = [y for x in entries for y in x.variant.get_variants()]
         self.rvs = list(sorted(variants, key=lambda x: supported_techclasses.index(x.techclass)))
@@ -174,3 +175,6 @@ class Roster:
         return "\n\n".join(
             [self.gameplay_cli(), self.hogscost_cli(), self.dimension_cli(), self.in_game_dimension_cli()]
         )
+
+    def name(self, string_manager, lang_id=0x7F):
+        return get_translation(string_manager[f"STR_PARAM_ROSTER_{self.translation_name}"], lang_id)

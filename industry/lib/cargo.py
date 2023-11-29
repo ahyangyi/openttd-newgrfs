@@ -69,7 +69,7 @@ class ACargo(Cargo, MetaSpriteMixin):
         return f"<Cargo:{self.label}>"
 
     def name(self, string_manager, lang_id=0x7F):
-        return get_translation(string_manager[f"STR_CARGO_NAME_{self.label.decode()}"], 0x7F)
+        return get_translation(string_manager[f"STR_CARGO_NAME_{self.label.decode()}"], lang_id)
 
     @property
     def penalty1(self):
