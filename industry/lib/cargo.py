@@ -55,7 +55,7 @@ class ACargo(Cargo, MetaSpriteMixin):
 
     @property
     def capacity_multiplier(self):
-        return self._props["capacity_mult"]
+        return self._props["capacity_multiplier"]
 
     @property
     def weight(self):
@@ -73,11 +73,11 @@ class ACargo(Cargo, MetaSpriteMixin):
 
     @property
     def penalty1(self):
-        return self._props["penalty1"]
+        return self._props["penalty_lowerbound"]
 
     @property
     def penalty2(self):
-        return self._props["penalty2"]
+        return self._props["single_penalty_length"]
 
     @property
     def base_price(self):
