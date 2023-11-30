@@ -20,7 +20,10 @@ the_bridge = ABridge(
     back=None,
     pillar=None,
     intro_year_since_1920=0,
+    min_length=4,
+    max_length=32,
     purchase_text="Build Test Bridge",
     description_rail="Test Bridge (rail)",
     description_road="Test Bridge (road)",
+    layout={"table_id": 0, "tables": []},
 )
