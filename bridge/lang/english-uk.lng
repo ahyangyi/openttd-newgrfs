@@ -4,7 +4,7 @@ STR_GRF_DESC                    :A bridge set based on bridges in Wuhu, Anhui, C
 
 STR_PARAM_SPEED_LIMIT               :Speed Limit
 STR_PARAM_SPEED_LIMIT_DESC          :The speed limit of the bridges{}{}Normal - Balanced against vanilla bridges
-STR_PARAM_SPEED_LIMIT_SEVERE        :SEVERE
+STR_PARAM_SPEED_LIMIT_SEVERE        :Severe
 STR_PARAM_SPEED_LIMIT_RESTRICTIVE   :Restrictive
 STR_PARAM_SPEED_LIMIT_NORMAL        :Normal
 STR_PARAM_SPEED_LIMIT_PERMISSIVE    :Permissive

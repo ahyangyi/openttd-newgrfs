@@ -1,3 +1,18 @@
 ##grflangid 0x56
 STR_GRF_NAME                    :AWBS - Ahyangyi 的芜湖桥梁包
 STR_GRF_DESC                    :基于芜湖的桥梁设计的模组
+
+STR_PARAM_SPEED_LIMIT               :车速限制
+STR_PARAM_SPEED_LIMIT_DESC          :桥梁的车速限制{}{}标准 - 接近原版的体验
+STR_PARAM_SPEED_LIMIT_SEVERE        :僵硬
+STR_PARAM_SPEED_LIMIT_RESTRICTIVE   :严格
+STR_PARAM_SPEED_LIMIT_NORMAL        :标准
+STR_PARAM_SPEED_LIMIT_PERMISSIVE    :宽松
+STR_PARAM_SPEED_LIMIT_FANTASY       :魔幻
+STR_PARAM_SPEED_LIMIT_NO_LIMIT      :无限速
+
+STR_PARAM_NIGHT_MODE            :夜景模式
+STR_PARAM_NIGHT_MODE_DESC       :使用适配 NightGFX 的夜景图像
+STR_PARAM_NIGHT_MODE_AUTO_DETECT:自动检测
+STR_PARAM_NIGHT_MODE_DISABLED   :不使用
+STR_PARAM_NIGHT_MODE_ENABLED    :使用
