@@ -15,6 +15,10 @@ def main():
         preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
 
+    from bridge.lib.parameters import parameter_list
+
+    parameter_list.add(g, s)
+
     from bridge.bridges.dovemere import test
 
     g.add(test.the_bridge)
