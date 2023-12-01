@@ -31,10 +31,13 @@ variant = AVariant(
     model_life=30,
     max_speed=ALorry.kmh(60),
     power=ALorry.kW(103),
-    weight=5,  # NO Data
+    weight=6.8,
     techclass="h_truck",
-    cargo_capacity=8,
+    cargo_capacity=8.2,
     default_cargo_type=0,
+    real_dimensions=(7.6, 2.4, 2.6),
+    axle_track=(1.927, 1.755),  # Škoda 706 RT values
+    real_x_dimensions=(1.4, 4.0, 2.2),
     refittable_cargo_classes=cargos.OPEN_CARGO_CLASSES,
     real_class=ALorry,
     graphics_helper=AutoWolf(lowside_switch, flags=("noflipY",)),
