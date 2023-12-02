@@ -10,4 +10,4 @@ vox = LazyVoxel(
 vox.render()
 voxels = [LazySpriteSheet([vox], [(0, 0)])]
 
-the_station = AStation(id=0x00, sprites=[s for v in voxels for s in v.spritesheet(0, 0)], **{"class": b"2018"})
+the_station = AStation(id=0x00, sprites=[s for v in voxels for s in v.spritesheet(0, 0)], class_label=b"2018")
