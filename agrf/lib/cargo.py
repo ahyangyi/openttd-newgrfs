@@ -28,6 +28,6 @@ class Cargo(grf.SpriteGenerator):
             return []
         definition = res[-1]
         self.callbacks.graphics = 0
-        res.append(self.callbacks.make_map_action(definition))
+        res.extend(self.callbacks.make_map_action(definition))
 
         return res

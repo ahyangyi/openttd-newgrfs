@@ -26,6 +26,6 @@ class AStation(grf.SpriteGenerator):
             for s in self.sprites:
                 res.append(s)
 
-        res.append(self.callbacks.make_map_action(definition))
+        res.extend(self.callbacks.make_map_action(definition))
 
         return res
