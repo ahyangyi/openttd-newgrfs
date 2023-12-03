@@ -30,6 +30,10 @@ nav_order: {i+1}
 **Capacity Multiplier**: {cargo.capacity_multiplier / 0x100}
 
 **Weight**: {cargo.weight / 16}
+
+**Is a freight cargo**: {cargo._props["is_freight"]}
+
+**Price**: {cargo.base_price} \| {cargo.penalty1} \| {cargo.penalty2}
 """,
                 file=f,
             )
