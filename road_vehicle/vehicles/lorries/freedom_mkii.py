@@ -1,9 +1,26 @@
 from datetime import date
 from road_vehicle.lib import ALorry, BiasPlyTire
 from road_vehicle.lib.graphics.autowolf import AutoWolf
+from road_vehicle.lib.graphics.voxel import LazyVoxel, LazySwitch, LazyAlternatives
 from agrf.variant import AVariant
+import cargos
+from agrf.graphics.recolour import *
 
 lowside = LazyVoxel("freedom").compose("road_vehicle/voxels/parts/open.vox", "open")
+
+empty = lowside.produce_empty("empty")
+coal = lowside.compose("road_vehicle/voxels/parts/cargo/coal.vox", "coal")
+
+lowside_switch = LazySwitch(
+    ranges={
+        cargos.cargos.index(k): LazyAlternatives(
+            (empty, lowside.compose("road_vehicle/voxels/parts/cargo/coal.vox", v.name, colour_map=v))
+        )
+        for k, v in cargos.coal_remaps.items()
+    },
+    default=LazyAlternatives((empty, coal)),
+    code="cargo_type_in_veh",
+)
 
 variant = AVariant(
     real_class=ALorry,
