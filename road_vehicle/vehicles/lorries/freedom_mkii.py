@@ -3,6 +3,7 @@ from road_vehicle.lib import ALorry, BiasPlyTire
 from road_vehicle.lib.graphics.autowolf import AutoWolf
 from agrf.variant import AVariant
 
+lowside = LazyVoxel("freedom").compose("road_vehicle/voxels/parts/open.vox", "open")
 
 variant = AVariant(
     real_class=ALorry,
@@ -22,5 +23,5 @@ variant = AVariant(
     axle_track=(1.70, 1.74),
     real_x_dimensions=(0.874, 4.175, 1.806),
     tire=BiasPlyTire(9, 20),
-    graphics_helper=AutoWolf("placeholder"),
+    graphics_helper=AutoWolf(lowside_switch, flags=("noflipY",)),
 )
