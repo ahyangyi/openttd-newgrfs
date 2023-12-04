@@ -38,6 +38,7 @@ variant = AVariant(
     real_dimensions=(7.6, 2.4, 2.6),
     axle_track=(1.927, 1.751),  # Škoda 706 RT values
     real_x_dimensions=(1.4, 4.0, 2.2),
+    tire=BiasPlyTire(11, 20),
     refittable_cargo_classes=cargos.OPEN_CARGO_CLASSES,
     real_class=ALorry,
     graphics_helper=AutoWolf(lowside_switch, flags=("noflipY",)),
