@@ -1,4 +1,33 @@
 import grf
+from dataclasses import dataclass
+from typing import Tuple
+
+
+@dataclass
+class SpritePair:
+    X: grf.SpriteRef | grf.ResourceAction
+    Y: grf.SpriteRef | grf.ResourceAction
+
+
+@dataclass
+class ASingleTypeBridgeLayout:
+    back: Tuple[SpritePair, SpritePair, SpritePair, SpritePair, SpritePair, SpritePair]
+    front: Tuple[SpritePair, SpritePair, SpritePair, SpritePair, SpritePair, SpritePair]
+    pillars: Tuple[SpritePair, SpritePair, SpritePair, SpritePair, SpritePair, SpritePair]
+    flat: Tuple[SpritePair, SpritePair]
+    ramp: Tuple[SpritePair, SpritePair]
+
+
+@dataclass
+class ABridgeLayout:
+    railX: ASingleTypeBridgeLayout
+    railY: ASingleTypeBridgeLayout
+    roadX: ASingleTypeBridgeLayout
+    roadY: ASingleTypeBridgeLayout
+    monoX: ASingleTypeBridgeLayout
+    monoY: ASingleTypeBridgeLayout
+    mlevX: ASingleTypeBridgeLayout
+    mlevY: ASingleTypeBridgeLayout
 
 
 class ABridge(grf.SpriteGenerator):
