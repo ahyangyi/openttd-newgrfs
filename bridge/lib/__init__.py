@@ -17,17 +17,26 @@ class ASingleTypeBridgeLayout:
     flat: Tuple[SpritePair, SpritePair]
     ramp: Tuple[SpritePair, SpritePair]
 
+    @staticmethod
+    def one_grid_layout(back, front, pillars, flat, ramp):
+        return ASingleTypeBridgeLayout((back,) * 6, (front,) * 6, (pillars,) * 6, flat, ramp)
+
 
 @dataclass
 class ABridgeLayout:
-    railX: ASingleTypeBridgeLayout
-    railY: ASingleTypeBridgeLayout
-    roadX: ASingleTypeBridgeLayout
-    roadY: ASingleTypeBridgeLayout
-    monoX: ASingleTypeBridgeLayout
-    monoY: ASingleTypeBridgeLayout
-    mlevX: ASingleTypeBridgeLayout
-    mlevY: ASingleTypeBridgeLayout
+    rail: ASingleTypeBridgeLayout
+    road: ASingleTypeBridgeLayout
+    mono: ASingleTypeBridgeLayout
+    mlev: ASingleTypeBridgeLayout
+
+    @staticmethod
+    def make_universal(single_layout):
+        return ABridgeLayout(
+            rail=single_layout,
+            road=single_layout,
+            mono=single_layout,
+            mlev=single_layout,
+        )
 
 
 class ABridge(grf.SpriteGenerator):
@@ -36,9 +45,7 @@ class ABridge(grf.SpriteGenerator):
         *,
         id,
         name,
-        back,
-        front,
-        pillar,
+        layout: ABridgeLayout,
         purchase_text=None,
         description_rail=None,
         description_road=None,
@@ -47,13 +54,14 @@ class ABridge(grf.SpriteGenerator):
         super().__init__()
         self.id = id
         self.name = name
-        self.back = back
-        self.front = front
-        self.pillar = pillar
+        self.layout = layout
         self.purchase_text = purchase_text
         self.description_rail = description_rail
         self.description_road = description_road
         self._props = props
+
+        # FIXME: supprt new layout abstraction
+        self._props["layout"] = layout
 
     def get_sprites(self, g):
         extra_props = {}
