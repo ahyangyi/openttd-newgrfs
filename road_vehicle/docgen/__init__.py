@@ -23,6 +23,7 @@ parent: Rosters
 grand_parent: ACRVS - Ahyangyi's Chinese Road Vehicle Set
 nav_order: {i+1}
 ---
+{{% translate_file road_vehicle/rosters/{roster.translation_name}.md %}}
 """,
                 file=f,
             )
@@ -32,9 +33,16 @@ nav_order: {i+1}
             with open(os.path.join(langprefix, f"{roster.translation_name}.md"), "w") as f:
                 print(
                     f"""
-""",
+# Buses
+
+| Year  | Name |
+|-------|------|""",
                     file=f,
                 )
+                for entry in roster.entries:
+                    entry = entry.variant.get_variants()[0]
+                    name = get_translation(string_manager["STR_RV_" + entry.translation_name + "_NAME"], 0x7F)
+                    print(f"| {entry._props['introduction_date'].year} | {name}", file=f)
 
     prefix = f"docs/road_vehicle/vehicles"
     os.makedirs(os.path.join(prefix, "img"), exist_ok=True)

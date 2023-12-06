@@ -33,6 +33,7 @@ STR_PARAM_FANTASY_FREIGHT_TRAMS_ENABLED :Enabled
 
 STR_RV_HAPPYONE_BUS_NAME        :Ford F-60 Canadian Military Pattern Combination Bus (gasoline)
 STR_RV_RIME_NAME                :Songhuajiang Type-57 Bus (gasoline)
+STR_RV_NORTHWING_NAME           :Jingyi BK640 Bus (gasoline)
 STR_RV_LONGRIVER_NAME           :Changjiang CJ640B Bus (gasoline)
 STR_RV_LONGRIVER_ARTICULATED_NAME :Changjiang CJ660B Bus (gasoline)
 STR_RV_LONGRIVER_COACH_NAME     :Changjiang CJ642B Coach (gasoline)
@@ -53,6 +54,7 @@ STR_TRAIN_NOVA_NAME             :CRRC Puzhen Alstom Innovia Monorail 300 (EMU)
 
 STR_RV_HAPPYONE_BUS_DESC        :{SILVER}
 STR_RV_RIME_DESC                :{SILVER}After the mass-production of the FAW Jiefang CA 10 trucks, many factories started to produce buses by installing a bus body on the chassis.{}{}Songhuajiang Type-57 was produced by the Weijian State-owned Machinery Factory in Harbin.
+STR_RV_NORTHWING_DESC           :{SILVER}
 STR_RV_LONGRIVER_DESC           :{SILVER}
 STR_RV_LONGRIVER_ARTICULATED_DESC :{SILVER}
 STR_RV_LONGRIVER_COACH_DESC     :{SILVER}
