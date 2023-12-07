@@ -31,33 +31,24 @@ nav_order: {i+1}
         for language in ["en-GB", "zh-CN"]:
             langprefix = f"docs/_i18n/{language}/road_vehicle/rosters"
             with open(os.path.join(langprefix, f"{roster.translation_name}.md"), "w") as f:
-                print(
-                    f"""
-# Buses
+                for title, techclassset in [
+                    ("Buses", ["bus", "articulated_bus", "2decker", "coach"]),
+                    ("Lorries", ["l_truck", "m_truck", "h_truck"]),
+                    ("Urban Rail Transit", ["monorail"]),
+                ]:
+                    print(
+                        f"""
+# {title}
 
 | Year  | Name |
 |-------|------|""",
-                    file=f,
-                )
-                for entry in sorted(roster.entries, key=lambda x: x.variant.introduction_date):
-                    entry = entry.variant.get_variants()[0]
-                    if entry.techclass in ["bus", "articulated_bus", "2decker", "coach"]:
-                        name = get_translation(string_manager["STR_RV_" + entry.translation_name + "_NAME"], 0x7F)
-                        print(f"| {entry._props['introduction_date'].year} | {name}", file=f)
-
-                print(
-                    f"""
-# Lorries
-
-| Year  | Name |
-|-------|------|""",
-                    file=f,
-                )
-                for entry in sorted(roster.entries, key=lambda x: x.variant.introduction_date):
-                    entry = entry.variant.get_variants()[0]
-                    if entry.techclass in ["l_truck", "m_truck", "h_truck"]:
-                        name = get_translation(string_manager["STR_RV_" + entry.translation_name + "_NAME"], 0x7F)
-                        print(f"| {entry._props['introduction_date'].year} | {name}", file=f)
+                        file=f,
+                    )
+                    for entry in sorted(roster.entries, key=lambda x: x.variant.introduction_date):
+                        entry = entry.variant.get_variants()[0]
+                        if entry.techclass in techclassset:
+                            name = get_translation(string_manager["STR_RV_" + entry.translation_name + "_NAME"], 0x7F)
+                            print(f"| {entry._props['introduction_date'].year} | {name}", file=f)
 
     prefix = f"docs/road_vehicle/vehicles"
     os.makedirs(os.path.join(prefix, "img"), exist_ok=True)
