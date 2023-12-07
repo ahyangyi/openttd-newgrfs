@@ -36,6 +36,8 @@ nav_order: {i+1}
                     ("Lorries", ["l_truck", "m_truck", "h_truck"]),
                     ("Urban Rail Transit", ["monorail"]),
                 ]:
+                    if not any(entry.techclass in techclassset for entry in roster.entries):
+                        continue
                     print(
                         f"""
 # {title}

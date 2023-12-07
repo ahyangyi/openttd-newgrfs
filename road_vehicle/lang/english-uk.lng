@@ -42,6 +42,7 @@ STR_RV_RAREGEM_NAME             :Chery Wanda WD6110CHEVG01 Bus (PHEV)
 STR_RV_MILKYWAY_2DECKER_NAME    :Yutong ZK6116HNGS2 Double-Decker Bus (diesel)
 
 STR_RV_HAPPYONE_NAME            :Ford F-60 Canadian Military Pattern Truck (gasoline)
+STR_RV_LEEWAY_NAME              :Dodge T-234 Truck (gasoline)
 STR_RV_FREEDOM_NAME             :FAW Jiefang CA10 Truck (gasoline)
 STR_RV_FREEDOM_TANKER_NAME      :FAW Jiefang CA10 Tank Truck (gasoline)
 STR_RV_FREEDOM_TARPAULIN_NAME   :FAW Jiefang CA10 Covered Wagon Truck (gasoline)
@@ -63,6 +64,7 @@ STR_RV_RAREGEM_DESC             :{SILVER}
 STR_RV_MILKYWAY_2DECKER_DESC    :{SILVER}
 
 STR_RV_HAPPYONE_DESC            :{SILVER}
+STR_RV_LEEWAY_DESC              :{SILVER}
 STR_RV_FREEDOM_DESC             :{SILVER}A licensed variant of the Soviet ZIS-150. The first mass-produced automobile in China.
 STR_RV_FREEDOM_TANKER_DESC      :{SILVER}A licensed variant of the Soviet ZIS-150. The first mass-produced automobile in China.
 STR_RV_FREEDOM_TARPAULIN_DESC   :{SILVER}A licensed variant of the Soviet ZIS-150. The first mass-produced automobile in China.
