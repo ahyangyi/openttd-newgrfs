@@ -39,10 +39,25 @@ nav_order: {i+1}
 |-------|------|""",
                     file=f,
                 )
-                for entry in roster.entries:
+                for entry in sorted(roster.entries, key=lambda x: x.variant.introduction_date):
                     entry = entry.variant.get_variants()[0]
-                    name = get_translation(string_manager["STR_RV_" + entry.translation_name + "_NAME"], 0x7F)
-                    print(f"| {entry._props['introduction_date'].year} | {name}", file=f)
+                    if entry.techclass in ["bus", "articulated_bus", "2decker", "coach"]:
+                        name = get_translation(string_manager["STR_RV_" + entry.translation_name + "_NAME"], 0x7F)
+                        print(f"| {entry._props['introduction_date'].year} | {name}", file=f)
+
+                print(
+                    f"""
+# Lorries
+
+| Year  | Name |
+|-------|------|""",
+                    file=f,
+                )
+                for entry in sorted(roster.entries, key=lambda x: x.variant.introduction_date):
+                    entry = entry.variant.get_variants()[0]
+                    if entry.techclass in ["l_truck", "m_truck", "h_truck"]:
+                        name = get_translation(string_manager["STR_RV_" + entry.translation_name + "_NAME"], 0x7F)
+                        print(f"| {entry._props['introduction_date'].year} | {name}", file=f)
 
     prefix = f"docs/road_vehicle/vehicles"
     os.makedirs(os.path.join(prefix, "img"), exist_ok=True)
