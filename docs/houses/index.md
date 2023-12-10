@@ -1,6 +1,6 @@
 ---
 layout: default
-title: AWBS - Ahyangyi's Wuhu Bridge Set
+title: AWHS - Ahyangyi's Wuhu House Set
 has_children: True
 nav_order: 6
 ---
