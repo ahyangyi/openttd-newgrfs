@@ -6,7 +6,7 @@ from agrf.variant import AVariant
 import cargos
 
 
-variant = AVariant(
+the_variant = AVariant(
     id=0x1050,
     name="Milky Way Double-Decker Bus",
     translation_name="MILKYWAY_2DECKER",

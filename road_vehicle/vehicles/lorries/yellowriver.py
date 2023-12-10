@@ -6,7 +6,7 @@ from agrf.variant import AVariant
 import cargos
 from agrf.graphics.recolour import *
 
-variant = AVariant(
+the_variant = AVariant(
     id=0x2300,
     name="Yellow River Truck",
     translation_name="YELLOWRIVER",

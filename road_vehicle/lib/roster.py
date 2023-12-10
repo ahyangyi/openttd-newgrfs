@@ -22,7 +22,7 @@ class Roster:
     def __init__(self, translation_name, *entries):
         self.translation_name = translation_name
         self.entries = entries
-        variants = [y for x in entries for y in x.variant.get_variants()]
+        variants = [y for x in entries for y in x.get_variants()]
         self.rvs = list(sorted(variants, key=lambda x: supported_techclasses.index(x.techclass)))
 
     def register(self, grf):

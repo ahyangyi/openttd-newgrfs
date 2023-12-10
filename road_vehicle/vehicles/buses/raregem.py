@@ -6,7 +6,7 @@ from agrf.variant import AVariant
 import cargos
 
 
-variant = AVariant(
+the_variant = AVariant(
     id=0x1030,
     name="Raregem Bus",
     translation_name="RAREGEM",

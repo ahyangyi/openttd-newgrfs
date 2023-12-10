@@ -4,7 +4,7 @@ from road_vehicle.lib.graphics.autowolf import AutoWolf
 from agrf.variant import AVariant
 
 
-variant = AVariant(
+the_variant = AVariant(
     real_class=ABus,
     id=0x1004,
     name="Longriver Coach",

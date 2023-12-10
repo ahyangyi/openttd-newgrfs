@@ -4,7 +4,7 @@ from road_vehicle.lib.graphics.autowolf import AutoWolf
 from agrf.variant import AVariant
 
 
-variant = AVariant(
+the_variant = AVariant(
     real_class=ALorry,
     id=0x2100,
     name="Happyone Truck",

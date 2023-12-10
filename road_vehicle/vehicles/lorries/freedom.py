@@ -22,7 +22,7 @@ lowside_switch = LazySwitch(
     code="cargo_type_in_veh",
 )
 
-variant = AVariant(
+the_variant = AVariant(
     id=0x2000,
     name="Freedom Open Truck",
     translation_name="FREEDOM",

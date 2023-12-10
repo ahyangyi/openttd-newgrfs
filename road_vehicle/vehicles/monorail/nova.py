@@ -11,7 +11,7 @@ nova = LazyVoxel("nova", config={"agrf_unnaturalness": 1})
 
 nova_f = LazyVoxel("nova_f", config={"agrf_unnaturalness": 1})
 
-variant = AVariant(
+the_variant = AVariant(
     id=0x3000,
     name="Nova",
     translation_name="NOVA",

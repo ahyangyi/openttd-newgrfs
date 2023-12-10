@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-import road_vehicle.rosters.dovemere as dovemere
-import road_vehicle.rosters.norbury as norbury
+from road_vehicle.rosters import everything, city_rosters
 from cargos import cargos
 import argparse
 import grf
@@ -51,7 +50,7 @@ def gen(fast):
         for _ in range(8):
             g.add(grf.EMPTY_SPRITE)
 
-    dovemere.roster.register(g)
+    everything.register(g)
     g.write("road_vehicle.grf")
 
 
@@ -66,9 +65,9 @@ def main():
     elif args.cmd == "doc":
         from road_vehicle.docgen import gen_docs
 
-        gen_docs(get_string_manager(), [dovemere.roster, norbury.roster])
+        gen_docs(get_string_manager(), city_rosters)
     else:
-        print("\n" + dovemere.roster.cli())
+        print("\n" + everything.cli())
 
 
 if __name__ == "__main__":

@@ -36,7 +36,7 @@ nav_order: {i+1}
                     ("Lorries", ["l_truck", "m_truck", "h_truck"]),
                     ("Urban Rail Transit", ["monorail"]),
                 ]:
-                    if not any(entry.variant.techclass in techclassset for entry in roster.entries):
+                    if not any(entry.techclass in techclassset for entry in roster.entries):
                         continue
                     print(
                         f"""
@@ -46,8 +46,8 @@ nav_order: {i+1}
 |-------|------|""",
                         file=f,
                     )
-                    for entry in sorted(roster.entries, key=lambda x: x.variant.introduction_date):
-                        entry = entry.variant.get_variants()[0]
+                    for entry in sorted(roster.entries, key=lambda x: x.introduction_date):
+                        entry = entry.get_variants()[0]
                         if entry.techclass in techclassset:
                             name = get_translation(string_manager["STR_RV_" + entry.translation_name + "_NAME"], 0x7F)
                             print(f"| {entry._props['introduction_date'].year} | {name}", file=f)
@@ -56,9 +56,8 @@ nav_order: {i+1}
     os.makedirs(os.path.join(prefix, "img"), exist_ok=True)
     cc1_remap = company_colour_remap(CompanyColour.BLUE, CompanyColour.BLUE).to_sprite()
     cc2_remap = company_colour_remap(CompanyColour.WHITE, CompanyColour.RED).to_sprite()
-    for i, entry in enumerate(rosters[0].entries):
+    for i, v in enumerate(rosters[0].entries):
         # Prepare text
-        v = entry.variant
         translation = get_translation(string_manager["STR_RV_" + v["translation_name"] + "_NAME"], 0x7F)
         desc_translation = get_translation(string_manager["STR_RV_" + v["translation_name"] + "_DESC"], 0x7F)
 

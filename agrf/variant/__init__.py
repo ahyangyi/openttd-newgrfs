@@ -13,3 +13,6 @@ class AVariant(dict):
             for v in self["variants"]:
                 ret.extend(self.modified_copy(**v).get_variants())
         return ret
+
+    def __hash__(self):
+        return id(self)

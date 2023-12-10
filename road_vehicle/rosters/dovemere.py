@@ -12,7 +12,7 @@ from ..vehicles.lorries import freedom, freedom_mkii, shield, happyone as happyo
 from ..vehicles.monorail import nova
 from road_vehicle.lib.roster import Roster
 
-roster = Roster(
+the_roster = Roster(
     "DOVEMERE",
     happyone,
     rime,

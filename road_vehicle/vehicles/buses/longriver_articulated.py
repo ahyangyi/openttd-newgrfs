@@ -4,7 +4,7 @@ from road_vehicle.lib.graphics.autowolf import AutoWolf
 from agrf.variant import AVariant
 
 
-variant = AVariant(
+the_variant = AVariant(
     id=0x1008,
     name="Longriver Articulated Bus",
     translation_name="LONGRIVER_ARTICULATED",

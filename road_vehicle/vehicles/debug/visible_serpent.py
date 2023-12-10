@@ -6,7 +6,7 @@ from agrf.variant import AVariant
 
 length = 128
 
-variant = AVariant(
+the_variant = AVariant(
     real_class=ABus,
     id=0x3FFF,
     name="Visible Snake",
