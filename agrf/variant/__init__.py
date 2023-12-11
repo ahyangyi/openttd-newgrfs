@@ -21,3 +21,6 @@ class AVariant(dict):
 
     def __hash__(self):
         return id(self)
+
+    def __getattr__(self, name):
+        return self.__dict__[name]

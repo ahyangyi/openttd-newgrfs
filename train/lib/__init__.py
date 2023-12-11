@@ -41,8 +41,8 @@ class ATrain(grf.Train):
         if self.graphics_helper is not None:
             self.graphics_helper.generate_graphics()
         if self.translation_name is not None:
-            self.name = g.strings[f"STR_TRAIN_{self.translation_name}_NAME"]
-            self.additional_text = g.strings[f"STR_TRAIN_{self.translation_name}_DESC"]
+            self.name = g.strings[f"STR_VEHICLE_{self.translation_name}_NAME"]
+            self.additional_text = g.strings[f"STR_VEHICLE_{self.translation_name}_DESC"]
         return super().get_sprites(g)
 
     def real_speed(self):

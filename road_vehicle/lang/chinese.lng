@@ -31,44 +31,42 @@ STR_PARAM_FANTASY_FREIGHT_TRAMS_DESC    :是否加入现实中仅限客运的电
 STR_PARAM_FANTASY_FREIGHT_TRAMS_DISABLED:不使用
 STR_PARAM_FANTASY_FREIGHT_TRAMS_ENABLED :使用
 
-STR_RV_HAPPYONE_BUS_NAME        :福特 F-60 加拿大军用型卡车改装公交车 (汽油)
-STR_RV_RIME_NAME                :松花江五七式公交车 (汽油)
-STR_RV_NORTHWING_NAME           :京一 BK640 公交车 (汽油)
-STR_RV_LONGRIVER_NAME           :长江 CJ640B 公交车 (汽油)
-STR_RV_LONGRIVER_ARTICULATED_NAME :长江 CJ660B 铰接式公交车 (汽油)
-STR_RV_LONGRIVER_COACH_NAME     :长江 CJ642B 长途大巴 (汽油)
-STR_RV_LONGRIVER_2DECKER_NAME   :长江福莱西宝 CJ6100SGCH 双层公交车 (柴油)
-STR_RV_RAREGEM_NAME             :奇瑞万达 WD6110CHEVG01 公交车 (插电混动)
-STR_RV_MILKYWAY_2DECKER_NAME    :宇通 ZK6116HNGS2 双层公交车 (柴油)
+STR_VEHICLE_HAPPYONE_BUS_NAME           :福特 F-60 加拿大军用型卡车改装公交车 (汽油)
+STR_VEHICLE_RIME_NAME                   :松花江五七式公交车 (汽油)
+STR_VEHICLE_NORTHWING_NAME              :京一 BK640 公交车 (汽油)
+STR_VEHICLE_LONGRIVER_NAME              :长江 CJ640B 公交车 (汽油)
+STR_VEHICLE_LONGRIVER_ARTICULATED_NAME  :长江 CJ660B 铰接式公交车 (汽油)
+STR_VEHICLE_LONGRIVER_COACH_NAME        :长江 CJ642B 长途大巴 (汽油)
+STR_VEHICLE_LONGRIVER_2DECKER_NAME      :长江福莱西宝 CJ6100SGCH 双层公交车 (柴油)
+STR_VEHICLE_RAREGEM_NAME                :奇瑞万达 WD6110CHEVG01 公交车 (插电混动)
+STR_VEHICLE_MILKYWAY_2DECKER_NAME       :宇通 ZK6116HNGS2 双层公交车 (柴油)
 
-STR_RV_HAPPYONE_NAME            :福特 F-60 加拿大军用型卡车 (汽油)
-STR_RV_FREEDOM_NAME             :一汽解放 CA10 卡车 (汽油)
-STR_RV_FREEDOM_TANKER_NAME      :一汽解放 CA10 油罐车 (汽油)
-STR_RV_FREEDOM_TARPAULIN_NAME   :一汽解放 CA10 顶棚卡车 (汽油)
-STR_RV_FREEDOM_MK_II_NAME       :一汽解放 CA15 卡车 (汽油)
-STR_RV_YELLOWRIVER_NAME         :黄河 JN150 卡车 (柴油)
-STR_RV_SHIELD_NAME              :联合 U+550 重型卡车 (柴油)
+STR_VEHICLE_HAPPYONE_NAME               :福特 F-60 加拿大军用型卡车 (汽油)
+STR_VEHICLE_FREEDOM_NAME                :一汽解放 CA10 卡车 (汽油)
+STR_VEHICLE_FREEDOM_TANKER_NAME         :一汽解放 CA10 油罐车 (汽油)
+STR_VEHICLE_FREEDOM_TARPAULIN_NAME      :一汽解放 CA10 顶棚卡车 (汽油)
+STR_VEHICLE_FREEDOM_MK_II_NAME          :一汽解放 CA15 卡车 (汽油)
+STR_VEHICLE_YELLOWRIVER_NAME            :黄河 JN150 卡车 (柴油)
+STR_VEHICLE_SHIELD_NAME                 :联合 U+550 重型卡车 (柴油)
 
-STR_RV_NOVA_NAME                :中车浦镇阿尔斯通 INNOVIA 300型 跨座式单轨 (EMU)
-STR_TRAIN_NOVA_NAME             :中车浦镇阿尔斯通 INNOVIA 300型 跨座式单轨 (EMU)
+STR_VEHICLE_NOVA_NAME                   :中车浦镇阿尔斯通 INNOVIA 300型 跨座式单轨 (EMU)
 
-STR_RV_HAPPYONE_BUS_DESC        :{SILVER}
-STR_RV_RIME_DESC                :{SILVER}在解放 CA10 卡车量产后，各地工厂纷纷生产基于 CA10 底盘的公交车。{}{}松花江五七式公交车是由哈尔滨国营伟建机器厂生产的。
-STR_RV_NORTHWING_DESC           :{SILVER}
-STR_RV_LONGRIVER_DESC           :{SILVER}
-STR_RV_LONGRIVER_ARTICULATED_DESC :{SILVER}
-STR_RV_LONGRIVER_COACH_DESC     :{SILVER}
-STR_RV_LONGRIVER_2DECKER_DESC   :{SILVER}
-STR_RV_RAREGEM_DESC             :{SILVER}
-STR_RV_MILKYWAY_2DECKER_DESC    :{SILVER}
+STR_VEHICLE_HAPPYONE_BUS_DESC           :{SILVER}
+STR_VEHICLE_RIME_DESC                   :{SILVER}在解放 CA10 卡车量产后，各地工厂纷纷生产基于 CA10 底盘的公交车。{}{}松花江五七式公交车是由哈尔滨国营伟建机器厂生产的。
+STR_VEHICLE_NORTHWING_DESC              :{SILVER}
+STR_VEHICLE_LONGRIVER_DESC              :{SILVER}
+STR_VEHICLE_LONGRIVER_ARTICULATED_DESC  :{SILVER}
+STR_VEHICLE_LONGRIVER_COACH_DESC        :{SILVER}
+STR_VEHICLE_LONGRIVER_2DECKER_DESC      :{SILVER}
+STR_VEHICLE_RAREGEM_DESC                :{SILVER}
+STR_VEHICLE_MILKYWAY_2DECKER_DESC       :{SILVER}
 
-STR_RV_HAPPYONE_DESC            :{SILVER}
-STR_RV_FREEDOM_DESC             :{SILVER}基于苏联 ZIS-150 的卡车。是中国第一种量产的汽车。
-STR_RV_FREEDOM_TANKER_DESC      :{SILVER}基于苏联 ZIS-150 的卡车。是中国第一种量产的汽车。
-STR_RV_FREEDOM_TARPAULIN_DESC   :{SILVER}基于苏联 ZIS-150 的卡车。是中国第一种量产的汽车。
-STR_RV_FREEDOM_MK_II_DESC       :{SILVER}
-STR_RV_YELLOWRIVER_DESC         :{SILVER}仿制斯柯达 706 RT 而生产的卡车。是中国的第一辆重型卡车。
-STR_RV_SHIELD_DESC              :{SILVER}
+STR_VEHICLE_HAPPYONE_DESC               :{SILVER}
+STR_VEHICLE_FREEDOM_DESC                :{SILVER}基于苏联 ZIS-150 的卡车。是中国第一种量产的汽车。
+STR_VEHICLE_FREEDOM_TANKER_DESC         :{SILVER}基于苏联 ZIS-150 的卡车。是中国第一种量产的汽车。
+STR_VEHICLE_FREEDOM_TARPAULIN_DESC      :{SILVER}基于苏联 ZIS-150 的卡车。是中国第一种量产的汽车。
+STR_VEHICLE_FREEDOM_MK_II_DESC          :{SILVER}
+STR_VEHICLE_YELLOWRIVER_DESC            :{SILVER}仿制斯柯达 706 RT 而生产的卡车。是中国的第一辆重型卡车。
+STR_VEHICLE_SHIELD_DESC                 :{SILVER}
 
-STR_RV_NOVA_DESC                :{SILVER}
-STR_TRAIN_NOVA_DESC             :{SILVER}
+STR_VEHICLE_NOVA_DESC                   :{SILVER}

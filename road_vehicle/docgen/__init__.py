@@ -49,7 +49,9 @@ nav_order: {i+1}
                     for entry in sorted(roster.entries, key=lambda x: x.introduction_date):
                         entry = entry.get_variants()[0]
                         if entry.techclass in techclassset:
-                            name = get_translation(string_manager["STR_RV_" + entry.translation_name + "_NAME"], 0x7F)
+                            name = get_translation(
+                                string_manager["STR_VEHICLE_" + entry.translation_name + "_NAME"], 0x7F
+                            )
                             print(f"| {entry._props['introduction_date'].year} | {name}", file=f)
 
     prefix = f"docs/road_vehicle/vehicles"
@@ -58,8 +60,8 @@ nav_order: {i+1}
     cc2_remap = company_colour_remap(CompanyColour.WHITE, CompanyColour.RED).to_sprite()
     for i, v in enumerate(rosters[0].entries):
         # Prepare text
-        translation = get_translation(string_manager["STR_RV_" + v["translation_name"] + "_NAME"], 0x7F)
-        desc_translation = get_translation(string_manager["STR_RV_" + v["translation_name"] + "_DESC"], 0x7F)
+        translation = get_translation(string_manager["STR_VEHICLE_" + v.translation_name + "_NAME"], 0x7F)
+        desc_translation = get_translation(string_manager["STR_VEHICLE_" + v.translation_name + "_DESC"], 0x7F)
 
         # Prepare graphics
         sprite = v.graphics_helper.doc_graphics()
@@ -68,13 +70,13 @@ nav_order: {i+1}
         mask, _ = masked_sprite.mask.get_image()
         cc1_mask = cc1_remap.remap_image(mask)
         cc1_masked_img = blend(img, cc1_mask)
-        cc1_masked_img.save(os.path.join(prefix, "img", f'{v["translation_name"]}_cc1.png'))
+        cc1_masked_img.save(os.path.join(prefix, "img", f"{v.translation_name}_cc1.png"))
         cc2_mask = cc2_remap.remap_image(mask)
         cc2_masked_img = blend(img, cc2_mask)
-        cc2_masked_img.save(os.path.join(prefix, "img", f'{v["translation_name"]}_cc2.png'))
+        cc2_masked_img.save(os.path.join(prefix, "img", f"{v.translation_name}_cc2.png"))
 
         # Dump template
-        with open(os.path.join(prefix, f'{v["translation_name"]}.md'), "w") as f:
+        with open(os.path.join(prefix, f"{v.translation_name}.md"), "w") as f:
             print(
                 f"""---
 layout: default
@@ -84,7 +86,7 @@ grand_parent: ACRVS - Ahyangyi's Chinese Road Vehicle Set
 nav_order: {i+1}
 ---
 
-{{% translate_file road_vehicle/vehicles/{v["translation_name"]}.md %}}
+{{% translate_file road_vehicle/vehicles/{v.translation_name}.md %}}
 """,
                 file=f,
             )
@@ -95,12 +97,12 @@ nav_order: {i+1}
             INTRODUCTION = {"en-GB": "Introduction", "zh-CN": "介绍"}[language]
             DATASHEET = {"en-GB": "Datasheet", "zh-CN": "数据"}[language]
 
-            with open(os.path.join(langprefix, f'{v["translation_name"]}.md'), "w") as f:
+            with open(os.path.join(langprefix, f"{v.translation_name}.md"), "w") as f:
                 print(
                     f"""
 # {INTRODUCTION}
-![](img/{v["translation_name"]}_cc1.png)
-![](img/{v["translation_name"]}_cc2.png)
+![](img/{v.translation_name}_cc1.png)
+![](img/{v.translation_name}_cc2.png)
 {desc_translation}
 
 # {DATASHEET}
