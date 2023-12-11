@@ -52,7 +52,10 @@ nav_order: {i+1}
                             name = get_translation(
                                 string_manager["STR_VEHICLE_" + entry.translation_name + "_NAME"], 0x7F
                             )
-                            print(f"| {entry._props['introduction_date'].year} | {name}", file=f)
+                            print(
+                                f"| {entry._props['introduction_date'].year} | [{name}](road_vehicle/vehicles/{entry.translation_name}.md)",
+                                file=f,
+                            )
 
     prefix = f"docs/road_vehicle/vehicles"
     os.makedirs(os.path.join(prefix, "img"), exist_ok=True)
