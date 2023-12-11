@@ -2,11 +2,11 @@ from datetime import date
 from road_vehicle.lib import ABus, RadialTire
 from road_vehicle.lib.graphics.autowolf import AutoWolf
 from road_vehicle.lib.graphics.voxel import LazyVoxel
-from agrf.variant import AVariant
+from agrf.metavehicle import AMetaVehicle
 import cargos
 
 
-the_variant = AVariant(
+the_variant = AMetaVehicle(
     id=0x1050,
     name="Milky Way Double-Decker Bus",
     translation_name="MILKYWAY_2DECKER",

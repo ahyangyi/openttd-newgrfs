@@ -2,7 +2,7 @@ from datetime import date
 from road_vehicle.lib import AMonorail
 from road_vehicle.lib.graphics.voxel import LazyVoxel
 from road_vehicle.lib.graphics.autowolf import AutoWolf
-from agrf.variant import AVariant
+from agrf.metavehicle import AMetaVehicle
 from train.lib import ATrain
 import grf
 
@@ -11,7 +11,7 @@ nova = LazyVoxel("nova", config={"agrf_unnaturalness": 1})
 
 nova_f = LazyVoxel("nova_f", config={"agrf_unnaturalness": 1})
 
-the_variant = AVariant(
+the_variant = AMetaVehicle(
     id=0x3000,
     name="Nova",
     translation_name="NOVA",

@@ -1,12 +1,12 @@
 from datetime import date
 from road_vehicle.lib import ABus
 from road_vehicle.lib.graphics.autowolf import AutoWolf
-from agrf.variant import AVariant
+from agrf.metavehicle import AMetaVehicle
 
 
 length = 128
 
-the_variant = AVariant(
+the_variant = AMetaVehicle(
     real_class=ABus,
     id=0x3FFF,
     name="Visible Snake",

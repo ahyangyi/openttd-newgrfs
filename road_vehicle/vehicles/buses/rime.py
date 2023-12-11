@@ -1,10 +1,10 @@
 from datetime import date
 from road_vehicle.lib import ABus, BiasPlyTire
 from road_vehicle.lib.graphics.autowolf import AutoWolf
-from agrf.variant import AVariant
+from agrf.metavehicle import AMetaVehicle
 
 
-the_variant = AVariant(
+the_variant = AMetaVehicle(
     real_class=ABus,
     id=0x1040,
     name="Rime Bus",

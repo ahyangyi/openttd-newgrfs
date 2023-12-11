@@ -1,10 +1,10 @@
 from datetime import date
 from road_vehicle.lib import ABus, StandardProfileRadialTire
 from road_vehicle.lib.graphics.autowolf import AutoWolf
-from agrf.variant import AVariant
+from agrf.metavehicle import AMetaVehicle
 
 
-the_variant = AVariant(
+the_variant = AMetaVehicle(
     id=0x1008,
     name="Longriver Articulated Bus",
     translation_name="LONGRIVER_ARTICULATED",

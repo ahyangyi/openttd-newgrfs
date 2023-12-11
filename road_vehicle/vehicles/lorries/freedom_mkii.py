@@ -2,7 +2,7 @@ from datetime import date
 from road_vehicle.lib import ALorry, BiasPlyTire
 from road_vehicle.lib.graphics.autowolf import AutoWolf
 from road_vehicle.lib.graphics.voxel import LazyVoxel, LazySwitch, LazyAlternatives
-from agrf.variant import AVariant
+from agrf.metavehicle import AMetaVehicle
 import cargos
 from agrf.graphics.recolour import *
 
@@ -22,7 +22,7 @@ lowside_switch = LazySwitch(
     code="cargo_type_in_veh",
 )
 
-the_variant = AVariant(
+the_variant = AMetaVehicle(
     real_class=ALorry,
     id=0x2080,
     name="Freedom Truck Mk II",
