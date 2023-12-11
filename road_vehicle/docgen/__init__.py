@@ -107,3 +107,8 @@ nav_order: {i+1}
 """,
                     file=f,
                 )
+
+                if "variants" in v:
+                    print("# Variants", file=f)
+                    for variant in v.list_variants():
+                        print(f"ID: {variant.id}", file=f)
