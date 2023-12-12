@@ -8,7 +8,6 @@ import cargos
 
 the_variant = AMetaVehicle(
     id=0x1030,
-    name="Raregem Bus",
     translation_name="RAREGEM",
     introduction_date=date(2020, 1, 1),
     vehicle_life=15,
@@ -31,7 +30,6 @@ the_variant = AMetaVehicle(
         # XXX
         dict(
             id=0x1032,
-            name="Raregem Bus - Night Test",
             variant_group=0x1030,
             extra_flags=0xB,
             graphics_helper=AutoWolf(LazyVoxel("raregem").self_compose("night_lights", colour_map=cargos.NIGHT)),

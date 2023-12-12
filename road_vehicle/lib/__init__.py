@@ -22,7 +22,6 @@ class ARoadVehicle(grf.RoadVehicle, HogCostMixin):
         self,
         *,
         id,
-        name,
         weight=0,
         capacity_in_tons=0,
         real_dimensions=None,
@@ -58,7 +57,7 @@ class ARoadVehicle(grf.RoadVehicle, HogCostMixin):
             )
         super().__init__(
             id=id,
-            name=name,
+            name=translation_name,
             liveries={},
             **{
                 "weight": weight,
@@ -133,12 +132,11 @@ class ARoadVehicle(grf.RoadVehicle, HogCostMixin):
 
 
 class ABus(ARoadVehicle):
-    def __init__(self, *, id, name, cargo_capacity, weight=None, full_weight=None, **kwargs):
+    def __init__(self, *, id, cargo_capacity, weight=None, full_weight=None, **kwargs):
         if weight is None:
             weight = full_weight - 0.0625 * cargo_capacity
         super().__init__(
             id=id,
-            name=name,
             capacity_in_tons=cargo_capacity / 16,
             **{"weight": ARoadVehicle.ton(weight), "cargo_capacity": cargo_capacity, **kwargs},
         )
@@ -146,10 +144,9 @@ class ABus(ARoadVehicle):
 
 
 class ALorry(ARoadVehicle):
-    def __init__(self, *, id, name, cargo_capacity, weight, misc_flags=0, **kwargs):
+    def __init__(self, *, id, cargo_capacity, weight, misc_flags=0, **kwargs):
         super().__init__(
             id=id,
-            name=name,
             capacity_in_tons=cargo_capacity,
             **{
                 "weight": ARoadVehicle.ton(weight),
@@ -162,10 +159,9 @@ class ALorry(ARoadVehicle):
 
 
 class AMonorail(ARoadVehicle):
-    def __init__(self, *, id, name, cargo_capacity, weight=None, misc_flags=0, **kwargs):
+    def __init__(self, *, id, cargo_capacity, weight=None, misc_flags=0, **kwargs):
         super().__init__(
             id=id,
-            name=name,
             capacity_in_tons=cargo_capacity / 16,
             **{
                 "weight": ARoadVehicle.ton(weight),

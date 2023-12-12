@@ -25,7 +25,6 @@ lowside_switch = LazySwitch(
 the_variant = AMetaVehicle(
     real_class=ALorry,
     id=0x2080,
-    name="Freedom Truck Mk II",
     translation_name="FREEDOM_MK_II",
     introduction_date=date(1983, 1, 1),
     vehicle_life=15,

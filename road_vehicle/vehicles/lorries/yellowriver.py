@@ -8,7 +8,6 @@ from agrf.graphics.recolour import *
 
 the_variant = AMetaVehicle(
     id=0x2300,
-    name="Yellow River Truck",
     translation_name="YELLOWRIVER",
     introduction_date=date(1960, 4, 15),
     vehicle_life=15,

@@ -6,7 +6,6 @@ from agrf.metavehicle import AMetaVehicle
 
 the_variant = AMetaVehicle(
     id=0x1010,
-    name="Happyone Bus",
     translation_name="HAPPYONE_BUS",
     introduction_date=date(1940, 1, 1),
     vehicle_life=15,

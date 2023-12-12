@@ -7,7 +7,6 @@ from agrf.metavehicle import AMetaVehicle
 the_variant = AMetaVehicle(
     real_class=ABus,
     id=0x1004,
-    name="Longriver Coach",
     translation_name="LONGRIVER_COACH",
     introduction_date=date(1980, 1, 1),
     vehicle_life=15,

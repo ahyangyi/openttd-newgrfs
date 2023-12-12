@@ -9,7 +9,6 @@ length = 128
 the_variant = AMetaVehicle(
     real_class=ABus,
     id=0x3FFF,
-    name="Visible Snake",
     introduction_date=date(1900, 1, 1),
     vehicle_life=255,
     model_life=255,

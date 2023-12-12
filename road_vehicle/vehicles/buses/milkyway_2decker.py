@@ -8,7 +8,6 @@ import cargos
 
 the_variant = AMetaVehicle(
     id=0x1050,
-    name="Milky Way Double-Decker Bus",
     translation_name="MILKYWAY_2DECKER",
     introduction_date=date(2014, 1, 1),
     vehicle_life=15,

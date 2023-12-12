@@ -7,7 +7,6 @@ from agrf.metavehicle import AMetaVehicle
 the_variant = AMetaVehicle(
     real_class=ALorry,
     id=0x20C0,
-    name="Freedom Plus Truck",
     introduction_date=date(1982, 1, 1),
     vehicle_life=15,
     model_life=15,

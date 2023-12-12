@@ -13,7 +13,6 @@ nova_f = LazyVoxel("nova_f", config={"agrf_unnaturalness": 1})
 
 the_variant = AMetaVehicle(
     id=0x3000,
-    name="Nova",
     translation_name="NOVA",
     introduction_date=date(2010, 1, 1),
     vehicle_life=30,
@@ -54,7 +53,6 @@ the_variant = AMetaVehicle(
         dict(
             real_class=ATrain,
             id=0x3001,
-            name="Nova",
             track_type=1,
             max_speed=90,
             power=AMonorail.kW(15000),

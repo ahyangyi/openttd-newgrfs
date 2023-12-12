@@ -6,7 +6,6 @@ class ATrain(grf.Train):
         self,
         *,
         id,
-        name,
         weight=0,
         additional_text="",
         techclass="unknown",
@@ -25,7 +24,7 @@ class ATrain(grf.Train):
             )
         super().__init__(
             id=id,
-            name=name,
+            name=translation_name,
             liveries={},
             **{
                 "weight": weight,
