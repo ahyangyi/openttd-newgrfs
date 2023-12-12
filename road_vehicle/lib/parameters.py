@@ -40,5 +40,14 @@ parameter_list = ParameterList(
                 1: "ENABLED",
             },
         ),
+        Parameter(
+            "BUS_CAPACITY",
+            1,
+            {
+                0: "LOW",
+                1: "STANDARD",
+                2: "CRAMMED",
+            },
+        ),
     ]
 )

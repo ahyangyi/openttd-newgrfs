@@ -1,3 +1,6 @@
+from dataclasses import dataclass
+
+
 class Length:
     def __init__(self, meters):
         self.meters = meters
@@ -20,3 +23,13 @@ class Length:
 
     def __str__(self):
         return f"{self.meters}m"
+
+    def str_milimeters(self):
+        return f"{self.meters*1000}mm"
+
+
+@dataclass
+class Size3D:
+    length: Length
+    width: Length
+    height: Length
