@@ -2,15 +2,18 @@ import grf
 
 
 class AStation(grf.SpriteGenerator):
-    def __init__(self, *, id, sprites, callbacks={}, **props):
+    def __init__(self, *, id, translation_name, sprites, callbacks={}, **props):
         super().__init__()
         self.id = id
+        self.translation_name = translation_name
         self.sprites = sprites
         self.callbacks = grf.make_callback_manager(grf.STATION, callbacks)
         self._props = props
 
     def get_sprites(self, g):
         res = []
+
+        name = g.strings[f"STR_STATION_{self.translation_name}_NAME"]
 
         if self.sprites:
             layouts = []
