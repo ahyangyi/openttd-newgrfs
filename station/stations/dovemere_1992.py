@@ -1,4 +1,3 @@
-import grf
 from station.lib import AStation
 from agrf.graphics.voxel import LazyVoxel, LazySpriteSheet
 
@@ -11,13 +10,4 @@ vox = LazyVoxel(
 vox.render()
 voxels = [LazySpriteSheet([vox], [(0, 0)])]
 
-the_station = AStation(
-    id=0x00,
-    sprites=[s for v in voxels for s in v.spritesheet(0, 0)] * 12,
-    class_label=b"2018",
-    callbacks={
-        "availability": grf.DefaultCallback(
-            default=1,
-        ),
-    },
-)
+the_station = AStation(id=0x01, sprites=[s for v in voxels for s in v.spritesheet(0, 0)] * 12, class_label=b"1992")

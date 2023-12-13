@@ -16,8 +16,10 @@ def main():
     )
 
     import station.stations.dovemere_2018
+    import station.stations.dovemere_1992
 
     g.add(station.stations.dovemere_2018.the_station)
+    g.add(station.stations.dovemere_1992.the_station)
 
     g.write("station.grf")
 
