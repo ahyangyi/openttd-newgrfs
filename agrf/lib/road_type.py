@@ -2,10 +2,11 @@ import grf
 
 
 class RoadType(grf.SpriteGenerator):
-    def __init__(self, *, id, underlay, **props):
+    def __init__(self, *, id, underlay=None, overlay=None, **props):
         super().__init__()
         self.id = id
         self.underlay = underlay
+        self.overlay = overlay
         self._props = props
 
     def get_sprites(self, g):
