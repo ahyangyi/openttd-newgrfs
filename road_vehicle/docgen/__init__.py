@@ -53,7 +53,7 @@ nav_order: {i+1}
                                 string_manager["STR_VEHICLE_" + entry.translation_name + "_NAME"], 0x7F
                             )
                             print(
-                                f"| {entry._props['introduction_date'].year} | [{name}](../vehicles/{entry.translation_name}.md)",
+                                f"| {entry._props['introduction_date'].year} | [{name}](../vehicles/{entry.translation_name}.html)",
                                 file=f,
                             )
 
