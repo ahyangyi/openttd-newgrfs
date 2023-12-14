@@ -27,19 +27,26 @@ class RoadType(grf.SpriteGenerator):
                     extra_props[p] = g.strings.add(s).get_persistent_id()
 
         res = []
-
-        if self.underlay:
-            layouts = []
-            for i, sprite in enumerate(self.underlay):
-                layouts.append(grf.GenericSpriteLayout(ent1=(i,), ent2=(i,), feature=grf.ROADTYPE))
-
         res.append(definition := grf.Define(feature=grf.ROADTYPE, id=self.id, props={**self._props, **extra_props}))
-        if self.underlay:
-            res.append(grf.Action1(feature=grf.ROADTYPE, set_count=1, sprite_count=19))
 
+        layouts = []
+        maps = {}
+
+        if self.overlay:
+            i = len(layouts)
+            layouts.append(grf.GenericSpriteLayout(ent1=(i,), ent2=(i,), feature=grf.ROADTYPE))
+            maps[0x01] = layouts[i]
+            res.append(grf.Action1(feature=grf.ROADTYPE, set_count=1, sprite_count=19, first_set=i))
+            for s in self.overlay:
+                res.append(s)
+        if self.underlay:
+            i = len(layouts)
+            layouts.append(grf.GenericSpriteLayout(ent1=(i,), ent2=(i,), feature=grf.ROADTYPE))
+            maps[0x02] = layouts[i]
+            res.append(grf.Action1(feature=grf.ROADTYPE, set_count=1, sprite_count=19, first_set=i))
             for s in self.underlay:
                 res.append(s)
 
-        res.append(grf.Map(definition=definition, maps={0x02: layouts[0]}, default=layouts[0]))
+        res.append(grf.Map(definition=definition, maps=maps, default=layouts[0]))
 
         return res
