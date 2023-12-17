@@ -49,5 +49,15 @@ parameter_list = ParameterList(
                 2: "CRAMMED",
             },
         ),
+        Parameter(
+            "MONORAIL",
+            0,
+            {
+                0: "TRAIN",
+                1: "TRAM",
+                2: "BOTH",
+                3: "NEITHER",
+            },
+        ),
     ]
 )
