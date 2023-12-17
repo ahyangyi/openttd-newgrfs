@@ -10,3 +10,6 @@ STR_RT_SLATE_BLOCK_NAME         :Slate Block Road
 
 STR_RT_MOTORWAY_CONS            :Motorway Construction
 STR_RT_MOTORWAY_NAME            :Motorway
+
+STR_RT_MONORAIL_CONS            :Monorail Construction
+STR_RT_MONORAIL_NAME            :Monorail

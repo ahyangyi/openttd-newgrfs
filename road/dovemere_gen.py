@@ -2,8 +2,9 @@
 import grf
 import argparse
 from road.road_types import slate_block, main_asphalt, motorway
+from road.tram_types import monorail
 
-road_types = [slate_block, main_asphalt, motorway]
+road_types = [slate_block, main_asphalt, motorway, monorail]
 
 
 def get_string_manager():

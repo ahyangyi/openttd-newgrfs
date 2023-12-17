@@ -2,9 +2,9 @@ from agrf.lib.road_type import RoadType
 
 
 class ARoadType(RoadType):
-    def __init__(self, *, id, translation_name, underlay, **props):
+    def __init__(self, *, id, translation_name, **props):
         self.translation_name = translation_name
-        super().__init__(id=id, underlay=underlay, **props)
+        super().__init__(id=id, **props)
 
     def get_sprites(self, g):
         s = g.strings
