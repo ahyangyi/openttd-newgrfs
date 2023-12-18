@@ -1,6 +1,7 @@
 from ..vehicles.buses import (
     happyone,
     rime,
+    southwing_articulated,
     longriver,
     longriver_coach,
     longriver_articulated,
@@ -16,6 +17,7 @@ the_roster = Roster(
     "DOVEMERE",
     happyone,
     rime,
+    southwing_articulated,
     longriver,
     longriver_coach,
     longriver_articulated,
