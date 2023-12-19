@@ -39,8 +39,8 @@ STR_PARAM_BUS_CAPACITY_CRAMMED  :Crammed
 
 STR_VEHICLE_HAPPYONE_BUS_NAME           :Ford F-60 Canadian Military Pattern Combination Bus (gasoline)
 STR_VEHICLE_RIME_NAME                   :Songhuajiang Type-57 Bus (gasoline)
-STR_VEHICLE_NORTHWING_NAME              :Jingyi BK640 Bus (gasoline)
-STR_VEHICLE_NORTHWING_ARTICULATED_NAME  :Jingyi BK670 Articulated Bus (diesel)
+STR_VEHICLE_NORTHWING_NAME              :Jinghua BK640 Bus (gasoline)
+STR_VEHICLE_NORTHWING_ARTICULATED_NAME  :Jinghua BK670 Articulated Bus (diesel)
 STR_VEHICLE_SOUTHWING_ARTICULATED_NAME  :Shanghai SK660 Articulated Bus (gasoline)
 STR_VEHICLE_LONGRIVER_NAME              :Changjiang CJ640B Bus (gasoline)
 STR_VEHICLE_LONGRIVER_ARTICULATED_NAME  :Changjiang CJ660B Articulated Bus (gasoline)
