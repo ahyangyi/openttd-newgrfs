@@ -65,7 +65,7 @@ def main():
     elif args.cmd == "doc":
         from road_vehicle.docgen import gen_docs
 
-        gen_docs(get_string_manager(), city_rosters)
+        gen_docs(get_string_manager(), city_rosters, everything)
     else:
         print("\n" + everything.cli())
 

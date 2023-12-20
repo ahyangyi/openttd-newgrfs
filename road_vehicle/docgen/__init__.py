@@ -21,7 +21,7 @@ def save_example_images(sprite, prefix, file_name):
     cc2_masked_img.save(os.path.join(prefix, "img", f"{file_name}_cc2.png"))
 
 
-def gen_docs(string_manager, rosters):
+def gen_docs(string_manager, rosters, everything):
     for language in ["en-GB", "zh-CN"]:
         prefix = f"docs/_i18n/{language}/road_vehicle/rosters"
         os.makedirs(prefix, exist_ok=True)
@@ -75,7 +75,7 @@ nav_order: {i+1}
 
     prefix = f"docs/road_vehicle/vehicles"
     os.makedirs(os.path.join(prefix, "img"), exist_ok=True)
-    for i, v in enumerate(rosters[0].entries):
+    for i, v in enumerate(everything.entries):
         # Prepare text
         translation = get_translation(string_manager["STR_VEHICLE_" + v.translation_name + "_NAME"], 0x7F)
         desc_translation = get_translation(string_manager["STR_VEHICLE_" + v.translation_name + "_DESC"], 0x7F)
