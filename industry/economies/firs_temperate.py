@@ -73,7 +73,7 @@ class TheEconomy(MetaEconomy):
                 fishing_grounds: PrimaryIndustry(fish),
                 dairy_farm: PrimaryIndustry((milk, livestock)),
                 orchard_and_piggery: PrimaryIndustry((fruit, livestock)),
-                chemical_plant: PrimaryIndustry(chemicals),  # FIXME
+                chemical_plant: PrimaryIndustry(chemicals),
                 steel_mill: SecondaryIndustry((coal, iron_ore, scrap_metal), steel),
                 dairy: SecondaryIndustry(milk, food),
                 glass_works: SecondaryIndustry((sand, chemicals), goods),

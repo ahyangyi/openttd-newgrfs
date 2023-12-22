@@ -86,7 +86,10 @@ class TheEconomy(MetaEconomy):
             ret.graph[farm].boosters = engineering_supplies
             ret.graph[forest].boosters = engineering_supplies
 
-            ret.graph[factory].produces += (engineering_supplies,)
+            if parameters["POLICY"] in ("SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"):
+                ret.graph[port].produces += (engineering_supplies,)
+            else:
+                ret.graph[factory].produces += (engineering_supplies,)
         elif parameters["PRIMARY_INDUSTRY_GROWTH"] == "GENERIC_SUPPLIES":
             ret.graph[coal_mine].boosters = engineering_supplies
             ret.graph[oil_wells].boosters = engineering_supplies
@@ -95,8 +98,11 @@ class TheEconomy(MetaEconomy):
             ret.graph[farm].boosters = farm_supplies
             ret.graph[forest].boosters = farm_supplies
 
-            ret.graph[factory].produces += (engineering_supplies,)
-            ret.graph[oil_refinery].produces += (farm_supplies,)
+            if parameters["POLICY"] in ("SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"):
+                ret.graph[port].produces += (engineering_supplies, farm_supplies)
+            else:
+                ret.graph[factory].produces += (engineering_supplies,)
+                ret.graph[oil_refinery].produces += (farm_supplies,)
 
         self.default_worker_support(
             ret,
