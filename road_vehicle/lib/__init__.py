@@ -12,6 +12,7 @@ supported_techclasses = [
     "m_truck",
     "h_truck",
     "monorail",
+    "trolleybus",
     "unknown",
 ]
 supported_tags = ["sanctioned", "air conditioner"]

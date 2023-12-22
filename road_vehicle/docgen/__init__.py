@@ -51,6 +51,7 @@ nav_order: {i+1}
                     ("Buses", ["bus", "articulated_bus", "2decker", "coach"]),
                     ("Lorries", ["l_truck", "m_truck", "h_truck"]),
                     ("Urban Rail Transit", ["monorail"]),
+                    ("Trolleybuses", ["trolleybus"]),
                 ]:
                     if not any(entry.techclass in techclassset for entry in roster.entries):
                         continue
