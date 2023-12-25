@@ -37,6 +37,18 @@ STR_PARAM_BUS_CAPACITY_LOW      :Low
 STR_PARAM_BUS_CAPACITY_STANDARD :Standard
 STR_PARAM_BUS_CAPACITY_CRAMMED  :Crammed
 
+STR_PARAM_BUS_SPEED_REGULATION      :Bus Speed Regulation
+STR_PARAM_BUS_SPEED_REGULATION_DESC :Since 2012, the Chinese technical standard for vehicle safety GB7258 required all buses that allow standees to limit their speed under 70 km/h, and interurban buses and touring buses to 100 km/h.{}You can choose to ignore this limit in your game, in which case the speed limit of exported models will be used, and guestimates will be used for non-exported models.
+STR_PARAM_BUS_SPEED_REGULATION_DISABLED:    Not Enforced
+STR_PARAM_BUS_SPEED_REGULATION_ENABLED:     Enforced
+
+STR_PARAM_MONORAIL              :Monorail Implementation
+STR_PARAM_MONORAIL_DESC         :The real-world monorail systems are more often a kind of urban public transport service, instead of the “better railroad” depicted by vanilla OpenTTD. You can choose to represent those as trains, trams, both or neither.{}Warning: if you choose “neither”, they will not appear as useable options and as a result you will have fewer options.{}This option only has effect if the chosen roster has monorail at all.
+STR_PARAM_MONORAIL_TRAIN        :Trains
+STR_PARAM_MONORAIL_TRAM         :Trams
+STR_PARAM_MONORAIL_BOTH         :Both
+STR_PARAM_MONORAIL_NEITHER      :Neither
+
 STR_VEHICLE_HAPPYONE_BUS_NAME           :Ford F-60 Canadian Military Pattern Combination Bus (gasoline)
 STR_VEHICLE_RIME_NAME                   :Songhuajiang Type-57 Bus (gasoline)
 STR_VEHICLE_NORTHWING_NAME              :Jinghua BK640 Bus (gasoline)

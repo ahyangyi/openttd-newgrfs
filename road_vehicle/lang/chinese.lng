@@ -31,6 +31,11 @@ STR_PARAM_FANTASY_FREIGHT_TRAMS_DESC    :是否加入现实中仅限客运的电
 STR_PARAM_FANTASY_FREIGHT_TRAMS_DISABLED:不使用
 STR_PARAM_FANTASY_FREIGHT_TRAMS_ENABLED :使用
 
+STR_PARAM_BUS_SPEED_REGULATION      :公共汽车车速规定
+STR_PARAM_BUS_SPEED_REGULATION_DESC :自 2012 年开始，车辆安全技术标准 GB7258 要求所有设置乘客站立区的公共汽车的车速限制低于 70 km/h，公路客车和旅游客车则低于 100 km/h。{}你可以选择在你的游戏中忽略此规定的影响，此时会使用出口型号的车速限制，而对于非出口型号则会采用假想数值。
+STR_PARAM_BUS_SPEED_REGULATION_DISABLED:    不限制车速
+STR_PARAM_BUS_SPEED_REGULATION_ENABLED:     限制车速
+
 STR_VEHICLE_HAPPYONE_BUS_NAME           :福特 F-60 加拿大军用型卡车改装公交车 (汽油)
 STR_VEHICLE_RIME_NAME                   :松花江五七式公交车 (汽油)
 STR_VEHICLE_NORTHWING_NAME              :京华 BK640 公交车 (汽油)

@@ -50,6 +50,14 @@ parameter_list = ParameterList(
             },
         ),
         Parameter(
+            "BUS_SPEED_REGULATION",
+            0,
+            {
+                0: "DISABLED",
+                1: "ENABLED",
+            },
+        ),
+        Parameter(
             "MONORAIL",
             0,
             {
