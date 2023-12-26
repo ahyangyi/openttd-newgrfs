@@ -22,6 +22,7 @@ class AStation(grf.SpriteGenerator):
             assert len(layouts) == 12
             self.callbacks.graphics = layouts[0]
 
+        res.extend(name.get_actions(grf.STATION, self.id))
         res.append(
             definition := grf.Define(
                 feature=grf.STATION, id=self.id, props={"class_label": self._props["class_label"], **self._props}
