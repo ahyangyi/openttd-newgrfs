@@ -1,3 +1,6 @@
 ##grflangid 0x56
 STR_GRF_NAME                    :AWSS - Ahyangyi 的芜湖车站包
 STR_GRF_DESC                    :基于芜湖的车站设计的模组
+
+STR_STATION_DOVEMERE_2018_NAME  :芜湖火车站 (2018)
+STR_STATION_DOVEMERE_1992_NAME  :芜湖火车站 (1992)
