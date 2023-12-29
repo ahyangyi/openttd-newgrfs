@@ -67,5 +67,13 @@ parameter_list = ParameterList(
                 3: "NEITHER",
             },
         ),
+        Parameter(
+            "MONORAIL_INFRA",
+            1,
+            {
+                0: "DISABLED",
+                1: "ENABLED",
+            },
+        ),
     ]
 )

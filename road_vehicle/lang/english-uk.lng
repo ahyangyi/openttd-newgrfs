@@ -49,6 +49,11 @@ STR_PARAM_MONORAIL_TRAM         :Trams
 STR_PARAM_MONORAIL_BOTH         :Both
 STR_PARAM_MONORAIL_NEITHER      :Neither
 
+STR_PARAM_MONORAIL_INFRA        :Bundled Monorail Infrastructure
+STR_PARAM_MONORAIL_INFRA_DESC   :As a road vehicle set, this is designed to work alongside various existing rail/road infrastructure sets. However, I also bundle a monorail implementation so that finding a matching infrastructure set is not mandatory.
+STR_PARAM_MONORAIL_INFRA_DISABLED:Disabled
+STR_PARAM_MONORAIL_INFRA_ENABLED:Enabled
+
 STR_VEHICLE_HAPPYONE_BUS_NAME           :Ford F-60 Canadian Military Pattern Combination Bus (gasoline)
 STR_VEHICLE_RIME_NAME                   :Songhuajiang Type-57 Bus (gasoline)
 STR_VEHICLE_NORTHWING_NAME              :Jinghua BK640 Bus (gasoline)
