@@ -2,15 +2,15 @@ import grf
 from copy import deepcopy
 
 
-class FakeReferencedAction(grf.LazyAction, grf.ReferenceableAction):
+class FakeReferencedAction(grf.Action, grf.ReferenceableAction):
     def __init__(self, action, feature, ref_id=None):
         super().__init__()
         self.action = action
         self.feature = feature
         self.ref_id = ref_id
 
-    def _encode(self):
-        return self.action._encode()
+    def get_data(self):
+        return self.action.get_data()
 
     def __str__(self):
         return f"ref {self.action.py(None)}"
@@ -22,9 +22,6 @@ class FakeAlternativeSprites(grf.AlternativeSprites, grf.ReferenceableAction):
         super().__init__(*[deepcopy(s) for s in sprite.sprites])
         self.feature = feature
         self.ref_id = ref_id
-
-    def _encode(self):
-        return self.action._encode()
 
     def __str__(self):
         return f"alt {self.feature} {self.sprites[0].file.path} {self.sprites[0]}"

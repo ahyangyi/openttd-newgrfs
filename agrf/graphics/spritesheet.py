@@ -73,29 +73,32 @@ def spritesheet_template(
 
         return int(xrel + 0.5), int(yrel + 0.5)
 
+    def make_sprite(i, scale, bpp):
+        x = (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale
+        w = guessed_dimens[i][0] * scale
+        h = guessed_dimens[i][1] * scale
+        sprite = grf.FileSprite(
+            grf.ImageFile(f"{path}_{scale}x_{bpp}bpp.png"),
+            x,
+            0,
+            w,
+            h,
+            xofs=get_rels(i, diff, scale)[0],
+            yofs=get_rels(i, diff, scale)[1],
+            bpp=bpp,
+            zoom=scale_to_zoom[scale],
+        )
+        if bpp != 32:
+            return sprite
+
+        mask = grf.FileSprite(grf.ImageFile(f"{path}_{scale}x_mask.png"), x, 0, w, h)
+        return grf.WithMask(sprite, mask)
+
     return [
         grf.AlternativeSprites(
             *(
-                grf.FileSprite(
-                    grf.ImageFile(f"{path}_{scale}x_{bpp}bpp.png"),
-                    (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale,
-                    0,
-                    guessed_dimens[i][0] * scale,
-                    guessed_dimens[i][1] * scale,
-                    xofs=get_rels(i, diff, scale)[0],
-                    yofs=get_rels(i, diff, scale)[1],
-                    bpp=bpp,
-                    zoom=scale_to_zoom[scale],
-                    mask=grf.FileMask(
-                        grf.ImageFile(f"{path}_{scale}x_mask.png"),
-                        (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale,
-                        0,
-                        guessed_dimens[i][0] * scale,
-                        guessed_dimens[i][1] * scale,
-                    )
-                    if bpp == 32
-                    else None,
-                )
+
+                make_sprite(i, scale, bpp)
                 for bpp in bpps
                 for scale in scales
             )
