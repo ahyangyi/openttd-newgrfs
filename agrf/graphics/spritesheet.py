@@ -73,20 +73,27 @@ def spritesheet_template(
 
         return int(xrel + 0.5), int(yrel + 0.5)
 
+    def with_optional_mask(sprite, mask):
+        if mask is None:
+            return sprite
+        return grf.WithMask(sprite, mask)
+
     return [
         grf.AlternativeSprites(
             *(
-                grf.FileSprite(
-                    grf.ImageFile(f"{path}_{scale}x_{bpp}bpp.png"),
-                    (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale,
-                    0,
-                    guessed_dimens[i][0] * scale,
-                    guessed_dimens[i][1] * scale,
-                    xofs=get_rels(i, diff, scale)[0],
-                    yofs=get_rels(i, diff, scale)[1],
-                    bpp=bpp,
-                    zoom=scale_to_zoom[scale],
-                    mask=grf.FileMask(
+                with_optional_mask(
+                    grf.FileSprite(
+                        grf.ImageFile(f"{path}_{scale}x_{bpp}bpp.png"),
+                        (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale,
+                        0,
+                        guessed_dimens[i][0] * scale,
+                        guessed_dimens[i][1] * scale,
+                        xofs=get_rels(i, diff, scale)[0],
+                        yofs=get_rels(i, diff, scale)[1],
+                        bpp=bpp,
+                        zoom=scale_to_zoom[scale],
+                    ),
+                    grf.FileSprite(
                         grf.ImageFile(f"{path}_{scale}x_mask.png"),
                         (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale,
                         0,
