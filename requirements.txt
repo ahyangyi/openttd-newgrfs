@@ -1,2 +1,2 @@
-grf @ git+https://github.com/citymania-org/grf-py@main
+grf @ git+https://github.com/ahyangyi/grf-py@set-bpp
 tabulate
