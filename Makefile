@@ -48,6 +48,9 @@ road_vehicle.grf:
 road_vehicle.md:
 	python3 -m road_vehicle.gen print
 
+doc.bridge:
+	python3 -m bridge.dovemere_gen doc
+
 doc.rv:
 	python3 -m road_vehicle.gen doc
 
@@ -64,7 +67,7 @@ aegis.grf:
 	python3 -m industry.aegis_gen gen
 
 bridge.grf:
-	python3 -m bridge.dovemere_gen
+	python3 -m bridge.dovemere_gen gen
 
 station.grf:
 	python3 -m station.dovemere_gen

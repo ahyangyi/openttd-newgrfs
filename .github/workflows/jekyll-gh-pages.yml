@@ -42,6 +42,8 @@ jobs:
         run: PATH=${PWD}/gopath/bin:${PATH} make doc.rt
       - name: Generate docs (AEGIS)
         run: make doc.aegis
+      - name: Generate docs (Bridge)
+        run: make doc.bridge
       - name: Setup Pages
         uses: actions/configure-pages@main
       - name: Install ruby deps

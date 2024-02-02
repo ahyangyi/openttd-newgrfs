@@ -1,10 +1,21 @@
 #!/usr/bin/env python
+import argparse
 import grf
+from bridge.bridges.dovemere import test
 
 
-def main():
+def get_string_manager():
     s = grf.StringManager()
     s.import_lang_dir("bridge/lang", default_lang_file="english-uk.lng")
+
+    return s
+
+
+bridges = [test]
+
+
+def gen():
+    s = get_string_manager()
 
     g = grf.NewGRF(
         grfid=b"\xE5\xBC\x8Bb",
@@ -19,11 +30,23 @@ def main():
 
     parameter_list.add(g, s)
 
-    from bridge.bridges.dovemere import test
-
-    g.add(test.the_bridge)
+    for b in bridges:
+        g.add(b)
 
     g.write("bridge.grf")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("cmd")
+    args = parser.parse_args()
+
+    if args.cmd == "gen":
+        gen()
+    else:
+        from bridge.lib.docgen import gen_docs
+
+        gen_docs(get_string_manager(), bridges)
 
 
 if __name__ == "__main__":
