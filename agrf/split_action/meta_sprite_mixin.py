@@ -40,46 +40,50 @@ class MetaSpriteMixin:
             new_props = {"exists": False}
         return new_props
 
-    def dynamic_definitions(self, all_choices, parameters, i=0):
-        if i == len(all_choices):
-            resolved_props = self.resolve_props(parameters)
-            exists = resolved_props.pop("exists", True)
-            if exists:
-                return [
-                    [grf.Define(feature=self.feature, id=self.id, props=self.postprocess_props(resolved_props))]
-                ], self.props_hash(resolved_props)
-            else:
-                return [], 0
-        ret = []
-        var_id = all_choices[i]
-        sublists = []
-        hashes = []
-        for choice in self._parameter_list.parameters[var_id].enum.keys():
-            parameters[var_id] = choice
-            sublist, h = self.dynamic_definitions(all_choices, parameters, i + 1)
-            sublists.append(sublist)
-            hashes.append(h)
-        del parameters[var_id]
+    def dynamic_definitions(self, all_choices):
+        def dfs(parameters, i=0):
+            if i == len(all_choices):
+                resolved_props = self.resolve_props(parameters)
+                exists = resolved_props.pop("exists", True)
+                if exists:
+                    return [
+                        [grf.Define(feature=self.feature, id=self.id, props=self.postprocess_props(resolved_props))]
+                    ], self.props_hash(resolved_props)
+                else:
+                    return [], 0
+            ret = []
+            var_id = all_choices[i]
+            sublists = []
+            hashes = []
+            for choice in self._parameter_list.parameters[var_id].enum.keys():
+                parameters[var_id] = choice
+                sublist, h = dfs(parameters, i + 1)
+                sublists.append(sublist)
+                hashes.append(h)
+            del parameters[var_id]
 
-        if all(hashes[0] == h for h in hashes):
-            return sublists[0], hash(tuple(hashes))
+            if all(hashes[0] == h for h in hashes):
+                return sublists[0], hash(tuple(hashes))
 
-        for choice in range(len(self._parameter_list.parameters[var_id].enum)):
-            sublist = sublists[choice]
-            for g in sublist:
-                ret.append(
-                    [grf.If(is_static=True, variable=var_id, condition=0x03, value=choice, skip=len(g), varsize=4)] + g
-                )
+            for choice in range(len(self._parameter_list.parameters[var_id].enum)):
+                sublist = sublists[choice]
+                for g in sublist:
+                    ret.append(
+                        [grf.If(is_static=True, variable=var_id, condition=0x03, value=choice, skip=len(g), varsize=4)]
+                        + g
+                    )
 
-        compressed_ret = []
-        cur_group = []
-        for group in ret:
-            if len(cur_group) + len(group) + i <= 255:
-                cur_group.extend(group)
-            else:
+            compressed_ret = []
+            cur_group = []
+            for group in ret:
+                if len(cur_group) + len(group) + i <= 255:
+                    cur_group.extend(group)
+                else:
+                    compressed_ret.append(cur_group)
+                    cur_group = group
+            if len(cur_group) > 0:
                 compressed_ret.append(cur_group)
-                cur_group = group
-        if len(cur_group) > 0:
-            compressed_ret.append(cur_group)
 
-        return compressed_ret, hash(tuple(hashes))
+            return compressed_ret, hash(tuple(hashes))
+
+        return dfs({}, 0)[0]

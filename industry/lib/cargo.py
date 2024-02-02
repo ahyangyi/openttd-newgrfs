@@ -38,7 +38,7 @@ class ACargo(Cargo, MetaSpriteMixin):
         return ACargo.translate_strings(props, self._g)
 
     def get_definitions(self, g):
-        res, _ = self.dynamic_definitions(self.dynamic_prop_variables, {}, 0)
+        res = self.dynamic_definitions(self.dynamic_prop_variables)
         return [sprite for sprite_group in res for sprite in sprite_group]
 
     def get_sprites(self, g):

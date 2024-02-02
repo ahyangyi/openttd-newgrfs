@@ -37,7 +37,7 @@ class AIndustry(grf.SpriteGenerator, MetaSpriteMixin):
 
     def get_sprites(self, g):
         self._props["name"] = g.strings[f"STR_INDUSTRY_NAME_{self.translation_name}"].get_persistent_id()
-        res, _ = self.dynamic_definitions(self.dynamic_prop_variables, {}, 0)
+        res = self.dynamic_definitions(self.dynamic_prop_variables)
         res = [sprite for sprite_group in res for sprite in sprite_group]
         if len(res) == 0:
             return []
