@@ -80,3 +80,7 @@ road.grf:
 
 road.csv:
 	python3 -m road.dovemere_gen csv
+
+profile.aegis:
+	python -m cProfile -o aegis_gen.prof -m industry.aegis_gen gen
+	gprof2dot -f pstats aegis_gen.prof | dot -Tpng -o aegis_gen_prof.png
