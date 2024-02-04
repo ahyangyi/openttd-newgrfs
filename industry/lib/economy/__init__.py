@@ -1,3 +1,4 @@
+import functools
 from agrf.strings import get_translation
 from industry.cargos import engineering_supplies, farm_supplies, tired_workers, workers
 from .industry_desc import PrimaryIndustry, WorkerYard, FreePort, SecondaryIndustry, TertiaryIndustry, Town
@@ -10,10 +11,12 @@ class Economy:
         self.parameters = parameters
 
     @property
+    @functools.cache
     def industries(self):
         return list(self.graph.keys())
 
     @property
+    @functools.cache
     def cargos(self):
         return list(set(y for x in self.graph.values() for y in x.accepts + x.produces))
 

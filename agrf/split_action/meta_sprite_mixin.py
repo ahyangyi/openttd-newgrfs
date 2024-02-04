@@ -22,22 +22,25 @@ class MetaSpriteMixin:
         return props
 
     def resolve_props(self, parameters):
-        new_props = {}
-        miss = False
-        for k, v in self._props.items():
+        if "exists" in self._props:
+            v = self._props["exists"]
             while isinstance(v, SplitDefinition):
                 v.fixup(self._parameter_list)
                 branch_key = tuple(parameters[var] for var in v.variables)
                 if branch_key in v.branches:
                     v = v.branches[branch_key]
-                else:
-                    miss = True
-                    break
+            if not v:
+                return {"exists": False}
+
+        new_props = {}
+        for k, v in self._props.items():
+            if k == "exists":
+                continue
+            while isinstance(v, SplitDefinition):
+                v.fixup(self._parameter_list)
+                branch_key = tuple(parameters[var] for var in v.variables)
+                v = v.branches[branch_key]
             new_props[k] = v
-        if new_props.get("exists", True):
-            assert not miss
-        else:
-            new_props = {"exists": False}
         return new_props
 
     def dynamic_definitions(self, all_choices):
