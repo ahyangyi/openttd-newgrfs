@@ -6,6 +6,7 @@ class Parameter:
         self.name = name
         self.default = default
         self.enum = enum
+        self.reverse_lookup = {v: k for k, v in self.enum.items()}
 
     def add(self, g, s):
         g.add_int_parameter(
@@ -36,7 +37,7 @@ class Parameter:
         self.index = index
 
     def enum_index(self, name):
-        return [k for k, v in self.enum.items() if v == name][0]
+        return self.reverse_lookup[name]
 
 
 class ParameterList:
