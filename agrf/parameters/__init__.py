@@ -78,10 +78,10 @@ class SearchSpace:
         else:
             parameter_name, available_choices = self.choices[i]
             for j in available_choices:
-                new_params = params.copy()
-                new_params[parameter_name] = j
-                for variation in self.iterate_variations(i + 1, new_params):
+                params[parameter_name] = j
+                for variation in self.iterate_variations(i + 1, params):
                     yield variation
+                del params[parameter_name]
 
     def desc(self, params):
         return "".join(str(options.index(params[i])) for i, options in self.choices)

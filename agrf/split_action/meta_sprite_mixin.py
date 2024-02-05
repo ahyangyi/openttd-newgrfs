@@ -21,7 +21,7 @@ class MetaSpriteMixin:
     def postprocess_props(self, props):
         return props
 
-    def resolve_props(self, parameters):
+    def _resolve_props_failfast(self, parameters):
         if "exists" in self._props:
             v = self._props["exists"]
             while isinstance(v, SplitDefinition):
@@ -30,7 +30,12 @@ class MetaSpriteMixin:
                 if branch_key in v.branches:
                     v = v.branches[branch_key]
             if not v:
-                return {"exists": False}
+                return True
+        return False
+
+    def resolve_props(self, parameters):
+        if self._resolve_props_failfast(parameters):
+            return {"exists": False}
 
         new_props = {}
         for k, v in self._props.items():
