@@ -9,7 +9,7 @@ class OldIndustryTileID:
         return grf.IndustryLayout.OldTile(
             xofs=xofs,
             yofs=yofs,
-            id=0,
+            id=self.id,
         )
 
 
@@ -21,7 +21,7 @@ class NewIndustryTileID:
         return grf.IndustryLayout.NewTile(
             xofs=xofs,
             yofs=yofs,
-            id=0,
+            id=self.id,
         )
 
 
