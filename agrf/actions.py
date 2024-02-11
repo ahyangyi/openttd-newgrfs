@@ -9,8 +9,8 @@ class FakeReferencedAction(grf.Action, grf.ReferenceableAction):
         self.feature = feature
         self.ref_id = ref_id
 
-    def get_data(self):
-        return self.action.get_data()
+    def get_data(self, context):
+        return self.action.get_data(context)
 
     def __str__(self):
         return f"ref {self.action.py(None)}"
