@@ -2,6 +2,17 @@
 STR_GRF_NAME                    :ACRS - Ahyangyi's Chinese Road Set
 STR_GRF_DESC                    :A road set based on roads in China.
 
+STR_PARAM_VANILLA_ROAD          :Vanilla roads
+STR_PARAM_VANILLA_ROAD_DESC     :Whether to disable vanilla roads
+STR_PARAM_VANILLA_ROAD_DISABLED :Disabled
+STR_PARAM_VANILLA_ROAD_ENABLED  :Enabled
+
+STR_PARAM_NIGHT_MODE            :Night mode
+STR_PARAM_NIGHT_MODE_DESC       :Use night graphics suitable for NightGFX
+STR_PARAM_NIGHT_MODE_AUTO_DETECT:Auto Detect
+STR_PARAM_NIGHT_MODE_DISABLED   :Disabled
+STR_PARAM_NIGHT_MODE_ENABLED    :Enabled
+
 STR_RT_MAIN_ASPHALT_CONS        :Main Road (Asphalt) Construction
 STR_RT_MAIN_ASPHALT_NAME        :Main Road (Asphalt)
 

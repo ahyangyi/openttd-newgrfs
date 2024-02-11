@@ -27,6 +27,9 @@ def gen():
         preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
 
+    from road.lib.parameters import parameter_list
+    parameter_list.add(g, s)
+
     for road_type in road_types:
         g.add(road_type)
 
