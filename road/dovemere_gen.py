@@ -28,6 +28,7 @@ def gen():
     )
 
     from road.lib.parameters import parameter_list
+
     parameter_list.add(g, s)
 
     for road_type in road_types:
