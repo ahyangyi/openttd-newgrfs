@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 import grf
+from house.houses import dovemere_gable
+
+
+houses = [dovemere_gable]
 
 
 def main():
@@ -25,9 +29,8 @@ def main():
     g.add(grf.If(is_static=True, variable=0, condition=0x02, value=1, skip=1, varsize=4))
     g.add(grf.DefineMultiple(feature=grf.HOUSE, first_id=0, props={"substitute": [0xFF] * 0x6E}))
 
-    import house.houses.dovemere_gable
-
-    g.add(house.houses.dovemere_gable.the_house)
+    for house in houses:
+        g.add(house)
 
     g.write("house.grf")
 
