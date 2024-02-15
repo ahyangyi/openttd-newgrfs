@@ -16,3 +16,8 @@ STR_PARAM_NIGHT_MODE_DESC       :Use night graphics suitable for NightGFX
 STR_PARAM_NIGHT_MODE_AUTO_DETECT:Auto Detect
 STR_PARAM_NIGHT_MODE_DISABLED   :Disabled
 STR_PARAM_NIGHT_MODE_ENABLED    :Enabled
+
+STR_BRIDGE_YANGTZE_I            :Cable-Stayed Bridge
+STR_BRIDGE_YANGTZE_I_PURCHASE   :Build Cable-Stayed Bridge
+STR_BRIDGE_YANGTZE_I_DESC_RAIL  :Cable-Stayed Bridge
+STR_BRIDGE_YANGTZE_I_DESC_ROAD  :Cable-Stayed Bridge

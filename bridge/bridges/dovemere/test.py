@@ -15,13 +15,10 @@ voxels = [LazySpriteSheet([vox], [(0, 0)])]
 
 the_bridge = ABridge(
     id=0x01,
-    name="Test Bridge",
+    translation_name="YANGTZE_I",
     intro_year_since_1920=0,
     min_length=4,
     max_length=32,
-    purchase_text="Build Test Bridge",
-    description_rail="Test Bridge (rail)",
-    description_road="Test Bridge (road)",
     layout={
         "table_id": 0,
         "tables": [

@@ -1,42 +1,5 @@
 import grf
-from dataclasses import dataclass
-from typing import Tuple
-
-
-@dataclass
-class SpritePair:
-    X: grf.SpriteRef | grf.ResourceAction
-    Y: grf.SpriteRef | grf.ResourceAction
-
-
-@dataclass
-class ASingleTypeBridgeLayout:
-    back: Tuple[SpritePair, SpritePair, SpritePair, SpritePair, SpritePair, SpritePair]
-    front: Tuple[SpritePair, SpritePair, SpritePair, SpritePair, SpritePair, SpritePair]
-    pillars: Tuple[SpritePair, SpritePair, SpritePair, SpritePair, SpritePair, SpritePair]
-    flat: Tuple[SpritePair, SpritePair]
-    ramp: Tuple[SpritePair, SpritePair]
-
-    @staticmethod
-    def one_grid_layout(back, front, pillars, flat, ramp):
-        return ASingleTypeBridgeLayout((back,) * 6, (front,) * 6, (pillars,) * 6, flat, ramp)
-
-
-@dataclass
-class ABridgeLayout:
-    rail: ASingleTypeBridgeLayout
-    road: ASingleTypeBridgeLayout
-    mono: ASingleTypeBridgeLayout
-    mlev: ASingleTypeBridgeLayout
-
-    @staticmethod
-    def make_universal(single_layout):
-        return ABridgeLayout(
-            rail=single_layout,
-            road=single_layout,
-            mono=single_layout,
-            mlev=single_layout,
-        )
+from agrf.lib.bridge import Bridge, BridgeLayout
 
 
 class ABridge(grf.SpriteGenerator):
@@ -44,42 +7,24 @@ class ABridge(grf.SpriteGenerator):
         self,
         *,
         id,
-        name,
-        layout: ABridgeLayout,
-        purchase_text=None,
-        description_rail=None,
-        description_road=None,
+        translation_name,
+        layout: BridgeLayout,
         **props,
     ):
         super().__init__()
         self.id = id
-        self.name = name
+        self.translation_name = translation_name
         self.layout = layout
-        self.purchase_text = purchase_text
-        self.description_rail = description_rail
-        self.description_road = description_road
         self._props = props
-
-        # FIXME: supprt new layout abstraction
-        self._props["layout"] = layout
+        self._agrf_bridge = None
 
     def get_sprites(self, g):
-        extra_props = {}
-        if self.purchase_text:
-            extra_props["purchase_text"] = g.strings.add(self.purchase_text).get_persistent_id()
-        if self.description_rail:
-            extra_props["description_rail"] = g.strings.add(self.description_rail).get_persistent_id()
-        if self.description_road:
-            extra_props["description_road"] = g.strings.add(self.description_road).get_persistent_id()
+        if self._agrf_bridge is None:
+            s = g.strings
+            self._props["purchase_text"] = s[f"STR_BRIDGE_{self.translation_name}_PURCHASE"]
+            self._props["description_rail"] = s[f"STR_BRIDGE_{self.translation_name}_DESC_RAIL"]
+            self._props["description_road"] = s[f"STR_BRIDGE_{self.translation_name}_DESC_ROAD"]
+            name = s[f"STR_BRIDGE_{self.translation_name}"]
+            self._agrf_bridge = Bridge(id=self.id, name=name, layout=self.layout, **self._props)
 
-        res = []
-
-        if isinstance(self.name, grf.StringRef):
-            name_action = self.name.get_actions(grf.BRIDGE, self.id)
-        else:
-            name_action = g.strings.add(self.name).get_actions(grf.BRIDGE, self.id)
-
-        res.extend(name_action)
-        res.append(definition := grf.Define(feature=grf.BRIDGE, id=self.id, props={**self._props, **extra_props}))
-
-        return res
+        return self._agrf_bridge.get_sprites(g)
