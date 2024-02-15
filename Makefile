@@ -60,6 +60,9 @@ doc.rt:
 doc.aegis:
 	python3 -m industry.aegis_gen doc
 
+doc.house:
+	python3 -m house.dovemere_gen doc
+
 test.aegis:
 	python3 -m industry.aegis_gen test
 
@@ -73,7 +76,7 @@ station.grf:
 	python3 -m station.dovemere_gen
 
 house.grf:
-	python3 -m house.dovemere_gen
+	python3 -m house.dovemere_gen gen
 
 road.grf:
 	python3 -m road.dovemere_gen gen

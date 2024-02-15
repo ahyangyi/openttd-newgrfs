@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import argparse
 import grf
 from house.houses import dovemere_gable
 
@@ -6,9 +7,15 @@ from house.houses import dovemere_gable
 houses = [dovemere_gable]
 
 
-def main():
+def get_string_manager():
     s = grf.StringManager()
     s.import_lang_dir("house/lang", default_lang_file="english-uk.lng")
+
+    return s
+
+
+def gen():
+    s = get_string_manager()
 
     g = grf.NewGRF(
         grfid=b"\xE5\xBC\x8Bh",
@@ -33,6 +40,19 @@ def main():
         g.add(house)
 
     g.write("house.grf")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("cmd")
+    args = parser.parse_args()
+
+    if args.cmd == "gen":
+        gen()
+    else:
+        from house.lib.docgen import gen_docs
+
+        gen_docs(get_string_manager(), houses)
 
 
 if __name__ == "__main__":

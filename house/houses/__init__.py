@@ -13,5 +13,5 @@ for p in glob.glob("house/houses/*.py"):
 
 for p in __all__:
     _imported_house = importlib.import_module(f"house.houses.{p}")
-    setattr(module, p, _imported_house.the_variant)
+    setattr(module, p, _imported_house.the_house)
     del _imported_house

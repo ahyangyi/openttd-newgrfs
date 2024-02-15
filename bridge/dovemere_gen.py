@@ -4,14 +4,14 @@ import grf
 from bridge.bridges.dovemere import test
 
 
+bridges = [test]
+
+
 def get_string_manager():
     s = grf.StringManager()
     s.import_lang_dir("bridge/lang", default_lang_file="english-uk.lng")
 
     return s
-
-
-bridges = [test]
 
 
 def gen():
