@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import argparse
 import grf
-from bridge.bridges.dovemere import test
+from bridge.bridges.dovemere import yangtze_i, zhongjiang
 
 
-bridges = [test]
+bridges = [yangtze_i, zhongjiang]
 
 
 def get_string_manager():

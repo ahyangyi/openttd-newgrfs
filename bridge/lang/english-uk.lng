@@ -21,3 +21,8 @@ STR_BRIDGE_YANGTZE_I            :Cable-Stayed, Concrete
 STR_BRIDGE_YANGTZE_I_PURCHASE   :Cable-Stayed, Concrete
 STR_BRIDGE_YANGTZE_I_DESC_RAIL  :Concrete Cable-Stayed Rail Bridge
 STR_BRIDGE_YANGTZE_I_DESC_ROAD  :Concrete Cable-Stayed Road Bridge
+
+STR_BRIDGE_ZHONGJIANG           :Cable-Stayed, Concrete
+STR_BRIDGE_ZHONGJIANG_PURCHASE  :Cable-Stayed, Concrete
+STR_BRIDGE_ZHONGJIANG_DESC_RAIL :Concrete Cable-Stayed Rail Bridge
+STR_BRIDGE_ZHONGJIANG_DESC_ROAD :Concrete Cable-Stayed Road Bridge
