@@ -13,14 +13,14 @@ STR_PARAM_NIGHT_MODE_AUTO_DETECT:自动检测
 STR_PARAM_NIGHT_MODE_DISABLED   :不使用
 STR_PARAM_NIGHT_MODE_ENABLED    :使用
 
-STR_RT_MAIN_ASPHALT_CONS        :沥青主干路建设
+STR_RT_MAIN_ASPHALT_CONS        :建设沥青主干路
 STR_RT_MAIN_ASPHALT_NAME        :沥青主干路
 
-STR_RT_SLATE_BLOCK_CONS         :青石板路建设
+STR_RT_SLATE_BLOCK_CONS         :建设青石板路
 STR_RT_SLATE_BLOCK_NAME         :青石板路
 
-STR_RT_MOTORWAY_CONS            :高速公路建设
+STR_RT_MOTORWAY_CONS            :建设高速公路
 STR_RT_MOTORWAY_NAME            :高速公路
 
-STR_RT_MONORAIL_CONS            :单轨建设
+STR_RT_MONORAIL_CONS            :建设单轨
 STR_RT_MONORAIL_NAME            :单轨
