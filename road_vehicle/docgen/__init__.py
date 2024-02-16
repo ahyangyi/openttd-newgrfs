@@ -10,7 +10,7 @@ cc2_remap = company_colour_remap(CompanyColour.WHITE, CompanyColour.RED).to_spri
 
 
 def save_example_images(sprite, prefix, file_name):
-    masked_sprite = sprite.get_sprite(zoom=grf.ZOOM_NORMAL, bpp=32)
+    masked_sprite = sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
     img, _ = masked_sprite.sprite.get_image()
     mask, _ = masked_sprite.mask.get_image()
     cc1_mask = cc1_remap.remap_image(mask)
