@@ -70,7 +70,7 @@ nav_order: {i+1}
                                 string_manager["STR_VEHICLE_" + entry.translation_name + "_NAME"], 0x7F
                             )
                             print(
-                                f"| ![](img/{entry.translation_name}_cc2.png) | {entry._props['introduction_date'].year} | [{name}](../vehicles/{entry.translation_name}.html)",
+                                f"| ![](../vehicles/img/{entry.translation_name}_cc2.png) | {entry._props['introduction_date'].year} | [{name}](../vehicles/{entry.translation_name}.html)",
                                 file=f,
                             )
 
