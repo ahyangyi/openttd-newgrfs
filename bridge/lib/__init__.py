@@ -19,7 +19,7 @@ class ABridge(grf.SpriteGenerator):
         self._agrf_bridge = None
 
     def name(self, s):
-        name = s[f"STR_BRIDGE_{self.translation_name}"]
+        return s[f"STR_BRIDGE_{self.translation_name}"]
 
     def get_sprites(self, g):
         if self._agrf_bridge is None:
