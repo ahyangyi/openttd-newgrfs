@@ -18,13 +18,15 @@ class ABridge(grf.SpriteGenerator):
         self._props = props
         self._agrf_bridge = None
 
+    def name(self, s):
+        name = s[f"STR_BRIDGE_{self.translation_name}"]
+
     def get_sprites(self, g):
         if self._agrf_bridge is None:
             s = g.strings
             self._props["purchase_text"] = s[f"STR_BRIDGE_{self.translation_name}_PURCHASE"]
             self._props["description_rail"] = s[f"STR_BRIDGE_{self.translation_name}_DESC_RAIL"]
             self._props["description_road"] = s[f"STR_BRIDGE_{self.translation_name}_DESC_ROAD"]
-            name = s[f"STR_BRIDGE_{self.translation_name}"]
-            self._agrf_bridge = Bridge(id=self.id, name=name, layout=self.layout, **self._props)
+            self._agrf_bridge = Bridge(id=self.id, name=self.name(s), layout=self.layout, **self._props)
 
         return self._agrf_bridge.get_sprites(g)

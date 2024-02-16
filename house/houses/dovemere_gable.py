@@ -12,6 +12,7 @@ rotated_voxels = [LazySpriteSheet([vox], [(0, i)]) for i in range(4)]
 
 
 the_house = AHouse(
+    substitute=0x06,
     id=0x80,
     name="House",
     sprites=[s for v in rotated_voxels for s in v.spritesheet(0, 0)],
