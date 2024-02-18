@@ -143,31 +143,28 @@ parameter_list = ParameterListWithPreset(
 
 parameter_choices = SearchSpace(
     [
-        (x, ["PRESET"] + y)
-        for x, y in [
-            ("POLICY", ["AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
-            (
-                "PRIMARY_INDUSTRY_GROWTH",
-                ["NONE", "UNIVERSAL_SUPPLIES", "GENERIC_SUPPLIES", "SPECIFIC_SUPPLIES", "DISCRETE", "CONTINUOUS"],
-            ),
-            (
-                "WORKFORCE",
-                [
-                    "ABSTRACT",
-                    "PROFESSIONAL",
-                    "PROFESSIONAL_PASSENGERS",
-                    "PROFESSIONAL_MAIL",
-                    "PROFESSIONAL_TIRED",
-                    "YETI",
-                    "YETI_PASSENGERS",
-                    "YETI_MAIL",
-                    "YETI_TIRED",
-                ],
-            ),
-            ("WORKER_PARTICIPATION", ["NONE", "PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY", "BOTH"]),
-            ("SEA_INDUSTRY", ["ORGANIC", "LAND_ONLY", "BOTH", "EITHER", "SEA_ONLY"]),
-            ("TOWN_GOODS", ["ORGANIC", "NONE", "FOOD", "FOOD_AND_WATER"]),
-        ]
+        ("POLICY", ["AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
+        (
+            "PRIMARY_INDUSTRY_GROWTH",
+            ["NONE", "UNIVERSAL_SUPPLIES", "GENERIC_SUPPLIES", "SPECIFIC_SUPPLIES", "DISCRETE", "CONTINUOUS"],
+        ),
+        (
+            "WORKFORCE",
+            [
+                "ABSTRACT",
+                "PROFESSIONAL",
+                "PROFESSIONAL_PASSENGERS",
+                "PROFESSIONAL_MAIL",
+                "PROFESSIONAL_TIRED",
+                "YETI",
+                "YETI_PASSENGERS",
+                "YETI_MAIL",
+                "YETI_TIRED",
+            ],
+        ),
+        ("WORKER_PARTICIPATION", ["NONE", "PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY", "BOTH"]),
+        ("SEA_INDUSTRY", ["ORGANIC", "LAND_ONLY", "BOTH", "EITHER", "SEA_ONLY"]),
+        ("TOWN_GOODS", ["ORGANIC", "NONE", "FOOD", "FOOD_AND_WATER"]),
     ],
     parameter_list,
 )
@@ -182,7 +179,6 @@ docs_parameter_choices = SearchSpace(
         (
             "WORKFORCE",
             [
-                "PRESET",
                 "ABSTRACT",
                 "PROFESSIONAL",
                 "YETI_TIRED",
