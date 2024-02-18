@@ -57,6 +57,7 @@ STR_VEHICLE_FREEDOM_TARPAULIN_NAME      :一汽解放 CA10 顶棚卡车 (汽油)
 STR_VEHICLE_FREEDOM_MK_II_NAME          :一汽解放 CA15 卡车 (汽油)
 STR_VEHICLE_YELLOWRIVER_NAME            :黄河 JN150 卡车 (柴油)
 STR_VEHICLE_SHIELD_NAME                 :联合 U+550 重型卡车 (柴油)
+STR_VEHICLE_JOYFIELD_LORRY_NAME         :北汽福田欧曼 GTL 重型卡车 (柴油)
 
 STR_VEHICLE_NOVA_NAME                   :中车浦镇阿尔斯通 INNOVIA 300型 跨座式单轨 (EMU)
 
@@ -81,5 +82,6 @@ STR_VEHICLE_FREEDOM_TARPAULIN_DESC      :{SILVER}基于苏联 ZIS-150 的卡车�
 STR_VEHICLE_FREEDOM_MK_II_DESC          :{SILVER}
 STR_VEHICLE_YELLOWRIVER_DESC            :{SILVER}仿制斯柯达 706 RT 而生产的卡车。是中国的第一辆重型卡车。
 STR_VEHICLE_SHIELD_DESC                 :{SILVER}
+STR_VEHICLE_JOYFIELD_LORRY_DESC         :{SILVER}
 
 STR_VEHICLE_NOVA_DESC                   :{SILVER}
