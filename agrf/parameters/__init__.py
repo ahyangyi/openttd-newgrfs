@@ -57,6 +57,12 @@ class ParameterList:
         return self.parameters[self.index(name)]
 
 
+class ParameterListWithPreset(ParameterList):
+    def __init__(self, parameters, preset):
+        super().__init__(parameters)
+        self.preset = preset
+
+
 class SearchSpace:
     def __init__(self, choices, parameter_list):
         self.choices = choices
