@@ -2,7 +2,6 @@ from industry.lib.economy import (
     MetaEconomy,
     Economy,
     PrimaryIndustry,
-    WorkerYard,
     FreePort,
     SecondaryIndustry,
     TertiaryIndustry,
@@ -27,10 +26,8 @@ from industry.cargos import (
     nitrates,
     oil,
     passengers,
-    tired_workers,
     water,
     wool,
-    workers,
 )
 from industry.industries import (
     arable_farm,
@@ -53,7 +50,6 @@ from industry.industries import (
     vineyard,
     water_supply,
     water_tower,
-    worker_yard,
 )
 
 
