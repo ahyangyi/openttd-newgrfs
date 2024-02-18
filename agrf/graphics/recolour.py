@@ -35,8 +35,9 @@ class ColourMap:
                 triplets.append((f.a - 2, f.a - 2, t.a - 2))
             else:
                 for i in range(f.a, f.b + 1):
-                    # FIXME: round instead of floor
-                    triplets.append((i - 2, i - 2, (i - f.a) * (t.b - t.a) // (f.b - f.a) + t.a - 2))
+                    triplets.append(
+                        (i - 2, i - 2, ((i - f.a) * (t.b - t.a) + (f.b - f.a) // 2) // (f.b - f.a) + t.a - 2)
+                    )
         return grf.PaletteRemap(triplets)
 
 

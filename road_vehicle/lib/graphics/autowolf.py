@@ -1,4 +1,5 @@
 from road_vehicle.lib.graphics.voxel import LazyVoxel, LazySwitch
+from agrf.graphics.attach_over import attach_over
 import grf
 
 ALLOWED_FLAGS = ["noflipX", "noflipY", "debug_bbox"]
@@ -100,12 +101,25 @@ class AutoWolf:
             self.shifts[i] = 4 if shadow_rotate else 0
 
     def doc_graphics(self):
-        ret = []
-        for v in self.graphics.values():
+        img = None
+        for k, v in self.graphics.items():
             v = v.get_default_graphics()
             v.render()
-            ret.append(v.spritesheet(0, 0))
-        return ret[0][3]
+            sprite = v.spritesheet(0, 0)
+            sprite = sprite[3 + self.shifts[k]]
+            masked_sprite = sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
+            subimg, _ = masked_sprite.sprite.get_image()
+            submask, _ = masked_sprite.mask.get_image()
+
+            if img is None:
+                img = subimg
+                mask = submask
+                pos = k
+            else:
+                diff = sum(self.lengths[pos:k])
+                img, mask = attach_over(img, mask, subimg, submask, (-8 * diff, -4 * diff))
+                pos = k
+        return img, mask
 
     def generate_graphics(self):
         for v in self.graphics.values():
