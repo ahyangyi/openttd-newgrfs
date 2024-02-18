@@ -3,7 +3,7 @@ import numpy as np
 
 
 # alpha blend image 1 over image 2, w/ offset
-def attach_over(image1, mask1, image2, mask2, offset):
+def attach_over(image1, image2, offset):
     image1 = np.uint8(image1)
     image2 = np.uint8(image2)
     h1, w1 = image1.shape[:2]
@@ -42,12 +42,4 @@ def attach_over(image1, mask1, image2, mask2, offset):
     blend_port[:, :, 3:] = (new_alpha + 128) // 255
     new_image = Image.fromarray(new_image)
 
-    new_mask = np.zeros((h, w), dtype=np.uint8)
-    new_mask[o1y : o1y + h1, o1x : o1x + w1] = mask1
-    blend_port = new_mask[o2y : o2y + h2, o2x : o2x + w2]
-    transparency = blend_port == 0
-    blend_port[:, :] = transparency * mask2 + (1 - transparency) * blend_port
-    new_mask = Image.fromarray(new_mask, mode="P")
-    new_mask.putpalette(mask1.getpalette())
-
-    return new_image, new_mask
+    return new_image

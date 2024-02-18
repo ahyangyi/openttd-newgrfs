@@ -1,7 +1,6 @@
 import os
 import grf
 from agrf.strings import get_translation
-from agrf.graphics.blend import blend
 from agrf.graphics.palette import CompanyColour, company_colour_remap
 
 
@@ -9,13 +8,10 @@ cc1_remap = company_colour_remap(CompanyColour.BLUE, CompanyColour.BLUE).to_spri
 cc2_remap = company_colour_remap(CompanyColour.WHITE, CompanyColour.RED).to_sprite()
 
 
-def save_example_images(sprite_pair, prefix, file_name):
-    img, mask = sprite_pair
-    cc1_mask = cc1_remap.remap_image(mask)
-    cc1_masked_img = blend(img, cc1_mask)
+def save_example_images(graphics_helper, prefix, file_name):
+    cc1_masked_img = graphics_helper.doc_graphics(cc1_remap)
     cc1_masked_img.save(os.path.join(prefix, "img", f"{file_name}_cc1.png"))
-    cc2_mask = cc2_remap.remap_image(mask)
-    cc2_masked_img = blend(img, cc2_mask)
+    cc2_masked_img = graphics_helper.doc_graphics(cc2_remap)
     cc2_masked_img.save(os.path.join(prefix, "img", f"{file_name}_cc2.png"))
 
 
@@ -80,7 +76,7 @@ nav_order: {i+1}
         desc_translation = get_translation(string_manager["STR_VEHICLE_" + v.translation_name + "_DESC"], 0x7F)
 
         # Prepare graphics
-        save_example_images(v.graphics_helper.doc_graphics(), prefix, v.translation_name)
+        save_example_images(v.graphics_helper, prefix, v.translation_name)
 
         # Dump template
         with open(os.path.join(prefix, f"{v.translation_name}.md"), "w") as f:
@@ -121,7 +117,7 @@ nav_order: {i+1}
                     print("# Variants", file=f)
                     for variant in v.list_variants():
                         vpath = f"{v.translation_name}_{variant.id}"
-                        save_example_images(variant.graphics_helper.doc_graphics(), prefix, vpath)
+                        save_example_images(variant.graphics_helper, prefix, vpath)
                         print(
                             f"""ID: {variant.id}
 
