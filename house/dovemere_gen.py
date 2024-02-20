@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import argparse
 import grf
-from house.houses import dovemere_gable
+from house.houses.generic import traditional_suburban_houses
 
 
-houses = [dovemere_gable]
+houses = [traditional_suburban_houses]
 
 
 def get_string_manager():
