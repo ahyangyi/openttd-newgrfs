@@ -57,6 +57,9 @@ class ParameterList:
     def __getitem__(self, name):
         return self.parameters[self.index(name)]
 
+    def get_effective_enum(self, i):
+        return self.parameters[i].enum
+
 
 class ParameterListWithPreset(ParameterList):
     def __init__(self, parameters, presets, start_id=0x40, preset_param_name="PRESET", preset_enum_name="PRESET"):
@@ -67,7 +70,11 @@ class ParameterListWithPreset(ParameterList):
         for p in self.presets.values():
             for k in p.keys():
                 if k not in self._parameters_with_preset:
-                    self._parameters_with_preset[k] = (start_id, self[k].enum_index(preset_enum_name))
+                    self._parameters_with_preset[k] = (
+                        start_id,
+                        self[k].enum_index(preset_enum_name),
+                        {kk: v for kk, v in self[k].enum.items() if v != preset_enum_name},
+                    )
                     start_id += 1
 
     def preset_index(self, name):
@@ -75,7 +82,7 @@ class ParameterListWithPreset(ParameterList):
 
     def add(self, g, s):
         super().add(g, s)
-        for k, (v, preset_enum_id) in sorted(self._parameters_with_preset.items()):
+        for k, (v, preset_enum_id, _) in sorted(self._parameters_with_preset.items()):
             k_id = self.index(k)
             for preset_name, preset in self.presets.items():
                 preset_id = self.parameters[self.preset_param_id].enum_index(preset_name)
@@ -99,6 +106,12 @@ class ParameterListWithPreset(ParameterList):
                         source2=0xFF,
                     )
                 )
+
+    def get_effective_enum(self, i):
+        name = self.parameters[i].name
+        if name in self._parameters_with_preset:
+            return self._parameters_with_preset[name][2]
+        return super().get_effective_enum(i)
 
 
 class SearchSpace:
