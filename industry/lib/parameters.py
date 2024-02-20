@@ -2,6 +2,15 @@ from agrf.parameters import Parameter, ParameterListWithPreset, SearchSpace
 
 
 PRESETS = {
+    "AEGIS": {
+        # FIXME
+        "POLICY": "AUTARKY",
+        "PRIMARY_INDUSTRY_GROWTH": "NONE",
+        "WORKFORCE": "ABSTRACT",
+        "WORKER_PARTICIPATION": "NONE",
+        "SEA_INDUSTRY": "ORGANIC",
+        "TOWN_GOODS": "ORGANIC",
+    },
     "VANILLA": {
         "POLICY": "AUTARKY",
         "PRIMARY_INDUSTRY_GROWTH": "NONE",
