@@ -104,6 +104,7 @@ class ParameterListWithPreset(ParameterList):
                         if_undefined=False,
                         source1=self[k].enum_index(preset[k]),
                         source2=0xFF,
+                        value=0,
                     )
                 )
 
