@@ -106,16 +106,6 @@ class SearchSpace:
         self.choices = choices
         self.parameter_list = parameter_list
 
-    def copy(self):
-        return SearchSpace(copy.deepcopy(self.choices), self.parameter_list)
-
-    def update_params(self, cat, options):
-        [(idx, all_options)] = [
-            (i, the_options) for i, (the_cat, the_options) in enumerate(self.choices) if the_cat == cat
-        ]
-        assert all(o in all_options for o in options)
-        self.choices[idx] = (cat, options)
-
     def iterate_variations(self, i=0, params={}):
         if i == len(self.choices):
             yield params

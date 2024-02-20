@@ -27,8 +27,7 @@ class MetaSpriteMixin:
             while isinstance(v, SplitDefinition):
                 v.fixup(self._parameter_list)
                 branch_key = tuple(parameters[var] for var in v.variables)
-                if branch_key in v.branches:
-                    v = v.branches[branch_key]
+                v = v.branches[branch_key]
             if not v:
                 return {"exists": False}
 
