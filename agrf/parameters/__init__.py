@@ -1,4 +1,5 @@
 import copy
+import grf
 
 
 class Parameter:
@@ -58,9 +59,46 @@ class ParameterList:
 
 
 class ParameterListWithPreset(ParameterList):
-    def __init__(self, parameters, preset):
+    def __init__(self, parameters, presets, start_id=0x40, preset_param_name="PRESET", preset_enum_name="PRESET"):
         super().__init__(parameters)
-        self.preset = preset
+        self.presets = presets
+        self.preset_param_id = self.index(preset_param_name)
+        self._parameters_with_preset = {}
+        for p in self.presets.values():
+            for k in p.keys():
+                if k not in self._parameters_with_preset:
+                    self._parameters_with_preset[k] = (start_id, self[k].enum_index(preset_enum_name))
+                    start_id += 1
+
+    def preset_index(self, name):
+        return self._parameters_with_preset[name]
+
+    def add(self, g, s):
+        super().add(g, s)
+        for k, (v, preset_enum_id) in sorted(self._parameters_with_preset.items()):
+            k_id = self.index(k)
+            for preset_name, preset in self.presets.items():
+                preset_id = self.parameters[self.preset_param_id].enum_index(preset_name)
+                g.add(
+                    grf.If(
+                        is_static=True,
+                        variable=self.preset_param_id,
+                        condition=0x02,
+                        value=preset_id,
+                        skip=2,
+                        varsize=4,
+                    )
+                )
+                g.add(grf.If(is_static=True, variable=v, condition=0x02, value=preset_enum_id, skip=1, varsize=4))
+                g.add(
+                    grf.ComputeParameters(
+                        target=v,
+                        operation=0x00,
+                        if_undefined=False,
+                        source1=self[k].enum_index(preset[k]),
+                        source2=0xFF,
+                    )
+                )
 
 
 class SearchSpace:
