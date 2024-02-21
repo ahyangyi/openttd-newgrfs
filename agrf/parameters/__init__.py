@@ -2,12 +2,20 @@ import copy
 import grf
 
 
-class Parameter:
-    def __init__(self, name, default, enum):
-        self.name = name
-        self.default = default
+class ParameterReverseLookup:
+    def __init__(self, enum):
         self.enum = enum
         self.reverse_lookup = {v: k for k, v in self.enum.items()}
+
+    def enum_index(self, name):
+        return self.reverse_lookup[name]
+
+
+class Parameter(ParameterReverseLookup):
+    def __init__(self, name, default, enum):
+        super().__init__(enum)
+        self.name = name
+        self.default = default
 
     def add(self, g, s):
         g.add_int_parameter(
@@ -37,9 +45,6 @@ class Parameter:
     def set_index(self, index):
         self.index = index
 
-    def enum_index(self, name):
-        return self.reverse_lookup[name]
-
 
 class ParameterList:
     def __init__(self, parameters):
@@ -54,11 +59,14 @@ class ParameterList:
     def index(self, name):
         return [i for i, p in enumerate(self.parameters) if p.name == name][0]
 
+    def preset_index(self, name):
+        return self.index(name)
+
     def __getitem__(self, name):
         return self.parameters[self.index(name)]
 
-    def get_effective_enum(self, i):
-        return self.parameters[i].enum
+    def parameter_by_id(self, i):
+        return self.parameters[i]
 
 
 class ParameterListWithPreset(ParameterList):
@@ -67,22 +75,27 @@ class ParameterListWithPreset(ParameterList):
         self.presets = presets
         self.preset_param_id = self.index(preset_param_name)
         self._parameters_with_preset = {}
+        self._preset_parameters = {}
         for p in self.presets.values():
             for k in p.keys():
                 if k not in self._parameters_with_preset:
                     self._parameters_with_preset[k] = (
                         start_id,
                         self[k].enum_index(preset_enum_name),
-                        {kk: v for kk, v in self[k].enum.items() if v != preset_enum_name},
+                    )
+                    self._preset_parameters[start_id] = ParameterReverseLookup(
+                        {kk: v for kk, v in self[k].enum.items() if v != preset_enum_name}
                     )
                     start_id += 1
 
     def preset_index(self, name):
-        return self._parameters_with_preset[name]
+        if name in self._parameters_with_preset:
+            return self._parameters_with_preset[name][0]
+        return self.index(name)
 
     def add(self, g, s):
         super().add(g, s)
-        for k, (v, preset_enum_id, _) in sorted(self._parameters_with_preset.items()):
+        for k, (v, preset_enum_id) in sorted(self._parameters_with_preset.items()):
             k_id = self.index(k)
             for preset_name, preset in self.presets.items():
                 preset_id = self.parameters[self.preset_param_id].enum_index(preset_name)
@@ -108,11 +121,10 @@ class ParameterListWithPreset(ParameterList):
                     )
                 )
 
-    def get_effective_enum(self, i):
-        name = self.parameters[i].name
-        if name in self._parameters_with_preset:
-            return self._parameters_with_preset[name][2]
-        return super().get_effective_enum(i)
+    def parameter_by_id(self, i):
+        if i in self._preset_parameters:
+            return self._preset_parameters[i]
+        return super().parameter_by_id(i)
 
 
 class SearchSpace:

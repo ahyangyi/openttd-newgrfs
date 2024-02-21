@@ -60,7 +60,7 @@ class MetaSpriteMixin:
             var_id = all_choices[i]
             sublists = []
             hashes = []
-            for choice in self._parameter_list.get_effective_enum(var_id).keys():
+            for choice in self._parameter_list.parameter_by_id(var_id).enum.keys():
                 parameters[var_id] = choice
                 sublist, h = dfs(parameters, i + 1)
                 sublists.append(sublist)
@@ -70,7 +70,7 @@ class MetaSpriteMixin:
             if all(hashes[0] == h for h in hashes):
                 return sublists[0], hash(tuple(hashes))
 
-            for choice in range(len(self._parameter_list.get_effective_enum(var_id))):
+            for choice in range(len(self._parameter_list.parameter_by_id(var_id).enum)):
                 sublist = sublists[choice]
                 for g in sublist:
                     ret.append(
