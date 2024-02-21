@@ -109,15 +109,15 @@ class ParameterListWithPreset(ParameterList):
                         varsize=4,
                     )
                 )
-                g.add(grf.If(is_static=True, variable=v, condition=0x02, value=preset_enum_id, skip=1, varsize=4))
+                g.add(grf.If(is_static=True, variable=k_id, condition=0x02, value=preset_enum_id, skip=1, varsize=4))
                 g.add(
                     grf.ComputeParameters(
                         target=v,
                         operation=0x00,
                         if_undefined=False,
-                        source1=self[k].enum_index(preset[k]),
+                        source1=0xFF,
                         source2=0xFF,
-                        value=0,
+                        value=self[k].enum_index(preset[k]),
                     )
                 )
 
