@@ -15,6 +15,35 @@ class AStation(grf.SpriteGenerator):
 
         name = g.strings[f"STR_STATION_{self.translation_name}_NAME"]
 
+        layout_x = grf.SpriteLayout(
+            [
+                grf.GroundSprite(
+                    sprite=grf.SpriteRef(
+                        id=1420,
+                        pal=0,
+                        is_global=True,
+                        use_recolour=False,
+                        always_transparent=False,
+                        no_transparent=False,
+                    ),
+                    flags=0,
+                ),
+                grf.ParentSprite(
+                    sprite=grf.SpriteRef(
+                        id=0x42D,
+                        pal=0,
+                        is_global=False,
+                        use_recolour=True,
+                        always_transparent=False,
+                        no_transparent=False,
+                    ),
+                    extent=(16, 16, 32),
+                    offset=(0, 0, 0),
+                    flags=0,
+                ),
+            ]
+        )
+
         if self.sprites:
             layouts = []
             for i, sprite in enumerate(self.sprites):
@@ -24,7 +53,13 @@ class AStation(grf.SpriteGenerator):
 
         res.append(
             definition := grf.Define(
-                feature=grf.STATION, id=self.id, props={"class_label": self._props["class_label"], **self._props}
+                feature=grf.STATION,
+                id=self.id,
+                props={
+                    "class_label": self._props["class_label"],
+                    "advanced_layout": grf.SpriteLayoutList([layout_x, layout_x]),
+                    **self._props,
+                },
             )
         )
         if self.sprites:
