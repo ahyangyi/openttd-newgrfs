@@ -103,13 +103,13 @@ class ParameterListWithPreset(ParameterList):
                     grf.If(
                         is_static=True,
                         variable=self.preset_param_id,
-                        condition=0x02,
+                        condition=0x03,
                         value=preset_id,
                         skip=2,
                         varsize=4,
                     )
                 )
-                g.add(grf.If(is_static=True, variable=k_id, condition=0x02, value=preset_enum_id, skip=1, varsize=4))
+                g.add(grf.If(is_static=True, variable=k_id, condition=0x03, value=preset_enum_id, skip=1, varsize=4))
                 g.add(
                     grf.ComputeParameters(
                         target=v,
