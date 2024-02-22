@@ -77,6 +77,7 @@ STR_VEHICLE_FREEDOM_MK_II_NAME          :FAW Jiefang CA15 Truck (gasoline)
 STR_VEHICLE_YELLOWRIVER_NAME            :Huanghe JN150 Truck (diesel)
 STR_VEHICLE_SHIELD_NAME                 :C&C U+550 Truck (diesel)
 STR_VEHICLE_JOYFIELD_LORRY_NAME         :Beiqi Foton Auman GTL Truck (diesel)
+STR_VEHICLE_JOYFIELD_ELECTRIC_LORRY_NAME:Beiqi Foton iBlue T5 Truck (electric)
 
 STR_VEHICLE_NOVA_NAME                   :CRRC Puzhen Alstom Innovia Monorail 300 (EMU)
 STR_VEHICLE_BURGER_NAME                 :Jingyi BD540 Trolleybus
@@ -104,6 +105,7 @@ STR_VEHICLE_FREEDOM_MK_II_DESC          :{SILVER}
 STR_VEHICLE_YELLOWRIVER_DESC            :{SILVER}Based on reverse-engineered Škoda 706 RT. The first heavy-duty truck produced in China.
 STR_VEHICLE_SHIELD_DESC                 :{SILVER}
 STR_VEHICLE_JOYFIELD_LORRY_DESC         :{SILVER}
+STR_VEHICLE_JOYFIELD_ELECTRIC_LORRY_DESC:{SILVER}
 
 STR_VEHICLE_NOVA_DESC                   :{SILVER}
 STR_VEHICLE_BURGER_DESC                 :{SILVER}
