@@ -8,13 +8,6 @@ cc1_remap = company_colour_remap(CompanyColour.BLUE, CompanyColour.BLUE).to_spri
 cc2_remap = company_colour_remap(CompanyColour.WHITE, CompanyColour.RED).to_sprite()
 
 
-# FIXME also in roster
-def dimens_repr(dimensions):
-    if dimensions is None:
-        return ""
-    return " × ".join(map(str, dimensions))
-
-
 def save_example_images(graphics_helper, prefix, file_name):
     cc1_masked_img = graphics_helper.doc_graphics(cc1_remap)
     cc1_masked_img.save(os.path.join(prefix, "img", f"{file_name}_cc1.png"))
@@ -121,8 +114,8 @@ nav_order: {i+1}
 """,
                     file=f,
                 )
-                # if v.real_dimensions is not None:
-                #    print("**Dimensions**: ", dimens_repr(v.real_dimensions), file=f)
+                if "real_dimensions" in v:
+                    print("**Dimensions**: ", v.real_dimensions_repr, file=f)
 
                 if "variants" in v:
                     print("# Variants", file=f)
