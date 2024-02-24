@@ -121,8 +121,8 @@ nav_order: {i+1}
 """,
                     file=f,
                 )
-                if v.real_dimensions is not None:
-                    print("**Dimensions**: ", dimens_repr(v.real_dimensions), file=f)
+                # if v.real_dimensions is not None:
+                #    print("**Dimensions**: ", dimens_repr(v.real_dimensions), file=f)
 
                 if "variants" in v:
                     print("# Variants", file=f)
