@@ -44,7 +44,7 @@ class AStation(grf.SpriteGenerator):
                     ),
                 ]
             )
-            for i in range(4)
+            for i in [2, 3]
         ]
 
         if self.sprites:
@@ -60,7 +60,7 @@ class AStation(grf.SpriteGenerator):
                 id=self.id,
                 props={
                     "class_label": self._props["class_label"],
-                    "advanced_layout": grf.SpriteLayoutList([sprite_layouts[2], sprite_layouts[3]]),
+                    "advanced_layout": grf.SpriteLayoutList(sprite_layouts),
                     **self._props,
                 },
             )

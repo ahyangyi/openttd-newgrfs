@@ -1,6 +1,7 @@
 import grf
 from station.lib import AStation
 from agrf.graphics.voxel import LazyVoxel, LazySpriteSheet
+from agrf.sprites import number_alternatives
 
 vox = LazyVoxel(
     "dovemere_2018",
@@ -14,7 +15,7 @@ voxels = [LazySpriteSheet([vox], [(0, i)]) for i in range(4)]
 the_station = AStation(
     id=0x00,
     translation_name="DOVEMERE_2018",
-    sprites=[s for v in voxels for s in v.spritesheet(0, 0)],
+    sprites=[number_alternatives(s, 0) for v in voxels for s in v.spritesheet(0, 0)],
     class_label=b"2018",
     cargo_threshold=40,
     callbacks={
