@@ -9,12 +9,12 @@ vox = LazyVoxel(
     load_from="station/files/gorender.json",
 )
 vox.render()
-voxels = [LazySpriteSheet([vox], [(0, 0)])]
+voxels = [LazySpriteSheet([vox], [(0, i)]) for i in range(4)]
 
 the_station = AStation(
     id=0x00,
     translation_name="DOVEMERE_2018",
-    sprites=[s for v in voxels for s in v.spritesheet(0, 0)] * 18,
+    sprites=[s for v in voxels for s in v.spritesheet(0, 0)],
     class_label=b"2018",
     cargo_threshold=40,
     callbacks={
