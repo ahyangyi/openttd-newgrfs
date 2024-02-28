@@ -44,7 +44,7 @@ class AStation(grf.SpriteGenerator):
                     ),
                 ]
             )
-            for i in [2, 3]
+            for i in range(18)
         ]
 
         if self.sprites:
