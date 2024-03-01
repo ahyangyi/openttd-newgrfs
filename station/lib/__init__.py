@@ -14,6 +14,7 @@ class AStation(grf.SpriteGenerator):
         res = []
 
         name = g.strings[f"STR_STATION_{self.translation_name}_NAME"]
+        class_name = g.strings[f"STR_STATION_CLASS_{self._props['class_label'].decode()}"]
 
         sprite_layouts = [
             grf.SpriteLayout(
@@ -74,7 +75,7 @@ class AStation(grf.SpriteGenerator):
                 res.append(s)
 
         res.extend(self.callbacks.make_map_action(definition))
-        res.extend(name.get_actions(grf.STATION, 0xC400 + self.id, is_generic_offset=True))
+        res.extend(class_name.get_actions(grf.STATION, 0xC400 + self.id, is_generic_offset=True))
         res.extend(name.get_actions(grf.STATION, 0xC500 + self.id, is_generic_offset=True))
 
         return res

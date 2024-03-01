@@ -22,7 +22,7 @@ the_station = AStation(
     id=0x00,
     translation_name="DOVEMERE_2018",
     sprites=[number_alternatives(voxels[(i + 2) % 4].spritesheet(0, 0)[0], i) for i in range(100)],
-    class_label=b"2018",
+    class_label=b"DM18",
     cargo_threshold=40,
     callbacks={
         "select_tile_layout": grf.PurchaseCallback(
