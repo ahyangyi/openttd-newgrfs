@@ -71,6 +71,6 @@ class Bridge(grf.SpriteGenerator):
             name_action = g.strings.add(self.name).get_actions(grf.BRIDGE, self.id)
 
         res.extend(name_action)
-        res.append(definition := grf.Define(feature=grf.BRIDGE, id=self.id, props={**self._props, **extra_props}))
+        res.append(grf.Define(feature=grf.BRIDGE, id=self.id, props={**self._props, **extra_props}))
 
         return res

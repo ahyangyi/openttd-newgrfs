@@ -1,5 +1,4 @@
 from bridge.lib import ABridge
-from datetime import date
 import grf
 
 from agrf.graphics.voxel import LazyVoxel, LazySpriteSheet
