@@ -8,11 +8,11 @@
     "fade_to_black": false,
     "sampler": "square",
     "accuracy": 5,
-    "overlap": 0,
+    "overlap": 0.5,
     "size": {
-        "x": 128,
-        "y": 128,
-        "z": 128
+        "x": 256,
+        "y": 256,
+        "z": 256
     },
     "render_elevation": 30,
     "sprites": [
