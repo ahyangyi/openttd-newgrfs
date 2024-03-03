@@ -21,7 +21,7 @@ class AStation(grf.SpriteGenerator):
                 [
                     grf.GroundSprite(
                         sprite=grf.SpriteRef(
-                            id=1420,
+                            id=1012 - i % 2,
                             pal=0,
                             is_global=True,
                             use_recolour=False,
