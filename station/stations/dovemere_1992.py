@@ -2,9 +2,9 @@ from station.lib import AStation
 from agrf.graphics.voxel import LazyVoxel, LazySpriteSheet
 
 vox = LazyVoxel(
-    "dovemere_2018",
+    "front_normal",
     prefix=f"station/voxels/render/dovemere_2018",
-    voxel_getter=lambda: f"station/voxels/dovemere_2018.vox",
+    voxel_getter=lambda: f"station/voxels/dovemere_2018/front_normal.vox",
     load_from="station/files/gorender.json",
 )
 vox.render()

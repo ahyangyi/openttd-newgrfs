@@ -45,14 +45,13 @@ class AStation(grf.SpriteGenerator):
                     ),
                 ]
             )
-            for i in range(32)
+            for i in range(len(self.sprites))
         ]
 
         if self.sprites:
             layouts = []
             for i, sprite in enumerate(self.sprites):
                 layouts.append(grf.GenericSpriteLayout(ent1=[i], ent2=[i], feature=grf.STATION))
-            assert len(layouts) >= 32
             self.callbacks.graphics = layouts[0]
 
         self.callbacks.set_flag_props(self._props)
