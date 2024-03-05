@@ -1,6 +1,4 @@
 import os
-import grf
-from agrf.strings import get_translation
 
 
 def gen_docs(string_manager, houses):

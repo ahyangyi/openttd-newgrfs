@@ -93,15 +93,17 @@ def spritesheet_template(
                         bpp=bpp,
                         zoom=scale_to_zoom[scale],
                     ),
-                    grf.FileSprite(
-                        grf.ImageFile(f"{path}_{scale}x_mask.png"),
-                        (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale,
-                        0,
-                        guessed_dimens[i][0] * scale,
-                        guessed_dimens[i][1] * scale,
-                    )
-                    if bpp == 32
-                    else None,
+                    (
+                        grf.FileSprite(
+                            grf.ImageFile(f"{path}_{scale}x_mask.png"),
+                            (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale,
+                            0,
+                            guessed_dimens[i][0] * scale,
+                            guessed_dimens[i][1] * scale,
+                        )
+                        if bpp == 32
+                        else None
+                    ),
                 )
                 for bpp in bpps
                 for scale in scales

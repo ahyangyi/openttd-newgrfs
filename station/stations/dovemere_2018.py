@@ -1,24 +1,24 @@
 import grf
 from station.lib import AStation
-from agrf.graphics.voxel import LazyVoxel, LazySpriteSheet
+from agrf.graphics.voxel import LazyVoxel
 from agrf.sprites import number_alternatives
 
 front_normal = LazyVoxel(
     "front_normal",
-    prefix=f"station/voxels/render/dovemere_2018",
-    voxel_getter=lambda: f"station/voxels/dovemere_2018/front_normal.vox",
+    prefix="station/voxels/render/dovemere_2018",
+    voxel_getter=lambda: "station/voxels/dovemere_2018/front_normal.vox",
     load_from="station/files/gorender.json",
 )
 front_gate = LazyVoxel(
     "front_gate",
-    prefix=f"station/voxels/render/dovemere_2018",
-    voxel_getter=lambda: f"station/voxels/dovemere_2018/front_gate.vox",
+    prefix="station/voxels/render/dovemere_2018",
+    voxel_getter=lambda: "station/voxels/dovemere_2018/front_gate.vox",
     load_from="station/files/gorender.json",
 )
 central = LazyVoxel(
     "central",
-    prefix=f"station/voxels/render/dovemere_2018",
-    voxel_getter=lambda: f"station/voxels/dovemere_2018/central.vox",
+    prefix="station/voxels/render/dovemere_2018",
+    voxel_getter=lambda: "station/voxels/dovemere_2018/central.vox",
     load_from="station/files/gorender.json",
 )
 front_gate_flipped = front_gate.flip("flip")
@@ -33,7 +33,6 @@ front_gate_flipped = front_gate_flipped.spritesheet(0, 0)
 central = central.spritesheet(0, 0)
 
 sprites = front_normal[2:] + front_normal + central[:2] + front_gate[2:] + front_gate_flipped[:2]
-print(sprites)
 
 cb41 = grf.Switch(
     ranges={
