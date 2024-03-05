@@ -60,7 +60,7 @@ classDef cargo fill:none,stroke:none;""",
 
                 # Industries
                 print(
-                    f"""```
+                    """```
 
 # Industries
 

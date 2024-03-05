@@ -132,7 +132,7 @@ class SearchSpace:
         self.choices = choices
         self.parameter_list = parameter_list
 
-    def iterate_variations(self, i=0, params={}):
+    def _iterate_variations(self, i, params):
         if i == len(self.choices):
             yield params
         else:
@@ -140,8 +140,12 @@ class SearchSpace:
             for j in available_choices:
                 new_params = params.copy()
                 new_params[parameter_name] = j
-                for variation in self.iterate_variations(i + 1, new_params):
+                for variation in self._iterate_variations(i + 1, new_params):
                     yield variation
+
+    def iterate_variations(self):
+        for variation in self._iterate_variations(0, {}):
+            yield variation
 
     def desc(self, params):
         return "".join(str(options.index(params[i])) for i, options in self.choices)

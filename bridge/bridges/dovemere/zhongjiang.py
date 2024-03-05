@@ -5,8 +5,8 @@ from agrf.graphics.voxel import LazyVoxel, LazySpriteSheet
 
 vox = LazyVoxel(
     "dovemere_yangtze_1",
-    prefix=f"bridge/voxels/render/dovemere_yangtze_1",
-    voxel_getter=lambda: f"bridge/voxels/dovemere_yangtze_1.vox",
+    prefix="bridge/voxels/render/dovemere_yangtze_1",
+    voxel_getter=lambda: "bridge/voxels/dovemere_yangtze_1.vox",
     load_from="bridge/files/gorender.json",
 )
 vox.render()

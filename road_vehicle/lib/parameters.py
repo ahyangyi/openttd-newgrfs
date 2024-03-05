@@ -1,4 +1,4 @@
-from agrf.parameters import Parameter, ParameterList, SearchSpace
+from agrf.parameters import Parameter, ParameterList
 
 
 parameter_list = ParameterList(
