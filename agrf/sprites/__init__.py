@@ -25,7 +25,7 @@ class NumberedSprite(grf.Sprite):
             font = ImageFont.truetype("resources/AntaeusConsoleNumbers.otf", w // 4)
             message = str(self.number)
             _, _, _w, _h = draw.textbbox((0, 0), message, font=font)
-            draw.text(((w - _w) // 2, (h - _h) // 2), message, "blue", font=font)
+            draw.text(((w - _w) // 2, (w // 2 - _h) // 2), message, "blue", font=font)
             rgb = np.asarray(img)
         return w, h, rgb, alpha, mask
 
