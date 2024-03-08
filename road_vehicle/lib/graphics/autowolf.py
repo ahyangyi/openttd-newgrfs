@@ -121,7 +121,7 @@ class AutoWolf:
                 diff = sum(self.lengths[pos:k])
                 img = attach_over(img, subimg, (-8 * diff, -4 * diff))
                 pos = k
-        return img
+        return img.crop(img.getbbox())
 
     def generate_graphics(self):
         for v in self.graphics.values():
