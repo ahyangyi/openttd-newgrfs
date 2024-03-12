@@ -2,6 +2,7 @@
     "lighting_angle": 60,
     "lighting_elevation": 65,
     "depth_influence": 0,
+    "tiled_normals": true,
     "hard_edge_threshold": 0.25,
     "pad_to_full_length": true,
     "solid_base": true,
@@ -14,7 +15,7 @@
     "detail_boost": 15.0,
     "falloff_adjustment": 0.25,
     "max_colour_push": 0,
-    "fosterise": true,
+    "fosterise": false,
     "suppress_edge_fosterisation": true,
     "size": {
         "x": 256,
