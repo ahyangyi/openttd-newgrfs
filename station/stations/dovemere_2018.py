@@ -39,6 +39,12 @@ central_windowed_extender = LazyVoxel(
     voxel_getter=lambda: "station/voxels/dovemere_2018/central_windowed_extender.vox",
     load_from="station/files/gorender.json",
 )
+side_a = LazyVoxel(
+    "side_a",
+    prefix="station/voxels/render/dovemere_2018",
+    voxel_getter=lambda: "station/voxels/dovemere_2018/side_a.vox",
+    load_from="station/files/gorender.json",
+)
 corner = LazyVoxel(
     "corner",
     prefix="station/voxels/render/dovemere_2018",
@@ -47,6 +53,7 @@ corner = LazyVoxel(
 )
 front_gate_flipped = front_gate.flip("flip")
 central_windowed_flipped = central_windowed.flip("flip")
+side_a_flipped = side_a.flip("flip")
 corner_flipped = corner.flip("flip")
 front_normal.render()
 front_gate.render()
@@ -56,6 +63,8 @@ central.render()
 central_windowed.render()
 central_windowed_extender.render()
 central_windowed_flipped.render()
+side_a.render()
+side_a_flipped.render()
 corner.render()
 corner_flipped.render()
 
@@ -67,6 +76,8 @@ central = central.spritesheet(0, 0)
 central_windowed = central_windowed.spritesheet(0, 0)
 central_windowed_extender = central_windowed_extender.spritesheet(0, 0)
 central_windowed_flipped = central_windowed_flipped.spritesheet(0, 0)
+side_a = side_a.spritesheet(0, 0)
+side_a_flipped = side_a_flipped.spritesheet(0, 0)
 corner = corner.spritesheet(0, 0)
 corner_flipped = corner_flipped.spritesheet(0, 0)
 
@@ -99,6 +110,10 @@ sprites = [
     front_gate_extender[1],
     central_windowed_extender[2],
     central_windowed_extender[3],
+    side_a[0],
+    side_a_flipped[3],
+    side_a_flipped[2],
+    side_a[1],
 ]
 
 
@@ -116,16 +131,19 @@ def get_back_index(l, r):
 
 
 def get_central_index(l, r):
-    if l + r <= 2:
-        # FIXME
+    if l + r == 0:
         return 6
+    if l + r == 1:
+        return [28, 30][l]
+    if l + r == 2:
+        return [28, 6, 30][l]
 
     e = l + r - 3
     c = e // 3
     if c % 2 != e % 2:
         c += 1
     o = (e - c) // 2
-    return ([6] + [6] * o + [22] + [26] * c + [20] + [6] * o + [6])[l]
+    return ([28] + [6] * o + [22] + [26] * c + [20] + [6] * o + [30])[l]
 
 
 def get_front_index(l, r):
