@@ -12,7 +12,7 @@ def quickload(name):
         load_from="station/files/gorender.json",
     )
     v.render()
-    return v.spritesheet(0, 0)
+    return v.spritesheet()
 
 
 (

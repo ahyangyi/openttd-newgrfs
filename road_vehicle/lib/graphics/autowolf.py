@@ -106,7 +106,7 @@ class AutoWolf:
         for k, v in self.graphics.items():
             v = v.get_default_graphics()
             v.render()
-            sprite = v.spritesheet(0, 0)
+            sprite = v.spritesheet()
             sprite = sprite[3 + self.shifts[k]]
             masked_sprite = sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
             subimg, _ = masked_sprite.sprite.get_image()
@@ -161,10 +161,10 @@ class AutoWolf:
             "graphics": grf.Switch(
                 ranges={
                     i: grf.Switch(
-                        ranges={0: self.graphics[i].get_action(self.xdiff[i], self.shifts[i], feature)},
+                        ranges={0: self.graphics[i].get_action(feature, self.xdiff[i], self.shifts[i])},
                         default=self.graphics[i]
                         .get_default_graphics()
-                        .get_action(self.xdiff[i], self.shifts[i], feature),
+                        .get_action(feature, self.xdiff[i], self.shifts[i]),
                         code="extra_callback_info1_byte",
                     )
                     for i, seg in enumerate(self.segments)

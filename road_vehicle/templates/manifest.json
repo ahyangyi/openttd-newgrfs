@@ -62,6 +62,7 @@
     "__agrf_scale_formula_comment": "2 ** 0.5 / 13",
     "agrf_scale": 0.10878565864408424,
     "agrf_real_x": 208,
+    "agrf_xdiff": 0,
     "agrf_zdiff": 0,
     "agrf_unnaturalness": 0.25,
     "agrf_bbox_joggle": [

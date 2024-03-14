@@ -15,7 +15,7 @@ the_house = AHouse(
     substitute=0x06,
     id=0x80,
     name="House",
-    sprites=[s for v in rotated_voxels for s in v.spritesheet(0, 0)],
+    sprites=[s for v in rotated_voxels for s in v.spritesheet()],
     flags=0x1,
     availability_mask=0xF81F,
 )
