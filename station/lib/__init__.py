@@ -39,7 +39,7 @@ class AStation(grf.SpriteGenerator):
                             always_transparent=False,
                             no_transparent=False,
                         ),
-                        extent=(16, 16, 32),
+                        extent=(16, 16, 48),
                         offset=(0, 0, 0),
                         flags=0,
                     ),

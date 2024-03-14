@@ -21,12 +21,16 @@ class NumberedSprite(grf.Sprite):
         w, h, rgb, alpha, mask = self.sprite.get_data_layers(context)
         if rgb is not None:
             img = Image.fromarray(rgb)
+            alpha = Image.fromarray(alpha)
             draw = ImageDraw.Draw(img)
+            drawa = ImageDraw.Draw(alpha)
             font = ImageFont.truetype("resources/AntaeusConsoleNumbers.otf", w // 4)
             message = str(self.number)
             _, _, _w, _h = draw.textbbox((0, 0), message, font=font)
-            draw.text(((w - _w) // 2, (w // 2 - _h) // 2), message, "blue", font=font)
+            draw.text(((w - _w) // 2, w // 4), message, "blue", font=font)
+            drawa.text(((w - _w) // 2, w // 4), message, 255, font=font)
             rgb = np.asarray(img)
+            alpha = np.asarray(alpha)
         return w, h, rgb, alpha, mask
 
     def get_image_files(self):

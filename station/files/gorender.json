@@ -43,15 +43,6 @@
             "flip": true
         },
         {
-            "angle": 225,
-            "width": 64,
-            "flip": true
-        },
-        {
-            "angle": 135,
-            "width": 64
-        },
-        {
             "angle": 45,
             "width": 64
         },
@@ -59,6 +50,15 @@
             "angle": 315,
             "width": 64,
             "flip": true
+        },
+        {
+            "angle": 225,
+            "width": 64,
+            "flip": true
+        },
+        {
+            "angle": 135,
+            "width": 64
         }
     ],
     "agrf_bpps": [8, 32],
