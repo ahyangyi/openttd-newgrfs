@@ -32,7 +32,18 @@ deltas = [[0, -2], [2, -1], [4, 0], [2, 1], [0, 2], [-2, 1], [-4, 0], [-2, -1]]
 scale_to_zoom = {4: grf.ZOOM_4X, 2: grf.ZOOM_2X, 1: grf.ZOOM_NORMAL}
 
 
+class LazyAlternativeSprites(grf.AlternativeSprites):
+    def __init__(self, voxel, *sprites):
+        super().__init__(*sprites)
+        self.voxel = voxel
+
+    def prepare_files(self):
+        self.voxel.render()
+        super().prepare_files()
+
+
 def spritesheet_template(
+    voxel,
     diff,
     path,
     dimens,
@@ -79,7 +90,8 @@ def spritesheet_template(
         return grf.WithMask(sprite, mask)
 
     return [
-        grf.AlternativeSprites(
+        LazyAlternativeSprites(
+            voxel,
             *(
                 with_optional_mask(
                     grf.FileSprite(
@@ -107,7 +119,7 @@ def spritesheet_template(
                 )
                 for bpp in bpps
                 for scale in scales
-            )
+            ),
         )
         for idx in range(len(dimens))
         for i in [(idx + shift) % len(dimens)]

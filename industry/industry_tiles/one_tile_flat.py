@@ -7,7 +7,6 @@ vox = LazyVoxel(
     voxel_getter=lambda: f"industry/voxels/one_tile_flat.vox",
     load_from="industry/files/gorender.json",
 )
-vox.render()
 rotated_voxels = [LazySpriteSheet([vox], [(0, i)]) for i in range(4)]
 
 

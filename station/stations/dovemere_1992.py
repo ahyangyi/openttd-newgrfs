@@ -7,7 +7,6 @@ vox = LazyVoxel(
     voxel_getter=lambda: "station/voxels/dovemere_2018/front_normal.vox",
     load_from="station/files/gorender.json",
 )
-vox.render()
 voxels = [LazySpriteSheet([vox], [(0, 0)])]
 
 the_station = AStation(

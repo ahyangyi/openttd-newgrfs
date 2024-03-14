@@ -138,6 +138,7 @@ class LazyVoxel(Config):
             self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=deepcopy(self.config)
         )
 
+    @functools.cache
     def render(self):
         voxel_path = self.voxel_getter()
         render(self, voxel_path, os.path.join(self.prefix, self.name))
@@ -148,6 +149,7 @@ class LazyVoxel(Config):
         real_ydiff = self.config.get("agrf_zdiff", 0) * 0.5 * self.config.get("agrf_scale", 1)
 
         return spritesheet_template(
+            self,
             xdiff,
             os.path.join(self.prefix, self.name),
             [(x["width"], x.get("height", 0)) for x in self.config["sprites"]],

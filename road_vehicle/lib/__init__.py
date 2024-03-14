@@ -70,8 +70,6 @@ class ARoadVehicle(grf.RoadVehicle, HogCostMixin):
         )
 
     def get_sprites(self, g):
-        if self.graphics_helper is not None:
-            self.graphics_helper.generate_graphics()
         if self.translation_name is not None:
             self.name = g.strings[f"STR_VEHICLE_{self.translation_name}_NAME"]
             self.additional_text = g.strings[f"STR_VEHICLE_{self.translation_name}_DESC"]

@@ -105,7 +105,6 @@ class AutoWolf:
         img = None
         for k, v in self.graphics.items():
             v = v.get_default_graphics()
-            v.render()
             sprite = v.spritesheet()
             sprite = sprite[3 + self.shifts[k]]
             masked_sprite = sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
@@ -122,10 +121,6 @@ class AutoWolf:
                 img = attach_over(img, subimg, (-8 * diff, -4 * diff))
                 pos = k
         return img.crop(img.getbbox())
-
-    def generate_graphics(self):
-        for v in self.graphics.values():
-            v.render()
 
     def empty(self):
         return grf.GenericSpriteLayout(ent1=(31,), ent2=(31,))

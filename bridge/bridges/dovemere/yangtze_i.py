@@ -9,7 +9,6 @@ vox = LazyVoxel(
     voxel_getter=lambda: "bridge/voxels/dovemere_yangtze_1.vox",
     load_from="bridge/files/gorender.json",
 )
-vox.render()
 voxels = [LazySpriteSheet([vox], [(0, 0)])]
 
 the_bridge = ABridge(

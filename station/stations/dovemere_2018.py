@@ -11,7 +11,6 @@ def quickload(name):
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/{name}.vox": path,
         load_from="station/files/gorender.json",
     )
-    v.render()
     return v.spritesheet()
 
 
