@@ -21,7 +21,7 @@ class AStation(grf.SpriteGenerator):
                 [
                     grf.GroundSprite(
                         sprite=grf.SpriteRef(
-                            id=1012 - i % 2,
+                            id=3981 if i in [2, 3, 4, 5, 8, 9, 12, 13, 14, 15, 16, 17, 18, 19] else 1012 - i % 2,
                             pal=0,
                             is_global=True,
                             use_recolour=False,
