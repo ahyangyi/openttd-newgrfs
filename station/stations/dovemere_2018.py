@@ -1,7 +1,47 @@
 import grf
 from station.lib import AStation
 from agrf.graphics.voxel import LazyVoxel
+from agrf.graphics.spritesheet import LazyAlternativeSprites
 from agrf.sprites import number_alternatives
+
+
+class BuildingSpriteSheet:
+    def __init__(self, things):
+        self.things = things
+
+    def all(self):
+        return self.things
+
+    @property
+    def L(self):
+        return self.things[0]
+
+    @property
+    def R(self):
+        return self.things[2]
+
+    @property
+    def TL(self):
+        return self.things[4]
+
+    @property
+    def TR(self):
+        return self.things[6]
+
+    def __getitem__(self, index):
+        return self.things[index]
+
+
+def fixup_callback(thing):
+    if isinstance(thing, grf.Switch):
+        return grf.Switch(
+            ranges={(r.low, r.high): fixup_callback(r.ref) for r in thing._ranges},
+            default=fixup_callback(thing.default),
+            code=thing.code,
+        )
+    if isinstance(thing, LazyAlternativeSprites):
+        return sprites.index(thing)
+    return thing
 
 
 def quickload(name):
@@ -11,7 +51,7 @@ def quickload(name):
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/{name}.vox": path,
         load_from="station/files/gorender.json",
     )
-    return v.spritesheet()
+    return BuildingSpriteSheet(v.spritesheet())
 
 
 (
@@ -68,8 +108,8 @@ sprites = [
     central_windowed[3],
     front_gate_extender[0],
     front_gate_extender[1],
-    central_windowed_extender[2],
-    central_windowed_extender[3],
+    central_windowed_extender[0],
+    central_windowed_extender[1],
     side_a[0],
     side_a[1],
     side_a[2],
@@ -163,63 +203,73 @@ def get_central_index(l, r):
 def get_front_index(l, r):
     if l + r == 0:
         # FIXME
-        return 4
+        return corner.L
     if l + r == 1:
-        return [12, 14][l]
+        return [corner.L, corner.R][l]
     if l + r == 2:
         # FIXME
-        return [12, 4, 14][l]
+        return [corner.L, front_normal.L, corner.R][l]
 
     e = l + r - 3
     c = (e + 1) // 3
     if c % 2 != e % 2:
         c += 1
     o = (e - c) // 2
-    return ([12] + [4] * o + [8] + [24] * c + [10] + [4] * o + [14])[l]
+    return (
+        [corner.L]
+        + [front_normal.L] * o
+        + [front_gate.L]
+        + [front_gate_extender.L] * c
+        + [front_gate.R]
+        + [front_normal.L] * o
+        + [corner.R]
+    )[l]
 
 
-cb41 = grf.Switch(
-    ranges={
-        (0, 1): 0,
-        (2, 3): grf.Switch(
-            ranges={
-                l: grf.Switch(
-                    ranges={r: get_back_index(l, r) for r in range(16)},
-                    default=2,
-                    code="var(0x41, shift=0, and=0x0000000f)",
-                )
-                for l in range(16)
-            },
-            default=2,
-            code="var(0x41, shift=4, and=0x0000000f)",
-        ),
-        (4, 5): grf.Switch(
-            ranges={
-                l: grf.Switch(
-                    ranges={r: get_front_index(l, r) for r in range(16)},
-                    default=4,
-                    code="var(0x41, shift=0, and=0x0000000f)",
-                )
-                for l in range(16)
-            },
-            default=4,
-            code="var(0x41, shift=4, and=0x0000000f)",
-        ),
-        (6, 7): grf.Switch(
-            ranges={
-                l: grf.Switch(
-                    ranges={r: get_central_index(l, r) for r in range(16)},
-                    default=6,
-                    code="var(0x41, shift=0, and=0x0000000f)",
-                )
-                for l in range(16)
-            },
-            default=6,
-            code="var(0x41, shift=4, and=0x0000000f)",
-        ),
-    },
-    default=0,
-    code="var(0x41, shift=24, and=0x0000000f)",
+cb41 = fixup_callback(
+    grf.Switch(
+        ranges={
+            (0, 1): 0,
+            (2, 3): grf.Switch(
+                ranges={
+                    l: grf.Switch(
+                        ranges={r: get_back_index(l, r) for r in range(16)},
+                        default=2,
+                        code="var(0x41, shift=0, and=0x0000000f)",
+                    )
+                    for l in range(16)
+                },
+                default=2,
+                code="var(0x41, shift=4, and=0x0000000f)",
+            ),
+            (4, 5): grf.Switch(
+                ranges={
+                    l: grf.Switch(
+                        ranges={r: get_front_index(l, r) for r in range(16)},
+                        default=4,
+                        code="var(0x41, shift=0, and=0x0000000f)",
+                    )
+                    for l in range(16)
+                },
+                default=4,
+                code="var(0x41, shift=4, and=0x0000000f)",
+            ),
+            (6, 7): grf.Switch(
+                ranges={
+                    l: grf.Switch(
+                        ranges={r: get_central_index(l, r) for r in range(16)},
+                        default=6,
+                        code="var(0x41, shift=0, and=0x0000000f)",
+                    )
+                    for l in range(16)
+                },
+                default=6,
+                code="var(0x41, shift=4, and=0x0000000f)",
+            ),
+        },
+        default=0,
+        code="var(0x41, shift=24, and=0x0000000f)",
+    )
 )
 
 the_station = AStation(
