@@ -88,6 +88,27 @@ class BuildingSpriteSheetSymmetrical(BuildingSpriteSheet):
         return BuildingSpriteSheetSymmetrical([things[0], things[1]])
 
 
+class Demo:
+    def __init__(self, tiles):
+        self.tiles = tiles
+
+    def doc_graphics(self, remap):
+        from agrf.graphics.attach_over import attach_over
+        from agrf.graphics.blend import blend
+        from PIL import Image
+
+        img = Image.new("RGBA", (2000, 2000))
+        for r, row in enumerate(self.tiles):
+            for c, sprite in enumerate(row[::-1]):
+                masked_sprite = sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
+                subimg, _ = masked_sprite.sprite.get_image()
+                submask, _ = masked_sprite.mask.get_image()
+                submask = remap.remap_image(submask)
+                subimg = blend(subimg, submask)
+                img = attach_over(subimg, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -200 - 64 * r - 64 * c))
+        return img.crop(img.getbbox())
+
+
 def fixup_callback(thing):
     if isinstance(thing, grf.Switch):
         return grf.Switch(
@@ -337,5 +358,27 @@ the_stations = AMetaStation(
         for i, sprites in enumerate(zip(sprites[::2], sprites[1::2]))
     ],
     b"DM18",
-    [],
+    [
+        Demo(
+            [
+                [corner.TL, front_normal.T, front_normal.T, corner.TR],
+                [side_a.TL, central_windowed.L, central_windowed.R, side_a.TR],
+                [side_b.TL, central_windowed.L, central_windowed.R, side_b.TR],
+                [side_b.L, central_windowed.L, central_windowed.R, side_b.R],
+                [side_a.L, central_windowed.L, central_windowed.R, side_a.R],
+                [corner.L, front_gate.L, front_gate.R, corner.R],
+            ]
+        ),
+        Demo(
+            [
+                [corner.TL, front_normal.T, front_normal.T, front_normal.T, corner.TR],
+                [side_a.TL, central_windowed.L, central_windowed_extender, central_windowed.R, side_a.TR],
+                [side_b.TL, central_windowed.L, central_windowed_extender, central_windowed.R, side_b.TR],
+                [side_c.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_c.R],
+                [side_b.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_b.R],
+                [side_a.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_a.R],
+                [corner.L, front_gate.L, front_gate_extender, front_gate.R, corner.R],
+            ]
+        ),
+    ],
 )
