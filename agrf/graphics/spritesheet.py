@@ -37,9 +37,13 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
         super().__init__(*sprites)
         self.voxel = voxel
 
-    def prepare_files(self):
+    def get_sprite(self, *, zoom=None, bpp=None):
         self.voxel.render()
-        super().prepare_files()
+        return super().get_sprite(zoom=zoom, bpp=bpp)
+
+    def get_resources(self):
+        self.voxel.render()
+        return super().get_resources()
 
 
 def spritesheet_template(
