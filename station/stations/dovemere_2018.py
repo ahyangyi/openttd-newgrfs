@@ -1,5 +1,5 @@
 import grf
-from station.lib import AStation
+from station.lib import AStation, AMetaStation
 from agrf.graphics.voxel import LazyVoxel
 from agrf.graphics.spritesheet import LazyAlternativeSprites
 from agrf.sprites import number_alternatives
@@ -121,7 +121,9 @@ sprites = []
     central_windowed,
     central_windowed_extender,
     side_a,
+    side_a2,
     side_b,
+    side_b2,
     side_c,
     corner,
 ) = [
@@ -134,7 +136,9 @@ sprites = []
         ("central_windowed", BuildingSpriteSheetSymmetricalY),
         ("central_windowed_extender", BuildingSpriteSheetSymmetrical),
         ("side_a", BuildingSpriteSheetFull),
+        ("side_a2", BuildingSpriteSheetSymmetricalY),
         ("side_b", BuildingSpriteSheetFull),
+        ("side_b2", BuildingSpriteSheetSymmetricalY),
         ("side_c", BuildingSpriteSheetSymmetricalY),
         ("corner", BuildingSpriteSheetFull),
     ]
@@ -153,6 +157,10 @@ def get_back_index(l, r):
 
 
 def get_left_index(t, d):
+    if t + d == 2:
+        return [corner.L, side_a2.L, corner.TL][t]
+    if t + d == 4:
+        return [corner.L, side_a.L, side_b2.L, side_a.TL, corner.TL][t]
     a = [corner.L, side_a.L, side_b.L, side_c.L, side_b.TL, side_a.TL, corner.TL]
     if t < d:
         return a[min(t, 3)]
@@ -313,16 +321,21 @@ the_station = AStation(
     },
 )
 
-the_stations = [the_station] + [
-    AStation(
-        id=1 + i,
-        translation_name="DOVEMERE_2018",  # FIXME
-        sprites=sprites,
-        class_label=b"DM18",
-        cargo_threshold=40,
-        callbacks={
-            "select_tile_layout": 0,
-        },
-    )
-    for i, sprites in enumerate(zip(sprites[::2], sprites[1::2]))
-]
+the_stations = AMetaStation(
+    [the_station]
+    + [
+        AStation(
+            id=1 + i,
+            translation_name="DOVEMERE_2018",  # FIXME
+            sprites=sprites,
+            class_label=b"DM18",
+            cargo_threshold=40,
+            callbacks={
+                "select_tile_layout": 0,
+            },
+        )
+        for i, sprites in enumerate(zip(sprites[::2], sprites[1::2]))
+    ],
+    b"DM18",
+    [],
+)

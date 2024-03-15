@@ -78,3 +78,14 @@ class AStation(grf.SpriteGenerator):
         res.extend(name.get_actions(grf.STATION, 0xC500 + self.id, is_generic_offset=True))
 
         return res
+
+
+class AMetaStation:
+    def __init__(self, stations, class_label, doc_layouts):
+        self.stations = stations
+        self.class_label = class_label
+        self.doc_layouts = doc_layouts
+
+    def add(self, g):
+        for station in self.stations:
+            g.add(station)

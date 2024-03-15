@@ -1,8 +1,20 @@
 #!/usr/bin/env python
 import grf
+import argparse
+from station.lib.docgen import gen_docs
+import station.stations.dovemere_2018
+
+metastations = [station.stations.dovemere_2018.the_stations]
 
 
-def main():
+def get_string_manager():
+    s = grf.StringManager()
+    s.import_lang_dir("station/lang", default_lang_file="english-uk.lng")
+
+    return s
+
+
+def gen():
     s = grf.StringManager()
     s.import_lang_dir("station/lang", default_lang_file="english-uk.lng")
 
@@ -16,14 +28,23 @@ def main():
         preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
 
-    import station.stations.dovemere_2018
-    import station.stations.dovemere_1992
-
-    for station in station.stations.dovemere_2018.the_stations:
-        g.add(station)
-    # g.add(station.stations.dovemere_1992.the_station)
+    for metastation in metastations:
+        metastation.add(g)
 
     g.write("station.grf")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("cmd")
+    args = parser.parse_args()
+
+    if args.cmd == "gen":
+        gen()
+    else:
+        from station.lib.docgen import gen_docs
+
+        gen_docs(get_string_manager(), metastations)
 
 
 if __name__ == "__main__":

@@ -51,6 +51,9 @@ road_vehicle.md:
 doc.bridge:
 	python3 -m bridge.dovemere_gen doc
 
+doc.station:
+	python3 -m station.dovemere_gen doc
+
 doc.rv:
 	python3 -m road_vehicle.gen doc
 
@@ -73,7 +76,7 @@ bridge.grf:
 	python3 -m bridge.dovemere_gen gen
 
 station.grf:
-	python3 -m station.dovemere_gen
+	python3 -m station.dovemere_gen gen
 
 house.grf:
 	python3 -m house.dovemere_gen gen
