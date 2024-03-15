@@ -33,9 +33,10 @@ scale_to_zoom = {4: grf.ZOOM_4X, 2: grf.ZOOM_2X, 1: grf.ZOOM_NORMAL}
 
 
 class LazyAlternativeSprites(grf.AlternativeSprites):
-    def __init__(self, voxel, *sprites):
+    def __init__(self, voxel, debug_info, *sprites):
         super().__init__(*sprites)
         self.voxel = voxel
+        self.debug_info = debug_info
 
     def get_sprite(self, *, zoom=None, bpp=None):
         self.voxel.render()
@@ -44,6 +45,9 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
     def get_resources(self):
         self.voxel.render()
         return super().get_resources()
+
+    def __repr__(self):
+        return f"LazyAlternativeSprites<{self.voxel.name}:{self.debug_info}>"
 
 
 def spritesheet_template(
@@ -96,6 +100,7 @@ def spritesheet_template(
     return [
         LazyAlternativeSprites(
             voxel,
+            f"{idx}",
             *(
                 with_optional_mask(
                     grf.FileSprite(
