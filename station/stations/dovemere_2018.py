@@ -312,3 +312,17 @@ the_station = AStation(
         ),
     },
 )
+
+the_stations = [the_station] + [
+    AStation(
+        id=1 + i,
+        translation_name="DOVEMERE_2018",  # FIXME
+        sprites=sprites,
+        class_label=b"DM18",
+        cargo_threshold=40,
+        callbacks={
+            "select_tile_layout": 0,
+        },
+    )
+    for i, sprites in enumerate(zip(sprites[::2], sprites[1::2]))
+]
