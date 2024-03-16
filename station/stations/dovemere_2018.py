@@ -100,6 +100,8 @@ class Demo:
         img = Image.new("RGBA", (2000, 2000))
         for r, row in enumerate(self.tiles):
             for c, sprite in enumerate(row[::-1]):
+                if sprite is None:
+                    continue
                 masked_sprite = sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
                 subimg, _ = masked_sprite.sprite.get_image()
                 submask, _ = masked_sprite.mask.get_image()
@@ -383,6 +385,7 @@ the_stations = AMetaStation(
         Demo(
             [
                 [corner.TL] + [front_normal.T] * 8 + [corner.TR],
+                [side_a2.L] + [central] * 8 + [side_a2.R],
                 [
                     corner.L,
                     front_normal,
