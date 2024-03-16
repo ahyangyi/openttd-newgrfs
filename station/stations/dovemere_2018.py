@@ -380,5 +380,11 @@ the_stations = AMetaStation(
                 [corner.L, front_gate.L, front_gate_extender, front_gate.R, corner.R],
             ]
         ),
+        Demo(
+            [
+                [corner.TL] + [front_normal.T] * 8 + [corner.TR],
+                [corner.L, front_normal, front_normal, front_gate.L, front_gate_extender, front_gate_extender, front_gate.R, front_normal, front_normal,  corner.R],
+            ]
+        ),
     ],
 )

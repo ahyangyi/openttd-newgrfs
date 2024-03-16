@@ -19,7 +19,7 @@ class FakeReferencedAction(grf.Action, grf.ReferenceableAction):
 class FakeAlternativeSprites(grf.AlternativeSprites, grf.ReferenceableAction):
     def __init__(self, sprite, feature, ref_id=None):
         # FIXME: deepcopy
-        super().__init__(*[deepcopy(s) for s in sprite.sprites])
+        super().__init__(*[deepcopy(s) for s in sprite.get_resources()])
         self.feature = feature
         self.ref_id = ref_id
 
