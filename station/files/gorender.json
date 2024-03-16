@@ -4,7 +4,7 @@
     "depth_influence": 0,
     "tiled_normals": true,
     "hard_edge_threshold": 0.25,
-    "pad_to_full_length": true,
+    "pad_to_full_length": false,
     "solid_base": true,
     "soften_edges": 0.5,
     "fade_to_black": false,
