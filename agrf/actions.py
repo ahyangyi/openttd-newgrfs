@@ -16,10 +16,13 @@ class FakeReferencedAction(grf.Action, grf.ReferenceableAction):
         return f"ref {self.action.py(None)}"
 
 
-class FakeAlternativeSprites(grf.AlternativeSprites, grf.ReferenceableAction):
+# FIXME weird dependency here
+from agrf.graphics.spritesheet import LazyAlternativeSprites
+
+
+class FakeAlternativeSprites(LazyAlternativeSprites, grf.ReferenceableAction):
     def __init__(self, sprite, feature, ref_id=None):
-        # FIXME: deepcopy
-        super().__init__(*[deepcopy(s) for s in sprite.get_resources()])
+        super().__init__(sprite.voxel, sprite.debug_info, *[s for s in sprite.sprites])
         self.feature = feature
         self.ref_id = ref_id
 
