@@ -112,6 +112,10 @@ class BuildingSpriteSheetFull(BuildingSpriteSheet):
         return self[2]
 
     @property
+    def T(self):
+        return self[4]
+
+    @property
     def TL(self):
         return self[4]
 
@@ -153,6 +157,10 @@ class BuildingSpriteSheetSymmetricalY(BuildingSpriteSheet):
     def R(self):
         return self[2]
 
+    @property
+    def T(self):
+        return self
+
 
 class BuildingSpriteSheetSymmetrical(BuildingSpriteSheet):
     def __init__(self, things):
@@ -161,6 +169,10 @@ class BuildingSpriteSheetSymmetrical(BuildingSpriteSheet):
     @staticmethod
     def from_complete_list(things):
         return BuildingSpriteSheetSymmetrical([things[0], things[1]])
+
+    @property
+    def T(self):
+        return self
 
 
 class Demo:
@@ -186,11 +198,11 @@ class Demo:
         return img.crop(img.getbbox())
 
 
-def fixup_callback(thing):
+def fixup_callback(thing, sprites):
     if isinstance(thing, grf.Switch):
         return grf.Switch(
-            ranges={(r.low, r.high): fixup_callback(r.ref) for r in thing._ranges},
-            default=fixup_callback(thing.default),
+            ranges={(r.low, r.high): fixup_callback(r.ref, sprites) for r in thing._ranges},
+            default=fixup_callback(thing.default, sprites),
             code=thing.code,
         )
     if isinstance(thing, BuildingSpriteSheet):

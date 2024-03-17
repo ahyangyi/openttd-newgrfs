@@ -44,8 +44,8 @@ sprites = []
     quickload(name, type)
     for name, type in [
         ("front_normal", BuildingSpriteSheetSymmetricalX),
-        ("front_gate", BuildingSpriteSheetSymmetricalY),  # FIXME not symmetrical, but unused in the back
-        ("front_gate_extender", BuildingSpriteSheetSymmetrical),  # ditto
+        ("front_gate", BuildingSpriteSheetFull),
+        ("front_gate_extender", BuildingSpriteSheetSymmetricalX),
         ("central", BuildingSpriteSheetSymmetrical),
         ("central_windowed", BuildingSpriteSheetSymmetricalY),
         ("central_windowed_extender", BuildingSpriteSheetSymmetrical),
@@ -60,14 +60,7 @@ sprites = []
 
 
 def get_back_index(l, r):
-    if l + r == 0:
-        # FIXME
-        return front_normal.T
-    if l == 0:
-        return corner.TL
-    if r == 0:
-        return corner.TR
-    return front_normal.T
+    return get_front_index(l, r).T
 
 
 def get_left_index(t, d):
@@ -201,7 +194,8 @@ cb41 = fixup_callback(
         },
         default=central,
         code="var(0x41, shift=24, and=0x0000000f)",
-    )
+    ),
+    sprites,
 )
 
 the_station = AStation(
@@ -254,7 +248,7 @@ the_stations = AMetaStation(
     [
         Demo(
             [
-                [corner.TL, front_normal.T, front_normal.T, corner.TR],
+                [corner.TL, front_gate.TL, front_gate.TR, corner.TR],
                 [side_a.TL, central_windowed.L, central_windowed.R, side_a.TR],
                 [side_b.TL, central_windowed.L, central_windowed.R, side_b.TR],
                 [side_b.L, central_windowed.L, central_windowed.R, side_b.R],
@@ -264,7 +258,7 @@ the_stations = AMetaStation(
         ),
         Demo(
             [
-                [corner.TL, front_normal.T, front_normal.T, front_normal.T, corner.TR],
+                [corner.TL, front_gate.TL, front_gate_extender.T, front_gate.TR, corner.TR],
                 [side_a.TL, central_windowed.L, central_windowed_extender, central_windowed.R, side_a.TR],
                 [side_b.TL, central_windowed.L, central_windowed_extender, central_windowed.R, side_b.TR],
                 [side_c.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_c.R],
@@ -275,7 +269,18 @@ the_stations = AMetaStation(
         ),
         Demo(
             [
-                [corner.TL] + [front_normal.T] * 8 + [corner.TR],
+                [
+                    corner.TL,
+                    front_normal.T,
+                    front_normal.T,
+                    front_gate.TL,
+                    front_gate_extender.T,
+                    front_gate_extender.T,
+                    front_gate.TR,
+                    front_normal.T,
+                    front_normal.T,
+                    corner.TR,
+                ],
                 [side_a2.L] + [central] * 8 + [side_a2.R],
                 [
                     corner.L,
