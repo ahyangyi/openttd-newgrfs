@@ -2,11 +2,12 @@ import grf
 
 
 class AStation(grf.SpriteGenerator):
-    def __init__(self, *, id, translation_name, sprites, callbacks={}, **props):
+    def __init__(self, *, id, translation_name, sprites, layouts, callbacks={}, **props):
         super().__init__()
         self.id = id
         self.translation_name = translation_name
         self.sprites = sprites
+        self.layouts = layouts
         self.callbacks = grf.make_callback_manager(grf.STATION, callbacks)
         self._props = props
 
@@ -15,38 +16,6 @@ class AStation(grf.SpriteGenerator):
 
         name = g.strings[f"STR_STATION_{self.translation_name}_NAME"]
         class_name = g.strings[f"STR_STATION_CLASS_{self._props['class_label'].decode()}"]
-
-        sprite_layouts = [
-            grf.SpriteLayout(
-                [
-                    grf.GroundSprite(
-                        sprite=grf.SpriteRef(
-                            id=3981 if i in [2, 3, 4, 5, 8, 9, 12, 13, 14, 15, 16, 17, 18, 19] else 1012 - i % 2,
-                            pal=0,
-                            is_global=True,
-                            use_recolour=False,
-                            always_transparent=False,
-                            no_transparent=False,
-                        ),
-                        flags=0,
-                    ),
-                    grf.ParentSprite(
-                        sprite=grf.SpriteRef(
-                            id=0x42D + i,
-                            pal=0,
-                            is_global=False,
-                            use_recolour=True,
-                            always_transparent=False,
-                            no_transparent=False,
-                        ),
-                        extent=(16, 16, 48),
-                        offset=(0, 0, 0),
-                        flags=0,
-                    ),
-                ]
-            )
-            for i in range(len(self.sprites))
-        ]
 
         if self.sprites:
             layouts = []
@@ -62,7 +31,7 @@ class AStation(grf.SpriteGenerator):
                 id=self.id,
                 props={
                     "class_label": self._props["class_label"],
-                    "advanced_layout": grf.SpriteLayoutList(sprite_layouts),
+                    "advanced_layout": grf.SpriteLayoutList(self.layouts),
                     **self._props,
                 },
             )
@@ -219,3 +188,34 @@ class AMetaStation:
     def add(self, g):
         for station in self.stations:
             g.add(station)
+
+
+def simple_layout(ground_sprite, sprite_id):
+    return grf.SpriteLayout(
+        [
+            grf.GroundSprite(
+                sprite=grf.SpriteRef(
+                    id=ground_sprite,
+                    pal=0,
+                    is_global=True,
+                    use_recolour=False,
+                    always_transparent=False,
+                    no_transparent=False,
+                ),
+                flags=0,
+            ),
+            grf.ParentSprite(
+                sprite=grf.SpriteRef(
+                    id=0x42D + sprite_id,
+                    pal=0,
+                    is_global=False,
+                    use_recolour=True,
+                    always_transparent=False,
+                    no_transparent=False,
+                ),
+                extent=(16, 16, 48),
+                offset=(0, 0, 0),
+                flags=0,
+            ),
+        ]
+    )

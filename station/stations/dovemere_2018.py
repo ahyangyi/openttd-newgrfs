@@ -8,13 +8,14 @@ from station.lib import (
     BuildingSpriteSheetSymmetricalY,
     Demo,
     fixup_callback,
+    simple_layout,
 )
 from agrf.graphics.voxel import LazyVoxel
 from agrf.graphics.spritesheet import LazyAlternativeSprites
 from agrf.sprites import number_alternatives
 
 
-def quickload(name, type):
+def quickload(name, type, traversable):
     v = LazyVoxel(
         name,
         prefix="station/voxels/render/dovemere_2018",
@@ -23,11 +24,15 @@ def quickload(name, type):
     )
     ret = type.from_complete_list(v.spritesheet())
     sprites.extend(ret.all())
+    for sprite in ret.all():
+        layouts.append((sprite, traversable))
     return ret
 
 
 sprites = []
+layouts = []
 (
+    corner,
     front_normal,
     front_gate,
     front_gate_extender,
@@ -39,22 +44,21 @@ sprites = []
     side_b,
     side_b2,
     side_c,
-    corner,
 ) = [
-    quickload(name, type)
-    for name, type in [
-        ("front_normal", BuildingSpriteSheetSymmetricalX),
-        ("front_gate", BuildingSpriteSheetFull),
-        ("front_gate_extender", BuildingSpriteSheetSymmetricalX),
-        ("central", BuildingSpriteSheetSymmetrical),
-        ("central_windowed", BuildingSpriteSheetSymmetricalY),
-        ("central_windowed_extender", BuildingSpriteSheetSymmetrical),
-        ("side_a", BuildingSpriteSheetFull),
-        ("side_a2", BuildingSpriteSheetSymmetricalY),
-        ("side_b", BuildingSpriteSheetFull),
-        ("side_b2", BuildingSpriteSheetSymmetricalY),
-        ("side_c", BuildingSpriteSheetSymmetricalY),
-        ("corner", BuildingSpriteSheetFull),
+    quickload(name, type, traversable)
+    for name, type, traversable in [
+        ("corner", BuildingSpriteSheetFull, False),
+        ("front_normal", BuildingSpriteSheetSymmetricalX, False),
+        ("front_gate", BuildingSpriteSheetFull, False),
+        ("front_gate_extender", BuildingSpriteSheetSymmetricalX, False),
+        ("central", BuildingSpriteSheetSymmetrical, True),
+        ("central_windowed", BuildingSpriteSheetSymmetricalY, True),
+        ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True),
+        ("side_a", BuildingSpriteSheetFull, True),
+        ("side_a2", BuildingSpriteSheetSymmetricalY, True),
+        ("side_b", BuildingSpriteSheetFull, True),
+        ("side_b2", BuildingSpriteSheetSymmetricalY, True),
+        ("side_c", BuildingSpriteSheetSymmetricalY, True),
     ]
 ]
 
@@ -202,8 +206,13 @@ the_station = AStation(
     id=0x00,
     translation_name="DOVEMERE_2018",
     sprites=sprites,
+    layouts=[
+        simple_layout(1012 - i % 2 if traversable else 1420, sprites.index(s))
+        for i, (s, traversable) in enumerate(layouts)
+    ],
     class_label=b"DM18",
     cargo_threshold=40,
+    non_traversable_tiles=0b00111100,
     callbacks={
         "select_tile_layout": grf.PurchaseCallback(
             purchase=grf.Switch(
@@ -235,14 +244,18 @@ the_stations = AMetaStation(
         AStation(
             id=1 + i,
             translation_name="DOVEMERE_2018",  # FIXME
-            sprites=sprites,
+            sprites=[s for s, _ in layouts],
+            layouts=[
+                simple_layout(1012 - i % 2 if traversable else 1420, i) for i, (s, traversable) in enumerate(layouts)
+            ],
             class_label=b"DM18",
             cargo_threshold=40,
+            non_traversable_tiles=0b00 if layouts[0][1] else 0b11,
             callbacks={
                 "select_tile_layout": 0,
             },
         )
-        for i, sprites in enumerate(zip(sprites[::2], sprites[1::2]))
+        for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))
     ],
     b"DM18",
     [
