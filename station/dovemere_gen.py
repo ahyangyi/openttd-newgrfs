@@ -42,8 +42,6 @@ def main():
     if args.cmd == "gen":
         gen()
     else:
-        from station.lib.docgen import gen_docs
-
         gen_docs(get_string_manager(), metastations)
 
 

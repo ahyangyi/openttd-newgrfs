@@ -1,5 +1,4 @@
 import os
-import grf
 from agrf.strings import get_translation
 from agrf.graphics.palette import CompanyColour, company_colour_remap
 

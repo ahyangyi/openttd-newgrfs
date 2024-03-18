@@ -11,8 +11,6 @@ from station.lib import (
     simple_layout,
 )
 from agrf.graphics.voxel import LazyVoxel
-from agrf.graphics.spritesheet import LazyAlternativeSprites
-from agrf.sprites import number_alternatives
 
 
 def quickload(name, type, traversable):
