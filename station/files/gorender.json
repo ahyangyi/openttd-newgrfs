@@ -17,6 +17,7 @@
     "max_colour_push": 0,
     "fosterise": false,
     "suppress_edge_fosterisation": true,
+    "soft_shadow": true,
     "size": {
         "x": 256,
         "y": 256,
