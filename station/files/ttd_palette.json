@@ -7,9 +7,9 @@
       "_comment": "flat greys",
       "start": 1,
       "end": 15,
-      "smoothness": 1,
-	  "max_gap_in_region": 3,
-	  "expected_colour_range": 3
+      "smoothness": 2,
+	  "max_gap_in_region": 6,
+	  "expected_colour_range": 6
     },
     {
       "_comment": "blue greys",
