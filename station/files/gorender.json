@@ -17,6 +17,7 @@
     "max_colour_push": 0,
     "fosterise": false,
     "suppress_edge_fosterisation": true,
+    "shadow_threshold": 0.1,
     "soft_shadow": true,
     "size": {
         "x": 256,
