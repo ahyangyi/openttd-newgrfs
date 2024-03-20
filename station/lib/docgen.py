@@ -34,7 +34,7 @@ nav_order: {i+1}
                 img = demo.doc_graphics(blue_remap)
                 img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{i}.png"))
                 print(
-                    f"![](img/{metastation_label}/tiles/{i}.png)",
+                    f'![](img/{metastation_label}/tiles/{i}.png){{: width="256"}}',
                     file=f,
                 )
             print("# Sample Layouts", file=f)
