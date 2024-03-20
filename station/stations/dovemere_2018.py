@@ -47,6 +47,7 @@ layouts = []
     h_gate,
     h_gate_extender,
     v_end,
+    v_central,
     tiny,
 ) = [
     quickload(name, type, traversable)
@@ -68,6 +69,7 @@ layouts = []
         ("h_gate", BuildingSpriteSheetSymmetricalY, True),
         ("h_gate_extender", BuildingSpriteSheetSymmetrical, True),
         ("v_end", BuildingSpriteSheetSymmetricalX, False),
+        ("v_central", BuildingSpriteSheetSymmetrical, True),
         ("tiny", BuildingSpriteSheetSymmetrical, True),
     ]
 ]
@@ -89,10 +91,9 @@ def get_left_index(t, d):
         return a[-1 - min(d, 3)]
 
 
-def horizontal_layout(l, r, lwall, rwall, general, window, window_extender):
+def horizontal_layout(l, r, onetile, lwall, rwall, general, window, window_extender):
     if l + r == 0:
-        # FIXME
-        return general
+        return onetile
     if l + r == 1:
         return [lwall, rwall][l]
     if l + r == 2:
@@ -133,15 +134,17 @@ right_wall = grf.Switch(
 
 
 def get_central_index(l, r):
-    return horizontal_layout(l, r, left_wall, right_wall, central, central_windowed, central_windowed_extender)
+    return horizontal_layout(
+        l, r, v_central, left_wall, right_wall, central, central_windowed, central_windowed_extender
+    )
 
 
 def get_front_index(l, r):
-    return horizontal_layout(l, r, corner.L, corner.R, front_normal, front_gate, front_gate_extender)
+    return horizontal_layout(l, r, v_end, corner.L, corner.R, front_normal, front_gate, front_gate_extender)
 
 
 def get_single_index(l, r):
-    return horizontal_layout(l, r, h_end.L, h_end.R, h_normal, h_gate, h_gate_extender)
+    return horizontal_layout(l, r, tiny, h_end.L, h_end.R, h_normal, h_gate, h_gate_extender)
 
 
 cb41 = fixup_callback(
@@ -360,9 +363,10 @@ the_stations = AMetaStation(
             ],
         ),
         Demo(
-            "A 2×1 station layout",
+            "A 3×1 station layout",
             [
                 [v_end.T],
+                [v_central],
                 [v_end],
             ],
         ),
