@@ -42,6 +42,8 @@ layouts = []
     side_b,
     side_b2,
     side_c,
+    h_end,
+    h_normal,
 ) = [
     quickload(name, type, traversable)
     for name, type, traversable in [
@@ -57,6 +59,8 @@ layouts = []
         ("side_b", BuildingSpriteSheetFull, True),
         ("side_b2", BuildingSpriteSheetSymmetricalY, True),
         ("side_c", BuildingSpriteSheetSymmetricalY, True),
+        ("h_end", BuildingSpriteSheetSymmetricalY, True),
+        ("h_normal", BuildingSpriteSheetSymmetrical, True),
     ]
 ]
 
@@ -153,10 +157,39 @@ def get_front_index(l, r):
     )[l]
 
 
+def get_single_index(l, r):
+    if l + r == 0:
+        # FIXME
+        return h_normal
+    if l + r == 1:
+        # FIXME
+        return [h_end.L, h_end.R][l]
+    if l + r == 2:
+        # FIXME
+        return [h_end.L, h_normal, h_end.R][l]
+
+    if l == 0:
+        return h_end.L
+    if r == 0:
+        return h_end.R
+    return h_normal
+
+
 cb41 = fixup_callback(
     grf.Switch(
         ranges={
-            (0, 1): front_normal,
+            (0, 1): grf.Switch(
+                ranges={
+                    l: grf.Switch(
+                        ranges={r: get_single_index(l, r) for r in range(16)},
+                        default=h_normal,
+                        code="var(0x41, shift=0, and=0x0000000f)",
+                    )
+                    for l in range(16)
+                },
+                default=h_normal,
+                code="var(0x41, shift=4, and=0x0000000f)",
+            ),
             (2, 3): grf.Switch(
                 ranges={
                     l: grf.Switch(
@@ -316,6 +349,37 @@ the_stations = AMetaStation(
                     front_normal,
                     corner.R,
                 ],
+            ]
+        ),
+        Demo(
+            [
+                [
+                    h_end.L,
+                    h_normal,
+                    front_gate.L,
+                    front_gate.R,
+                    h_normal,
+                    h_end.R,
+                ],
+            ]
+        ),
+        Demo(
+            [
+                [corner.TL, corner.TR],
+                [side_a.TL, side_a.TR],
+                [side_b.TL, side_b.TR],
+                [side_b.L, side_b.R],
+                [side_a.L, side_a.R],
+                [corner.L, corner.R],
+            ]
+        ),
+        Demo(
+            [
+                [corner.TL, corner.TR],
+                [side_a.TL, side_a.TR],
+                [side_b2.L, side_b2.R],
+                [side_a.L, side_a.R],
+                [corner.L, corner.R],
             ]
         ),
     ],
