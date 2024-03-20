@@ -159,7 +159,9 @@ class Demo:
         from agrf.graphics.blend import blend
         from PIL import Image
 
-        img = Image.new("RGBA", (2000, 2000))
+        img = Image.new(
+            "RGBA", (128 * (len(self.tiles) + len(self.tiles[0])), 200 + 64 * (len(self.tiles) + len(self.tiles[0])))
+        )
         for r, row in enumerate(self.tiles):
             for c, sprite in enumerate(row[::-1]):
                 if sprite is None:
