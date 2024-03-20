@@ -22,7 +22,7 @@ def quickload(name, type, traversable):
     )
     ret = type.from_complete_list(v.spritesheet())
     sprites.extend(ret.all())
-    for sprite in ret.all():
+    for sprite in ret.all_variants():
         layouts.append((sprite, traversable))
     return ret
 
@@ -238,7 +238,7 @@ the_station = AStation(
     translation_name="DOVEMERE_2018",
     sprites=sprites,
     layouts=[
-        simple_layout(1012 - i % 2 if traversable else 1420, sprites.index(s))
+        simple_layout(1012 - i % 2 if traversable else 1420, sprites.index(s.sprite))
         for i, (s, traversable) in enumerate(layouts)
     ],
     class_label=b"DM18",
@@ -275,7 +275,7 @@ the_stations = AMetaStation(
         AStation(
             id=1 + i,
             translation_name="DOVEMERE_2018",  # FIXME
-            sprites=[s for s, _ in layouts],
+            sprites=[s.sprite for s, _ in layouts],
             layouts=[
                 simple_layout(1012 - i % 2 if traversable else 1420, i) for i, (s, traversable) in enumerate(layouts)
             ],
@@ -289,8 +289,10 @@ the_stations = AMetaStation(
         for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))
     ],
     b"DM18",
+    [layouts[0][0] for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))],
     [
         Demo(
+            "Normal 4×6 station layout",
             [
                 [corner.TL, front_gate.TL, front_gate.TR, corner.TR],
                 [side_a.TL, central_windowed.L, central_windowed.R, side_a.TR],
@@ -298,9 +300,10 @@ the_stations = AMetaStation(
                 [side_b.L, central_windowed.L, central_windowed.R, side_b.R],
                 [side_a.L, central_windowed.L, central_windowed.R, side_a.R],
                 [corner.L, front_gate.L, front_gate.R, corner.R],
-            ]
+            ],
         ),
         Demo(
+            "Normal 5×7 station layout",
             [
                 [corner.TL, front_gate.TL, front_gate_extender.T, front_gate.TR, corner.TR],
                 [side_a.TL, central_windowed.L, central_windowed_extender, central_windowed.R, side_a.TR],
@@ -309,9 +312,10 @@ the_stations = AMetaStation(
                 [side_b.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_b.R],
                 [side_a.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_a.R],
                 [corner.L, front_gate.L, front_gate_extender, front_gate.R, corner.R],
-            ]
+            ],
         ),
         Demo(
+            "A 3×10 station layout, demonstrating horizontal extensibility",
             [
                 [
                     corner.TL,
@@ -349,9 +353,10 @@ the_stations = AMetaStation(
                     front_normal,
                     corner.R,
                 ],
-            ]
+            ],
         ),
         Demo(
+            "A 1×6 station layout",
             [
                 [
                     h_end.L,
@@ -361,9 +366,10 @@ the_stations = AMetaStation(
                     h_normal,
                     h_end.R,
                 ],
-            ]
+            ],
         ),
         Demo(
+            "A 6×2 station layout",
             [
                 [corner.TL, corner.TR],
                 [side_a.TL, side_a.TR],
@@ -371,16 +377,17 @@ the_stations = AMetaStation(
                 [side_b.L, side_b.R],
                 [side_a.L, side_a.R],
                 [corner.L, corner.R],
-            ]
+            ],
         ),
         Demo(
+            "A 5×2 station layout",
             [
                 [corner.TL, corner.TR],
                 [side_a.TL, side_a.TR],
                 [side_b2.L, side_b2.R],
                 [side_a.L, side_a.R],
                 [corner.L, corner.R],
-            ]
+            ],
         ),
     ],
 )

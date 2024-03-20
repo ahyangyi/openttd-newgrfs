@@ -58,6 +58,9 @@ class BuildingSpriteSheet:
     def all(self):
         return self.things
 
+    def all_variants(self):
+        return [self[x] for x in range(len(self.things))]
+
     def __getitem__(self, index):
         return type(self)([self.things[index ^ x] for x in range(len(self.things))])
 
@@ -147,7 +150,8 @@ class BuildingSpriteSheetSymmetrical(BuildingSpriteSheet):
 
 
 class Demo:
-    def __init__(self, tiles):
+    def __init__(self, title, tiles):
+        self.title = title
         self.tiles = tiles
 
     def doc_graphics(self, remap):
@@ -182,9 +186,10 @@ def fixup_callback(thing, sprites):
 
 
 class AMetaStation:
-    def __init__(self, stations, class_label, doc_layouts):
+    def __init__(self, stations, class_label, doc_sprites, doc_layouts):
         self.stations = stations
         self.class_label = class_label
+        self.doc_sprites = doc_sprites
         self.doc_layouts = doc_layouts
 
     def add(self, g):

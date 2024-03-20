@@ -12,10 +12,6 @@ def gen_docs(string_manager, metastations):
         metastation_label = metastation.class_label.decode()
         translation = get_translation(string_manager[f"STR_STATION_CLASS_{metastation_label}"], 0x7F)
 
-        for i, demo in enumerate(metastation.doc_layouts):
-            img = demo.doc_graphics(blue_remap)
-            img.save(os.path.join(prefix, "img", f"{metastation_label}_{i}.png"))
-
         with open(os.path.join(prefix, f"{metastation_label}.md"), "w") as f:
             print(
                 f"""---
@@ -28,8 +24,23 @@ nav_order: {i+1}
                 file=f,
             )
 
-            for i in range(len(metastation.doc_layouts)):
+            print("# Building Blocks", file=f)
+            for i, sprite in enumerate(metastation.doc_sprites):
+                # FIXME
+                from station.lib import Demo
+
+                demo = Demo("", [[sprite]])
+                img = demo.doc_graphics(blue_remap)
+                img.save(os.path.join(prefix, "img", f"{metastation_label}_tile_{i}.png"))
                 print(
-                    f"![](img/{metastation_label}_{i}.png)",
+                    f"![](img/{metastation_label}_tile_{i}.png)",
+                    file=f,
+                )
+            print("# Sample Layouts", file=f)
+            for i, demo in enumerate(metastation.doc_layouts):
+                img = demo.doc_graphics(blue_remap)
+                img.save(os.path.join(prefix, "img", f"{metastation_label}_{i}.png"))
+                print(
+                    f"## {demo.title}\n\n![](img/{metastation_label}_{i}.png)",
                     file=f,
                 )
