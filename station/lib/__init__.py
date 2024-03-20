@@ -149,6 +149,11 @@ class BuildingSpriteSheetSymmetrical(BuildingSpriteSheet):
         return self
 
 
+from PIL import Image
+
+groundsprite = Image.open("third_party/opengfx2/1012.png")
+
+
 class Demo:
     def __init__(self, title, tiles):
         self.title = title
@@ -157,7 +162,6 @@ class Demo:
     def doc_graphics(self, remap):
         from agrf.graphics.attach_over import attach_over
         from agrf.graphics.blend import blend
-        from PIL import Image
 
         img = Image.new(
             "RGBA", (128 * (len(self.tiles) + len(self.tiles[0])), 200 + 64 * (len(self.tiles) + len(self.tiles[0])))
@@ -171,6 +175,8 @@ class Demo:
                 submask, _ = masked_sprite.mask.get_image()
                 submask = remap.remap_image(submask)
                 subimg = blend(subimg, submask)
+                # FIXME: doesn't align
+                # img = attach_over(groundsprite, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -341 - 64 * r - 64 * c))
                 img = attach_over(subimg, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -200 - 64 * r - 64 * c))
         return img.crop(img.getbbox())
 
