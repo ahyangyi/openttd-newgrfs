@@ -46,6 +46,8 @@ layouts = []
     h_normal,
     h_gate,
     h_gate_extender,
+    v_end,
+    tiny,
 ) = [
     quickload(name, type, traversable)
     for name, type, traversable in [
@@ -65,6 +67,8 @@ layouts = []
         ("h_normal", BuildingSpriteSheetSymmetrical, True),
         ("h_gate", BuildingSpriteSheetSymmetricalY, True),
         ("h_gate_extender", BuildingSpriteSheetSymmetrical, True),
+        ("v_end", BuildingSpriteSheetSymmetricalX, False),
+        ("tiny", BuildingSpriteSheetSymmetrical, True),
     ]
 ]
 
@@ -353,6 +357,19 @@ the_stations = AMetaStation(
                 [side_b2.L, side_b2.R],
                 [side_a.L, side_a.R],
                 [corner.L, corner.R],
+            ],
+        ),
+        Demo(
+            "A 2×1 station layout",
+            [
+                [v_end.T],
+                [v_end],
+            ],
+        ),
+        Demo(
+            "A 1×1 station layout",
+            [
+                [tiny],
             ],
         ),
     ],
