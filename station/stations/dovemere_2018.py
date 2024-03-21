@@ -7,10 +7,10 @@ from station.lib import (
     BuildingSpriteSheetSymmetricalX,
     BuildingSpriteSheetSymmetricalY,
     Demo,
-    fixup_callback,
     simple_layout,
 )
 from agrf.graphics.voxel import LazyVoxel
+from agrf.magic import Switch
 
 
 def quickload(name, type, traversable):
@@ -21,8 +21,8 @@ def quickload(name, type, traversable):
         load_from="station/files/gorender.json",
     )
     ret = type.from_complete_list(v.spritesheet())
-    sprites.extend(ret.all())
-    for sprite in ret.all_variants():
+    sprites.extend(ret.all_variants)
+    for sprite in ret.all_variants:
         layouts.append((sprite, traversable))
     return ret
 
@@ -107,9 +107,9 @@ def horizontal_layout(l, r, onetile, lwall, rwall, general, window, window_exten
     return ([lwall] + [general] * o + [window.L] + [window_extender] * c + [window.R] + [general] * o + [rwall])[l]
 
 
-left_wall = grf.Switch(
+left_wall = Switch(
     ranges={
-        t: grf.Switch(
+        t: Switch(
             ranges={d: get_left_index(t, d) for d in range(16)},
             default=side_c.L,
             code="var(0x41, shift=8, and=0x0000000f)",
@@ -119,18 +119,8 @@ left_wall = grf.Switch(
     default=side_c.L,
     code="var(0x41, shift=12, and=0x0000000f)",
 )
-right_wall = grf.Switch(
-    ranges={
-        t: grf.Switch(
-            ranges={d: get_left_index(t, d).R for d in range(16)},
-            default=side_c.R,
-            code="var(0x41, shift=8, and=0x0000000f)",
-        )
-        for t in range(16)
-    },
-    default=side_c.R,
-    code="var(0x41, shift=12, and=0x0000000f)",
-)
+
+right_wall = left_wall.R
 
 
 def get_central_index(l, r):
@@ -147,70 +137,67 @@ def get_single_index(l, r):
     return horizontal_layout(l, r, tiny, h_end.L, h_end.R, h_normal, h_gate, h_gate_extender)
 
 
-cb41 = fixup_callback(
-    grf.Switch(
-        ranges={
-            (0, 1): grf.Switch(
-                ranges={
-                    l: grf.Switch(
-                        ranges={r: get_single_index(l, r) for r in range(16)},
-                        default=h_normal,
-                        code="var(0x41, shift=0, and=0x0000000f)",
-                    )
-                    for l in range(16)
-                },
-                default=h_normal,
-                code="var(0x41, shift=4, and=0x0000000f)",
-            ),
-            (2, 3): grf.Switch(
-                ranges={
-                    l: grf.Switch(
-                        ranges={r: get_back_index(l, r) for r in range(16)},
-                        default=front_normal.T,
-                        code="var(0x41, shift=0, and=0x0000000f)",
-                    )
-                    for l in range(16)
-                },
-                default=front_normal.T,
-                code="var(0x41, shift=4, and=0x0000000f)",
-            ),
-            (4, 5): grf.Switch(
-                ranges={
-                    l: grf.Switch(
-                        ranges={r: get_front_index(l, r) for r in range(16)},
-                        default=front_normal,
-                        code="var(0x41, shift=0, and=0x0000000f)",
-                    )
-                    for l in range(16)
-                },
-                default=front_normal,
-                code="var(0x41, shift=4, and=0x0000000f)",
-            ),
-            (6, 7): grf.Switch(
-                ranges={
-                    l: grf.Switch(
-                        ranges={r: get_central_index(l, r) for r in range(16)},
-                        default=central,
-                        code="var(0x41, shift=0, and=0x0000000f)",
-                    )
-                    for l in range(16)
-                },
-                default=central,
-                code="var(0x41, shift=4, and=0x0000000f)",
-            ),
-        },
-        default=central,
-        code="var(0x41, shift=24, and=0x0000000f)",
-    ),
-    sprites,
-)
+cb41 = Switch(
+    ranges={
+        (0, 1): Switch(
+            ranges={
+                l: Switch(
+                    ranges={r: get_single_index(l, r) for r in range(16)},
+                    default=h_normal,
+                    code="var(0x41, shift=0, and=0x0000000f)",
+                )
+                for l in range(16)
+            },
+            default=h_normal,
+            code="var(0x41, shift=4, and=0x0000000f)",
+        ),
+        (2, 3): Switch(
+            ranges={
+                l: Switch(
+                    ranges={r: get_back_index(l, r) for r in range(16)},
+                    default=front_normal.T,
+                    code="var(0x41, shift=0, and=0x0000000f)",
+                )
+                for l in range(16)
+            },
+            default=front_normal.T,
+            code="var(0x41, shift=4, and=0x0000000f)",
+        ),
+        (4, 5): Switch(
+            ranges={
+                l: Switch(
+                    ranges={r: get_front_index(l, r) for r in range(16)},
+                    default=front_normal,
+                    code="var(0x41, shift=0, and=0x0000000f)",
+                )
+                for l in range(16)
+            },
+            default=front_normal,
+            code="var(0x41, shift=4, and=0x0000000f)",
+        ),
+        (6, 7): Switch(
+            ranges={
+                l: Switch(
+                    ranges={r: get_central_index(l, r) for r in range(16)},
+                    default=central,
+                    code="var(0x41, shift=0, and=0x0000000f)",
+                )
+                for l in range(16)
+            },
+            default=central,
+            code="var(0x41, shift=4, and=0x0000000f)",
+        ),
+    },
+    default=central,
+    code="var(0x41, shift=24, and=0x0000000f)",
+).to_index(sprites)
 
 the_station = AStation(
     id=0x00,
     translation_name="DOVEMERE_2018",
     sprites=sprites,
     layouts=[
-        simple_layout(1012 - i % 2 if traversable else 1420, sprites.index(s.sprite))
+        simple_layout(1012 - i % 2 if traversable else 1420, sprites.index(s))
         for i, (s, traversable) in enumerate(layouts)
     ],
     class_label=b"DM18",
@@ -218,11 +205,11 @@ the_station = AStation(
     non_traversable_tiles=0b00111100,
     callbacks={
         "select_tile_layout": grf.PurchaseCallback(
-            purchase=grf.Switch(
+            purchase=Switch(
                 ranges={
-                    (2, 15): grf.Switch(
+                    (2, 15): Switch(
                         ranges={0: 2},
-                        default=grf.Switch(
+                        default=Switch(
                             ranges={0: 4},
                             default=6,
                             code="(extra_callback_info1 >> 12) & 0xf",
@@ -247,7 +234,7 @@ the_stations = AMetaStation(
         AStation(
             id=1 + i,
             translation_name="DOVEMERE_2018",  # FIXME
-            sprites=[s.sprite for s, _ in layouts],
+            sprites=[s for s, _ in layouts],
             layouts=[
                 simple_layout(1012 - i % 2 if traversable else 1420, i) for i, (s, traversable) in enumerate(layouts)
             ],
