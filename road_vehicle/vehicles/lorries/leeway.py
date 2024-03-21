@@ -1,4 +1,5 @@
 from datetime import date
+from road_vehicle.lib import ALorry
 from road_vehicle.lib.graphics.autowolf import AutoWolf
 from agrf.metavehicle import AMetaVehicle
 
