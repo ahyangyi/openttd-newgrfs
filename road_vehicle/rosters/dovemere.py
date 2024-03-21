@@ -8,6 +8,7 @@ from ..vehicles.buses import (
     longriver_2decker,
     raregem,
     milkyway_2decker,
+    milkyway_coach,
 )
 from ..vehicles.lorries import freedom, freedom_mkii, shield, happyone as happyone_truck, yellowriver
 from ..vehicles.monorail import nova
@@ -24,6 +25,7 @@ the_roster = Roster(
     longriver_2decker,
     raregem,
     milkyway_2decker,
+    milkyway_coach,
     happyone_truck,
     freedom,
     freedom_mkii,

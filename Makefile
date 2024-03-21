@@ -51,6 +51,9 @@ road_vehicle.md:
 doc.bridge:
 	python3 -m bridge.dovemere_gen doc
 
+doc.station:
+	python3 -m station.dovemere_gen doc
+
 doc.rv:
 	python3 -m road_vehicle.gen doc
 
@@ -59,6 +62,9 @@ doc.rt:
 
 doc.aegis:
 	python3 -m industry.aegis_gen doc
+
+doc.house:
+	python3 -m house.dovemere_gen doc
 
 test.aegis:
 	python3 -m industry.aegis_gen test
@@ -70,10 +76,10 @@ bridge.grf:
 	python3 -m bridge.dovemere_gen gen
 
 station.grf:
-	python3 -m station.dovemere_gen
+	python3 -m station.dovemere_gen gen
 
 house.grf:
-	python3 -m house.dovemere_gen
+	python3 -m house.dovemere_gen gen
 
 road.grf:
 	python3 -m road.dovemere_gen gen
@@ -82,5 +88,5 @@ road.csv:
 	python3 -m road.dovemere_gen csv
 
 profile.aegis:
-	python -m cProfile -o .prof/aegis_gen.prof -m industry.aegis_gen gen
+	python3 -m cProfile -o .prof/aegis_gen.prof -m industry.aegis_gen gen
 	gprof2dot -f pstats .prof/aegis_gen.prof | dot -Tpng -o .prof/aegis_gen_prof.png

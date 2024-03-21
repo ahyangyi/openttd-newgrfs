@@ -12,6 +12,7 @@ class MetaSpriteMixin:
     def dynamic_prop_variables(self):
         ret = set()
         for p in self._props.values():
+            # FIXME recursive SplitDefinitions?
             if isinstance(p, SplitDefinition):
                 p.fixup(self._parameter_list)
                 for v in p.variables:
@@ -27,8 +28,7 @@ class MetaSpriteMixin:
             while isinstance(v, SplitDefinition):
                 v.fixup(self._parameter_list)
                 branch_key = tuple(parameters[var] for var in v.variables)
-                if branch_key in v.branches:
-                    v = v.branches[branch_key]
+                v = v.branches[branch_key]
             if not v:
                 return True
         return False
@@ -48,7 +48,9 @@ class MetaSpriteMixin:
             new_props[k] = v
         return new_props
 
-    def dynamic_definitions(self, all_choices):
+    def dynamic_definitions(self):
+        all_choices = self.dynamic_prop_variables
+
         def dfs(parameters, i=0):
             if i == len(all_choices):
                 resolved_props = self.resolve_props(parameters)
@@ -63,7 +65,7 @@ class MetaSpriteMixin:
             var_id = all_choices[i]
             sublists = []
             hashes = []
-            for choice in self._parameter_list.parameters[var_id].enum.keys():
+            for choice in self._parameter_list.parameter_by_id(var_id).enum.keys():
                 parameters[var_id] = choice
                 sublist, h = dfs(parameters, i + 1)
                 sublists.append(sublist)
@@ -73,7 +75,7 @@ class MetaSpriteMixin:
             if all(hashes[0] == h for h in hashes):
                 return sublists[0], hash(tuple(hashes))
 
-            for choice in range(len(self._parameter_list.parameters[var_id].enum)):
+            for choice in range(len(self._parameter_list.parameter_by_id(var_id).enum)):
                 sublist = sublists[choice]
                 for g in sublist:
                     ret.append(

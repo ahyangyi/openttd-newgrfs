@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 import argparse
 import grf
-from bridge.bridges.dovemere import test
+from bridge.bridges.dovemere import yangtze_i, zhongjiang
+
+
+bridges = [yangtze_i, zhongjiang]
 
 
 def get_string_manager():
@@ -9,9 +12,6 @@ def get_string_manager():
     s.import_lang_dir("bridge/lang", default_lang_file="english-uk.lng")
 
     return s
-
-
-bridges = [test]
 
 
 def gen():
@@ -23,6 +23,7 @@ def gen():
         description=s["STR_GRF_DESC"],
         id_map_file="bridge/id_map.json",
         sprite_cache_path="bridge/.cache",
+        strings=s,
         preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
 

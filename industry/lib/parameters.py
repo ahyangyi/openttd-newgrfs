@@ -1,7 +1,60 @@
-from agrf.parameters import Parameter, ParameterList, SearchSpace
+from agrf.parameters import Parameter, ParameterListWithPreset, SearchSpace
 
 
-parameter_list = ParameterList(
+PRESETS = {
+    "AEGIS": {
+        # FIXME
+        "POLICY": "AUTARKY",
+        "PRIMARY_INDUSTRY_GROWTH": "NONE",
+        "WORKFORCE": "ABSTRACT",
+        "WORKER_PARTICIPATION": "NONE",
+        "SEA_INDUSTRY": "ORGANIC",
+        "TOWN_GOODS": "ORGANIC",
+    },
+    "VANILLA": {
+        "POLICY": "AUTARKY",
+        "PRIMARY_INDUSTRY_GROWTH": "NONE",
+        "WORKFORCE": "ABSTRACT",
+        "WORKER_PARTICIPATION": "NONE",
+        "SEA_INDUSTRY": "ORGANIC",
+        "TOWN_GOODS": "ORGANIC",
+    },
+    "FIRS": {
+        "POLICY": "FREE_TRADE",
+        "PRIMARY_INDUSTRY_GROWTH": "GENERIC_SUPPLIES",
+        "WORKFORCE": "ABSTRACT",
+        "WORKER_PARTICIPATION": "NONE",
+        "SEA_INDUSTRY": "ORGANIC",
+        "TOWN_GOODS": "ORGANIC",
+    },
+    "YETI": {
+        "POLICY": "AUTARKY",
+        "PRIMARY_INDUSTRY_GROWTH": "UNIVERSAL_SUPPLIES",
+        "WORKFORCE": "YETI_TIRED",
+        "WORKER_PARTICIPATION": "PRIMARY_INDUSTRY",
+        "SEA_INDUSTRY": "ORGANIC",
+        "TOWN_GOODS": "ORGANIC",
+    },
+    "CARIBBEAN": {
+        "POLICY": "EXPORT",
+        "PRIMARY_INDUSTRY_GROWTH": "GENERIC_SUPPLIES",
+        "WORKFORCE": "PROFESSIONAL",
+        "WORKER_PARTICIPATION": "SECONDARY_INDUSTRY",
+        "SEA_INDUSTRY": "ORGANIC",
+        "TOWN_GOODS": "ORGANIC",
+    },
+    "LUMBERJACK": {
+        "POLICY": "AUTARKY",
+        "PRIMARY_INDUSTRY_GROWTH": "GENERIC_SUPPLIES",
+        "WORKFORCE": "PROFESSIONAL",
+        "WORKER_PARTICIPATION": "SECONDARY_INDUSTRY",
+        "SEA_INDUSTRY": "ORGANIC",
+        "TOWN_GOODS": "ORGANIC",
+    },
+}
+
+
+parameter_list = ParameterListWithPreset(
     [
         Parameter(
             "ECONOMY",
@@ -92,22 +145,21 @@ parameter_list = ParameterList(
             },
         ),
         Parameter("NIGHT_MODE", 0, {0: "AUTO_DETECT", 1: "ENABLED", 2: "DISABLED"}),
-    ]
+    ],
+    PRESETS,
 )
 
 
 parameter_choices = SearchSpace(
     [
-        # FIXME: handle preset
-        ("POLICY", ["PRESET", "AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
+        ("POLICY", ["AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
         (
             "PRIMARY_INDUSTRY_GROWTH",
-            ["PRESET", "NONE", "UNIVERSAL_SUPPLIES", "GENERIC_SUPPLIES", "SPECIFIC_SUPPLIES", "DISCRETE", "CONTINUOUS"],
+            ["NONE", "UNIVERSAL_SUPPLIES", "GENERIC_SUPPLIES", "SPECIFIC_SUPPLIES", "DISCRETE", "CONTINUOUS"],
         ),
         (
             "WORKFORCE",
             [
-                "PRESET",
                 "ABSTRACT",
                 "PROFESSIONAL",
                 "PROFESSIONAL_PASSENGERS",
@@ -119,64 +171,31 @@ parameter_choices = SearchSpace(
                 "YETI_TIRED",
             ],
         ),
-        ("WORKER_PARTICIPATION", ["PRESET", "NONE", "PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY", "BOTH"]),
-        ("SEA_INDUSTRY", ["PRESET", "ORGANIC", "LAND_ONLY", "BOTH", "EITHER", "SEA_ONLY"]),
-        ("TOWN_GOODS", ["PRESET", "ORGANIC", "NONE", "FOOD", "FOOD_AND_WATER"]),
+        ("WORKER_PARTICIPATION", ["NONE", "PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY", "BOTH"]),
+        ("SEA_INDUSTRY", ["ORGANIC", "LAND_ONLY", "BOTH", "EITHER", "SEA_ONLY"]),
+        ("TOWN_GOODS", ["ORGANIC", "NONE", "FOOD", "FOOD_AND_WATER"]),
     ],
     parameter_list,
 )
 
-
-docs_parameter_choices = parameter_choices.copy()
-docs_parameter_choices.update_params("POLICY", ["AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
-docs_parameter_choices.update_params(
-    "PRIMARY_INDUSTRY_GROWTH", ["NONE", "UNIVERSAL_SUPPLIES", "GENERIC_SUPPLIES", "SPECIFIC_SUPPLIES"]
+docs_parameter_choices = SearchSpace(
+    [
+        ("POLICY", ["AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
+        (
+            "PRIMARY_INDUSTRY_GROWTH",
+            ["NONE", "UNIVERSAL_SUPPLIES", "GENERIC_SUPPLIES", "SPECIFIC_SUPPLIES"],
+        ),
+        (
+            "WORKFORCE",
+            [
+                "ABSTRACT",
+                "PROFESSIONAL",
+                "YETI_TIRED",
+            ],
+        ),
+        ("WORKER_PARTICIPATION", ["NONE", "PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY"]),
+        ("SEA_INDUSTRY", ["ORGANIC"]),
+        ("TOWN_GOODS", ["ORGANIC"]),
+    ],
+    parameter_list,
 )
-docs_parameter_choices.update_params("WORKFORCE", ["ABSTRACT", "PROFESSIONAL", "YETI_TIRED"])
-docs_parameter_choices.update_params("WORKER_PARTICIPATION", ["NONE", "PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY"])
-docs_parameter_choices.update_params("SEA_INDUSTRY", ["ORGANIC"])
-docs_parameter_choices.update_params("TOWN_GOODS", ["ORGANIC"])
-
-
-PRESETS = {
-    "VANILLA": {
-        "POLICY": "AUTARKY",
-        "PRIMARY_INDUSTRY_GROWTH": "NONE",
-        "WORKFORCE": "ABSTRACT",
-        "WORKER_PARTICIPATION": "NONE",
-        "SEA_INDUSTRY": "ORGANIC",
-        "TOWN_GOODS": "ORGANIC",
-    },
-    "FIRS": {
-        "POLICY": "FREE_TRADE",
-        "PRIMARY_INDUSTRY_GROWTH": "GENERIC_SUPPLIES",
-        "WORKFORCE": "ABSTRACT",
-        "WORKER_PARTICIPATION": "NONE",
-        "SEA_INDUSTRY": "ORGANIC",
-        "TOWN_GOODS": "ORGANIC",
-    },
-    "YETI": {
-        "POLICY": "AUTARKY",
-        "PRIMARY_INDUSTRY_GROWTH": "UNIVERSAL_SUPPLIES",
-        "WORKFORCE": "YETI_TIRED",
-        "WORKER_PARTICIPATION": "PRIMARY_INDUSTRY",
-        "SEA_INDUSTRY": "ORGANIC",
-        "TOWN_GOODS": "ORGANIC",
-    },
-    "CARIBBEAN": {
-        "POLICY": "EXPORT",
-        "PRIMARY_INDUSTRY_GROWTH": "GENERIC_SUPPLIES",
-        "WORKFORCE": "PROFESSIONAL",
-        "WORKER_PARTICIPATION": "SECONDARY_INDUSTRY",
-        "SEA_INDUSTRY": "ORGANIC",
-        "TOWN_GOODS": "ORGANIC",
-    },
-    "LUMBERJACK": {
-        "POLICY": "AUTARKY",
-        "PRIMARY_INDUSTRY_GROWTH": "GENERIC_SUPPLIES",
-        "WORKFORCE": "PROFESSIONAL",
-        "WORKER_PARTICIPATION": "SECONDARY_INDUSTRY",
-        "SEA_INDUSTRY": "ORGANIC",
-        "TOWN_GOODS": "ORGANIC",
-    },
-}

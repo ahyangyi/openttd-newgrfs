@@ -1,4 +1,4 @@
-from industry.lib.industry import AIndustry, SplitDefinition, transcribe, symmetrize
+from industry.lib.industry import AIndustry
 
 the_industry = AIndustry(
     id=0x10,

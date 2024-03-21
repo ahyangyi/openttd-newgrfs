@@ -2,7 +2,7 @@ import os
 from industry.lib.parameters import docs_parameter_choices, parameter_choices, PRESETS
 
 
-default_variation = "1" * len(parameter_choices.choices)
+default_variation = "0" * len(parameter_choices.choices)
 
 
 def gen_economy_doc(all_economies, string_manager):
@@ -60,7 +60,7 @@ classDef cargo fill:none,stroke:none;""",
 
                 # Industries
                 print(
-                    f"""```
+                    """```
 
 # Industries
 

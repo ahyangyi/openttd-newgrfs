@@ -33,7 +33,7 @@ nav_order: {i+1}
 
 **Is a freight cargo**: {cargo._props["is_freight"]}
 
-**Price**: {cargo.base_price} \| {cargo.penalty1} \| {cargo.penalty2}
+**Price**: {cargo.base_price} \\| {cargo.penalty1} \\| {cargo.penalty2}
 """,
                 file=f,
             )

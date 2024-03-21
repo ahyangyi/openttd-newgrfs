@@ -2,7 +2,6 @@ from industry.lib.economy import (
     MetaEconomy,
     Economy,
     PrimaryIndustry,
-    WorkerYard,
     FreePort,
     SecondaryIndustry,
     TertiaryIndustry,
@@ -27,9 +26,7 @@ from industry.cargos import (
     sand,
     scrap_metal,
     steel,
-    tired_workers,
     water,
-    workers,
 )
 from industry.industries import (
     chemical_plant,
@@ -54,7 +51,6 @@ from industry.industries import (
     trading_centre,
     water_supply,
     water_tower,
-    worker_yard,
 )
 
 

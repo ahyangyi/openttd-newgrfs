@@ -67,6 +67,7 @@ STR_VEHICLE_JOYFIELD_NAME               :Beiqi Foton AUV BJ6123EVCA Bus (BEV)
 STR_VEHICLE_JOYFIELD_ARTICULATED_NAME   :Beiqi Foton AUV BJ6160SHEVCA Articulated Bus (PHEV)
 STR_VEHICLE_RAREGEM_NAME                :Chery Wanda WD6110CHEVG01 Bus (PHEV)
 STR_VEHICLE_MILKYWAY_2DECKER_NAME       :Yutong ZK6116HNGS2 Double-Decker Bus (diesel)
+STR_VEHICLE_MILKYWAY_COACH_NAME         :Yutong ZK6888HC9 Coach (diesel)
 
 STR_VEHICLE_HAPPYONE_NAME               :Ford F-60 Canadian Military Pattern Truck (gasoline)
 STR_VEHICLE_LEEWAY_NAME                 :Dodge T-234 Truck (gasoline)
@@ -76,6 +77,8 @@ STR_VEHICLE_FREEDOM_TARPAULIN_NAME      :FAW Jiefang CA10 Covered Wagon Truck (g
 STR_VEHICLE_FREEDOM_MK_II_NAME          :FAW Jiefang CA15 Truck (gasoline)
 STR_VEHICLE_YELLOWRIVER_NAME            :Huanghe JN150 Truck (diesel)
 STR_VEHICLE_SHIELD_NAME                 :C&C U+550 Truck (diesel)
+STR_VEHICLE_JOYFIELD_LORRY_NAME         :Beiqi Foton Auman GTL Truck (diesel)
+STR_VEHICLE_JOYFIELD_ELECTRIC_LORRY_NAME:Beiqi Foton iBlue T5 Truck (electric)
 
 STR_VEHICLE_NOVA_NAME                   :CRRC Puzhen Alstom Innovia Monorail 300 (EMU)
 STR_VEHICLE_BURGER_NAME                 :Jingyi BD540 Trolleybus
@@ -93,6 +96,7 @@ STR_VEHICLE_JOYFIELD_DESC               :{SILVER}
 STR_VEHICLE_JOYFIELD_ARTICULATED_DESC   :{SILVER}
 STR_VEHICLE_RAREGEM_DESC                :{SILVER}The WD6110CHEVG01 bus is a common sight in the streets of Wuhu in the 2020s.
 STR_VEHICLE_MILKYWAY_2DECKER_DESC       :{SILVER}
+STR_VEHICLE_MILKYWAY_COACH_DESC         :{SILVER}
 
 STR_VEHICLE_HAPPYONE_DESC               :{SILVER}
 STR_VEHICLE_LEEWAY_DESC                 :{SILVER}
@@ -102,6 +106,8 @@ STR_VEHICLE_FREEDOM_TARPAULIN_DESC      :{SILVER}A licensed variant of the Sovie
 STR_VEHICLE_FREEDOM_MK_II_DESC          :{SILVER}
 STR_VEHICLE_YELLOWRIVER_DESC            :{SILVER}Based on reverse-engineered Škoda 706 RT. The first heavy-duty truck produced in China.
 STR_VEHICLE_SHIELD_DESC                 :{SILVER}
+STR_VEHICLE_JOYFIELD_LORRY_DESC         :{SILVER}
+STR_VEHICLE_JOYFIELD_ELECTRIC_LORRY_DESC:{SILVER}
 
 STR_VEHICLE_NOVA_DESC                   :{SILVER}
 STR_VEHICLE_BURGER_DESC                 :{SILVER}

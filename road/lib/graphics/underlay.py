@@ -38,5 +38,4 @@ def get_spritesheet(name):
             (4, 2),
         ],
     )
-    spritesheet.render()
-    return spritesheet.spritesheet(0, 0)
+    return spritesheet.spritesheet()

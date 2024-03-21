@@ -29,18 +29,41 @@ def guess_dimens(width, height, angle, bbox):
 
 deltas = [[0, -2], [2, -1], [4, 0], [2, 1], [0, 2], [-2, 1], [-4, 0], [-2, -1]]
 
-scale_to_zoom = {1: grf.ZOOM_4X, 2: grf.ZOOM_2X, 4: grf.ZOOM_NORMAL}
+scale_to_zoom = {4: grf.ZOOM_4X, 2: grf.ZOOM_2X, 1: grf.ZOOM_NORMAL}
+
+
+class LazyAlternativeSprites(grf.AlternativeSprites):
+    def __init__(self, voxel, debug_info, *sprites):
+        super().__init__(*sprites)
+        self.voxel = voxel
+        self.debug_info = debug_info
+
+    def get_sprite(self, *, zoom=None, bpp=None):
+        self.voxel.render()
+        return super().get_sprite(zoom=zoom, bpp=bpp)
+
+    def get_resources(self):
+        self.voxel.render()
+        return super().get_resources()
+
+    def get_resource_files(self):
+        self.voxel.render()
+        return super().get_resource_files()
+
+    def __repr__(self):
+        return f"LazyAlternativeSprites<{self.voxel.name}:{self.debug_info}>"
 
 
 def spritesheet_template(
+    voxel,
     diff,
     path,
     dimens,
     angles,
     bbox,
     bbox_joggle=None,
-    bpps=[8, 32],
-    scales=[1, 2, 4],
+    bpps=(8, 32),
+    scales=(1, 2, 4),
     xdiff=0,
     ydiff=0,
     shift=0,
@@ -79,7 +102,9 @@ def spritesheet_template(
         return grf.WithMask(sprite, mask)
 
     return [
-        grf.AlternativeSprites(
+        LazyAlternativeSprites(
+            voxel,
+            f"{idx}",
             *(
                 with_optional_mask(
                     grf.FileSprite(
@@ -93,19 +118,21 @@ def spritesheet_template(
                         bpp=bpp,
                         zoom=scale_to_zoom[scale],
                     ),
-                    grf.FileSprite(
-                        grf.ImageFile(f"{path}_{scale}x_mask.png"),
-                        (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale,
-                        0,
-                        guessed_dimens[i][0] * scale,
-                        guessed_dimens[i][1] * scale,
-                    )
-                    if bpp == 32
-                    else None,
+                    (
+                        grf.FileSprite(
+                            grf.ImageFile(f"{path}_{scale}x_mask.png"),
+                            (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale,
+                            0,
+                            guessed_dimens[i][0] * scale,
+                            guessed_dimens[i][1] * scale,
+                        )
+                        if bpp == 32
+                        else None
+                    ),
                 )
                 for bpp in bpps
                 for scale in scales
-            )
+            ),
         )
         for idx in range(len(dimens))
         for i in [(idx + shift) % len(dimens)]

@@ -14,10 +14,11 @@ def blend(image, mask):
 
     above = mask_colour >= 255
     below = np.minimum(mask_colour + ob[:, :, np.newaxis] * (255 - mask_colour) // 256, 255)
+    mixed = np.where(above, 255, below)
 
     image_np = np.uint8(image)
-    below[:, :, 3] = image_np[:, :, 3]
+    mixed[:, :, 3] = image_np[:, :, 3]
     mask_pal = np.uint8(mask)
-    blended = np.where(np.broadcast_to((mask_pal == 0)[:, :, np.newaxis], (*mask_pal.shape, 4)), image_np, below)
+    blended = np.where(np.broadcast_to((mask_pal == 0)[:, :, np.newaxis], (*mask_pal.shape, 4)), image_np, mixed)
 
     return Image.fromarray(blended.astype("uint8"))

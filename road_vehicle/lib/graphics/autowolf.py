@@ -1,4 +1,6 @@
 from road_vehicle.lib.graphics.voxel import LazyVoxel, LazySwitch
+from agrf.graphics.attach_over import attach_over
+from agrf.graphics.blend import blend
 import grf
 
 ALLOWED_FLAGS = ["noflipX", "noflipY", "debug_bbox"]
@@ -99,17 +101,26 @@ class AutoWolf:
             self.graphics[i] = switch
             self.shifts[i] = 4 if shadow_rotate else 0
 
-    def doc_graphics(self):
-        ret = []
-        for v in self.graphics.values():
+    def doc_graphics(self, remap):
+        img = None
+        for k, v in self.graphics.items():
             v = v.get_default_graphics()
-            v.render()
-            ret.append(v.spritesheet(0, 0))
-        return ret[0][3]
+            sprite = v.spritesheet()
+            sprite = sprite[3 + self.shifts[k]]
+            masked_sprite = sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
+            subimg, _ = masked_sprite.sprite.get_image()
+            submask, _ = masked_sprite.mask.get_image()
+            submask = remap.remap_image(submask)
+            subimg = blend(subimg, submask)
 
-    def generate_graphics(self):
-        for v in self.graphics.values():
-            v.render()
+            if img is None:
+                img = subimg
+                pos = k
+            else:
+                diff = sum(self.lengths[pos:k])
+                img = attach_over(img, subimg, (-8 * diff, -4 * diff))
+                pos = k
+        return img.crop(img.getbbox())
 
     def empty(self):
         return grf.GenericSpriteLayout(ent1=(31,), ent2=(31,))
@@ -145,10 +156,10 @@ class AutoWolf:
             "graphics": grf.Switch(
                 ranges={
                     i: grf.Switch(
-                        ranges={0: self.graphics[i].get_action(self.xdiff[i], self.shifts[i], feature)},
+                        ranges={0: self.graphics[i].get_action(feature, self.xdiff[i], self.shifts[i])},
                         default=self.graphics[i]
                         .get_default_graphics()
-                        .get_action(self.xdiff[i], self.shifts[i], feature),
+                        .get_action(feature, self.xdiff[i], self.shifts[i]),
                         code="extra_callback_info1_byte",
                     )
                     for i, seg in enumerate(self.segments)

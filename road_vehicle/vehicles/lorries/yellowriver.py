@@ -4,7 +4,6 @@ from road_vehicle.lib.graphics.autowolf import AutoWolf
 from road_vehicle.lib.graphics.voxel import LazyVoxel
 from agrf.metavehicle import AMetaVehicle
 import cargos
-from agrf.graphics.recolour import *
 
 the_variant = AMetaVehicle(
     id=0x2300,
@@ -15,7 +14,7 @@ the_variant = AMetaVehicle(
     max_speed=ALorry.kmh(60),
     power=ALorry.kW(103),
     weight=6.8,
-    techclass="h_truck",
+    techclass="m_truck",
     cargo_capacity=8,
     default_cargo_type=0,
     real_dimensions=(7.6, 2.4, 2.6),

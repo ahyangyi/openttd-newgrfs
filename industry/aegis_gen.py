@@ -144,9 +144,9 @@ def gen():
     parameter_list.add(g, s)
 
     nightgfx_id = struct.unpack("<I", b"\xffOTN")[0]
-    g.add(grf.ComputeParameters(target=0x41, operation=0x00, if_undefined=False, source1=0xFF, source2=0xFF, value=1))
+    g.add(grf.ComputeParameters(target=0x3F, operation=0x00, if_undefined=False, source1=0xFF, source2=0xFF, value=1))
     g.add(grf.If(is_static=False, variable=0x88, condition=0x06, value=nightgfx_id, skip=1, varsize=4))
-    g.add(grf.ComputeParameters(target=0x41, operation=0x00, if_undefined=False, source1=0xFF, source2=0xFF, value=0))
+    g.add(grf.ComputeParameters(target=0x3F, operation=0x00, if_undefined=False, source1=0xFF, source2=0xFF, value=0))
 
     from industry.industry_tiles import one_tile_flat
 

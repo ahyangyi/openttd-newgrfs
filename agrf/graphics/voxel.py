@@ -138,16 +138,18 @@ class LazyVoxel(Config):
             self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=deepcopy(self.config)
         )
 
+    @functools.cache
     def render(self):
         voxel_path = self.voxel_getter()
         render(self, voxel_path, os.path.join(self.prefix, self.name))
 
     @functools.cache
-    def spritesheet(self, xdiff, shift):
+    def spritesheet(self, xdiff=0, shift=0):
         real_xdiff = 0.5
         real_ydiff = self.config.get("agrf_zdiff", 0) * 0.5 * self.config.get("agrf_scale", 1)
 
         return spritesheet_template(
+            self,
             xdiff,
             os.path.join(self.prefix, self.name),
             [(x["width"], x.get("height", 0)) for x in self.config["sprites"]],
@@ -163,7 +165,7 @@ class LazyVoxel(Config):
         )
 
     @functools.cache
-    def get_action(self, xdiff, shift, feature):
+    def get_action(self, feature, xdiff=0, shift=0):
         return FakeReferencingGenericSpriteLayout(feature, (self.spritesheet(xdiff, shift),))
 
     def get_default_graphics(self):
@@ -183,7 +185,7 @@ class LazySpriteSheet:
         return method
 
     @functools.cache
-    def spritesheet(self, xdiff, shift):
+    def spritesheet(self, xdiff=0, shift=0):
         spritesheets = [x.spritesheet(xdiff, shift) for x in self.sprites]
         return [spritesheets[i][j] for (i, j) in self.indices]
 
@@ -211,7 +213,7 @@ class LazyAlternatives:
         return method
 
     @functools.cache
-    def get_action(self, xdiff, shift, feature):
+    def get_action(self, feature, xdiff=0, shift=0):
         return FakeReferencingGenericSpriteLayout(
             feature,
             tuple(x.spritesheet(xdiff, shift) for x in self.sprites),
@@ -243,10 +245,10 @@ class LazySwitch:
         self.default.render()
 
     @functools.cache
-    def get_action(self, xdiff, shift, feature):
+    def get_action(self, feature, xdiff=0, shift=0):
         return grf.Switch(
-            ranges={k: v.get_action(xdiff, shift, feature) for k, v in self.ranges.items()},
-            default=self.default.get_action(xdiff, shift, feature),
+            ranges={k: v.get_action(feature, xdiff, shift) for k, v in self.ranges.items()},
+            default=self.default.get_action(feature, xdiff, shift),
             code=self.code,
         )
 

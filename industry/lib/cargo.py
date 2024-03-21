@@ -4,7 +4,7 @@ from industry.lib.parameters import parameter_list
 from agrf.lib.cargo import Cargo
 from cargos import cargos as cargo_table
 from agrf.strings import get_translation
-from agrf.split_action import SplitDefinition, MetaSpriteMixin
+from agrf.split_action import MetaSpriteMixin
 
 
 class CargoUnit:
@@ -38,7 +38,7 @@ class ACargo(Cargo, MetaSpriteMixin):
         return ACargo.translate_strings(props, self._g)
 
     def get_definitions(self, g):
-        res = self.dynamic_definitions(self.dynamic_prop_variables)
+        res = self.dynamic_definitions()
         return [sprite for sprite_group in res for sprite in sprite_group]
 
     def get_sprites(self, g):
