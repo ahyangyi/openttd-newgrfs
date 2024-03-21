@@ -4,7 +4,7 @@ from industry.lib.parameters import parameter_list
 from agrf.lib.cargo import Cargo
 from cargos import cargos as cargo_table
 from agrf.strings import get_translation
-from agrf.split_action import SplitDefinition, MetaSpriteMixin
+from agrf.split_action import MetaSpriteMixin
 
 
 class CargoUnit:

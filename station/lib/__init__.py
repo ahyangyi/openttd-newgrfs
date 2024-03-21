@@ -1,4 +1,5 @@
 import grf
+from PIL import Image
 
 
 class AStation(grf.SpriteGenerator):
@@ -148,8 +149,6 @@ class BuildingSpriteSheetSymmetrical(BuildingSpriteSheet):
     def T(self):
         return self
 
-
-from PIL import Image
 
 groundsprite = Image.open("third_party/opengfx2/1012.png")
 
