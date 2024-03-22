@@ -61,3 +61,9 @@ class Switch(grf.Switch):
         )
         self.call_cache[key] = ret
         return ret
+
+    # FIXME: should probably be refactored into something more general
+    # and not rely on everything else implementing `get_default_graphics`
+    # But that'll happen after LazyVoxel refactor
+    def get_default_graphics(self):
+        return self.default.get_default_graphics()
