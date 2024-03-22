@@ -1,14 +1,13 @@
 import grf
+from collections.abc import Collection, Mapping, Hashable
 
 
 def deep_freeze(thing):
-    from collections.abc import Collection, Mapping, Hashable
-    from frozendict import frozendict
 
     if thing is None or isinstance(thing, str):
         return thing
     elif isinstance(thing, Mapping):
-        return frozendict({k: deep_freeze(v) for k, v in thing.items()})
+        return tuple((k, deep_freeze(v)) for k, v in sorted(thing.items()))
     elif isinstance(thing, Collection):
         return tuple(deep_freeze(i) for i in thing)
     elif not isinstance(thing, Hashable):
