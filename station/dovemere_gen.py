@@ -2,9 +2,10 @@
 import grf
 import argparse
 from station.lib.docgen import gen_docs
+import station.stations.dovemere_1992
 import station.stations.dovemere_2018
 
-metastations = [station.stations.dovemere_2018.the_stations]
+metastations = [station.stations.dovemere_1992.the_stations, station.stations.dovemere_2018.the_stations]
 
 
 def get_string_manager():
