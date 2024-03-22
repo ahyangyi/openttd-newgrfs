@@ -52,27 +52,17 @@ class AStation(grf.SpriteGenerator):
         return res
 
 
-class BinaryVariantWrapper:
-    def __init__(self, obj):
-        self.obj = obj
-        self.variants = None
-
+class BinaryVariantMixin:
     @staticmethod
-    def create_variants(factory, variants):
-        ret = [factory(v) for v in variants]
-        for i, r in enumerate(ret):
-            r.variants = [ret[i ^ j] for j in range(len(ret))]
-        return ret[0]
-
-    def __getattr__(self, name):
-        def method(*args, **kwargs):
-            call = lambda x: getattr(x, name)(*args, **kwargs)
-            return getattr(self.obj, name)(*args, **kwargs)
-
-        return method
+    def create_variants(classobj, variants):
+        for i, v in enumerate(variants):
+            cls = v.__class__
+            v.__class__ = type(cls.__name__, (classobj, cls), {})
+            v.variants = [variants[i ^ j] for j in range(len(variants))]
+        return variants[0]
 
     def __repr__(self):
-        return f"<BinaryVariant:{repr(self.obj)}>"
+        return f"<BinaryVariant:{repr(super())}>"
 
     @property
     def all_variants(self):
@@ -85,13 +75,13 @@ class BinaryVariantWrapper:
         return sprite_pool.index(self)
 
 
-class BuildingSpriteSheetFull(BinaryVariantWrapper):
+class BuildingSpriteSheetFull(BinaryVariantMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
     @staticmethod
     def from_complete_list(sprites):
-        return BinaryVariantWrapper.create_variants(BuildingSpriteSheetFull, sprites)
+        return BinaryVariantMixin.create_variants(BuildingSpriteSheetFull, sprites)
 
     @property
     def L(self):
@@ -114,13 +104,13 @@ class BuildingSpriteSheetFull(BinaryVariantWrapper):
         return self[6]
 
 
-class BuildingSpriteSheetSymmetricalX(BinaryVariantWrapper):
+class BuildingSpriteSheetSymmetricalX(BinaryVariantMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
     @staticmethod
     def from_complete_list(sprites):
-        return BinaryVariantWrapper.create_variants(BuildingSpriteSheetSymmetricalX, [sprites[i] for i in [0, 1, 4, 5]])
+        return BinaryVariantMixin.create_variants(BuildingSpriteSheetSymmetricalX, [sprites[i] for i in [0, 1, 4, 5]])
 
     @property
     def C(self):
@@ -131,13 +121,13 @@ class BuildingSpriteSheetSymmetricalX(BinaryVariantWrapper):
         return self[2]
 
 
-class BuildingSpriteSheetSymmetricalY(BinaryVariantWrapper):
+class BuildingSpriteSheetSymmetricalY(BinaryVariantMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
     @staticmethod
     def from_complete_list(sprites):
-        return BinaryVariantWrapper.create_variants(BuildingSpriteSheetSymmetricalY, [sprites[i] for i in [0, 1, 2, 3]])
+        return BinaryVariantMixin.create_variants(BuildingSpriteSheetSymmetricalY, [sprites[i] for i in [0, 1, 2, 3]])
 
     @property
     def L(self):
@@ -152,13 +142,13 @@ class BuildingSpriteSheetSymmetricalY(BinaryVariantWrapper):
         return self
 
 
-class BuildingSpriteSheetSymmetrical(BinaryVariantWrapper):
+class BuildingSpriteSheetSymmetrical(BinaryVariantMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
     @staticmethod
     def from_complete_list(sprites):
-        return BinaryVariantWrapper.create_variants(BuildingSpriteSheetSymmetricalY, [sprites[i] for i in [0, 1]])
+        return BinaryVariantMixin.create_variants(BuildingSpriteSheetSymmetricalY, [sprites[i] for i in [0, 1]])
 
     @property
     def T(self):

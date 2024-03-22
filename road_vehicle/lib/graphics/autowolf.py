@@ -1,6 +1,7 @@
-from road_vehicle.lib.graphics.voxel import LazyVoxel, LazySwitch
+from road_vehicle.lib.graphics.voxel import LazyVoxel
 from agrf.graphics.attach_over import attach_over
 from agrf.graphics.blend import blend
+from agrf.magic import Switch
 import grf
 
 ALLOWED_FLAGS = ["noflipX", "noflipY", "debug_bbox"]
@@ -62,7 +63,7 @@ class AutoWolf:
             back_z = "(var(0x62, param=0x01, shift=0, and=0xff000000) >> 24)"
             back_z_2 = "(var(0x62, param=0x02, shift=0, and=0xff000000) >> 24)"
 
-            switch = LazySwitch(
+            switch = Switch(
                 ranges={k: hill_voxels[v] for k, v in ranges.items()},
                 default=hill_voxels[2],
                 code=f"{front_z_2} + {front_z} + {back_z} + {back_z_2}",
@@ -77,7 +78,7 @@ class AutoWolf:
             front_d = "(var(0x62, param=0xff, shift=0, and=0x0000000f))"
             back_d = "(var(0x62, param=0x01, shift=0, and=0x0000000f))"
 
-            switch = LazySwitch(
+            switch = Switch(
                 ranges={(4, 7): rot_voxels[0], (1, 3): rot_voxels[2]},
                 default=rot_voxels[1],
                 code=f"({front_d} - {back_d}) & 0x7",
@@ -85,7 +86,7 @@ class AutoWolf:
 
             # Make night switches
             night_voxels = switch.update_config({"lighting_weight": 0.3}, "night")
-            switch = LazySwitch(
+            switch = Switch(
                 ranges={1: night_voxels, (4, 5): night_voxels},
                 default=switch,
                 code="(var(0x7F, param=0x1, shift=1, and=0x00000006)) + (var(0x7F, param=0x41, shift=0, and=0x00000001))",
@@ -94,7 +95,7 @@ class AutoWolf:
             # Make flipped switches
             flipped_voxels = switch.flip("flip")
             if "noflipY" not in self.flags:
-                switch = LazySwitch(ranges={0: switch}, default=flipped_voxels, code="traffic_side")
+                switch = Switch(ranges={0: switch}, default=flipped_voxels, code="traffic_side")
             else:
                 switch = flipped_voxels
 

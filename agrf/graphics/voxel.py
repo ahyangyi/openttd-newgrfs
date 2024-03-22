@@ -222,35 +222,3 @@ class LazyAlternatives:
 
     def get_default_graphics(self):
         return self.sprites[-1]
-
-
-class LazySwitch:
-    def __init__(self, ranges, default, code):
-        self.ranges = ranges
-        self.default = default
-        self.code = code
-
-    def __getattr__(self, name):
-        def method(*args, **kwargs):
-            call = lambda x: getattr(x, name)(*args, **kwargs)
-            new_ranges = {k: call(v) for k, v in self.ranges.items()}
-            new_default = call(self.default)
-            return LazySwitch(new_ranges, new_default, self.code)
-
-        return method
-
-    def render(self):
-        for v in self.ranges.values():
-            v.render()
-        self.default.render()
-
-    @functools.cache
-    def get_action(self, feature, xdiff=0, shift=0):
-        return grf.Switch(
-            ranges={k: v.get_action(feature, xdiff, shift) for k, v in self.ranges.items()},
-            default=self.default.get_action(feature, xdiff, shift),
-            code=self.code,
-        )
-
-    def get_default_graphics(self):
-        return self.default.get_default_graphics()
