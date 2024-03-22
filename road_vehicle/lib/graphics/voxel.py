@@ -1,4 +1,4 @@
-from agrf.graphics.voxel import LazyVoxel as LazyVoxelBase, LazySwitch, LazyAlternatives
+from agrf.graphics.voxel import LazyVoxel as LazyVoxelBase, LazyAlternatives
 
 
 # RV-specific hack
