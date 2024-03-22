@@ -52,31 +52,46 @@ class AStation(grf.SpriteGenerator):
         return res
 
 
-class BuildingSpriteSheet:
-    def __init__(self, things):
-        self.things = things
-
-    def all(self):
-        return self.things
-
-    def all_variants(self):
-        return [self[x] for x in range(len(self.things))]
-
-    def __getitem__(self, index):
-        return type(self)([self.things[index ^ x] for x in range(len(self.things))])
-
-    @property
-    def sprite(self):
-        return self.things[0]
-
-
-class BuildingSpriteSheetFull(BuildingSpriteSheet):
-    def __init__(self, things):
-        super().__init__(things)
+class BinaryVariantWrapper:
+    def __init__(self, obj):
+        self.obj = obj
+        self.variants = None
 
     @staticmethod
-    def from_complete_list(things):
-        return BuildingSpriteSheetFull(things)
+    def create_variants(factory, variants):
+        ret = [factory(v) for v in variants]
+        for i, r in enumerate(ret):
+            r.variants = [ret[i ^ j] for j in range(len(ret))]
+        return ret[0]
+
+    def __getattr__(self, name):
+        def method(*args, **kwargs):
+            call = lambda x: getattr(x, name)(*args, **kwargs)
+            return getattr(self.obj, name)(*args, **kwargs)
+
+        return method
+
+    def __repr__(self):
+        return f"<BinaryVariant:{repr(self.obj)}>"
+
+    @property
+    def all_variants(self):
+        return self.variants
+
+    def __getitem__(self, index):
+        return self.variants[index]
+
+    def to_index(self, sprite_pool):
+        return sprite_pool.index(self)
+
+
+class BuildingSpriteSheetFull(BinaryVariantWrapper):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    @staticmethod
+    def from_complete_list(sprites):
+        return BinaryVariantWrapper.create_variants(BuildingSpriteSheetFull, sprites)
 
     @property
     def L(self):
@@ -99,13 +114,13 @@ class BuildingSpriteSheetFull(BuildingSpriteSheet):
         return self[6]
 
 
-class BuildingSpriteSheetSymmetricalX(BuildingSpriteSheet):
-    def __init__(self, things):
-        super().__init__(things)
+class BuildingSpriteSheetSymmetricalX(BinaryVariantWrapper):
+    def __init__(self, obj):
+        super().__init__(obj)
 
     @staticmethod
-    def from_complete_list(things):
-        return BuildingSpriteSheetSymmetricalX([things[0], things[1], things[4], things[5]])
+    def from_complete_list(sprites):
+        return BinaryVariantWrapper.create_variants(BuildingSpriteSheetSymmetricalX, [sprites[i] for i in [0, 1, 4, 5]])
 
     @property
     def C(self):
@@ -116,13 +131,13 @@ class BuildingSpriteSheetSymmetricalX(BuildingSpriteSheet):
         return self[2]
 
 
-class BuildingSpriteSheetSymmetricalY(BuildingSpriteSheet):
-    def __init__(self, things):
-        super().__init__(things)
+class BuildingSpriteSheetSymmetricalY(BinaryVariantWrapper):
+    def __init__(self, obj):
+        super().__init__(obj)
 
     @staticmethod
-    def from_complete_list(things):
-        return BuildingSpriteSheetSymmetricalY([things[0], things[1], things[2], things[3]])
+    def from_complete_list(sprites):
+        return BinaryVariantWrapper.create_variants(BuildingSpriteSheetSymmetricalY, [sprites[i] for i in [0, 1, 2, 3]])
 
     @property
     def L(self):
@@ -137,13 +152,13 @@ class BuildingSpriteSheetSymmetricalY(BuildingSpriteSheet):
         return self
 
 
-class BuildingSpriteSheetSymmetrical(BuildingSpriteSheet):
-    def __init__(self, things):
-        super().__init__(things)
+class BuildingSpriteSheetSymmetrical(BinaryVariantWrapper):
+    def __init__(self, obj):
+        super().__init__(obj)
 
     @staticmethod
-    def from_complete_list(things):
-        return BuildingSpriteSheetSymmetrical([things[0], things[1]])
+    def from_complete_list(sprites):
+        return BinaryVariantWrapper.create_variants(BuildingSpriteSheetSymmetricalY, [sprites[i] for i in [0, 1]])
 
     @property
     def T(self):
@@ -169,7 +184,7 @@ class Demo:
             for c, sprite in enumerate(row[::-1]):
                 if sprite is None:
                     continue
-                masked_sprite = sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
+                masked_sprite = sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
                 subimg, _ = masked_sprite.sprite.get_image()
                 submask, _ = masked_sprite.mask.get_image()
                 submask = remap.remap_image(submask)
@@ -178,18 +193,6 @@ class Demo:
                 # img = attach_over(groundsprite, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -341 - 64 * r - 64 * c))
                 img = attach_over(subimg, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -200 - 64 * r - 64 * c))
         return img.crop(img.getbbox())
-
-
-def fixup_callback(thing, sprites):
-    if isinstance(thing, grf.Switch):
-        return grf.Switch(
-            ranges={(r.low, r.high): fixup_callback(r.ref, sprites) for r in thing._ranges},
-            default=fixup_callback(thing.default, sprites),
-            code=thing.code,
-        )
-    if isinstance(thing, BuildingSpriteSheet):
-        return sprites.index(thing.sprite)
-    return thing
 
 
 class AMetaStation:
