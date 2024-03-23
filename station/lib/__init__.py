@@ -2,6 +2,7 @@ import grf
 from PIL import Image
 from agrf.graphics.attach_over import attach_over
 from agrf.graphics.blend import blend
+from agrf.magic.switch import deep_freeze
 
 
 class AStation(grf.SpriteGenerator):
@@ -63,18 +64,12 @@ class BinaryVariantMixin:
             v.variants = [variants[i ^ j] for j in range(len(variants))]
         return variants[0]
 
-    def __repr__(self):
-        return f"<BinaryVariant:{repr(super())}>"
-
     @property
     def all_variants(self):
         return self.variants
 
     def __getitem__(self, index):
         return self.variants[index]
-
-    def to_index(self, sprite_pool):
-        return sprite_pool.index(self)
 
     @property
     def M(self):
@@ -213,6 +208,9 @@ class ADefaultGroundSprite:
             flags=0,
         )
 
+    def __repr__(self):
+        return f"<ADefaultGroundSprite:{self.sprite}>"
+
     @property
     def L(self):
         return self
@@ -249,6 +247,9 @@ class AParentSprite:
         self.sprite = sprite
         self.extent = extent
         self.offset = offset
+
+    def __repr__(self):
+        return f"<AParentSprite:{self.sprite}:{self.extent}:{self.offset}>"
 
     def to_grf(self, sprite_list):
         return grf.ParentSprite(
@@ -295,6 +296,8 @@ class ALayout:
     def __init__(self, ground_sprite, sprites):
         self.ground_sprite = ground_sprite
         self.sprites = sprites
+        self.attr_cache = {}
+        self.call_cache = {}
 
     def to_grf(self, sprite_list):
         return grf.SpriteLayout(
@@ -302,28 +305,50 @@ class ALayout:
         )
 
     def __getattr__(self, name):
+        if name in self.attr_cache:
+            return self.attr_cache[name]
         call = lambda x: getattr(x, name)
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = [call(sprite) for sprite in self.sprites]
-        return ALayout(new_ground_sprite, new_sprites)
+        ret = ALayout(new_ground_sprite, new_sprites)
+        self.attr_cache[name] = ret
+        return ret
 
     def __call__(self, *args, **kwargs):
+        key = deep_freeze((args, kwargs))
+        if key in self.call_cache:
+            return self.call_cache[key]
         call = lambda x: x(*args, **kwargs)
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = call(self.sprites)
-        return ALayout(new_ground_sprite, new_sprites)
+        ret = ALayout(new_ground_sprite, new_sprites)
+        self.call_cache[key] = ret
+        return ret
 
     def doc_graphics(self, remap):
-        img = None
+        img = Image.new("RGBA", (256, 128))
         for sprite in self.sprites:
             masked_sprite = sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
             subimg, _ = masked_sprite.sprite.get_image()
             submask, _ = masked_sprite.mask.get_image()
             submask = remap.remap_image(submask)
             subimg = blend(subimg, submask)
-            # img = attach_over(subimg, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -200 - 64 * r - 64 * c))
-            img = subimg
+
+            xofs = masked_sprite.sprite.xofs + sprite.offset[0] * 8 + sprite.offset[1] * 8
+            yofs = masked_sprite.sprite.yofs - sprite.offset[0] * 4 + sprite.offset[1] * 4
+
+            # FIXME treat offsets seriously
+            img = attach_over(subimg, img, (0, 0))
         return img
+
+    def to_index(self, layout_pool):
+        print(self, id(self))
+        for i, x in enumerate(layout_pool):
+            print(i, x, id(x))
+        return layout_pool.index(self)
+
+    def __repr__(self):
+        return f"<ALayout:{self.ground_sprite}:{self.sprites}>"
 
 
 def simple_layout(ground_sprite, sprite_id):

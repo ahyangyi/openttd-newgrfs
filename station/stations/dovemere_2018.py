@@ -8,6 +8,9 @@ from station.lib import (
     BuildingSpriteSheetSymmetricalY,
     Demo,
     simple_layout,
+    ADefaultGroundSprite,
+    AParentSprite,
+    ALayout,
 )
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
@@ -21,11 +24,26 @@ def quickload(name, type, traversable, platform):
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/{name}.vox": path,
         load_from="station/files/gorender.json",
     )
-    ret = type.from_complete_list(v.spritesheet())
-    sprites.extend(ret.all_variants)
-    for sprite in ret.all_variants:
-        layouts.append((sprite, traversable))
-    return ret
+    sprite = type.from_complete_list(v.spritesheet())
+    sprites.extend(sprite.all_variants)
+    layout = ALayout(
+        ADefaultGroundSprite(1012 if traversable else 1420), [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))]
+    )
+    if type is BuildingSpriteSheetFull:
+        layouts.append(layout)
+        layouts.append(layout.T)
+        layouts.append(layout.R)
+        layouts.append(layout.TR)
+    elif type is BuildingSpriteSheetSymmetricalX:
+        layouts.append(layout)
+        layouts.append(layout.T)
+    elif type is BuildingSpriteSheetSymmetricalY:
+        layouts.append(layout)
+        layouts.append(layout.R)
+    else:
+        layouts.append(layout)
+
+    return layout
 
 
 sprites = platform_sprites.copy()
@@ -191,16 +209,13 @@ cb41 = Switch(
     },
     default=central,
     code="var(0x41, shift=24, and=0x0000000f)",
-).to_index(sprites)
+).to_index(layouts)
 
 the_station = AStation(
     id=0x00,
     translation_name="DOVEMERE_2018",
     sprites=sprites,
-    layouts=[
-        simple_layout(1012 - i % 2 if traversable else 1420, sprites.index(s))
-        for i, (s, traversable) in enumerate(layouts)
-    ],
+    layouts=[layout.to_grf(sprites) for layout in layouts],
     class_label=b"DM18",
     cargo_threshold=40,
     non_traversable_tiles=0b00111100,
@@ -235,21 +250,22 @@ the_stations = AMetaStation(
         AStation(
             id=1 + i,
             translation_name="DOVEMERE_2018",  # FIXME
-            sprites=[s for s, _ in layouts],
+            sprites=[layout.sprites[0].sprite, layout.M.sprites[0].sprite],
             layouts=[
-                simple_layout(1012 - i % 2 if traversable else 1420, i) for i, (s, traversable) in enumerate(layouts)
+                layout.to_grf(sprites),
+                layout.M.to_grf(sprites),
             ],
             class_label=b"DM18",
             cargo_threshold=40,
-            non_traversable_tiles=0b00 if layouts[0][1] else 0b11,
+            non_traversable_tiles=0b00,  # FIXME
             callbacks={
                 "select_tile_layout": 0,
             },
         )
-        for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))
+        for i, layout in enumerate(layouts)
     ],
     b"DM18",
-    [layouts[0][0] for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))],
+    layouts,
     [
         Demo(
             "Normal 4×6 station layout",
