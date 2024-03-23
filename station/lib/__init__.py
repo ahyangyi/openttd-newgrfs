@@ -197,6 +197,54 @@ class AMetaStation:
             g.add(station)
 
 
+class AGroundSprite:
+    def __init__(self, sprite):
+        self.sprite = sprite
+
+    def to_grf(self, sprite_list):
+        if type(self.sprite) is int:
+            is_global = True
+            i = self.sprite
+        else:
+            is_global = False
+            i = sprite_list.index(self.sprite)
+        return (
+            grf.GroundSprite(
+                sprite=grf.SpriteRef(
+                    id=i,
+                    pal=0,
+                    is_global=is_global,
+                    use_recolour=False,
+                    always_transparent=False,
+                    no_transparent=False,
+                ),
+                flags=0,
+            ),
+        )
+
+
+class AParentSprite:
+    def __init__(self, sprite, extent, offset):
+        self.sprite = sprite
+        self.extent = extent
+        self.offset = offset
+
+    def to_grf(self, sprite_list):
+        return grf.ParentSprite(
+            sprite=grf.SpriteRef(
+                id=0x42D + sprite_list.index(self.sprite),
+                pal=0,
+                is_global=False,
+                use_recolour=True,
+                always_transparent=False,
+                no_transparent=False,
+            ),
+            extent=self.extent,
+            offset=self.offset,
+            flags=0,
+        )
+
+
 class ALayout:
     def __init__(self, ground_sprite, sprites):
         self.ground_sprite = ground_sprite
