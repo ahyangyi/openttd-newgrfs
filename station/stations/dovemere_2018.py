@@ -14,7 +14,7 @@ from agrf.magic import Switch
 from .platforms import sprites as platform_sprites
 
 
-def quickload(name, type, traversable):
+def quickload(name, type, traversable, platform):
     v = LazyVoxel(
         name,
         prefix="station/voxels/render/dovemere_2018",
@@ -51,91 +51,29 @@ layouts = []
     v_central,
     tiny,
 ) = [
-    quickload(name, type, traversable)
-    for name, type, traversable in [
-        ("corner", BuildingSpriteSheetFull, False),
-        ("front_normal", BuildingSpriteSheetSymmetricalX, False),
-        ("front_gate", BuildingSpriteSheetFull, False),
-        ("front_gate_extender", BuildingSpriteSheetSymmetricalX, False),
-        ("central", BuildingSpriteSheetSymmetrical, True),
-        ("central_windowed", BuildingSpriteSheetSymmetricalY, True),
-        ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True),
-        ("side_a", BuildingSpriteSheetFull, True),
-        ("side_a2", BuildingSpriteSheetSymmetricalY, True),
-        ("side_b", BuildingSpriteSheetFull, True),
-        ("side_b2", BuildingSpriteSheetSymmetricalY, True),
-        ("side_c", BuildingSpriteSheetSymmetricalY, True),
-        ("h_end", BuildingSpriteSheetSymmetricalY, True),
-        ("h_normal", BuildingSpriteSheetSymmetrical, True),
-        ("h_gate", BuildingSpriteSheetSymmetricalY, True),
-        ("h_gate_extender", BuildingSpriteSheetSymmetrical, True),
-        ("v_end", BuildingSpriteSheetSymmetricalX, False),
-        ("v_central", BuildingSpriteSheetSymmetrical, True),
-        ("tiny", BuildingSpriteSheetSymmetrical, True),
+    quickload(name, type, traversable, platform)
+    for name, type, traversable, platform in [
+        ("corner", BuildingSpriteSheetFull, False, False),
+        ("front_normal", BuildingSpriteSheetSymmetricalX, False, False),
+        ("front_gate", BuildingSpriteSheetFull, False, False),
+        ("front_gate_extender", BuildingSpriteSheetSymmetricalX, False, False),
+        ("central", BuildingSpriteSheetSymmetrical, True, False),
+        ("central_windowed", BuildingSpriteSheetSymmetricalY, True, False),
+        ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True, False),
+        ("side_a", BuildingSpriteSheetFull, True, True),
+        ("side_a2", BuildingSpriteSheetSymmetricalY, True, True),
+        ("side_b", BuildingSpriteSheetFull, True, True),
+        ("side_b2", BuildingSpriteSheetSymmetricalY, True, True),
+        ("side_c", BuildingSpriteSheetSymmetricalY, True, True),
+        ("h_end", BuildingSpriteSheetSymmetricalY, True, False),
+        ("h_normal", BuildingSpriteSheetSymmetrical, True, False),
+        ("h_gate", BuildingSpriteSheetSymmetricalY, True, False),
+        ("h_gate_extender", BuildingSpriteSheetSymmetrical, True, False),
+        ("v_end", BuildingSpriteSheetSymmetricalX, False, False),
+        ("v_central", BuildingSpriteSheetSymmetrical, True, False),
+        ("tiny", BuildingSpriteSheetSymmetrical, True, False),
     ]
 ]
-
-
-def fixme_layout(ground_sprite, sprite_id, platform_id, flag):
-    layouts = [
-        grf.GroundSprite(
-            sprite=grf.SpriteRef(
-                id=ground_sprite,
-                pal=0,
-                is_global=True,
-                use_recolour=False,
-                always_transparent=False,
-                no_transparent=False,
-            ),
-            flags=0,
-        ),
-        grf.ParentSprite(
-            sprite=grf.SpriteRef(
-                id=0x42D + sprite_id,
-                pal=0,
-                is_global=False,
-                use_recolour=True,
-                always_transparent=False,
-                no_transparent=False,
-            ),
-            extent=(16, 16, 48),
-            offset=(0, 0, 0),
-            flags=0,
-        ),
-    ]
-    if flag & 1:
-        layouts.append(
-            grf.ParentSprite(
-                sprite=grf.SpriteRef(
-                    id=0x42D + platform_id,
-                    pal=0,
-                    is_global=False,
-                    use_recolour=True,
-                    always_transparent=False,
-                    no_transparent=False,
-                ),
-                extent=(16, 6, 6),
-                offset=(0, 10, 0),
-                flags=0,
-            )
-        )
-    if flag & 2:
-        layouts.append(
-            grf.ParentSprite(
-                sprite=grf.SpriteRef(
-                    id=0x42D + platform_id + 2,
-                    pal=0,
-                    is_global=False,
-                    use_recolour=True,
-                    always_transparent=False,
-                    no_transparent=False,
-                ),
-                extent=(16, 6, 6),
-                offset=(0, 0, 0),
-                flags=0,
-            ),
-        )
-    return grf.SpriteLayout(layouts)
 
 
 def get_back_index(l, r):
