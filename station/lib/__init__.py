@@ -75,6 +75,26 @@ class BinaryVariantMixin:
     def M(self):
         return self[1]
 
+    @property
+    def L(self):
+        return self
+
+    @property
+    def R(self):
+        return self
+
+    @property
+    def T(self):
+        return self
+
+    @property
+    def TL(self):
+        return self.T.L
+
+    @property
+    def TR(self):
+        return self.T.R
+
 
 class BuildingSpriteSheetFull(BinaryVariantMixin):
     def __init__(self, obj):
@@ -95,14 +115,6 @@ class BuildingSpriteSheetFull(BinaryVariantMixin):
     @property
     def T(self):
         return self[4]
-
-    @property
-    def TL(self):
-        return self[4]
-
-    @property
-    def TR(self):
-        return self[6]
 
 
 class BuildingSpriteSheetSymmetricalX(BinaryVariantMixin):

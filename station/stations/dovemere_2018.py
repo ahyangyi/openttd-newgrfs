@@ -28,26 +28,39 @@ def quickload(name, type, traversable, platform):
 
     ground = ADefaultGroundSprite(1012 if traversable else 1420)
     parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
+    plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
 
-    l = ALayout(ground, [parent])
-    # FIXME
-    if type is BuildingSpriteSheetFull:
-        l = [l, l.M, l.R, l.R.M, l.T, l.T.M, l.T.R, l.T.R.M]
-        layouts.extend(l)
-        ret = type.from_complete_list(l)
-    elif type is BuildingSpriteSheetSymmetricalX:
-        l = [l, l.M, l.T, l.T.M]
-        layouts.extend(l)
-        ret = type.from_complete_list([l[0], l[1], None, None, l[2], l[3], None, None])
-    elif type is BuildingSpriteSheetSymmetricalY:
-        l = [l, l.M, l.R, l.R.M]
-        layouts.extend(l)
-        ret = type.from_complete_list(l + [None] * 4)
+    if platform:
+        candidates = [
+            ALayout(ground, [plat, parent]),
+            ALayout(ground, [plat.T, parent]),
+            ALayout(ground, [plat, plat.T, parent]),
+        ]
     else:
-        l = [l, l.M]
-        layouts.extend(l)
-        ret = type.from_complete_list(l + [None] * 6)
+        candidates = [ALayout(ground, [parent])]
 
+    ret = []
+    for l in candidates:
+        # FIXME
+        if type is BuildingSpriteSheetFull:
+            l = [l, l.M, l.R, l.R.M, l.T, l.T.M, l.T.R, l.T.R.M]
+            layouts.extend(l)
+            ret.append(type.from_complete_list(l))
+        elif type is BuildingSpriteSheetSymmetricalX:
+            l = [l, l.M, l.T, l.T.M]
+            layouts.extend(l)
+            ret.append(type.from_complete_list([l[0], l[1], None, None, l[2], l[3], None, None]))
+        elif type is BuildingSpriteSheetSymmetricalY:
+            l = [l, l.M, l.R, l.R.M]
+            layouts.extend(l)
+            ret.append(type.from_complete_list(l + [None] * 4))
+        else:
+            l = [l, l.M]
+            layouts.extend(l)
+            ret.append(type.from_complete_list(l + [None] * 6))
+
+    if len(ret) == 1:
+        return ret[0]
     return ret
 
 
@@ -61,17 +74,17 @@ layouts = []
     central,
     central_windowed,
     central_windowed_extender,
-    side_a,
-    side_a2,
-    side_b,
-    side_b2,
-    side_c,
+    (side_a_n, side_a_f, side_a),
+    (side_a2_n, side_2a_f, side_a2),
+    (side_b_n, side_b_f, side_b),
+    (side_b2_n, side_b2_f, side_b2),
+    (side_c_n, side_c_f, side_c),
     h_end,
     h_normal,
     h_gate,
     h_gate_extender,
     v_end,
-    v_central,
+    (v_central_n, v_central_f, v_central),
     tiny,
 ) = [
     quickload(name, type, traversable, platform)
@@ -93,7 +106,7 @@ layouts = []
         ("h_gate", BuildingSpriteSheetSymmetricalY, True, False),
         ("h_gate_extender", BuildingSpriteSheetSymmetrical, True, False),
         ("v_end", BuildingSpriteSheetSymmetricalX, False, False),
-        ("v_central", BuildingSpriteSheetSymmetrical, True, False),
+        ("v_central", BuildingSpriteSheetSymmetrical, True, True),
         ("tiny", BuildingSpriteSheetSymmetrical, True, False),
     ]
 ]
