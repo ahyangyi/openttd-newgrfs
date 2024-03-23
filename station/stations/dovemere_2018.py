@@ -11,6 +11,7 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
+from .platforms import sprites as platform_sprites
 
 
 def quickload(name, type, traversable):
@@ -27,7 +28,7 @@ def quickload(name, type, traversable):
     return ret
 
 
-sprites = []
+sprites = platform_sprites.copy()
 layouts = []
 (
     corner,
@@ -73,6 +74,68 @@ layouts = []
         ("tiny", BuildingSpriteSheetSymmetrical, True),
     ]
 ]
+
+
+def fixme_layout(ground_sprite, sprite_id, platform_id, flag):
+    layouts = [
+        grf.GroundSprite(
+            sprite=grf.SpriteRef(
+                id=ground_sprite,
+                pal=0,
+                is_global=True,
+                use_recolour=False,
+                always_transparent=False,
+                no_transparent=False,
+            ),
+            flags=0,
+        ),
+        grf.ParentSprite(
+            sprite=grf.SpriteRef(
+                id=0x42D + sprite_id,
+                pal=0,
+                is_global=False,
+                use_recolour=True,
+                always_transparent=False,
+                no_transparent=False,
+            ),
+            extent=(16, 16, 48),
+            offset=(0, 0, 0),
+            flags=0,
+        ),
+    ]
+    if flag & 1:
+        layouts.append(
+            grf.ParentSprite(
+                sprite=grf.SpriteRef(
+                    id=0x42D + platform_id,
+                    pal=0,
+                    is_global=False,
+                    use_recolour=True,
+                    always_transparent=False,
+                    no_transparent=False,
+                ),
+                extent=(16, 6, 6),
+                offset=(0, 10, 0),
+                flags=0,
+            )
+        )
+    if flag & 2:
+        layouts.append(
+            grf.ParentSprite(
+                sprite=grf.SpriteRef(
+                    id=0x42D + platform_id + 2,
+                    pal=0,
+                    is_global=False,
+                    use_recolour=True,
+                    always_transparent=False,
+                    no_transparent=False,
+                ),
+                extent=(16, 6, 6),
+                offset=(0, 0, 0),
+                flags=0,
+            ),
+        )
+    return grf.SpriteLayout(layouts)
 
 
 def get_back_index(l, r):

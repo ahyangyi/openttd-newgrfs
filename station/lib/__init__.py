@@ -197,6 +197,17 @@ class AMetaStation:
             g.add(station)
 
 
+class ALayout:
+    def __init__(self, ground_sprite, sprites):
+        self.ground_sprite = ground_sprite
+        self.sprites = sprites
+
+    def to_grf(self, sprite_list):
+        return grf.SpriteLayout(
+            [self.ground_sprite.to_grf(sprite_list)] + [sprite.to_grf(sprite_list) for sprite in self.sprites]
+        )
+
+
 def simple_layout(ground_sprite, sprite_id):
     return grf.SpriteLayout(
         [
