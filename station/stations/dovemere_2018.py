@@ -7,27 +7,64 @@ from station.lib import (
     BuildingSpriteSheetSymmetricalX,
     BuildingSpriteSheetSymmetricalY,
     Demo,
-    simple_layout,
+    ADefaultGroundSprite,
+    AParentSprite,
+    ALayout,
 )
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
+from .platforms import sprites as platform_sprites
 
 
-def quickload(name, type, traversable):
+def quickload(name, type, traversable, platform):
     v = LazyVoxel(
         name,
         prefix="station/voxels/render/dovemere_2018",
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/{name}.vox": path,
         load_from="station/files/gorender.json",
     )
-    ret = type.from_complete_list(v.spritesheet())
-    sprites.extend(ret.all_variants)
-    for sprite in ret.all_variants:
-        layouts.append((sprite, traversable))
+    sprite = type.from_complete_list(v.spritesheet())
+    sprites.extend(sprite.all_variants)
+
+    ground = ADefaultGroundSprite(1012 if traversable else 1420)
+    parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
+    plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
+
+    if platform:
+        candidates = [
+            ALayout(ground, [plat, parent]),
+            ALayout(ground, [plat.T, parent]),
+            ALayout(ground, [plat, plat.T, parent]),
+        ]
+    else:
+        candidates = [ALayout(ground, [parent])]
+
+    ret = []
+    for l in candidates:
+        # FIXME
+        if type is BuildingSpriteSheetFull:
+            l = [l, l.M, l.R, l.R.M, l.T, l.T.M, l.T.R, l.T.R.M]
+            layouts.extend(l)
+            ret.append(type.from_complete_list(l))
+        elif type is BuildingSpriteSheetSymmetricalX:
+            l = [l, l.M, l.T, l.T.M]
+            layouts.extend(l)
+            ret.append(type.from_complete_list([l[0], l[1], None, None, l[2], l[3], None, None]))
+        elif type is BuildingSpriteSheetSymmetricalY:
+            l = [l, l.M, l.R, l.R.M]
+            layouts.extend(l)
+            ret.append(type.from_complete_list(l + [None] * 4))
+        else:
+            l = [l, l.M]
+            layouts.extend(l)
+            ret.append(type.from_complete_list(l + [None] * 6))
+
+    if len(ret) == 1:
+        return ret[0]
     return ret
 
 
-sprites = []
+sprites = platform_sprites.copy()
 layouts = []
 (
     corner,
@@ -37,40 +74,40 @@ layouts = []
     central,
     central_windowed,
     central_windowed_extender,
-    side_a,
-    side_a2,
-    side_b,
-    side_b2,
-    side_c,
+    (side_a_n, side_a_f, side_a),
+    (side_a2_n, side_2a_f, side_a2),
+    (side_b_n, side_b_f, side_b),
+    (side_b2_n, side_b2_f, side_b2),
+    (side_c_n, side_c_f, side_c),
     h_end,
     h_normal,
     h_gate,
     h_gate_extender,
     v_end,
-    v_central,
+    (v_central_n, v_central_f, v_central),
     tiny,
 ) = [
-    quickload(name, type, traversable)
-    for name, type, traversable in [
-        ("corner", BuildingSpriteSheetFull, False),
-        ("front_normal", BuildingSpriteSheetSymmetricalX, False),
-        ("front_gate", BuildingSpriteSheetFull, False),
-        ("front_gate_extender", BuildingSpriteSheetSymmetricalX, False),
-        ("central", BuildingSpriteSheetSymmetrical, True),
-        ("central_windowed", BuildingSpriteSheetSymmetricalY, True),
-        ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True),
-        ("side_a", BuildingSpriteSheetFull, True),
-        ("side_a2", BuildingSpriteSheetSymmetricalY, True),
-        ("side_b", BuildingSpriteSheetFull, True),
-        ("side_b2", BuildingSpriteSheetSymmetricalY, True),
-        ("side_c", BuildingSpriteSheetSymmetricalY, True),
-        ("h_end", BuildingSpriteSheetSymmetricalY, True),
-        ("h_normal", BuildingSpriteSheetSymmetrical, True),
-        ("h_gate", BuildingSpriteSheetSymmetricalY, True),
-        ("h_gate_extender", BuildingSpriteSheetSymmetrical, True),
-        ("v_end", BuildingSpriteSheetSymmetricalX, False),
-        ("v_central", BuildingSpriteSheetSymmetrical, True),
-        ("tiny", BuildingSpriteSheetSymmetrical, True),
+    quickload(name, type, traversable, platform)
+    for name, type, traversable, platform in [
+        ("corner", BuildingSpriteSheetFull, False, False),
+        ("front_normal", BuildingSpriteSheetSymmetricalX, False, False),
+        ("front_gate", BuildingSpriteSheetFull, False, False),
+        ("front_gate_extender", BuildingSpriteSheetSymmetricalX, False, False),
+        ("central", BuildingSpriteSheetSymmetrical, True, False),
+        ("central_windowed", BuildingSpriteSheetSymmetricalY, True, False),
+        ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True, False),
+        ("side_a", BuildingSpriteSheetFull, True, True),
+        ("side_a2", BuildingSpriteSheetSymmetricalY, True, True),
+        ("side_b", BuildingSpriteSheetFull, True, True),
+        ("side_b2", BuildingSpriteSheetSymmetricalY, True, True),
+        ("side_c", BuildingSpriteSheetSymmetricalY, True, True),
+        ("h_end", BuildingSpriteSheetSymmetricalY, True, False),
+        ("h_normal", BuildingSpriteSheetSymmetrical, True, False),
+        ("h_gate", BuildingSpriteSheetSymmetricalY, True, False),
+        ("h_gate_extender", BuildingSpriteSheetSymmetrical, True, False),
+        ("v_end", BuildingSpriteSheetSymmetricalX, False, False),
+        ("v_central", BuildingSpriteSheetSymmetrical, True, True),
+        ("tiny", BuildingSpriteSheetSymmetrical, True, False),
     ]
 ]
 
@@ -190,16 +227,13 @@ cb41 = Switch(
     },
     default=central,
     code="var(0x41, shift=24, and=0x0000000f)",
-).to_index(sprites)
+).to_index(layouts)
 
 the_station = AStation(
     id=0x00,
     translation_name="DOVEMERE_2018",
     sprites=sprites,
-    layouts=[
-        simple_layout(1012 - i % 2 if traversable else 1420, sprites.index(s))
-        for i, (s, traversable) in enumerate(layouts)
-    ],
+    layouts=[layout.to_grf(sprites) for layout in layouts],
     class_label=b"DM18",
     cargo_threshold=40,
     non_traversable_tiles=0b00111100,
@@ -234,13 +268,14 @@ the_stations = AMetaStation(
         AStation(
             id=1 + i,
             translation_name="DOVEMERE_2018",  # FIXME
-            sprites=[s for s, _ in layouts],
+            sprites=sprites,  # FIXME
             layouts=[
-                simple_layout(1012 - i % 2 if traversable else 1420, i) for i, (s, traversable) in enumerate(layouts)
+                layouts[0].to_grf(sprites),
+                layouts[1].to_grf(sprites),
             ],
             class_label=b"DM18",
             cargo_threshold=40,
-            non_traversable_tiles=0b00 if layouts[0][1] else 0b11,
+            non_traversable_tiles=0b00,  # FIXME
             callbacks={
                 "select_tile_layout": 0,
             },
@@ -248,7 +283,7 @@ the_stations = AMetaStation(
         for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))
     ],
     b"DM18",
-    [layouts[0][0] for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))],
+    layouts,
     [
         Demo(
             "Normal 4×6 station layout",
