@@ -349,34 +349,3 @@ class ALayout:
 
     def __repr__(self):
         return f"<ALayout:{self.ground_sprite}:{self.sprites}>"
-
-
-def simple_layout(ground_sprite, sprite_id):
-    return grf.SpriteLayout(
-        [
-            grf.GroundSprite(
-                sprite=grf.SpriteRef(
-                    id=ground_sprite,
-                    pal=0,
-                    is_global=True,
-                    use_recolour=False,
-                    always_transparent=False,
-                    no_transparent=False,
-                ),
-                flags=0,
-            ),
-            grf.ParentSprite(
-                sprite=grf.SpriteRef(
-                    id=0x42D + sprite_id,
-                    pal=0,
-                    is_global=False,
-                    use_recolour=True,
-                    always_transparent=False,
-                    no_transparent=False,
-                ),
-                extent=(16, 16, 48),
-                offset=(0, 0, 0),
-                flags=0,
-            ),
-        ]
-    )

@@ -7,7 +7,6 @@ from station.lib import (
     BuildingSpriteSheetSymmetricalX,
     BuildingSpriteSheetSymmetricalY,
     Demo,
-    simple_layout,
     ADefaultGroundSprite,
     AParentSprite,
     ALayout,
@@ -29,6 +28,7 @@ def quickload(name, type, traversable, platform):
     layout = ALayout(
         ADefaultGroundSprite(1012 if traversable else 1420), [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))]
     )
+    # FIXME
     if type is BuildingSpriteSheetFull:
         layouts.append(layout)
         layouts.append(layout.T)
