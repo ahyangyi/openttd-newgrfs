@@ -206,18 +206,16 @@ class ADefaultGroundSprite:
         self.sprite = sprite
 
     def to_grf(self, sprite_list):
-        return (
-            grf.GroundSprite(
-                sprite=grf.SpriteRef(
-                    id=self.sprite,
-                    pal=0,
-                    is_global=True,
-                    use_recolour=False,
-                    always_transparent=False,
-                    no_transparent=False,
-                ),
-                flags=0,
+        return grf.GroundSprite(
+            sprite=grf.SpriteRef(
+                id=self.sprite,
+                pal=0,
+                is_global=True,
+                use_recolour=False,
+                always_transparent=False,
+                no_transparent=False,
             ),
+            flags=0,
         )
 
     @property
@@ -236,18 +234,16 @@ class AGroundSprite:
         self.sprite = sprite
 
     def to_grf(self, sprite_list):
-        return (
-            grf.GroundSprite(
-                sprite=grf.SpriteRef(
-                    id=sprite_list.index(self.sprite),
-                    pal=0,
-                    is_global=False,
-                    use_recolour=False,
-                    always_transparent=False,
-                    no_transparent=False,
-                ),
-                flags=0,
+        return grf.GroundSprite(
+            sprite=grf.SpriteRef(
+                id=sprite_list.index(self.sprite),
+                pal=0,
+                is_global=False,
+                use_recolour=False,
+                always_transparent=False,
+                no_transparent=False,
             ),
+            flags=0,
         )
 
     # FIXME add methods
@@ -285,12 +281,12 @@ class AParentSprite:
 
     @property
     def R(self):
-        new_offset = (16 - self.offset[0], self.offset[1], self.offset[2])
+        new_offset = (16 - self.offset[0] - self.extent[0], self.offset[1], self.offset[2])
         return AParentSprite(self.sprite.R, self.extent, new_offset)
 
     @property
     def T(self):
-        new_offset = (self.offset[0], 16 - self.offset[1], self.offset[2])
+        new_offset = (self.offset[0], 16 - self.offset[1] - self.extent[1], self.offset[2])
         return AParentSprite(self.sprite.T, self.extent, new_offset)
 
     TL = T
