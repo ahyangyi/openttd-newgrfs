@@ -58,8 +58,8 @@ def simple_layout(ground_sprite, sprite_id, flag):
                     always_transparent=False,
                     no_transparent=False,
                 ),
-                extent=(16, 6, 6),
-                offset=(0, 10, 0),
+                extent=(16, 6, 6) if sprite_id % 2 == 0 else (6, 16, 6),
+                offset=(0, 10, 0) if sprite_id % 2 == 0 else (10, 0, 6),
                 flags=0,
             )
         )
@@ -74,7 +74,7 @@ def simple_layout(ground_sprite, sprite_id, flag):
                     always_transparent=False,
                     no_transparent=False,
                 ),
-                extent=(16, 6, 6),
+                extent=(16, 6, 6) if sprite_id % 2 == 0 else (6, 16, 6),
                 offset=(0, 0, 0),
                 flags=0,
             ),
