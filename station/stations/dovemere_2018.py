@@ -28,43 +28,23 @@ def quickload(name, type, traversable, platform):
 
     ground = ADefaultGroundSprite(1012 if traversable else 1420)
     parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
+
+    l = ALayout(ground, [parent])
     # FIXME
     if type is BuildingSpriteSheetFull:
-        l = [
-            ALayout(ground, [parent]),
-            ALayout(ground.M, [parent.M]),
-            ALayout(ground, [parent.R]),
-            ALayout(ground.M, [parent.R.M]),
-            ALayout(ground, [parent.T]),
-            ALayout(ground.M, [parent.T.M]),
-            ALayout(ground, [parent.T.R]),
-            ALayout(ground.M, [parent.T.R.M]),
-        ]
+        l = [l, l.M, l.R, l.R.M, l.T, l.T.M, l.T.R, l.T.R.M]
         layouts.extend(l)
         ret = type.from_complete_list(l)
     elif type is BuildingSpriteSheetSymmetricalX:
-        l = [
-            ALayout(ground, [parent]),
-            ALayout(ground.M, [parent.M]),
-            ALayout(ground, [parent.T]),
-            ALayout(ground.M, [parent.T.M]),
-        ]
+        l = [l, l.M, l.T, l.T.M]
         layouts.extend(l)
         ret = type.from_complete_list([l[0], l[1], None, None, l[2], l[3], None, None])
     elif type is BuildingSpriteSheetSymmetricalY:
-        l = [
-            ALayout(ground, [parent]),
-            ALayout(ground.M, [parent.M]),
-            ALayout(ground, [parent.R]),
-            ALayout(ground.M, [parent.R.M]),
-        ]
+        l = [l, l.M, l.R, l.R.M]
         layouts.extend(l)
         ret = type.from_complete_list(l + [None] * 4)
     else:
-        l = [
-            ALayout(ground, [parent]),
-            ALayout(ground.M, [parent.M]),
-        ]
+        l = [l, l.M]
         layouts.extend(l)
         ret = type.from_complete_list(l + [None] * 6)
 

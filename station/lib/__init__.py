@@ -323,3 +323,15 @@ class ALayout:
 
     def __repr__(self):
         return f"<ALayout:{self.ground_sprite}:{self.sprites}>"
+
+    def __getattr__(self, name):
+        call = lambda x: getattr(x, name)
+        new_ground_sprite = call(self.ground_sprite)
+        new_sprites = [call(sprite) for sprite in self.sprites]
+        return ALayout(new_ground_sprite, new_sprites)
+
+    def __call__(self, *args, **kwargs):
+        call = lambda x: x(*args, **kwargs)
+        new_ground_sprite = call(self.ground_sprite)
+        new_sprites = call(self.sprites)
+        return ALayout(new_ground_sprite, new_sprites)
