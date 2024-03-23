@@ -1,5 +1,7 @@
 import grf
 from PIL import Image
+from agrf.graphics.attach_over import attach_over
+from agrf.graphics.blend import blend
 
 
 class AStation(grf.SpriteGenerator):
@@ -168,9 +170,6 @@ class Demo:
         self.tiles = tiles
 
     def doc_graphics(self, remap):
-        from agrf.graphics.attach_over import attach_over
-        from agrf.graphics.blend import blend
-
         img = Image.new(
             "RGBA", (128 * (len(self.tiles) + len(self.tiles[0])), 200 + 64 * (len(self.tiles) + len(self.tiles[0])))
         )
@@ -178,11 +177,7 @@ class Demo:
             for c, sprite in enumerate(row[::-1]):
                 if sprite is None:
                     continue
-                masked_sprite = sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
-                subimg, _ = masked_sprite.sprite.get_image()
-                submask, _ = masked_sprite.mask.get_image()
-                submask = remap.remap_image(submask)
-                subimg = blend(subimg, submask)
+                subimg = sprite.doc_graphics(remap)
                 # FIXME: doesn't align
                 # img = attach_over(groundsprite, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -341 - 64 * r - 64 * c))
                 img = attach_over(subimg, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -200 - 64 * r - 64 * c))
@@ -317,6 +312,18 @@ class ALayout:
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = call(self.sprites)
         return ALayout(new_ground_sprite, new_sprites)
+
+    def doc_graphics(self, remap):
+        img = None
+        for sprite in self.sprites:
+            masked_sprite = sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
+            subimg, _ = masked_sprite.sprite.get_image()
+            submask, _ = masked_sprite.mask.get_image()
+            submask = remap.remap_image(submask)
+            subimg = blend(subimg, submask)
+            # img = attach_over(subimg, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -200 - 64 * r - 64 * c))
+            img = subimg
+        return img
 
 
 def simple_layout(ground_sprite, sprite_id):

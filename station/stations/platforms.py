@@ -19,24 +19,25 @@ def quickload(name, type, traversable):
         voxel_getter=lambda path=f"station/voxels/csps/{name}.vox": path,
         load_from="station/files/csps-gorender.json",
     )
-    ret = type.from_complete_list(v.spritesheet(xdiff=10))
-    sprites.extend(ret.all_variants)
+    sprite = type.from_complete_list(v.spritesheet(xdiff=10))
+    sprites.extend(sprite.all_variants)
 
-    ps = AParentSprite(ret, (16, 6, 6), (0, 10, 0))
+    ps = AParentSprite(sprite, (16, 6, 6), (0, 10, 0))
+    ret = [
+        ALayout(ADefaultGroundSprite(1012), [ps]),
+        ALayout(ADefaultGroundSprite(1012), [ps.T]),
+        ALayout(ADefaultGroundSprite(1012), [ps, ps.T]),
+    ]
 
-    layouts.extend(
-        [
-            ALayout(ADefaultGroundSprite(1012), [ps]),
-            ALayout(ADefaultGroundSprite(1012), [ps.T]),
-            ALayout(ADefaultGroundSprite(1012), [ps, ps.T]),
-        ]
-    )
-    return ret
+    layouts.extend(ret)
+    return ret[0], ret[2]
 
 
 sprites = []
 layouts = []
-(pl1_low_white,) = [
+[
+    (pl1_low_white, pl1_low_white_d),
+] = [
     quickload(name, type, traversable)
     for name, type, traversable in [
         ("pl1_low_white", BuildingSpriteSheetSymmetricalX, True),
@@ -63,8 +64,8 @@ the_stations = AMetaStation(
         for i, layout in enumerate(layouts)
     ],
     b"PLAT",
-    [],  # FIXME need new layout interface ;)
+    layouts,
     [
-        Demo("Test", [[pl1_low_white]]),
+        Demo("Test", [[pl1_low_white], [pl1_low_white_d], [pl1_low_white.T]]),
     ],
 )
