@@ -4,10 +4,12 @@ import argparse
 from station.lib.docgen import gen_docs
 import station.stations.dovemere_2018
 import station.stations.dovemere_north_2018
+import station.stations.platforms
 
 metastations = [
     station.stations.dovemere_2018.the_stations,
     station.stations.dovemere_north_2018.the_stations,
+    station.stations.platforms.the_stations,
 ]
 
 

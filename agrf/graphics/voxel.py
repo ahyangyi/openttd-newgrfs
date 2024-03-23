@@ -10,8 +10,10 @@ from agrf.actions import FakeReferencingGenericSpriteLayout
 
 
 class LazyVoxel(Config):
-    def __init__(self, name, *, prefix=None, voxel_getter=None, load_from=None, config=None):
+    def __init__(self, name, *, prefix=None, voxel_getter=None, load_from=None, config=None, subset=None):
         super().__init__(load_from=load_from, config=config)
+        if subset is not None:
+            self.config = self.subset(subset).config
         self.name = name
         self.prefix = prefix
         self.voxel_getter = voxel_getter
@@ -155,6 +157,7 @@ class LazyVoxel(Config):
             [(x["width"], x.get("height", 0)) for x in self.config["sprites"]],
             [x["angle"] for x in self.config["sprites"]],
             bbox=self.config["size"],
+            deltas=self.config.get("agrf_deltas", None),  # no default -- erroring out is graceful
             bbox_joggle=self.config.get("agrf_bbox_joggle", None),
             xdiff=real_xdiff,
             ydiff=real_ydiff,
