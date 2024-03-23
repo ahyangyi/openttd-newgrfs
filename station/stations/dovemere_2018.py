@@ -11,6 +11,7 @@ from station.lib import (
     AParentSprite,
     ALayout,
 )
+from pygorender import Config
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
 from .platforms import sprites as platform_sprites
@@ -22,6 +23,7 @@ def quickload(name, type, traversable, platform):
         prefix="station/voxels/render/dovemere_2018",
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/{name}.vox": path,
         load_from="station/files/gorender.json",
+        subset=type.render_indices(),
     )
     sprite = type.from_complete_list(v.spritesheet())
     sprites.extend(sprite.all_variants)
@@ -49,15 +51,15 @@ def quickload(name, type, traversable, platform):
         elif type is BuildingSpriteSheetSymmetricalX:
             l = [l, l.M, l.T, l.T.M]
             layouts.extend(l)
-            ret.append(type.from_complete_list([l[0], l[1], None, None, l[2], l[3], None, None]))
+            ret.append(type.from_complete_list(l))
         elif type is BuildingSpriteSheetSymmetricalY:
             l = [l, l.M, l.R, l.R.M]
             layouts.extend(l)
-            ret.append(type.from_complete_list(l + [None] * 4))
+            ret.append(type.from_complete_list(l))
         else:
             l = [l, l.M]
             layouts.extend(l)
-            ret.append(type.from_complete_list(l + [None] * 6))
+            ret.append(type.from_complete_list(l))
 
     if len(ret) == 1:
         return ret[0]
