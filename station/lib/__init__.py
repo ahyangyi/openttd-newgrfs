@@ -116,6 +116,10 @@ class BuildingSpriteSheetFull(BinaryVariantMixin):
     def T(self):
         return self[4]
 
+    @staticmethod
+    def render_indices():
+        return list(range(8))
+
 
 class BuildingSpriteSheetSymmetricalX(BinaryVariantMixin):
     def __init__(self, obj):
@@ -123,7 +127,7 @@ class BuildingSpriteSheetSymmetricalX(BinaryVariantMixin):
 
     @staticmethod
     def from_complete_list(sprites):
-        return BinaryVariantMixin.create_variants(BuildingSpriteSheetSymmetricalX, [sprites[i] for i in [0, 1, 4, 5]])
+        return BinaryVariantMixin.create_variants(BuildingSpriteSheetSymmetricalX, sprites)
 
     @property
     def C(self):
@@ -133,6 +137,10 @@ class BuildingSpriteSheetSymmetricalX(BinaryVariantMixin):
     def T(self):
         return self[2]
 
+    @staticmethod
+    def render_indices():
+        return [0, 1, 4, 5]
+
 
 class BuildingSpriteSheetSymmetricalY(BinaryVariantMixin):
     def __init__(self, obj):
@@ -140,7 +148,7 @@ class BuildingSpriteSheetSymmetricalY(BinaryVariantMixin):
 
     @staticmethod
     def from_complete_list(sprites):
-        return BinaryVariantMixin.create_variants(BuildingSpriteSheetSymmetricalY, [sprites[i] for i in [0, 1, 2, 3]])
+        return BinaryVariantMixin.create_variants(BuildingSpriteSheetSymmetricalY, sprites)
 
     @property
     def L(self):
@@ -154,6 +162,10 @@ class BuildingSpriteSheetSymmetricalY(BinaryVariantMixin):
     def T(self):
         return self
 
+    @staticmethod
+    def render_indices():
+        return [0, 1, 2, 3]
+
 
 class BuildingSpriteSheetSymmetrical(BinaryVariantMixin):
     def __init__(self, obj):
@@ -161,11 +173,15 @@ class BuildingSpriteSheetSymmetrical(BinaryVariantMixin):
 
     @staticmethod
     def from_complete_list(sprites):
-        return BinaryVariantMixin.create_variants(BuildingSpriteSheetSymmetricalY, [sprites[i] for i in [0, 1]])
+        return BinaryVariantMixin.create_variants(BuildingSpriteSheetSymmetricalY, sprites)
 
     @property
     def T(self):
         return self
+
+    @staticmethod
+    def render_indices():
+        return [0, 1]
 
 
 groundsprite = Image.open("third_party/opengfx2/1012.png")

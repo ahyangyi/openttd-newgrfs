@@ -18,6 +18,7 @@ def quickload(name, type, traversable):
         prefix="station/voxels/render/csps",
         voxel_getter=lambda path=f"station/voxels/csps/{name}.vox": path,
         load_from="station/files/csps-gorender.json",
+        subset=type.render_indices(),
     )
     sprite = type.from_complete_list(v.spritesheet(xdiff=10))
     sprites.extend(sprite.all_variants)

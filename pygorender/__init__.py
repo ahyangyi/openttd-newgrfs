@@ -18,6 +18,11 @@ class Config:
     def copy(self):
         return Config(config=deepcopy(self.config))
 
+    def subset(self, indices):
+        new_config = deepcopy(self.config)
+        new_config["sprites"] = [new_config["sprites"][i] for i in indices]
+        return Config(config=new_config)
+
 
 def render(config, vox_path, output_path=None):
     if output_path is not None:
