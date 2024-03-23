@@ -155,7 +155,7 @@ class LazyVoxel(Config):
             [(x["width"], x.get("height", 0)) for x in self.config["sprites"]],
             [x["angle"] for x in self.config["sprites"]],
             bbox=self.config["size"],
-            deltas=self.config.get("agrf_deltas", None), # no default -- erroring out is graceful
+            deltas=self.config.get("agrf_deltas", None),  # no default -- erroring out is graceful
             bbox_joggle=self.config.get("agrf_bbox_joggle", None),
             xdiff=real_xdiff,
             ydiff=real_ydiff,
