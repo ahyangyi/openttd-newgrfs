@@ -16,7 +16,7 @@ def quickload(name, type, traversable):
         voxel_getter=lambda path=f"station/voxels/csps/{name}.vox": path,
         load_from="station/files/csps-gorender.json",
     )
-    ret = type.from_complete_list(v.spritesheet())
+    ret = type.from_complete_list(v.spritesheet(xdiff=10))
     sprites.extend(ret.all_variants)
     for sprite in ret.all_variants:
         layouts.append((sprite, traversable))
