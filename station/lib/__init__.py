@@ -296,34 +296,11 @@ class ALayout:
     def __init__(self, ground_sprite, sprites):
         self.ground_sprite = ground_sprite
         self.sprites = sprites
-        self.attr_cache = {}
-        self.call_cache = {}
 
     def to_grf(self, sprite_list):
         return grf.SpriteLayout(
             [self.ground_sprite.to_grf(sprite_list)] + [sprite.to_grf(sprite_list) for sprite in self.sprites]
         )
-
-    def __getattr__(self, name):
-        if name in self.attr_cache:
-            return self.attr_cache[name]
-        call = lambda x: getattr(x, name)
-        new_ground_sprite = call(self.ground_sprite)
-        new_sprites = [call(sprite) for sprite in self.sprites]
-        ret = ALayout(new_ground_sprite, new_sprites)
-        self.attr_cache[name] = ret
-        return ret
-
-    def __call__(self, *args, **kwargs):
-        key = deep_freeze((args, kwargs))
-        if key in self.call_cache:
-            return self.call_cache[key]
-        call = lambda x: x(*args, **kwargs)
-        new_ground_sprite = call(self.ground_sprite)
-        new_sprites = call(self.sprites)
-        ret = ALayout(new_ground_sprite, new_sprites)
-        self.call_cache[key] = ret
-        return ret
 
     def doc_graphics(self, remap):
         img = Image.new("RGBA", (256, 128))
@@ -342,9 +319,6 @@ class ALayout:
         return img
 
     def to_index(self, layout_pool):
-        print(self, id(self))
-        for i, x in enumerate(layout_pool):
-            print(i, x, id(x))
         return layout_pool.index(self)
 
     def __repr__(self):

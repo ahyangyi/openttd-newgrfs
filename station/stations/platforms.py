@@ -25,18 +25,21 @@ def quickload(name, type, traversable):
     ps = AParentSprite(sprite, (16, 6, 6), (0, 10, 0))
     ret = [
         ALayout(ADefaultGroundSprite(1012), [ps]),
+        ALayout(ADefaultGroundSprite(1011), [ps.M]),
         ALayout(ADefaultGroundSprite(1012), [ps.T]),
+        ALayout(ADefaultGroundSprite(1011), [ps.T.M]),
         ALayout(ADefaultGroundSprite(1012), [ps, ps.T]),
+        ALayout(ADefaultGroundSprite(1011), [ps.M, ps.T.M]),
     ]
 
     layouts.extend(ret)
-    return ret[0], ret[2]
+    return ret
 
 
 sprites = []
 layouts = []
 [
-    (pl1_low_white, pl1_low_white_d),
+    (pl1_low_white, pl1_low_white_m, pl1_low_white_t, pl1_low_white_t_m, pl1_low_white_d, pl1_low_white_d_m),
 ] = [
     quickload(name, type, traversable)
     for name, type, traversable in [
@@ -52,8 +55,8 @@ the_stations = AMetaStation(
             translation_name="DOVEMERE_2018",  # FIXME
             sprites=sprites,  # FIXME
             layouts=[
-                layout.to_grf(sprites),
-                layout.M.to_grf(sprites),
+                layout[0].to_grf(sprites),
+                layout[1].to_grf(sprites),
             ],
             class_label=b"PLAT",
             cargo_threshold=40,
@@ -61,11 +64,11 @@ the_stations = AMetaStation(
                 "select_tile_layout": 0,
             },
         )
-        for i, layout in enumerate(layouts)
+        for i, layout in enumerate(zip(layouts[::2], layouts[1::2]))
     ],
     b"PLAT",
     layouts,
     [
-        Demo("Test", [[pl1_low_white], [pl1_low_white_d], [pl1_low_white.T]]),
+        Demo("Test", [[pl1_low_white], [pl1_low_white_d], [pl1_low_white_t]]),
     ],
 )

@@ -25,25 +25,50 @@ def quickload(name, type, traversable, platform):
     )
     sprite = type.from_complete_list(v.spritesheet())
     sprites.extend(sprite.all_variants)
-    layout = ALayout(
-        ADefaultGroundSprite(1012 if traversable else 1420), [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))]
-    )
+
+    ground = ADefaultGroundSprite(1012 if traversable else 1420)
+    parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
     # FIXME
     if type is BuildingSpriteSheetFull:
-        layouts.append(layout)
-        layouts.append(layout.T)
-        layouts.append(layout.R)
-        layouts.append(layout.TR)
+        l = [
+            ALayout(ground, [parent]),
+            ALayout(ground.M, [parent.M]),
+            ALayout(ground, [parent.R]),
+            ALayout(ground.M, [parent.R.M]),
+            ALayout(ground, [parent.T]),
+            ALayout(ground.M, [parent.T.M]),
+            ALayout(ground, [parent.T.R]),
+            ALayout(ground.M, [parent.T.R.M]),
+        ]
+        layouts.extend(l)
+        ret = type.from_complete_list(l)
     elif type is BuildingSpriteSheetSymmetricalX:
-        layouts.append(layout)
-        layouts.append(layout.T)
+        l = [
+            ALayout(ground, [parent]),
+            ALayout(ground.M, [parent.M]),
+            ALayout(ground, [parent.T]),
+            ALayout(ground.M, [parent.T.M]),
+        ]
+        layouts.extend(l)
+        ret = type.from_complete_list([l[0], l[1], None, None, l[2], l[3], None, None])
     elif type is BuildingSpriteSheetSymmetricalY:
-        layouts.append(layout)
-        layouts.append(layout.R)
+        l = [
+            ALayout(ground, [parent]),
+            ALayout(ground.M, [parent.M]),
+            ALayout(ground, [parent.R]),
+            ALayout(ground.M, [parent.R.M]),
+        ]
+        layouts.extend(l)
+        ret = type.from_complete_list(l + [None] * 4)
     else:
-        layouts.append(layout)
+        l = [
+            ALayout(ground, [parent]),
+            ALayout(ground.M, [parent.M]),
+        ]
+        layouts.extend(l)
+        ret = type.from_complete_list(l + [None] * 6)
 
-    return layout
+    return ret
 
 
 sprites = platform_sprites.copy()
@@ -250,10 +275,10 @@ the_stations = AMetaStation(
         AStation(
             id=1 + i,
             translation_name="DOVEMERE_2018",  # FIXME
-            sprites=[layout.sprites[0].sprite, layout.M.sprites[0].sprite],
+            sprites=sprites,  # FIXME
             layouts=[
-                layout.to_grf(sprites),
-                layout.M.to_grf(sprites),
+                layouts[0].to_grf(sprites),
+                layouts[1].to_grf(sprites),
             ],
             class_label=b"DM18",
             cargo_threshold=40,
@@ -262,7 +287,7 @@ the_stations = AMetaStation(
                 "select_tile_layout": 0,
             },
         )
-        for i, layout in enumerate(layouts)
+        for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))
     ],
     b"DM18",
     layouts,
