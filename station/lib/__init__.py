@@ -74,6 +74,10 @@ class BinaryVariantMixin:
     def to_index(self, sprite_pool):
         return sprite_pool.index(self)
 
+    @property
+    def M(self):
+        return self[1]
+
 
 class BuildingSpriteSheetFull(BinaryVariantMixin):
     def __init__(self, obj):
@@ -197,23 +201,17 @@ class AMetaStation:
             g.add(station)
 
 
-class AGroundSprite:
+class ADefaultGroundSprite:
     def __init__(self, sprite):
         self.sprite = sprite
 
     def to_grf(self, sprite_list):
-        if type(self.sprite) is int:
-            is_global = True
-            i = self.sprite
-        else:
-            is_global = False
-            i = sprite_list.index(self.sprite)
         return (
             grf.GroundSprite(
                 sprite=grf.SpriteRef(
-                    id=i,
+                    id=self.sprite,
                     pal=0,
-                    is_global=is_global,
+                    is_global=True,
                     use_recolour=False,
                     always_transparent=False,
                     no_transparent=False,
@@ -221,6 +219,38 @@ class AGroundSprite:
                 flags=0,
             ),
         )
+
+    @property
+    def L(self):
+        return self
+
+    R = T = TL = TR = L
+
+    @property
+    def M(self):
+        return ADefaultGroundSprite(self.sprite - 1 if self.sprite % 2 == 0 else self.sprite + 1)
+
+
+class AGroundSprite:
+    def __init__(self, sprite):
+        self.sprite = sprite
+
+    def to_grf(self, sprite_list):
+        return (
+            grf.GroundSprite(
+                sprite=grf.SpriteRef(
+                    id=sprite_list.index(self.sprite),
+                    pal=0,
+                    is_global=False,
+                    use_recolour=False,
+                    always_transparent=False,
+                    no_transparent=False,
+                ),
+                flags=0,
+            ),
+        )
+
+    # FIXME add methods
 
 
 class AParentSprite:
@@ -244,6 +274,31 @@ class AParentSprite:
             flags=0,
         )
 
+    @property
+    def L(self):
+        return self
+
+    @property
+    def M(self):
+        mirror = lambda x: (x[1], x[0], x[2])
+        return AParentSprite(self.sprite.M, mirror(self.extent), mirror(self.offset))
+
+    @property
+    def R(self):
+        new_offset = (16 - self.offset[0], self.offset[1], self.offset[2])
+        return AParentSprite(self.sprite.R, self.extent, new_offset)
+
+    @property
+    def T(self):
+        new_offset = (self.offset[0], 16 - self.offset[1], self.offset[2])
+        return AParentSprite(self.sprite.T, self.extent, new_offset)
+
+    TL = T
+
+    @property
+    def TR(self):
+        return self.T.R
+
 
 class ALayout:
     def __init__(self, ground_sprite, sprites):
@@ -254,6 +309,18 @@ class ALayout:
         return grf.SpriteLayout(
             [self.ground_sprite.to_grf(sprite_list)] + [sprite.to_grf(sprite_list) for sprite in self.sprites]
         )
+
+    def __getattr__(self, name):
+        call = lambda x: getattr(x, name)
+        new_ground_sprite = call(self.ground_sprite)
+        new_sprites = [call(sprite) for sprite in self.sprites]
+        return ALayout(new_ground_sprite, new_sprites)
+
+    def __call__(self, *args, **kwargs):
+        call = lambda x: x(*args, **kwargs)
+        new_ground_sprite = call(self.ground_sprite)
+        new_sprites = call(self.sprites)
+        return ALayout(new_ground_sprite, new_sprites)
 
 
 def simple_layout(ground_sprite, sprite_id):

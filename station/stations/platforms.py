@@ -4,6 +4,9 @@ from station.lib import (
     AMetaStation,
     BuildingSpriteSheetSymmetricalX,
     Demo,
+    ADefaultGroundSprite,
+    AParentSprite,
+    ALayout,
 )
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
@@ -18,8 +21,16 @@ def quickload(name, type, traversable):
     )
     ret = type.from_complete_list(v.spritesheet(xdiff=10))
     sprites.extend(ret.all_variants)
-    for sprite in ret.all_variants:
-        layouts.append((sprite, traversable))
+
+    ps = AParentSprite(ret, (16, 6, 6), (0, 10, 0))
+
+    layouts.extend(
+        [
+            ALayout(ADefaultGroundSprite(1012), [ps]),
+            ALayout(ADefaultGroundSprite(1012), [ps.T]),
+            ALayout(ADefaultGroundSprite(1012), [ps, ps.T]),
+        ]
+    )
     return ret
 
 
@@ -33,64 +44,15 @@ layouts = []
 ]
 
 
-def simple_layout(ground_sprite, sprite_id, flag):
-    layouts = [
-        grf.GroundSprite(
-            sprite=grf.SpriteRef(
-                id=ground_sprite,
-                pal=0,
-                is_global=True,
-                use_recolour=False,
-                always_transparent=False,
-                no_transparent=False,
-            ),
-            flags=0,
-        ),
-    ]
-    if flag & 1:
-        layouts.append(
-            grf.ParentSprite(
-                sprite=grf.SpriteRef(
-                    id=0x42D + sprite_id,
-                    pal=0,
-                    is_global=False,
-                    use_recolour=True,
-                    always_transparent=False,
-                    no_transparent=False,
-                ),
-                extent=(16, 6, 6) if sprite_id % 2 == 0 else (6, 16, 6),
-                offset=(0, 10, 0) if sprite_id % 2 == 0 else (10, 0, 0),
-                flags=0,
-            )
-        )
-    if flag & 2:
-        layouts.append(
-            grf.ParentSprite(
-                sprite=grf.SpriteRef(
-                    id=0x42D + sprite_id + 2,
-                    pal=0,
-                    is_global=False,
-                    use_recolour=True,
-                    always_transparent=False,
-                    no_transparent=False,
-                ),
-                extent=(16, 6, 6) if sprite_id % 2 == 0 else (6, 16, 6),
-                offset=(0, 0, 0),
-                flags=0,
-            ),
-        )
-    return grf.SpriteLayout(layouts)
-
-
 the_stations = AMetaStation(
     [
         AStation(
-            id=0xF0 + var,
+            id=0xF0 + i,
             translation_name="DOVEMERE_2018",  # FIXME
-            sprites=[s for s, _ in layouts],
+            sprites=sprites,  # FIXME
             layouts=[
-                simple_layout(1012 - i % 2 if traversable else 1420, i, 1 + var)
-                for i, (s, traversable) in enumerate(layouts[:2])
+                layout.to_grf(sprites),
+                layout.M.to_grf(sprites),
             ],
             class_label=b"PLAT",
             cargo_threshold=40,
@@ -98,10 +60,10 @@ the_stations = AMetaStation(
                 "select_tile_layout": 0,
             },
         )
-        for var in range(3)
+        for i, layout in enumerate(layouts)
     ],
     b"PLAT",
-    [layouts[0][0] for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))],
+    [],  # FIXME need new layout interface ;)
     [
         Demo("Test", [[pl1_low_white]]),
     ],
