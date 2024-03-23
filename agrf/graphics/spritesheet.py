@@ -27,8 +27,6 @@ def guess_dimens(width, height, angle, bbox):
     return height, delta, z
 
 
-deltas = [[0, -2], [2, -1], [4, 0], [2, 1], [0, 2], [-2, 1], [-4, 0], [-2, -1]]
-
 scale_to_zoom = {4: grf.ZOOM_4X, 2: grf.ZOOM_2X, 1: grf.ZOOM_NORMAL}
 
 
@@ -61,6 +59,7 @@ def spritesheet_template(
     dimens,
     angles,
     bbox,
+    deltas,
     bbox_joggle=None,
     bpps=(8, 32),
     scales=(1, 2, 4),
@@ -87,8 +86,9 @@ def spritesheet_template(
         yrel += ydiff * scale
         yrel -= z_ydiff
 
-        xrel += deltas[direction][0] * diff * scale
-        yrel += deltas[direction][1] * diff * scale
+        if diff != 0:
+            xrel += deltas[direction][0] * diff * scale
+            yrel += deltas[direction][1] * diff * scale
 
         if bbox_joggle is not None:
             xrel += bbox_joggle[direction][0] * scale
