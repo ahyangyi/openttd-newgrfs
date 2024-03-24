@@ -24,10 +24,7 @@ class AStation(grf.SpriteGenerator):
         class_name = g.strings[f"STR_STATION_CLASS_{self._props['class_label'].decode()}"]
 
         if self.sprites:
-            layouts = []
-            for i in range(len(self.sprites)):
-                layouts.append(grf.GenericSpriteLayout(ent1=[i], ent2=[i], feature=grf.STATION))
-            self.callbacks.graphics = layouts[0]
+            self.callbacks.graphics = grf.GenericSpriteLayout(ent1=[0], ent2=[0], feature=grf.STATION)
 
         self.callbacks.set_flag_props(self._props)
 
