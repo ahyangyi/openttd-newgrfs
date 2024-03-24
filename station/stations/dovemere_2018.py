@@ -176,7 +176,7 @@ def get_single_index(l, r):
     return horizontal_layout(l, r, tiny, h_end.L, h_end.R, h_normal, h_gate, h_gate_extender)
 
 
-cb41 = Switch(
+cb14 = Switch(
     ranges={
         (0, 1): Switch(
             ranges={
@@ -258,8 +258,8 @@ the_station = AStation(
             ),
         ),
         "select_sprite_layout": grf.DualCallback(
-            default=cb41,
-            purchase=cb41,
+            default=cb14,
+            purchase=layouts.index(tiny),
         ),
     },
 )
