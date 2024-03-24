@@ -1,6 +1,6 @@
 import grf
 from PIL import Image
-from agrf.graphics.attach_over import attach_over
+from agrf.graphics.attach_over import attach_over, attach_over_masked
 from agrf.graphics.blend import blend
 from agrf.magic.switch import deep_freeze
 
@@ -203,6 +203,24 @@ class Demo:
                 img = attach_over(subimg, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -200 - 64 * r - 64 * c))
         return img.crop(img.getbbox())
 
+    def graphics(self):
+        size = (128 * (len(self.tiles) + len(self.tiles[0])), 200 + 64 * (len(self.tiles) + len(self.tiles[0])))
+        img = Image.new("RGBA", size)
+        mask = Image.new("P", size)
+        has_palette = False
+        for r, row in enumerate(self.tiles):
+            for c, sprite in enumerate(row[::-1]):
+                if sprite is None:
+                    continue
+                subimg, submask = sprite.graphics()
+                if not has_palette:
+                    has_palette = True
+                    mask.putpalette(submask.getpalette())
+                img, mask = attach_over_masked(
+                    subimg, submask, img, mask, (-128 * (len(row) - 1) - 128 * r + 128 * c, -200 - 64 * r - 64 * c)
+                )
+        return img, mask
+
 
 class AMetaStation:
     def __init__(self, stations, class_label, doc_sprites, doc_layouts):
@@ -342,6 +360,24 @@ class ALayout:
             # FIXME treat offsets seriously
             img = attach_over(subimg, img, (0, 0))
         return img
+
+    def graphics(self):
+        img = None
+        for sprite in self.sprites:
+            masked_sprite = sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
+            subimg, _ = masked_sprite.sprite.get_image()
+            submask, _ = masked_sprite.mask.get_image()
+
+            xofs = masked_sprite.sprite.xofs + sprite.offset[0] * 8 + sprite.offset[1] * 8
+            yofs = masked_sprite.sprite.yofs - sprite.offset[0] * 4 + sprite.offset[1] * 4
+
+            if img is None:
+                img = subimg
+                mask = submask
+            else:
+                # FIXME treat offsets seriously
+                img, mask = attach_over_masked(subimg, submask, img, mask, (0, 0))
+        return img, mask
 
     def to_index(self, layout_pool):
         return layout_pool.index(self)
