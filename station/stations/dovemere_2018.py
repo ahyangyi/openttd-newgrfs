@@ -113,6 +113,59 @@ layouts = []
     ]
 ]
 
+normal_demo = Demo(
+    "Normal 5×7 station layout",
+    [
+        [corner.TL, front_gate.TL, front_gate_extender.T, front_gate.TR, corner.TR],
+        [side_a.TL, central_windowed.L, central_windowed_extender, central_windowed.R, side_a.TR],
+        [side_b.TL, central_windowed.L, central_windowed_extender, central_windowed.R, side_b.TR],
+        [side_c.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_c.R],
+        [side_b.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_b.R],
+        [side_a.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_a.R],
+        [corner.L, front_gate.L, front_gate_extender, front_gate.R, corner.R],
+    ],
+)
+from PIL import Image
+
+img, mask = normal_demo.graphics()
+img.thumbnail((256, 256), Image.Resampling.LANCZOS)
+mask.thumbnail((256, 256), Image.Resampling.LANCZOS)
+img.save("test.png")
+mask.save("mask.png")
+demo_sprite = grf.AlternativeSprites(
+    grf.WithMask(
+        grf.ImageSprite(
+            img,
+            xofs=-128,
+            yofs=-192,
+            zoom=grf.ZOOM_NORMAL,
+        ),
+        grf.ImageSprite(mask),
+    ),
+    grf.WithMask(
+        grf.ImageSprite(
+            img,
+            xofs=-128,
+            yofs=-192,
+            zoom=grf.ZOOM_2X,
+        ),
+        grf.ImageSprite(mask),
+    ),
+    grf.WithMask(
+        grf.ImageSprite(
+            img,
+            xofs=-128,
+            yofs=-192,
+            zoom=grf.ZOOM_4X,
+        ),
+        grf.ImageSprite(mask),
+    ),
+)
+sprites.append(demo_sprite)
+demo_layout = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprite, (16, 16, 48), (0, 0, 0))])
+layouts.append(demo_layout)
+layouts.append(demo_layout)
+
 
 def get_back_index(l, r):
     return get_front_index(l, r).T
@@ -298,18 +351,7 @@ the_stations = AMetaStation(
                 [corner.L, front_gate.L, front_gate.R, corner.R],
             ],
         ),
-        Demo(
-            "Normal 5×7 station layout",
-            [
-                [corner.TL, front_gate.TL, front_gate_extender.T, front_gate.TR, corner.TR],
-                [side_a.TL, central_windowed.L, central_windowed_extender, central_windowed.R, side_a.TR],
-                [side_b.TL, central_windowed.L, central_windowed_extender, central_windowed.R, side_b.TR],
-                [side_c.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_c.R],
-                [side_b.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_b.R],
-                [side_a.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_a.R],
-                [corner.L, front_gate.L, front_gate_extender, front_gate.R, corner.R],
-            ],
-        ),
+        normal_demo,
         Demo(
             "A 3×10 station layout, demonstrating horizontal extensibility",
             [

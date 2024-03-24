@@ -39,9 +39,6 @@ nav_order: {i+1}
                 )
             print("# Sample Layouts", file=f)
             for i, demo in enumerate(metastation.doc_layouts):
-                img, mask = demo.graphics()
-                img.save(os.path.join(prefix, "img", f"{metastation_label}/layouts/{i}_img.png"))
-                mask.save(os.path.join(prefix, "img", f"{metastation_label}/layouts/{i}_mask.png"))
                 img = demo.doc_graphics(blue_remap)
                 img.save(os.path.join(prefix, "img", f"{metastation_label}/layouts/{i}.png"))
                 print(
