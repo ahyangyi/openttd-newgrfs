@@ -7,7 +7,9 @@ from station.lib import (
     BuildingSpriteSheetSymmetricalX,
     BuildingSpriteSheetSymmetricalY,
     Demo,
-    simple_layout,
+    ADefaultGroundSprite,
+    AParentSprite,
+    ALayout,
 )
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
@@ -19,11 +21,37 @@ def quickload(name, type, traversable):
         prefix="station/voxels/render/dovemere_north_2018",
         voxel_getter=lambda path=f"station/voxels/dovemere_north_2018/{name}.vox": path,
         load_from="station/files/gorender.json",
+        subset=type.render_indices(),
     )
-    ret = type.from_complete_list(v.spritesheet())
-    sprites.extend(ret.all_variants)
-    for sprite in ret.all_variants:
-        layouts.append((sprite, traversable))
+    sprite = type.from_complete_list(v.spritesheet())
+    sprites.extend(sprite.all_variants)
+
+    ground = ADefaultGroundSprite(1012 if traversable else 1420)
+    parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
+    candidates = [ALayout(ground, [parent])]
+
+    ret = []
+    for l in candidates:
+        # FIXME
+        if type is BuildingSpriteSheetFull:
+            l = [l, l.M, l.R, l.R.M, l.T, l.T.M, l.T.R, l.T.R.M]
+            layouts.extend(l)
+            ret.append(type.from_complete_list(l))
+        elif type is BuildingSpriteSheetSymmetricalX:
+            l = [l, l.M, l.T, l.T.M]
+            layouts.extend(l)
+            ret.append(type.from_complete_list(l))
+        elif type is BuildingSpriteSheetSymmetricalY:
+            l = [l, l.M, l.R, l.R.M]
+            layouts.extend(l)
+            ret.append(type.from_complete_list(l))
+        else:
+            l = [l, l.M]
+            layouts.extend(l)
+            ret.append(type.from_complete_list(l))
+
+    if len(ret) == 1:
+        return ret[0]
     return ret
 
 
@@ -42,13 +70,14 @@ the_stations = AMetaStation(
         AStation(
             id=0x80 + i,
             translation_name="DOVEMERE_NORTH_2018",  # FIXME
-            sprites=[s for s, _ in layouts] * 4,  # FIXME create actual foundation graphics
+            sprites=sprites,  # FIXME
             layouts=[
-                simple_layout(1012 - i % 2 if traversable else 1420, i) for i, (s, traversable) in enumerate(layouts)
+                layouts[0].to_grf(sprites),
+                layouts[1].to_grf(sprites),
             ],
             class_label=b"DN18",
             cargo_threshold=40,
-            non_traversable_tiles=0b00 if layouts[0][1] else 0b11,
+            non_traversable_tiles=0b00,  # FIXME
             general_flags=0x08,
             callbacks={
                 "select_tile_layout": 0,

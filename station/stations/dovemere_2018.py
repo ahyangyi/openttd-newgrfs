@@ -11,7 +11,6 @@ from station.lib import (
     AParentSprite,
     ALayout,
 )
-from pygorender import Config
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
 from .platforms import sprites as platform_sprites
