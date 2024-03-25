@@ -32,7 +32,7 @@ def quickload(name, type, traversable, platform):
 
     ground = ADefaultGroundSprite(1012 if traversable else 1420)
     parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
-    plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
+    plat = AParentSprite(platform_sprites[4], (16, 6, 6), (0, 10, 0))
 
     if platform:
         candidates = [

@@ -41,10 +41,19 @@ sprites = []
 layouts = []
 [
     (pl1_low_white, pl1_low_white_m, pl1_low_white_t, pl1_low_white_t_m, pl1_low_white_d, pl1_low_white_d_m),
+    (
+        pl1_low_white_shed,
+        pl1_low_white_shed_m,
+        pl1_low_white_shed_t,
+        pl1_low_white_shed_t_m,
+        pl1_low_white_shed_d,
+        pl1_low_white_shed_d_m,
+    ),
 ] = [
     quickload(name, type, traversable)
     for name, type, traversable in [
         ("pl1_low_white", BuildingSpriteSheetSymmetricalX, True),
+        ("pl1_low_white_shed", BuildingSpriteSheetSymmetricalX, True),
     ]
 ]
 
@@ -70,6 +79,7 @@ the_stations = AMetaStation(
     b"PLAT",
     layouts,
     [
-        Demo("Test", [[pl1_low_white], [pl1_low_white_d], [pl1_low_white_t]]),
+        Demo("Platform", [[pl1_low_white], [pl1_low_white_d], [pl1_low_white_t]]),
+        Demo("Platform with Shed", [[pl1_low_white_shed], [pl1_low_white_shed_d], [pl1_low_white_shed_t]]),
     ],
 )
