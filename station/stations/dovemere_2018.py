@@ -127,36 +127,28 @@ normal_demo = Demo(
 )
 from PIL import Image
 
-img, mask = normal_demo.graphics()
-img.thumbnail((256, 256), Image.Resampling.LANCZOS)
-mask.thumbnail((256, 256), Image.Resampling.LANCZOS)
-img.save("test.png")
-mask.save("mask.png")
-demo_sprite = grf.AlternativeSprites(
-    grf.WithMask(
-        grf.FileSprite(
-            grf.ImageFile("test.png"),
-            0,
-            0,
-            256,
-            192,
-            xofs=-128,
-            yofs=-64,
-            zoom=grf.ZOOM_4X,
+demo_sprites = []
+for demo in [normal_demo, normal_demo.M]:
+    img, mask = demo.graphics()
+    img.thumbnail((256, 256), Image.Resampling.LANCZOS)
+    mask.thumbnail((256, 256), Image.Resampling.LANCZOS)
+    sprite = grf.AlternativeSprites(
+        grf.WithMask(
+            grf.ImageSprite(
+                img,
+                xofs=-128,
+                yofs=-64,
+                zoom=grf.ZOOM_4X,
+            ),
+            grf.ImageSprite(mask),
         ),
-        grf.FileSprite(
-            grf.ImageFile("mask.png"),
-            0,
-            0,
-            256,
-            192,
-        ),
-    ),
-)
-sprites.append(demo_sprite)
-demo_layout = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprite, (16, 16, 48), (0, 0, 0))])
-layouts.append(demo_layout)
-layouts.append(demo_layout)
+    )
+    demo_sprites.append(sprite)
+sprites.extend(demo_sprites)
+demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))])
+demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))])
+layouts.append(demo_layout1)
+layouts.append(demo_layout2)
 
 
 def get_back_index(l, r):
@@ -304,7 +296,7 @@ the_station = AStation(
         ),
         "select_sprite_layout": grf.DualCallback(
             default=cb14,
-            purchase=layouts.index(tiny),
+            purchase=layouts.index(demo_layout1),
         ),
     },
 )
@@ -327,7 +319,7 @@ the_stations = AMetaStation(
                 "select_tile_layout": 0,
             },
         )
-        for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))
+        for i, layouts in enumerate(zip(layouts[:-2:2], layouts[1:-2:2]))
     ],
     b"DM18",
     layouts,

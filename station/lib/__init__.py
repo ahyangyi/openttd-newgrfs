@@ -221,6 +221,10 @@ class Demo:
                 )
         return img, mask
 
+    @property
+    def M(self):
+        return Demo(self.title, [[tile.M for tile in row] for row in self.tiles])
+
 
 class AMetaStation:
     def __init__(self, stations, class_label, doc_sprites, doc_layouts):
