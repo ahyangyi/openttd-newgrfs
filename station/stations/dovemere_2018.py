@@ -134,31 +134,23 @@ img.save("test.png")
 mask.save("mask.png")
 demo_sprite = grf.AlternativeSprites(
     grf.WithMask(
-        grf.ImageSprite(
-            img,
+        grf.FileSprite(
+            grf.ImageFile("test.png"),
+            0,
+            0,
+            256,
+            192,
             xofs=-128,
-            yofs=-192,
-            zoom=grf.ZOOM_NORMAL,
-        ),
-        grf.ImageSprite(mask),
-    ),
-    grf.WithMask(
-        grf.ImageSprite(
-            img,
-            xofs=-128,
-            yofs=-192,
-            zoom=grf.ZOOM_2X,
-        ),
-        grf.ImageSprite(mask),
-    ),
-    grf.WithMask(
-        grf.ImageSprite(
-            img,
-            xofs=-128,
-            yofs=-192,
+            yofs=-64,
             zoom=grf.ZOOM_4X,
         ),
-        grf.ImageSprite(mask),
+        grf.FileSprite(
+            grf.ImageFile("mask.png"),
+            0,
+            0,
+            256,
+            192,
+        ),
     ),
 )
 sprites.append(demo_sprite)
