@@ -146,9 +146,9 @@ class LazyVoxel(Config):
         render(self, voxel_path, os.path.join(self.prefix, self.name))
 
     @functools.cache
-    def spritesheet(self, xdiff=0, shift=0):
+    def spritesheet(self, xdiff=0, zdiff=0, shift=0):
         real_xdiff = 0.5
-        real_ydiff = self.config.get("agrf_zdiff", 0) * 0.5 * self.config.get("agrf_scale", 1)
+        real_ydiff = (self.config.get("agrf_zdiff", 0) + zdiff) * 0.5 * self.config.get("agrf_scale", 1)
 
         return spritesheet_template(
             self,
@@ -168,7 +168,7 @@ class LazyVoxel(Config):
         )
 
     @functools.cache
-    def get_action(self, feature, xdiff=0, shift=0):
+    def get_action(self, feature, xdiff=0, zdiff=0, shift=0):
         return FakeReferencingGenericSpriteLayout(feature, (self.spritesheet(xdiff, shift),))
 
     def get_default_graphics(self):
@@ -188,7 +188,7 @@ class LazySpriteSheet:
         return method
 
     @functools.cache
-    def spritesheet(self, xdiff=0, shift=0):
+    def spritesheet(self, xdiff=0, zdiff=0, shift=0):
         spritesheets = [x.spritesheet(xdiff, shift) for x in self.sprites]
         return [spritesheets[i][j] for (i, j) in self.indices]
 
@@ -216,7 +216,7 @@ class LazyAlternatives:
         return method
 
     @functools.cache
-    def get_action(self, feature, xdiff=0, shift=0):
+    def get_action(self, feature, xdiff=0, zdiff=0, shift=0):
         return FakeReferencingGenericSpriteLayout(
             feature,
             tuple(x.spritesheet(xdiff, shift) for x in self.sprites),

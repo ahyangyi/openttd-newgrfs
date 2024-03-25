@@ -23,7 +23,7 @@ def quickload(name, type, traversable):
         load_from="station/files/gorender.json",
         subset=type.render_indices(),
     )
-    sprite = type.from_complete_list(v.spritesheet())
+    sprite = type.from_complete_list(v.spritesheet(zdiff=16))
     sprites.extend(sprite.all_variants)
 
     ground = ADefaultGroundSprite(1012 if traversable else 1420)
