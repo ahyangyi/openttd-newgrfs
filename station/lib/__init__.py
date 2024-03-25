@@ -223,7 +223,7 @@ class Demo:
 
     @property
     def M(self):
-        return Demo(self.title, [[tile.M for tile in row] for row in self.tiles])
+        return Demo(self.title, [[tile.M for tile in row[::-1]] for row in list(zip(*self.tiles))[::-1]])
 
 
 class AMetaStation:
@@ -376,8 +376,8 @@ class ALayout:
             yofs = masked_sprite.sprite.yofs - sprite.offset[0] * 4 + sprite.offset[1] * 4
 
             if img is None:
-                img = subimg
-                mask = submask
+                img = subimg.copy()
+                mask = submask.copy()
             else:
                 # FIXME treat offsets seriously
                 img, mask = attach_over_masked(subimg, submask, img, mask, (0, 0))
