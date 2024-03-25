@@ -140,6 +140,7 @@ for demo in [normal_demo, normal_demo.M]:
                 xofs=-128,
                 yofs=-64,
                 zoom=grf.ZOOM_4X,
+                bpp=32,
             )
         )
     )
