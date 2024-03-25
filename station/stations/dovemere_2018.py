@@ -132,17 +132,7 @@ from PIL import Image
 demo_sprites = []
 for demo in [normal_demo, normal_demo.M]:
     demo_sprites.append(
-        grf.AlternativeSprites(
-            LayoutSprite(
-                demo,
-                256,
-                256,
-                xofs=-128,
-                yofs=-64,
-                zoom=grf.ZOOM_4X,
-                bpp=32,
-            )
-        )
+        grf.AlternativeSprites(LayoutSprite(demo, 256, 256, xofs=-128, yofs=-64, zoom=grf.ZOOM_4X, bpp=32))
     )
 sprites.extend(demo_sprites)
 demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))])
@@ -278,22 +268,15 @@ the_station = AStation(
                 ranges={
                     (2, 15): Switch(
                         ranges={0: 2},
-                        default=Switch(
-                            ranges={0: 4},
-                            default=6,
-                            code="(extra_callback_info1 >> 12) & 0xf",
-                        ),
+                        default=Switch(ranges={0: 4}, default=6, code="(extra_callback_info1 >> 12) & 0xf"),
                         code="(extra_callback_info1 >> 8) & 0xf",
                     )
                 },
                 default=0,
                 code="(extra_callback_info1 >> 20) & 0xf",
-            ),
+            )
         ),
-        "select_sprite_layout": grf.DualCallback(
-            default=cb14,
-            purchase=layouts.index(demo_layout1),
-        ),
+        "select_sprite_layout": grf.DualCallback(default=cb14, purchase=layouts.index(demo_layout1)),
     },
 )
 
@@ -304,16 +287,11 @@ the_stations = AMetaStation(
             id=1 + i,
             translation_name="DOVEMERE_2018",  # FIXME
             sprites=sprites,  # FIXME
-            layouts=[
-                layouts[0].to_grf(sprites),
-                layouts[1].to_grf(sprites),
-            ],
+            layouts=[layouts[0].to_grf(sprites), layouts[1].to_grf(sprites)],
             class_label=b"DM18",
             cargo_threshold=40,
             non_traversable_tiles=0b00,  # FIXME
-            callbacks={
-                "select_tile_layout": 0,
-            },
+            callbacks={"select_tile_layout": 0},
         )
         for i, layouts in enumerate(zip(layouts[:-2:2], layouts[1:-2:2]))
     ],
@@ -373,20 +351,7 @@ the_stations = AMetaStation(
                 ],
             ],
         ),
-        Demo(
-            "A 1×7 station layout",
-            [
-                [
-                    h_end.L,
-                    h_normal,
-                    h_gate.L,
-                    h_gate_extender,
-                    h_gate.R,
-                    h_normal,
-                    h_end.R,
-                ],
-            ],
-        ),
+        Demo("A 1×7 station layout", [[h_end.L, h_normal, h_gate.L, h_gate_extender, h_gate.R, h_normal, h_end.R]]),
         Demo(
             "A 6×2 station layout",
             [
@@ -408,19 +373,7 @@ the_stations = AMetaStation(
                 [corner.L, corner.R],
             ],
         ),
-        Demo(
-            "A 3×1 station layout",
-            [
-                [v_end.T],
-                [v_central],
-                [v_end],
-            ],
-        ),
-        Demo(
-            "A 1×1 station layout",
-            [
-                [tiny],
-            ],
-        ),
+        Demo("A 3×1 station layout", [[v_end.T], [v_central], [v_end]]),
+        Demo("A 1×1 station layout", [[tiny]]),
     ],
 )

@@ -39,13 +39,9 @@ def quickload(name, type, traversable):
 
 sprites = []
 layouts = []
-[
-    (pl1_low_white, pl1_low_white_m, pl1_low_white_t, pl1_low_white_t_m, pl1_low_white_d, pl1_low_white_d_m),
-] = [
+[(pl1_low_white, pl1_low_white_m, pl1_low_white_t, pl1_low_white_t_m, pl1_low_white_d, pl1_low_white_d_m)] = [
     quickload(name, type, traversable)
-    for name, type, traversable in [
-        ("pl1_low_white", BuildingSpriteSheetSymmetricalX, True),
-    ]
+    for name, type, traversable in [("pl1_low_white", BuildingSpriteSheetSymmetricalX, True)]
 ]
 
 
@@ -55,21 +51,14 @@ the_stations = AMetaStation(
             id=0xF0 + i,
             translation_name="DOVEMERE_2018",  # FIXME
             sprites=sprites,  # FIXME
-            layouts=[
-                layout[0].to_grf(sprites),
-                layout[1].to_grf(sprites),
-            ],
+            layouts=[layout[0].to_grf(sprites), layout[1].to_grf(sprites)],
             class_label=b"PLAT",
             cargo_threshold=40,
-            callbacks={
-                "select_tile_layout": 0,
-            },
+            callbacks={"select_tile_layout": 0},
         )
         for i, layout in enumerate(zip(layouts[::2], layouts[1::2]))
     ],
     b"PLAT",
     layouts,
-    [
-        Demo("Test", [[pl1_low_white], [pl1_low_white_d], [pl1_low_white_t]]),
-    ],
+    [Demo("Test", [[pl1_low_white], [pl1_low_white_d], [pl1_low_white_t]])],
 )

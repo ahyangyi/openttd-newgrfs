@@ -8,60 +8,15 @@ from industry.lib.industry import (
     NewIndustryTileID,
 )
 
-large_set = symmetrize(
-    [
-        (
-            "cddc",
-            "cddc",
-            "cabc",
-            "eeff",
-            "eeff",
-        ),
-        (
-            "ddeec",
-            "ddefc",
-            "cffff",
-            "abecf",
-        ),
-    ]
-)
+large_set = symmetrize([("cddc", "cddc", "cabc", "eeff", "eeff"), ("ddeec", "ddefc", "cffff", "abecf")])
 
-medium_set = symmetrize(
-    [
-        (
-            "eed",
-            "abd",
-            "cff",
-        ),
-        (
-            "cddc",
-            "eabf",
-            "eeff",
-        ),
-        (
-            "ddee",
-            "cffe",
-            "abec",
-        ),
-    ]
-)
+medium_set = symmetrize([("eed", "abd", "cff"), ("cddc", "eabf", "eeff"), ("ddee", "cffe", "abec")])
 
-small_set = symmetrize(
-    [
-        (
-            "abd",
-            "ecf",
-        ),
-    ]
-)
+small_set = symmetrize([("abd", "ecf")])
 
-tiny_set = [
-    ("ab",),
-]
+tiny_set = [("ab",)]
 
-one_tile_set = [
-    ("a",),
-]
+one_tile_set = [("a",)]
 
 tile_map = {
     "a": OldIndustryTileID(0x21),  # house (left)

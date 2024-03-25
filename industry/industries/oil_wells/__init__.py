@@ -13,28 +13,11 @@ from .large import large_set
 from .medium import medium_set
 
 
-small_set = symmetrize(
-    [
-        (
-            "x ",
-            "xx",
-            "x ",
-        ),
-    ]
-)
+small_set = symmetrize([("x ", "xx", "x ")])
 
-tiny_set = symmetrize(
-    [
-        (
-            "x  ",
-            "  x",
-        ),
-    ]
-)
+tiny_set = symmetrize([("x  ", "  x")])
 
-one_tile_set = [
-    ("x",),
-]
+one_tile_set = [("x",)]
 
 tile_map = {"x": OldIndustryTileID(0x1D)}
 

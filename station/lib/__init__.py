@@ -414,11 +414,7 @@ class LayoutSprite(grf.Sprite):
 
     def get_fingerprint(self):
         # FIXME don't use id
-        return {
-            "layout": id(self.layout),
-            "w": self.w,
-            "h": self.h,
-        }
+        return {"layout": id(self.layout), "w": self.w, "h": self.h}
 
     def get_image_files(self):
         return ()
