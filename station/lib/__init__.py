@@ -1,7 +1,9 @@
 import grf
-from PIL import Image
+import numpy as np
+from PIL import Image, ImagePalette
 from agrf.graphics.attach_over import attach_over, attach_over_masked
 from agrf.graphics.blend import blend
+from agrf.graphics.palette import PIL_PALETTE
 from agrf.magic.switch import deep_freeze
 
 
@@ -353,13 +355,14 @@ class ALayout:
         img = Image.new("RGBA", (256, 128))
         for sprite in self.sprites:
             masked_sprite = sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
-            subimg, _ = masked_sprite.sprite.get_image()
-            submask, _ = masked_sprite.mask.get_image()
-            submask = remap.remap_image(submask)
+            _, _, subrgb, subalpha, submask = masked_sprite.get_data_layers(context)
+            subimg = Image.fromarray(np.concatenate((subrgb, subalpha[:, :, np.newaxis]), axis=2))
+            submask = Image.fromarray(submask)
+            submask.putpalette(PIL_PALETTE.tobytes())
             subimg = blend(subimg, submask)
 
-            xofs = masked_sprite.sprite.xofs + sprite.offset[0] * 8 + sprite.offset[1] * 8
-            yofs = masked_sprite.sprite.yofs - sprite.offset[0] * 4 + sprite.offset[1] * 4
+            xofs = masked_sprite.xofs + sprite.offset[0] * 8 + sprite.offset[1] * 8
+            yofs = masked_sprite.yofs - sprite.offset[0] * 4 + sprite.offset[1] * 4
 
             # FIXME treat offsets seriously
             img = attach_over(subimg, img, (0, 0))
@@ -369,8 +372,10 @@ class ALayout:
         img = None
         for sprite in self.sprites:
             masked_sprite = sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
-            subimg, _ = masked_sprite.sprite.get_image()
-            submask, _ = masked_sprite.mask.get_image()
+            _, _, subrgb, subalpha, submask = masked_sprite.get_data_layers(context)
+            subimg = Image.fromarray(np.concatenate((subrgb, subalpha[:, :, np.newaxis]), axis=2))
+            submask = Image.fromarray(submask)
+            submask.putpalette(PIL_PALETTE.tobytes())
 
             xofs = masked_sprite.sprite.xofs + sprite.offset[0] * 8 + sprite.offset[1] * 8
             yofs = masked_sprite.sprite.yofs - sprite.offset[0] * 4 + sprite.offset[1] * 4
@@ -410,9 +415,9 @@ class LayoutSprite(grf.Sprite):
     def get_fingerprint(self):
         # FIXME don't use id
         return {
-            "layout": id(layout),
-            "w": w,
-            "h": h,
+            "layout": id(self.layout),
+            "w": self.w,
+            "h": self.h,
         }
 
     def get_image_files(self):
@@ -420,7 +425,7 @@ class LayoutSprite(grf.Sprite):
 
     def get_data_layers(self, context):
         timer = context.start_timer()
-        img, mask = demo.graphics()
+        img, mask = self.layout.graphics()
         img.thumbnail((self.w, self.h), Image.Resampling.LANCZOS)
         mask.thumbnail((self.w, self.h), Image.Resampling.LANCZOS)
         timer.count_composing()
