@@ -130,20 +130,20 @@ def get_left_index(t, d):
         return a[-1 - min(d, 3)]
 
 
-def horizontal_layout(l, r, onetile, lwall, rwall, general, window, window_extender):
+def horizontal_layout(l, r, onetile, lwall, general, window, window_extender):
     if l + r == 0:
         return onetile
     if l + r == 1:
-        return [lwall, rwall][l]
+        return [lwall, lwall.R][l]
     if l + r == 2:
-        return [lwall, general, rwall][l]
+        return [lwall, general, lwall.R][l]
 
     e = l + r - 3
     c = (e + 1) // 3
     if c % 2 != e % 2:
         c += 1
     o = (e - c) // 2
-    return ([lwall] + [general] * o + [window.L] + [window_extender] * c + [window.R] + [general] * o + [rwall])[l]
+    return ([lwall] + [general] * o + [window.L] + [window_extender] * c + [window.R] + [general] * o + [lwall.R])[l]
 
 
 left_wall = Switch(
@@ -159,21 +159,17 @@ left_wall = Switch(
     code="var(0x41, shift=12, and=0x0000000f)",
 )
 
-right_wall = left_wall.R
-
 
 def get_central_index(l, r):
-    return horizontal_layout(
-        l, r, v_central, left_wall, right_wall, central, central_windowed, central_windowed_extender
-    )
+    return horizontal_layout(l, r, v_central, left_wall, central, central_windowed, central_windowed_extender)
 
 
 def get_front_index(l, r):
-    return horizontal_layout(l, r, v_end, corner.L, corner.R, front_normal, front_gate, front_gate_extender)
+    return horizontal_layout(l, r, v_end, corner, front_normal, front_gate, front_gate_extender)
 
 
 def get_single_index(l, r):
-    return horizontal_layout(l, r, tiny, h_end.L, h_end.R, h_normal, h_gate, h_gate_extender)
+    return horizontal_layout(l, r, tiny, h_end, h_normal, h_gate, h_gate_extender)
 
 
 cb41 = Switch(
