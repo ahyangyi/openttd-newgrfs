@@ -8,7 +8,9 @@ from .small import small_set
 from .tiny import tiny_set
 
 
-one_grid_set = [("x",)]
+one_grid_set = [
+    ("x",),
+]
 
 tile_map = {"x": OldIndustryTileID(0x10)}
 

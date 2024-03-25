@@ -18,6 +18,6 @@ enormous_set = symmetrize(
             "   xx     xx    ",
             "            x   ",
             "             xxx",
-        )
+        ),
     ]
 )
