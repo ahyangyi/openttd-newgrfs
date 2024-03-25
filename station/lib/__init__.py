@@ -400,3 +400,34 @@ class ALayout:
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = call(self.sprites)
         return ALayout(new_ground_sprite, new_sprites)
+
+
+class LayoutSprite(grf.Sprite):
+    def __init__(self, layout, w, h, **kwargs):
+        super().__init__(w, h, **kwargs)
+        self.layout = layout
+
+    def get_fingerprint(self):
+        # FIXME don't use id
+        return {
+            "layout": id(layout),
+            "w": w,
+            "h": h,
+        }
+
+    def get_image_files(self):
+        return ()
+
+    def get_data_layers(self, context):
+        timer = context.start_timer()
+        img, mask = demo.graphics()
+        img.thumbnail((self.w, self.h), Image.Resampling.LANCZOS)
+        mask.thumbnail((self.w, self.h), Image.Resampling.LANCZOS)
+        timer.count_composing()
+
+        npimg = np.asarray(img)
+        rgb = npimg[:, :, :3]
+        alpha = npimg[:, :, 3]
+        mask = np.asarray(mask)
+
+        return img.size[0], img.size[1], rgb, alpha, mask

@@ -10,6 +10,7 @@ from station.lib import (
     ADefaultGroundSprite,
     AParentSprite,
     ALayout,
+    LayoutSprite,
 )
 from pygorender import Config
 from agrf.graphics.voxel import LazyVoxel
@@ -129,26 +130,19 @@ normal_demo = Demo(
 from PIL import Image
 
 demo_sprites = []
-for i, demo in enumerate([normal_demo, normal_demo.M]):
-    img, mask = demo.graphics()
-    img.thumbnail((256, 256), Image.Resampling.LANCZOS)
-    mask.thumbnail((256, 256), Image.Resampling.LANCZOS)
-    sprite = grf.AlternativeSprites(
-        grf.WithMask(
-            ImageSprite(
-                img,
-                f"dovemere18_thumbnail_{i}",
+for demo in [normal_demo, normal_demo.M]:
+    demo_sprites.append(
+        grf.AlternativeSprites(
+            LayoutSprite(
+                demo,
+                256,
+                256,
                 xofs=-128,
                 yofs=-64,
                 zoom=grf.ZOOM_4X,
-            ),
-            ImageSprite(
-                mask,
-                f"dovemere18_thumbnail_mask_{i}",
-            ),
-        ),
+            )
+        )
     )
-    demo_sprites.append(sprite)
 sprites.extend(demo_sprites)
 demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))])
 demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))])
