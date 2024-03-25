@@ -349,7 +349,7 @@ class ALayout:
             [self.ground_sprite.to_grf(sprite_list)] + [sprite.to_grf(sprite_list) for sprite in self.sprites]
         )
 
-    def doc_graphics(self, remap):
+    def doc_graphics(self, remap, context=grf.DummyWriteContext()):
         img = Image.new("RGBA", (256, 128))
         for sprite in self.sprites:
             masked_sprite = sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
@@ -365,7 +365,7 @@ class ALayout:
             img = attach_over(subimg, img, (0, 0))
         return img
 
-    def graphics(self):
+    def graphics(self, context=grf.DummyWriteContext()):
         img = None
         for sprite in self.sprites:
             masked_sprite = sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
