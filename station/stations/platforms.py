@@ -20,7 +20,7 @@ def quickload(name, type, traversable):
         load_from="station/files/csps-gorender.json",
         subset=type.render_indices(),
     )
-    sprite = type.from_complete_list(v.spritesheet(xdiff=10))
+    sprite = type.create_variants(v.spritesheet(xdiff=10))
     sprites.extend(sprite.all_variants)
 
     ps = AParentSprite(sprite, (16, 6, 6), (0, 10, 0))
