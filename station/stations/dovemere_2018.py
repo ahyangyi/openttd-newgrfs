@@ -14,6 +14,7 @@ from station.lib import (
 from pygorender import Config
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
+from agrf.graphics.imagesprite import ImageSprite
 from .platforms import sprites as platform_sprites
 
 
@@ -132,17 +133,19 @@ for i, demo in enumerate([normal_demo, normal_demo.M]):
     img, mask = demo.graphics()
     img.thumbnail((256, 256), Image.Resampling.LANCZOS)
     mask.thumbnail((256, 256), Image.Resampling.LANCZOS)
-    img.save(f"station/voxels/render/dovemere_2018/thumbnail{i}.png")
-    mask.save(f"station/voxels/render/dovemere_2018/thumbnail_mask{i}.png")
     sprite = grf.AlternativeSprites(
         grf.WithMask(
-            grf.FileSprite(
-                grf.ImageFile(f"station/voxels/render/dovemere_2018/thumbnail{i}.png"), 0, 0, 256, 192,
+            ImageSprite(
+                img,
+                f"dovemere18_thumbnail_{i}",
                 xofs=-128,
                 yofs=-64,
                 zoom=grf.ZOOM_4X,
             ),
-            grf.ImageSprite(mask),
+            ImageSprite(
+                mask,
+                f"dovemere18_thumbnail_mask_{i}",
+            ),
         ),
     )
     demo_sprites.append(sprite)
@@ -151,8 +154,6 @@ demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0
 demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))])
 layouts.append(demo_layout1)
 layouts.append(demo_layout2)
-print(demo_sprites)
-print(layouts[-2:])
 
 
 def get_back_index(l, r):
@@ -323,7 +324,7 @@ the_stations = AMetaStation(
                 "select_tile_layout": 0,
             },
         )
-        for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))
+        for i, layouts in enumerate(zip(layouts[:-2:2], layouts[1:-2:2]))
     ],
     b"DM18",
     layouts,
