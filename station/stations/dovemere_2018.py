@@ -10,10 +10,12 @@ from station.lib import (
     ADefaultGroundSprite,
     AParentSprite,
     ALayout,
+    LayoutSprite,
 )
 from pygorender import Config
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
+from agrf.graphics.imagesprite import ImageSprite
 from .platforms import sprites as platform_sprites
 
 
@@ -113,6 +115,41 @@ layouts = []
     ]
 ]
 
+normal_demo = Demo(
+    "Normal 5×7 station layout",
+    [
+        [corner.TL, front_gate.TL, front_gate_extender.T, front_gate.TR, corner.TR],
+        [side_a.TL, central_windowed.L, central_windowed_extender, central_windowed.R, side_a.TR],
+        [side_b.TL, central_windowed.L, central_windowed_extender, central_windowed.R, side_b.TR],
+        [side_c.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_c.R],
+        [side_b.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_b.R],
+        [side_a.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_a.R],
+        [corner.L, front_gate.L, front_gate_extender, front_gate.R, corner.R],
+    ],
+)
+from PIL import Image
+
+demo_sprites = []
+for demo in [normal_demo, normal_demo.M]:
+    demo_sprites.append(
+        grf.AlternativeSprites(
+            LayoutSprite(
+                demo,
+                256,
+                256,
+                xofs=-128,
+                yofs=-64,
+                zoom=grf.ZOOM_4X,
+                bpp=32,
+            )
+        )
+    )
+sprites.extend(demo_sprites)
+demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))])
+demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))])
+layouts.append(demo_layout1)
+layouts.append(demo_layout2)
+
 
 def get_back_index(l, r):
     return get_front_index(l, r).T
@@ -130,20 +167,20 @@ def get_left_index(t, d):
         return a[-1 - min(d, 3)]
 
 
-def horizontal_layout(l, r, onetile, lwall, rwall, general, window, window_extender):
+def horizontal_layout(l, r, onetile, lwall, general, window, window_extender):
     if l + r == 0:
         return onetile
     if l + r == 1:
-        return [lwall, rwall][l]
+        return [lwall, lwall.R][l]
     if l + r == 2:
-        return [lwall, general, rwall][l]
+        return [lwall, general, lwall.R][l]
 
     e = l + r - 3
     c = (e + 1) // 3
     if c % 2 != e % 2:
         c += 1
     o = (e - c) // 2
-    return ([lwall] + [general] * o + [window.L] + [window_extender] * c + [window.R] + [general] * o + [rwall])[l]
+    return ([lwall] + [general] * o + [window.L] + [window_extender] * c + [window.R] + [general] * o + [lwall.R])[l]
 
 
 left_wall = Switch(
@@ -159,24 +196,20 @@ left_wall = Switch(
     code="var(0x41, shift=12, and=0x0000000f)",
 )
 
-right_wall = left_wall.R
-
 
 def get_central_index(l, r):
-    return horizontal_layout(
-        l, r, v_central, left_wall, right_wall, central, central_windowed, central_windowed_extender
-    )
+    return horizontal_layout(l, r, v_central, left_wall, central, central_windowed, central_windowed_extender)
 
 
 def get_front_index(l, r):
-    return horizontal_layout(l, r, v_end, corner.L, corner.R, front_normal, front_gate, front_gate_extender)
+    return horizontal_layout(l, r, v_end, corner, front_normal, front_gate, front_gate_extender)
 
 
 def get_single_index(l, r):
-    return horizontal_layout(l, r, tiny, h_end.L, h_end.R, h_normal, h_gate, h_gate_extender)
+    return horizontal_layout(l, r, tiny, h_end, h_normal, h_gate, h_gate_extender)
 
 
-cb41 = Switch(
+cb14 = Switch(
     ranges={
         (0, 1): Switch(
             ranges={
@@ -258,8 +291,8 @@ the_station = AStation(
             ),
         ),
         "select_sprite_layout": grf.DualCallback(
-            default=cb41,
-            purchase=cb41,
+            default=cb14,
+            purchase=layouts.index(demo_layout1),
         ),
     },
 )
@@ -282,7 +315,7 @@ the_stations = AMetaStation(
                 "select_tile_layout": 0,
             },
         )
-        for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))
+        for i, layouts in enumerate(zip(layouts[:-2:2], layouts[1:-2:2]))
     ],
     b"DM18",
     layouts,
@@ -298,18 +331,7 @@ the_stations = AMetaStation(
                 [corner.L, front_gate.L, front_gate.R, corner.R],
             ],
         ),
-        Demo(
-            "Normal 5×7 station layout",
-            [
-                [corner.TL, front_gate.TL, front_gate_extender.T, front_gate.TR, corner.TR],
-                [side_a.TL, central_windowed.L, central_windowed_extender, central_windowed.R, side_a.TR],
-                [side_b.TL, central_windowed.L, central_windowed_extender, central_windowed.R, side_b.TR],
-                [side_c.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_c.R],
-                [side_b.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_b.R],
-                [side_a.L, central_windowed.L, central_windowed_extender, central_windowed.R, side_a.R],
-                [corner.L, front_gate.L, front_gate_extender, front_gate.R, corner.R],
-            ],
-        ),
+        normal_demo,
         Demo(
             "A 3×10 station layout, demonstrating horizontal extensibility",
             [

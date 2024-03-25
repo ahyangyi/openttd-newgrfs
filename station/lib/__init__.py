@@ -1,7 +1,9 @@
 import grf
+import numpy as np
 from PIL import Image
-from agrf.graphics.attach_over import attach_over
+from agrf.graphics.attach_over import attach_over, attach_over_masked
 from agrf.graphics.blend import blend
+from agrf.graphics.palette import PIL_PALETTE
 from agrf.magic.switch import deep_freeze
 
 
@@ -24,10 +26,7 @@ class AStation(grf.SpriteGenerator):
         class_name = g.strings[f"STR_STATION_CLASS_{self._props['class_label'].decode()}"]
 
         if self.sprites:
-            layouts = []
-            for i in range(len(self.sprites)):
-                layouts.append(grf.GenericSpriteLayout(ent1=[i], ent2=[i], feature=grf.STATION))
-            self.callbacks.graphics = layouts[0]
+            self.callbacks.graphics = grf.GenericSpriteLayout(ent1=[0], ent2=[0], feature=grf.STATION)
 
         self.callbacks.set_flag_props(self._props)
 
@@ -206,6 +205,28 @@ class Demo:
                 img = attach_over(subimg, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -200 - 64 * r - 64 * c))
         return img.crop(img.getbbox())
 
+    def graphics(self):
+        size = (128 * (len(self.tiles) + len(self.tiles[0])), 200 + 64 * (len(self.tiles) + len(self.tiles[0])))
+        img = Image.new("RGBA", size)
+        mask = Image.new("P", size)
+        has_palette = False
+        for r, row in enumerate(self.tiles):
+            for c, sprite in enumerate(row[::-1]):
+                if sprite is None:
+                    continue
+                subimg, submask = sprite.graphics()
+                if not has_palette:
+                    has_palette = True
+                    mask.putpalette(submask.getpalette())
+                img, mask = attach_over_masked(
+                    subimg, submask, img, mask, (-128 * (len(row) - 1) - 128 * r + 128 * c, -200 - 64 * r - 64 * c)
+                )
+        return img, mask
+
+    @property
+    def M(self):
+        return Demo(self.title, [[tile.M for tile in row[::-1]] for row in list(zip(*self.tiles))[::-1]])
+
 
 class AMetaStation:
     def __init__(self, stations, class_label, doc_sprites, doc_layouts):
@@ -330,21 +351,42 @@ class ALayout:
             [self.ground_sprite.to_grf(sprite_list)] + [sprite.to_grf(sprite_list) for sprite in self.sprites]
         )
 
-    def doc_graphics(self, remap):
+    def doc_graphics(self, remap, context=grf.DummyWriteContext()):
         img = Image.new("RGBA", (256, 128))
         for sprite in self.sprites:
             masked_sprite = sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
-            subimg, _ = masked_sprite.sprite.get_image()
-            submask, _ = masked_sprite.mask.get_image()
-            submask = remap.remap_image(submask)
+            _, _, subrgb, subalpha, submask = masked_sprite.get_data_layers(context)
+            subimg = Image.fromarray(np.concatenate((subrgb, subalpha[:, :, np.newaxis]), axis=2))
+            submask = Image.fromarray(submask)
+            submask.putpalette(PIL_PALETTE.tobytes())
             subimg = blend(subimg, submask)
 
-            xofs = masked_sprite.sprite.xofs + sprite.offset[0] * 8 + sprite.offset[1] * 8
-            yofs = masked_sprite.sprite.yofs - sprite.offset[0] * 4 + sprite.offset[1] * 4
+            xofs = masked_sprite.xofs + sprite.offset[0] * 8 + sprite.offset[1] * 8
+            yofs = masked_sprite.yofs - sprite.offset[0] * 4 + sprite.offset[1] * 4
 
             # FIXME treat offsets seriously
             img = attach_over(subimg, img, (0, 0))
         return img
+
+    def graphics(self, context=grf.DummyWriteContext()):
+        img = None
+        for sprite in self.sprites:
+            masked_sprite = sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
+            _, _, subrgb, subalpha, submask = masked_sprite.get_data_layers(context)
+            subimg = Image.fromarray(np.concatenate((subrgb, subalpha[:, :, np.newaxis]), axis=2))
+            submask = Image.fromarray(submask)
+            submask.putpalette(PIL_PALETTE.tobytes())
+
+            xofs = masked_sprite.sprite.xofs + sprite.offset[0] * 8 + sprite.offset[1] * 8
+            yofs = masked_sprite.sprite.yofs - sprite.offset[0] * 4 + sprite.offset[1] * 4
+
+            if img is None:
+                img = subimg.copy()
+                mask = submask.copy()
+            else:
+                # FIXME treat offsets seriously
+                img, mask = attach_over_masked(subimg, submask, img, mask, (0, 0))
+        return img, mask
 
     def to_index(self, layout_pool):
         return layout_pool.index(self)
@@ -363,3 +405,34 @@ class ALayout:
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = call(self.sprites)
         return ALayout(new_ground_sprite, new_sprites)
+
+
+class LayoutSprite(grf.Sprite):
+    def __init__(self, layout, w, h, **kwargs):
+        super().__init__(w, h, **kwargs)
+        self.layout = layout
+
+    def get_fingerprint(self):
+        # FIXME don't use id
+        return {
+            "layout": id(self.layout),
+            "w": self.w,
+            "h": self.h,
+        }
+
+    def get_image_files(self):
+        return ()
+
+    def get_data_layers(self, context):
+        timer = context.start_timer()
+        img, mask = self.layout.graphics()
+        img.thumbnail((self.w, self.h), Image.Resampling.LANCZOS)
+        mask.thumbnail((self.w, self.h), Image.Resampling.LANCZOS)
+        timer.count_composing()
+
+        npimg = np.asarray(img)
+        rgb = npimg[:, :, :3]
+        alpha = npimg[:, :, 3]
+        mask = np.asarray(mask)
+
+        return img.size[0], img.size[1], rgb, alpha, mask
