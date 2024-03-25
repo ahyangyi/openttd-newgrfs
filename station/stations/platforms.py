@@ -23,7 +23,7 @@ def quickload(name, type, traversable):
     sprite = type.from_complete_list(v.spritesheet(xdiff=10))
     sprites.extend(sprite.all_variants)
 
-    ps = AParentSprite(sprite, (16, 6, 6), (0, 10, 0))
+    ps = AParentSprite(sprite, (16, 6, 14 if "shed" in name else 6), (0, 10, 0))
     ret = [
         ALayout(ADefaultGroundSprite(1012), [ps]),
         ALayout(ADefaultGroundSprite(1011), [ps.M]),

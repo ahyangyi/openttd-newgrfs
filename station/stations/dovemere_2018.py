@@ -27,20 +27,22 @@ def quickload(name, type, traversable, platform):
         load_from="station/files/gorender.json",
         subset=type.render_indices(),
     )
-    sprite = type.from_complete_list(v.spritesheet())
+    shed_height = 14
+    sprite = type.from_complete_list(v.spritesheet(zdiff=shed_height * 2 if platform else 0))
     sprites.extend(sprite.all_variants)
 
     ground = ADefaultGroundSprite(1012 if traversable else 1420)
-    parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
-    plat = AParentSprite(platform_sprites[4], (16, 6, 6), (0, 10, 0))
+    plat = AParentSprite(platform_sprites[4], (16, 6, shed_height), (0, 10, 0))
 
     if platform:
+        parent = AParentSprite(sprite, (16, 16, 48 - shed_height), (0, 0, shed_height))
         candidates = [
             ALayout(ground, [plat, parent]),
             ALayout(ground, [plat.T, parent]),
             ALayout(ground, [plat, plat.T, parent]),
         ]
     else:
+        parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
         candidates = [ALayout(ground, [parent])]
 
     ret = []
