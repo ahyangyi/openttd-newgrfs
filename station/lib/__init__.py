@@ -1,6 +1,6 @@
 import grf
 import numpy as np
-from PIL import Image, ImagePalette
+from PIL import Image
 from agrf.graphics.attach_over import attach_over, attach_over_masked
 from agrf.graphics.blend import blend
 from agrf.graphics.palette import PIL_PALETTE
