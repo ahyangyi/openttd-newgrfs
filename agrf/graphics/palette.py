@@ -1,8 +1,11 @@
 import json
+from PIL import ImagePalette
 from .recolour import ColourMap, ColourRange
 
 with open("files/ttd_palette.json") as f:
     PALETTE = json.load(f)["entries"]
+
+PIL_PALETTE = ImagePalette.ImagePalette(palette=[item for colour in PALETTE for item in colour])
 
 
 class CompanyColour:

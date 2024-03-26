@@ -1,11 +1,5 @@
 import grf
-from station.lib import (
-    AStation,
-    AMetaStation,
-    BuildingSpriteSheetSymmetricalX,
-    Demo,
-    simple_layout,
-)
+from station.lib import AStation, AMetaStation, BuildingSpriteSheetSymmetricalX, Demo, simple_layout
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
 
@@ -27,10 +21,7 @@ def quickload(name, type, traversable):
 sprites = []
 layouts = []
 (main,) = [
-    quickload(name, type, traversable)
-    for name, type, traversable in [
-        ("main", BuildingSpriteSheetSymmetricalX, False),
-    ]
+    quickload(name, type, traversable) for name, type, traversable in [("main", BuildingSpriteSheetSymmetricalX, False)]
 ]
 
 the_station = AStation(
