@@ -23,7 +23,7 @@ def quickload(name, type, traversable):
         load_from="station/files/gorender.json",
         subset=type.render_indices(),
     )
-    sprite = type.from_complete_list(v.spritesheet(zdiff=16))
+    sprite = type.create_variants(v.spritesheet())
     sprites.extend(sprite.all_variants)
 
     ground = ADefaultGroundSprite(1012 if traversable else 1420)
@@ -32,23 +32,9 @@ def quickload(name, type, traversable):
 
     ret = []
     for l in candidates:
-        # FIXME
-        if type is BuildingSpriteSheetFull:
-            l = [l, l.M, l.R, l.R.M, l.T, l.T.M, l.T.R, l.T.R.M]
-            layouts.extend(l)
-            ret.append(type.from_complete_list(l))
-        elif type is BuildingSpriteSheetSymmetricalX:
-            l = [l, l.M, l.T, l.T.M]
-            layouts.extend(l)
-            ret.append(type.from_complete_list(l))
-        elif type is BuildingSpriteSheetSymmetricalY:
-            l = [l, l.M, l.R, l.R.M]
-            layouts.extend(l)
-            ret.append(type.from_complete_list(l))
-        else:
-            l = [l, l.M]
-            layouts.extend(l)
-            ret.append(type.from_complete_list(l))
+        l = type.get_all_variants(l)
+        layouts.extend(l)
+        ret.append(type.create_variants(l))
 
     if len(ret) == 1:
         return ret[0]
@@ -79,6 +65,6 @@ the_stations = AMetaStation(
         for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))
     ],
     b"DN18",
-    [layouts[0][0] for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))],
+    layouts,
     [Demo("Test", [[front_normal, front_normal]])],
 )
