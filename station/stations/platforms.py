@@ -3,6 +3,7 @@ from station.lib import (
     AStation,
     AMetaStation,
     BuildingSpriteSheetSymmetricalX,
+    BuildingSpriteSheetSymmetrical,
     Demo,
     ADefaultGroundSprite,
     AParentSprite,
@@ -24,22 +25,21 @@ def quickload(name, type, traversable):
     sprites.extend(sprite.all_variants)
 
     ps = AParentSprite(sprite, (16, 6, 6), (0, 10, 0))
-    ret = [
-        ALayout(ADefaultGroundSprite(1012), [ps]),
-        ALayout(ADefaultGroundSprite(1011), [ps.M]),
-        ALayout(ADefaultGroundSprite(1012), [ps.T]),
-        ALayout(ADefaultGroundSprite(1011), [ps.T.M]),
-        ALayout(ADefaultGroundSprite(1012), [ps, ps.T]),
-        ALayout(ADefaultGroundSprite(1011), [ps.M, ps.T.M]),
-    ]
+    ret = []
+    l = type.get_all_variants(ALayout(ADefaultGroundSprite(1012), [ps]))
+    layouts.extend(l)
+    ret.append(type.create_variants(l))
+    type = BuildingSpriteSheetSymmetrical
+    l = type.get_all_variants(ALayout(ADefaultGroundSprite(1012), [ps, ps.T]))
+    layouts.extend(l)
+    ret.append(type.create_variants(l))
 
-    layouts.extend(ret)
     return ret
 
 
 sprites = []
 layouts = []
-[(pl1_low_white, pl1_low_white_m, pl1_low_white_t, pl1_low_white_t_m, pl1_low_white_d, pl1_low_white_d_m)] = [
+[(pl1_low_white, pl1_low_white_d)] = [
     quickload(name, type, traversable)
     for name, type, traversable in [("pl1_low_white", BuildingSpriteSheetSymmetricalX, True)]
 ]
@@ -60,5 +60,5 @@ the_stations = AMetaStation(
     ],
     b"PLAT",
     layouts,
-    [Demo("Test", [[pl1_low_white], [pl1_low_white_d], [pl1_low_white_t]])],
+    [Demo("Test", [[pl1_low_white], [pl1_low_white_d], [pl1_low_white.T]])],
 )
