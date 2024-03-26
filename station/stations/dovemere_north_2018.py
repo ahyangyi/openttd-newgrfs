@@ -59,9 +59,7 @@ sprites = []
 layouts = []
 (front_normal,) = [
     quickload(name, type, traversable)
-    for name, type, traversable in [
-        ("front_normal", BuildingSpriteSheetSymmetricalX, False),
-    ]
+    for name, type, traversable in [("front_normal", BuildingSpriteSheetSymmetricalX, False)]
 ]
 
 
@@ -71,26 +69,16 @@ the_stations = AMetaStation(
             id=0x80 + i,
             translation_name="DOVEMERE_NORTH_2018",  # FIXME
             sprites=sprites,  # FIXME
-            layouts=[
-                layouts[0].to_grf(sprites),
-                layouts[1].to_grf(sprites),
-            ],
+            layouts=[layouts[0].to_grf(sprites), layouts[1].to_grf(sprites)],
             class_label=b"DN18",
             cargo_threshold=40,
             non_traversable_tiles=0b00,  # FIXME
             general_flags=0x08,
-            callbacks={
-                "select_tile_layout": 0,
-            },
+            callbacks={"select_tile_layout": 0},
         )
         for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))
     ],
     b"DN18",
     [layouts[0][0] for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))],
-    [
-        Demo(
-            "Test",
-            [[front_normal, front_normal]],
-        ),
-    ],
+    [Demo("Test", [[front_normal, front_normal]])],
 )
