@@ -6,11 +6,7 @@ class OldIndustryTileID:
         self.id = id
 
     def __call__(self, xofs, yofs):
-        return grf.IndustryLayout.OldTile(
-            xofs=xofs,
-            yofs=yofs,
-            id=self.id,
-        )
+        return grf.IndustryLayout.OldTile(xofs=xofs, yofs=yofs, id=self.id)
 
 
 class NewIndustryTileID:
@@ -18,11 +14,7 @@ class NewIndustryTileID:
         self.id = id
 
     def __call__(self, xofs, yofs):
-        return grf.IndustryLayout.NewTile(
-            xofs=xofs,
-            yofs=yofs,
-            id=self.id,
-        )
+        return grf.IndustryLayout.NewTile(xofs=xofs, yofs=yofs, id=self.id)
 
 
 def transcribe_one(pattern, registry):

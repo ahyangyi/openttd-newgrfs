@@ -5,6 +5,12 @@ from agrf.graphics.attach_over import attach_over, attach_over_masked
 from agrf.graphics.blend import blend
 from agrf.graphics.palette import PIL_PALETTE
 from agrf.magic.switch import deep_freeze
+from .binary_variants import (
+    BuildingSpriteSheetFull,
+    BuildingSpriteSheetSymmetrical,
+    BuildingSpriteSheetSymmetricalX,
+    BuildingSpriteSheetSymmetricalY,
+)
 
 
 class AStation(grf.SpriteGenerator):
@@ -52,135 +58,6 @@ class AStation(grf.SpriteGenerator):
         res.extend(name.get_actions(grf.STATION, 0xC500 + self.id, is_generic_offset=True))
 
         return res
-
-
-class BinaryVariantMixin:
-    @staticmethod
-    def create_variants(classobj, variants):
-        for i, v in enumerate(variants):
-            cls = v.__class__
-            v.__class__ = type(cls.__name__, (classobj, cls), {})
-            v.variants = [variants[i ^ j] for j in range(len(variants))]
-        return variants[0]
-
-    @property
-    def all_variants(self):
-        return self.variants
-
-    def __getitem__(self, index):
-        return self.variants[index]
-
-    @property
-    def M(self):
-        return self[1]
-
-    @property
-    def L(self):
-        return self
-
-    @property
-    def R(self):
-        return self
-
-    @property
-    def T(self):
-        return self
-
-    @property
-    def TL(self):
-        return self.T.L
-
-    @property
-    def TR(self):
-        return self.T.R
-
-
-class BuildingSpriteSheetFull(BinaryVariantMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
-    @staticmethod
-    def from_complete_list(sprites):
-        return BinaryVariantMixin.create_variants(BuildingSpriteSheetFull, sprites)
-
-    @property
-    def L(self):
-        return self
-
-    @property
-    def R(self):
-        return self[2]
-
-    @property
-    def T(self):
-        return self[4]
-
-    @staticmethod
-    def render_indices():
-        return list(range(8))
-
-
-class BuildingSpriteSheetSymmetricalX(BinaryVariantMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
-    @staticmethod
-    def from_complete_list(sprites):
-        return BinaryVariantMixin.create_variants(BuildingSpriteSheetSymmetricalX, sprites)
-
-    @property
-    def C(self):
-        return self
-
-    @property
-    def T(self):
-        return self[2]
-
-    @staticmethod
-    def render_indices():
-        return [0, 1, 4, 5]
-
-
-class BuildingSpriteSheetSymmetricalY(BinaryVariantMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
-    @staticmethod
-    def from_complete_list(sprites):
-        return BinaryVariantMixin.create_variants(BuildingSpriteSheetSymmetricalY, sprites)
-
-    @property
-    def L(self):
-        return self
-
-    @property
-    def R(self):
-        return self[2]
-
-    @property
-    def T(self):
-        return self
-
-    @staticmethod
-    def render_indices():
-        return [0, 1, 2, 3]
-
-
-class BuildingSpriteSheetSymmetrical(BinaryVariantMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
-    @staticmethod
-    def from_complete_list(sprites):
-        return BinaryVariantMixin.create_variants(BuildingSpriteSheetSymmetricalY, sprites)
-
-    @property
-    def T(self):
-        return self
-
-    @staticmethod
-    def render_indices():
-        return [0, 1]
 
 
 groundsprite = Image.open("third_party/opengfx2/1012.png")
@@ -414,11 +291,7 @@ class LayoutSprite(grf.Sprite):
 
     def get_fingerprint(self):
         # FIXME don't use id
-        return {
-            "layout": id(self.layout),
-            "w": self.w,
-            "h": self.h,
-        }
+        return {"layout": id(self.layout), "w": self.w, "h": self.h}
 
     def get_image_files(self):
         return ()
