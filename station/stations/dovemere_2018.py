@@ -12,10 +12,8 @@ from station.lib import (
     ALayout,
     LayoutSprite,
 )
-from pygorender import Config
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
-from agrf.graphics.imagesprite import ImageSprite
 from .platforms import sprites as platform_sprites
 
 
@@ -113,7 +111,6 @@ normal_demo = Demo(
         [corner, front_gate, front_gate_extender, front_gate.R, corner.R],
     ],
 )
-from PIL import Image
 
 demo_sprites = []
 for demo in [normal_demo, normal_demo.M]:
