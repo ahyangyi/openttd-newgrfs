@@ -1,5 +1,14 @@
 import grf
-from station.lib import AStation, AMetaStation, BuildingSpriteSheetSymmetricalX, Demo, simple_layout
+from station.lib import (
+    AStation,
+    AMetaStation,
+    BuildingSpriteSheetSymmetricalX,
+    Demo,
+    ADefaultGroundSprite,
+    AParentSprite,
+    ALayout,
+    LayoutSprite,
+)
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
 
@@ -11,10 +20,19 @@ def quickload(name, type, traversable):
         voxel_getter=lambda path=f"station/voxels/dovemere_1992/{name}.vox": path,
         load_from="station/files/gorender.json",
     )
-    ret = type.from_complete_list(v.spritesheet())
-    sprites.extend(ret.all_variants)
-    for sprite in ret.all_variants:
-        layouts.append((sprite, traversable))
+    sprite = type.create_variants(v.spritesheet())
+    sprites.extend(sprite.all_variants)
+    ground = ADefaultGroundSprite(1012 if traversable else 1420)
+    parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
+    candidates = [ALayout(ground, [parent])]
+    ret = []
+    for l in candidates:
+        l = type.get_all_variants(l)
+        layouts.extend(l)
+        ret.append(type.create_variants(l))
+
+    if len(ret) == 1:
+        return ret[0]
     return ret
 
 
@@ -25,19 +43,16 @@ layouts = []
 ]
 
 the_station = AStation(
-    id=0x100,
+    id=0xe0,
     translation_name="DOVEMERE_1992",
     sprites=sprites,
-    layouts=[
-        simple_layout(1012 - i % 2 if traversable else 1420, sprites.index(s))
-        for i, (s, traversable) in enumerate(layouts)
-    ],
-    cargo_threshold=40,
+    layouts=[layout.to_grf(sprites) for layout in layouts],
     class_label=b"DM92",
+    cargo_threshold=40,
 )
 the_stations = AMetaStation(
     [the_station],
     b"DM92",
-    [layouts[0][0] for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))],
+    layouts,
     [Demo("Station", [[main]])],
 )
