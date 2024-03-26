@@ -1,4 +1,3 @@
-import grf
 from station.lib import (
     AStation,
     AMetaStation,
@@ -10,7 +9,6 @@ from station.lib import (
     ALayout,
 )
 from agrf.graphics.voxel import LazyVoxel
-from agrf.magic import Switch
 
 
 def quickload(name, type, traversable):
