@@ -210,7 +210,7 @@ class LayeredImage:
                 continue
             old_w, old_h = img.shape[1], img.shape[0]
             img = Image.fromarray(img)
-            img.thumbnail((w, h), Image.Resampling.LANCZOS)
+            img.thumbnail((w, h), Image.Resampling.NEAREST if k == "mask" else Image.Resampling.LANCZOS)
             img = np.asarray(img)
             setattr(self, k, img)
             new_w, new_h = img.shape[1], img.shape[0]
