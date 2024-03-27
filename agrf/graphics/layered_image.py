@@ -61,7 +61,7 @@ class LayeredImage:
         return self
 
     def apply_mask(self):
-        if self.mask is None:
+        if self.rgb is None or self.mask is None:
             return
         v = np.min(self.rgb, axis=2, keepdims=True)
         mask_colour = NUMPY_PALETTE[self.mask].astype(np.uint16)
