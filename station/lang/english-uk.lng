@@ -5,5 +5,9 @@ STR_GRF_DESC                    :A station set based on stations in Wuhu, Anhui,
 STR_STATION_DOVEMERE_2018_NAME  :Station Building
 STR_STATION_DOVEMERE_1992_NAME  :Wuhu Railway Station (1992)
 
-STR_STATION_CLASS_DM18          :Wuhu Railway Station (2018)
+STR_STATION_CLASS_E88A9CA       :Wuhu Railway Station (2018) - Flexible Station Building
+STR_STATION_CLASS_E88A9CF       :Wuhu Railway Station (2018) - Modular Station Building, Front
+STR_STATION_CLASS_E88A9CB       :Wuhu Railway Station (2018) - Modular Station Building, Back
+STR_STATION_CLASS_E88A9CC       :Wuhu Railway Station (2018) - Modular Station Building, Centre
+STR_STATION_CLASS_E88A9CH       :Wuhu Railway Station (2018) - Modular Station Building, Narrow
 STR_STATION_CLASS_PLAT          :Platforms
