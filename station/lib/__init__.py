@@ -270,4 +270,7 @@ class LayoutSprite(grf.Sprite):
         ret.resize(self.w, self.h)
         timer.count_composing()
 
+        self.xofs += ret.xofs
+        self.yofs += ret.yofs
+
         return ret.w, ret.h, ret.rgb, ret.alpha, ret.mask
