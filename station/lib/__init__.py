@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image
 from agrf.graphics.palette import PIL_PALETTE
 from agrf.magic.switch import deep_freeze
-from agrf.graphics import LayeredImage
+from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from .binary_variants import (
     BuildingSpriteSheetFull,
     BuildingSpriteSheetSymmetrical,
@@ -67,12 +67,13 @@ class Demo:
         self.title = title
         self.tiles = tiles
 
-    def graphics(self, remap):
+    def graphics(self, remap, scale, bpp):
+        yofs = 32 * scale
         img = LayeredImage.canvas(
-            -64 * (len(self.tiles) + len(self.tiles[0])),
-            -200,
-            128 * (len(self.tiles) + len(self.tiles[0])),
-            200 + 64 * (len(self.tiles) + len(self.tiles[0])),
+            -16 * scale * (len(self.tiles) + len(self.tiles[0])),
+            -yofs,
+            32 * scale * (len(self.tiles) + len(self.tiles[0])),
+            yofs + 16 * scale * (len(self.tiles) + len(self.tiles[0])),
             has_mask=remap is None,
         )
 
@@ -80,10 +81,8 @@ class Demo:
             for c, sprite in enumerate(row[::-1]):
                 if sprite is None:
                     continue
-                subimg = sprite.graphics(remap)
-                # FIXME: doesn't align
-                # img = attach_over(groundsprite, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -341 - 64 * r - 64 * c))
-                img.blend_over(subimg.move(128 * r - 128 * c, 64 * r + 64 * c))
+                subimg = sprite.graphics(remap, scale, bpp)
+                img.blend_over(subimg.move((32 * r - 32 * c) * scale, (16 * r + 16 * c) * scale))
         return img
 
     @property
@@ -214,17 +213,20 @@ class ALayout:
             [self.ground_sprite.to_grf(sprite_list)] + [sprite.to_grf(sprite_list) for sprite in self.sprites]
         )
 
-    def graphics(self, remap, context=grf.DummyWriteContext()):
+    def graphics(self, remap, scale, bpp, context=grf.DummyWriteContext()):
         img = LayeredImage.empty()
         for sprite in self.sprites:
-            masked_sprite = LayeredImage.from_sprite(sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)).copy()
+            masked_sprite = LayeredImage.from_sprite(
+                sprite.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
+            ).copy()
             if remap is not None:
                 masked_sprite.remap(remap)
                 masked_sprite.apply_mask()
 
             img.blend_over(
                 masked_sprite.move(
-                    sprite.offset[0] * 8 + sprite.offset[1] * 8, sprite.offset[0] * 4 + sprite.offset[1] * 4
+                    sprite.offset[0] * scale * 2 + sprite.offset[1] * scale * 2,
+                    sprite.offset[0] * scale + sprite.offset[1] * scale,
                 )
             )
         return img
@@ -249,20 +251,26 @@ class ALayout:
 
 
 class LayoutSprite(grf.Sprite):
-    def __init__(self, layout, w, h, **kwargs):
-        super().__init__(w, h, **kwargs)
+    def __init__(self, layout, w, h, scale=4, bpp=32, **kwargs):
+        super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], **kwargs)
         self.layout = layout
+        self.scale = scale
+        self.bpp = bpp
 
     def get_fingerprint(self):
         # FIXME don't use id
-        return {"layout": id(self.layout), "w": self.w, "h": self.h}
+        return {"layout": id(self.layout), "w": self.w, "h": self.h, "bpp": self.bpp}
 
     def get_image_files(self):
         return ()
 
     def get_data_layers(self, context):
         timer = context.start_timer()
-        ret = self.layout.graphics(None)
+        ret = self.layout.graphics(None, self.scale, self.bpp)
+        ret.resize(self.w, self.h)
         timer.count_composing()
+
+        self.xofs += ret.xofs
+        self.yofs += ret.yofs
 
         return ret.w, ret.h, ret.rgb, ret.alpha, ret.mask
