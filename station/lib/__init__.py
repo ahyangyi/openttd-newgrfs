@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image
 from agrf.graphics.palette import PIL_PALETTE
 from agrf.magic.switch import deep_freeze
-from agrf.graphics import LayeredImage
+from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from .binary_variants import (
     BuildingSpriteSheetFull,
     BuildingSpriteSheetSymmetrical,
@@ -216,14 +216,17 @@ class ALayout:
     def graphics(self, remap, scale, bpp, context=grf.DummyWriteContext()):
         img = LayeredImage.empty()
         for sprite in self.sprites:
-            masked_sprite = LayeredImage.from_sprite(sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=bpp)).copy()
+            masked_sprite = LayeredImage.from_sprite(
+                sprite.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
+            ).copy()
             if remap is not None:
                 masked_sprite.remap(remap)
                 masked_sprite.apply_mask()
 
             img.blend_over(
                 masked_sprite.move(
-                    sprite.offset[0] * 8 + sprite.offset[1] * 8, sprite.offset[0] * 4 + sprite.offset[1] * 4
+                    sprite.offset[0] * scale * 2 + sprite.offset[1] * scale * 2,
+                    sprite.offset[0] * scale + sprite.offset[1] * scale,
                 )
             )
         return img
@@ -248,10 +251,11 @@ class ALayout:
 
 
 class LayoutSprite(grf.Sprite):
-    def __init__(self, layout, w, h, bpp=32, **kwargs):
+    def __init__(self, layout, w, h, scale=1, bpp=32, **kwargs):
         super().__init__(w, h, **kwargs)
-        self.bpp = bpp
         self.layout = layout
+        self.scale = scale
+        self.bpp = bpp
 
     def get_fingerprint(self):
         # FIXME don't use id
@@ -262,7 +266,7 @@ class LayoutSprite(grf.Sprite):
 
     def get_data_layers(self, context):
         timer = context.start_timer()
-        ret = self.layout.graphics(None)
+        ret = self.layout.graphics(None, self.scale, self.bpp)
         timer.count_composing()
 
         return ret.w, ret.h, ret.rgb, ret.alpha, ret.mask
