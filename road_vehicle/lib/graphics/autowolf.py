@@ -109,7 +109,8 @@ class AutoWolf:
             sprite = sprite[3 + self.shifts[k]]
             masked_sprite = LayeredImage.from_sprite(sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)).copy()
             masked_sprite.remap(remap)
-            masked_sprite.blend()
+            masked_sprite.apply_mask()
+            diff = sum(self.lengths[:k])
             img.blend_over(masked_sprite.move(8 * diff, 4 * diff))
         return img.crop().to_pil_image()
 

@@ -1,4 +1,5 @@
 import grf
+import numpy as np
 from .palette import NUMPY_PALETTE
 from PIL import Image
 
@@ -41,9 +42,10 @@ class LayeredImage:
         self.yofs = other.yofs
         self.w = other.w
         self.h = other.h
-        self.rgb = (None if other.rgb is None else other.rgb.copy(),)
-        self.alpha = (None if other.alpha is None else other.alpha.copy(),)
-        self.mask = (None if other.mask is None else other.mask.copy(),)
+        self.rgb = None if other.rgb is None else other.rgb.copy()
+        self.alpha = None if other.alpha is None else other.alpha.copy()
+        self.mask = None if other.mask is None else other.mask.copy()
+
         return self
 
     def apply_mask(self):
@@ -59,15 +61,15 @@ class LayeredImage:
         ob = (r_ob + g_ob + b_ob) // 2
 
         above = mask_colour >= 255
-        below = np.minimum(mask_colour + ob[:, :, np.newaxis] * (255 - mask_colour) // 256, 255)
+        below = np.minimum(mask_colour + ob[:, :, np.newaxis] * (255 - mask_colour) // 256, 255).astype(np.uint8)
         mixed = np.where(above, 255, below)
 
-        mixed[:, :, 3] = self.rgb
         mask_pal = self.mask == 0
         blended = np.where(np.broadcast_to(mask_pal[:, :, np.newaxis], (*mask_pal.shape, 3)), self.rgb, mixed)
 
         self.rgb = blended
         self.mask = None
+
         return self
 
     def adjust_canvas(self, other):
@@ -99,6 +101,7 @@ class LayeredImage:
         self.h = h
         self.xofs -= x0
         self.yofs -= y0
+
         return self
 
     def blend_over(self, other):
@@ -131,6 +134,7 @@ class LayeredImage:
                 alpha1_component * rgb_viewport + alpha2_component * other.rgb + new_alpha // 2
             ) // np.maximum(new_alpha, 1)
             alpha_viewport[:, :] = (new_alpha + 128) // 255
+
         return self
 
     def move(self, offset_x, offset_y):
@@ -140,7 +144,7 @@ class LayeredImage:
 
     def remap(self, remap):
         if self.mask is not None:
-            self.mask = remap.remap_image(self.mask)
+            self.mask = remap.remap_array(self.mask)
         return self
 
     def crop(self):
@@ -156,8 +160,8 @@ class LayeredImage:
         else:
             raise context.failure(self, "All data layers are None")
 
-        cols_used = np.arange(w)[cols_bitset]
-        rows_used = np.arange(h)[rows_bitset]
+        cols_used = np.arange(self.w)[cols_bitset]
+        rows_used = np.arange(self.h)[rows_bitset]
 
         crop_x = min(cols_used, default=0)
         crop_y = min(rows_used, default=0)
@@ -174,11 +178,12 @@ class LayeredImage:
         self.h = h
         self.xofs += crop_x
         self.yofs += crop_y
+
         return self
 
     def to_image(self):
         if self.mask is not None:
-            self.blend()
+            self.apply_mask()
         return np.concatenate((self.rgb, self.alpha[:, :, np.newaxis]), axis=2)
 
     def to_pil_image(self):
