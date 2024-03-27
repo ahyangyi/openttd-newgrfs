@@ -89,7 +89,7 @@ class LayeredImage:
         h = max(other.h + other.yofs - self.yofs, self.h) - min(0, other.yofs - self.yofs)
         x0 = max(0, self.xofs - other.xofs)
         y0 = max(0, self.yofs - other.yofs)
-        if w == self.w or h == self.h:
+        if w == self.w and h == self.h:
             return
 
         if self.rgb is not None:
