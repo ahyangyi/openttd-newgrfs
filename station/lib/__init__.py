@@ -84,7 +84,7 @@ class Demo:
                 # FIXME: doesn't align
                 # img = attach_over(groundsprite, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -341 - 64 * r - 64 * c))
                 img.blend_over(subimg.move(128 * r - 128 * c, 64 * r + 64 * c))
-        return img.crop().to_pil_image()
+        return img
 
     @property
     def M(self):
@@ -220,7 +220,7 @@ class ALayout:
             masked_sprite = LayeredImage.from_sprite(sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)).copy()
             if remap is not None:
                 masked_sprite.remap(remap)
-            masked_sprite.apply_mask()
+                masked_sprite.apply_mask()
 
             img.blend_over(
                 masked_sprite.move(
