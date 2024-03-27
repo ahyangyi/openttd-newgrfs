@@ -12,16 +12,16 @@ def guess_dimens(width, height, angle, bbox, z_scale):
     xcom, ycom = abs(x * cos), abs(y * sin)
     pxcom, pycom = abs(x * sin), abs(y * cos)
 
-    horizontal_height = (xcom + ycom) * 0.5 / z_scale
+    horizontal_height = (xcom + ycom) * 0.5
 
     if height == 0:
         ratio = (horizontal_height + z) / (pxcom + pycom)
         height_float = ratio * width
         height = math.ceil(height_float)
 
-    real_ratio = (horizontal_height + z * 3**0.5 / 2) / (pxcom + pycom)
+    real_ratio = (horizontal_height + z) / (pxcom + pycom)
     real_height_float = real_ratio * width
-    z = (z * 3**0.5 / 2) / (pxcom + pycom) * width
+    z = z / (pxcom + pycom) * width
 
     delta = height - real_height_float
 
