@@ -1,10 +1,9 @@
 import grf
 import numpy as np
 from PIL import Image
-from agrf.graphics.attach_over import attach_over, attach_over_masked
-from agrf.graphics.blend import blend
 from agrf.graphics.palette import PIL_PALETTE
 from agrf.magic.switch import deep_freeze
+from agrf.graphics import LayeredImage
 from .binary_variants import (
     BuildingSpriteSheetFull,
     BuildingSpriteSheetSymmetrical,
@@ -68,37 +67,24 @@ class Demo:
         self.title = title
         self.tiles = tiles
 
-    def doc_graphics(self, remap):
-        img = Image.new(
-            "RGBA", (128 * (len(self.tiles) + len(self.tiles[0])), 200 + 64 * (len(self.tiles) + len(self.tiles[0])))
+    def graphics(self, remap):
+        img = LayeredImage.canvas(
+            -64 * (len(self.tiles) + len(self.tiles[0])),
+            -200,
+            128 * (len(self.tiles) + len(self.tiles[0])),
+            200 + 64 * (len(self.tiles) + len(self.tiles[0])),
+            has_mask=remap is None,
         )
+
         for r, row in enumerate(self.tiles):
             for c, sprite in enumerate(row[::-1]):
                 if sprite is None:
                     continue
-                subimg = sprite.doc_graphics(remap)
+                subimg = sprite.graphics(remap)
                 # FIXME: doesn't align
                 # img = attach_over(groundsprite, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -341 - 64 * r - 64 * c))
-                img = attach_over(subimg, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -200 - 64 * r - 64 * c))
-        return img.crop(img.getbbox())
-
-    def graphics(self):
-        size = (128 * (len(self.tiles) + len(self.tiles[0])), 200 + 64 * (len(self.tiles) + len(self.tiles[0])))
-        img = Image.new("RGBA", size)
-        mask = Image.new("P", size)
-        has_palette = False
-        for r, row in enumerate(self.tiles):
-            for c, sprite in enumerate(row[::-1]):
-                if sprite is None:
-                    continue
-                subimg, submask = sprite.graphics()
-                if not has_palette:
-                    has_palette = True
-                    mask.putpalette(submask.getpalette())
-                img, mask = attach_over_masked(
-                    subimg, submask, img, mask, (-128 * (len(row) - 1) - 128 * r + 128 * c, -200 - 64 * r - 64 * c)
-                )
-        return img, mask
+                img.blend_over(subimg.move(128 * r - 128 * c, 64 * r + 64 * c))
+        return img.crop().to_pil_image()
 
     @property
     def M(self):
@@ -228,42 +214,20 @@ class ALayout:
             [self.ground_sprite.to_grf(sprite_list)] + [sprite.to_grf(sprite_list) for sprite in self.sprites]
         )
 
-    def doc_graphics(self, remap, context=grf.DummyWriteContext()):
-        img = Image.new("RGBA", (256, 128))
+    def graphics(self, remap, context=grf.DummyWriteContext()):
+        img = LayeredImage.empty()
         for sprite in self.sprites:
-            masked_sprite = sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
-            _, _, subrgb, subalpha, submask = masked_sprite.get_data_layers(context)
-            subimg = Image.fromarray(np.concatenate((subrgb, subalpha[:, :, np.newaxis]), axis=2))
-            submask = Image.fromarray(submask)
-            submask.putpalette(PIL_PALETTE.tobytes())
-            subimg = blend(subimg, submask)
+            masked_sprite = LayeredImage.from_sprite(sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)).copy()
+            if remap is not None:
+                masked_sprite.remap(remap)
+            masked_sprite.apply_mask()
 
-            xofs = masked_sprite.xofs + sprite.offset[0] * 8 + sprite.offset[1] * 8
-            yofs = masked_sprite.yofs - sprite.offset[0] * 4 + sprite.offset[1] * 4
-
-            # FIXME treat offsets seriously
-            img = attach_over(subimg, img, (0, 0))
+            img.blend_over(
+                masked_sprite.move(
+                    sprite.offset[0] * 8 + sprite.offset[1] * 8, sprite.offset[0] * 4 + sprite.offset[1] * 4
+                )
+            )
         return img
-
-    def graphics(self, context=grf.DummyWriteContext()):
-        img = None
-        for sprite in self.sprites:
-            masked_sprite = sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
-            _, _, subrgb, subalpha, submask = masked_sprite.get_data_layers(context)
-            subimg = Image.fromarray(np.concatenate((subrgb, subalpha[:, :, np.newaxis]), axis=2))
-            submask = Image.fromarray(submask)
-            submask.putpalette(PIL_PALETTE.tobytes())
-
-            xofs = masked_sprite.sprite.xofs + sprite.offset[0] * 8 + sprite.offset[1] * 8
-            yofs = masked_sprite.sprite.yofs - sprite.offset[0] * 4 + sprite.offset[1] * 4
-
-            if img is None:
-                img = subimg.copy()
-                mask = submask.copy()
-            else:
-                # FIXME treat offsets seriously
-                img, mask = attach_over_masked(subimg, submask, img, mask, (0, 0))
-        return img, mask
 
     def to_index(self, layout_pool):
         return layout_pool.index(self)
@@ -298,14 +262,7 @@ class LayoutSprite(grf.Sprite):
 
     def get_data_layers(self, context):
         timer = context.start_timer()
-        img, mask = self.layout.graphics()
-        img.thumbnail((self.w, self.h), Image.Resampling.LANCZOS)
-        mask.thumbnail((self.w, self.h), Image.Resampling.LANCZOS)
+        ret = self.layout.graphics(None)
         timer.count_composing()
 
-        npimg = np.asarray(img)
-        rgb = npimg[:, :, :3]
-        alpha = npimg[:, :, 3]
-        mask = np.asarray(mask)
-
-        return img.size[0], img.size[1], rgb, alpha, mask
+        return ret.w, ret.h, ret.rgb, ret.alpha, ret.mask

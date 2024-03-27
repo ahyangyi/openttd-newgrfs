@@ -21,6 +21,18 @@ class LayeredImage:
         return LayeredImage(0, 0, 0, 0, None, None, None)
 
     @staticmethod
+    def canvas(xofs, yofs, w, h, bpp=32, has_mask=True):
+        return LayeredImage(
+            xofs,
+            yofs,
+            w,
+            h,
+            np.zeros((h, w, 3), dtype=np.uint8) if bpp == 32 else None,
+            np.zeros((h, w), dtype=np.uint8) if bpp == 32 else None,
+            np.zeros((h, w), dtype=np.uint8) if has_mask else None,
+        )
+
+    @staticmethod
     def from_sprite(sprite, context=None):
         context = context or grf.DummyWriteContext()
         w, h, rgb, alpha, mask = sprite.get_data_layers(context)
@@ -117,7 +129,7 @@ class LayeredImage:
                 opacity = other.mask != 0
             else:
                 opacity = other.alpha != 0
-            view_mask[:, :] = view_mask * (1 - opacity) + other.mask * opacity
+            mask_viewport[:, :] = mask_viewport * (1 - opacity) + other.mask * opacity
 
         if self.rgb is not None:
             rgb_viewport = self.rgb[y1 : y1 + other.h, x1 : x1 + other.w]

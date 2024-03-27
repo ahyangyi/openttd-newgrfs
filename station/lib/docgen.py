@@ -31,7 +31,7 @@ nav_order: {i+1}
                 from station.lib import Demo
 
                 demo = Demo("", [[sprite]])
-                img = demo.doc_graphics(blue_remap)
+                img = demo.graphics(blue_remap)
                 img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{i}.png"))
                 print(f'![](img/{metastation_label}/tiles/{i}.png){{: width="64"}}', file=f)
             print("# Sample Layouts", file=f)
