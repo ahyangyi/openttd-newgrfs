@@ -116,9 +116,11 @@ demo_sprites = []
 for demo in [normal_demo, normal_demo.M]:
     demo_sprites.append(
         grf.AlternativeSprites(
-            LayoutSprite(demo, 128 * scale, 128 * scale, xofs=0, yofs=-16 * scale, scale=scale, bpp=bpp)
-            for scale in [1, 2, 4]
-            for bpp in [8, 32]
+            *[
+                LayoutSprite(demo, 128 * scale, 128 * scale, xofs=0, yofs=-16 * scale, scale=scale, bpp=bpp)
+                for scale in [1, 2, 4]
+                for bpp in [8, 32]
+            ]
         )
     )
 sprites.extend(demo_sprites)
