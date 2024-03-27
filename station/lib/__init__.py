@@ -213,10 +213,10 @@ class ALayout:
             [self.ground_sprite.to_grf(sprite_list)] + [sprite.to_grf(sprite_list) for sprite in self.sprites]
         )
 
-    def graphics(self, remap, context=grf.DummyWriteContext()):
+    def graphics(self, remap, scale, bpp, context=grf.DummyWriteContext()):
         img = LayeredImage.empty()
         for sprite in self.sprites:
-            masked_sprite = LayeredImage.from_sprite(sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)).copy()
+            masked_sprite = LayeredImage.from_sprite(sprite.sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=bpp)).copy()
             if remap is not None:
                 masked_sprite.remap(remap)
                 masked_sprite.apply_mask()
