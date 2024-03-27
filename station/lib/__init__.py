@@ -266,10 +266,4 @@ class LayoutSprite(grf.Sprite):
         ret.resize(self.w, self.h)
         timer.count_composing()
 
-        import cv2
-
-        cv2.imwrite("rgb.png", ret.rgb)
-        cv2.imwrite("alpha.png", ret.alpha)
-        cv2.imwrite("mask.png", ret.mask)
-
         return ret.w, ret.h, ret.rgb, ret.alpha, ret.mask
