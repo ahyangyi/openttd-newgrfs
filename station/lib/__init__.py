@@ -67,12 +67,13 @@ class Demo:
         self.title = title
         self.tiles = tiles
 
-    def graphics(self, remap):
+    def graphics(self, remap, scale, bpp):
+        yofs = 32 * scale
         img = LayeredImage.canvas(
-            -64 * (len(self.tiles) + len(self.tiles[0])),
-            -200,
-            128 * (len(self.tiles) + len(self.tiles[0])),
-            200 + 64 * (len(self.tiles) + len(self.tiles[0])),
+            -16 * scale * (len(self.tiles) + len(self.tiles[0])),
+            -yofs,
+            32 * scale * (len(self.tiles) + len(self.tiles[0])),
+            yofs + 16 * scale * (len(self.tiles) + len(self.tiles[0])),
             has_mask=remap is None,
         )
 
@@ -80,10 +81,8 @@ class Demo:
             for c, sprite in enumerate(row[::-1]):
                 if sprite is None:
                     continue
-                subimg = sprite.graphics(remap)
-                # FIXME: doesn't align
-                # img = attach_over(groundsprite, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -341 - 64 * r - 64 * c))
-                img.blend_over(subimg.move(128 * r - 128 * c, 64 * r + 64 * c))
+                subimg = sprite.graphics(remap, scale, bpp)
+                img.blend_over(subimg.move((32 * r - 32 * c) * scale, (16 * r + 16 * c) * scale))
         return img
 
     @property
@@ -249,13 +248,14 @@ class ALayout:
 
 
 class LayoutSprite(grf.Sprite):
-    def __init__(self, layout, w, h, **kwargs):
+    def __init__(self, layout, w, h, bpp=32, **kwargs):
         super().__init__(w, h, **kwargs)
+        self.bpp = bpp
         self.layout = layout
 
     def get_fingerprint(self):
         # FIXME don't use id
-        return {"layout": id(self.layout), "w": self.w, "h": self.h}
+        return {"layout": id(self.layout), "w": self.w, "h": self.h, "bpp": self.bpp}
 
     def get_image_files(self):
         return ()
