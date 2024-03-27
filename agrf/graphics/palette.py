@@ -7,7 +7,7 @@ with open("files/ttd_palette.json") as f:
     PALETTE = json.load(f)["entries"]
 
 PIL_PALETTE = ImagePalette.ImagePalette(palette=[item for colour in PALETTE for item in colour])
-NUMPY_PALETTE = np.array(palette, dtype="uint8")
+NUMPY_PALETTE = np.array(PALETTE, dtype="uint8")
 
 
 class CompanyColour:
