@@ -198,3 +198,25 @@ class LayeredImage:
 
     def to_pil_image(self):
         return Image.fromarray(self.to_image())
+
+    # Keep aspect ratio
+    # Using given w and h as maximum
+    # offsets updated approximately
+    def resize(self, w, h):
+        metadata_updated = False
+        for k in ["rgb", "alpha", "mask"]:
+            img = getattr(self, k)
+            if img is None:
+                continue
+            old_w, old_h = img.shape[1], img.shape[0]
+            img = Image.fromarray(img)
+            img.thumbnail((w, h), Image.Resampling.LANCZOS)
+            img = np.asarray(img)
+            setattr(self, k, img)
+            new_w, new_h = img.shape[1], img.shape[0]
+            if not metadata_updated:
+                self.w = new_w
+                self.h = new_h
+                self.xofs = (self.xofs * new_w + old_w // 2) // old_w
+                self.yofs = (self.yofs * new_h + old_h // 2) // old_h
+                metadata_updated = True

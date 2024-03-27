@@ -267,6 +267,13 @@ class LayoutSprite(grf.Sprite):
     def get_data_layers(self, context):
         timer = context.start_timer()
         ret = self.layout.graphics(None, self.scale, self.bpp)
+        ret.resize(self.w, self.h)
         timer.count_composing()
+
+        import cv2
+
+        cv2.imwrite("rgb.png", ret.rgb)
+        cv2.imwrite("alpha.png", ret.alpha)
+        cv2.imwrite("mask.png", ret.mask)
 
         return ret.w, ret.h, ret.rgb, ret.alpha, ret.mask
