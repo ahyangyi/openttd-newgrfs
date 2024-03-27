@@ -66,5 +66,5 @@
     "agrf_bpps": [8, 32],
     "agrf_scales": [1, 2, 4],
     "agrf_palette": "station/files/ttd_palette.json",
-    "z_scale": 2.0
+    "z_scale": 1.5
 }
