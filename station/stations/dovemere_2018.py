@@ -114,9 +114,7 @@ normal_demo = Demo(
 
 demo_sprites = []
 for demo in [normal_demo, normal_demo.M]:
-    demo_sprites.append(
-        grf.AlternativeSprites(LayoutSprite(demo, 256, 256, xofs=-128, yofs=-64, zoom=grf.ZOOM_4X, bpp=32))
-    )
+    demo_sprites.append(grf.AlternativeSprites(LayoutSprite(demo, 256, 256, xofs=-128, yofs=-64, scale=4, bpp=32)))
 sprites.extend(demo_sprites)
 demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))])
 demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))])

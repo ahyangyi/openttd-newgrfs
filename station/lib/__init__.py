@@ -251,8 +251,8 @@ class ALayout:
 
 
 class LayoutSprite(grf.Sprite):
-    def __init__(self, layout, w, h, scale=1, bpp=32, **kwargs):
-        super().__init__(w, h, **kwargs)
+    def __init__(self, layout, w, h, scale=4, bpp=32, **kwargs):
+        super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], **kwargs)
         self.layout = layout
         self.scale = scale
         self.bpp = bpp
