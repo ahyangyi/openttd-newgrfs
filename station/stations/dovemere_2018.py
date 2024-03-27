@@ -119,7 +119,7 @@ for demo in [normal_demo, normal_demo.M]:
             *[
                 LayoutSprite(demo, 128 * scale, 128 * scale, xofs=0, yofs=-16 * scale, scale=scale, bpp=bpp)
                 for scale in [1, 2, 4]
-                for bpp in [8, 32]
+                for bpp in [32]
             ]
         )
     )
