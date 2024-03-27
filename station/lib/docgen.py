@@ -31,11 +31,11 @@ nav_order: {i+1}
                 from station.lib import Demo
 
                 demo = Demo("", [[sprite]])
-                img = demo.doc_graphics(blue_remap)
+                img = demo.graphics(blue_remap).crop().to_pil_image()
                 img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{i}.png"))
                 print(f'![](img/{metastation_label}/tiles/{i}.png){{: width="64"}}', file=f)
             print("# Sample Layouts", file=f)
             for i, demo in enumerate(metastation.doc_layouts):
-                img = demo.doc_graphics(blue_remap)
+                img = demo.graphics(blue_remap).crop().to_pil_image()
                 img.save(os.path.join(prefix, "img", f"{metastation_label}/layouts/{i}.png"))
                 print(f"## {demo.title}\n\n![](img/{metastation_label}/layouts/{i}.png)", file=f)
