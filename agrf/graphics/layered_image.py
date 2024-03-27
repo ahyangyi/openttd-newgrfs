@@ -16,21 +16,35 @@ class LayeredImage:
         self.mask = mask
 
     @staticmethod
+    def empty():
+        return LayeredImage(0, 0, 0, 0, None, None, None)
+
+    @staticmethod
     def from_sprite(sprite, context=None):
         context = context or grf.DummyWriteContext()
-        w, h, rgb, alpha, mask = sprite.get_data_layers(self, context)
+        w, h, rgb, alpha, mask = sprite.get_data_layers(context)
         return LayeredImage(sprite.xofs, sprite.yofs, w, h, rgb, alpha, mask)
 
     def copy(self):
-        return Image(
+        return LayeredImage(
             self.xofs,
             self.yofs,
             self.w,
             self.h,
-            self.rgb and self.rgb.copy(),
-            self.alpha and self.alpha.copy(),
-            self.mask and self.mask.copy(),
+            None if self.rgb is None else self.rgb.copy(),
+            None if self.alpha is None else self.alpha.copy(),
+            None if self.mask is None else self.mask.copy(),
         )
+
+    def copy_from(self, other):
+        self.xofs = other.xofs
+        self.yofs = other.yofs
+        self.w = other.w
+        self.h = other.h
+        self.rgb = (None if other.rgb is None else other.rgb.copy(),)
+        self.alpha = (None if other.alpha is None else other.alpha.copy(),)
+        self.mask = (None if other.mask is None else other.mask.copy(),)
+        return self
 
     def apply_mask(self):
         if self.mask is None:
@@ -54,6 +68,7 @@ class LayeredImage:
 
         self.rgb = blended
         self.mask = None
+        return self
 
     def adjust_canvas(self, other):
         # x: other.xofs - self.xofs .. other.w - 1 + other.xofs - self.xofs
@@ -84,8 +99,12 @@ class LayeredImage:
         self.h = h
         self.xofs -= x0
         self.yofs -= y0
+        return self
 
     def blend_over(self, other):
+        if self.rgb is None and self.mask is None:
+            self.copy_from(other)
+            return
         self.adjust_canvas(other)
 
         x1 = other.xofs - self.xofs
@@ -112,3 +131,55 @@ class LayeredImage:
                 alpha1_component * rgb_viewport + alpha2_component * other.rgb + new_alpha // 2
             ) // np.maximum(new_alpha, 1)
             alpha_viewport[:, :] = (new_alpha + 128) // 255
+        return self
+
+    def move(self, offset_x, offset_y):
+        self.xofs += offset_x
+        self.yofs += offset_y
+        return self
+
+    def remap(self, remap):
+        if self.mask is not None:
+            self.mask = remap.remap_image(self.mask)
+        return self
+
+    def crop(self):
+        if self.alpha is not None:
+            cols_bitset = self.alpha.any(0)
+            rows_bitset = self.alpha.any(1)
+        elif self.rgb is not None:
+            cols_bitset = self.rgb.any((0, 2))
+            rows_bitset = self.rgb.any((1, 2))
+        elif self.mask is not None:
+            cols_bitset = self.mask.any(0)
+            rows_bitset = self.mask.any(1)
+        else:
+            raise context.failure(self, "All data layers are None")
+
+        cols_used = np.arange(w)[cols_bitset]
+        rows_used = np.arange(h)[rows_bitset]
+
+        crop_x = min(cols_used, default=0)
+        crop_y = min(rows_used, default=0)
+        w = max(cols_used, default=0) - crop_x + 1
+        h = max(rows_used, default=0) - crop_y + 1
+
+        if self.rgb is not None:
+            self.rgb = self.rgb[crop_y : crop_y + h, crop_x : crop_x + w]
+        if self.alpha is not None:
+            self.alpha = self.alpha[crop_y : crop_y + h, crop_x : crop_x + w]
+        if self.mask is not None:
+            self.mask = self.mask[crop_y : crop_y + h, crop_x : crop_x + w]
+        self.w = w
+        self.h = h
+        self.xofs += crop_x
+        self.yofs += crop_y
+        return self
+
+    def to_image(self):
+        if self.mask is not None:
+            self.blend()
+        return np.concatenate((self.rgb, self.alpha[:, :, np.newaxis]), axis=2)
+
+    def to_pil_image(self):
+        return Image.fromarray(self.to_image())
