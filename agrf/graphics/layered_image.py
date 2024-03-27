@@ -73,8 +73,6 @@ class LayeredImage:
         return self
 
     def adjust_canvas(self, other):
-        # x: other.xofs - self.xofs .. other.w - 1 + other.xofs - self.xofs
-        # y: other.yofs - self.yofs .. other.h - 1 + other.yofs - self.yofs
         w = max(other.w + other.xofs - self.xofs, self.w) - min(0, other.xofs - self.xofs)
         h = max(other.h + other.yofs - self.yofs, self.h) - min(0, other.yofs - self.yofs)
         x0 = max(0, self.xofs - other.xofs)
@@ -127,13 +125,13 @@ class LayeredImage:
 
             alpha1 = alpha_viewport.astype(np.uint32)
             alpha2 = other.alpha.astype(np.uint32)
-            alpha1_component = alpha1 * (255 - alpha2)
-            alpha2_component = alpha2 * 255
+            alpha1_component = np.expand_dims(alpha1 * (255 - alpha2), 2)
+            alpha2_component = np.expand_dims(alpha2 * 255, 2)
             new_alpha = alpha1_component + alpha2_component
             rgb_viewport[:, :] = (
                 alpha1_component * rgb_viewport + alpha2_component * other.rgb + new_alpha // 2
             ) // np.maximum(new_alpha, 1)
-            alpha_viewport[:, :] = (new_alpha + 128) // 255
+            alpha_viewport[:, :] = (new_alpha[:, :, 0] + 128) // 255
 
         return self
 

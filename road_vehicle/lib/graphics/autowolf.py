@@ -103,7 +103,7 @@ class AutoWolf:
 
     def doc_graphics(self, remap):
         img = LayeredImage.empty()
-        for k, v in self.graphics.items():
+        for k, v in sorted(self.graphics.items(), reverse=True):
             v = v.get_default_graphics()
             sprite = v.spritesheet()
             sprite = sprite[3 + self.shifts[k]]
@@ -111,7 +111,7 @@ class AutoWolf:
             masked_sprite.remap(remap)
             masked_sprite.apply_mask()
             diff = sum(self.lengths[:k])
-            img.blend_over(masked_sprite.move(8 * diff, 4 * diff))
+            img.blend_over(masked_sprite.move(-8 * diff, -4 * diff))
         return img.crop().to_pil_image()
 
     def empty(self):
