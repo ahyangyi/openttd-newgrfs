@@ -1,5 +1,6 @@
 import grf
 import math
+from .misc import SCALE_TO_ZOOM
 
 
 def guess_dimens(width, height, angle, bbox):
@@ -25,9 +26,6 @@ def guess_dimens(width, height, angle, bbox):
     delta = height - real_height_float
 
     return height, delta, z
-
-
-scale_to_zoom = {4: grf.ZOOM_4X, 2: grf.ZOOM_2X, 1: grf.ZOOM_NORMAL}
 
 
 class LazyAlternativeSprites(grf.AlternativeSprites):
@@ -116,7 +114,7 @@ def spritesheet_template(
                         xofs=get_rels(i, diff, scale)[0],
                         yofs=get_rels(i, diff, scale)[1],
                         bpp=bpp,
-                        zoom=scale_to_zoom[scale],
+                        zoom=SCALE_TO_ZOOM[scale],
                     ),
                     (
                         grf.FileSprite(

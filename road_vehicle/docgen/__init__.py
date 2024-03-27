@@ -8,11 +8,25 @@ cc1_remap = company_colour_remap(CompanyColour.BLUE, CompanyColour.BLUE).to_spri
 cc2_remap = company_colour_remap(CompanyColour.WHITE, CompanyColour.RED).to_sprite()
 
 
+techclass_order = [
+    ("Buses", ["bus", "articulated_bus", "2decker", "coach"]),
+    ("Lorries", ["l_truck", "m_truck", "h_truck"]),
+    ("Urban Rail Transit", ["monorail"]),
+    ("Trolleybuses", ["trolleybus"]),
+]
+
+
 def save_example_images(graphics_helper, prefix, file_name):
     cc1_masked_img = graphics_helper.doc_graphics(cc1_remap)
     cc1_masked_img.save(os.path.join(prefix, "img", f"{file_name}_cc1.png"))
     cc2_masked_img = graphics_helper.doc_graphics(cc2_remap)
     cc2_masked_img.save(os.path.join(prefix, "img", f"{file_name}_cc2.png"))
+
+
+def metavehicle_key(mv):
+    for i, (_, techclass_list) in enumerate(techclass_order):
+        if mv.techclass in techclass_list:
+            return i, mv.introduction_date, mv.translation_name
 
 
 def gen_docs(string_manager, rosters, everything):
@@ -41,12 +55,7 @@ nav_order: {i+1}
         for language in ["en-GB", "zh-CN"]:
             langprefix = f"docs/_i18n/{language}/road_vehicle/rosters"
             with open(os.path.join(langprefix, f"{roster.translation_name}.md"), "w") as f:
-                for title, techclassset in [
-                    ("Buses", ["bus", "articulated_bus", "2decker", "coach"]),
-                    ("Lorries", ["l_truck", "m_truck", "h_truck"]),
-                    ("Urban Rail Transit", ["monorail"]),
-                    ("Trolleybuses", ["trolleybus"]),
-                ]:
+                for title, techclassset in techclass_order:
                     if not any(entry.techclass in techclassset for entry in roster.entries):
                         continue
                     print(
@@ -70,7 +79,7 @@ nav_order: {i+1}
 
     prefix = f"docs/road_vehicle/vehicles"
     os.makedirs(os.path.join(prefix, "img"), exist_ok=True)
-    for i, v in enumerate(everything.entries):
+    for i, v in enumerate(sorted(everything.entries, key=metavehicle_key)):
         # Prepare text
         translation = get_translation(string_manager["STR_VEHICLE_" + v.translation_name + "_NAME"], 0x7F)
         desc_translation = get_translation(string_manager["STR_VEHICLE_" + v.translation_name + "_DESC"], 0x7F)

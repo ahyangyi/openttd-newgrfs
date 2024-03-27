@@ -17,7 +17,7 @@ from agrf.magic import Switch
 from .platforms import sprites as platform_sprites
 
 
-def quickload(name, type, traversable, platform):
+def quickload(name, type, traversable, platform, category):
     v = LazyVoxel(
         name,
         prefix="station/voxels/render/dovemere_2018",
@@ -46,6 +46,10 @@ def quickload(name, type, traversable, platform):
     ret = []
     for l in candidates:
         l = type.get_all_variants(l)
+        for layout in l[: len(l) // 2]:
+            layout.category = category
+        for layout in l[len(l) // 2 :]:
+            layout.category = "B" if category == "F" else category
         layouts.extend(l)
         ret.append(type.create_variants(l))
 
@@ -77,27 +81,27 @@ layouts = []
     (v_central_n, v_central_f, v_central),
     tiny,
 ) = [
-    quickload(name, type, traversable, platform)
-    for name, type, traversable, platform in [
-        ("corner", BuildingSpriteSheetFull, False, False),
-        ("front_normal", BuildingSpriteSheetSymmetricalX, False, False),
-        ("front_gate", BuildingSpriteSheetFull, False, False),
-        ("front_gate_extender", BuildingSpriteSheetSymmetricalX, False, False),
-        ("central", BuildingSpriteSheetSymmetrical, True, False),
-        ("central_windowed", BuildingSpriteSheetSymmetricalY, True, False),
-        ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True, False),
-        ("side_a", BuildingSpriteSheetFull, True, True),
-        ("side_a2", BuildingSpriteSheetSymmetricalY, True, True),
-        ("side_b", BuildingSpriteSheetFull, True, True),
-        ("side_b2", BuildingSpriteSheetSymmetricalY, True, True),
-        ("side_c", BuildingSpriteSheetSymmetricalY, True, True),
-        ("h_end", BuildingSpriteSheetSymmetricalY, True, False),
-        ("h_normal", BuildingSpriteSheetSymmetrical, True, False),
-        ("h_gate", BuildingSpriteSheetSymmetricalY, True, False),
-        ("h_gate_extender", BuildingSpriteSheetSymmetrical, True, False),
-        ("v_end", BuildingSpriteSheetSymmetricalX, False, False),
-        ("v_central", BuildingSpriteSheetSymmetrical, True, True),
-        ("tiny", BuildingSpriteSheetSymmetrical, True, False),
+    quickload(name, type, traversable, platform, category)
+    for name, type, traversable, platform, category in [
+        ("corner", BuildingSpriteSheetFull, False, False, "F"),
+        ("front_normal", BuildingSpriteSheetSymmetricalX, False, False, "F"),
+        ("front_gate", BuildingSpriteSheetFull, False, False, "F"),
+        ("front_gate_extender", BuildingSpriteSheetSymmetricalX, False, False, "F"),
+        ("central", BuildingSpriteSheetSymmetrical, True, False, "C"),
+        ("central_windowed", BuildingSpriteSheetSymmetricalY, True, False, "C"),
+        ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True, False, "C"),
+        ("side_a", BuildingSpriteSheetFull, True, True, "C"),
+        ("side_a2", BuildingSpriteSheetSymmetricalY, True, True, "C"),
+        ("side_b", BuildingSpriteSheetFull, True, True, "C"),
+        ("side_b2", BuildingSpriteSheetSymmetricalY, True, True, "C"),
+        ("side_c", BuildingSpriteSheetSymmetricalY, True, True, "C"),
+        ("h_end", BuildingSpriteSheetSymmetricalY, True, False, "H"),
+        ("h_normal", BuildingSpriteSheetSymmetrical, True, False, "H"),
+        ("h_gate", BuildingSpriteSheetSymmetricalY, True, False, "H"),
+        ("h_gate_extender", BuildingSpriteSheetSymmetrical, True, False, "H"),
+        ("v_end", BuildingSpriteSheetSymmetricalX, False, False, "F"),
+        ("v_central", BuildingSpriteSheetSymmetrical, True, True, "C"),
+        ("tiny", BuildingSpriteSheetSymmetrical, True, False, "H"),
     ]
 ]
 
@@ -117,7 +121,13 @@ normal_demo = Demo(
 demo_sprites = []
 for demo in [normal_demo, normal_demo.M]:
     demo_sprites.append(
-        grf.AlternativeSprites(LayoutSprite(demo, 256, 256, xofs=-128, yofs=-64, zoom=grf.ZOOM_4X, bpp=32))
+        grf.AlternativeSprites(
+            *[
+                LayoutSprite(demo, 128 * scale, 128 * scale, xofs=0, yofs=-16 * scale, scale=scale, bpp=bpp)
+                for scale in [1, 2, 4]
+                for bpp in [32]
+            ]
+        )
     )
 sprites.extend(demo_sprites)
 demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))])
@@ -244,7 +254,7 @@ the_station = AStation(
     translation_name="DOVEMERE_2018",
     sprites=sprites,
     layouts=[layout.to_grf(sprites) for layout in layouts],
-    class_label=b"DM18",
+    class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
     non_traversable_tiles=0b00111100,
     callbacks={
@@ -273,14 +283,15 @@ the_stations = AMetaStation(
             translation_name="DOVEMERE_2018",  # FIXME
             sprites=sprites,  # FIXME
             layouts=[layouts[0].to_grf(sprites), layouts[1].to_grf(sprites)],
-            class_label=b"DM18",
+            class_label=b"\xe8\x8a\x9c" + layouts[0].category.encode(),
             cargo_threshold=40,
             non_traversable_tiles=0b00,  # FIXME
             callbacks={"select_tile_layout": 0},
         )
         for i, layouts in enumerate(zip(layouts[:-2:2], layouts[1:-2:2]))
     ],
-    b"DM18",
+    b"\xe8\x8a\x9cA",
+    ["F", "B", "C", "H"],
     layouts,
     [
         Demo(
