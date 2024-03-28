@@ -90,11 +90,11 @@ layouts = []
         ("central", BuildingSpriteSheetSymmetrical, True, False, "C"),
         ("central_windowed", BuildingSpriteSheetSymmetricalY, True, False, "C"),
         ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True, False, "C"),
-        ("side_a", BuildingSpriteSheetFull, True, True, "C"),
-        ("side_a2", BuildingSpriteSheetSymmetricalY, True, True, "C"),
-        ("side_b", BuildingSpriteSheetFull, True, True, "C"),
-        ("side_b2", BuildingSpriteSheetSymmetricalY, True, True, "C"),
-        ("side_c", BuildingSpriteSheetSymmetricalY, True, True, "C"),
+        ("side_a", BuildingSpriteSheetFull, True, True, "I"),
+        ("side_a2", BuildingSpriteSheetSymmetricalY, True, True, "I"),
+        ("side_b", BuildingSpriteSheetFull, True, True, "J"),
+        ("side_b2", BuildingSpriteSheetSymmetricalY, True, True, "J"),
+        ("side_c", BuildingSpriteSheetSymmetricalY, True, True, "K"),
         ("h_end", BuildingSpriteSheetSymmetricalY, True, False, "H"),
         ("h_normal", BuildingSpriteSheetSymmetrical, True, False, "H"),
         ("h_gate", BuildingSpriteSheetSymmetricalY, True, False, "H"),
@@ -291,7 +291,7 @@ the_stations = AMetaStation(
         for i, layouts in enumerate(zip(layouts[:-2:2], layouts[1:-2:2]))
     ],
     b"\xe8\x8a\x9cA",
-    ["F", "B", "C", "H"],
+    ["F", "B", "C", "I", "J", "K", "H"],
     layouts,
     [
         Demo(

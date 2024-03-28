@@ -9,7 +9,7 @@ def gen_docs(string_manager, metastations):
     prefix = "docs/station/"
     for i, metastation in enumerate(metastations):
         metastation_label = metastation.class_label_plain
-        translation = get_translation(string_manager[f"STR_STATION_CLASS_{metastation_label}"], 0x7F)
+        translation = get_translation(string_manager[f"STR_METASTATION_CLASS_{metastation_label}"], 0x7F)
         os.makedirs(os.path.join(prefix, "img", metastation_label, "layouts"), exist_ok=True)
         os.makedirs(os.path.join(prefix, "img", metastation_label, "tiles"), exist_ok=True)
 
