@@ -18,6 +18,14 @@ class Config:
     def copy(self):
         return Config(config=deepcopy(self.config))
 
+    def subset(self, indices):
+        new_config = deepcopy(self.config)
+        for k in ["sprites", "agrf_deltas"]:
+            if k in new_config:
+                new_config[k] = [new_config[k][i] for i in indices]
+
+        return Config(config=new_config)
+
 
 def render(config, vox_path, output_path=None):
     if output_path is not None:

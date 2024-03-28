@@ -79,10 +79,7 @@ class ParameterListWithPreset(ParameterList):
         for p in self.presets.values():
             for k in p.keys():
                 if k not in self._parameters_with_preset:
-                    self._parameters_with_preset[k] = (
-                        start_id,
-                        self[k].enum_index(preset_enum_name),
-                    )
+                    self._parameters_with_preset[k] = (start_id, self[k].enum_index(preset_enum_name))
                     self._preset_parameters[start_id] = ParameterReverseLookup(
                         {kk: v for kk, v in self[k].enum.items() if v != preset_enum_name}
                     )

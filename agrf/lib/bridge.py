@@ -31,23 +31,11 @@ class BridgeLayout:
 
     @staticmethod
     def make_universal(single_layout):
-        return BridgeLayout(
-            rail=single_layout,
-            road=single_layout,
-            mono=single_layout,
-            mlev=single_layout,
-        )
+        return BridgeLayout(rail=single_layout, road=single_layout, mono=single_layout, mlev=single_layout)
 
 
 class Bridge(grf.SpriteGenerator):
-    def __init__(
-        self,
-        *,
-        id,
-        name,
-        layout: BridgeLayout,
-        **props,
-    ):
+    def __init__(self, *, id, name, layout: BridgeLayout, **props):
         super().__init__()
         self.id = id
         self.name = name

@@ -181,18 +181,8 @@ parameter_choices = SearchSpace(
 docs_parameter_choices = SearchSpace(
     [
         ("POLICY", ["AUTARKY", "SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"]),
-        (
-            "PRIMARY_INDUSTRY_GROWTH",
-            ["NONE", "UNIVERSAL_SUPPLIES", "GENERIC_SUPPLIES", "SPECIFIC_SUPPLIES"],
-        ),
-        (
-            "WORKFORCE",
-            [
-                "ABSTRACT",
-                "PROFESSIONAL",
-                "YETI_TIRED",
-            ],
-        ),
+        ("PRIMARY_INDUSTRY_GROWTH", ["NONE", "UNIVERSAL_SUPPLIES", "GENERIC_SUPPLIES", "SPECIFIC_SUPPLIES"]),
+        ("WORKFORCE", ["ABSTRACT", "PROFESSIONAL", "YETI_TIRED"]),
         ("WORKER_PARTICIPATION", ["NONE", "PRIMARY_INDUSTRY", "SECONDARY_INDUSTRY"]),
         ("SEA_INDUSTRY", ["ORGANIC"]),
         ("TOWN_GOODS", ["ORGANIC"]),

@@ -38,9 +38,7 @@ class NumberedSprite(grf.Sprite):
 
     def get_fingerprint(self):
         return grf.combine_fingerprint(
-            super().get_fingerprint_base(),
-            sprite=self.sprite.get_fingerprint(),
-            number=self.number,
+            super().get_fingerprint_base(), sprite=self.sprite.get_fingerprint(), number=self.number
         )
 
     def get_resource_files(self):

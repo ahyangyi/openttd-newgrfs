@@ -90,10 +90,7 @@ class TheEconomy(MetaEconomy):
             ret.graph[forest].boosters = farm_supplies
 
             if parameters["POLICY"] in ("SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"):
-                ret.graph[port].produces += (
-                    engineering_supplies,
-                    farm_supplies,
-                )
+                ret.graph[port].produces += (engineering_supplies, farm_supplies)
             else:
                 ret.graph[printing_works].produces += (engineering_supplies,)
                 ret.graph[oil_refinery].produces += (farm_supplies,)
@@ -105,10 +102,7 @@ class TheEconomy(MetaEconomy):
             ret.graph[forest].boosters = farm_supplies
 
             if parameters["POLICY"] in ("SELF_SUFFICIENT", "FREE_TRADE", "EXPORT"):
-                ret.graph[port].produces += (
-                    engineering_supplies,
-                    farm_supplies,
-                )
+                ret.graph[port].produces += (engineering_supplies, farm_supplies)
             else:
                 ret.graph[printing_works].produces += (engineering_supplies,)
                 ret.graph[oil_refinery].produces += (farm_supplies,)

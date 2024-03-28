@@ -1,7 +1,6 @@
 from road_vehicle.lib.graphics.voxel import LazyVoxel
-from agrf.graphics.attach_over import attach_over
-from agrf.graphics.blend import blend
 from agrf.magic import Switch
+from agrf.graphics import LayeredImage
 import grf
 
 ALLOWED_FLAGS = ["noflipX", "noflipY", "debug_bbox"]
@@ -103,25 +102,17 @@ class AutoWolf:
             self.shifts[i] = 4 if shadow_rotate else 0
 
     def doc_graphics(self, remap):
-        img = None
-        for k, v in self.graphics.items():
+        img = LayeredImage.empty()
+        for k, v in sorted(self.graphics.items(), reverse=True):
             v = v.get_default_graphics()
             sprite = v.spritesheet()
             sprite = sprite[3 + self.shifts[k]]
-            masked_sprite = sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
-            subimg, _ = masked_sprite.sprite.get_image()
-            submask, _ = masked_sprite.mask.get_image()
-            submask = remap.remap_image(submask)
-            subimg = blend(subimg, submask)
-
-            if img is None:
-                img = subimg
-                pos = k
-            else:
-                diff = sum(self.lengths[pos:k])
-                img = attach_over(img, subimg, (-8 * diff, -4 * diff))
-                pos = k
-        return img.crop(img.getbbox())
+            masked_sprite = LayeredImage.from_sprite(sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)).copy()
+            masked_sprite.remap(remap)
+            masked_sprite.apply_mask()
+            diff = sum(self.lengths[:k])
+            img.blend_over(masked_sprite.move(-8 * diff, -4 * diff))
+        return img.crop().to_pil_image()
 
     def empty(self):
         return grf.GenericSpriteLayout(ent1=(31,), ent2=(31,))

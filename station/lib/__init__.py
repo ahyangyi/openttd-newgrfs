@@ -1,5 +1,18 @@
 import grf
+import numpy as np
 from PIL import Image
+from agrf.graphics.palette import PIL_PALETTE
+from agrf.magic.switch import deep_freeze
+from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
+from .binary_variants import (
+    BuildingSpriteSheetFull,
+    BuildingSpriteSheetSymmetrical,
+    BuildingSpriteSheetSymmetricalX,
+    BuildingSpriteSheetSymmetricalY,
+)
+from .layout import ADefaultGroundSprite, AGroundSprite, AParentSprite, ALayout
+from .metastation import AMetaStation
+from .utils import class_label_printable
 
 
 class AStation(grf.SpriteGenerator):
@@ -14,17 +27,18 @@ class AStation(grf.SpriteGenerator):
         self.callbacks = grf.make_callback_manager(grf.STATION, callbacks)
         self._props = props
 
+    @property
+    def class_label_plain(self):
+        return class_label_printable(self._props["class_label"])
+
     def get_sprites(self, g):
         res = []
 
         name = g.strings[f"STR_STATION_{self.translation_name}_NAME"]
-        class_name = g.strings[f"STR_STATION_CLASS_{self._props['class_label'].decode()}"]
+        class_name = g.strings[f"STR_STATION_CLASS_{self.class_label_plain}"]
 
         if self.sprites:
-            layouts = []
-            for i in range(len(self.sprites)):
-                layouts.append(grf.GenericSpriteLayout(ent1=[i], ent2=[i], feature=grf.STATION))
-            self.callbacks.graphics = layouts[0]
+            self.callbacks.graphics = grf.GenericSpriteLayout(ent1=[0], ent2=[0], feature=grf.STATION)
 
         self.callbacks.set_flag_props(self._props)
 
@@ -52,109 +66,6 @@ class AStation(grf.SpriteGenerator):
         return res
 
 
-class BinaryVariantMixin:
-    @staticmethod
-    def create_variants(classobj, variants):
-        for i, v in enumerate(variants):
-            cls = v.__class__
-            v.__class__ = type(cls.__name__, (classobj, cls), {})
-            v.variants = [variants[i ^ j] for j in range(len(variants))]
-        return variants[0]
-
-    def __repr__(self):
-        return f"<BinaryVariant:{repr(super())}>"
-
-    @property
-    def all_variants(self):
-        return self.variants
-
-    def __getitem__(self, index):
-        return self.variants[index]
-
-    def to_index(self, sprite_pool):
-        return sprite_pool.index(self)
-
-
-class BuildingSpriteSheetFull(BinaryVariantMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
-    @staticmethod
-    def from_complete_list(sprites):
-        return BinaryVariantMixin.create_variants(BuildingSpriteSheetFull, sprites)
-
-    @property
-    def L(self):
-        return self
-
-    @property
-    def R(self):
-        return self[2]
-
-    @property
-    def T(self):
-        return self[4]
-
-    @property
-    def TL(self):
-        return self[4]
-
-    @property
-    def TR(self):
-        return self[6]
-
-
-class BuildingSpriteSheetSymmetricalX(BinaryVariantMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
-    @staticmethod
-    def from_complete_list(sprites):
-        return BinaryVariantMixin.create_variants(BuildingSpriteSheetSymmetricalX, [sprites[i] for i in [0, 1, 4, 5]])
-
-    @property
-    def C(self):
-        return self
-
-    @property
-    def T(self):
-        return self[2]
-
-
-class BuildingSpriteSheetSymmetricalY(BinaryVariantMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
-    @staticmethod
-    def from_complete_list(sprites):
-        return BinaryVariantMixin.create_variants(BuildingSpriteSheetSymmetricalY, [sprites[i] for i in [0, 1, 2, 3]])
-
-    @property
-    def L(self):
-        return self
-
-    @property
-    def R(self):
-        return self[2]
-
-    @property
-    def T(self):
-        return self
-
-
-class BuildingSpriteSheetSymmetrical(BinaryVariantMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
-    @staticmethod
-    def from_complete_list(sprites):
-        return BinaryVariantMixin.create_variants(BuildingSpriteSheetSymmetricalY, [sprites[i] for i in [0, 1]])
-
-    @property
-    def T(self):
-        return self
-
-
 groundsprite = Image.open("third_party/opengfx2/1012.png")
 
 
@@ -163,66 +74,50 @@ class Demo:
         self.title = title
         self.tiles = tiles
 
-    def doc_graphics(self, remap):
-        from agrf.graphics.attach_over import attach_over
-        from agrf.graphics.blend import blend
-
-        img = Image.new(
-            "RGBA", (128 * (len(self.tiles) + len(self.tiles[0])), 200 + 64 * (len(self.tiles) + len(self.tiles[0])))
+    def graphics(self, remap, scale, bpp):
+        yofs = 32 * scale
+        img = LayeredImage.canvas(
+            -16 * scale * (len(self.tiles) + len(self.tiles[0])),
+            -yofs,
+            32 * scale * (len(self.tiles) + len(self.tiles[0])),
+            yofs + 16 * scale * (len(self.tiles) + len(self.tiles[0])),
+            has_mask=remap is None,
         )
+
         for r, row in enumerate(self.tiles):
             for c, sprite in enumerate(row[::-1]):
                 if sprite is None:
                     continue
-                masked_sprite = sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
-                subimg, _ = masked_sprite.sprite.get_image()
-                submask, _ = masked_sprite.mask.get_image()
-                submask = remap.remap_image(submask)
-                subimg = blend(subimg, submask)
-                # FIXME: doesn't align
-                # img = attach_over(groundsprite, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -341 - 64 * r - 64 * c))
-                img = attach_over(subimg, img, (-128 * (len(row) - 1) - 128 * r + 128 * c, -200 - 64 * r - 64 * c))
-        return img.crop(img.getbbox())
+                subimg = sprite.graphics(remap, scale, bpp)
+                img.blend_over(subimg.move((32 * r - 32 * c) * scale, (16 * r + 16 * c) * scale))
+        return img
+
+    @property
+    def M(self):
+        return Demo(self.title, [[tile.M for tile in row[::-1]] for row in list(zip(*self.tiles))[::-1]])
 
 
-class AMetaStation:
-    def __init__(self, stations, class_label, doc_sprites, doc_layouts):
-        self.stations = stations
-        self.class_label = class_label
-        self.doc_sprites = doc_sprites
-        self.doc_layouts = doc_layouts
+class LayoutSprite(grf.Sprite):
+    def __init__(self, layout, w, h, scale, bpp, **kwargs):
+        super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], **kwargs)
+        self.layout = layout
+        self.scale = scale
+        self.bpp = bpp
 
-    def add(self, g):
-        for station in self.stations:
-            g.add(station)
+    def get_fingerprint(self):
+        # FIXME don't use id
+        return {"layout": id(self.layout), "w": self.w, "h": self.h, "bpp": self.bpp}
 
+    def get_image_files(self):
+        return ()
 
-def simple_layout(ground_sprite, sprite_id):
-    return grf.SpriteLayout(
-        [
-            grf.GroundSprite(
-                sprite=grf.SpriteRef(
-                    id=ground_sprite,
-                    pal=0,
-                    is_global=True,
-                    use_recolour=False,
-                    always_transparent=False,
-                    no_transparent=False,
-                ),
-                flags=0,
-            ),
-            grf.ParentSprite(
-                sprite=grf.SpriteRef(
-                    id=0x42D + sprite_id,
-                    pal=0,
-                    is_global=False,
-                    use_recolour=True,
-                    always_transparent=False,
-                    no_transparent=False,
-                ),
-                extent=(16, 16, 48),
-                offset=(0, 0, 0),
-                flags=0,
-            ),
-        ]
-    )
+    def get_data_layers(self, context):
+        timer = context.start_timer()
+        ret = self.layout.graphics(None, self.scale, self.bpp)
+        ret.resize(self.w, self.h)
+        timer.count_composing()
+
+        self.xofs += ret.xofs
+        self.yofs += ret.yofs
+
+        return ret.w, ret.h, ret.rgb, ret.alpha, ret.mask

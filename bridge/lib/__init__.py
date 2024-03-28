@@ -3,14 +3,7 @@ from agrf.lib.bridge import Bridge, BridgeLayout
 
 
 class ABridge(grf.SpriteGenerator):
-    def __init__(
-        self,
-        *,
-        id,
-        translation_name,
-        layout: BridgeLayout,
-        **props,
-    ):
+    def __init__(self, *, id, translation_name, layout: BridgeLayout, **props):
         super().__init__()
         self.id = id
         self.translation_name = translation_name
