@@ -126,8 +126,8 @@ class ALayout:
 
             img.blend_over(
                 masked_sprite.move(
-                    sprite.offset[0] * scale * 2 + sprite.offset[1] * scale * 2,
-                    sprite.offset[0] * scale + sprite.offset[1] * scale,
+                    (-sprite.offset[0] * 2 + sprite.offset[1] * 2) * scale,
+                    (sprite.offset[0] + sprite.offset[1] - sprite.offset[2]) * scale,
                 )
             )
         return img
