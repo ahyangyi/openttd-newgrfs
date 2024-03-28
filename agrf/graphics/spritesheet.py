@@ -1,5 +1,6 @@
 import grf
 import math
+from .misc import SCALE_TO_ZOOM
 
 
 def guess_dimens(width, height, angle, bbox):
@@ -18,18 +19,13 @@ def guess_dimens(width, height, angle, bbox):
         height_float = ratio * width
         height = math.ceil(height_float)
 
-    real_ratio = (horizontal_height + z * 3**0.5 / 2) / (pxcom + pycom)
+    real_ratio = (horizontal_height + z) / (pxcom + pycom)
     real_height_float = real_ratio * width
-    z = (z * 3**0.5 / 2) / (pxcom + pycom) * width
+    z = z / (pxcom + pycom) * width
 
     delta = height - real_height_float
 
     return height, delta, z
-
-
-deltas = [[0, -2], [2, -1], [4, 0], [2, 1], [0, 2], [-2, 1], [-4, 0], [-2, -1]]
-
-scale_to_zoom = {4: grf.ZOOM_4X, 2: grf.ZOOM_2X, 1: grf.ZOOM_NORMAL}
 
 
 class LazyAlternativeSprites(grf.AlternativeSprites):
@@ -61,6 +57,7 @@ def spritesheet_template(
     dimens,
     angles,
     bbox,
+    deltas,
     bbox_joggle=None,
     bpps=(8, 32),
     scales=(1, 2, 4),
@@ -87,8 +84,9 @@ def spritesheet_template(
         yrel += ydiff * scale
         yrel -= z_ydiff
 
-        xrel += deltas[direction][0] * diff * scale
-        yrel += deltas[direction][1] * diff * scale
+        if diff != 0:
+            xrel += deltas[direction][0] * diff * scale
+            yrel += deltas[direction][1] * diff * scale
 
         if bbox_joggle is not None:
             xrel += bbox_joggle[direction][0] * scale
@@ -116,7 +114,7 @@ def spritesheet_template(
                         xofs=get_rels(i, diff, scale)[0],
                         yofs=get_rels(i, diff, scale)[1],
                         bpp=bpp,
-                        zoom=scale_to_zoom[scale],
+                        zoom=SCALE_TO_ZOOM[scale],
                     ),
                     (
                         grf.FileSprite(

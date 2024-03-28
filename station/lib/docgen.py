@@ -8,8 +8,8 @@ blue_remap = company_colour_remap(CompanyColour.BLUE, CompanyColour.BLUE).to_spr
 def gen_docs(string_manager, metastations):
     prefix = "docs/station/"
     for i, metastation in enumerate(metastations):
-        metastation_label = metastation.class_label.decode()
-        translation = get_translation(string_manager[f"STR_STATION_CLASS_{metastation_label}"], 0x7F)
+        metastation_label = metastation.class_label_plain
+        translation = get_translation(string_manager[f"STR_METASTATION_CLASS_{metastation_label}"], 0x7F)
         os.makedirs(os.path.join(prefix, "img", metastation_label, "layouts"), exist_ok=True)
         os.makedirs(os.path.join(prefix, "img", metastation_label, "tiles"), exist_ok=True)
 
@@ -26,22 +26,25 @@ nav_order: {i+1}
             )
 
             print("# Building Blocks", file=f)
-            for i, sprite in enumerate(metastation.doc_sprites):
-                # FIXME
-                from station.lib import Demo
+            if metastation.categories is None:
+                subsections = [None]
+            else:
+                subsections = metastation.categories
+            for sub in subsections:
+                if sub is not None:
+                    print(f"## Category {sub}", file=f)
+                for i, layout in enumerate(metastation.doc_layouts):
+                    if sub is not None and layout.category != sub:
+                        continue
+                    # FIXME
+                    from station.lib import Demo
 
-                demo = Demo("", [[sprite]])
-                img = demo.doc_graphics(blue_remap)
-                img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{i}.png"))
-                print(
-                    f'![](img/{metastation_label}/tiles/{i}.png){{: width="64"}}',
-                    file=f,
-                )
+                    demo = Demo("", [[layout]])
+                    img = demo.graphics(blue_remap, 4, 32).crop().to_pil_image()
+                    img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{i}.png"))
+                    print(f'![](img/{metastation_label}/tiles/{i}.png){{: width="64"}}', file=f)
             print("# Sample Layouts", file=f)
-            for i, demo in enumerate(metastation.doc_layouts):
-                img = demo.doc_graphics(blue_remap)
+            for i, demo in enumerate(metastation.demos):
+                img = demo.graphics(blue_remap, 4, 32).crop().to_pil_image()
                 img.save(os.path.join(prefix, "img", f"{metastation_label}/layouts/{i}.png"))
-                print(
-                    f"## {demo.title}\n\n![](img/{metastation_label}/layouts/{i}.png)",
-                    file=f,
-                )
+                print(f"## {demo.title}\n\n![](img/{metastation_label}/layouts/{i}.png)", file=f)

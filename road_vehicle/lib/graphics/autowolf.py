@@ -1,6 +1,6 @@
-from road_vehicle.lib.graphics.voxel import LazyVoxel, LazySwitch
-from agrf.graphics.attach_over import attach_over
-from agrf.graphics.blend import blend
+from road_vehicle.lib.graphics.voxel import LazyVoxel
+from agrf.magic import Switch
+from agrf.graphics import LayeredImage
 import grf
 
 ALLOWED_FLAGS = ["noflipX", "noflipY", "debug_bbox"]
@@ -62,7 +62,7 @@ class AutoWolf:
             back_z = "(var(0x62, param=0x01, shift=0, and=0xff000000) >> 24)"
             back_z_2 = "(var(0x62, param=0x02, shift=0, and=0xff000000) >> 24)"
 
-            switch = LazySwitch(
+            switch = Switch(
                 ranges={k: hill_voxels[v] for k, v in ranges.items()},
                 default=hill_voxels[2],
                 code=f"{front_z_2} + {front_z} + {back_z} + {back_z_2}",
@@ -77,7 +77,7 @@ class AutoWolf:
             front_d = "(var(0x62, param=0xff, shift=0, and=0x0000000f))"
             back_d = "(var(0x62, param=0x01, shift=0, and=0x0000000f))"
 
-            switch = LazySwitch(
+            switch = Switch(
                 ranges={(4, 7): rot_voxels[0], (1, 3): rot_voxels[2]},
                 default=rot_voxels[1],
                 code=f"({front_d} - {back_d}) & 0x7",
@@ -85,7 +85,7 @@ class AutoWolf:
 
             # Make night switches
             night_voxels = switch.update_config({"lighting_weight": 0.3}, "night")
-            switch = LazySwitch(
+            switch = Switch(
                 ranges={1: night_voxels, (4, 5): night_voxels},
                 default=switch,
                 code="(var(0x7F, param=0x1, shift=1, and=0x00000006)) + (var(0x7F, param=0x41, shift=0, and=0x00000001))",
@@ -94,7 +94,7 @@ class AutoWolf:
             # Make flipped switches
             flipped_voxels = switch.flip("flip")
             if "noflipY" not in self.flags:
-                switch = LazySwitch(ranges={0: switch}, default=flipped_voxels, code="traffic_side")
+                switch = Switch(ranges={0: switch}, default=flipped_voxels, code="traffic_side")
             else:
                 switch = flipped_voxels
 
@@ -102,25 +102,17 @@ class AutoWolf:
             self.shifts[i] = 4 if shadow_rotate else 0
 
     def doc_graphics(self, remap):
-        img = None
-        for k, v in self.graphics.items():
+        img = LayeredImage.empty()
+        for k, v in sorted(self.graphics.items(), reverse=True):
             v = v.get_default_graphics()
             sprite = v.spritesheet()
             sprite = sprite[3 + self.shifts[k]]
-            masked_sprite = sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)
-            subimg, _ = masked_sprite.sprite.get_image()
-            submask, _ = masked_sprite.mask.get_image()
-            submask = remap.remap_image(submask)
-            subimg = blend(subimg, submask)
-
-            if img is None:
-                img = subimg
-                pos = k
-            else:
-                diff = sum(self.lengths[pos:k])
-                img = attach_over(img, subimg, (-8 * diff, -4 * diff))
-                pos = k
-        return img.crop(img.getbbox())
+            masked_sprite = LayeredImage.from_sprite(sprite.get_sprite(zoom=grf.ZOOM_4X, bpp=32)).copy()
+            masked_sprite.remap(remap)
+            masked_sprite.apply_mask()
+            diff = sum(self.lengths[:k])
+            img.blend_over(masked_sprite.move(-8 * diff, -4 * diff))
+        return img.crop().to_pil_image()
 
     def empty(self):
         return grf.GenericSpriteLayout(ent1=(31,), ent2=(31,))
