@@ -4,6 +4,7 @@ from .binary_variants import (
     BuildingSpriteSheetSymmetrical,
     BuildingSpriteSheetSymmetricalX,
     BuildingSpriteSheetSymmetricalY,
+    BuildingSpriteSheetRotational,
 )
 from .layout import ADefaultGroundSprite, AGroundSprite, AParentSprite, ALayout, LayoutSprite
 from .metastation import AMetaStation
