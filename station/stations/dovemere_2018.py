@@ -14,7 +14,7 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
-from .platforms import sprites as platform_sprites
+from .platforms import sprites as platform_sprites, pl1_low_white_d as platform
 
 
 def quickload(name, type, traversable, platform, category):
@@ -80,6 +80,7 @@ layouts = []
     v_end,
     (v_central_n, v_central_f, v_central),
     tiny,
+    junction3,
 ) = [
     quickload(name, type, traversable, platform, category)
     for name, type, traversable, platform, category in [
@@ -104,6 +105,7 @@ layouts = []
         ("v_end", BuildingSpriteSheetSymmetricalX, False, False, "F"),
         ("v_central", BuildingSpriteSheetSymmetrical, True, True, "C"),
         ("tiny", BuildingSpriteSheetSymmetrical, True, False, "H"),
+        ("junction3", BuildingSpriteSheetSymmetricalX, True, False, "T"),
     ]
 ]
 
@@ -373,5 +375,17 @@ the_stations = AMetaStation(
         ),
         Demo("A 3×1 station layout", [[v_end.T], [v_central], [v_end]]),
         Demo("A 1×1 station layout", [[tiny]]),
+        Demo(
+            "Irregular 7×7 station layout",
+            [
+                [h_end, junction3.T, h_gate, h_gate_extender, h_gate.R, junction3.T, h_end.R],
+                [platform, v_central, platform, platform, platform, v_central, platform],
+                [platform, v_central, platform, platform, platform, v_central, platform],
+                [platform, v_central, platform, platform, platform, v_central, platform],
+                [platform, v_central, platform, platform, platform, v_central, platform],
+                [platform, v_central, platform, platform, platform, v_central, platform],
+                [h_end, junction3, h_gate, h_gate_extender, h_gate.R, junction3, h_end.R],
+            ],
+        ),
     ],
 )
