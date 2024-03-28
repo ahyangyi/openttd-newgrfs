@@ -289,7 +289,7 @@ the_stations = AMetaStation(
         for i, layouts in enumerate(zip(layouts[:-2:2], layouts[1:-2:2]))
     ],
     b"\xe8\x8a\x9cA",
-    ["F", "B", "C", "H"],
+    ["F", "B", "C", "I", "J", "K", "H"],
     layouts,
     [
         Demo(
