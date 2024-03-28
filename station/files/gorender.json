@@ -67,5 +67,5 @@
     "agrf_scales": [1, 2, 4],
     "agrf_palette": "station/files/ttd_palette.json",
     "agrf_road_mode": true,
-    "z_scale": 1.5
+    "z_scale": 1.75
 }
