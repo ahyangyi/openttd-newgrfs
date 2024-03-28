@@ -19,9 +19,9 @@ def guess_dimens(width, height, angle, bbox):
         height_float = ratio * width
         height = math.ceil(height_float)
 
-    real_ratio = (horizontal_height + z * 3**0.5 / 2) / (pxcom + pycom)
+    real_ratio = (horizontal_height + z) / (pxcom + pycom)
     real_height_float = real_ratio * width
-    z = (z * 3**0.5 / 2) / (pxcom + pycom) * width
+    z = z / (pxcom + pycom) * width
 
     delta = height - real_height_float
 
