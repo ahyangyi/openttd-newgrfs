@@ -392,13 +392,13 @@ the_stations = AMetaStation(
         Demo(
             "Irregular 7×7 station layout",
             [
-                [platform, platform, v_end.T, platform, v_end.T, platform, platform],
+                [None, None, v_end.T, None, v_end.T, None, None],
                 [platform, platform, v_central, platform, v_central, platform, platform],
                 [platform, platform, v_central, platform, v_central, platform, platform],
                 [h_end, h_normal, junction4, h_normal, junction4, h_normal, h_end.R],
                 [platform, platform, v_central, platform, v_central, platform, platform],
                 [platform, platform, v_central, platform, v_central, platform, platform],
-                [platform, platform, v_end, platform, v_end, platform, platform],
+                [None, None, v_end, None, v_end, None, None],
             ],
         ),
     ],
