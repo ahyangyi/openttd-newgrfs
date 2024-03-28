@@ -81,6 +81,7 @@ layouts = []
     (v_central_n, v_central_f, v_central),
     tiny,
     junction3,
+    junction4,
 ) = [
     quickload(name, type, traversable, platform, category)
     for name, type, traversable, platform, category in [
@@ -106,6 +107,7 @@ layouts = []
         ("v_central", BuildingSpriteSheetSymmetrical, True, True, "C"),
         ("tiny", BuildingSpriteSheetSymmetrical, True, False, "H"),
         ("junction3", BuildingSpriteSheetSymmetricalX, True, False, "T"),
+        ("junction4", BuildingSpriteSheetSymmetrical, True, False, "T"),
     ]
 ]
 
@@ -385,6 +387,18 @@ the_stations = AMetaStation(
                 [platform, v_central, platform, platform, platform, v_central, platform],
                 [platform, v_central, platform, platform, platform, v_central, platform],
                 [h_end, junction3, h_gate, h_gate_extender, h_gate.R, junction3, h_end.R],
+            ],
+        ),
+        Demo(
+            "Irregular 7×7 station layout",
+            [
+                [platform, platform, v_end.T, platform, v_end.T, platform, platform],
+                [platform, platform, v_central, platform, v_central, platform, platform],
+                [platform, platform, v_central, platform, v_central, platform, platform],
+                [h_end, h_normal, junction4, h_normal, junction4, h_normal, h_end.R],
+                [platform, platform, v_central, platform, v_central, platform, platform],
+                [platform, platform, v_central, platform, v_central, platform, platform],
+                [platform, platform, v_end, platform, v_end, platform, platform],
             ],
         ),
     ],
