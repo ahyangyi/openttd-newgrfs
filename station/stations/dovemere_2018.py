@@ -6,6 +6,7 @@ from station.lib import (
     BuildingSpriteSheetSymmetrical,
     BuildingSpriteSheetSymmetricalX,
     BuildingSpriteSheetSymmetricalY,
+    BuildingSpriteSheetRotational,
     Demo,
     ADefaultGroundSprite,
     AParentSprite,
@@ -82,6 +83,7 @@ layouts = []
     tiny,
     junction3,
     junction4,
+    double_corner,
 ) = [
     quickload(name, type, traversable, platform, category)
     for name, type, traversable, platform, category in [
@@ -108,6 +110,7 @@ layouts = []
         ("tiny", BuildingSpriteSheetSymmetrical, True, False, "H"),
         ("junction3", BuildingSpriteSheetSymmetricalX, True, False, "T"),
         ("junction4", BuildingSpriteSheetSymmetrical, True, False, "T"),
+        ("double_corner", BuildingSpriteSheetRotational, True, False, "T"),
     ]
 ]
 
@@ -399,6 +402,18 @@ the_stations = AMetaStation(
                 [platform, platform, v_central, platform, v_central, platform, platform],
                 [platform, platform, v_central, platform, v_central, platform, platform],
                 [None, None, v_end, None, v_end, None, None],
+            ],
+        ),
+        Demo(
+            "Irregular 7×7 station layout",
+            [
+                [corner.T, front_gate.T, front_gate.TR, corner.TR, None, None, None],
+                [side_a.T, central_windowed, central_windowed.R, side_a.TR, platform, platform, platform],
+                [side_a, central_windowed, central_windowed.R, side_a.R, platform, platform, platform],
+                [corner, front_gate, front_gate.R, double_corner.R, front_gate.T, front_gate.TR, corner.TR],
+                [platform, platform, platform, side_a.T, central_windowed, central_windowed.R, side_a.TR],
+                [platform, platform, platform, side_a, central_windowed, central_windowed.R, side_a.R],
+                [None, None, None, corner, front_gate, front_gate.R, corner.R],
             ],
         ),
     ],
