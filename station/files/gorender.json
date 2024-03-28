@@ -65,5 +65,6 @@
     ],
     "agrf_bpps": [8, 32],
     "agrf_scales": [1, 2, 4],
-    "agrf_palette": "station/files/ttd_palette.json"
+    "agrf_palette": "station/files/ttd_palette.json",
+    "agrf_road_mode": true
 }
