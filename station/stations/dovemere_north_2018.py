@@ -56,7 +56,7 @@ the_stations = AMetaStation(
             translation_name="DOVEMERE_NORTH_2018",  # FIXME
             sprites=sprites,  # FIXME
             layouts=[layouts[0].to_grf(sprites), layouts[1].to_grf(sprites)],
-            class_label=b"DN18",
+            class_label=b"\xe9\xb8\xa0A",
             cargo_threshold=40,
             non_traversable_tiles=0b00,  # FIXME
             general_flags=0x08,
@@ -64,7 +64,8 @@ the_stations = AMetaStation(
         )
         for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))
     ],
-    b"DN18",
+    b"\xe9\xb8\xa0A",
+    [None],
     layouts,
     [Demo("Test", [[front_normal, front_normal]])],
 )
