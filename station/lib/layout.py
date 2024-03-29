@@ -1,5 +1,6 @@
 import grf
 from PIL import Image
+import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 
 
@@ -20,6 +21,17 @@ class ADefaultGroundSprite:
             flags=0,
         )
 
+    def graphics(self, scale, bpp):
+        if self.sprite not in [1012, 1011]:
+            return LayeredImage.empty()
+        img = np.asarray(ADefaultGroundSprite.default_rail[1012 - self.sprite])
+        ret = LayeredImage(-128, 0, 256, 127, img[:, :, :3], img[:, :, 3], None)
+        if scale == 2:
+            ret.resize(128, 63)
+        elif scale == 1:
+            ret.resize(64, 31)
+        return ret
+
     def __repr__(self):
         return f"<ADefaultGroundSprite:{self.sprite}>"
 
@@ -32,6 +44,8 @@ class ADefaultGroundSprite:
     @property
     def M(self):
         return ADefaultGroundSprite(self.sprite - 1 if self.sprite % 2 == 0 else self.sprite + 1)
+
+    default_rail = [Image.open("third_party/opengfx2/1012.png"), Image.open("third_party/opengfx2/1011.png")]
 
 
 class AGroundSprite:
@@ -104,9 +118,6 @@ class AParentSprite:
         return self.T.R
 
 
-groundsprite = Image.open("third_party/opengfx2/1012.png")
-
-
 class ALayout:
     def __init__(self, ground_sprite, sprites, category=None):
         self.ground_sprite = ground_sprite
@@ -119,7 +130,7 @@ class ALayout:
         )
 
     def graphics(self, remap, scale, bpp, context=grf.DummyWriteContext()):
-        img = LayeredImage.empty()
+        img = self.ground_sprite.graphics(scale, bpp)
         for sprite in self.sprites:
             masked_sprite = LayeredImage.from_sprite(
                 sprite.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
