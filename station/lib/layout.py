@@ -1,4 +1,5 @@
 import grf
+from PIL import Image
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 
 
@@ -103,6 +104,9 @@ class AParentSprite:
         return self.T.R
 
 
+groundsprite = Image.open("third_party/opengfx2/1012.png")
+
+
 class ALayout:
     def __init__(self, ground_sprite, sprites, category=None):
         self.ground_sprite = ground_sprite
@@ -149,3 +153,29 @@ class ALayout:
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = call(self.sprites)
         return ALayout(new_ground_sprite, new_sprites)
+
+
+class LayoutSprite(grf.Sprite):
+    def __init__(self, layout, w, h, scale, bpp, **kwargs):
+        super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], **kwargs)
+        self.layout = layout
+        self.scale = scale
+        self.bpp = bpp
+
+    def get_fingerprint(self):
+        # FIXME don't use id
+        return {"layout": id(self.layout), "w": self.w, "h": self.h, "bpp": self.bpp}
+
+    def get_image_files(self):
+        return ()
+
+    def get_data_layers(self, context):
+        timer = context.start_timer()
+        ret = self.layout.graphics(None, self.scale, self.bpp)
+        ret.resize(self.w, self.h)
+        timer.count_composing()
+
+        self.xofs += ret.xofs
+        self.yofs += ret.yofs
+
+        return ret.w, ret.h, ret.rgb, ret.alpha, ret.mask
