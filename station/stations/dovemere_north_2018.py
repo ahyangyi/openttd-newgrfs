@@ -13,6 +13,7 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
+from .platforms import sprites as platform_sprites
 
 
 def quickload(name, type, traversable):
@@ -23,12 +24,13 @@ def quickload(name, type, traversable):
         load_from="station/files/gorender.json",
         subset=type.render_indices(),
     )
-    sprite = type.create_variants(v.spritesheet())
+    sprite = type.create_variants(v.spritesheet(zdiff=16))
     sprites.extend(sprite.all_variants)
 
     ground = ADefaultGroundSprite(1012 if traversable else 1420)
     parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
-    candidates = [ALayout(ground, [parent])]
+    plat = AParentSprite(platform_sprites[0].T, (16, 6, 6), (0, 0, 0))
+    candidates = [ALayout(ground, [plat, parent])]
 
     ret = []
     for l in candidates:
@@ -41,7 +43,7 @@ def quickload(name, type, traversable):
     return ret
 
 
-sprites = []
+sprites = platform_sprites.copy()
 layouts = []
 (front_normal,) = [
     quickload(name, type, traversable)
@@ -59,7 +61,7 @@ the_stations = AMetaStation(
             class_label=b"\xe9\xb8\xa0A",
             cargo_threshold=40,
             non_traversable_tiles=0b00,  # FIXME
-            general_flags=0x08,
+            # general_flags=0x08, # FIXME: handle custom foundation later
             callbacks={"select_tile_layout": 0},
         )
         for i, layouts in enumerate(zip(layouts[::2], layouts[1::2]))
