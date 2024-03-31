@@ -94,6 +94,7 @@ layouts = []
     double_corner,
     funnel,
     inner_corner,
+    v_funnel,
     front_corner,
     front_gate_extender_corner,
     double_corner_2,
@@ -135,6 +136,7 @@ layouts = []
         ("irregular/double_corner", BuildingSpriteSheetRotational, True, False, "T"),
         ("irregular/funnel", BuildingSpriteSheetFull, True, False, "T"),
         ("irregular/inner_corner", BuildingSpriteSheetFull, True, False, "T"),
+        ("irregular/v_funnel", BuildingSpriteSheetFull, True, False, "T"),
         ("junction/front_corner", BuildingSpriteSheetFull, False, False, "X"),
         ("junction/front_gate_extender_corner", BuildingSpriteSheetFull, False, False, "X"),
         ("junction/double_corner_2", BuildingSpriteSheetFull, False, False, "X"),
@@ -617,8 +619,8 @@ the_stations = AMetaStation(
         Demo(
             "Irregular 7×7 station layout",
             [
-                [v_end.M, v_central.M, v_central.M, v_central.M, v_central.M, platform.M, bicorner.TR],
-                [platform.M, platform.M, platform.M, platform.M, corner.R.M, double_corner_2, platform],
+                [v_end.M, v_central.M, v_central.M, v_central.M, v_central.M, v_funnel.R.M, bicorner.TR],
+                [platform.M, platform.M, platform.M, platform.M, corner.R.M, double_corner_2, v_funnel.R],
                 [platform.M, platform.M, platform.M, corner.R.M, double_corner_2, corner.R, v_central],
                 [platform.M, platform.M, corner.R.M, double_corner_2, corner.R, platform, v_central],
                 [platform.M, corner.R.M, double_corner_2, corner.R, platform, platform, v_central],
