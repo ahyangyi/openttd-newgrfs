@@ -15,7 +15,7 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
-from .platforms import sprites as platform_sprites, pl1_low_white_d as platform
+from .platforms import sprites as platform_sprites, pl1_low_white_d as platform, pl1_low_white as platform_s
 
 
 def quickload(name, type, traversable, platform, category):
@@ -97,7 +97,7 @@ layouts = []
     front_corner,
     front_gate_extender_corner,
     double_corner_2,
-    corner_2,
+    bicorner,
 ) = [
     quickload(name, type, traversable, platform, category)
     for name, type, traversable, platform, category in [
@@ -138,7 +138,7 @@ layouts = []
         ("junction/front_corner", BuildingSpriteSheetFull, False, False, "X"),
         ("junction/front_gate_extender_corner", BuildingSpriteSheetFull, False, False, "X"),
         ("junction/double_corner_2", BuildingSpriteSheetFull, False, False, "X"),
-        ("junction/corner_2", BuildingSpriteSheetFull, False, False, "X"),
+        ("junction/bicorner", BuildingSpriteSheetFull, False, False, "X"),
     ]
 ]
 
@@ -146,11 +146,11 @@ normal_demo = Demo(
     "Normal 5×7 station layout",
     [
         [corner.T, front_gate.T, front_gate_extender.T, front_gate.TR, corner.TR],
-        [side_a.T, central_windowed, central_windowed_extender, central_windowed.R, side_a.TR],
-        [side_b.T, central_windowed, central_windowed_extender, central_windowed.R, side_b.TR],
+        [side_a_n.T, central_windowed, central_windowed_extender, central_windowed.R, side_a_n.TR],
+        [side_b_f.T, central_windowed, central_windowed_extender, central_windowed.R, side_b_f.TR],
         [side_c, central_windowed, central_windowed_extender, central_windowed.R, side_c.R],
-        [side_b, central_windowed, central_windowed_extender, central_windowed.R, side_b.R],
-        [side_a, central_windowed, central_windowed_extender, central_windowed.R, side_a.R],
+        [side_b_f, central_windowed, central_windowed_extender, central_windowed.R, side_b_f.R],
+        [side_a_n, central_windowed, central_windowed_extender, central_windowed.R, side_a_n.R],
         [corner, front_gate, front_gate_extender, front_gate.R, corner.R],
     ],
 )
@@ -617,7 +617,7 @@ the_stations = AMetaStation(
         Demo(
             "Irregular 7×7 station layout",
             [
-                [v_end.M, v_central.M, v_central.M, v_central.M, v_central.M, platform.M, corner_2.TR],
+                [v_end.M, v_central.M, v_central.M, v_central.M, v_central.M, platform.M, bicorner.TR],
                 [platform.M, platform.M, platform.M, platform.M, corner.R.M, double_corner_2, platform],
                 [platform.M, platform.M, platform.M, corner.R.M, double_corner_2, corner.R, v_central],
                 [platform.M, platform.M, corner.R.M, double_corner_2, corner.R, platform, v_central],
