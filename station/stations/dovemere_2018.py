@@ -96,6 +96,8 @@ layouts = []
     inner_corner,
     front_corner,
     front_gate_extender_corner,
+    double_corner_2,
+    corner_2,
 ) = [
     quickload(name, type, traversable, platform, category)
     for name, type, traversable, platform, category in [
@@ -135,6 +137,8 @@ layouts = []
         ("irregular/inner_corner", BuildingSpriteSheetFull, True, False, "T"),
         ("junction/front_corner", BuildingSpriteSheetFull, False, False, "X"),
         ("junction/front_gate_extender_corner", BuildingSpriteSheetFull, False, False, "X"),
+        ("junction/double_corner_2", BuildingSpriteSheetFull, False, False, "X"),
+        ("junction/corner_2", BuildingSpriteSheetFull, False, False, "X"),
     ]
 ]
 
@@ -613,13 +617,13 @@ the_stations = AMetaStation(
         Demo(
             "Irregular 7×7 station layout",
             [
-                [platform.M, platform.M, platform.M, v_end.M, v_central.M, platform.M, None],
-                [platform.M, platform.M, platform.M, platform.M, platform.M, None, platform],
-                [platform.M, platform.M, platform.M, platform.M, None, platform, v_central],
-                [platform.M, platform.M, platform.M, None, platform, platform, v_end],
-                [platform.M, platform.M, None, platform, platform, platform, platform],
-                [corner_gate.R.M, None, platform, platform, platform, platform, platform],
-                [front_gate_extender_corner, corner_gate.R, platform, platform, platform, platform, platform],
+                [v_end.M, v_central.M, v_central.M, v_central.M, v_central.M, platform.M, corner_2.TR],
+                [platform.M, platform.M, platform.M, platform.M, corner.R.M, double_corner_2, platform],
+                [platform.M, platform.M, platform.M, corner.R.M, double_corner_2, corner.R, v_central],
+                [platform.M, platform.M, corner.R.M, double_corner_2, corner.R, platform, v_central],
+                [platform.M, corner.R.M, double_corner_2, corner.R, platform, platform, v_central],
+                [corner_gate.R.M, double_corner_2, corner.R, platform, platform, platform, v_central],
+                [front_gate_extender_corner, corner_gate.R, platform, platform, platform, platform, v_end],
             ],
         ),
         Demo(
