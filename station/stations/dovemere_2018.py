@@ -34,15 +34,18 @@ def quickload(name, type, traversable, platform, category):
 
     if platform:
         if type.is_symmetrical_y():
-            candidates = [ALayout(ground, [plat, parent]), ALayout(ground, [plat, plat.T, parent])]
+            candidates = [
+                ALayout(ground, [plat, parent], traversable),
+                ALayout(ground, [plat, plat.T, parent], traversable),
+            ]
         else:
             candidates = [
-                ALayout(ground, [plat, parent]),
-                ALayout(ground, [plat.T, parent]),
-                ALayout(ground, [plat, plat.T, parent]),
+                ALayout(ground, [plat, parent], traversable),
+                ALayout(ground, [plat.T, parent], traversable),
+                ALayout(ground, [plat, plat.T, parent], traversable),
             ]
     else:
-        candidates = [ALayout(ground, [parent])]
+        candidates = [ALayout(ground, [parent], traversable)]
 
     ret = []
     for l in candidates:
@@ -131,8 +134,8 @@ for demo in [normal_demo, normal_demo.M]:
         )
     )
 sprites.extend(demo_sprites)
-demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))])
-demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))])
+demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))], False)
+demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))], False)
 layouts.append(demo_layout1)
 layouts.append(demo_layout2)
 
@@ -281,12 +284,12 @@ the_stations = AMetaStation(
     + [
         AStation(
             id=0x10 + i,
-            translation_name="DEFAULT",
+            translation_name="DEFAULT" if layouts[0].traversable else "UNTRAVERSABLE",
             sprites=sprites,  # FIXME
             layouts=[layouts[0].to_grf(sprites), layouts[1].to_grf(sprites)],
             class_label=b"\xe8\x8a\x9c" + layouts[0].category.encode(),
             cargo_threshold=40,
-            non_traversable_tiles=0b00,  # FIXME
+            non_traversable_tiles=0b00 if layouts[0].traversable else 0b11,
             callbacks={"select_tile_layout": 0},
         )
         for i, layouts in enumerate(zip(layouts[:-2:2], layouts[1:-2:2]))

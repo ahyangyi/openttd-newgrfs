@@ -24,11 +24,11 @@ def quickload(name, type):
 
     ps = AParentSprite(sprite, (16, 6, 6), (0, 10, 0))
     ret = []
-    l = type.get_all_variants(ALayout(ADefaultGroundSprite(1012), [ps]))
+    l = type.get_all_variants(ALayout(ADefaultGroundSprite(1012), [ps], True))
     layouts.extend(l)
     ret.append(type.create_variants(l))
     type = BuildingSpriteSheetSymmetrical
-    l = type.get_all_variants(ALayout(ADefaultGroundSprite(1012), [ps, ps.T]))
+    l = type.get_all_variants(ALayout(ADefaultGroundSprite(1012), [ps, ps.T], True))
     layouts.extend(l)
     ret.append(type.create_variants(l))
 

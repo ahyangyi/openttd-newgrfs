@@ -119,9 +119,10 @@ class AParentSprite:
 
 
 class ALayout:
-    def __init__(self, ground_sprite, sprites, category=None):
+    def __init__(self, ground_sprite, sprites, traversable, category=None):
         self.ground_sprite = ground_sprite
         self.sprites = sprites
+        self.traversable = traversable
         self.category = category
 
     def to_grf(self, sprite_list):
@@ -157,13 +158,13 @@ class ALayout:
         call = lambda x: getattr(x, name)
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = [call(sprite) for sprite in self.sprites]
-        return ALayout(new_ground_sprite, new_sprites)
+        return ALayout(new_ground_sprite, new_sprites, self.traversable)
 
     def __call__(self, *args, **kwargs):
         call = lambda x: x(*args, **kwargs)
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = call(self.sprites)
-        return ALayout(new_ground_sprite, new_sprites)
+        return ALayout(new_ground_sprite, new_sprites, self.traversable)
 
 
 class LayoutSprite(grf.Sprite):
