@@ -280,7 +280,7 @@ the_stations = AMetaStation(
     [the_station]
     + [
         AStation(
-            id=1 + i,
+            id=0x10 + i,
             translation_name="DEFAULT",
             sprites=sprites,  # FIXME
             layouts=[layouts[0].to_grf(sprites), layouts[1].to_grf(sprites)],
