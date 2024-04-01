@@ -343,6 +343,18 @@ the_stations = AMetaStation(
     [
         normal_demo,
         Demo(
+            "Normal 7×8 station layout",
+            [
+                [corner.T, front_normal.T, front_gate.T, front_gate_extender.T, front_gate.TR, front_normal.T, corner.TR],
+                [side_a_n.T, central, central_windowed, central_windowed_extender, central_windowed.R, central, side_a_n.TR],
+                [side_b_f.T, central, central_windowed, central_windowed_extender, central_windowed.R, central, side_b_f.TR],
+                [side_c, central, central_windowed, central_windowed_extender, central_windowed.R, central, side_c.R],
+                [side_b_f, central, central_windowed, central_windowed_extender, central_windowed.R, central, side_b_f.R],
+                [side_a_n, central, central_windowed, central_windowed_extender, central_windowed.R, central, side_a_n.R],
+                [corner, front_normal, front_gate, front_gate_extender, front_gate.R, front_normal, corner.R],
+            ],
+        ),
+        Demo(
             "Fully traversable automatic stations",
             [
                 [
