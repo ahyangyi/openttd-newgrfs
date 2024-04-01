@@ -21,8 +21,12 @@ class AStation(grf.SpriteGenerator):
     def get_sprites(self, g):
         res = []
 
-        name = g.strings[f"STR_STATION_{self.translation_name}"]
-        class_name = g.strings[f"STR_STATION_CLASS_{self.class_label_plain}"]
+        extra_props = {
+            "station_name": g.strings.add(g.strings[f"STR_STATION_{self.translation_name}"]).get_persistent_id(),
+            "station_class_name": g.strings.add(
+                g.strings[f"STR_STATION_CLASS_{self.class_label_plain}"]
+            ).get_persistent_id(),
+        }
 
         if self.sprites:
             self.callbacks.graphics = grf.GenericSpriteLayout(ent1=[0], ent2=[0], feature=grf.STATION)
@@ -37,6 +41,7 @@ class AStation(grf.SpriteGenerator):
                     "class_label": self._props["class_label"],
                     "advanced_layout": grf.SpriteLayoutList(self.layouts),
                     **self._props,
+                    **extra_props,
                 },
             )
         )
@@ -47,7 +52,5 @@ class AStation(grf.SpriteGenerator):
                 res.append(s)
 
         res.extend(self.callbacks.make_map_action(definition))
-        res.extend(class_name.get_actions(grf.STATION, 0xC400 + self.id, is_generic_offset=True))
-        res.extend(name.get_actions(grf.STATION, 0xC500 + self.id, is_generic_offset=True))
 
         return res
