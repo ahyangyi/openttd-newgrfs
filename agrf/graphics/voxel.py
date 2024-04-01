@@ -1,6 +1,5 @@
 import math
 import os
-import grf
 import functools
 from pygorender import Config, render, hill_positor_1, stairstep, compose, self_compose, produce_empty
 from agrf.graphics.rotator import unnatural_dimens
