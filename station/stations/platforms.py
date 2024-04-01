@@ -11,7 +11,7 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 
 
-def quickload(name, type, traversable):
+def quickload(name, type):
     v = LazyVoxel(
         name,
         prefix="station/voxels/render/csps",
@@ -38,8 +38,7 @@ def quickload(name, type, traversable):
 sprites = []
 layouts = []
 [(pl1_low_white, pl1_low_white_d)] = [
-    quickload(name, type, traversable)
-    for name, type, traversable in [("pl1_low_white", BuildingSpriteSheetSymmetricalX, True)]
+    quickload(name, type) for name, type in [("pl1_low_white", BuildingSpriteSheetSymmetricalX)]
 ]
 
 
