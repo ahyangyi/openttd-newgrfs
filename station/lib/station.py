@@ -21,7 +21,7 @@ class AStation(grf.SpriteGenerator):
     def get_sprites(self, g):
         res = []
 
-        name = g.strings[f"STR_STATION_{self.translation_name}_NAME"]
+        name = g.strings[f"STR_STATION_{self.translation_name}"]
         class_name = g.strings[f"STR_STATION_CLASS_{self.class_label_plain}"]
 
         if self.sprites:

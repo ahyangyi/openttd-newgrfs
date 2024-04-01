@@ -252,7 +252,7 @@ cb14 = Switch(
 
 the_station = AStation(
     id=0x00,
-    translation_name="DOVEMERE_2018",
+    translation_name="FLEXIBLE_UNTRAVERSABLE",
     sprites=sprites,
     layouts=[layout.to_grf(sprites) for layout in layouts],
     class_label=b"\xe8\x8a\x9cA",
@@ -281,7 +281,7 @@ the_stations = AMetaStation(
     + [
         AStation(
             id=1 + i,
-            translation_name="DOVEMERE_2018",  # FIXME
+            translation_name="DEFAULT",
             sprites=sprites,  # FIXME
             layouts=[layouts[0].to_grf(sprites), layouts[1].to_grf(sprites)],
             class_label=b"\xe8\x8a\x9c" + layouts[0].category.encode(),

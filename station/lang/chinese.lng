@@ -2,11 +2,11 @@
 STR_GRF_NAME                    :AWSS - Ahyangyi 的芜湖车站包
 STR_GRF_DESC                    :基于芜湖的车站设计的模组
 
-STR_STATION_TILE_DEFAULT                    :站房
-STR_STATION_TILE_UNTRAVERSABLE              :站房（不可通行）
-STR_STATION_TILE_PLATFORM                   :平台
-STR_STATION_TILE_FLEXIBLE                   :自动站房
-STR_STATION_TILE_FLEXIBLE_UNTRAVERSABLE     :自动站房（第一行和最后一行不可通行）
+STR_STATION_DEFAULT                 :站房
+STR_STATION_UNTRAVERSABLE           :站房（不可通行）
+STR_STATION_PLATFORM                :平台
+STR_STATION_FLEXIBLE                :自动站房
+STR_STATION_FLEXIBLE_UNTRAVERSABLE  :自动站房（第一行和最后一行不可通行）
 
 STR_STATION_CLASS_E88A9CA       :芜湖火车站 (2018) - 自动站房
 STR_STATION_CLASS_E88A9CF       :芜湖火车站 (2018) - 模块化站房（前）

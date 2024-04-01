@@ -46,7 +46,7 @@ the_stations = AMetaStation(
     [
         AStation(
             id=0xF0 + i,
-            translation_name="DOVEMERE_2018",  # FIXME
+            translation_name="PLATFORM",
             sprites=sprites,  # FIXME
             layouts=[layout[0].to_grf(sprites), layout[1].to_grf(sprites)],
             class_label=b"PLAT",
