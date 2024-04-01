@@ -28,6 +28,10 @@ class BinaryVariantMixin:
     def TR(self):
         return self.T.R
 
+    @classmethod
+    def is_symmetrical_y(classobj):
+        return classobj._t_offset == 0
+
 
 class BuildingSpriteSheetFull(BinaryVariantMixin):
     def __init__(self, obj):
