@@ -33,11 +33,14 @@ def quickload(name, type, traversable, platform, category):
     plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
 
     if platform:
-        candidates = [
-            ALayout(ground, [plat, parent]),
-            ALayout(ground, [plat.T, parent]),
-            ALayout(ground, [plat, plat.T, parent]),
-        ]
+        if type.is_symmetrical_y():
+            candidates = [ALayout(ground, [plat, parent]), ALayout(ground, [plat, plat.T, parent])]
+        else:
+            candidates = [
+                ALayout(ground, [plat, parent]),
+                ALayout(ground, [plat.T, parent]),
+                ALayout(ground, [plat, plat.T, parent]),
+            ]
     else:
         candidates = [ALayout(ground, [parent])]
 
@@ -67,16 +70,16 @@ layouts = []
     central_windowed,
     central_windowed_extender,
     (side_a_n, side_a_f, side_a),
-    (side_a2_n, side_2a_f, side_a2),
+    (side_a2_n, side_a2),
     (side_b_n, side_b_f, side_b),
-    (side_b2_n, side_b2_f, side_b2),
-    (side_c_n, side_c_f, side_c),
+    (side_b2_n, side_b2),
+    (side_c_n, side_c),
     h_end,
     h_normal,
     h_gate,
     h_gate_extender,
     v_end,
-    (v_central_n, v_central_f, v_central),
+    (v_central_n, v_central),
     tiny,
 ) = [
     quickload(name, type, traversable, platform, category)
