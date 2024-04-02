@@ -65,7 +65,14 @@ class AGroundSprite:
             flags=0,
         )
 
-    # FIXME add methods
+    def graphics(self, scale, bpp):
+        return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
+
+    def __getattr__(self, name):
+        return AGroundSprite(getattr(self.sprite, name))
+
+    def __call__(self, *args, **kwargs):
+        return AGroundSprite(self.sprite(*args, **kwargs))
 
 
 class AParentSprite:
@@ -119,9 +126,10 @@ class AParentSprite:
 
 
 class ALayout:
-    def __init__(self, ground_sprite, sprites, category=None):
+    def __init__(self, ground_sprite, sprites, traversable, category=None):
         self.ground_sprite = ground_sprite
         self.sprites = sprites
+        self.traversable = traversable
         self.category = category
 
     def to_grf(self, sprite_list):
@@ -130,7 +138,7 @@ class ALayout:
         )
 
     def graphics(self, remap, scale, bpp, context=grf.DummyWriteContext()):
-        img = self.ground_sprite.graphics(scale, bpp)
+        img = self.ground_sprite.graphics(scale, bpp).copy()
         for sprite in self.sprites:
             masked_sprite = LayeredImage.from_sprite(
                 sprite.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
@@ -157,13 +165,13 @@ class ALayout:
         call = lambda x: getattr(x, name)
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = [call(sprite) for sprite in self.sprites]
-        return ALayout(new_ground_sprite, new_sprites)
+        return ALayout(new_ground_sprite, new_sprites, self.traversable)
 
     def __call__(self, *args, **kwargs):
         call = lambda x: x(*args, **kwargs)
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = call(self.sprites)
-        return ALayout(new_ground_sprite, new_sprites)
+        return ALayout(new_ground_sprite, new_sprites, self.traversable)
 
 
 class LayoutSprite(grf.Sprite):

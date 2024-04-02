@@ -24,11 +24,11 @@ def quickload(name, type):
 
     ps = AParentSprite(sprite, (16, 6, 14 if "shed " in name else 6), (0, 10, 0))
     ret = []
-    l = type.get_all_variants(ALayout(ADefaultGroundSprite(1012), [ps]))
+    l = type.get_all_variants(ALayout(ADefaultGroundSprite(1012), [ps], True))
     layouts.extend(l)
     ret.append(type.create_variants(l))
     type = BuildingSpriteSheetSymmetrical
-    l = type.get_all_variants(ALayout(ADefaultGroundSprite(1012), [ps, ps.T]))
+    l = type.get_all_variants(ALayout(ADefaultGroundSprite(1012), [ps, ps.T], True))
     layouts.extend(l)
     ret.append(type.create_variants(l))
 
@@ -50,7 +50,7 @@ the_stations = AMetaStation(
     [
         AStation(
             id=0xF0 + i,
-            translation_name="DOVEMERE_2018",  # FIXME
+            translation_name="PLATFORM",
             sprites=sprites,  # FIXME
             layouts=[layout[0].to_grf(sprites), layout[1].to_grf(sprites)],
             class_label=b"PLAT",

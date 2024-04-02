@@ -8,6 +8,7 @@ from station.lib import (
     BuildingSpriteSheetSymmetricalY,
     Demo,
     ADefaultGroundSprite,
+    AGroundSprite,
     AParentSprite,
     ALayout,
     LayoutSprite,
@@ -15,6 +16,7 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
 from .platforms import sprites as platform_sprites
+from .ground import sprites as ground_sprites, gray, gray_third
 
 
 def quickload(name, type, traversable, platform, category):
@@ -29,19 +31,32 @@ def quickload(name, type, traversable, platform, category):
     sprite = type.create_variants(v.spritesheet(zdiff=shed_height * 2 if platform else 0))
     sprites.extend(sprite.all_variants)
 
-    ground = ADefaultGroundSprite(1012 if traversable else 1420)
+    if traversable:
+        ground = ADefaultGroundSprite(1012)
+    else:
+        ground = AGroundSprite(gray)
     plat = AParentSprite(platform_sprites[4], (16, 6, shed_height), (0, 10, 0))
+    third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
 
     if platform:
         parent = AParentSprite(sprite, (16, 16, 48 - shed_height), (0, 0, shed_height))
-        candidates = [
-            ALayout(ground, [plat, parent]),
-            ALayout(ground, [plat.T, parent]),
-            ALayout(ground, [plat, plat.T, parent]),
-        ]
+        if type.is_symmetrical_y():
+            candidates = [
+                ALayout(ground, [plat, parent], traversable),
+                ALayout(ground, [plat, plat.T, parent], traversable),
+            ]
+        else:
+            candidates = [
+                ALayout(ground, [plat, parent], traversable),
+                ALayout(ground, [plat.T, parent], traversable),
+                ALayout(ground, [plat, plat.T, parent], traversable),
+            ]
     else:
         parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
-        candidates = [ALayout(ground, [parent])]
+        if traversable:
+            candidates = [ALayout(ground, [third, third.T, parent], traversable)]
+        else:
+            candidates = [ALayout(ground, [parent], traversable)]
 
     ret = []
     for l in candidates:
@@ -58,7 +73,7 @@ def quickload(name, type, traversable, platform, category):
     return ret
 
 
-sprites = platform_sprites.copy()
+sprites = platform_sprites + ground_sprites
 layouts = []
 (
     corner,
@@ -69,16 +84,16 @@ layouts = []
     central_windowed,
     central_windowed_extender,
     (side_a_n, side_a_f, side_a),
-    (side_a2_n, side_2a_f, side_a2),
+    (side_a2_n, side_a2),
     (side_b_n, side_b_f, side_b),
-    (side_b2_n, side_b2_f, side_b2),
-    (side_c_n, side_c_f, side_c),
+    (side_b2_n, side_b2),
+    (side_c_n, side_c),
     h_end,
     h_normal,
     h_gate,
     h_gate_extender,
     v_end,
-    (v_central_n, v_central_f, v_central),
+    (v_central_n, v_central),
     tiny,
 ) = [
     quickload(name, type, traversable, platform, category)
@@ -130,8 +145,8 @@ for demo in [normal_demo, normal_demo.M]:
         )
     )
 sprites.extend(demo_sprites)
-demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))])
-demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))])
+demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))], False)
+demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))], False)
 layouts.append(demo_layout1)
 layouts.append(demo_layout2)
 
@@ -251,7 +266,7 @@ cb14 = Switch(
 
 the_station = AStation(
     id=0x00,
-    translation_name="DOVEMERE_2018",
+    translation_name="FLEXIBLE_UNTRAVERSABLE",
     sprites=sprites,
     layouts=[layout.to_grf(sprites) for layout in layouts],
     class_label=b"\xe8\x8a\x9cA",
@@ -279,13 +294,13 @@ the_stations = AMetaStation(
     [the_station]
     + [
         AStation(
-            id=1 + i,
-            translation_name="DOVEMERE_2018",  # FIXME
+            id=0x10 + i,
+            translation_name="DEFAULT" if layouts[0].traversable else "UNTRAVERSABLE",
             sprites=sprites,  # FIXME
             layouts=[layouts[0].to_grf(sprites), layouts[1].to_grf(sprites)],
             class_label=b"\xe8\x8a\x9c" + layouts[0].category.encode(),
             cargo_threshold=40,
-            non_traversable_tiles=0b00,  # FIXME
+            non_traversable_tiles=0b00 if layouts[0].traversable else 0b11,
             callbacks={"select_tile_layout": 0},
         )
         for i, layouts in enumerate(zip(layouts[:-2:2], layouts[1:-2:2]))
