@@ -1,4 +1,4 @@
-from station.lib import BuildingSpriteSheetSymmetrical
+from station.lib import BuildingSpriteSheetSymmetrical, BuildingSpriteSheetSymmetricalX
 from agrf.graphics.voxel import LazyVoxel
 
 
@@ -16,4 +16,7 @@ def quickload(name, type):
 
 
 sprites = []
-(gray,) = [quickload(name, type) for name, type in [("gray", BuildingSpriteSheetSymmetrical)]]
+(gray, gray_third) = [
+    quickload(name, type)
+    for name, type in [("gray", BuildingSpriteSheetSymmetrical), ("gray_third", BuildingSpriteSheetSymmetricalX)]
+]

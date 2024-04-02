@@ -16,7 +16,7 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
 from .platforms import sprites as platform_sprites
-from .ground import sprites as ground_sprites, gray
+from .ground import sprites as ground_sprites, gray, gray_third
 
 
 def quickload(name, type, traversable, platform, category):
@@ -36,6 +36,7 @@ def quickload(name, type, traversable, platform, category):
         ground = AGroundSprite(gray)
     parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
     plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
+    third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
 
     if platform:
         if type.is_symmetrical_y():
@@ -50,7 +51,10 @@ def quickload(name, type, traversable, platform, category):
                 ALayout(ground, [plat, plat.T, parent], traversable),
             ]
     else:
-        candidates = [ALayout(ground, [parent], traversable)]
+        if traversable:
+            candidates = [ALayout(ground, [third, third.T, parent], traversable)]
+        else:
+            candidates = [ALayout(ground, [parent], traversable)]
 
     ret = []
     for l in candidates:
