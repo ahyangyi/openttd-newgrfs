@@ -9,6 +9,7 @@ from station.lib import (
     BuildingSpriteSheetRotational,
     Demo,
     ADefaultGroundSprite,
+    AGroundSprite,
     AParentSprite,
     ALayout,
     LayoutSprite,
@@ -16,6 +17,7 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
 from .platforms import sprites as platform_sprites, pl1_low_white_d as platform, pl1_low_white as platform_s
+from .ground import sprites as ground_sprites, gray
 
 
 def quickload(name, type, traversable, platform, category):
@@ -29,7 +31,10 @@ def quickload(name, type, traversable, platform, category):
     sprite = type.create_variants(v.spritesheet())
     sprites.extend(sprite.all_variants)
 
-    ground = ADefaultGroundSprite(1012 if traversable else 1420)
+    if traversable:
+        ground = ADefaultGroundSprite(1012)
+    else:
+        ground = AGroundSprite(gray)
     parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
     plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
 
@@ -63,7 +68,7 @@ def quickload(name, type, traversable, platform, category):
     return ret
 
 
-sprites = platform_sprites.copy()
+sprites = platform_sprites + ground_sprites
 layouts = []
 (
     corner,

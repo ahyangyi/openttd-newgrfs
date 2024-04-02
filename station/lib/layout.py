@@ -65,7 +65,14 @@ class AGroundSprite:
             flags=0,
         )
 
-    # FIXME add methods
+    def graphics(self, scale, bpp):
+        return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
+
+    def __getattr__(self, name):
+        return AGroundSprite(getattr(self.sprite, name))
+
+    def __call__(self, *args, **kwargs):
+        return AGroundSprite(self.sprite(*args, **kwargs))
 
 
 class AParentSprite:
@@ -131,7 +138,7 @@ class ALayout:
         )
 
     def graphics(self, remap, scale, bpp, context=grf.DummyWriteContext()):
-        img = self.ground_sprite.graphics(scale, bpp)
+        img = self.ground_sprite.graphics(scale, bpp).copy()
         for sprite in self.sprites:
             masked_sprite = LayeredImage.from_sprite(
                 sprite.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
