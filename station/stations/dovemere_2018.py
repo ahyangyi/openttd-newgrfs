@@ -6,6 +6,7 @@ from station.lib import (
     BuildingSpriteSheetSymmetrical,
     BuildingSpriteSheetSymmetricalX,
     BuildingSpriteSheetSymmetricalY,
+    BuildingSpriteSheetRotational,
     Demo,
     ADefaultGroundSprite,
     AGroundSprite,
@@ -41,7 +42,7 @@ def quickload(name, type, traversable, platform, category):
     if platform:
         if type.is_symmetrical_y():
             candidates = [
-                ALayout(ground, [plat, parent], traversable),
+                ALayout(ground, [plat, parent], traversable, notes=["y"]),
                 ALayout(ground, [plat, plat.T, parent], traversable),
             ]
         else:
@@ -58,13 +59,21 @@ def quickload(name, type, traversable, platform, category):
 
     ret = []
     for l in candidates:
-        l = type.get_all_variants(l)
+        if "y" in l.notes:
+            cur_type = {
+                BuildingSpriteSheetSymmetricalY: BuildingSpriteSheetFull,
+                BuildingSpriteSheetSymmetrical: BuildingSpriteSheetSymmetricalX,
+                BuildingSpriteSheetRotational: BuildingSpriteSheetFull,
+            }.get(type, type)
+        else:
+            cur_type = type
+        l = cur_type.get_all_variants(l)
         for layout in l[: len(l) // 2]:
             layout.category = category
         for layout in l[len(l) // 2 :]:
             layout.category = "B" if category == "F" else category
         layouts.extend(l)
-        ret.append(type.create_variants(l))
+        ret.append(cur_type.create_variants(l))
 
     if len(ret) == 1:
         return ret[0]
