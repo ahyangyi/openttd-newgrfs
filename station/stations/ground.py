@@ -1,4 +1,4 @@
-from station.lib import BuildingSpriteSheetSymmetrical, BuildingSpriteSheetSymmetricalX
+from station.lib import BuildingSpriteSheetSymmetrical, BuildingSpriteSheetSymmetricalX, AGroundSprite, ALayout
 from agrf.graphics.voxel import LazyVoxel
 
 
@@ -12,11 +12,12 @@ def quickload(name, type):
     )
     sprite = type.create_variants(v.spritesheet())
     sprites.extend(sprite.all_variants)
-    return sprite
+    l = ALayout(AGroundSprite(sprite), [], False)
+    return sprite, l
 
 
 sprites = []
-(gray, gray_third) = [
+((gray, gray_layout), (gray_third, gray_third_layout)) = [
     quickload(name, type)
     for name, type in [("gray", BuildingSpriteSheetSymmetrical), ("gray_third", BuildingSpriteSheetSymmetricalX)]
 ]

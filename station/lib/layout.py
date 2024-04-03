@@ -126,18 +126,20 @@ class AParentSprite:
 
 
 class ALayout:
-    def __init__(self, ground_sprite, sprites, traversable, category=None):
+    def __init__(self, ground_sprite, sprites, traversable, category=None, notes=None):
         self.ground_sprite = ground_sprite
         self.sprites = sprites
         self.traversable = traversable
         self.category = category
+        self.notes = notes or []
 
     def to_grf(self, sprite_list):
         return grf.SpriteLayout(
             [self.ground_sprite.to_grf(sprite_list)] + [sprite.to_grf(sprite_list) for sprite in self.sprites]
         )
 
-    def graphics(self, remap, scale, bpp, context=grf.DummyWriteContext()):
+    def graphics(self, remap, scale, bpp, context=None):
+        context = context or grf.DummyWriteContext()
         img = self.ground_sprite.graphics(scale, bpp).copy()
         for sprite in self.sprites:
             masked_sprite = LayeredImage.from_sprite(
