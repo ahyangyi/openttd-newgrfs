@@ -126,11 +126,12 @@ class AParentSprite:
 
 
 class ALayout:
-    def __init__(self, ground_sprite, sprites, traversable, category=None):
+    def __init__(self, ground_sprite, sprites, traversable, category=None, notes=None):
         self.ground_sprite = ground_sprite
         self.sprites = sprites
         self.traversable = traversable
         self.category = category
+        self.notes = notes or []
 
     def to_grf(self, sprite_list):
         return grf.SpriteLayout(
