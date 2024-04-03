@@ -12,12 +12,12 @@ class BinaryVariantMixin:
     @classmethod
     def get_all_variants(cls, thing):
         ret = [thing]
-        if cls._m_offset > 0:
-            ret = ret + [x.M for x in ret]
         if cls._r_offset > 0:
             ret = ret + [x.R for x in ret]
-        if cls._t_offset > 0:
+        if cls._t_offset > cls._r_offset:
             ret = ret + [x.T for x in ret]
+        if cls._m_offset > 0:
+            ret = [y for x in ret for y in [x, x.M]]
         return ret
 
     @property
@@ -27,6 +27,10 @@ class BinaryVariantMixin:
     @property
     def TR(self):
         return self.T.R
+
+    @classmethod
+    def is_symmetrical_y(classobj):
+        return classobj._t_offset == 0
 
 
 class BuildingSpriteSheetFull(BinaryVariantMixin):
@@ -79,3 +83,16 @@ class BuildingSpriteSheetSymmetrical(BinaryVariantMixin):
     _m_offset = 1
     _r_offset = 0
     _t_offset = 0
+
+
+class BuildingSpriteSheetRotational(BinaryVariantMixin):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    @staticmethod
+    def render_indices():
+        return [0, 1, 2, 3]
+
+    _m_offset = 1
+    _r_offset = 2
+    _t_offset = 2
