@@ -55,7 +55,7 @@ class AGroundSprite:
     def to_grf(self, sprite_list):
         return grf.GroundSprite(
             sprite=grf.SpriteRef(
-                id=sprite_list.index(self.sprite),
+                id=0x42D + sprite_list.index(self.sprite),
                 pal=0,
                 is_global=False,
                 use_recolour=False,
