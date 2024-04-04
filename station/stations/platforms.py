@@ -5,10 +5,12 @@ from station.lib import (
     BuildingSpriteSheetSymmetrical,
     Demo,
     ADefaultGroundSprite,
+    AGroundSprite,
     AParentSprite,
     ALayout,
 )
 from agrf.graphics.voxel import LazyVoxel
+from .ground import sprites as ground_sprites, gray
 
 
 def quickload(name, type):
@@ -21,26 +23,30 @@ def quickload(name, type):
     )
     sprite = type.create_variants(v.spritesheet(xdiff=10))
     sprites.extend(sprite.all_variants)
-
     ps = AParentSprite(sprite, (16, 6, 6), (0, 10, 0))
     ret = []
-    l = type.get_all_variants(ALayout(ADefaultGroundSprite(1012), [ps], True))
-    layouts.extend(l)
-    ret.append(type.create_variants(l))
-    type = BuildingSpriteSheetSymmetrical
-    l = type.get_all_variants(ALayout(ADefaultGroundSprite(1012), [ps, ps.T], True))
-    layouts.extend(l)
-    ret.append(type.create_variants(l))
+    for l, make_symmetrical in [([ps], False), ([ps, ps.T], True)]:
+        #        for traversable in [True, False]:
+        for traversable in [True, True]:
+            groundsprite = ADefaultGroundSprite(1012) if traversable else AGroundSprite(gray)
+            cur_type = BuildingSpriteSheetSymmetrical if make_symmetrical else type
+            var = cur_type.get_all_variants(ALayout(groundsprite, l, True))
+            layouts.extend(var)
+            ret.append(cur_type.create_variants(var))
 
     return ret
 
 
 sprites = []
 layouts = []
-[(pl1_low_white, pl1_low_white_d)] = [
+[(pl1_low_white, pl1_low_white_nt, pl1_low_white_d, pl1_low_white_d_nt)] = [
     quickload(name, type) for name, type in [("pl1_low_white", BuildingSpriteSheetSymmetricalX)]
 ]
-
+sprites = sprites + ground_sprites
+for i, s in enumerate(sprites):
+    print(i, s)
+for i, l in enumerate(layouts):
+    print(i, l)
 
 the_stations = AMetaStation(
     [
@@ -58,5 +64,8 @@ the_stations = AMetaStation(
     b"PLAT",
     None,
     layouts,
-    [Demo("Test", [[pl1_low_white], [pl1_low_white_d], [pl1_low_white.T]])],
+    [
+        Demo("Test", [[pl1_low_white], [pl1_low_white_d], [pl1_low_white.T]]),
+        Demo("Test", [[pl1_low_white_nt], [pl1_low_white_d], [pl1_low_white_nt.T]]),
+    ],
 )
