@@ -26,8 +26,7 @@ def quickload(name, type):
     ps = AParentSprite(sprite, (16, 6, 6), (0, 10, 0))
     ret = []
     for l, make_symmetrical in [([ps], False), ([ps, ps.T], True)]:
-        #        for traversable in [True, False]:
-        for traversable in [True, True]:
+        for traversable in [True, False]:
             groundsprite = ADefaultGroundSprite(1012) if traversable else AGroundSprite(gray)
             cur_type = BuildingSpriteSheetSymmetrical if make_symmetrical else type
             var = cur_type.get_all_variants(ALayout(groundsprite, l, True))
