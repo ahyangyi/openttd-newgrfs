@@ -42,10 +42,6 @@ layouts = []
     quickload(name, type) for name, type in [("pl1_low_white", BuildingSpriteSheetSymmetricalX)]
 ]
 sprites = sprites + ground_sprites
-for i, s in enumerate(sprites):
-    print(i, s)
-for i, l in enumerate(layouts):
-    print(i, l)
 
 the_stations = AMetaStation(
     [
