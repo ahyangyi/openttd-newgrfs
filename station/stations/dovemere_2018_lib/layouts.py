@@ -34,14 +34,21 @@ def quickload(name, type, traversable, platform, category):
         load_from="station/files/gorender.json",
         subset=type.render_indices(),
     )
-    sprite = type.create_variants(v.spritesheet())
+    if not traversable and platform:
+        # FIXME wrong xdiff
+        sprite = type.create_variants(v.spritesheet(xdiff=1))
+    else:
+        sprite = type.create_variants(v.spritesheet())
     sprites.extend(sprite.all_variants)
 
     if traversable:
         ground = ADefaultGroundSprite(1012)
     else:
         ground = AGroundSprite(gray)
-    parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
+    if not traversable and platform:
+        parent = AParentSprite(sprite, (16, 15, 48), (0, 1, 0))
+    else:
+        parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
     plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
     third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
 
