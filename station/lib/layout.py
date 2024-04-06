@@ -55,7 +55,7 @@ class AGroundSprite:
     def to_grf(self, sprite_list):
         return grf.GroundSprite(
             sprite=grf.SpriteRef(
-                id=sprite_list.index(self.sprite),
+                id=0x42D + sprite_list.index(self.sprite),
                 pal=0,
                 is_global=False,
                 use_recolour=False,
@@ -67,6 +67,9 @@ class AGroundSprite:
 
     def graphics(self, scale, bpp):
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
+
+    def __repr__(self):
+        return f"<AGroundSprite:{self.sprite}>"
 
     def __getattr__(self, name):
         return AGroundSprite(getattr(self.sprite, name))
@@ -185,7 +188,7 @@ class LayoutSprite(grf.Sprite):
 
     def get_fingerprint(self):
         # FIXME don't use id
-        return {"layout": id(self.layout), "w": self.w, "h": self.h, "bpp": self.bpp}
+        return {"layout": id(self.layout), "w": self.w, "h": self.h, "bpp": self.bpp, "xxx": id(self)}
 
     def get_image_files(self):
         return ()

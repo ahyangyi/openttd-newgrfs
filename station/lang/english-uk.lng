@@ -15,7 +15,10 @@ STR_STATION_CLASS_E88A9CC       :AWSS: Wuhu (2021) - Modular, Centre
 STR_STATION_CLASS_E88A9CI       :AWSS: Wuhu (2021) - Modular, Side A
 STR_STATION_CLASS_E88A9CJ       :AWSS: Wuhu (2021) - Modular, Side B
 STR_STATION_CLASS_E88A9CK       :AWSS: Wuhu (2021) - Modular, Side C
+STR_STATION_CLASS_E88A9CL       :AWSS: Wuhu (2021) - Modular, Side D
 STR_STATION_CLASS_E88A9CH       :AWSS: Wuhu (2021) - Modular, Narrow
+STR_STATION_CLASS_E88A9CT       :AWSS: Wuhu (2021) - Modular, Irregular
+STR_STATION_CLASS_E88A9CX       :AWSS: Wuhu (2021) - Modular, Junction
 
 STR_STATION_CLASS_PLAT          :AWSS: Platforms
 
