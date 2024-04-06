@@ -144,7 +144,10 @@ class ALayout:
     def graphics(self, remap, scale, bpp, context=None):
         context = context or grf.DummyWriteContext()
         img = self.ground_sprite.graphics(scale, bpp).copy()
-        for sprite in self.sprites:
+        for sprite in sorted(
+            self.sprites,
+            key=lambda x: (x.offset[0] + x.offset[1] + x.extent[0] + x.extent[1], x.offset[2] + x.extent[2]),
+        ):
             masked_sprite = LayeredImage.from_sprite(
                 sprite.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
             ).copy()
