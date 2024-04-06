@@ -23,6 +23,7 @@ from station.stations.platforms import (
     pl1_low_white_nt as platform_s_nt,
 )
 from station.stations.ground import sprites as ground_sprites, gray, gray_third, gray_layout
+from station.stations.misc import rail
 
 
 def quickload(name, type, traversable, platform, category):
@@ -47,11 +48,13 @@ def quickload(name, type, traversable, platform, category):
     if platform:
         if type.is_symmetrical_y():
             candidates = [
+                ALayout(ground, [parent], traversable),
                 ALayout(ground, [plat, parent], traversable, notes=["y"]),
                 ALayout(ground, [plat, plat.T, parent], traversable),
             ]
         else:
             candidates = [
+                ALayout(ground, [parent], traversable),
                 ALayout(ground, [plat, parent], traversable),
                 ALayout(ground, [plat.T, parent], traversable),
                 ALayout(ground, [plat, plat.T, parent], traversable),
@@ -98,16 +101,16 @@ layouts = []
     central,
     central_windowed,
     central_windowed_extender,
-    (side_a_n, side_a_f, side_a),
-    (side_a_windowed_n, side_a_windowed_f, side_a_windowed),
-    (side_a2_n, side_a2),
-    (side_a2_windowed_n, side_a2_windowed),
-    (side_a3_n, side_a3_f, side_a3),
-    (side_a3_windowed_n, side_a3_windowed_f, side_a3_windowed),
-    (side_b_n, side_b_f, side_b),
-    (side_b2_n, side_b2),
-    (side_c_n, side_c),
-    (side_d_n, side_d),
+    (side_a_x, side_a_n, side_a_f, side_a),
+    (side_a_windowed_x, side_a_windowed_n, side_a_windowed_f, side_a_windowed),
+    (side_a2_x, side_a2_n, side_a2),
+    (side_a2_windowed_x, side_a2_windowed_n, side_a2_windowed),
+    (side_a3_x, side_a3_n, side_a3_f, side_a3),
+    (side_a3_windowed_x, side_a3_windowed_n, side_a3_windowed_f, side_a3_windowed),
+    (side_b_x, side_b_n, side_b_f, side_b),
+    (side_b2_x, side_b2_n, side_b2),
+    (side_c_x, side_c_n, side_c),
+    (side_d_x, side_d_n, side_d),
     h_end,
     h_end_gate,
     h_end_gate_1,
@@ -118,7 +121,7 @@ layouts = []
     h_windowed_extender,
     v_end,
     v_end_gate,
-    (v_central_n, v_central),
+    (v_central_x, v_central_n, v_central),
     tiny,
     turn,
     turn_gate,

@@ -1,6 +1,7 @@
 from station.lib import Demo
 from station.stations.dovemere_2018_lib.layouts import *
 
+
 big_demo = Demo(
     "8×12 station layout (roughly 1 grid = 25m)",
     [
@@ -116,68 +117,4 @@ big_demo = Demo(
         ],
     ],
 )
-big_half_demo = Demo(
-    "8×6 half-station layout (roughly 1 grid = 25m)",
-    [
-        [
-            corner.T,
-            front_normal.T,
-            front_gate.T,
-            front_gate_extender.T,
-            front_gate_extender.T,
-            front_gate.TR,
-            front_normal.T,
-            corner.TR,
-        ],
-        [
-            side_a_n.T,
-            central,
-            central_windowed,
-            central_windowed_extender,
-            central_windowed_extender,
-            central_windowed.R,
-            central,
-            side_a_n.TR,
-        ],
-        [
-            side_b_f.T,
-            central,
-            central_windowed,
-            central_windowed_extender,
-            central_windowed_extender,
-            central_windowed.R,
-            central,
-            side_b_f.TR,
-        ],
-        [
-            side_c_n.T,
-            central,
-            central_windowed,
-            central_windowed_extender,
-            central_windowed_extender,
-            central_windowed.R,
-            central,
-            side_c_n.TR,
-        ],
-        [
-            side_c_n,
-            central,
-            central_windowed,
-            central_windowed_extender,
-            central_windowed_extender,
-            central_windowed.R,
-            central,
-            side_c_n.R,
-        ],
-        [
-            side_c,
-            central,
-            central_windowed,
-            central_windowed_extender,
-            central_windowed_extender,
-            central_windowed.R,
-            central,
-            side_c.R,
-        ],
-    ],
-)
+big_half_demo = Demo("8×6 half-station layout (roughly 1 grid = 25m)", big_demo.tiles[:6])

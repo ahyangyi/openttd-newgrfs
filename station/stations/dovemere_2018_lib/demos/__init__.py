@@ -1,5 +1,6 @@
 from .normal import normal_demo
 from .big import big_demo, big_half_demo
+from .real_yard import real_yard_demo
 from .full_auto import full_auto_demo
 from .semi_auto import semi_auto_demo
 from .special_g import special_demo_g
