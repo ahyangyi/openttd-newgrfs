@@ -43,16 +43,11 @@ layouts = []
 ]
 
 the_station = AStation(
-    id=0xe0,
-    translation_name="DOVEMERE_1992",
+    id=0x1000,
+    translation_name="UNTRAVERSABLE",
     sprites=sprites,
     layouts=[layout.to_grf(sprites) for layout in layouts],
-    class_label=b"DM92",
+    class_label=b"\xe8\x8a\x9ca",
     cargo_threshold=40,
 )
-the_stations = AMetaStation(
-    [the_station],
-    b"DM92",
-    layouts,
-    [Demo("Station", [[main]])],
-)
+the_stations = AMetaStation([the_station], b"\xe8\x8a\x9ca", None, layouts, [Demo("Station", [[main]])])

@@ -1,5 +1,4 @@
 import grf
-from copy import deepcopy
 
 
 class FakeReferencedAction(grf.Action, grf.ReferenceableAction):

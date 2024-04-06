@@ -2,9 +2,28 @@
 STR_GRF_NAME                    :AWSS - Ahyangyi's Wuhu Station Set
 STR_GRF_DESC                    :A station set based on stations in Wuhu, Anhui, China.
 
-STR_STATION_DOVEMERE_2018_NAME  :Station Building
-STR_STATION_DOVEMERE_1992_NAME  :Wuhu Railway Station (1992)
+STR_STATION_DEFAULT                 :Station Building
+STR_STATION_UNTRAVERSABLE           :Station Building (Untraversable)
+STR_STATION_PLATFORM                :Platform
+STR_STATION_FLEXIBLE                :Flexible Station Building
+STR_STATION_FLEXIBLE_UNTRAVERSABLE  :Flexible Station Building (First and last row untraversable)
 
-STR_STATION_CLASS_DM18          :Wuhu Railway Station (2018)
-STR_STATION_CLASS_DM92          :Wuhu Railway Station (1992)
-STR_STATION_CLASS_PLAT          :Platforms
+STR_STATION_CLASS_E88A9CA       :AWSS: Wuhu (2021) - Flexible
+STR_STATION_CLASS_E88A9CF       :AWSS: Wuhu (2021) - Modular, Front
+STR_STATION_CLASS_E88A9CB       :AWSS: Wuhu (2021) - Modular, Back
+STR_STATION_CLASS_E88A9CC       :AWSS: Wuhu (2021) - Modular, Centre
+STR_STATION_CLASS_E88A9CI       :AWSS: Wuhu (2021) - Modular, Side A
+STR_STATION_CLASS_E88A9CJ       :AWSS: Wuhu (2021) - Modular, Side B
+STR_STATION_CLASS_E88A9CK       :AWSS: Wuhu (2021) - Modular, Side C
+STR_STATION_CLASS_E88A9CL       :AWSS: Wuhu (2021) - Modular, Side D
+STR_STATION_CLASS_E88A9CH       :AWSS: Wuhu (2021) - Modular, Narrow
+STR_STATION_CLASS_E88A9CT       :AWSS: Wuhu (2021) - Modular, Irregular
+STR_STATION_CLASS_E88A9CX       :AWSS: Wuhu (2021) - Modular, Junction
+
+STR_STATION_CLASS_E88A9Ca       :AWSS: Wuhu (1992) - Modular
+
+STR_STATION_CLASS_PLAT          :AWSS: Platforms
+
+STR_METASTATION_CLASS_E88A9CA   :Wuhu (2021)
+STR_METASTATION_CLASS_E88A9Ca   :Wuhu (1992)
+STR_METASTATION_CLASS_PLAT      :Platforms

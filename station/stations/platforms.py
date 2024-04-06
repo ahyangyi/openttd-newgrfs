@@ -1,4 +1,3 @@
-import grf
 from station.lib import (
     AStation,
     AMetaStation,
@@ -6,14 +5,15 @@ from station.lib import (
     BuildingSpriteSheetSymmetrical,
     Demo,
     ADefaultGroundSprite,
+    AGroundSprite,
     AParentSprite,
     ALayout,
 )
 from agrf.graphics.voxel import LazyVoxel
-from agrf.magic import Switch
+from .ground import sprites as ground_sprites, gray
 
 
-def quickload(name, type, traversable):
+def quickload(name, type):
     v = LazyVoxel(
         name,
         prefix="station/voxels/render/csps",
@@ -23,33 +23,31 @@ def quickload(name, type, traversable):
     )
     sprite = type.create_variants(v.spritesheet(xdiff=10))
     sprites.extend(sprite.all_variants)
-
     ps = AParentSprite(sprite, (16, 6, 6), (0, 10, 0))
     ret = []
-    l = type.get_all_variants(ALayout(ADefaultGroundSprite(1012), [ps]))
-    layouts.extend(l)
-    ret.append(type.create_variants(l))
-    type = BuildingSpriteSheetSymmetrical
-    l = type.get_all_variants(ALayout(ADefaultGroundSprite(1012), [ps, ps.T]))
-    layouts.extend(l)
-    ret.append(type.create_variants(l))
+    for l, make_symmetrical in [([ps], False), ([ps, ps.T], True)]:
+        for traversable in [True, False]:
+            groundsprite = ADefaultGroundSprite(1012) if traversable else AGroundSprite(gray)
+            cur_type = BuildingSpriteSheetSymmetrical if make_symmetrical else type
+            var = cur_type.get_all_variants(ALayout(groundsprite, l, True))
+            layouts.extend(var)
+            ret.append(cur_type.create_variants(var))
 
     return ret
 
 
 sprites = []
 layouts = []
-[(pl1_low_white, pl1_low_white_d)] = [
-    quickload(name, type, traversable)
-    for name, type, traversable in [("pl1_low_white", BuildingSpriteSheetSymmetricalX, True)]
+[(pl1_low_white, pl1_low_white_nt, pl1_low_white_d, pl1_low_white_d_nt)] = [
+    quickload(name, type) for name, type in [("pl1_low_white", BuildingSpriteSheetSymmetricalX)]
 ]
-
+sprites = sprites + ground_sprites
 
 the_stations = AMetaStation(
     [
         AStation(
             id=0xF0 + i,
-            translation_name="DOVEMERE_2018",  # FIXME
+            translation_name="PLATFORM",
             sprites=sprites,  # FIXME
             layouts=[layout[0].to_grf(sprites), layout[1].to_grf(sprites)],
             class_label=b"PLAT",
@@ -59,6 +57,10 @@ the_stations = AMetaStation(
         for i, layout in enumerate(zip(layouts[::2], layouts[1::2]))
     ],
     b"PLAT",
+    None,
     layouts,
-    [Demo("Test", [[pl1_low_white], [pl1_low_white_d], [pl1_low_white.T]])],
+    [
+        Demo("Test", [[pl1_low_white], [pl1_low_white_d], [pl1_low_white.T]]),
+        Demo("Test", [[pl1_low_white_nt], [pl1_low_white_d], [pl1_low_white_nt.T]]),
+    ],
 )
