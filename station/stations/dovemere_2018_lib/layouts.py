@@ -45,25 +45,28 @@ def quickload(name, type, traversable, platform, category):
     plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
     third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
 
-    if platform:
-        if type.is_symmetrical_y():
-            candidates = [
-                ALayout(ground, [parent], traversable),
-                ALayout(ground, [plat, parent], traversable, notes=["y"]),
-                ALayout(ground, [plat, plat.T, parent], traversable),
-            ]
+    if traversable:
+        if platform:
+            if type.is_symmetrical_y():
+                candidates = [
+                    ALayout(ground, [parent], True),
+                    ALayout(ground, [plat, parent], True, notes=["y"]),
+                    ALayout(ground, [plat, plat.T, parent], True),
+                ]
+            else:
+                candidates = [
+                    ALayout(ground, [parent], True),
+                    ALayout(ground, [plat, parent], True),
+                    ALayout(ground, [plat.T, parent], True),
+                    ALayout(ground, [plat, plat.T, parent], True),
+                ]
         else:
-            candidates = [
-                ALayout(ground, [parent], traversable),
-                ALayout(ground, [plat, parent], traversable),
-                ALayout(ground, [plat.T, parent], traversable),
-                ALayout(ground, [plat, plat.T, parent], traversable),
-            ]
+            candidates = [ALayout(ground, [third, third.T, parent], True)]
     else:
-        if traversable:
-            candidates = [ALayout(ground, [third, third.T, parent], traversable)]
+        if platform:
+            candidates = [ALayout(ground, [plat.T, parent], False)]
         else:
-            candidates = [ALayout(ground, [parent], traversable)]
+            candidates = [ALayout(ground, [parent], False)]
 
     ret = []
     for l in candidates:
@@ -92,6 +95,7 @@ sprites = platform_sprites + ground_sprites
 layouts = []
 (
     corner,
+    corner_platform,
     corner_gate,
     corner_2,
     corner_gate_2,
@@ -140,6 +144,7 @@ layouts = []
     quickload(name, type, traversable, platform, category)
     for name, type, traversable, platform, category in [
         ("corner", BuildingSpriteSheetFull, False, False, "F"),
+        ("corner_platform", BuildingSpriteSheetFull, False, True, "F"),
         ("corner_gate", BuildingSpriteSheetFull, False, False, "F"),
         ("corner_2", BuildingSpriteSheetFull, False, False, "F"),
         ("corner_gate_2", BuildingSpriteSheetFull, False, False, "F"),
