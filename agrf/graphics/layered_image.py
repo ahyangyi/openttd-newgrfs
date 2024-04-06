@@ -225,3 +225,4 @@ class LayeredImage:
                 self.xofs = (self.xofs * new_w + old_w // 2) // old_w
                 self.yofs = (self.yofs * new_h + old_h // 2) // old_h
                 metadata_updated = True
+        return self
