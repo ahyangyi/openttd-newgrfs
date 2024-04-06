@@ -788,7 +788,7 @@ the_stations = AMetaStation(
             "Semitraversable automatic stations",
             [
                 [
-                    v_end.T,
+                    v_end_gate.T,
                     gray_layout,
                     corner_gate.T,
                     corner_gate.TR,
@@ -818,7 +818,7 @@ the_stations = AMetaStation(
                     side_a2.R,
                 ],
                 [
-                    v_end,
+                    v_end_gate,
                     gray_layout,
                     corner_gate,
                     corner_gate.R,
@@ -834,7 +834,7 @@ the_stations = AMetaStation(
                 ],
                 [gray_layout] * 13,
                 [
-                    v_end.T,
+                    v_end_gate.T,
                     gray_layout,
                     corner_gate.T,
                     corner_gate.TR,
@@ -879,7 +879,7 @@ the_stations = AMetaStation(
                     side_a3.R,
                 ],
                 [
-                    v_end,
+                    v_end_gate,
                     gray_layout,
                     corner_gate,
                     corner_gate.R,
@@ -895,7 +895,7 @@ the_stations = AMetaStation(
                 ],
                 [gray_layout] * 13,
                 [
-                    v_end.T,
+                    v_end_gate.T,
                     gray_layout,
                     corner_gate.T,
                     corner_gate.TR,
@@ -955,7 +955,7 @@ the_stations = AMetaStation(
                     side_a_f.R,
                 ],
                 [
-                    v_end,
+                    v_end_gate,
                     gray_layout,
                     corner_gate,
                     corner_gate.R,
@@ -971,7 +971,7 @@ the_stations = AMetaStation(
                 ],
                 [gray_layout] * 13,
                 [
-                    v_end.T,
+                    v_end_gate.T,
                     gray_layout,
                     corner_gate.T,
                     corner_gate.TR,
@@ -1046,7 +1046,7 @@ the_stations = AMetaStation(
                     side_a_n.R,
                 ],
                 [
-                    v_end,
+                    v_end_gate,
                     gray_layout,
                     corner_gate,
                     corner_gate.R,
