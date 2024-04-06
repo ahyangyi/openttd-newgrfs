@@ -145,6 +145,22 @@ class LazyVoxel(Config):
         render(self, voxel_path, os.path.join(self.prefix, self.name))
 
     @functools.cache
+    def mask_clip(self, subvoxel, suffix):
+        def voxel_getter(subvoxel=subvoxel):
+            old_path = self.voxel_getter()
+            new_path = os.path.join(self.prefix, suffix)
+            if isinstance(subvoxel, str):
+                subvoxel_path = subvoxel
+            else:
+                subvoxel_path = subvoxel.voxel_getter()
+            compose(old_path, subvoxel_path, new_path, {"type": "clip", "mask_original": True})
+            return os.path.join(new_path, f"{self.name}.vox")
+
+        return LazyVoxel(
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=deepcopy(self.config)
+        )
+
+    @functools.cache
     def spritesheet(self, xdiff=0, zdiff=0, shift=0):
         real_xdiff = 0 if self.config.get("agrf_road_mode", False) else 0.5
         real_ydiff = (self.config.get("agrf_zdiff", 0) + zdiff) * 0.5 * self.config.get("agrf_scale", 1)

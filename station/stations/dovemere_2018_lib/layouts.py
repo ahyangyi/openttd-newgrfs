@@ -35,8 +35,9 @@ def quickload(name, type, traversable, platform, category):
         subset=type.render_indices(),
     )
     if not traversable and platform:
+        f2 = v.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
         # FIXME wrong xdiff
-        sprite = type.create_variants(v.spritesheet(xdiff=1))
+        sprite = type.create_variants(f2.spritesheet(xdiff=1))
     else:
         sprite = type.create_variants(v.spritesheet())
     sprites.extend(sprite.all_variants)
