@@ -3,10 +3,11 @@ STR_GRF_NAME                    :AWSS - Ahyangyi's Wuhu Station Set
 STR_GRF_DESC                    :A station set based on stations in Wuhu, Anhui, China.
 
 STR_STATION_DEFAULT                 :Station Building
-STR_STATION_UNTRAVERSABLE           :Station Building (Untraversable)
+STR_STATION_UNTRAVERSABLE           :Station Building (No Rail)
 STR_STATION_PLATFORM                :Platform
+STR_STATION_PLATFORM_UNTRAVERSABLE  :Platform (No Rail)
 STR_STATION_FLEXIBLE                :Flexible Station Building
-STR_STATION_FLEXIBLE_UNTRAVERSABLE  :Flexible Station Building (First and last row untraversable)
+STR_STATION_FLEXIBLE_UNTRAVERSABLE  :Flexible Station Building (No Rail at Ends)
 
 STR_STATION_CLASS_E88A9CA       :AWSS: Wuhu (2021) - Flexible
 STR_STATION_CLASS_E88A9CF       :AWSS: Wuhu (2021) - Modular, Front
