@@ -35,21 +35,24 @@ def quickload(name, type, traversable, platform, category):
         subset=type.render_indices(),
     )
     if not traversable and platform:
-        f2 = v.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
-        # FIXME wrong xdiff
-        sprite = type.create_variants(f2.spritesheet(xdiff=1))
+        f1 = v.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
+        f2 = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f1 = type.create_variants(f1.spritesheet(xdiff=6))
+        f2 = type.create_variants(f2.spritesheet(zdiff=-16))
+        sprites.extend(f1.all_variants)
+        sprites.extend(f2.all_variants)
     else:
         sprite = type.create_variants(v.spritesheet())
-    sprites.extend(sprite.all_variants)
+        sprites.extend(sprite.all_variants)
 
     if traversable:
         ground = ADefaultGroundSprite(1012)
     else:
         ground = AGroundSprite(gray)
     if not traversable and platform:
-        parent = AParentSprite(sprite, (16, 15, 48), (0, 1, 0))
+        parents = [AParentSprite(f1, (16, 10, 48), (0, 6, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, 16))]
     else:
-        parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
+        parents = [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))]
     plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
     third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
 
@@ -57,24 +60,24 @@ def quickload(name, type, traversable, platform, category):
         if platform:
             if type.is_symmetrical_y():
                 candidates = [
-                    ALayout(ground, [parent], True),
-                    ALayout(ground, [plat, parent], True, notes=["y"]),
-                    ALayout(ground, [plat, plat.T, parent], True),
+                    ALayout(ground, parents, True),
+                    ALayout(ground, parents + [plat], True, notes=["y"]),
+                    ALayout(ground, parents + [plat, plat.T], True),
                 ]
             else:
                 candidates = [
-                    ALayout(ground, [parent], True),
-                    ALayout(ground, [plat, parent], True),
-                    ALayout(ground, [plat.T, parent], True),
-                    ALayout(ground, [plat, plat.T, parent], True),
+                    ALayout(ground, parents, True),
+                    ALayout(ground, parents + [plat], True),
+                    ALayout(ground, parents + [plat.T], True),
+                    ALayout(ground, parents + [plat, plat.T], True),
                 ]
         else:
-            candidates = [ALayout(ground, [third, third.T, parent], True)]
+            candidates = [ALayout(ground, parents + [third, third.T], True)]
     else:
         if platform:
-            candidates = [ALayout(ground, [plat.T, parent], False)]
+            candidates = [ALayout(ground, parents + [plat.T], False)]
         else:
-            candidates = [ALayout(ground, [parent], False)]
+            candidates = [ALayout(ground, parents, False)]
 
     ret = []
     for l in candidates:
