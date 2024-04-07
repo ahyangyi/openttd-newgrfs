@@ -167,19 +167,19 @@ the_stations = AMetaStation(
     + [
         AStation(
             id=0x10 + i,
-            translation_name="DEFAULT" if layouts[0].traversable else "UNTRAVERSABLE",
+            translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
             sprites=sprites,  # FIXME
-            layouts=[layouts[0].to_grf(sprites), layouts[1].to_grf(sprites)],
-            class_label=b"\xe8\x8a\x9c" + layouts[0].category.encode(),
+            layouts=[entry.to_grf(sprites), entry.M.to_grf(sprites)],
+            class_label=b"\xe8\x8a\x9c" + entry.category.encode(),
             cargo_threshold=40,
-            non_traversable_tiles=0b00 if layouts[0].traversable else 0b11,
+            non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0},
         )
-        for i, layouts in enumerate(zip(layouts[:-2:2], layouts[1:-2:2]))
+        for i, entry in enumerate(entries)
     ],
     b"\xe8\x8a\x9cA",
     ["F", "B", "C", "I", "J", "K", "H", "T", "X"],
-    layouts,
+    entries,
     [
         normal_demo,
         big_demo,
