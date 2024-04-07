@@ -38,7 +38,7 @@ def quickload(name, type, traversable, platform, category):
         f1 = v.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
         f2 = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
         f1 = type.create_variants(f1.spritesheet(xdiff=6))
-        f2 = type.create_variants(f2.spritesheet(zdiff=-16))
+        f2 = type.create_variants(f2.spritesheet(zdiff=32))
         sprites.extend(f1.all_variants)
         sprites.extend(f2.all_variants)
     else:

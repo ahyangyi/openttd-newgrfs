@@ -169,7 +169,9 @@ class LazyVoxel(Config):
                 subvoxel_path = subvoxel
             else:
                 subvoxel_path = subvoxel.voxel_getter()
-            compose(old_path, subvoxel_path, new_path, {"ignore_mask": True, "overwrite": True})
+            compose(
+                old_path, subvoxel_path, new_path, {"ignore_mask": True, "overwrite": True, "n": 0, "truncate": True}
+            )
             return os.path.join(new_path, f"{self.name}.vox")
 
         return LazyVoxel(
