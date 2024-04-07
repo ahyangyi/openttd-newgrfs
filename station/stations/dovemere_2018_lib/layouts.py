@@ -51,9 +51,10 @@ def quickload(name, type, traversable, platform, category):
         ground = AGroundSprite(gray)
     if not traversable and platform:
         parents = [AParentSprite(f1, (16, 10, 48), (0, 6, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, 16))]
+        plat = AParentSprite(platform_sprites[4], (16, 6, 6), (0, 10, 0))
     else:
         parents = [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))]
-    plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
+        plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
     third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
 
     if traversable:
