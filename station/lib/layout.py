@@ -173,13 +173,13 @@ class ALayout:
         call = lambda x: getattr(x, name)
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = [call(sprite) for sprite in self.sprites]
-        return ALayout(new_ground_sprite, new_sprites, self.traversable)
+        return ALayout(new_ground_sprite, new_sprites, self.traversable, self.category, self.notes)
 
     def __call__(self, *args, **kwargs):
         call = lambda x: x(*args, **kwargs)
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = call(self.sprites)
-        return ALayout(new_ground_sprite, new_sprites, self.traversable)
+        return ALayout(new_ground_sprite, new_sprites, self.traversable, self.category, self.notes)
 
 
 class LayoutSprite(grf.Sprite):

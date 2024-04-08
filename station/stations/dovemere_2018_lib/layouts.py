@@ -27,6 +27,32 @@ from station.stations.ground import sprites as ground_sprites, gray, gray_third,
 from station.stations.misc import rail
 
 
+def get_category(internal_category, back, notes):
+    if internal_category in ["F0", "F1"]:
+        ret = 0x80 + (internal_category[1] == "1")
+        if back:
+            ret += 0x8
+    elif internal_category in ["A", "B", "C", "D"]:
+        ret = 0x90 + 0x10 * (ord(internal_category) - ord("A"))
+        if "near" in notes:
+            ret += 1 ^ (back * 3)
+        elif "far" in notes:
+            ret += 2 ^ (back * 3)
+        elif "both" in notes:
+            ret += 3
+    elif internal_category == "N":
+        ret = 0xF0
+    elif internal_category == "H":
+        ret = 0xD0
+    elif internal_category == "T":
+        ret = 0xF1
+    elif internal_category == "X":
+        ret = 0xF2
+    else:
+        raise KeyError(f"Unsupported internal category {internal_category}")
+    return b"\xe8\x8a\x9c" + ret.to_bytes()
+
+
 def quickload(name, type, traversable, platform, category):
     v = LazyVoxel(
         name,
@@ -50,15 +76,15 @@ def quickload(name, type, traversable, platform, category):
         if type.is_symmetrical_y():
             candidates = [
                 ALayout(ground, [parent], traversable),
-                ALayout(ground, [plat, parent], traversable, notes=["y"]),
-                ALayout(ground, [plat, plat.T, parent], traversable),
+                ALayout(ground, [plat, parent], traversable, notes=["y", "near"]),
+                ALayout(ground, [plat, plat.T, parent], traversable, notes=["both"]),
             ]
         else:
             candidates = [
                 ALayout(ground, [parent], traversable),
-                ALayout(ground, [plat, parent], traversable),
-                ALayout(ground, [plat.T, parent], traversable),
-                ALayout(ground, [plat, plat.T, parent], traversable),
+                ALayout(ground, [plat, parent], traversable, notes=["near"]),
+                ALayout(ground, [plat.T, parent], traversable, notes=["far"]),
+                ALayout(ground, [plat, plat.T, parent], traversable, notes=["both"]),
             ]
     else:
         if traversable:
@@ -73,10 +99,8 @@ def quickload(name, type, traversable, platform, category):
         else:
             cur_type = type
         l = cur_type.get_all_variants(l)
-        for layout in l[: len(l) // 2]:
-            layout.category = category
-        for layout in l[len(l) // 2 :]:
-            layout.category = "B" if category == "F" else category
+        for i, layout in enumerate(l):
+            layout.category = get_category(category, i >= len(l) // 2, layout.notes)
         layouts.extend(l)
         l = cur_type.create_variants(l)
         entries.extend(cur_type.get_all_entries(l))
@@ -139,26 +163,26 @@ entries = []
 ) = [
     quickload(name, type, traversable, platform, category)
     for name, type, traversable, platform, category in [
-        ("corner", BuildingSpriteSheetFull, False, False, "F"),
-        ("corner_gate", BuildingSpriteSheetFull, False, False, "F"),
-        ("corner_2", BuildingSpriteSheetFull, False, False, "F"),
-        ("corner_gate_2", BuildingSpriteSheetFull, False, False, "F"),
-        ("front_normal", BuildingSpriteSheetSymmetricalX, False, False, "F"),
-        ("front_gate", BuildingSpriteSheetFull, False, False, "F"),
-        ("front_gate_extender", BuildingSpriteSheetSymmetricalX, False, False, "F"),
-        ("central", BuildingSpriteSheetSymmetrical, True, False, "C"),
-        ("central_windowed", BuildingSpriteSheetSymmetricalY, True, False, "C"),
-        ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True, False, "C"),
-        ("side_a", BuildingSpriteSheetFull, True, True, "I"),
-        ("side_a_windowed", BuildingSpriteSheetFull, True, True, "I"),
-        ("side_a2", BuildingSpriteSheetSymmetricalY, True, True, "I"),
-        ("side_a2_windowed", BuildingSpriteSheetSymmetricalY, True, True, "I"),
-        ("side_a3", BuildingSpriteSheetFull, True, True, "I"),
-        ("side_a3_windowed", BuildingSpriteSheetFull, True, True, "I"),
-        ("side_b", BuildingSpriteSheetFull, True, True, "J"),
-        ("side_b2", BuildingSpriteSheetSymmetricalY, True, True, "J"),
-        ("side_c", BuildingSpriteSheetSymmetricalY, True, True, "K"),
-        ("side_d", BuildingSpriteSheetSymmetricalY, True, True, "L"),
+        ("corner", BuildingSpriteSheetFull, False, False, "F1"),
+        ("corner_gate", BuildingSpriteSheetFull, False, False, "F1"),
+        ("corner_2", BuildingSpriteSheetFull, False, False, "F1"),
+        ("corner_gate_2", BuildingSpriteSheetFull, False, False, "F1"),
+        ("front_normal", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
+        ("front_gate", BuildingSpriteSheetFull, False, False, "F0"),
+        ("front_gate_extender", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
+        ("central", BuildingSpriteSheetSymmetrical, True, False, "N"),
+        ("central_windowed", BuildingSpriteSheetSymmetricalY, True, False, "N"),
+        ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True, False, "N"),
+        ("side_a", BuildingSpriteSheetFull, True, True, "A"),
+        ("side_a_windowed", BuildingSpriteSheetFull, True, True, "A"),
+        ("side_a2", BuildingSpriteSheetSymmetricalY, True, True, "A"),
+        ("side_a2_windowed", BuildingSpriteSheetSymmetricalY, True, True, "A"),
+        ("side_a3", BuildingSpriteSheetFull, True, True, "A"),
+        ("side_a3_windowed", BuildingSpriteSheetFull, True, True, "A"),
+        ("side_b", BuildingSpriteSheetFull, True, True, "B"),
+        ("side_b2", BuildingSpriteSheetSymmetricalY, True, True, "B"),
+        ("side_c", BuildingSpriteSheetSymmetricalY, True, True, "C"),
+        ("side_d", BuildingSpriteSheetSymmetricalY, True, True, "D"),
         ("h_end", BuildingSpriteSheetSymmetricalY, True, False, "H"),
         ("h_end_gate", BuildingSpriteSheetSymmetricalY, True, False, "H"),
         ("h_end_gate_1", BuildingSpriteSheetFull, True, False, "H"),
@@ -167,9 +191,9 @@ entries = []
         ("h_gate_extender", BuildingSpriteSheetSymmetrical, True, False, "H"),
         ("h_windowed", BuildingSpriteSheetSymmetricalY, True, False, "H"),
         ("h_windowed_extender", BuildingSpriteSheetSymmetrical, True, False, "H"),
-        ("v_end", BuildingSpriteSheetSymmetricalX, False, False, "F"),
-        ("v_end_gate", BuildingSpriteSheetSymmetricalX, False, False, "F"),
-        ("v_central", BuildingSpriteSheetSymmetrical, True, True, "C"),
+        ("v_end", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
+        ("v_end_gate", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
+        ("v_central", BuildingSpriteSheetSymmetrical, True, True, "N"),
         ("tiny", BuildingSpriteSheetSymmetrical, True, False, "H"),
         ("irregular/turn", BuildingSpriteSheetFull, False, False, "T"),
         ("irregular/turn_gate", BuildingSpriteSheetFull, False, False, "T"),
