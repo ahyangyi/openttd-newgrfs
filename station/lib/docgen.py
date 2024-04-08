@@ -1,8 +1,7 @@
 import os
 from agrf.strings import get_translation
-from agrf.graphics.palette import CompanyColour, company_colour_remap
-
-blue_remap = company_colour_remap(CompanyColour.BLUE, CompanyColour.BLUE).to_sprite()
+from agrf.graphics.palette import CompanyColour
+from .utils import get_1cc_remap
 
 
 def gen_docs(string_manager, metastations):
@@ -40,11 +39,11 @@ nav_order: {i+1}
                     from station.lib import Demo
 
                     demo = Demo("", [[layout]])
-                    img = demo.graphics(blue_remap, 4, 32).crop().to_pil_image()
+                    img = demo.graphics(4, 32, remap=get_1cc_remap(CompanyColour.BLUE)).crop().to_pil_image()
                     img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{i}.png"))
                     print(f'![](img/{metastation_label}/tiles/{i}.png){{: width="64"}}', file=f)
             print("# Sample Layouts", file=f)
             for i, demo in enumerate(metastation.demos):
-                img = demo.graphics(blue_remap, 4, 32).crop().resize(1920, 1080).to_pil_image()
+                img = demo.graphics(4, 32).crop().resize(1920, 1080).to_pil_image()
                 img.save(os.path.join(prefix, "img", f"{metastation_label}/layouts/{i}.png"))
                 print(f"## {demo.title}\n\n![](img/{metastation_label}/layouts/{i}.png)", file=f)
