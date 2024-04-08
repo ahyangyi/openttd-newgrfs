@@ -1,5 +1,7 @@
 from station.lib import Demo
 from station.stations.dovemere_2018_lib.layouts import *
+from station.lib.utils import get_1cc_remap
+from agrf.graphics.palette import CompanyColour
 
 
 big_demo = Demo(
@@ -116,5 +118,8 @@ big_demo = Demo(
             corner.R,
         ],
     ],
+    remap=get_1cc_remap(CompanyColour.WHITE),
 )
-big_half_demo = Demo("8×6 half-station layout (roughly 1 grid = 25m)", big_demo.tiles[:6])
+big_half_demo = Demo(
+    "8×6 half-station layout (roughly 1 grid = 25m)", big_demo.tiles[:6], remap=get_1cc_remap(CompanyColour.WHITE)
+)

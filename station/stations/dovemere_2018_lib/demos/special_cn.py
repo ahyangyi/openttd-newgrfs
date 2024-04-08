@@ -1,5 +1,7 @@
 from station.lib import Demo
 from station.stations.dovemere_2018_lib.layouts import *
+from station.lib.utils import get_1cc_remap
+from agrf.graphics.palette import CompanyColour
 
 special_demo_cn = Demo(
     "Irregular 7×7 station layout",
@@ -12,4 +14,5 @@ special_demo_cn = Demo(
         [platform, platform, platform, side_a3, central_windowed, central_windowed.R, side_a2.R],
         [h_end, h_normal, h_normal, funnel, front_gate, front_gate.R, corner.R],
     ],
+    remap=get_1cc_remap(CompanyColour.MAUVE),
 )

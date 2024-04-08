@@ -1,5 +1,7 @@
 from station.lib import Demo
 from station.stations.dovemere_2018_lib.layouts import *
+from station.lib.utils import get_1cc_remap
+from agrf.graphics.palette import CompanyColour
 
 full_auto_demo = Demo(
     "Fully traversable automatic stations",
@@ -234,4 +236,5 @@ full_auto_demo = Demo(
             corner.R,
         ],
     ],
+    remap=get_1cc_remap(CompanyColour.BLUE),
 )
