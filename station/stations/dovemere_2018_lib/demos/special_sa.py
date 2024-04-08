@@ -6,13 +6,21 @@ from agrf.graphics.palette import CompanyColour
 special_demo_sa = Demo(
     "Irregular 7×7 station layout",
     [
-        [v_end.M, v_central.M, v_central.M, v_central.M, v_central.M, v_funnel.R.M, bicorner.TR],
-        [platform.M, platform.M, platform.M, platform.M, corner.R.M, double_corner_2, v_funnel.R],
-        [platform.M, platform.M, platform.M, corner.R.M, double_corner_2, corner.R, v_central],
-        [platform.M, platform.M, corner.R.M, double_corner_2, corner.R, platform, v_central],
-        [platform.M, corner.R.M, double_corner_2, corner.R, platform, platform, v_central],
-        [corner_gate.R.M, double_corner_2, corner.R, platform, platform, platform, v_central],
-        [front_gate_extender_corner, corner_gate.R, platform, platform, platform, platform, v_end],
+        [v_end.M, v_central_n.M, v_central_n.T.M, v_central_n.M, v_central_n.T.M, v_funnel.R.M, bicorner.TR],
+        [platform_s_nt.T.M, platform_s.M, platform_s.T.M, platform_s.M, corner.R.M, double_corner_2, v_funnel.R],
+        [platform_s_nt.T.M, platform_s.M, platform_s.T.M, corner.R.M, double_corner_2, corner.R, v_central_n.T],
+        [platform_s_nt.T.M, platform_s.M, corner.R.M, double_corner_2, corner.R, platform_s, v_central_n],
+        [platform_s_nt.T.M, corner.R.M, double_corner_2, corner.R, platform_s.T, platform_s.T, v_central_n.T],
+        [corner_gate.R.M, double_corner_2, corner.R, platform_s, platform_s, platform_s, v_central_n],
+        [
+            front_gate_extender_corner,
+            corner_gate.R,
+            platform_s_nt.T,
+            platform_s_nt.T,
+            platform_s_nt.T,
+            platform_s_nt.T,
+            v_end,
+        ],
     ],
     remap=get_1cc_remap(CompanyColour.PURPLE),
 )
