@@ -62,7 +62,7 @@ def quickload(name, type, traversable, platform, category):
         load_from="station/files/gorender.json",
         subset=type.render_indices(),
     )
-    shed_height = 14
+    shed_height = 10
     sprite = type.create_variants(v.spritesheet(zdiff=shed_height * 2 if platform else 0))
     sprites.extend(sprite.all_variants)
 
@@ -74,7 +74,7 @@ def quickload(name, type, traversable, platform, category):
         parent = AParentSprite(sprite, (16, 16, 48 - shed_height), (0, 0, shed_height))
     else:
         parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
-    plat = AParentSprite(platform_sprites[4], (16, 6, 6), (0, 10, 0))
+    plat = AParentSprite(platform_sprites[4], (16, 6, shed_height), (0, 10, 0))
     third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
 
     if platform:

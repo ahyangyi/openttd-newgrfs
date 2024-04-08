@@ -23,7 +23,7 @@ def quickload(name, type):
     )
     sprite = type.create_variants(v.spritesheet(xdiff=10))
     sprites.extend(sprite.all_variants)
-    ps = AParentSprite(sprite, (16, 6, 14 if "shed " in name else 6), (0, 10, 0))
+    ps = AParentSprite(sprite, (16, 6, 10 if "shed" in name else 6), (0, 10, 0))
     ret = []
     for l, make_symmetrical in [([ps], False), ([ps, ps.T], True)]:
         for traversable in [True, False]:
