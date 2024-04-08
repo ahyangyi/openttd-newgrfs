@@ -7,6 +7,7 @@ from station.lib import (
     BuildingSpriteSheetSymmetricalX,
     BuildingSpriteSheetSymmetricalY,
     BuildingSpriteSheetRotational,
+    BuildingSpriteSheetDiagonal,
     Demo,
     ADefaultGroundSprite,
     AGroundSprite,
@@ -96,7 +97,9 @@ def quickload(name, type, traversable, platform, category):
         for layout in l[len(l) // 2 :]:
             layout.category = "B" if category == "F" else category
         layouts.extend(l)
-        ret.append(cur_type.create_variants(l))
+        l = cur_type.create_variants(l)
+        entries.extend(cur_type.get_all_entries(l))
+        ret.append(l)
 
     if len(ret) == 1:
         return ret[0]
@@ -105,6 +108,7 @@ def quickload(name, type, traversable, platform, category):
 
 sprites = platform_sprites + ground_sprites
 layouts = []
+entries = []
 (
     corner,
     corner_platform,
@@ -199,9 +203,9 @@ layouts = []
         ("irregular/inner_corner", BuildingSpriteSheetFull, False, False, "T"),
         ("irregular/double_inner_corner", BuildingSpriteSheetSymmetricalY, False, False, "T"),
         ("irregular/v_funnel", BuildingSpriteSheetFull, False, False, "T"),
-        ("junction/front_corner", BuildingSpriteSheetFull, False, False, "X"),
-        ("junction/front_gate_extender_corner", BuildingSpriteSheetFull, False, False, "X"),
-        ("junction/double_corner_2", BuildingSpriteSheetFull, False, False, "X"),
-        ("junction/bicorner", BuildingSpriteSheetFull, False, False, "X"),
+        ("junction/front_corner", BuildingSpriteSheetDiagonal, False, False, "X"),
+        ("junction/front_gate_extender_corner", BuildingSpriteSheetDiagonal, False, False, "X"),
+        ("junction/double_corner_2", BuildingSpriteSheetDiagonal, False, False, "X"),
+        ("junction/bicorner", BuildingSpriteSheetDiagonal, False, False, "X"),
     ]
 ]
