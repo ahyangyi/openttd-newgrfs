@@ -1,3 +1,4 @@
+import os
 import grf
 from station.lib import (
     AStation,
@@ -29,17 +30,22 @@ from station.stations.misc import rail
 
 def quickload(name, type, traversable, platform, category):
     v = LazyVoxel(
-        name,
-        prefix="station/voxels/render/dovemere_2018",
+        os.path.basename(name),
+        prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(name)),
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/{name}.vox": path,
         load_from="station/files/gorender.json",
         subset=type.render_indices(),
     )
+    f1v = v.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
+    f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
     if not traversable and platform:
-        f1 = v.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
-        f2 = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
-        f1 = type.create_variants(f1.spritesheet(xdiff=6))
-        f2 = type.create_variants(f2.spritesheet(zdiff=32))
+        f1 = type.create_variants(f1v.spritesheet(xdiff=6))
+        f2 = type.create_variants(f2v.spritesheet(zdiff=32))
+        sprites.extend(f1.all_variants)
+        sprites.extend(f2.all_variants)
+    elif not traversable:
+        f1 = type.create_variants(f1v.spritesheet())
+        f2 = type.create_variants(f2v.spritesheet(zdiff=32))
         sprites.extend(f1.all_variants)
         sprites.extend(f2.all_variants)
     else:
@@ -53,6 +59,9 @@ def quickload(name, type, traversable, platform, category):
     if not traversable and platform:
         parents = [AParentSprite(f1, (16, 10, 48), (0, 6, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, 16))]
         plat = AParentSprite(platform_sprites[4], (16, 6, 6), (0, 10, 0))
+    elif not traversable:
+        parents = [AParentSprite(f1, (16, 16, 48), (0, 0, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, 16))]
+        plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
     else:
         parents = [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))]
         plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
