@@ -1,3 +1,4 @@
+import os
 import grf
 from station.lib import (
     AStation,
@@ -7,6 +8,7 @@ from station.lib import (
     BuildingSpriteSheetSymmetricalX,
     BuildingSpriteSheetSymmetricalY,
     BuildingSpriteSheetRotational,
+    BuildingSpriteSheetDiagonal,
     Demo,
     ADefaultGroundSprite,
     AGroundSprite,
@@ -28,17 +30,22 @@ from station.stations.misc import rail
 
 def quickload(name, type, traversable, platform, category):
     v = LazyVoxel(
-        name,
-        prefix="station/voxels/render/dovemere_2018",
+        os.path.basename(name),
+        prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(name)),
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/{name}.vox": path,
         load_from="station/files/gorender.json",
         subset=type.render_indices(),
     )
+    f1v = v.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
+    f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
     if not traversable and platform:
-        f1 = v.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
-        f2 = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
-        f1 = type.create_variants(f1.spritesheet(xdiff=6))
-        f2 = type.create_variants(f2.spritesheet(zdiff=32))
+        f1 = type.create_variants(f1v.spritesheet(xdiff=6))
+        f2 = type.create_variants(f2v.spritesheet(zdiff=32))
+        sprites.extend(f1.all_variants)
+        sprites.extend(f2.all_variants)
+    elif not traversable:
+        f1 = type.create_variants(f1v.spritesheet())
+        f2 = type.create_variants(f2v.spritesheet(zdiff=32))
         sprites.extend(f1.all_variants)
         sprites.extend(f2.all_variants)
     else:
@@ -52,6 +59,9 @@ def quickload(name, type, traversable, platform, category):
     if not traversable and platform:
         parents = [AParentSprite(f1, (16, 10, 48), (0, 6, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, 16))]
         plat = AParentSprite(platform_sprites[4], (16, 6, 6), (0, 10, 0))
+    elif not traversable:
+        parents = [AParentSprite(f1, (16, 16, 48), (0, 0, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, 16))]
+        plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
     else:
         parents = [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))]
         plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
@@ -96,7 +106,9 @@ def quickload(name, type, traversable, platform, category):
         for layout in l[len(l) // 2 :]:
             layout.category = "B" if category == "F" else category
         layouts.extend(l)
-        ret.append(cur_type.create_variants(l))
+        l = cur_type.create_variants(l)
+        entries.extend(cur_type.get_all_entries(l))
+        ret.append(l)
 
     if len(ret) == 1:
         return ret[0]
@@ -105,6 +117,7 @@ def quickload(name, type, traversable, platform, category):
 
 sprites = platform_sprites + ground_sprites
 layouts = []
+entries = []
 (
     corner,
     corner_platform,
@@ -199,9 +212,9 @@ layouts = []
         ("irregular/inner_corner", BuildingSpriteSheetFull, False, False, "T"),
         ("irregular/double_inner_corner", BuildingSpriteSheetSymmetricalY, False, False, "T"),
         ("irregular/v_funnel", BuildingSpriteSheetFull, False, False, "T"),
-        ("junction/front_corner", BuildingSpriteSheetFull, False, False, "X"),
-        ("junction/front_gate_extender_corner", BuildingSpriteSheetFull, False, False, "X"),
-        ("junction/double_corner_2", BuildingSpriteSheetFull, False, False, "X"),
-        ("junction/bicorner", BuildingSpriteSheetFull, False, False, "X"),
+        ("junction/front_corner", BuildingSpriteSheetDiagonal, False, False, "X"),
+        ("junction/front_gate_extender_corner", BuildingSpriteSheetDiagonal, False, False, "X"),
+        ("junction/double_corner_2", BuildingSpriteSheetDiagonal, False, False, "X"),
+        ("junction/bicorner", BuildingSpriteSheetDiagonal, False, False, "X"),
     ]
 ]

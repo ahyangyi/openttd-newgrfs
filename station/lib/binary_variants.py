@@ -4,20 +4,28 @@ class BinaryVariantMixin:
         for i, v in enumerate(variants):
             cls = v.__class__
             v.__class__ = type(cls.__name__, (classobj, cls), {})
-            v.M = variants[i ^ classobj._m_offset]
+            if classobj._m_offset == 0:
+                v.M = variants[i ^ 3 if i in [1, 2] else i]
+            else:
+                v.M = variants[i ^ classobj._m_offset]
             v.R = variants[i ^ classobj._r_offset]
             v.T = variants[i ^ classobj._t_offset]
         return variants[0]
 
     @classmethod
     def get_all_variants(cls, thing):
+        ret = cls.get_all_entries(thing)
+        if cls._m_offset > 0:
+            ret = [y for x in ret for y in [x, x.M]]
+        return ret
+
+    @classmethod
+    def get_all_entries(cls, thing):
         ret = [thing]
         if cls._r_offset > 0:
             ret = ret + [x.R for x in ret]
         if cls._t_offset > cls._r_offset:
             ret = ret + [x.T for x in ret]
-        if cls._m_offset > 0:
-            ret = [y for x in ret for y in [x, x.M]]
         return ret
 
     @property
@@ -95,4 +103,17 @@ class BuildingSpriteSheetRotational(BinaryVariantMixin):
 
     _m_offset = 1
     _r_offset = 2
+    _t_offset = 2
+
+
+class BuildingSpriteSheetDiagonal(BinaryVariantMixin):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    @staticmethod
+    def render_indices():
+        return [0, 2, 4, 6]
+
+    _m_offset = 0
+    _r_offset = 1
     _t_offset = 2
