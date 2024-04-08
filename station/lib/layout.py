@@ -144,7 +144,10 @@ class ALayout:
     def graphics(self, remap, scale, bpp, context=None):
         context = context or grf.DummyWriteContext()
         img = self.ground_sprite.graphics(scale, bpp).copy()
-        for sprite in self.sprites:
+        for sprite in sorted(
+            self.sprites,
+            key=lambda x: (x.offset[0] + x.offset[1] + x.extent[0] + x.extent[1], x.offset[2] + x.extent[2]),
+        ):
             masked_sprite = LayeredImage.from_sprite(
                 sprite.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
             ).copy()
@@ -170,13 +173,13 @@ class ALayout:
         call = lambda x: getattr(x, name)
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = [call(sprite) for sprite in self.sprites]
-        return ALayout(new_ground_sprite, new_sprites, self.traversable)
+        return ALayout(new_ground_sprite, new_sprites, self.traversable, self.category, self.notes)
 
     def __call__(self, *args, **kwargs):
         call = lambda x: x(*args, **kwargs)
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = call(self.sprites)
-        return ALayout(new_ground_sprite, new_sprites, self.traversable)
+        return ALayout(new_ground_sprite, new_sprites, self.traversable, self.category, self.notes)
 
 
 class LayoutSprite(grf.Sprite):
@@ -195,7 +198,7 @@ class LayoutSprite(grf.Sprite):
 
     def get_data_layers(self, context):
         timer = context.start_timer()
-        ret = self.layout.graphics(None, self.scale, self.bpp)
+        ret = self.layout.graphics(self.scale, self.bpp)
         ret.resize(self.w, self.h)
         timer.count_composing()
 
