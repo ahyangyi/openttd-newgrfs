@@ -198,7 +198,7 @@ class LayoutSprite(grf.Sprite):
 
     def get_data_layers(self, context):
         timer = context.start_timer()
-        ret = self.layout.graphics(None, self.scale, self.bpp)
+        ret = self.layout.graphics(self.scale, self.bpp)
         ret.resize(self.w, self.h)
         timer.count_composing()
 

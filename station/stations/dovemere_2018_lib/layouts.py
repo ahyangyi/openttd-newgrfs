@@ -69,11 +69,7 @@ def quickload(name, type, traversable, platform, category):
     ret = []
     for l in candidates:
         if "y" in l.notes:
-            cur_type = {
-                BuildingSpriteSheetSymmetricalY: BuildingSpriteSheetFull,
-                BuildingSpriteSheetSymmetrical: BuildingSpriteSheetSymmetricalX,
-                BuildingSpriteSheetRotational: BuildingSpriteSheetFull,
-            }.get(type, type)
+            cur_type = type.break_y_symmetry()
         else:
             cur_type = type
         l = cur_type.get_all_variants(l)
