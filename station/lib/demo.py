@@ -2,11 +2,13 @@ from agrf.graphics import LayeredImage
 
 
 class Demo:
-    def __init__(self, title, tiles):
+    def __init__(self, title, tiles, remap=None):
         self.title = title
         self.tiles = tiles
+        self.remap = remap
 
-    def graphics(self, remap, scale, bpp):
+    def graphics(self, scale, bpp, remap=None):
+        remap = remap or self.remap
         yofs = 32 * scale
         img = LayeredImage.canvas(
             -16 * scale * (len(self.tiles) + len(self.tiles[0])),

@@ -9,22 +9,36 @@ STR_STATION_PLATFORM_UNTRAVERSABLE  :Platform (No Rail)
 STR_STATION_FLEXIBLE                :Flexible Station Building
 STR_STATION_FLEXIBLE_UNTRAVERSABLE  :Flexible Station Building (No Rail at Ends)
 
-STR_STATION_CLASS_E88A9CA       :AWSS: Wuhu (2021) - Flexible
-STR_STATION_CLASS_E88A9CF       :AWSS: Wuhu (2021) - Modular, Front
-STR_STATION_CLASS_E88A9CB       :AWSS: Wuhu (2021) - Modular, Back
-STR_STATION_CLASS_E88A9CC       :AWSS: Wuhu (2021) - Modular, Centre
-STR_STATION_CLASS_E88A9CI       :AWSS: Wuhu (2021) - Modular, Side A
-STR_STATION_CLASS_E88A9CJ       :AWSS: Wuhu (2021) - Modular, Side B
-STR_STATION_CLASS_E88A9CK       :AWSS: Wuhu (2021) - Modular, Side C
-STR_STATION_CLASS_E88A9CL       :AWSS: Wuhu (2021) - Modular, Side D
-STR_STATION_CLASS_E88A9CH       :AWSS: Wuhu (2021) - Modular, Narrow
-STR_STATION_CLASS_E88A9CT       :AWSS: Wuhu (2021) - Modular, Irregular
-STR_STATION_CLASS_E88A9CX       :AWSS: Wuhu (2021) - Modular, Junction
+STR_STATION_CLASS_E88A9CA       :AWSS: Wuhu - Flexible
+STR_STATION_CLASS_E88A9C80      :AWSS: Wuhu - Modular, Front
+STR_STATION_CLASS_E88A9C81      :AWSS: Wuhu - Modular, Front Corner
+STR_STATION_CLASS_E88A9C88      :AWSS: Wuhu - Modular, Back
+STR_STATION_CLASS_E88A9C89      :AWSS: Wuhu - Modular, Back Corner
+STR_STATION_CLASS_E88A9CF0      :AWSS: Wuhu - Modular, Centre
+STR_STATION_CLASS_E88A9C90      :AWSS: Wuhu - Modular, Side A, No Platform
+STR_STATION_CLASS_E88A9C91      :AWSS: Wuhu - Modular, Side A, Near Platform
+STR_STATION_CLASS_E88A9C92      :AWSS: Wuhu - Modular, Side A, Far Platform
+STR_STATION_CLASS_E88A9C93      :AWSS: Wuhu - Modular, Side A, Platforms
+STR_STATION_CLASS_E88A9CA0      :AWSS: Wuhu - Modular, Side B, No Platform
+STR_STATION_CLASS_E88A9CA1      :AWSS: Wuhu - Modular, Side B, Near Platform
+STR_STATION_CLASS_E88A9CA2      :AWSS: Wuhu - Modular, Side B, Far Platform
+STR_STATION_CLASS_E88A9CA3      :AWSS: Wuhu - Modular, Side B, Platforms
+STR_STATION_CLASS_E88A9CB0      :AWSS: Wuhu - Modular, Side C, No Platform
+STR_STATION_CLASS_E88A9CB1      :AWSS: Wuhu - Modular, Side C, Near Platform
+STR_STATION_CLASS_E88A9CB2      :AWSS: Wuhu - Modular, Side C, Far Platform
+STR_STATION_CLASS_E88A9CB3      :AWSS: Wuhu - Modular, Side C, Platforms
+STR_STATION_CLASS_E88A9CC0      :AWSS: Wuhu - Modular, Side D, No Platform
+STR_STATION_CLASS_E88A9CC1      :AWSS: Wuhu - Modular, Side D, Near Platform
+STR_STATION_CLASS_E88A9CC2      :AWSS: Wuhu - Modular, Side D, Far Platform
+STR_STATION_CLASS_E88A9CC3      :AWSS: Wuhu - Modular, Side D, Platforms
+STR_STATION_CLASS_E88A9CD0      :AWSS: Wuhu - Modular, Narrow
+STR_STATION_CLASS_E88A9CF1      :AWSS: Wuhu - Modular, Irregular
+STR_STATION_CLASS_E88A9CF2      :AWSS: Wuhu - Modular, Junction
 
 STR_STATION_CLASS_E88A9Ca       :AWSS: Wuhu (1992) - Modular
 
 STR_STATION_CLASS_PLAT          :AWSS: Platforms
 
-STR_METASTATION_CLASS_E88A9CA   :Wuhu (2021)
-STR_METASTATION_CLASS_E88A9Ca   :Wuhu (1992)
+STR_METASTATION_CLASS_E88A9CA   :Wuhu Station (2021)
+STR_METASTATION_CLASS_E88A9Ca   :Wuhu Station (1992)
 STR_METASTATION_CLASS_PLAT      :Platforms

@@ -1,5 +1,7 @@
 from station.lib import Demo
 from station.stations.dovemere_2018_lib.layouts import *
+from station.lib.utils import get_1cc_remap
+from agrf.graphics.palette import CompanyColour
 
 
 def make_line(x, a, b, c, d):
@@ -26,4 +28,6 @@ near_lines = [
 
 far_lines = [[el.T for el in line] for line in near_lines[::-1]]
 
-real_yard_demo = Demo("14×22 rail yard (roughly 1 grid = 12.5m)", far_lines + near_lines)
+real_yard_demo = Demo(
+    "14×22 rail yard (roughly 1 grid = 12.5m)", far_lines + near_lines, remap=get_1cc_remap(CompanyColour.WHITE)
+)
