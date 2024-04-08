@@ -1,3 +1,4 @@
+import os
 import grf
 from station.lib import (
     AStation,
@@ -55,8 +56,8 @@ def get_category(internal_category, back, notes):
 
 def quickload(name, type, traversable, platform, category):
     v = LazyVoxel(
-        name,
-        prefix="station/voxels/render/dovemere_2018",
+        os.path.basename(name),
+        prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(name)),
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/{name}.vox": path,
         load_from="station/files/gorender.json",
         subset=type.render_indices(),
