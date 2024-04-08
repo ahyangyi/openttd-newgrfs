@@ -50,7 +50,7 @@ def get_category(internal_category, back, notes):
         ret = 0xF2
     else:
         raise KeyError(f"Unsupported internal category {internal_category}")
-    return b"\xe8\x8a\x9c" + ret.to_bytes()
+    return b"\xe8\x8a\x9c" + ret.to_bytes(1)
 
 
 def quickload(name, type, traversable, platform, category):

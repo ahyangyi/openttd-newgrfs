@@ -33,7 +33,7 @@ nav_order: {i+1}
                 if sub is not None:
                     cat_name = get_translation(string_manager[f"STR_STATION_CLASS_{class_label_printable(sub)}"], 0x7F)
                     if "-" in cat_name:
-                        cat_name = split("-")[-1].strip()
+                        cat_name = cat_name.split("-")[-1].strip()
                     print(f"## {cat_name}", file=f)
                 for i, layout in enumerate(metastation.doc_layouts):
                     if sub is not None and layout.category != sub:
