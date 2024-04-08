@@ -28,4 +28,6 @@ class Demo:
 
     @property
     def M(self):
-        return Demo(self.title, [[tile.M for tile in row[::-1]] for row in list(zip(*self.tiles))[::-1]])
+        return Demo(
+            self.title, [[tile and tile.M for tile in row[::-1]] for row in list(zip(*self.tiles))[::-1]], self.remap
+        )
