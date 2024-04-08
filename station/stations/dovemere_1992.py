@@ -29,7 +29,9 @@ def quickload(name, type, traversable):
     for l in candidates:
         l = type.get_all_variants(l)
         layouts.extend(l)
-        ret.append(type.create_variants(l))
+        l = type.create_variants(l)
+        ret.append(l)
+        entries.extend(type.get_all_entries(l))
 
     if len(ret) == 1:
         return ret[0]
@@ -38,6 +40,7 @@ def quickload(name, type, traversable):
 
 sprites = []
 layouts = []
+entries = []
 (main,) = [
     quickload(name, type, traversable) for name, type, traversable in [("main", BuildingSpriteSheetSymmetricalX, False)]
 ]
