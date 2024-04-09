@@ -7,7 +7,7 @@ semi_auto_demo = Demo(
     "Semitraversable automatic stations",
     [
         [
-            v_end_gate.T,
+            v_end_gate_platform.T,
             platform_s_nt,
             corner_gate_platform.T,
             corner_gate_platform.TR,
@@ -37,7 +37,7 @@ semi_auto_demo = Demo(
             side_a2.R,
         ],
         [
-            v_end_gate,
+            v_end_gate_platform,
             platform_s_nt.T,
             corner_gate_platform,
             corner_gate_platform.R,
@@ -53,7 +53,7 @@ semi_auto_demo = Demo(
         ],
         [gray_layout] * 13,
         [
-            v_end_gate.T,
+            v_end_gate_platform.T,
             platform_s_nt,
             corner_gate_platform.T,
             corner_gate_platform.TR,
@@ -98,7 +98,7 @@ semi_auto_demo = Demo(
             side_a3_n.R,
         ],
         [
-            v_end_gate,
+            v_end_gate_platform,
             platform_s_nt.T,
             corner_gate_platform,
             corner_gate_platform.R,
@@ -190,7 +190,7 @@ semi_auto_demo = Demo(
         ],
         [gray_layout] * 13,
         [
-            v_end_gate.T,
+            v_end_gate_platform.T,
             platform_s_nt,
             corner_gate_platform.T,
             corner_gate_platform.TR,
@@ -265,7 +265,7 @@ semi_auto_demo = Demo(
             side_a_n.R,
         ],
         [
-            v_end_gate,
+            v_end_gate_platform,
             platform_s_nt.T,
             corner_gate_platform,
             corner_gate_platform.R,
