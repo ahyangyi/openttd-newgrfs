@@ -38,11 +38,7 @@ nav_order: {i+1}
                 for i, layout in enumerate(metastation.doc_layouts):
                     if sub is not None and layout.category != sub:
                         continue
-                    # FIXME
-                    from station.lib import Demo
-
-                    demo = Demo("", [[layout]])
-                    img = demo.graphics(4, 32, remap=get_1cc_remap(CompanyColour.BLUE)).crop().to_pil_image()
+                    img = layout.graphics(4, 32, remap=get_1cc_remap(CompanyColour.BLUE)).crop().to_pil_image()
                     img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{i}.png"))
                     print(f'![](img/{metastation_label}/tiles/{i}.png){{: width="64"}}', file=f)
             print("# Sample Layouts", file=f)
