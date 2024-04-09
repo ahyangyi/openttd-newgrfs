@@ -45,11 +45,6 @@ class AStation(grf.SpriteGenerator):
                 },
             )
         )
-        if self.sprites:
-            res.append(grf.Action1(feature=grf.STATION, set_count=1, sprite_count=len(self.sprites)))
-
-            for s in self.sprites:
-                res.append(s)
 
         res.extend(self.callbacks.make_map_action(definition))
 
