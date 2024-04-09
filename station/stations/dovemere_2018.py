@@ -16,7 +16,6 @@ for demo in [normal_demo, normal_demo.M]:
             ]
         )
     )
-sprites.extend(demo_sprites)
 demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))], False)
 demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))], False)
 layouts.append(demo_layout1)
@@ -139,8 +138,7 @@ cb14 = Switch(
 the_station = AStation(
     id=0x00,
     translation_name="FLEXIBLE_UNTRAVERSABLE",
-    sprites=sprites,
-    layouts=[layout.to_grf(sprites) for layout in layouts],
+    layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
     non_traversable_tiles=0b00111100,
@@ -168,8 +166,7 @@ the_stations = AMetaStation(
         AStation(
             id=0x10 + i,
             translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
-            sprites=sprites,  # FIXME
-            layouts=[entry.to_grf(sprites), entry.M.to_grf(sprites)],
+            layouts=[entry, entry.M],
             class_label=entry.category,
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,

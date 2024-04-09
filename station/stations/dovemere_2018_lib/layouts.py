@@ -63,7 +63,6 @@ def quickload(name, type, traversable, platform, category):
         subset=type.render_indices(),
     )
     sprite = type.create_variants(v.spritesheet())
-    sprites.extend(sprite.all_variants)
 
     if traversable:
         ground = ADefaultGroundSprite(1012)
@@ -112,7 +111,6 @@ def quickload(name, type, traversable, platform, category):
     return ret
 
 
-sprites = platform_sprites + ground_sprites
 layouts = []
 entries = []
 (
