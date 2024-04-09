@@ -27,10 +27,15 @@ class AStation(grf.SpriteGenerator):
             ).get_persistent_id(),
         }
 
-        if self.sprites:
-            self.callbacks.graphics = grf.GenericSpriteLayout(ent1=[0], ent2=[0], feature=grf.STATION)
-
+        self.callbacks.graphics = grf.GenericSpriteLayout(ent1=[0], ent2=[0], feature=grf.STATION)
         self.callbacks.set_flag_props(self._props)
+
+        if sprites is None:
+            sprites = self.sprites
+            res.append(grf.Action1(feature=grf.STATION, set_count=1, sprite_count=len(self.sprites)))
+
+            for s in self.sprites:
+                res.append(s)
 
         res.append(
             definition := grf.Define(
@@ -38,18 +43,13 @@ class AStation(grf.SpriteGenerator):
                 id=self.id,
                 props={
                     "class_label": self._props["class_label"],
-                    "advanced_layout": grf.SpriteLayoutList(self.layouts),
+                    "advanced_layout": grf.SpriteLayoutList([l.to_grf(sprites) for l in self.layouts]),
                     **self._props,
                     **extra_props,
                 },
             )
         )
 
-        if sprites is None:
-            res.append(grf.Action1(feature=grf.STATION, set_count=1, sprite_count=len(self.sprites)))
-
-            for s in self.sprites:
-                res.append(s)
         res.extend(self.callbacks.make_map_action(definition))
 
         return res
