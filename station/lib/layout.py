@@ -141,7 +141,7 @@ class ALayout:
             [self.ground_sprite.to_grf(sprite_list)] + [sprite.to_grf(sprite_list) for sprite in self.sprites]
         )
 
-    def graphics(self, remap, scale, bpp, context=None):
+    def graphics(self, scale, bpp, remap=None, context=None):
         context = context or grf.DummyWriteContext()
         img = self.ground_sprite.graphics(scale, bpp).copy()
         for sprite in sorted(
