@@ -20,3 +20,7 @@ class AMetaStation:
             g.add(s)
         for station in self.stations:
             g.add(station)
+
+    @property
+    def sprites(self):
+        return [*dict.fromkeys([sub for s in self.stations for l in s.layouts for sub in l.sprites])]

@@ -47,6 +47,10 @@ class ADefaultGroundSprite:
 
     default_rail = [Image.open("third_party/opengfx2/1012.png"), Image.open("third_party/opengfx2/1011.png")]
 
+    @property
+    def sprites(self):
+        return []
+
 
 class AGroundSprite:
     def __init__(self, sprite):
@@ -76,6 +80,10 @@ class AGroundSprite:
 
     def __call__(self, *args, **kwargs):
         return AGroundSprite(self.sprite(*args, **kwargs))
+
+    @property
+    def sprites(self):
+        return [self.sprite]
 
 
 class AParentSprite:
@@ -126,6 +134,10 @@ class AParentSprite:
     @property
     def TR(self):
         return self.T.R
+
+    @property
+    def sprites(self):
+        return [self.sprite]
 
 
 class ALayout:
@@ -180,6 +192,10 @@ class ALayout:
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = call(self.sprites)
         return ALayout(new_ground_sprite, new_sprites, self.traversable, self.category, self.notes)
+
+    @property
+    def sprites(self):
+        return [*dict.fromkeys([self.ground_sprite.sprites] + [sub for s in self.sprites for sub in s.sprites])]
 
 
 class LayoutSprite(grf.Sprite):
