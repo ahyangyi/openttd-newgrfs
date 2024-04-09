@@ -69,7 +69,6 @@ class LoadType:
 
     def get_sprites(self, voxel):
         sprite = self.symmetry.create_variants(voxel.spritesheet())
-        sprites.extend(sprite.all_variants)
         return [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))]
 
     def make_platform_variants(self, ground, parents):
@@ -117,7 +116,6 @@ class Traversable(LoadType):
 class TraversablePlatform(Traversable):
     def get_sprites(self, voxel):
         sprite = self.symmetry.create_variants(voxel.spritesheet(zdiff=platform_height * 2))
-        sprites.extend(sprite.all_variants)
         return [AParentSprite(sprite, (16, 16, 48 - platform_height), (0, 0, platform_height))]
 
     def make_platform_variants(self, ground, parents):
@@ -151,8 +149,6 @@ class SideFull(Side):
         f2v = voxel.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
         f1 = self.symmetry.create_variants(f1v.spritesheet())
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
-        sprites.extend(f1.all_variants)
-        sprites.extend(f2.all_variants)
         return [AParentSprite(f1, (16, 16, 48), (0, 0, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
 
 
@@ -162,8 +158,6 @@ class SidePlatform(Side):
         f2v = voxel.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
         f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=6))
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
-        sprites.extend(f1.all_variants)
-        sprites.extend(f2.all_variants)
         return [AParentSprite(f1, (16, 10, 48), (0, 6, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
 
     def make_platform_variants(self, ground, parents):
@@ -176,8 +170,6 @@ class SideThird(Traversable):
         f2v = voxel.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
         f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=10))
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
-        sprites.extend(f1.all_variants)
-        sprites.extend(f2.all_variants)
         return [AParentSprite(f1, (16, 6, 48), (0, 10, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
 
     def make_platform_variants(self, ground, parents):
@@ -197,7 +189,6 @@ def quickload(name, type, traversable, platform, category):
     return worker.load()
 
 
-sprites = platform_sprites + ground_sprites
 layouts = []
 entries = []
 (
