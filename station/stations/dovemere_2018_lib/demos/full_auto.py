@@ -23,7 +23,7 @@ full_auto_demo = Demo(
         ],
         [gray_layout] * 13,
         [
-            v_end_gate.T,
+            v_end_gate_platform.T,
             platform,
             corner_gate_2.T,
             corner_gate_2.TR,
@@ -38,7 +38,7 @@ full_auto_demo = Demo(
             corner_2.TR,
         ],
         [
-            v_end_gate,
+            v_end_gate_platform,
             platform,
             corner_gate_2,
             corner_gate_2.R,
@@ -54,7 +54,7 @@ full_auto_demo = Demo(
         ],
         [gray_layout] * 13,
         [
-            v_end_gate.T,
+            v_end_gate_platform.T,
             platform_s,
             corner_gate_third_f.T,
             corner_gate_third_f.TR,
@@ -84,7 +84,7 @@ full_auto_demo = Demo(
             side_a2.R,
         ],
         [
-            v_end_gate,
+            v_end_gate_platform,
             platform_s.T,
             corner_gate_third_f,
             corner_gate_third_f.R,
@@ -161,7 +161,7 @@ full_auto_demo = Demo(
         ],
         [gray_layout] * 13,
         [
-            v_end_gate.T,
+            v_end_gate_platform.T,
             platform_s,
             corner_gate_third_f.T,
             corner_gate_third_f.TR,
@@ -221,7 +221,7 @@ full_auto_demo = Demo(
             side_a.R,
         ],
         [
-            v_end_gate,
+            v_end_gate_platform,
             platform_s.T,
             corner_gate_third_f,
             corner_gate_third_f.R,

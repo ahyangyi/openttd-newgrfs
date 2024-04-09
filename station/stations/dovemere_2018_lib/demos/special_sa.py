@@ -6,7 +6,7 @@ from agrf.graphics.palette import CompanyColour
 special_demo_sa = Demo(
     "Irregular 7×7 station layout",
     [
-        [v_end.M, v_central_n.M, v_central_n.T.M, v_central_n.M, v_central_n.T.M, v_funnel.R.M, bicorner.TR],
+        [v_end_platform.M, v_central_n.M, v_central_n.T.M, v_central_n.M, v_central_n.T.M, v_funnel.R.M, bicorner.TR],
         [platform_s_nt.T.M, platform_s.M, platform_s.T.M, platform_s.M, corner.R.M, double_corner_2, v_funnel.R],
         [platform_s_nt.T.M, platform_s.M, platform_s.T.M, corner.R.M, double_corner_2, corner.R, v_central_n.T],
         [platform_s_nt.T.M, platform_s.M, corner.R.M, double_corner_2, corner.R, platform_s, v_central_n],
@@ -19,7 +19,7 @@ special_demo_sa = Demo(
             platform_s_nt.T,
             platform_s_nt.T,
             platform_s_nt.T,
-            v_end,
+            v_end_platform,
         ],
     ],
     remap=get_1cc_remap(CompanyColour.PURPLE),

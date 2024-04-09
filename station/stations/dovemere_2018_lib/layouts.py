@@ -161,7 +161,7 @@ class SidePlatform(Side):
         return [AParentSprite(f1, (16, 10, 48), (0, 6, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
 
     def make_platform_variants(self, ground, parents):
-        return [ALayout(ground, parents + [plat_nt], True)]
+        return [ALayout(ground, parents + [plat_nt.T], True)]
 
 
 class SideThird(Traversable):
@@ -226,7 +226,9 @@ entries = []
     h_windowed,
     h_windowed_extender,
     v_end,
+    v_end_platform,
     v_end_gate,
+    v_end_gate_platform,
     (v_central_x, v_central_n, v_central),
     tiny,
     turn,
@@ -279,7 +281,9 @@ entries = []
         ("h_windowed", BuildingSpriteSheetSymmetricalY, True, False, "H"),
         ("h_windowed_extender", BuildingSpriteSheetSymmetrical, True, False, "H"),
         ("v_end", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
+        ("v_end_platform", BuildingSpriteSheetSymmetricalX, False, True, "F0"),
         ("v_end_gate", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
+        ("v_end_gate_platform", BuildingSpriteSheetSymmetricalX, False, True, "F0"),
         ("v_central", BuildingSpriteSheetSymmetrical, True, True, "N"),
         ("tiny", BuildingSpriteSheetSymmetrical, True, False, "H"),
         ("irregular/turn", BuildingSpriteSheetFull, False, False, "T"),
