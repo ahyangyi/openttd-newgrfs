@@ -54,85 +54,147 @@ def get_category(internal_category, back, notes):
     return b"\xe8\x8a\x9c" + ret.to_bytes(1, "little")
 
 
-def quickload(name, type, traversable, platform, category):
-    v = LazyVoxel(
-        os.path.basename(name),
-        prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(name)),
-        voxel_getter=lambda path=f"station/voxels/dovemere_2018/{name}.vox": path,
-        load_from="station/files/gorender.json",
-        subset=type.render_indices(),
-    )
-    f1v = v.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
-    f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
-    if not traversable and platform:
-        f1 = type.create_variants(f1v.spritesheet(xdiff=6))
-        f2 = type.create_variants(f2v.spritesheet(zdiff=32))
-        sprites.extend(f1.all_variants)
-        sprites.extend(f2.all_variants)
-    elif not traversable:
-        f1 = type.create_variants(f1v.spritesheet())
-        f2 = type.create_variants(f2v.spritesheet(zdiff=32))
-        sprites.extend(f1.all_variants)
-        sprites.extend(f2.all_variants)
-    else:
-        sprite = type.create_variants(v.spritesheet())
+platform_height = 6
+base_height = 16
+plat = AParentSprite(platform_sprites[0], (16, 6, platform_height), (0, 10, 0))
+plat_nt = AParentSprite(platform_sprites[4], (16, 6, platform_height), (0, 10, 0))
+third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
+
+
+class LoadType:
+    def __init__(self, name, symmetry, internal_category):
+        self.name = name
+        self.symmetry = symmetry
+        self.internal_category = internal_category
+
+    def get_sprites(self, voxel):
+        sprite = self.symmetry.create_variants(voxel.spritesheet())
         sprites.extend(sprite.all_variants)
+        return [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))]
 
-    if traversable:
-        ground = ADefaultGroundSprite(1012)
-    else:
-        ground = AGroundSprite(gray)
-    if not traversable and platform:
-        parents = [AParentSprite(f1, (16, 10, 48), (0, 6, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, 16))]
-        plat = AParentSprite(platform_sprites[4], (16, 6, 6), (0, 10, 0))
-    elif not traversable:
-        parents = [AParentSprite(f1, (16, 16, 48), (0, 0, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, 16))]
-        plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
-    else:
-        parents = [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))]
-        plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
-    third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
+    def make_platform_variants(self, ground, parents):
+        return [ALayout(ground, parents, True)]
 
-    if traversable:
-        if platform:
-            if type.is_symmetrical_y():
-                candidates = [
-                    ALayout(ground, parents, True),
-                    ALayout(ground, parents + [plat], True, notes=["y", "near"]),
-                    ALayout(ground, parents + [plat, plat.T], True, notes=["both"]),
-                ]
+    def load(self):
+        v = LazyVoxel(
+            os.path.basename(self.name),
+            prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(self.name)),
+            voxel_getter=lambda path=f"station/voxels/dovemere_2018/{self.name}.vox": path,
+            load_from="station/files/gorender.json",
+            subset=self.symmetry.render_indices(),
+        )
+        ground, fake_ground_sprites = self.get_ground_sprites()
+        sprites = self.get_sprites(v)
+
+        candidates = self.make_platform_variants(ground, fake_ground_sprites + sprites)
+        ret = []
+        for l in candidates:
+            if "y" in l.notes:
+                cur_sym = self.symmetry.break_y_symmetry()
             else:
-                candidates = [
-                    ALayout(ground, parents, True),
-                    ALayout(ground, parents + [plat], True, notes=["near"]),
-                    ALayout(ground, parents + [plat.T], True, notes=["far"]),
-                    ALayout(ground, parents + [plat, plat.T], True, notes=["both"]),
-                ]
-        else:
-            candidates = [ALayout(ground, parents + [third, third.T], True)]
-    else:
-        if platform:
-            candidates = [ALayout(ground, parents + [plat.T], False)]
-        else:
-            candidates = [ALayout(ground, parents, False)]
+                cur_sym = self.symmetry
+            l = cur_sym.get_all_variants(l)
+            for i, layout in enumerate(l):
+                layout.category = get_category(self.internal_category, i >= len(l) // 2, layout.notes)
+            layouts.extend(l)
+            l = cur_sym.create_variants(l)
+            entries.extend(cur_sym.get_all_entries(l))
+            ret.append(l)
 
-    ret = []
-    for l in candidates:
-        if "y" in l.notes:
-            cur_type = type.break_y_symmetry()
-        else:
-            cur_type = type
-        l = cur_type.get_all_variants(l)
-        for i, layout in enumerate(l):
-            layout.category = get_category(category, i >= len(l) // 2, layout.notes)
-        layouts.extend(l)
-        l = cur_type.create_variants(l)
-        entries.extend(cur_type.get_all_entries(l))
-        ret.append(l)
+        if len(ret) == 1:
+            return ret[0]
+        return ret
 
-    if len(ret) == 1:
-        return ret[0]
-    return ret
+
+class Traversable(LoadType):
+    def __init__(self, name, symmetry, internal_category):
+        super().__init__(name, symmetry, internal_category)
+
+    def get_ground_sprites(self):
+        return ADefaultGroundSprite(1012), []
+
+
+class TraversablePlatform(Traversable):
+    def get_sprites(self, voxel):
+        sprite = self.symmetry.create_variants(voxel.spritesheet(zdiff=platform_height * 2))
+        sprites.extend(sprite.all_variants)
+        return [AParentSprite(sprite, (16, 16, 48 - platform_height), (0, 0, platform_height))]
+
+    def make_platform_variants(self, ground, parents):
+        if self.symmetry.is_symmetrical_y():
+            return [
+                ALayout(ground, parents, True),
+                ALayout(ground, parents + [plat], True, notes=["y", "near"]),
+                ALayout(ground, parents + [plat, plat.T], True, notes=["both"]),
+            ]
+        return [
+            ALayout(ground, parents, True),
+            ALayout(ground, parents + [plat], True, notes=["near"]),
+            ALayout(ground, parents + [plat.T], True, notes=["far"]),
+            ALayout(ground, parents + [plat, plat.T], True, notes=["both"]),
+        ]
+
+
+class TraversableCorridor(Traversable):
+    def get_ground_sprites(self):
+        return ADefaultGroundSprite(1012), [third, third.T]
+
+
+class Side(LoadType):
+    def get_ground_sprites(self):
+        return AGroundSprite(gray), []
+
+
+class SideFull(Side):
+    def get_sprites(self, voxel):
+        f1v = voxel.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
+        f2v = voxel.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f1 = self.symmetry.create_variants(f1v.spritesheet())
+        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
+        sprites.extend(f1.all_variants)
+        sprites.extend(f2.all_variants)
+        return [AParentSprite(f1, (16, 16, 48), (0, 0, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
+
+
+class SidePlatform(Side):
+    def get_sprites(self, voxel):
+        f1v = voxel.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
+        f2v = voxel.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=6))
+        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
+        sprites.extend(f1.all_variants)
+        sprites.extend(f2.all_variants)
+        return [AParentSprite(f1, (16, 10, 48), (0, 6, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
+
+    def make_platform_variants(self, ground, parents):
+        return [ALayout(ground, parents + [plat_nt], True)]
+
+
+class SideThird(Traversable):
+    def get_sprites(self, voxel):
+        f1v = voxel.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
+        f2v = voxel.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=10))
+        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
+        sprites.extend(f1.all_variants)
+        sprites.extend(f2.all_variants)
+        return [AParentSprite(f1, (16, 6, 48), (0, 10, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
+
+    def make_platform_variants(self, ground, parents):
+        return [ALayout(ground, parents, True), ALayout(ground, parents + [plat.T], True)]
+
+
+def quickload(name, type, traversable, platform, category):
+    worker_class = {
+        (True, True): TraversablePlatform,
+        (True, False): TraversableCorridor,
+        (True, "third"): SideThird,
+        (False, True): SidePlatform,
+        (False, False): SideFull,
+    }[(traversable, platform)]
+
+    worker = worker_class(name, type, category)
+    return worker.load()
 
 
 sprites = platform_sprites + ground_sprites
@@ -141,6 +203,7 @@ entries = []
 (
     corner,
     corner_platform,
+    (corner_third, corner_third_f),
     corner_gate,
     corner_gate_platform,
     corner_2,
@@ -192,6 +255,7 @@ entries = []
     for name, type, traversable, platform, category in [
         ("corner", BuildingSpriteSheetFull, False, False, "F1"),
         ("corner_platform", BuildingSpriteSheetFull, False, True, "F1"),
+        ("corner_third", BuildingSpriteSheetFull, True, "third", "F1"),
         ("corner_gate", BuildingSpriteSheetFull, False, False, "F1"),
         ("corner_gate_platform", BuildingSpriteSheetFull, False, True, "F1"),
         ("corner_2", BuildingSpriteSheetFull, False, False, "F1"),
