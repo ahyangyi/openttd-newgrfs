@@ -22,7 +22,7 @@ class Demo:
             for c, sprite in enumerate(row[::-1]):
                 if sprite is None:
                     continue
-                subimg = sprite.graphics(remap, scale, bpp)
+                subimg = sprite.graphics(scale, bpp, remap=remap)
                 img.blend_over(subimg.move((32 * r - 32 * c) * scale, (16 * r + 16 * c) * scale))
         return img
 
