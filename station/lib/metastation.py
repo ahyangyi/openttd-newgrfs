@@ -15,12 +15,12 @@ class AMetaStation:
         return class_label_printable(self.class_label)
 
     def add(self, g):
-        g.add(grf.Action1(feature=grf.STATION, set_count=1, sprite_count=len(self.stations[0].sprites)))
-        for s in self.stations[0].sprites:
-            g.add(s)
+        # g.add(grf.Action1(feature=grf.STATION, set_count=1, sprite_count=len(self.stations[0].sprites)))
+        # for s in self.stations[0].sprites:
+        #    g.add(s)
         for station in self.stations:
             g.add(station)
 
     @property
     def sprites(self):
-        return [*dict.fromkeys([sub for s in self.stations for l in s.layouts for sub in l.sprites])]
+        return [*dict.fromkeys([sub for s in self.stations for sub in s.sprites])]

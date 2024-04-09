@@ -16,7 +16,6 @@ for demo in [normal_demo, normal_demo.M]:
             ]
         )
     )
-sprites.extend(demo_sprites)
 demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))], False)
 demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))], False)
 layouts.append(demo_layout1)

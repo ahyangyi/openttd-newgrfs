@@ -3,11 +3,10 @@ from .utils import class_label_printable
 
 
 class AStation(grf.SpriteGenerator):
-    def __init__(self, *, id, translation_name, sprites, layouts, callbacks=None, **props):
+    def __init__(self, *, id, translation_name, layouts, callbacks=None, **props):
         super().__init__()
         self.id = id
         self.translation_name = translation_name
-        self.sprites = sprites
         self.layouts = layouts
         if callbacks is None:
             callbacks = {}
@@ -18,7 +17,7 @@ class AStation(grf.SpriteGenerator):
     def class_label_plain(self):
         return class_label_printable(self._props["class_label"])
 
-    def get_sprites(self, g):
+    def get_sprites(self, g, sprites=None):
         res = []
 
         extra_props = {
@@ -46,6 +45,15 @@ class AStation(grf.SpriteGenerator):
             )
         )
 
+        if sprites is None:
+            res.append(grf.Action1(feature=grf.STATION, set_count=1, sprite_count=len(self.sprites)))
+
+            for s in self.sprites:
+                res.append(s)
         res.extend(self.callbacks.make_map_action(definition))
 
         return res
+
+    @property
+    def sprites(self):
+        return [*dict.fromkeys([sub for l in self.layouts for sub in l.sprites])]
