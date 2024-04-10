@@ -3,4 +3,5 @@ max-line-length = 120
 extend-ignore = E203, E731, E741, B019
 per-file-ignores =
     */__init__.py:F401
+    road_vehicle/lib/graphics/voxel.py:F401
     station/*:F405
