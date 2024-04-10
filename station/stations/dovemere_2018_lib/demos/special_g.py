@@ -10,7 +10,7 @@ station = [
     h_end_asym_platform,
     junction3,
     h_gate_1_platform,
-    h_gate_extender,
+    h_gate_extender_1_platform,
     h_gate_1_platform.R,
     junction3,
     h_end_asym_platform.R,
