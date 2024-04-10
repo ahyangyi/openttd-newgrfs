@@ -8,11 +8,11 @@ rail_far = [x.T for x in rail_near]
 rail_both = [platform, v_central, platform, platform, platform, v_central, platform]
 station = [
     h_end_asym_platform,
-    tee,
+    tee_platform,
     h_gate_1_platform,
     h_gate_extender_1_platform,
     h_gate_1_platform.R,
-    tee,
+    tee_platform,
     h_end_asym_platform.R,
 ]
 
