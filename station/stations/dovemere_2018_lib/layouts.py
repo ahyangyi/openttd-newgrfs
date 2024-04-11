@@ -1,22 +1,17 @@
-import grf
+import os
 from station.lib import (
-    AStation,
-    AMetaStation,
     BuildingSpriteSheetFull,
     BuildingSpriteSheetSymmetrical,
     BuildingSpriteSheetSymmetricalX,
     BuildingSpriteSheetSymmetricalY,
     BuildingSpriteSheetRotational,
     BuildingSpriteSheetDiagonal,
-    Demo,
     ADefaultGroundSprite,
     AGroundSprite,
     AParentSprite,
     ALayout,
-    LayoutSprite,
 )
 from agrf.graphics.voxel import LazyVoxel
-from agrf.magic import Switch
 from station.stations.platforms import (
     sprites as platform_sprites,
     pl1_low_white_d as platform,
@@ -55,14 +50,13 @@ def get_category(internal_category, back, notes):
 
 def quickload(name, type, traversable, platform, category):
     v = LazyVoxel(
-        name,
-        prefix="station/voxels/render/dovemere_2018",
+        os.path.basename(name),
+        prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(name)),
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/{name}.vox": path,
         load_from="station/files/gorender.json",
         subset=type.render_indices(),
     )
     sprite = type.create_variants(v.spritesheet())
-    sprites.extend(sprite.all_variants)
 
     if traversable:
         ground = ADefaultGroundSprite(1012)
@@ -111,7 +105,6 @@ def quickload(name, type, traversable, platform, category):
     return ret
 
 
-sprites = platform_sprites + ground_sprites
 layouts = []
 entries = []
 (

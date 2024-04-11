@@ -22,10 +22,12 @@ class Demo:
             for c, sprite in enumerate(row[::-1]):
                 if sprite is None:
                     continue
-                subimg = sprite.graphics(remap, scale, bpp)
+                subimg = sprite.graphics(scale, bpp, remap=remap)
                 img.blend_over(subimg.move((32 * r - 32 * c) * scale, (16 * r + 16 * c) * scale))
         return img
 
     @property
     def M(self):
-        return Demo(self.title, [[tile.M for tile in row[::-1]] for row in list(zip(*self.tiles))[::-1]])
+        return Demo(
+            self.title, [[tile and tile.M for tile in row[::-1]] for row in list(zip(*self.tiles))[::-1]], self.remap
+        )
