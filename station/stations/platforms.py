@@ -55,8 +55,7 @@ the_stations = AMetaStation(
         AStation(
             id=0xF000 + i,
             translation_name="PLATFORM" if layout[0].traversable else "PLATFORM_UNTRAVERSABLE",
-            sprites=sprites,  # FIXME
-            layouts=[layout[0].to_grf(sprites), layout[1].to_grf(sprites)],
+            layouts=layout,
             class_label=b"PLAT",
             cargo_threshold=40,
             callbacks={"select_tile_layout": 0},

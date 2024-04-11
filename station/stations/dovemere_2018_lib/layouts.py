@@ -1,23 +1,17 @@
 import os
-import grf
 from station.lib import (
-    AStation,
-    AMetaStation,
     BuildingSpriteSheetFull,
     BuildingSpriteSheetSymmetrical,
     BuildingSpriteSheetSymmetricalX,
     BuildingSpriteSheetSymmetricalY,
     BuildingSpriteSheetRotational,
     BuildingSpriteSheetDiagonal,
-    Demo,
     ADefaultGroundSprite,
     AGroundSprite,
     AParentSprite,
     ALayout,
-    LayoutSprite,
 )
 from agrf.graphics.voxel import LazyVoxel
-from agrf.magic import Switch
 from station.stations.platforms import (
     sprites as platform_sprites,
     pl1_low_white_shed_d as platform,
@@ -64,7 +58,6 @@ def quickload(name, type, traversable, platform, category):
     )
     shed_height = 10
     sprite = type.create_variants(v.spritesheet(zdiff=shed_height * 2 if platform else 0))
-    sprites.extend(sprite.all_variants)
 
     if traversable:
         ground = ADefaultGroundSprite(1012)
@@ -116,7 +109,6 @@ def quickload(name, type, traversable, platform, category):
     return ret
 
 
-sprites = platform_sprites + ground_sprites
 layouts = []
 entries = []
 (
