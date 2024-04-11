@@ -21,7 +21,6 @@ def quickload(name, type, traversable):
         load_from="station/files/gorender.json",
     )
     sprite = type.create_variants(v.spritesheet())
-    sprites.extend(sprite.all_variants)
     ground = ADefaultGroundSprite(1012 if traversable else 1420)
     parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
     candidates = [ALayout(ground, [parent], False)]
@@ -38,7 +37,6 @@ def quickload(name, type, traversable):
     return ret
 
 
-sprites = []
 layouts = []
 entries = []
 (main,) = [
@@ -46,11 +44,6 @@ entries = []
 ]
 
 the_station = AStation(
-    id=0x1000,
-    translation_name="UNTRAVERSABLE",
-    sprites=sprites,
-    layouts=[layout.to_grf(sprites) for layout in layouts],
-    class_label=b"\xe8\x8a\x9ca",
-    cargo_threshold=40,
+    id=0x1000, translation_name="UNTRAVERSABLE", layouts=layouts, class_label=b"\xe8\x8a\x9ca", cargo_threshold=40
 )
 the_stations = AMetaStation([the_station], b"\xe8\x8a\x9ca", None, layouts, [Demo("Station", [[main]])])
