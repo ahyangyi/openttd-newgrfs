@@ -3,9 +3,14 @@ import grf
 import argparse
 from station.lib.docgen import gen_docs
 import station.stations.dovemere_2018
+import station.stations.dovemere_1933
 import station.stations.platforms
 
-metastations = [station.stations.dovemere_2018.the_stations, station.stations.platforms.the_stations]
+metastations = [
+    station.stations.dovemere_2018.the_stations,
+    station.stations.dovemere_1933.the_stations,
+    station.stations.platforms.the_stations,
+]
 
 
 def get_string_manager():
