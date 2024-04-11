@@ -84,7 +84,7 @@ row_four_centre = [
 ]
 
 row_four = [
-    v_end_gate_platform,
+    v_end_gate_third_f,
     platform_s.T,
     corner_gate_third_f,
     corner_gate_third_f.R,
