@@ -242,10 +242,12 @@ entries = []
     inner_corner,
     double_inner_corner,
     v_funnel,
+    v_funnel_2,
     front_corner,
     front_gate_extender_corner,
     double_corner_2,
     bicorner,
+    bicorner_2,
 ) = [
     quickload(name, type, traversable, platform, category)
     for name, type, traversable, platform, category in [
@@ -305,9 +307,11 @@ entries = []
         ("irregular/inner_corner", BuildingSpriteSheetFull, False, False, "T"),
         ("irregular/double_inner_corner", BuildingSpriteSheetSymmetricalY, False, False, "T"),
         ("irregular/v_funnel", BuildingSpriteSheetFull, False, False, "T"),
+        ("irregular/v_funnel_2", BuildingSpriteSheetFull, False, False, "T"),
         ("junction/front_corner", BuildingSpriteSheetDiagonal, False, False, "X"),
         ("junction/front_gate_extender_corner", BuildingSpriteSheetDiagonal, False, False, "X"),
         ("junction/double_corner_2", BuildingSpriteSheetDiagonal, False, False, "X"),
         ("junction/bicorner", BuildingSpriteSheetDiagonal, False, False, "X"),
+        ("junction/bicorner_2", BuildingSpriteSheetDiagonal, False, False, "X"),
     ]
 ]

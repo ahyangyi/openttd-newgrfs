@@ -6,8 +6,16 @@ from agrf.graphics.palette import CompanyColour
 special_demo_sa = Demo(
     "Irregular 7×7 station layout",
     [
-        [v_end_platform.M, v_central_n.M, v_central_n.T.M, v_central_n.M, v_central_n.T.M, v_funnel.R.M, bicorner.TR],
-        [platform_s_nt.T.M, platform_s.M, platform_s.T.M, platform_s.M, corner.R.M, double_corner_2, v_funnel.R],
+        [
+            v_end_platform.M,
+            v_central_n.M,
+            v_central_n.T.M,
+            v_central_n.M,
+            v_central_n.T.M,
+            v_funnel_2.R.M,
+            bicorner_2.TR,
+        ],
+        [platform_s_nt.T.M, platform_s.M, platform_s.T.M, platform_s.M, corner.R.M, double_corner_2, v_funnel_2.R],
         [platform_s_nt.T.M, platform_s.M, platform_s.T.M, corner.R.M, double_corner_2, corner.R, v_central_n.T],
         [platform_s_nt.T.M, platform_s.M, corner.R.M, double_corner_2, corner.R, platform_s, v_central_n],
         [platform_s_nt.T.M, corner.R.M, double_corner_2, corner.R, platform_s.T, platform_s.T, v_central_n.T],
