@@ -4,3 +4,5 @@ go install github.com/ahyangyi/gorender/cmd@f2e65476
 mv gopath/bin/cmd gopath/bin/gorender
 go install github.com/ahyangyi/cargopositor/cmd@latest
 mv gopath/bin/cmd gopath/bin/positor
+go install github.com/ahyangyi/gandalf/cmd@f44011df
+mv gopath/bin/cmd gopath/bin/layer-filter
