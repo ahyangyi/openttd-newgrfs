@@ -1,7 +1,7 @@
 import math
 import os
 import functools
-from pygorender import Config, render, hill_positor_1, stairstep, compose, self_compose, produce_empty
+from pygorender import Config, render, hill_positor_1, stairstep, compose, self_compose, produce_empty, discard_layers
 from agrf.graphics.rotator import unnatural_dimens
 from agrf.graphics.spritesheet import spritesheet_template
 from copy import deepcopy
@@ -140,11 +140,6 @@ class LazyVoxel(Config):
         )
 
     @functools.cache
-    def render(self):
-        voxel_path = self.voxel_getter()
-        render(self, voxel_path, os.path.join(self.prefix, self.name))
-
-    @functools.cache
     def mask_clip(self, subvoxel, suffix):
         def voxel_getter(subvoxel=subvoxel):
             old_path = self.voxel_getter()
@@ -177,6 +172,23 @@ class LazyVoxel(Config):
         return LazyVoxel(
             self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=deepcopy(self.config)
         )
+
+    @functools.cache
+    def discard_layers(self, discards, suffix):
+        def voxel_getter(subvoxel=subvoxel):
+            old_path = self.voxel_getter()
+            new_path = os.path.join(self.prefix, suffix)
+            discard_layers(discards, old_path, new_path)
+            return os.path.join(new_path, f"{self.name}.vox")
+
+        return LazyVoxel(
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=deepcopy(self.config)
+        )
+
+    @functools.cache
+    def render(self):
+        voxel_path = self.voxel_getter()
+        render(self, voxel_path, os.path.join(self.prefix, self.name))
 
     @functools.cache
     def spritesheet(self, xdiff=0, zdiff=0, shift=0):
