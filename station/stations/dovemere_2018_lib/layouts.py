@@ -179,6 +179,18 @@ class SideThird(Traversable):
         return [ALayout(ground, parents, True), ALayout(ground, parents + [plat.T], True)]
 
 
+class SideDouble(LoadType):
+    def do_work(self, v):
+        return (
+            SideFull(
+                v.discard_layers(("ground level - platform"), "full"), self.symmetry, self.internal_category
+            ).load_list()
+            + SidePlatform(
+                v.discard_layers(("ground level"), "platform"), self.symmetry, self.internal_category
+            ).load_list()
+        )
+
+
 class SideTriple(LoadType):
     def do_work(self, v):
         return (
@@ -207,6 +219,7 @@ def quickload(source, type, traversable, platform, category):
         (True, "third"): SideThird,
         (False, True): SidePlatform,
         (False, False): SideFull,
+        (False, "double"): SideDouble,
         (False, "triple"): SideTriple,
     }[(traversable, platform)]
 
@@ -238,8 +251,7 @@ entries = []
     (side_c_x, side_c_n, side_c),
     (side_d_x, side_d_n, side_d),
     h_end,
-    h_end_asym,
-    h_end_asym_platform,
+    (h_end_asym, h_end_asym_platform),
     h_end_gate,
     h_end_gate_1,
     h_normal,
@@ -298,8 +310,7 @@ entries = []
         ("side_c", BuildingSpriteSheetSymmetricalY, True, True, "C"),
         ("side_d", BuildingSpriteSheetSymmetricalY, True, True, "D"),
         ("h_end", BuildingSpriteSheetSymmetricalY, True, False, "H"),
-        ("h_end_asym", BuildingSpriteSheetFull, False, False, "H"),
-        ("h_end_asym_platform", BuildingSpriteSheetFull, False, True, "H"),
+        ("h_end_asym", BuildingSpriteSheetFull, False, "double", "H"),
         ("h_end_gate", BuildingSpriteSheetSymmetricalY, True, False, "H"),
         ("h_end_gate_1", BuildingSpriteSheetFull, True, False, "H"),
         ("h_normal", BuildingSpriteSheetSymmetrical, True, False, "H"),
