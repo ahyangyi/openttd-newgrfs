@@ -175,11 +175,11 @@ class LazyVoxel(Config):
 
     @functools.cache
     def discard_layers(self, discards, suffix):
-        def voxel_getter(subvoxel=subvoxel):
+        def voxel_getter():
             old_path = self.voxel_getter()
-            new_path = os.path.join(self.prefix, suffix)
+            new_path = os.path.join(self.prefix, suffix, f"{self.name}.vox")
             discard_layers(discards, old_path, new_path)
-            return os.path.join(new_path, f"{self.name}.vox")
+            return new_path
 
         return LazyVoxel(
             self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=deepcopy(self.config)

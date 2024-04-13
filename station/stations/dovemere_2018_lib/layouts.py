@@ -56,8 +56,8 @@ third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
 
 
 class LoadType:
-    def __init__(self, name, symmetry, internal_category):
-        self.name = name
+    def __init__(self, source, symmetry, internal_category):
+        self.source = source
         self.symmetry = symmetry
         self.internal_category = internal_category
 
@@ -68,14 +68,20 @@ class LoadType:
     def make_platform_variants(self, ground, parents):
         return [ALayout(ground, parents, True)]
 
-    def load(self):
-        v = LazyVoxel(
-            os.path.basename(self.name),
-            prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(self.name)),
-            voxel_getter=lambda path=f"station/voxels/dovemere_2018/{self.name}.vox": path,
-            load_from="station/files/gorender.json",
-            subset=self.symmetry.render_indices(),
-        )
+    def load_list(self):
+        if isinstance(self.source, str):
+            v = LazyVoxel(
+                os.path.basename(self.source),
+                prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(self.source)),
+                voxel_getter=lambda path=f"station/voxels/dovemere_2018/{self.source}.vox": path,
+                load_from="station/files/gorender.json",
+                subset=self.symmetry.render_indices(),
+            )
+        else:
+            v = self.source
+        return self.do_work(v)
+
+    def do_work(self, v):
         ground, fake_ground_sprites = self.get_ground_sprites()
         sprites = self.get_sprites(v)
 
@@ -93,15 +99,18 @@ class LoadType:
             l = cur_sym.create_variants(l)
             entries.extend(cur_sym.get_all_entries(l))
             ret.append(l)
+        return ret
 
+    def load(self):
+        ret = self.load_list()
         if len(ret) == 1:
             return ret[0]
         return ret
 
 
 class Traversable(LoadType):
-    def __init__(self, name, symmetry, internal_category):
-        super().__init__(name, symmetry, internal_category)
+    def __init__(self, source, symmetry, internal_category):
+        super().__init__(source, symmetry, internal_category)
 
     def get_ground_sprites(self):
         return ADefaultGroundSprite(1012), []
@@ -170,16 +179,38 @@ class SideThird(Traversable):
         return [ALayout(ground, parents, True), ALayout(ground, parents + [plat.T], True)]
 
 
-def quickload(name, type, traversable, platform, category):
+class SideTriple(LoadType):
+    def do_work(self, v):
+        return (
+            SideFull(
+                v.discard_layers(("ground level - platform", "ground level - third"), "full"),
+                self.symmetry,
+                self.internal_category,
+            ).load_list()
+            + SidePlatform(
+                v.discard_layers(("ground level", "ground level - third"), "platform"),
+                self.symmetry,
+                self.internal_category,
+            ).load_list()
+            + SideThird(
+                v.discard_layers(("ground level", "ground level - platform"), "third"),
+                self.symmetry,
+                self.internal_category,
+            ).load_list()
+        )
+
+
+def quickload(source, type, traversable, platform, category):
     worker_class = {
         (True, True): TraversablePlatform,
         (True, False): TraversableCorridor,
         (True, "third"): SideThird,
         (False, True): SidePlatform,
         (False, False): SideFull,
+        (False, "triple"): SideTriple,
     }[(traversable, platform)]
 
-    worker = worker_class(name, type, category)
+    worker = worker_class(source, type, category)
     return worker.load()
 
 
@@ -189,9 +220,7 @@ entries = []
     corner,
     corner_platform,
     (corner_third, corner_third_f),
-    corner_gate,
-    corner_gate_platform,
-    (corner_gate_third, corner_gate_third_f),
+    (corner_gate, corner_gate_platform, corner_gate_third, corner_gate_third_f),
     corner_2,
     (corner_2_third, corner_2_third_f),
     corner_gate_2,
@@ -250,14 +279,12 @@ entries = []
     bicorner,
     bicorner_2,
 ) = [
-    quickload(name, type, traversable, platform, category)
-    for name, type, traversable, platform, category in [
+    quickload(name, symmetry, traversable, platform, category)
+    for name, symmetry, traversable, platform, category in [
         ("corner", BuildingSpriteSheetFull, False, False, "F1"),
         ("corner_platform", BuildingSpriteSheetFull, False, True, "F1"),
         ("corner_third", BuildingSpriteSheetFull, True, "third", "F1"),
-        ("corner_gate", BuildingSpriteSheetFull, False, False, "F1"),
-        ("corner_gate_platform", BuildingSpriteSheetFull, False, True, "F1"),
-        ("corner_gate_third", BuildingSpriteSheetFull, True, "third", "F1"),
+        ("corner_gate", BuildingSpriteSheetFull, False, "triple", "F1"),
         ("corner_2", BuildingSpriteSheetFull, False, False, "F1"),
         ("corner_2_third", BuildingSpriteSheetFull, True, "third", "F1"),
         ("corner_gate_2", BuildingSpriteSheetFull, False, False, "F1"),
