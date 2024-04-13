@@ -217,14 +217,10 @@ def quickload(source, type, traversable, platform, category):
 layouts = []
 entries = []
 (
-    corner,
-    corner_platform,
-    (corner_third, corner_third_f),
+    (corner, corner_platform, corner_third, corner_third_f),
     (corner_gate, corner_gate_platform, corner_gate_third, corner_gate_third_f),
-    corner_2,
-    (corner_2_third, corner_2_third_f),
-    corner_gate_2,
-    (corner_gate_2_third, corner_gate_2_third_f),
+    (corner_2, corner_2_platform, corner_2_third, corner_2_third_f),
+    (corner_gate_2, corner_gate_2_platform, corner_gate_2_third, corner_gate_2_third_f),
     front_normal,
     front_gate,
     front_gate_extender,
@@ -281,14 +277,10 @@ entries = []
 ) = [
     quickload(name, symmetry, traversable, platform, category)
     for name, symmetry, traversable, platform, category in [
-        ("corner", BuildingSpriteSheetFull, False, False, "F1"),
-        ("corner_platform", BuildingSpriteSheetFull, False, True, "F1"),
-        ("corner_third", BuildingSpriteSheetFull, True, "third", "F1"),
+        ("corner", BuildingSpriteSheetFull, False, "triple", "F1"),
         ("corner_gate", BuildingSpriteSheetFull, False, "triple", "F1"),
-        ("corner_2", BuildingSpriteSheetFull, False, False, "F1"),
-        ("corner_2_third", BuildingSpriteSheetFull, True, "third", "F1"),
-        ("corner_gate_2", BuildingSpriteSheetFull, False, False, "F1"),
-        ("corner_gate_2_third", BuildingSpriteSheetFull, True, "third", "F1"),
+        ("corner_2", BuildingSpriteSheetFull, False, "triple", "F1"),
+        ("corner_gate_2", BuildingSpriteSheetFull, False, "triple", "F1"),
         ("front_normal", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
         ("front_gate", BuildingSpriteSheetFull, False, False, "F0"),
         ("front_gate_extender", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
