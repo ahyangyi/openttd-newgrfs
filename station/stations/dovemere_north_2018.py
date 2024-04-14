@@ -25,7 +25,6 @@ def quickload(name, type, traversable):
         subset=type.render_indices(),
     )
     sprite = type.create_variants(v.spritesheet(zdiff=16, xdiff=6))
-    sprites.extend(sprite.all_variants)
 
     ground = ADefaultGroundSprite(1012 if traversable else 1420)
     parent = AParentSprite(sprite, (16, 10, 48), (0, 6, 0))
@@ -43,7 +42,6 @@ def quickload(name, type, traversable):
     return ret
 
 
-sprites = platform_sprites.copy()
 layouts = []
 (front_normal,) = [
     quickload(name, type, traversable)
@@ -56,8 +54,7 @@ the_stations = AMetaStation(
         AStation(
             id=0x80 + i,
             translation_name="UNTRAVERSABLE",
-            sprites=sprites,  # FIXME
-            layouts=[layouts[0].to_grf(sprites), layouts[1].to_grf(sprites)],
+            layouts=layouts,
             class_label=b"\xe9\xb8\xa0A",
             cargo_threshold=40,
             non_traversable_tiles=0b11,
