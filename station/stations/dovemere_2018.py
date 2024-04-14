@@ -189,6 +189,7 @@ the_stations = AMetaStation(
         real_yard_demo,
         full_auto_demo,
         semi_auto_demo,
+        side_auto_demo,
         special_demo_g,
         special_demo_p,
         special_demo_cn,
