@@ -13,7 +13,7 @@ from agrf.graphics.voxel import LazyVoxel
 from .ground import sprites as ground_sprites, gray
 
 
-def quickload(name, type):
+def quickload(name, type, traversable):
     v = LazyVoxel(
         name,
         prefix="station/voxels/render/csps",
@@ -26,20 +26,23 @@ def quickload(name, type):
     ps = AParentSprite(sprite, (16, 6, 6), (0, 10, 0))
     ret = []
     for l, make_symmetrical in [([ps], False), ([ps, ps.T], True)]:
-        for traversable in [True, False]:
-            groundsprite = ADefaultGroundSprite(1012) if traversable else AGroundSprite(gray)
-            cur_type = BuildingSpriteSheetSymmetrical if make_symmetrical else type
-            var = cur_type.get_all_variants(ALayout(groundsprite, l, True))
-            layouts.extend(var)
-            ret.append(cur_type.create_variants(var))
+        groundsprite = ADefaultGroundSprite(1012) if traversable else AGroundSprite(gray)
+        cur_type = BuildingSpriteSheetSymmetrical if make_symmetrical else type
+        var = cur_type.get_all_variants(ALayout(groundsprite, l, True))
+        layouts.extend(var)
+        ret.append(cur_type.create_variants(var))
 
     return ret
 
 
 sprites = []
 layouts = []
-[(pl1_low_white, pl1_low_white_nt, pl1_low_white_d, pl1_low_white_d_nt)] = [
-    quickload(name, type) for name, type in [("pl1_low_white", BuildingSpriteSheetSymmetricalX)]
+[(pl1_low_white, pl1_low_white_d), (pl1_low_white_nt, pl1_low_white_d_nt)] = [
+    quickload(name, type, traversable)
+    for name, type, traversable in [
+        ("pl1_low_white", BuildingSpriteSheetSymmetricalX, True),
+        ("pl1_low_white_side", BuildingSpriteSheetSymmetricalX, False),
+    ]
 ]
 sprites = sprites + ground_sprites
 
@@ -48,8 +51,7 @@ the_stations = AMetaStation(
         AStation(
             id=0xF000 + i,
             translation_name="PLATFORM" if layout[0].traversable else "PLATFORM_UNTRAVERSABLE",
-            sprites=sprites,  # FIXME
-            layouts=[layout[0].to_grf(sprites), layout[1].to_grf(sprites)],
+            layouts=layout,
             class_label=b"PLAT",
             cargo_threshold=40,
             callbacks={"select_tile_layout": 0},

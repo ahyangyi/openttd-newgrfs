@@ -1,22 +1,17 @@
-import grf
+import os
 from station.lib import (
-    AStation,
-    AMetaStation,
     BuildingSpriteSheetFull,
     BuildingSpriteSheetSymmetrical,
     BuildingSpriteSheetSymmetricalX,
     BuildingSpriteSheetSymmetricalY,
     BuildingSpriteSheetRotational,
     BuildingSpriteSheetDiagonal,
-    Demo,
     ADefaultGroundSprite,
     AGroundSprite,
     AParentSprite,
     ALayout,
-    LayoutSprite,
 )
 from agrf.graphics.voxel import LazyVoxel
-from agrf.magic import Switch
 from station.stations.platforms import (
     sprites as platform_sprites,
     pl1_low_white_d as platform,
@@ -53,78 +48,198 @@ def get_category(internal_category, back, notes):
     return b"\xe8\x8a\x9c" + ret.to_bytes(1, "little")
 
 
-def quickload(name, type, traversable, platform, category):
-    v = LazyVoxel(
-        name,
-        prefix="station/voxels/render/dovemere_2018",
-        voxel_getter=lambda path=f"station/voxels/dovemere_2018/{name}.vox": path,
-        load_from="station/files/gorender.json",
-        subset=type.render_indices(),
-    )
-    sprite = type.create_variants(v.spritesheet())
-    sprites.extend(sprite.all_variants)
+platform_height = 6
+base_height = 16
+plat = AParentSprite(platform_sprites[0], (16, 6, platform_height), (0, 10, 0))
+plat_nt = AParentSprite(platform_sprites[4], (16, 6, platform_height), (0, 10, 0))
+third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
 
-    if traversable:
-        ground = ADefaultGroundSprite(1012)
-    else:
-        ground = AGroundSprite(gray)
-    parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
-    plat = AParentSprite(platform_sprites[0], (16, 6, 6), (0, 10, 0))
-    third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
 
-    if platform:
-        if type.is_symmetrical_y():
-            candidates = [
-                ALayout(ground, [parent], traversable),
-                ALayout(ground, [plat, parent], traversable, notes=["y", "near"]),
-                ALayout(ground, [plat, plat.T, parent], traversable, notes=["both"]),
+class LoadType:
+    def __init__(self, source, symmetry, internal_category):
+        self.source = source
+        self.symmetry = symmetry
+        self.internal_category = internal_category
+
+    def get_sprites(self, voxel):
+        sprite = self.symmetry.create_variants(voxel.spritesheet())
+        return [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))]
+
+    def make_platform_variants(self, ground, parents):
+        return [ALayout(ground, parents, True)]
+
+    def load_list(self):
+        if isinstance(self.source, str):
+            v = LazyVoxel(
+                os.path.basename(self.source),
+                prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(self.source)),
+                voxel_getter=lambda path=f"station/voxels/dovemere_2018/{self.source}.vox": path,
+                load_from="station/files/gorender.json",
+                subset=self.symmetry.render_indices(),
+            )
+        else:
+            v = self.source
+        return self.do_work(v)
+
+    def do_work(self, v):
+        ground, fake_ground_sprites = self.get_ground_sprites()
+        sprites = self.get_sprites(v)
+
+        candidates = self.make_platform_variants(ground, fake_ground_sprites + sprites)
+        ret = []
+        for l in candidates:
+            if "y" in l.notes:
+                cur_sym = self.symmetry.break_y_symmetry()
+            else:
+                cur_sym = self.symmetry
+            l = cur_sym.get_all_variants(l)
+            for i, layout in enumerate(l):
+                layout.category = get_category(self.internal_category, i >= len(l) // 2, layout.notes)
+            layouts.extend(l)
+            l = cur_sym.create_variants(l)
+            entries.extend(cur_sym.get_all_entries(l))
+            ret.append(l)
+        return ret
+
+    def load(self):
+        ret = self.load_list()
+        if len(ret) == 1:
+            return ret[0]
+        return ret
+
+
+class Traversable(LoadType):
+    def __init__(self, source, symmetry, internal_category):
+        super().__init__(source, symmetry, internal_category)
+
+    def get_ground_sprites(self):
+        return ADefaultGroundSprite(1012), []
+
+
+class TraversablePlatform(Traversable):
+    def get_sprites(self, voxel):
+        sprite = self.symmetry.create_variants(voxel.spritesheet(zdiff=platform_height * 2))
+        return [AParentSprite(sprite, (16, 16, 48 - platform_height), (0, 0, platform_height))]
+
+    def make_platform_variants(self, ground, parents):
+        if self.symmetry.is_symmetrical_y():
+            return [
+                ALayout(ground, parents, True),
+                ALayout(ground, parents + [plat], True, notes=["y", "near"]),
+                ALayout(ground, parents + [plat, plat.T], True, notes=["both"]),
             ]
-        else:
-            candidates = [
-                ALayout(ground, [parent], traversable),
-                ALayout(ground, [plat, parent], traversable, notes=["near"]),
-                ALayout(ground, [plat.T, parent], traversable, notes=["far"]),
-                ALayout(ground, [plat, plat.T, parent], traversable, notes=["both"]),
-            ]
-    else:
-        if traversable:
-            candidates = [ALayout(ground, [third, third.T, parent], traversable)]
-        else:
-            candidates = [ALayout(ground, [parent], traversable)]
-
-    ret = []
-    for l in candidates:
-        if "y" in l.notes:
-            cur_type = type.break_y_symmetry()
-        else:
-            cur_type = type
-        l = cur_type.get_all_variants(l)
-        for i, layout in enumerate(l):
-            layout.category = get_category(category, i >= len(l) // 2, layout.notes)
-        layouts.extend(l)
-        l = cur_type.create_variants(l)
-        entries.extend(cur_type.get_all_entries(l))
-        ret.append(l)
-
-    if len(ret) == 1:
-        return ret[0]
-    return ret
+        return [
+            ALayout(ground, parents, True),
+            ALayout(ground, parents + [plat], True, notes=["near"]),
+            ALayout(ground, parents + [plat.T], True, notes=["far"]),
+            ALayout(ground, parents + [plat, plat.T], True, notes=["both"]),
+        ]
 
 
-sprites = platform_sprites + ground_sprites
+class TraversableCorridor(Traversable):
+    def get_ground_sprites(self):
+        return ADefaultGroundSprite(1012), [third, third.T]
+
+
+class Side(LoadType):
+    def get_ground_sprites(self):
+        return AGroundSprite(gray), []
+
+
+class SideFull(Side):
+    def get_sprites(self, voxel):
+        f1v = voxel.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
+        f2v = voxel.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f1 = self.symmetry.create_variants(f1v.spritesheet())
+        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
+        return [AParentSprite(f1, (16, 16, 48), (0, 0, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
+
+
+class SidePlatform(Side):
+    def get_sprites(self, voxel):
+        f1v = voxel.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
+        f2v = voxel.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=6))
+        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
+        return [AParentSprite(f1, (16, 10, 48), (0, 6, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
+
+    def make_platform_variants(self, ground, parents):
+        return [ALayout(ground, parents + [plat_nt.T], True)]
+
+
+class SideThird(Traversable):
+    def get_sprites(self, voxel):
+        f1v = voxel.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
+        f2v = voxel.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=10))
+        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
+        return [AParentSprite(f1, (16, 6, 48), (0, 10, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
+
+    def make_platform_variants(self, ground, parents):
+        return [ALayout(ground, parents, True), ALayout(ground, parents + [plat.T], True)]
+
+
+class SideDouble(LoadType):
+    def do_work(self, v):
+        return (
+            SideFull(
+                v.discard_layers(("ground level - platform"), "full"), self.symmetry, self.internal_category
+            ).load_list()
+            + SidePlatform(
+                v.discard_layers(("ground level"), "platform"), self.symmetry, self.internal_category
+            ).load_list()
+        )
+
+
+class SideTriple(LoadType):
+    def do_work(self, v):
+        return (
+            SideFull(
+                v.discard_layers(("ground level - platform", "ground level - third"), "full"),
+                self.symmetry,
+                self.internal_category,
+            ).load_list()
+            + SidePlatform(
+                v.discard_layers(("ground level", "ground level - third"), "platform"),
+                self.symmetry,
+                self.internal_category,
+            ).load_list()
+            + SideThird(
+                v.discard_layers(("ground level", "ground level - platform"), "third"),
+                self.symmetry,
+                self.internal_category,
+            ).load_list()
+        )
+
+
+def quickload(source, type, traversable, platform, category):
+    worker_class = {
+        (True, True): TraversablePlatform,
+        (True, False): TraversableCorridor,
+        (True, "third"): SideThird,
+        (False, True): SidePlatform,
+        (False, False): SideFull,
+        (False, "double"): SideDouble,
+        (False, "triple"): SideTriple,
+    }[(traversable, platform)]
+
+    worker = worker_class(source, type, category)
+    return worker.load()
+
+
 layouts = []
 entries = []
 (
-    corner,
-    corner_gate,
-    corner_2,
-    corner_gate_2,
+    (corner, corner_platform, corner_third, corner_third_f),
+    (corner_gate, corner_gate_platform, corner_gate_third, corner_gate_third_f),
+    (corner_2, corner_2_platform, corner_2_third, corner_2_third_f),
+    (corner_gate_2, corner_gate_2_platform, corner_gate_2_third, corner_gate_2_third_f),
     front_normal,
     front_gate,
     front_gate_extender,
-    central,
-    central_windowed,
-    central_windowed_extender,
+    (central_x, central_n, central),
+    (central_windowed_x, central_windowed_n, central_windowed),
+    (central_windowed_extender_x, central_windowed_extender_n, central_windowed_extender),
     (side_a_x, side_a_n, side_a_f, side_a),
     (side_a_windowed_x, side_a_windowed_n, side_a_windowed_f, side_a_windowed),
     (side_a2_x, side_a2_n, side_a2),
@@ -136,43 +251,50 @@ entries = []
     (side_c_x, side_c_n, side_c),
     (side_d_x, side_d_n, side_d),
     h_end,
+    (h_end_asym, h_end_asym_platform),
+    (h_end_asym_gate, h_end_asym_gate_platform, h_end_asym_gate_third, h_end_asym_gate_third_f),
     h_end_gate,
     h_end_gate_1,
     h_normal,
     h_gate,
+    h_gate_1_platform,
     h_gate_extender,
+    h_gate_extender_1_platform,
     h_windowed,
     h_windowed_extender,
-    v_end,
-    v_end_gate,
+    (v_end, v_end_platform, v_end_third, v_end_third_f),
+    (v_end_gate, v_end_gate_platform, v_end_gate_third, v_end_gate_third_f),
     (v_central_x, v_central_n, v_central),
     tiny,
+    tiny_asym_platform,
     turn,
     turn_gate,
-    junction3,
-    junction4,
+    (tee, tee_platform),
+    cross,
     double_corner,
     funnel,
     inner_corner,
     double_inner_corner,
     v_funnel,
+    v_funnel_2,
     front_corner,
     front_gate_extender_corner,
     double_corner_2,
     bicorner,
+    bicorner_2,
 ) = [
-    quickload(name, type, traversable, platform, category)
-    for name, type, traversable, platform, category in [
-        ("corner", BuildingSpriteSheetFull, False, False, "F1"),
-        ("corner_gate", BuildingSpriteSheetFull, False, False, "F1"),
-        ("corner_2", BuildingSpriteSheetFull, False, False, "F1"),
-        ("corner_gate_2", BuildingSpriteSheetFull, False, False, "F1"),
+    quickload(name, symmetry, traversable, platform, category)
+    for name, symmetry, traversable, platform, category in [
+        ("corner", BuildingSpriteSheetFull, False, "triple", "F1"),
+        ("corner_gate", BuildingSpriteSheetFull, False, "triple", "F1"),
+        ("corner_2", BuildingSpriteSheetFull, False, "triple", "F1"),
+        ("corner_gate_2", BuildingSpriteSheetFull, False, "triple", "F1"),
         ("front_normal", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
         ("front_gate", BuildingSpriteSheetFull, False, False, "F0"),
         ("front_gate_extender", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
-        ("central", BuildingSpriteSheetSymmetrical, True, False, "N"),
-        ("central_windowed", BuildingSpriteSheetSymmetricalY, True, False, "N"),
-        ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True, False, "N"),
+        ("central", BuildingSpriteSheetSymmetrical, True, True, "N"),
+        ("central_windowed", BuildingSpriteSheetSymmetricalY, True, True, "N"),
+        ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True, True, "N"),
         ("side_a", BuildingSpriteSheetFull, True, True, "A"),
         ("side_a_windowed", BuildingSpriteSheetFull, True, True, "A"),
         ("side_a2", BuildingSpriteSheetSymmetricalY, True, True, "A"),
@@ -184,29 +306,36 @@ entries = []
         ("side_c", BuildingSpriteSheetSymmetricalY, True, True, "C"),
         ("side_d", BuildingSpriteSheetSymmetricalY, True, True, "D"),
         ("h_end", BuildingSpriteSheetSymmetricalY, True, False, "H"),
+        ("h_end_asym", BuildingSpriteSheetFull, False, "double", "H"),
+        ("h_end_asym_gate", BuildingSpriteSheetFull, False, "triple", "H"),
         ("h_end_gate", BuildingSpriteSheetSymmetricalY, True, False, "H"),
         ("h_end_gate_1", BuildingSpriteSheetFull, True, False, "H"),
         ("h_normal", BuildingSpriteSheetSymmetrical, True, False, "H"),
         ("h_gate", BuildingSpriteSheetSymmetricalY, True, False, "H"),
+        ("h_gate_1_platform", BuildingSpriteSheetFull, False, True, "H"),
         ("h_gate_extender", BuildingSpriteSheetSymmetrical, True, False, "H"),
+        ("h_gate_extender_1_platform", BuildingSpriteSheetFull, False, True, "H"),
         ("h_windowed", BuildingSpriteSheetSymmetricalY, True, False, "H"),
         ("h_windowed_extender", BuildingSpriteSheetSymmetrical, True, False, "H"),
-        ("v_end", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
-        ("v_end_gate", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
+        ("v_end", BuildingSpriteSheetSymmetricalX, False, "triple", "F0"),
+        ("v_end_gate", BuildingSpriteSheetSymmetricalX, False, "triple", "F0"),
         ("v_central", BuildingSpriteSheetSymmetrical, True, True, "N"),
         ("tiny", BuildingSpriteSheetSymmetrical, True, False, "H"),
+        ("tiny_asym_platform", BuildingSpriteSheetSymmetricalX, False, True, "H"),
         ("irregular/turn", BuildingSpriteSheetFull, False, False, "T"),
         ("irregular/turn_gate", BuildingSpriteSheetFull, False, False, "T"),
-        ("irregular/junction3", BuildingSpriteSheetSymmetricalX, False, False, "T"),
-        ("irregular/junction4", BuildingSpriteSheetSymmetrical, False, False, "T"),
+        ("irregular/tee", BuildingSpriteSheetSymmetricalX, False, "double", "T"),
+        ("irregular/cross", BuildingSpriteSheetSymmetrical, False, False, "T"),
         ("irregular/double_corner", BuildingSpriteSheetRotational, False, False, "T"),
         ("irregular/funnel", BuildingSpriteSheetFull, False, False, "T"),
         ("irregular/inner_corner", BuildingSpriteSheetFull, False, False, "T"),
         ("irregular/double_inner_corner", BuildingSpriteSheetSymmetricalY, False, False, "T"),
         ("irregular/v_funnel", BuildingSpriteSheetFull, False, False, "T"),
+        ("irregular/v_funnel_2", BuildingSpriteSheetFull, False, False, "T"),
         ("junction/front_corner", BuildingSpriteSheetDiagonal, False, False, "X"),
         ("junction/front_gate_extender_corner", BuildingSpriteSheetDiagonal, False, False, "X"),
         ("junction/double_corner_2", BuildingSpriteSheetDiagonal, False, False, "X"),
         ("junction/bicorner", BuildingSpriteSheetDiagonal, False, False, "X"),
+        ("junction/bicorner_2", BuildingSpriteSheetDiagonal, False, False, "X"),
     ]
 ]

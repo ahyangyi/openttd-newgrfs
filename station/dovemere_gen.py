@@ -35,7 +35,7 @@ def gen():
     )
 
     for metastation in metastations:
-        metastation.add(g)
+        g.add(metastation)
 
     g.write("station.grf")
 
