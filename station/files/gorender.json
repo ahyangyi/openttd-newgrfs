@@ -67,5 +67,6 @@
     "agrf_scales": [1, 2, 4],
     "agrf_palette": "station/files/ttd_palette.json",
     "agrf_deltas": [[-2, -1], [2, -1], [-2, -1], [2, -1], [0, 0], [0, 0], [0, 0], [0, 0]],
-    "agrf_road_mode": true
+    "agrf_road_mode": true,
+    "z_scale": 1.25
 }
