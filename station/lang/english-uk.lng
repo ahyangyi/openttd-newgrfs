@@ -2,6 +2,12 @@
 STR_GRF_NAME                    :AWSS - Ahyangyi's Wuhu Station Set
 STR_GRF_DESC                    :A station set based on stations in Wuhu, Anhui, China.
 
+STR_PARAM_NIGHT_MODE            :Night mode
+STR_PARAM_NIGHT_MODE_DESC       :Use night graphics suitable for NightGFX
+STR_PARAM_NIGHT_MODE_AUTO_DETECT:Auto Detect
+STR_PARAM_NIGHT_MODE_DISABLED   :Disabled
+STR_PARAM_NIGHT_MODE_ENABLED    :Enabled
+
 STR_STATION_DEFAULT                 :Station Building
 STR_STATION_UNTRAVERSABLE           :Station Building (No Rail)
 STR_STATION_PLATFORM                :Platform
