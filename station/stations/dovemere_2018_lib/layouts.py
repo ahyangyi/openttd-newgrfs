@@ -161,20 +161,27 @@ class TwoFloorMixin:
             f2v = f2base.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
             f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
         f1v = f1base.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
-        f1 = self.symmetry.create_variants(f1v.spritesheet())
-        return [AParentSprite(f1, (16, 16, 48), (0, 0, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
+        f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x))
+        return [
+            AParentSprite(f1, (16, self.f1x, 48), (0, 16 - self.f1x, 0)),
+            AParentSprite(f2, (16, 16, 32), (0, 0, base_height)),
+        ]
 
 
 class SideFull(TwoFloorMixin, Side):
-    pass
+    f1x = 16
 
 
 class SidePlatform(TwoFloorMixin, Side):
+    f1x = 10
+
     def make_platform_variants(self, ground, parents):
         return [ALayout(ground, parents + [plat_nt.T], True, notes=["far"])]
 
 
 class SideThird(TwoFloorMixin, Traversable):
+    f1x = 6
+
     def make_platform_variants(self, ground, parents):
         return [
             ALayout(ground, parents, True, notes=["third"]),
