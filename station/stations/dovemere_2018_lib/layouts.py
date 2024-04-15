@@ -24,7 +24,13 @@ from station.stations.misc import rail
 
 def get_category(internal_category, back, notes):
     if internal_category in ["F0", "F1"]:
-        ret = 0x80 + (internal_category[1] == "1")
+        ret = 0x80
+        if "far" in notes:
+            ret += 0x1
+        if "third" in notes:
+            ret += 0x2
+        if internal_category[1] == "1":
+            ret += 0x4
         if back:
             ret += 0x8
     elif internal_category in ["A", "B", "C", "D"]:
@@ -164,7 +170,7 @@ class SidePlatform(Side):
         return [AParentSprite(f1, (16, 10, 48), (0, 6, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
 
     def make_platform_variants(self, ground, parents):
-        return [ALayout(ground, parents + [plat_nt.T], True)]
+        return [ALayout(ground, parents + [plat_nt.T], True, notes=["far"])]
 
 
 class SideThird(Traversable):
@@ -176,7 +182,10 @@ class SideThird(Traversable):
         return [AParentSprite(f1, (16, 6, 48), (0, 10, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
 
     def make_platform_variants(self, ground, parents):
-        return [ALayout(ground, parents, True), ALayout(ground, parents + [plat.T], True)]
+        return [
+            ALayout(ground, parents, True, notes=["third"]),
+            ALayout(ground, parents + [plat.T], True, notes=["third", "far"]),
+        ]
 
 
 class SideDouble(LoadType):
