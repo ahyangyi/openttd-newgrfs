@@ -1,5 +1,5 @@
 import grf
-from station.lib import AStation, AMetaStation, LayoutSprite
+from station.lib import AStation, LayoutSprite
 from agrf.magic import Switch
 from ..layouts import *
 from ..demos import *

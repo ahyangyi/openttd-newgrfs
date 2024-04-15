@@ -1,6 +1,4 @@
-import grf
 from station.lib import AStation, AMetaStation
-from agrf.magic import Switch
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib.demos import *
 from .dovemere_2018_lib.flexible_stations.semi_auto import flex0
