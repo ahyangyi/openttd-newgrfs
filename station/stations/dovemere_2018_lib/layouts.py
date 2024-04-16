@@ -57,7 +57,8 @@ def get_category(internal_category, back, notes):
 platform_height = 10
 base_height = 16
 plat = AParentSprite(platform_sprites[0], (16, 6, platform_height), (0, 10, 0))
-plat_nt = AParentSprite(platform_sprites[4], (16, 6, platform_height), (0, 10, 0))
+plat_nt = AParentSprite(platform_sprites[16], (16, 6, platform_height), (0, 10, 0))
+plat_shed = AParentSprite(platform_sprites[8], (16, 6, platform_height), (0, 10, 0))
 third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
 
 
@@ -139,6 +140,26 @@ class TraversablePlatform(Traversable):
             ALayout(ground, parents + [plat], True, notes=["near"]),
             ALayout(ground, parents + [plat.T], True, notes=["far"]),
             ALayout(ground, parents + [plat, plat.T], True, notes=["both"]),
+        ]
+
+
+class TraversablePlatformSide(Traversable):
+    def get_sprites(self, voxel):
+        sprite = self.symmetry.create_variants(voxel.spritesheet(zdiff=platform_height * 2))
+        return [AParentSprite(sprite, (16, 16, 48 - platform_height), (0, 0, platform_height))]
+
+    def make_platform_variants(self, ground, parents):
+        if self.symmetry.is_symmetrical_y():
+            return [
+                ALayout(ground, parents, True),
+                ALayout(ground, parents + [plat_shed], True, notes=["y", "near"]),
+                ALayout(ground, parents + [plat_shed, plat_shed.T], True, notes=["both"]),
+            ]
+        return [
+            ALayout(ground, parents, True),
+            ALayout(ground, parents + [plat_shed], True, notes=["near"]),
+            ALayout(ground, parents + [plat_shed.T], True, notes=["far"]),
+            ALayout(ground, parents + [plat_shed, plat_shed.T], True, notes=["both"]),
         ]
 
 
@@ -228,7 +249,8 @@ class SideTriple(LoadType):
 
 def quickload(source, type, traversable, platform, category):
     worker_class = {
-        (True, True): TraversablePlatform,
+        (True, "central"): TraversablePlatform,
+        (True, True): TraversablePlatformSide,
         (True, False): TraversableCorridor,
         (True, "third"): SideThird,
         (False, True): SidePlatform,
@@ -306,9 +328,9 @@ entries = []
         ("front_normal", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
         ("front_gate", BuildingSpriteSheetFull, False, False, "F0"),
         ("front_gate_extender", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
-        ("central", BuildingSpriteSheetSymmetrical, True, True, "N"),
-        ("central_windowed", BuildingSpriteSheetSymmetricalY, True, True, "N"),
-        ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True, True, "N"),
+        ("central", BuildingSpriteSheetSymmetrical, True, "central", "N"),
+        ("central_windowed", BuildingSpriteSheetSymmetricalY, True, "central", "N"),
+        ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True, "central", "N"),
         ("side_a", BuildingSpriteSheetFull, True, True, "A"),
         ("side_a_windowed", BuildingSpriteSheetFull, True, True, "A"),
         ("side_a2", BuildingSpriteSheetSymmetricalY, True, True, "A"),

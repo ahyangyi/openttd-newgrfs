@@ -3,6 +3,7 @@ from station.lib import (
     AMetaStation,
     BuildingSpriteSheetSymmetricalX,
     BuildingSpriteSheetSymmetrical,
+    BuildingSpriteSheetFull,
     Demo,
     ADefaultGroundSprite,
     AGroundSprite,
@@ -40,12 +41,14 @@ layouts = []
 [
     (pl1_low_white, pl1_low_white_d),
     (pl1_low_white_shed, pl1_low_white_shed_d),
+    (pl1_low_white_shed_building, pl1_low_white_shed_building_d),
     (pl1_low_white_nt, pl1_low_white_d_nt),
 ] = [
     quickload(name, type, traversable)
     for name, type, traversable in [
         ("pl1_low_white", BuildingSpriteSheetSymmetricalX, True),
         ("pl1_low_white_shed", BuildingSpriteSheetSymmetricalX, True),
+        ("pl1_low_white_shed_building", BuildingSpriteSheetFull, True),
         ("pl1_low_white_side", BuildingSpriteSheetSymmetricalX, False),
     ]
 ]
