@@ -203,6 +203,7 @@ class LazyVoxel(Config):
             [x["angle"] for x in self.config["sprites"]],
             bbox=self.config["size"],
             deltas=self.config.get("agrf_deltas", None),  # no default -- erroring out is graceful
+            z_scale=self.config.get("z_scale", 1.0),
             bbox_joggle=self.config.get("agrf_bbox_joggle", None),
             xdiff=real_xdiff,
             ydiff=real_ydiff,

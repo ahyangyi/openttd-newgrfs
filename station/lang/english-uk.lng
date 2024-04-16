@@ -11,9 +11,21 @@ STR_STATION_FLEXIBLE_UNTRAVERSABLE  :Flexible Station Building (No Rail at Ends)
 
 STR_STATION_CLASS_E88A9CA       :AWSS: Wuhu - Flexible
 STR_STATION_CLASS_E88A9C80      :AWSS: Wuhu - Modular, Front
-STR_STATION_CLASS_E88A9C81      :AWSS: Wuhu - Modular, Front Corner
+STR_STATION_CLASS_E88A9C81      :AWSS: Wuhu - Modular, Front, Platform
+STR_STATION_CLASS_E88A9C82      :AWSS: Wuhu - Modular, Front, Rail
+STR_STATION_CLASS_E88A9C83      :AWSS: Wuhu - Modular, Front, Both
+STR_STATION_CLASS_E88A9C84      :AWSS: Wuhu - Modular, Front Corner
+STR_STATION_CLASS_E88A9C85      :AWSS: Wuhu - Modular, Front Corner, Platform
+STR_STATION_CLASS_E88A9C86      :AWSS: Wuhu - Modular, Front Corner, Rail
+STR_STATION_CLASS_E88A9C87      :AWSS: Wuhu - Modular, Front Corner, Both
 STR_STATION_CLASS_E88A9C88      :AWSS: Wuhu - Modular, Back
-STR_STATION_CLASS_E88A9C89      :AWSS: Wuhu - Modular, Back Corner
+STR_STATION_CLASS_E88A9C89      :AWSS: Wuhu - Modular, Back, Platform
+STR_STATION_CLASS_E88A9C8A      :AWSS: Wuhu - Modular, Back, Rail
+STR_STATION_CLASS_E88A9C8B      :AWSS: Wuhu - Modular, Back, Both
+STR_STATION_CLASS_E88A9C8C      :AWSS: Wuhu - Modular, Back Corner
+STR_STATION_CLASS_E88A9C8D      :AWSS: Wuhu - Modular, Back Corner, Platform
+STR_STATION_CLASS_E88A9C8E      :AWSS: Wuhu - Modular, Back Corner, Rail
+STR_STATION_CLASS_E88A9C8F      :AWSS: Wuhu - Modular, Back Corner, Both
 STR_STATION_CLASS_E88A9CF0      :AWSS: Wuhu - Modular, Centre
 STR_STATION_CLASS_E88A9C90      :AWSS: Wuhu - Modular, Side A, No Platform
 STR_STATION_CLASS_E88A9C91      :AWSS: Wuhu - Modular, Side A, Near Platform

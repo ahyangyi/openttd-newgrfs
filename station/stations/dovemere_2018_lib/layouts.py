@@ -24,7 +24,13 @@ from station.stations.misc import rail
 
 def get_category(internal_category, back, notes):
     if internal_category in ["F0", "F1"]:
-        ret = 0x80 + (internal_category[1] == "1")
+        ret = 0x80
+        if "far" in notes:
+            ret += 0x1
+        if "third" in notes:
+            ret += 0x2
+        if internal_category[1] == "1":
+            ret += 0x4
         if back:
             ret += 0x8
     elif internal_category in ["A", "B", "C", "D"]:
@@ -146,66 +152,74 @@ class Side(LoadType):
         return AGroundSprite(gray), []
 
 
-class SideFull(Side):
+class TwoFloorMixin:
     def get_sprites(self, voxel):
-        f1v = voxel.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
-        f2v = voxel.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
-        f1 = self.symmetry.create_variants(f1v.spritesheet())
-        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
-        return [AParentSprite(f1, (16, 16, 48), (0, 0, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
+        if isinstance(voxel, tuple):
+            f1base, f2 = voxel
+        else:
+            f1base = f2base = voxel
+            f2v = f2base.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+            f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
+        f1v = f1base.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
+        f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x))
+        return [
+            AParentSprite(f1, (16, self.f1x, 48), (0, 16 - self.f1x, 0)),
+            AParentSprite(f2, (16, 16, 32), (0, 0, base_height)),
+        ]
 
 
-class SidePlatform(Side):
-    def get_sprites(self, voxel):
-        f1v = voxel.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
-        f2v = voxel.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
-        f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=6))
-        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
-        return [AParentSprite(f1, (16, 10, 48), (0, 6, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
+class SideFull(TwoFloorMixin, Side):
+    f1x = 16
+
+
+class SidePlatform(TwoFloorMixin, Side):
+    f1x = 10
 
     def make_platform_variants(self, ground, parents):
-        return [ALayout(ground, parents + [plat_nt.T], True)]
+        return [ALayout(ground, parents + [plat_nt.T], True, notes=["far"])]
 
 
-class SideThird(Traversable):
-    def get_sprites(self, voxel):
-        f1v = voxel.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
-        f2v = voxel.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
-        f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=10))
-        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
-        return [AParentSprite(f1, (16, 6, 48), (0, 10, 0)), AParentSprite(f2, (16, 16, 32), (0, 0, base_height))]
+class SideThird(TwoFloorMixin, Traversable):
+    f1x = 6
 
     def make_platform_variants(self, ground, parents):
-        return [ALayout(ground, parents, True), ALayout(ground, parents + [plat.T], True)]
+        return [
+            ALayout(ground, parents, True, notes=["third"]),
+            ALayout(ground, parents + [plat.T], True, notes=["third", "far"]),
+        ]
 
 
 class SideDouble(LoadType):
     def do_work(self, v):
+        f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
         return (
             SideFull(
-                v.discard_layers(("ground level - platform"), "full"), self.symmetry, self.internal_category
+                (v.discard_layers(("ground level - platform"), "full"), f2), self.symmetry, self.internal_category
             ).load_list()
             + SidePlatform(
-                v.discard_layers(("ground level"), "platform"), self.symmetry, self.internal_category
+                (v.discard_layers(("ground level"), "platform"), f2), self.symmetry, self.internal_category
             ).load_list()
         )
 
 
 class SideTriple(LoadType):
     def do_work(self, v):
+        f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
         return (
             SideFull(
-                v.discard_layers(("ground level - platform", "ground level - third"), "full"),
+                (v.discard_layers(("ground level - platform", "ground level - third"), "full"), f2),
                 self.symmetry,
                 self.internal_category,
             ).load_list()
             + SidePlatform(
-                v.discard_layers(("ground level", "ground level - third"), "platform"),
+                (v.discard_layers(("ground level", "ground level - third"), "platform"), f2),
                 self.symmetry,
                 self.internal_category,
             ).load_list()
             + SideThird(
-                v.discard_layers(("ground level", "ground level - platform"), "third"),
+                (v.discard_layers(("ground level", "ground level - platform"), "third"), f2),
                 self.symmetry,
                 self.internal_category,
             ).load_list()
