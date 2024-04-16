@@ -18,19 +18,3 @@ normal_demo = Demo(
     ],
     remap=get_1cc_remap(CompanyColour.WHITE),
 )
-
-demo_sprites = []
-for demo in [normal_demo, normal_demo.M]:
-    demo_sprites.append(
-        grf.AlternativeSprites(
-            *[
-                LayoutSprite(demo, 128 * scale, 128 * scale, xofs=0, yofs=-16 * scale, scale=scale, bpp=bpp)
-                for scale in [1, 2, 4]
-                for bpp in [32]
-            ]
-        )
-    )
-demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))], False)
-demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))], False)
-layouts.append(demo_layout1)
-layouts.append(demo_layout2)

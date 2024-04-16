@@ -1,9 +1,33 @@
 import grf
-from station.lib import AStation, LayoutSprite
+from station.lib import AStation, LayoutSprite, Demo
 from agrf.magic import Switch
 from ..layouts import *
 from ..demos import *
-from ..demos.normal import demo_layout1
+
+my_demo = Demo(
+    "4×4 full station layout",
+    [
+        [corner_platform.T, front_gate.T, front_gate.TR, corner_platform.TR],
+        [side_a3_n.T, central_windowed, central_windowed.R, side_a3_n.TR],
+        [side_a3_n, central_windowed, central_windowed.R, side_a3_n.R],
+        [corner_platform, front_gate, front_gate.R, corner_platform.R],
+    ],
+)
+demo_sprites = []
+for demo in [my_demo, my_demo.M]:
+    demo_sprites.append(
+        grf.AlternativeSprites(
+            *[
+                LayoutSprite(demo, 64 * scale, 64 * scale, xofs=0, yofs=0, scale=scale, bpp=bpp)
+                for scale in [1, 2, 4]
+                for bpp in [32]
+            ]
+        )
+    )
+demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))], False)
+demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))], False)
+layouts.append(demo_layout1)
+layouts.append(demo_layout2)
 
 
 def get_back_index(l, r):
