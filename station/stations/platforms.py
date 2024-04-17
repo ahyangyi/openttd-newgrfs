@@ -12,50 +12,43 @@ from station.lib import (
     AttrDict,
 )
 from agrf.graphics.voxel import LazyVoxel
-from .ground import sprites as ground_sprites, gray
+from .ground import gray
 
 
-def quickload(name, type, traversable):
+def quickload(name, symmetry, traversable):
     v = LazyVoxel(
         name,
         prefix="station/voxels/render/csps",
         voxel_getter=lambda path=f"station/voxels/csps/{name}.vox": path,
         load_from="station/files/csps-gorender.json",
-        subset=type.render_indices(),
+        subset=symmetry.render_indices(),
     )
-    sprite = type.create_variants(v.spritesheet(xdiff=10))
-    sprites.extend(sprite.all_variants)
+    sprite = symmetry.create_variants(v.spritesheet(xdiff=10))
+    named_sprites[name] = sprite
     ps = AParentSprite(sprite, (16, 6, 10 if "shed" in name else 6), (0, 10, 0))
-    ret = []
-    for l, make_symmetrical in [([ps], False), ([ps, ps.T], True)]:
+    for l, make_symmetrical, suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
         groundsprite = ADefaultGroundSprite(1012) if traversable else AGroundSprite(gray)
-        cur_type = BuildingSpriteSheetSymmetrical if make_symmetrical else type
-        var = cur_type.get_all_variants(ALayout(groundsprite, l, True))
+        cur_symmetry = BuildingSpriteSheetSymmetrical if make_symmetrical else symmetry
+        var = cur_symmetry.get_all_variants(ALayout(groundsprite, l, True))
         layouts.extend(var)
-        ret.append(cur_type.create_variants(var))
+        l = cur_symmetry.create_variants(var)
+        named_tiles[name + suffix] = l
 
-    return ret
 
-
-sprites = []
 layouts = []
-[
-    (pl1_low_white, pl1_low_white_d),
-    (pl1_low_white_nt, pl1_low_white_d_nt),
-    (pl1_low_white_shed, pl1_low_white_shed_d),
-    (pl1_low_white_shed_nt, pl1_low_white_shed_d_nt),
-    (pl1_low_white_shed_building, pl1_low_white_shed_building_d),
-] = [
-    quickload(name, type, traversable)
-    for name, type, traversable in [
-        ("pl1_low_white", BuildingSpriteSheetSymmetricalX, True),
-        ("pl1_low_white_side", BuildingSpriteSheetSymmetricalX, False),
-        ("pl1_low_white_shed", BuildingSpriteSheetSymmetricalX, True),
-        ("pl1_low_white_shed_side", BuildingSpriteSheetSymmetricalX, False),
-        ("pl1_low_white_shed_building", BuildingSpriteSheetFull, True),
-    ]
-]
-sprites = sprites + ground_sprites
+named_sprites = AttrDict()
+named_tiles = AttrDict()
+
+for name, symmetry, traversable in [
+    ("pl1_low_white", BuildingSpriteSheetSymmetricalX, True),
+    ("pl1_low_white_side", BuildingSpriteSheetSymmetricalX, False),
+    ("pl1_low_white_shed", BuildingSpriteSheetSymmetricalX, True),
+    ("pl1_low_white_shed_side", BuildingSpriteSheetSymmetricalX, False),
+    ("pl1_low_white_shed_building", BuildingSpriteSheetFull, True),
+]:
+    quickload(name, symmetry, traversable)
+
+named_tiles.globalize()
 
 the_stations = AMetaStation(
     [
@@ -74,7 +67,7 @@ the_stations = AMetaStation(
     layouts,
     [
         Demo("Platform", [[pl1_low_white], [pl1_low_white_d], [pl1_low_white.T]]),
-        Demo("Platform with concrete grounds", [[pl1_low_white_nt], [pl1_low_white_d], [pl1_low_white_nt.T]]),
+        Demo("Platform with concrete grounds", [[pl1_low_white_side], [pl1_low_white_d], [pl1_low_white_side.T]]),
         Demo("Platform with shed", [[pl1_low_white_shed], [pl1_low_white_shed_d], [pl1_low_white_shed.T]]),
     ],
 )
