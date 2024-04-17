@@ -1,5 +1,4 @@
 import os
-import inspect
 from station.lib import (
     BuildingSpriteSheetFull,
     BuildingSpriteSheetSymmetrical,
@@ -11,13 +10,14 @@ from station.lib import (
     AGroundSprite,
     AParentSprite,
     ALayout,
+    AttrDict,
 )
 from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
-    sprites as platform_sprites,
-    pl1_low_white_d as platform,
-    pl1_low_white as platform_s,
-    pl1_low_white_nt as platform_s_nt,
+    named_sprites as platform_sprites,
+    pl1_low_white_shed_d as platform,
+    pl1_low_white_shed as platform_s,
+    pl1_low_white_side_shed as platform_s_nt,
 )
 from station.stations.ground import gray, gray_third, gray_layout
 from station.stations.misc import rail
@@ -55,23 +55,13 @@ def get_category(internal_category, back, notes):
     return b"\xe8\x8a\x9c" + ret.to_bytes(1, "little")
 
 
-platform_height = 6
+platform_height = 10
 base_height = 16
-plat = AParentSprite(platform_sprites[0], (16, 6, platform_height), (0, 10, 0))
-plat_nt = AParentSprite(platform_sprites[4], (16, 6, platform_height), (0, 10, 0))
+plat = AParentSprite(platform_sprites.pl1_low_white, (16, 6, platform_height), (0, 10, 0))
+plat_nt = AParentSprite(platform_sprites.pl1_low_white_side, (16, 6, platform_height), (0, 10, 0))
+plat_shed = AParentSprite(platform_sprites.pl1_low_white_shed_building, (16, 6, platform_height), (0, 10, 0))
+plat_shed_nt = AParentSprite(platform_sprites.pl1_low_white_side_shed, (16, 6, platform_height), (0, 10, 0))
 third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
-
-
-class AttrDict(dict):
-    def __init__(self, *args, **kwargs):
-        super(AttrDict, self).__init__(*args, **kwargs)
-        self.__dict__ = self
-
-    def globalize(self):
-        # black magic supplied by ChatGPT, don't ask
-        caller_module = inspect.currentframe().f_back.f_globals
-        for k, v in self.items():
-            caller_module[k] = v
 
 
 class LoadType:
@@ -143,6 +133,23 @@ class TraversablePlatform(Traversable):
             self.register(ALayout(ground, parents + [plat, plat.T], True, notes=["both"]))
 
 
+class TraversablePlatformSide(Traversable):
+    def get_sprites(self, voxel):
+        sprite = self.symmetry.create_variants(voxel.spritesheet(zdiff=platform_height * 2))
+        return [AParentSprite(sprite, (16, 16, 48 - platform_height), (0, 0, platform_height))]
+
+    def make_platform_variants(self, ground, parents):
+        if self.symmetry.is_symmetrical_y():
+            self.register(ALayout(ground, parents, True), "_x")
+            self.register(ALayout(ground, parents + [plat_shed], True, notes=["y", "near"]), "_n")
+            self.register(ALayout(ground, parents + [plat_shed, plat_shed.T], True, notes=["both"]))
+        else:
+            self.register(ALayout(ground, parents, True), "_x")
+            self.register(ALayout(ground, parents + [plat_shed], True, notes=["near"]), "_n")
+            self.register(ALayout(ground, parents + [plat_shed.T], True, notes=["near"]), "_f")
+            self.register(ALayout(ground, parents + [plat_shed, plat_shed.T], True, notes=["both"]))
+
+
 class TraversableCorridor(Traversable):
     def get_ground_sprites(self):
         return ADefaultGroundSprite(1012), [third, third.T]
@@ -177,7 +184,7 @@ class SidePlatform(TwoFloorMixin, Side):
     f1x = 10
 
     def make_platform_variants(self, ground, parents):
-        self.register(ALayout(ground, parents + [plat_nt.T], True, notes=["far"]))
+        self.register(ALayout(ground, parents + [plat_shed_nt.T], True, notes=["far"]))
 
 
 class SideThird(TwoFloorMixin, Traversable):
@@ -185,7 +192,7 @@ class SideThird(TwoFloorMixin, Traversable):
 
     def make_platform_variants(self, ground, parents):
         self.register(ALayout(ground, parents, True, notes=["third"]))
-        self.register(ALayout(ground, parents + [plat.T], True, notes=["third", "far"]), "_f")
+        self.register(ALayout(ground, parents + [plat_shed.T], True, notes=["third", "far"]), "_f")
 
 
 class SideDouble(LoadType):
@@ -232,7 +239,8 @@ class SideTriple(LoadType):
 
 def quickload(source, type, traversable, groundtype, category):
     worker_class = {
-        (True, True): TraversablePlatform,
+        (True, "central"): TraversablePlatform,
+        (True, True): TraversablePlatformSide,
         (True, False): TraversableCorridor,
         (True, "third"): SideThird,
         (False, True): SidePlatform,
@@ -255,9 +263,9 @@ for name, symmetry, traversable, groundtype, category in [
     ("front_normal", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
     ("front_gate", BuildingSpriteSheetFull, False, False, "F0"),
     ("front_gate_extender", BuildingSpriteSheetSymmetricalX, False, False, "F0"),
-    ("central", BuildingSpriteSheetSymmetrical, True, True, "N"),
-    ("central_windowed", BuildingSpriteSheetSymmetricalY, True, True, "N"),
-    ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True, True, "N"),
+    ("central", BuildingSpriteSheetSymmetrical, True, "central", "N"),
+    ("central_windowed", BuildingSpriteSheetSymmetricalY, True, "central", "N"),
+    ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True, "central", "N"),
     ("side_a", BuildingSpriteSheetFull, True, True, "A"),
     ("side_a_windowed", BuildingSpriteSheetFull, True, True, "A"),
     ("side_a2", BuildingSpriteSheetSymmetricalY, True, True, "A"),

@@ -10,3 +10,4 @@ from .binary_variants import (
 from .layout import ADefaultGroundSprite, AGroundSprite, AParentSprite, ALayout, LayoutSprite
 from .metastation import AMetaStation
 from .demo import Demo
+from .utils import AttrDict
