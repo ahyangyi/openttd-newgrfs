@@ -58,8 +58,9 @@ def get_category(internal_category, back, notes):
 platform_height = 10
 base_height = 16
 plat = AParentSprite(platform_sprites[0], (16, 6, platform_height), (0, 10, 0))
-plat_nt = AParentSprite(platform_sprites[16], (16, 6, platform_height), (0, 10, 0))
-plat_shed = AParentSprite(platform_sprites[8], (16, 6, platform_height), (0, 10, 0))
+plat_nt = AParentSprite(platform_sprites[4], (16, 6, platform_height), (0, 10, 0))
+plat_shed = AParentSprite(platform_sprites[16], (16, 6, platform_height), (0, 10, 0))
+plat_shed_nt = AParentSprite(platform_sprites[12], (16, 6, platform_height), (0, 10, 0))
 third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
 
 

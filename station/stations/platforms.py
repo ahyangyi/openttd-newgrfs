@@ -40,16 +40,18 @@ sprites = []
 layouts = []
 [
     (pl1_low_white, pl1_low_white_d),
-    (pl1_low_white_shed, pl1_low_white_shed_d),
-    (pl1_low_white_shed_building, pl1_low_white_shed_building_d),
     (pl1_low_white_nt, pl1_low_white_d_nt),
+    (pl1_low_white_shed, pl1_low_white_shed_d),
+    (pl1_low_white_shed_nt, pl1_low_white_shed_d_nt),
+    (pl1_low_white_shed_building, pl1_low_white_shed_building_d),
 ] = [
     quickload(name, type, traversable)
     for name, type, traversable in [
         ("pl1_low_white", BuildingSpriteSheetSymmetricalX, True),
-        ("pl1_low_white_shed", BuildingSpriteSheetSymmetricalX, True),
-        ("pl1_low_white_shed_building", BuildingSpriteSheetFull, True),
         ("pl1_low_white_side", BuildingSpriteSheetSymmetricalX, False),
+        ("pl1_low_white_shed", BuildingSpriteSheetSymmetricalX, True),
+        ("pl1_low_white_shed_side", BuildingSpriteSheetSymmetricalX, True),
+        ("pl1_low_white_shed_building", BuildingSpriteSheetFull, True),
     ]
 ]
 sprites = sprites + ground_sprites
