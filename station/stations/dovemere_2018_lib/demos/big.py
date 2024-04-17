@@ -1,8 +1,9 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import *
+from station.stations.dovemere_2018_lib.layouts import named_tiles
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 
+named_tiles.globalize()
 
 big_demo = Demo(
     "8×12 station layout (roughly 1 grid = 25m)",

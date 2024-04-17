@@ -1,7 +1,9 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import *
+from station.stations.dovemere_2018_lib.layouts import named_tiles, platform, platform_s, platform_s_nt
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
+
+named_tiles.globalize()
 
 rail_row = [platform_s_nt.T.M, platform_s.M, platform_s.T.M, platform.M, platform_s.M, platform_s.T.M, platform_s_nt.M]
 top_building = [
