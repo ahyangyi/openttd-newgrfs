@@ -17,7 +17,7 @@ from station.stations.platforms import (
     sprites as platform_sprites,
     pl1_low_white_shed_d as platform,
     pl1_low_white_shed as platform_s,
-    pl1_low_white_nt as platform_s_nt,
+    pl1_low_white_shed_nt as platform_s_nt,
 )
 from station.stations.ground import gray, gray_third, gray_layout
 from station.stations.misc import rail
@@ -196,7 +196,7 @@ class SidePlatform(TwoFloorMixin, Side):
     f1x = 10
 
     def make_platform_variants(self, ground, parents):
-        self.register(ALayout(ground, parents + [plat_nt.T], True, notes=["far"]))
+        self.register(ALayout(ground, parents + [plat_shed_nt.T], True, notes=["far"]))
 
 
 class SideThird(TwoFloorMixin, Traversable):
@@ -204,7 +204,7 @@ class SideThird(TwoFloorMixin, Traversable):
 
     def make_platform_variants(self, ground, parents):
         self.register(ALayout(ground, parents, True, notes=["third"]))
-        self.register(ALayout(ground, parents + [plat.T], True, notes=["third", "far"]), "_f")
+        self.register(ALayout(ground, parents + [plat_shed.T], True, notes=["third", "far"]), "_f")
 
 
 class SideDouble(LoadType):

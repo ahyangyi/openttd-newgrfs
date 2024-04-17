@@ -50,7 +50,7 @@ layouts = []
         ("pl1_low_white", BuildingSpriteSheetSymmetricalX, True),
         ("pl1_low_white_side", BuildingSpriteSheetSymmetricalX, False),
         ("pl1_low_white_shed", BuildingSpriteSheetSymmetricalX, True),
-        ("pl1_low_white_shed_side", BuildingSpriteSheetSymmetricalX, True),
+        ("pl1_low_white_shed_side", BuildingSpriteSheetSymmetricalX, False),
         ("pl1_low_white_shed_building", BuildingSpriteSheetFull, True),
     ]
 ]
