@@ -1,8 +1,9 @@
 import grf
-from station.lib import AStation, LayoutSprite, Demo
+from station.lib import AStation, ALayout, ADefaultGroundSprite, AParentSprite, LayoutSprite, Demo
 from agrf.magic import Switch
-from ..layouts import *
-from ..demos import *
+from ..layouts import named_tiles, layouts
+
+named_tiles.globalize()
 
 my_demo = Demo(
     "4×4 full station layout",

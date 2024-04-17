@@ -1,7 +1,9 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import *
+from station.stations.dovemere_2018_lib.layouts import named_tiles, platform, platform_s
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
+
+named_tiles.globalize()
 
 rail_near = [platform_s, v_central_n, platform_s, platform_s, platform_s, v_central_n, platform_s]
 rail_far = [x.T for x in rail_near]
