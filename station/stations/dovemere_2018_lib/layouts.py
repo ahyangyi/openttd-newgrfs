@@ -18,7 +18,7 @@ from station.stations.platforms import (
     pl1_low_white as platform_s,
     pl1_low_white_nt as platform_s_nt,
 )
-from station.stations.ground import sprites as ground_sprites, gray, gray_third, gray_layout
+from station.stations.ground import gray, gray_third, gray_layout
 from station.stations.misc import rail
 
 

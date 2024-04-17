@@ -1,6 +1,6 @@
 from station.lib import AStation, AMetaStation
 from .dovemere_2018_lib.layouts import *
-from .dovemere_2018_lib.demos import *
+from .dovemere_2018_lib import demos
 from .dovemere_2018_lib.flexible_stations.semi_auto import flex0
 from .dovemere_2018_lib.flexible_stations.full_auto import flex1
 
@@ -30,18 +30,18 @@ the_stations = AMetaStation(
     ],
     entries,
     [
-        normal_demo,
-        big_demo,
-        big_half_demo,
-        real_yard_demo,
-        full_auto_demo,
-        semi_auto_demo,
-        side_auto_demo,
-        special_demo_g,
-        special_demo_p,
-        special_demo_cn,
-        special_demo_sa,
-        special_demo_cp,
-        special_demo_aq,
+        demos.normal_demo,
+        demos.big_demo,
+        demos.big_half_demo,
+        demos.real_yard_demo,
+        demos.full_auto_demo,
+        demos.semi_auto_demo,
+        demos.side_auto_demo,
+        demos.special_demo_g,
+        demos.special_demo_p,
+        demos.special_demo_cn,
+        demos.special_demo_sa,
+        demos.special_demo_cp,
+        demos.special_demo_aq,
     ],
 )
