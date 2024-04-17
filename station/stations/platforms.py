@@ -9,6 +9,7 @@ from station.lib import (
     AGroundSprite,
     AParentSprite,
     ALayout,
+    AttrDict,
 )
 from agrf.graphics.voxel import LazyVoxel
 from .ground import sprites as ground_sprites, gray

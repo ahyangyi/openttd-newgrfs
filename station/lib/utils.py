@@ -1,3 +1,4 @@
+import inspect
 from agrf.graphics.palette import company_colour_remap
 
 
@@ -13,3 +14,15 @@ def class_label_printable(x):
         else:
             ret.append(hex(byte)[2:].upper())
     return "".join(ret)
+
+
+class AttrDict(dict):
+    def __init__(self, *args, **kwargs):
+        super(AttrDict, self).__init__(*args, **kwargs)
+        self.__dict__ = self
+
+    def globalize(self):
+        # black magic supplied by ChatGPT, don't ask
+        caller_module = inspect.currentframe().f_back.f_globals
+        for k, v in self.items():
+            caller_module[k] = v

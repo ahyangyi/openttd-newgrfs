@@ -1,5 +1,4 @@
 import os
-import inspect
 from station.lib import (
     BuildingSpriteSheetFull,
     BuildingSpriteSheetSymmetrical,
@@ -11,6 +10,7 @@ from station.lib import (
     AGroundSprite,
     AParentSprite,
     ALayout,
+    AttrDict,
 )
 from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
@@ -62,18 +62,6 @@ plat_nt = AParentSprite(platform_sprites[4], (16, 6, platform_height), (0, 10, 0
 plat_shed = AParentSprite(platform_sprites[16], (16, 6, platform_height), (0, 10, 0))
 plat_shed_nt = AParentSprite(platform_sprites[12], (16, 6, platform_height), (0, 10, 0))
 third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
-
-
-class AttrDict(dict):
-    def __init__(self, *args, **kwargs):
-        super(AttrDict, self).__init__(*args, **kwargs)
-        self.__dict__ = self
-
-    def globalize(self):
-        # black magic supplied by ChatGPT, don't ask
-        caller_module = inspect.currentframe().f_back.f_globals
-        for k, v in self.items():
-            caller_module[k] = v
 
 
 class LoadType:
