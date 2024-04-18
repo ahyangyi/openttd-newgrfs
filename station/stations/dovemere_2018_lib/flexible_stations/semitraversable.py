@@ -42,6 +42,8 @@ def get_back_index(l, r):
 def get_left_index(t, d):
     if t + d == 2:
         return [corner, side_a2, corner.T][t]
+    if t + d == 3:
+        return [corner, side_a3, side_a3.T, corner.T][t]
     if t + d == 4:
         return [corner, side_a, side_b2, side_a.T, corner.T][t]
     a = [corner, side_a, side_b, side_c, side_b.T, side_a.T, corner.T]
@@ -51,13 +53,14 @@ def get_left_index(t, d):
         return a[-1 - min(d, 3)]
 
 
-def horizontal_layout(l, r, onetile, twotile, lwall, general, window, window_extender):
+def horizontal_layout(l, r, onetile, twotile, lwall, general, window, window_extender, threetile=None):
+    threetile = threetile or twotile
     if l + r == 0:
         return onetile
     if l + r == 1:
         return [twotile, twotile.R][l]
     if l + r == 2:
-        return [twotile, window_extender, twotile.R][l]
+        return [threetile, window_extender, threetile.R][l]
 
     e = l + r - 3
     c = (e + 1) // 3
@@ -82,7 +85,24 @@ left_wall = Switch(
 
 
 def get_central_index(l, r):
-    return horizontal_layout(l, r, v_central, side_d, left_wall, central, central_windowed, central_windowed_extender)
+    return horizontal_layout(
+        l,
+        r,
+        v_central,
+        Switch(
+            ranges={
+                0x11: side_a2_windowed,
+                **{0x10 + x: side_a3_windowed for x in range(2, 16)},
+                **{0x1 + 0x10 * x: side_a3_windowed.T for x in range(2, 16)},
+            },
+            default=side_d,
+            code="var(0x41, shift=8, and=0x000000ff)",
+        ),  # TODO: a3 or a2_windowed for threetile?
+        left_wall,
+        central,
+        central_windowed,
+        central_windowed_extender,
+    )
 
 
 def get_front_index(l, r):
