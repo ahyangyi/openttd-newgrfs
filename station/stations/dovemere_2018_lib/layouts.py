@@ -195,19 +195,48 @@ class SideThird(TwoFloorMixin, Traversable):
         self.register(ALayout(ground, parents + [plat_shed.T], True, notes=["third", "far"]), "_f")
 
 
+class HorizontalDouble(LoadType):
+    def load(self):
+        v = LazyVoxel(
+            os.path.basename(self.source),
+            prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(self.source)),
+            voxel_getter=lambda path=f"station/voxels/dovemere_2018/{self.source}.vox": path,
+            load_from="station/files/gorender.json",
+        )
+        self.do_work(v)
+
+    def do_work(self, v):
+        plat_symmetry = self.symmetry.break_y_symmetry()
+
+        f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f2v.subset(plat_symmetry.render_indices())
+        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
+
+        corridor = v.discard_layers(("ground level - platform",), "full")
+        corridor.subset(self.symmetry.render_indices())
+
+        plat_f1 = v.discard_layers(("ground level",), "platform")
+        plat_f1.subset(plat_symmetry.render_indices())
+
+        TraversableCorridor(
+            self.name, corridor, self.symmetry, self.internal_category  # XXX not a two-floor thing for now
+        ).load()
+        SidePlatform(self.name + "_platform", (plat_f1, f2), plat_symmetry, self.internal_category).load()
+
+
 class SideDouble(LoadType):
     def do_work(self, v):
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
         SideFull(
             self.name,
-            (v.discard_layers(("ground level - platform"), "full"), f2),
+            (v.discard_layers(("ground level - platform",), "full"), f2),
             self.symmetry,
             self.internal_category,
         ).load()
         SidePlatform(
             self.name + "_platform",
-            (v.discard_layers(("ground level"), "platform"), f2),
+            (v.discard_layers(("ground level",), "platform"), f2),
             self.symmetry,
             self.internal_category,
         ).load()
@@ -242,6 +271,7 @@ def quickload(source, type, traversable, groundtype, category):
         (True, "central"): TraversablePlatform,
         (True, True): TraversablePlatformSide,
         (True, False): TraversableCorridor,
+        (True, "double"): HorizontalDouble,
         (True, "third"): SideThird,
         (False, True): SidePlatform,
         (False, False): SideFull,
@@ -281,7 +311,7 @@ for name, symmetry, traversable, groundtype, category in [
     ("h_end_asym_gate", BuildingSpriteSheetFull, False, "triple", "H"),
     ("h_end_gate", BuildingSpriteSheetSymmetricalY, True, False, "H"),
     ("h_end_gate_1", BuildingSpriteSheetFull, True, False, "H"),
-    ("h_normal", BuildingSpriteSheetSymmetrical, True, False, "H"),
+    ("h_normal", BuildingSpriteSheetSymmetrical, True, "double", "H"),
     ("h_gate", BuildingSpriteSheetSymmetricalY, True, False, "H"),
     ("h_gate_1_platform", BuildingSpriteSheetFull, False, True, "H"),
     ("h_gate_extender", BuildingSpriteSheetSymmetrical, True, False, "H"),
