@@ -40,7 +40,7 @@ def get_front_index(l, r):
     return horizontal_layout(l, r, v_end_third_f, corner_third_f, front_normal, front_gate, front_gate_extender)
 
 
-cb14_1 = Switch(
+cb14 = Switch(
     ranges={
         (0, 1): Switch(
             ranges={
@@ -95,7 +95,7 @@ cb14_1 = Switch(
     code="var(0x41, shift=24, and=0x0000000f)",
 ).to_index(layouts)
 
-flex1 = AStation(
+traversable_station = AStation(
     id=0x01,
     translation_name="FLEXIBLE",
     layouts=layouts,
@@ -116,6 +116,6 @@ flex1 = AStation(
                 code="(extra_callback_info1 >> 20) & 0xf",
             )
         ),
-        "select_sprite_layout": grf.DualCallback(default=cb14_1, purchase=layouts.index(demo_layout1)),
+        "select_sprite_layout": grf.DualCallback(default=cb14, purchase=layouts.index(demo_layout1)),
     },
 )
