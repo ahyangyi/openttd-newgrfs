@@ -1,12 +1,12 @@
 import grf
-from station.lib import AStation, ALayout, ADefaultGroundSprite, AParentSprite, LayoutSprite, Demo
+from station.lib import AStation, ALayout, AGroundSprite, AParentSprite, LayoutSprite, Demo
 from agrf.magic import Switch
 from ..layouts import named_tiles, layouts
 
 named_tiles.globalize()
 
 my_demo = Demo(
-    "4×4 full station layout",
+    "4×4 semitraversable flexible station layout",
     [
         [corner_platform.T, front_gate.T, front_gate.TR, corner_platform.TR],
         [side_a3_n.T, central_windowed, central_windowed.R, side_a3_n.TR],
@@ -25,8 +25,12 @@ for demo in [my_demo, my_demo.M]:
             ]
         )
     )
-demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))], False)
-demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))], False)
+demo_layout1 = ALayout(
+    AGroundSprite(grf.EMPTY_SPRITE), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))], False
+)
+demo_layout2 = ALayout(
+    AGroundSprite(grf.EMPTY_SPRITE), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))], False
+)
 layouts.append(demo_layout1)
 layouts.append(demo_layout2)
 
@@ -38,6 +42,8 @@ def get_back_index(l, r):
 def get_left_index(t, d):
     if t + d == 2:
         return [corner, side_a2, corner.T][t]
+    if t + d == 3:
+        return [corner, side_a3, side_a3.T, corner.T][t]
     if t + d == 4:
         return [corner, side_a, side_b2, side_a.T, corner.T][t]
     a = [corner, side_a, side_b, side_c, side_b.T, side_a.T, corner.T]
@@ -47,13 +53,14 @@ def get_left_index(t, d):
         return a[-1 - min(d, 3)]
 
 
-def horizontal_layout(l, r, onetile, lwall, general, window, window_extender):
+def horizontal_layout(l, r, onetile, twotile, lwall, general, window, window_extender, threetile=None):
+    threetile = threetile or twotile
     if l + r == 0:
         return onetile
     if l + r == 1:
-        return [lwall, lwall.R][l]
+        return [twotile, twotile.R][l]
     if l + r == 2:
-        return [lwall, general, lwall.R][l]
+        return [threetile, window_extender, threetile.R][l]
 
     e = l + r - 3
     c = (e + 1) // 3
@@ -78,18 +85,35 @@ left_wall = Switch(
 
 
 def get_central_index(l, r):
-    return horizontal_layout(l, r, v_central, left_wall, central, central_windowed, central_windowed_extender)
+    return horizontal_layout(
+        l,
+        r,
+        v_central,
+        Switch(
+            ranges={
+                0x11: side_a2_windowed,
+                **{0x10 + x: side_a3_windowed for x in range(2, 16)},
+                **{0x1 + 0x10 * x: side_a3_windowed.T for x in range(2, 16)},
+            },
+            default=side_d,
+            code="var(0x41, shift=8, and=0x000000ff)",
+        ),  # TODO: a3 or a2_windowed for threetile?
+        left_wall,
+        central,
+        central_windowed,
+        central_windowed_extender,
+    )
 
 
 def get_front_index(l, r):
-    return horizontal_layout(l, r, v_end, corner, front_normal, front_gate, front_gate_extender)
+    return horizontal_layout(l, r, v_end_gate, corner_gate, corner, front_normal, front_gate, front_gate_extender)
 
 
 def get_single_index(l, r):
-    return horizontal_layout(l, r, tiny, h_end, h_normal, h_gate, h_gate_extender)
+    return horizontal_layout(l, r, tiny, h_end_gate, h_end, h_normal, h_gate, h_gate_extender)
 
 
-cb14_0 = Switch(
+cb14 = Switch(
     ranges={
         (0, 1): Switch(
             ranges={
@@ -144,13 +168,14 @@ cb14_0 = Switch(
     code="var(0x41, shift=24, and=0x0000000f)",
 ).to_index(layouts)
 
-flex0 = AStation(
+semitraversable_station = AStation(
     id=0x00,
     translation_name="FLEXIBLE_UNTRAVERSABLE",
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
     non_traversable_tiles=0b00111100,
+    disabled_platforms=0b11,
     callbacks={
         "select_tile_layout": grf.PurchaseCallback(
             purchase=Switch(
@@ -165,6 +190,6 @@ flex0 = AStation(
                 code="(extra_callback_info1 >> 20) & 0xf",
             )
         ),
-        "select_sprite_layout": grf.DualCallback(default=cb14_0, purchase=layouts.index(demo_layout1)),
+        "select_sprite_layout": grf.DualCallback(default=cb14, purchase=layouts.index(demo_layout1)),
     },
 )
