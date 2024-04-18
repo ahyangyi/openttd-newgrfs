@@ -1,13 +1,13 @@
 import grf
-from station.lib import AStation, ALayout, ADefaultGroundSprite, AParentSprite, LayoutSprite, Demo
+from station.lib import AStation, ALayout, AGroundSprite, AParentSprite, LayoutSprite, Demo
 from agrf.magic import Switch
 from ..layouts import named_tiles, layouts
-from .semi_auto import horizontal_layout, get_single_index, get_central_index
+from .semitraversable import horizontal_layout, get_single_index, get_central_index
 
 named_tiles.globalize()
 
 my_demo = Demo(
-    "4×4 full station layout",
+    "4×4 traversable flexible station layout",
     [
         [corner_third_f.T, front_gate.T, front_gate.TR, corner_third_f.TR],
         [side_a3_n.T, central_windowed, central_windowed.R, side_a3_n.TR],
@@ -26,8 +26,12 @@ for demo in [my_demo, my_demo.M]:
             ]
         )
     )
-demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))], False)
-demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))], False)
+demo_layout1 = ALayout(
+    AGroundSprite(grf.EMPTY_SPRITE), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))], False
+)
+demo_layout2 = ALayout(
+    AGroundSprite(grf.EMPTY_SPRITE), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))], False
+)
 layouts.append(demo_layout1)
 layouts.append(demo_layout2)
 
@@ -37,10 +41,23 @@ def get_back_index(l, r):
 
 
 def get_front_index(l, r):
-    return horizontal_layout(l, r, v_end_third_f, corner_third_f, front_normal, front_gate, front_gate_extender)
+    return horizontal_layout(
+        l,
+        r,
+        v_end_gate_third_f,
+        Switch(
+            ranges={0x1: corner_gate_2_third_f},
+            default=corner_gate_third_f,
+            code="var(0x41, shift=8, and=0x0000000f) + var(0x41, shift=12, and=0x0000000f)",  # XXX Fragile code due to .T
+        ),  # TODO: a3 or a2_windowed for threetile?
+        corner_third_f,
+        front_normal,
+        front_gate,
+        front_gate_extender,
+    )
 
 
-cb14_1 = Switch(
+cb14 = Switch(
     ranges={
         (0, 1): Switch(
             ranges={
@@ -95,7 +112,7 @@ cb14_1 = Switch(
     code="var(0x41, shift=24, and=0x0000000f)",
 ).to_index(layouts)
 
-flex1 = AStation(
+traversable_station = AStation(
     id=0x01,
     translation_name="FLEXIBLE",
     layouts=layouts,
@@ -116,6 +133,6 @@ flex1 = AStation(
                 code="(extra_callback_info1 >> 20) & 0xf",
             )
         ),
-        "select_sprite_layout": grf.DualCallback(default=cb14_1, purchase=layouts.index(demo_layout1)),
+        "select_sprite_layout": grf.DualCallback(default=cb14, purchase=layouts.index(demo_layout1)),
     },
 )
