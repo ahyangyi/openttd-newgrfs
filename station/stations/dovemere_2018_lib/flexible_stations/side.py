@@ -41,7 +41,7 @@ cb14 = Switch(
     },
     default=h_normal,
     code="var(0x41, shift=4, and=0x0000000f)",
-).to_index(layouts)
+)
 
 side_station = AStation(
     id=0x02,
@@ -52,6 +52,21 @@ side_station = AStation(
     non_traversable_tiles=0b11,
     callbacks={
         "select_tile_layout": 0,
-        "select_sprite_layout": grf.DualCallback(default=cb14, purchase=layouts.index(demo_layout1)),
+        "select_sprite_layout": grf.DualCallback(default=cb14.to_index(layouts), purchase=layouts.index(demo_layout1)),
+    },
+)
+
+back_side_station = AStation(
+    id=0x03,
+    translation_name="FLEXIBLE_BACK_SIDE",
+    layouts=layouts,
+    class_label=b"\xe8\x8a\x9cA",
+    cargo_threshold=40,
+    non_traversable_tiles=0b11,
+    callbacks={
+        "select_tile_layout": 0,
+        "select_sprite_layout": grf.DualCallback(
+            default=cb14.T.to_index(layouts), purchase=layouts.index(demo_layout1)
+        ),
     },
 )
