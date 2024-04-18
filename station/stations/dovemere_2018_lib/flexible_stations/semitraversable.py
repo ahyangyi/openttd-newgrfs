@@ -1,5 +1,5 @@
 import grf
-from station.lib import AStation, ALayout, ADefaultGroundSprite, AParentSprite, LayoutSprite, Demo
+from station.lib import AStation, ALayout, AGroundSprite, AParentSprite, LayoutSprite, Demo
 from agrf.magic import Switch
 from ..layouts import named_tiles, layouts
 
@@ -25,8 +25,12 @@ for demo in [my_demo, my_demo.M]:
             ]
         )
     )
-demo_layout1 = ALayout(ADefaultGroundSprite(1012), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))], False)
-demo_layout2 = ALayout(ADefaultGroundSprite(1011), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))], False)
+demo_layout1 = ALayout(
+    AGroundSprite(grf.EMPTY_SPRITE), [AParentSprite(demo_sprites[0], (16, 16, 48), (0, 0, 0))], False
+)
+demo_layout2 = ALayout(
+    AGroundSprite(grf.EMPTY_SPRITE), [AParentSprite(demo_sprites[1], (16, 16, 48), (0, 0, 0))], False
+)
 layouts.append(demo_layout1)
 layouts.append(demo_layout2)
 
@@ -151,6 +155,7 @@ semitraversable_station = AStation(
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
     non_traversable_tiles=0b00111100,
+    disabled_platforms=0b11,
     callbacks={
         "select_tile_layout": grf.PurchaseCallback(
             purchase=Switch(
