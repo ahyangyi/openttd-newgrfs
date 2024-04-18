@@ -42,7 +42,18 @@ def get_back_index(l, r):
 
 def get_front_index(l, r):
     return horizontal_layout(
-        l, r, v_end_third_f, corner_gate_third_f, corner_third_f, front_normal, front_gate, front_gate_extender
+        l,
+        r,
+        v_end_gate_third_f,
+        Switch(
+            ranges={0x1: corner_gate_2_third_f},
+            default=corner_gate_third_f,
+            code="var(0x41, shift=8, and=0x0000000f) + var(0x41, shift=12, and=0x0000000f)",  # XXX Fragile code due to .T
+        ),  # TODO: a3 or a2_windowed for threetile?
+        corner_third_f,
+        front_normal,
+        front_gate,
+        front_gate_extender,
     )
 
 
