@@ -6,7 +6,7 @@ from ..layouts import named_tiles, layouts
 named_tiles.globalize()
 
 my_demo = Demo(
-    "4×4 full station layout",
+    "4×4 semitraversable flexible station layout",
     [
         [corner_platform.T, front_gate.T, front_gate.TR, corner_platform.TR],
         [side_a3_n.T, central_windowed, central_windowed.R, side_a3_n.TR],
@@ -89,7 +89,7 @@ def get_single_index(l, r):
     return horizontal_layout(l, r, tiny, h_end, h_normal, h_gate, h_gate_extender)
 
 
-cb14_0 = Switch(
+cb14 = Switch(
     ranges={
         (0, 1): Switch(
             ranges={
@@ -144,7 +144,7 @@ cb14_0 = Switch(
     code="var(0x41, shift=24, and=0x0000000f)",
 ).to_index(layouts)
 
-flex0 = AStation(
+semitraversable_station = AStation(
     id=0x00,
     translation_name="FLEXIBLE_UNTRAVERSABLE",
     layouts=layouts,
@@ -165,6 +165,6 @@ flex0 = AStation(
                 code="(extra_callback_info1 >> 20) & 0xf",
             )
         ),
-        "select_sprite_layout": grf.DualCallback(default=cb14_0, purchase=layouts.index(demo_layout1)),
+        "select_sprite_layout": grf.DualCallback(default=cb14, purchase=layouts.index(demo_layout1)),
     },
 )

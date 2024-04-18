@@ -8,6 +8,8 @@ STR_STATION_PLATFORM                :Platform
 STR_STATION_PLATFORM_UNTRAVERSABLE  :Platform (No Rail)
 STR_STATION_FLEXIBLE                :Flexible Station Building
 STR_STATION_FLEXIBLE_UNTRAVERSABLE  :Flexible Station Building (No Rail at Ends)
+STR_STATION_FLEXIBLE_FRONT_SIDE     :Flexible Station Building (Track-side, front)
+STR_STATION_FLEXIBLE_BACK_SIDE      :Flexible Station Building (Track-side, back)
 
 STR_STATION_CLASS_E88A9CA       :AWSS: Wuhu - Flexible
 STR_STATION_CLASS_E88A9C80      :AWSS: Wuhu - Modular, Front

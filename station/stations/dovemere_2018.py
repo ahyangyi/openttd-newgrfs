@@ -1,12 +1,13 @@
 from station.lib import AStation, AMetaStation
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos
-from .dovemere_2018_lib.flexible_stations.semi_auto import flex0
+from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_station
 from .dovemere_2018_lib.flexible_stations.full_auto import flex1
+from .dovemere_2018_lib.flexible_stations.side import side_station
 
 
 the_stations = AMetaStation(
-    [flex0, flex1]
+    [semitraversable_station, flex1, side_station]
     + [
         AStation(
             id=0x10 + i,

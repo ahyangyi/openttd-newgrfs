@@ -2,12 +2,12 @@ import grf
 from station.lib import AStation, ALayout, ADefaultGroundSprite, AParentSprite, LayoutSprite, Demo
 from agrf.magic import Switch
 from ..layouts import named_tiles, layouts
-from .semi_auto import horizontal_layout, get_single_index, get_central_index
+from .semitraversable import horizontal_layout, get_single_index, get_central_index
 
 named_tiles.globalize()
 
 my_demo = Demo(
-    "4×4 full station layout",
+    "4×4 traversable flexible station layout",
     [
         [corner_third_f.T, front_gate.T, front_gate.TR, corner_third_f.TR],
         [side_a3_n.T, central_windowed, central_windowed.R, side_a3_n.TR],
