@@ -12,7 +12,7 @@ class LazyVoxel(Config):
     def __init__(self, name, *, prefix=None, voxel_getter=None, load_from=None, config=None, subset=None):
         super().__init__(load_from=load_from, config=config)
         if subset is not None:
-            self.config = self.subset(subset).config
+            self.in_place_subset(subset)
         self.name = name
         self.prefix = prefix
         self.voxel_getter = voxel_getter
@@ -29,6 +29,9 @@ class LazyVoxel(Config):
                     x["angle"], bounding_box, self.config["agrf_scale"], unnaturalness=self.config["agrf_unnaturalness"]
                 ),
             )
+
+    def in_place_subset(self, subset):
+        self.config = self.subset(subset).config
 
     @functools.cache
     def rotate(self, delta, suffix):
@@ -203,6 +206,7 @@ class LazyVoxel(Config):
             [x["angle"] for x in self.config["sprites"]],
             bbox=self.config["size"],
             deltas=self.config.get("agrf_deltas", None),  # no default -- erroring out is graceful
+            z_scale=self.config.get("z_scale", 1.0),
             bbox_joggle=self.config.get("agrf_bbox_joggle", None),
             xdiff=real_xdiff,
             ydiff=real_ydiff,
