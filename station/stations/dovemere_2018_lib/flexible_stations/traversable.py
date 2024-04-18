@@ -41,7 +41,9 @@ def get_back_index(l, r):
 
 
 def get_front_index(l, r):
-    return horizontal_layout(l, r, v_end_third_f, corner_third_f, front_normal, front_gate, front_gate_extender)
+    return horizontal_layout(
+        l, r, v_end_third_f, corner_gate_third_f, corner_third_f, front_normal, front_gate, front_gate_extender
+    )
 
 
 cb14 = Switch(
