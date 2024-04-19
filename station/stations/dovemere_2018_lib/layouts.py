@@ -201,13 +201,13 @@ class SideDouble(LoadType):
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
         SideFull(
             self.name,
-            (v.discard_layers(("ground level - platform"), "full"), f2),
+            (v.discard_layers(("ground level - platform",), "full"), f2),
             self.symmetry,
             self.internal_category,
         ).load()
         SidePlatform(
             self.name + "_platform",
-            (v.discard_layers(("ground level"), "platform"), f2),
+            (v.discard_layers(("ground level",), "platform"), f2),
             self.symmetry,
             self.internal_category,
         ).load()
