@@ -195,6 +195,38 @@ class SideThird(TwoFloorMixin, Traversable):
         self.register(ALayout(ground, parents + [plat_shed.T], True, notes=["third", "far"]), "_f")
 
 
+class HorizontalSingle(Traversable):
+    def load(self):
+        v = LazyVoxel(
+            os.path.basename(self.source),
+            prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(self.source)),
+            voxel_getter=lambda path=f"station/voxels/dovemere_2018/{self.source}.vox": path,
+            load_from="station/files/gorender.json",
+        )
+        self.do_work(v)
+
+    f1x = 6
+
+    def do_work(self, v):
+        ground, fake_ground_sprites = self.get_ground_sprites()
+
+        f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f2v.subset(self.symmetry.render_indices())
+        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
+
+        f1v = v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
+        f1_symmetry = self.symmetry.break_y_symmetry()
+        f1v.subset(f1_symmetry.render_indices())
+        f1 = f1_symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x))
+
+        f1s = AParentSprite(f1, (16, self.f1x, 48), (0, 16 - self.f1x, 0))
+        f2s = AParentSprite(f2, (16, 16, 32), (0, 0, base_height))
+
+        self.register(ALayout(ground, [f1s, f1s.T, f2s], True, notes=["third"]), "")
+        self.register(ALayout(ground, [f1s, f2s], True, notes=["third"]), "_third")
+        self.register(ALayout(ground, [f1s, f2s, plat_shed.T], True, notes=["third", "far"]), "_third_f")
+
+
 class HorizontalDouble(LoadType):
     def load(self):
         v = LazyVoxel(
@@ -271,6 +303,7 @@ def quickload(source, type, traversable, groundtype, category):
         (True, "central"): TraversablePlatform,
         (True, True): TraversablePlatformSide,
         (True, False): TraversableCorridor,
+        (True, "single"): HorizontalSingle,
         (True, "double"): HorizontalDouble,
         (True, "third"): SideThird,
         (False, True): SidePlatform,
@@ -306,7 +339,7 @@ for name, symmetry, traversable, groundtype, category in [
     ("side_b2", BuildingSpriteSheetSymmetricalY, True, True, "B"),
     ("side_c", BuildingSpriteSheetSymmetricalY, True, True, "C"),
     ("side_d", BuildingSpriteSheetSymmetricalY, True, True, "D"),
-    ("h_end", BuildingSpriteSheetSymmetricalY, True, False, "H"),
+    ("h_end", BuildingSpriteSheetSymmetricalY, True, "single", "H"),
     ("h_end_asym", BuildingSpriteSheetFull, False, "double", "H"),
     ("h_end_asym_gate", BuildingSpriteSheetFull, False, "triple", "H"),
     ("h_end_gate", BuildingSpriteSheetSymmetricalY, True, False, "H"),
@@ -321,7 +354,7 @@ for name, symmetry, traversable, groundtype, category in [
     ("v_end", BuildingSpriteSheetSymmetricalX, False, "triple", "F0"),
     ("v_end_gate", BuildingSpriteSheetSymmetricalX, False, "triple", "F0"),
     ("v_central", BuildingSpriteSheetSymmetrical, True, True, "N"),
-    ("tiny", BuildingSpriteSheetSymmetrical, True, False, "H"),
+    ("tiny", BuildingSpriteSheetSymmetrical, True, "single", "H"),
     ("tiny_asym_platform", BuildingSpriteSheetSymmetricalX, False, True, "H"),
     ("irregular/turn", BuildingSpriteSheetFull, False, False, "T"),
     ("irregular/turn_gate", BuildingSpriteSheetFull, False, False, "T"),
