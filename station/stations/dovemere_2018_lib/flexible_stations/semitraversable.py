@@ -67,9 +67,9 @@ def get_left_index(t, d):
     if t + d == 2:
         return [corner, side_a2, corner.T][t]
     if t + d == 3:
-        return [corner, side_a3, side_a3.T, corner.T][t]
+        return [corner, side_a3_n, side_a3_n.T, corner.T][t]
     if t + d == 4:
-        return [corner, side_a, side_b2, side_a.T, corner.T][t]
+        return [corner, side_a_f, side_b2, side_a_f.T, corner.T][t]
     a = [corner, side_a, side_b, side_c, side_b.T, side_a.T, corner.T]
     if t < d:
         return a[min(t, 3)]

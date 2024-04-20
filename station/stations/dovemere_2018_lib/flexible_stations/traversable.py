@@ -2,7 +2,7 @@ import grf
 from station.lib import AStation, ALayout, AGroundSprite, AParentSprite, LayoutSprite, Demo
 from agrf.magic import Switch
 from ..layouts import named_tiles, layouts
-from .semitraversable import horizontal_layout, get_single_index, get_central_index
+from .semitraversable import horizontal_layout, get_single_index
 
 named_tiles.globalize()
 
@@ -38,6 +38,55 @@ layouts.append(demo_layout2)
 
 def get_back_index(l, r):
     return get_front_index(l, r).T
+
+
+def get_left_index(t, d):
+    if t + d == 2:
+        return [corner, side_a2, corner.T][t]
+    if t + d == 3:
+        return [corner, side_a3, side_a3.T, corner.T][t]
+    if t + d == 4:
+        return [corner, side_a, side_b2, side_a.T, corner.T][t]
+    a = [corner, side_a, side_b, side_c, side_b.T, side_a.T, corner.T]
+    if t < d:
+        return a[min(t, 3)]
+    else:
+        return a[-1 - min(d, 3)]
+
+
+left_wall = Switch(
+    ranges={
+        t: Switch(
+            ranges={d: get_left_index(t, d) for d in range(16)},
+            default=side_c,
+            code="var(0x41, shift=8, and=0x0000000f)",
+        )
+        for t in range(16)
+    },
+    default=side_c,
+    code="var(0x41, shift=12, and=0x0000000f)",
+)
+
+
+def get_central_index(l, r):
+    return horizontal_layout(
+        l,
+        r,
+        v_central,
+        Switch(
+            ranges={
+                0x11: side_a2_windowed,
+                **{0x10 + x: side_a3_windowed for x in range(2, 16)},
+                **{0x1 + 0x10 * x: side_a3_windowed.T for x in range(2, 16)},
+            },
+            default=side_d,
+            code="var(0x41, shift=8, and=0x000000ff)",
+        ),  # TODO: a3 or a2_windowed for threetile?
+        left_wall,
+        central,
+        central_windowed,
+        central_windowed_extender,
+    )
 
 
 def get_front_index(l, r):
