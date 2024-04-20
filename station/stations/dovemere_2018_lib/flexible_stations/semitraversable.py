@@ -65,16 +65,22 @@ smart_corner_T = Switch(
 
 def get_left_index(t, d):
     if t + d == 2:
-        return [corner, side_a2, corner.T][t]
+        return [side_a2][t - 1]
     if t + d == 3:
-        return [corner, side_a3_n, side_a3_n.T, corner.T][t]
+        return [side_a3_n, side_a3_n.T][t - 1]
     if t + d == 4:
-        return [corner, side_a_f, side_b2, side_a_f.T, corner.T][t]
-    a = [corner, side_a, side_b, side_c, side_b.T, side_a.T, corner.T]
-    if t < d:
-        return a[min(t, 3)]
+        return [side_a_f, side_b2, side_a_f.T][t - 1]
+    if (t + d) % 4 == 0:
+        a = [side_a_f, side_b_n, side_c_n.T, side_c_n]
     else:
-        return a[-1 - min(d, 3)]
+        a = [side_a_n, side_b_f, side_c_n, side_c_n.T]
+
+    if t == d:
+        return side_c
+    if t < d:
+        return a[min(t - 1, (t - 1) % 2 + 2)]
+    else:
+        return a[min(d - 1, (d - 1) % 2 + 2)].T
 
 
 def horizontal_layout(l, r, onetile, twotile, lwall, general, window, window_extender, threetile=None):
@@ -97,11 +103,11 @@ def horizontal_layout(l, r, onetile, twotile, lwall, general, window, window_ext
 left_wall = Switch(
     ranges={
         t: Switch(
-            ranges={d: get_left_index(t, d) for d in range(16)},
+            ranges={d: get_left_index(t, d) for d in range(1, 16)},
             default=side_c,
             code="var(0x41, shift=8, and=0x0000000f)",
         )
-        for t in range(16)
+        for t in range(1, 16)
     },
     default=side_c,
     code="var(0x41, shift=12, and=0x0000000f)",
