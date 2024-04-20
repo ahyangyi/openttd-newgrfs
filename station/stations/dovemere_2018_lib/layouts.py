@@ -211,12 +211,12 @@ class HorizontalSingle(Traversable):
         ground, fake_ground_sprites = self.get_ground_sprites()
 
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
-        f2v.subset(self.symmetry.render_indices())
+        f2v.in_place_subset(self.symmetry.render_indices())
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         f1v = v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         f1_symmetry = self.symmetry.break_y_symmetry()
-        f1v.subset(f1_symmetry.render_indices())
+        f1v.in_place_subset(f1_symmetry.render_indices())
         f1 = f1_symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x))
 
         f1s = AParentSprite(f1, (16, self.f1x, 48), (0, 16 - self.f1x, 0))
@@ -241,14 +241,14 @@ class HorizontalDouble(LoadType):
         plat_symmetry = self.symmetry.break_y_symmetry()
 
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
-        f2v.subset(plat_symmetry.render_indices())
+        f2v.in_place_subset(plat_symmetry.render_indices())
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         corridor = v.discard_layers(("ground level - platform",), "full")
-        corridor.subset(self.symmetry.render_indices())
+        corridor.in_place_subset(self.symmetry.render_indices())
 
         plat_f1 = v.discard_layers(("ground level",), "platform")
-        plat_f1.subset(plat_symmetry.render_indices())
+        plat_f1.in_place_subset(plat_symmetry.render_indices())
 
         TraversableCorridor(
             self.name, corridor, self.symmetry, self.internal_category  # XXX not a two-floor thing for now
