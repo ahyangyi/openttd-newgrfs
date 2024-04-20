@@ -35,6 +35,24 @@ layouts.append(demo_layout1)
 layouts.append(demo_layout2)
 
 
+def determine_platform(t, d):
+    if (t + d) % 2 == 1:
+        return "fn"[t % 2]
+    if (t + d) % 4 == 0:
+        if t == 0 or d == 0:
+            return "x"
+        if t < d:
+            return "nf"[t % 2]
+        if t == d:
+            return "d"
+        return "fn"[t % 2]
+    if t < d:
+        return "fn"[t % 2]
+    if t == d:
+        return "d"
+    return "nf"[t % 2]
+
+
 def get_back_index(l, r):
     return get_front_index(l, r).T
 
