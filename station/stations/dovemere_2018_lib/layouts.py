@@ -331,6 +331,50 @@ class HorizontalTriple(Traversable):
         SidePlatform(self.name + "_platform", (plat_f1, f2), f1_symmetry, self.internal_category).load()
 
 
+class HorizontalTripleAsym(Traversable):
+    def load(self):
+        v = LazyVoxel(
+            os.path.basename(self.source),
+            prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(self.source)),
+            voxel_getter=lambda path=f"station/voxels/dovemere_2018/{self.source}.vox": path,
+            load_from="station/files/gorender.json",
+        )
+        self.do_work(v)
+
+    f1x = 6
+
+    def do_work(self, v):
+        ground, fake_ground_sprites = self.get_ground_sprites()
+
+        f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f2v.in_place_subset(self.symmetry.render_indices())
+        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
+
+        f1_symmetry = self.symmetry.break_y_symmetry()
+        f1v = v.discard_layers(("ground level - platform",), "full")
+
+        plat_f1 = v.discard_layers(("ground level",), "platform")
+        plat_f1.in_place_subset(f1_symmetry.render_indices())
+
+        f1v = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
+        f1vb = v.mask_clip_away("station/voxels/dovemere_2018/masks/front.vox", "f1")
+        f1vf = v.mask_clip_away("station/voxels/dovemere_2018/masks/back.vox", "f1")
+        f1_symmetry = self.symmetry.break_y_symmetry()
+        f1vb.in_place_subset(f1_symmetry.render_indices())
+        f1vf.in_place_subset(f1_symmetry.render_indices())
+        f1f = f1_symmetry.create_variants(f1vf.spritesheet(xdiff=16 - self.f1x))
+        f1b = f1_symmetry.create_variants(f1vb.spritesheet())
+
+        f1fs = AParentSprite(f1f, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
+        f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 0, 0))
+        f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
+
+        self.register(ALayout(ground, [f1fs, f1bs, f2s], True), "")
+        self.register(ALayout(ground, [f1fs, f2s], True, notes=["third", "y"]), "_third")
+        self.register(ALayout(ground, [f1fs, f2s, plat_shed.T], True, notes=["third", "y", "far"]), "_third_f")
+        SidePlatform(self.name + "_platform", (plat_f1, f2), f1_symmetry, self.internal_category).load()
+
+
 class SideDouble(LoadType):
     def do_work(self, v):
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
@@ -382,6 +426,7 @@ def quickload(source, type, traversable, groundtype, category):
         (True, "single-1"): HorizontalSingleAsym,
         (True, "double"): HorizontalDouble,
         (True, "triple"): HorizontalTriple,
+        (True, "triple-1"): HorizontalTripleAsym,
         (True, "third"): SideThird,
         (False, True): SidePlatform,
         (False, False): SideFull,
@@ -423,7 +468,7 @@ for name, symmetry, traversable, groundtype, category in [
     ("h_end_gate_1", BuildingSpriteSheetFull, True, "single-1", "H"),
     ("h_normal", BuildingSpriteSheetSymmetrical, True, "triple", "H"),
     ("h_gate", BuildingSpriteSheetSymmetricalY, True, False, "H"),
-    ("h_gate_1_platform", BuildingSpriteSheetFull, False, True, "H"),
+    ("h_gate_1", BuildingSpriteSheetFull, True, "triple-1", "H"),
     ("h_gate_extender", BuildingSpriteSheetSymmetrical, True, False, "H"),
     ("h_gate_extender_1_platform", BuildingSpriteSheetFull, False, True, "H"),
     ("h_windowed", BuildingSpriteSheetSymmetricalY, True, False, "H"),
