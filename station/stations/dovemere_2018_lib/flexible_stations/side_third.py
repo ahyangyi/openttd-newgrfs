@@ -8,7 +8,6 @@ named_tiles.globalize()
 
 # FIXME
 h_gate_1_third_f = h_gate
-h_end_gate_third_f = h_end_gate
 h_gate_extender_1_third_f = h_gate_extender
 
 my_demo = Demo("1×4 side station layout", [[h_end_third_f, h_gate_1_third_f, h_gate_1_third_f.R, h_end_third_f.R]])
@@ -31,7 +30,7 @@ def get_side_index(l, r):
         l,
         r,
         tiny_third_f,
-        h_end_gate_third_f,
+        h_end_gate_1_third_f,
         h_end_third_f,
         h_normal_third_f,
         h_gate_1_third_f,
