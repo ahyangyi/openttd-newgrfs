@@ -46,6 +46,7 @@ the_stations = AMetaStation(
         demos.full_auto_demo,
         demos.semi_auto_demo,
         demos.side_auto_demo,
+        demos.side_third_auto_demo,
         demos.special_demo_g,
         demos.special_demo_p,
         demos.special_demo_cn,
