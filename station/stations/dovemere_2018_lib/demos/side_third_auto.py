@@ -5,9 +5,6 @@ from agrf.graphics.palette import CompanyColour
 
 named_tiles.globalize()
 
-# FIXME
-h_gate_extender_1_third_f = h_gate_extender
-
 station_building = [
     tiny_third_f,
     platform_s.T,

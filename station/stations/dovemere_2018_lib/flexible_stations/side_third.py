@@ -6,9 +6,6 @@ from .semitraversable import horizontal_layout
 
 named_tiles.globalize()
 
-# FIXME
-h_gate_extender_1_third_f = h_gate_extender
-
 my_demo = Demo("1×4 side station layout", [[h_end_third_f, h_gate_1_third_f, h_gate_1_third_f.R, h_end_third_f.R]])
 demo_layouts = []
 for i, demo in enumerate([my_demo, my_demo.M, my_demo.T, my_demo.T.M]):

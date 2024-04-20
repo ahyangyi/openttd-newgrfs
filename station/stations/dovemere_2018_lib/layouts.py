@@ -470,7 +470,7 @@ for name, symmetry, traversable, groundtype, category in [
     ("h_gate", BuildingSpriteSheetSymmetricalY, True, False, "H"),
     ("h_gate_1", BuildingSpriteSheetFull, True, "triple-1", "H"),
     ("h_gate_extender", BuildingSpriteSheetSymmetrical, True, False, "H"),
-    ("h_gate_extender_1_platform", BuildingSpriteSheetFull, False, True, "H"),
+    ("h_gate_extender_1", BuildingSpriteSheetSymmetrical, True, "triple", "H"),
     ("h_windowed", BuildingSpriteSheetSymmetricalY, True, False, "H"),
     ("h_windowed_extender", BuildingSpriteSheetSymmetrical, True, False, "H"),
     ("v_end", BuildingSpriteSheetSymmetricalX, False, "triple", "F0"),
