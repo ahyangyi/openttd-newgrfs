@@ -53,8 +53,14 @@ def determine_platform(t, d):
     return "nf"[t % 2]
 
 
-def get_back_index(l, r):
-    return get_front_index(l, r).T
+smart_corner = Switch(
+    ranges={d: corner for d in range(4, 16, 4)}, default=corner_platform, code="var(0x41, shift=8, and=0x000000ff)"
+)
+smart_corner_T = Switch(
+    ranges={t * 0x10: corner.T for t in range(4, 16, 4)},
+    default=corner_platform.T,
+    code="var(0x41, shift=8, and=0x000000ff)",
+)
 
 
 def get_left_index(t, d):
@@ -123,8 +129,14 @@ def get_central_index(l, r):
     )
 
 
+def get_back_index(l, r):
+    return horizontal_layout(
+        l, r, v_end_gate.T, corner_gate.T, smart_corner_T, front_normal.T, front_gate.T, front_gate_extender.T
+    )
+
+
 def get_front_index(l, r):
-    return horizontal_layout(l, r, v_end_gate, corner_gate, corner, front_normal, front_gate, front_gate_extender)
+    return horizontal_layout(l, r, v_end_gate, corner_gate, smart_corner, front_normal, front_gate, front_gate_extender)
 
 
 def get_single_index(l, r):
