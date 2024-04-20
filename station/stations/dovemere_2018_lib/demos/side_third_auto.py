@@ -6,24 +6,24 @@ from agrf.graphics.palette import CompanyColour
 named_tiles.globalize()
 
 # FIXME
-h_gate_1_third = h_gate
-h_end_gate_third = h_end_gate
-h_gate_extender_1_third = h_gate_extender
+h_gate_1_third_f = h_gate
+h_end_gate_third_f = h_end_gate
+h_gate_extender_1_third_f = h_gate_extender
 
 station_building = [
-    tiny_third,
+    tiny_third_f,
     platform_s.T,
-    h_end_gate_third,
-    h_end_gate_third.R,
+    h_end_gate_third_f,
+    h_end_gate_third_f.R,
     platform_s.T,
-    h_end_gate_third,
-    h_gate_extender_1_third,
-    h_end_gate_third.R,
+    h_end_gate_third_f,
+    h_gate_extender_1_third_f,
+    h_end_gate_third_f.R,
     platform_s.T,
-    h_end_third,
-    h_gate_1_third,
-    h_gate_1_third.R,
-    h_end_third.R,
+    h_end_third_f,
+    h_gate_1_third_f,
+    h_gate_1_third_f.R,
+    h_end_third_f.R,
 ]
 
 side_third_auto_demo = Demo(

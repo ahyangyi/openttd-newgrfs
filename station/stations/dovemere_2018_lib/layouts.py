@@ -223,8 +223,8 @@ class HorizontalSingle(Traversable):
         f2s = AParentSprite(f2, (16, 16, 32), (0, 0, base_height))
 
         self.register(ALayout(ground, [f1s, f1s.T, f2s], True, notes=["third"]), "")
-        self.register(ALayout(ground, [f1s, f2s], True, notes=["third"]), "_third")
-        self.register(ALayout(ground, [f1s, f2s, plat_shed.T], True, notes=["third", "far"]), "_third_f")
+        self.register(ALayout(ground, [f1s, f2s], True, notes=["third", "y"]), "_third")
+        self.register(ALayout(ground, [f1s, f2s, plat_shed.T], True, notes=["third", "y", "far"]), "_third_f")
 
 
 class HorizontalDouble(LoadType):
