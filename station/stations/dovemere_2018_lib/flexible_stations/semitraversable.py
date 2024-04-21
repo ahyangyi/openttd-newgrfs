@@ -53,6 +53,22 @@ def determine_platform(t, d):
     return "nf"[t % 2]
 
 
+def get_tile(name, desc):
+    if desc == "f":
+        return named_tiles[name + "_f"]
+    if desc == "d":
+        return named_tiles[name]
+    return named_tiles[name + "_n"]
+
+
+def get_tile_sym(name, desc):
+    if desc == "f":
+        return named_tiles[name + "_n"].T
+    if desc == "d":
+        return named_tiles[name]
+    return named_tiles[name + "_n"]
+
+
 smart_corner = Switch(
     ranges={d: corner for d in range(4, 16, 4)}, default=corner_platform, code="var(0x41, shift=8, and=0x000000ff)"
 )
@@ -113,25 +129,42 @@ left_wall = Switch(
     code="var(0x41, shift=12, and=0x0000000f)",
 )
 
+left_wall_2 = Switch(
+    ranges={
+        t: Switch(
+            ranges={
+                d: (
+                    side_a2_windowed
+                    if (t, d) == (1, 1)
+                    else (
+                        side_a3_windowed
+                        if t == 1
+                        else side_a3_windowed.T if d == 1 else get_tile_sym("side_d", determine_platform(t, d))
+                    )
+                )
+                for d in range(1, 16)
+            },
+            default=side_d,
+            code="var(0x41, shift=8, and=0x0000000f)",
+        )
+        for t in range(1, 16)
+    },
+    default=side_d,
+    code="var(0x41, shift=12, and=0x0000000f)",
+)
+
 
 def get_central_index(l, r):
     return horizontal_layout(
         l,
         r,
         v_central,
-        Switch(
-            ranges={
-                0x11: side_a2_windowed,
-                **{0x10 + x: side_a3_windowed for x in range(2, 16)},
-                **{0x1 + 0x10 * x: side_a3_windowed.T for x in range(2, 16)},
-            },
-            default=side_d,
-            code="var(0x41, shift=8, and=0x000000ff)",
-        ),  # TODO: a3 or a2_windowed for threetile?
+        left_wall_2,
         left_wall,
         central,
         central_windowed,
         central_windowed_extender,
+        # TODO: a3 or a2_windowed for threetile?
     )
 
 
