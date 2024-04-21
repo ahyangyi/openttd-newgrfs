@@ -80,30 +80,28 @@ smart_corner_T = Switch(
 )
 
 
-def get_left_index(t, d):
+def get_left_index(t, d, cb):
+    if t > d:
+        return get_left_index(d, t, cb).T
     if t + d == 2:
         return [side_a2][t - 1]
     if t + d == 3:
-        return [side_a3_n, side_a3_n.T][t - 1]
+        return [get_tile("side_a3", cb(1, 2))][t - 1]
     if t + d == 4:
-        return [side_a_f, side_b2, side_a_f.T][t - 1]
-    if (t + d) % 4 == 0:
-        a = [side_a_f, side_b_n, side_c_n.T, side_c_n]
-    else:
-        a = [side_a_n, side_b_f, side_c_n, side_c_n.T]
-
+        return [get_tile("side_a", cb(1, 3)), get_tile_sym("side_b2", cb(2, 2))][t - 1]
     if t == d:
         return side_c
-    if t < d:
-        return a[min(t - 1, (t - 1) % 2 + 2)]
-    else:
-        return a[min(d - 1, (d - 1) % 2 + 2)].T
+    if t == 1:
+        return get_tile("side_a", cb(t, d))
+    if t == 2:
+        return get_tile("side_b", cb(t, d))
+    return get_tile_sym("side_c", cb(t, d))
 
 
 left_wall = Switch(
     ranges={
         t: Switch(
-            ranges={d: get_left_index(t, d) for d in range(1, 16)},
+            ranges={d: get_left_index(t, d, determine_platform) for d in range(1, 16)},
             default=side_c,
             code="var(0x41, shift=8, and=0x0000000f)",
         )
