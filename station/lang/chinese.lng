@@ -2,14 +2,16 @@
 STR_GRF_NAME                    :AWSS - Ahyangyi 的芜湖车站包
 STR_GRF_DESC                    :基于芜湖的车站设计的模组
 
-STR_STATION_DEFAULT                 :站房
-STR_STATION_UNTRAVERSABLE           :站房（无轨道）
-STR_STATION_PLATFORM                :平台
-STR_STATION_PLATFORM_UNTRAVERSABLE  :平台（无轨道）
-STR_STATION_FLEXIBLE                :自动站房
-STR_STATION_FLEXIBLE_UNTRAVERSABLE  :自动站房（头尾无轨道）
-STR_STATION_FLEXIBLE_FRONT_SIDE     :自动站房（线侧，前）
-STR_STATION_FLEXIBLE_BACK_SIDE      :自动站房（线侧，后）
+STR_STATION_DEFAULT                             :站房
+STR_STATION_UNTRAVERSABLE                       :站房（无轨道）
+STR_STATION_PLATFORM                            :平台
+STR_STATION_PLATFORM_UNTRAVERSABLE              :平台（无轨道）
+STR_STATION_FLEXIBLE_SIDE                       :自动站房（头尾有轨道，有侧式站台）
+STR_STATION_FLEXIBLE_NO_SIDE                    :自动站房（头尾有轨道，无侧式站台）
+STR_STATION_FLEXIBLE_UNTRAVERSABLE_SIDE         :自动站房（头尾无轨道，有侧式站台）
+STR_STATION_FLEXIBLE_UNTRAVERSABLE_NO_SIDE      :自动站房（头尾无轨道，无侧式站台）
+STR_STATION_FLEXIBLE_FRONT_SIDE                 :自动站房（线侧，前）
+STR_STATION_FLEXIBLE_BACK_SIDE                  :自动站房（线侧，后）
 
 STR_STATION_CLASS_E88A9CA       :AWSS: 芜湖站 - 自动
 STR_STATION_CLASS_E88A9C80      :AWSS: 芜湖站 - 模块化（前）
