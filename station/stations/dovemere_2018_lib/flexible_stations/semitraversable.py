@@ -227,7 +227,7 @@ cb14 = Switch(
 
 semitraversable_station = AStation(
     id=0x00,
-    translation_name="FLEXIBLE_UNTRAVERSABLE",
+    translation_name="FLEXIBLE_UNTRAVERSABLE_SIDE",
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,

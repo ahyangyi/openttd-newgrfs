@@ -162,8 +162,8 @@ cb14 = Switch(
 ).to_index(layouts)
 
 traversable_station = AStation(
-    id=0x01,
-    translation_name="FLEXIBLE",
+    id=0x02,
+    translation_name="FLEXIBLE_SIDE",
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
