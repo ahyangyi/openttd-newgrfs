@@ -1,8 +1,16 @@
 import grf
 from station.lib import AStation, ALayout, AGroundSprite, AParentSprite, LayoutSprite, Demo
 from agrf.magic import Switch
-from ..layouts import named_tiles, layouts
-from .common import horizontal_layout, get_tile, get_tile_sym, make_cb14, get_central_index
+from ..layouts import named_tiles, layouts, entries
+from .common import (
+    horizontal_layout,
+    get_tile,
+    get_tile_sym,
+    make_cb14,
+    get_central_index,
+    determine_platform_odd,
+    determine_platform_even,
+)
 
 named_tiles.globalize()
 
@@ -44,38 +52,16 @@ for demo in my_demos:
             )
         )
 demo_layouts = [
-    ALayout(AGroundSprite(grf.EMPTY_SPRITE), [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False)
+    ALayout(
+        AGroundSprite(grf.EMPTY_SPRITE),
+        [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))],
+        False,
+        category=b"\xe8\x8a\x9cA",
+    )
     for sprite in demo_sprites
 ]
 layouts.extend(demo_layouts)
-
-
-def determine_platform(t, d):
-    if d > t:
-        return {"f": "n", "n": "f", "d": "d"}[determine_platform(d, t)]
-    if (t + d) % 2 == 1:
-        return "fn"[t % 2]
-    if (t + d) % 4 == 0:
-        if t < d - 1:
-            return "fn"[t % 2]
-        return "d"
-    if t < d:
-        return "fn"[t % 2]
-    return "d"
-
-
-def determine_platform_2(t, d):
-    if d > t:
-        return {"f": "n", "n": "f", "d": "d"}[determine_platform_2(d, t)]
-    if (t + d) % 2 == 1:
-        return "nf"[t % 2]
-    if (t + d) % 4 == 0:
-        if t < d:
-            return "nf"[t % 2]
-        return "d"
-    if t < d - 1:
-        return "nf"[t % 2]
-    return "d"
+# entries.extend([x for x in demo_layouts[::2]])
 
 
 def get_front_index(l, r):
@@ -95,8 +81,10 @@ def get_front_index_2(l, r):
     return horizontal_layout(l, r, v_end_gate, corner_gate, corner, front_normal, front_gate, front_gate_extender)
 
 
-cb14_0 = make_cb14(get_front_index, lambda l, r: get_central_index(l, r, determine_platform), None).to_index(layouts)
-cb14_1 = make_cb14(get_front_index_2, lambda l, r: get_central_index(l, r, determine_platform_2), None).to_index(
+cb14_0 = make_cb14(get_front_index, lambda l, r: get_central_index(l, r, determine_platform_odd), None).to_index(
+    layouts
+)
+cb14_1 = make_cb14(get_front_index_2, lambda l, r: get_central_index(l, r, determine_platform_even), None).to_index(
     layouts
 )
 

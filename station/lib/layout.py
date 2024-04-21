@@ -76,6 +76,8 @@ class AGroundSprite:
         return f"<AGroundSprite:{self.sprite}>"
 
     def __getattr__(self, name):
+        if self.sprite is grf.EMPTY_SPRITE:
+            return AGroundSprite(self.sprite)
         return AGroundSprite(getattr(self.sprite, name))
 
     def __call__(self, *args, **kwargs):
