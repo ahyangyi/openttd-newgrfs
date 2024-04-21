@@ -254,6 +254,7 @@ def quickload(source, type, traversable, groundtype, category):
 
 layouts = []
 entries = []
+flexible_entries = []
 named_tiles = AttrDict()
 for name, symmetry, traversable, groundtype, category in [
     ("corner", BuildingSpriteSheetFull, False, "triple", "F1"),

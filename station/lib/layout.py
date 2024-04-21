@@ -70,6 +70,8 @@ class AGroundSprite:
         )
 
     def graphics(self, scale, bpp):
+        if self.sprite is grf.EMPTY_SPRITE:
+            return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 
     def __repr__(self):

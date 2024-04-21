@@ -1,7 +1,7 @@
 import grf
 from station.lib import AStation, ALayout, AGroundSprite, AParentSprite, LayoutSprite, Demo
 from agrf.magic import Switch
-from ..layouts import named_tiles, layouts, entries
+from ..layouts import named_tiles, layouts, flexible_entries
 from .common import (
     horizontal_layout,
     get_tile,
@@ -61,7 +61,7 @@ demo_layouts = [
     for sprite in demo_sprites
 ]
 layouts.extend(demo_layouts)
-# entries.extend([x for x in demo_layouts[::2]])
+flexible_entries.extend([x for x in demo_layouts[::2]])
 
 
 def get_front_index(l, r):
