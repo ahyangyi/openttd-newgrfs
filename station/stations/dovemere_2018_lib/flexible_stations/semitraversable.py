@@ -65,21 +65,17 @@ def determine_platform(t, d):
 
 
 def determine_platform_2(t, d):
+    if d > t:
+        return {"f": "n", "n": "f", "d": "d"}[determine_platform_2(d, t)]
     if (t + d) % 2 == 1:
-        return "fn"[t % 2]
+        return "nf"[t % 2]
     if (t + d) % 4 == 0:
-        if t == 0 or d == 0:
-            return "x"
         if t < d:
             return "nf"[t % 2]
-        if t == d:
-            return "d"
-        return "fn"[t % 2]
-    if t < d:
-        return "fn"[t % 2]
-    if t == d:
         return "d"
-    return "nf"[t % 2]
+    if t < d - 1:
+        return "nf"[t % 2]
+    return "d"
 
 
 def get_left_index(t, d, cb):
@@ -227,7 +223,7 @@ semitraversable_station_no_side = AStation(
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
     non_traversable_tiles=0b00111100,
-    disabled_platforms=0b11,
+    disabled_platforms=0b111,
     callbacks={
         "select_tile_layout": grf.PurchaseCallback(
             purchase=Switch(
