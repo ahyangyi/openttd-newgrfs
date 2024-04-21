@@ -137,9 +137,13 @@ left_wall_2 = Switch(
                     side_a2_windowed
                     if (t, d) == (1, 1)
                     else (
-                        side_a3_windowed
+                        get_tile("side_a3_windowed", determine_platform(t, d))
                         if t == 1
-                        else side_a3_windowed.T if d == 1 else get_tile_sym("side_d", determine_platform(t, d))
+                        else (
+                            get_tile("side_a3_windowed", determine_platform(d, t)).T
+                            if d == 1
+                            else get_tile_sym("side_d", determine_platform(t, d))
+                        )
                     )
                 )
                 for d in range(1, 16)
