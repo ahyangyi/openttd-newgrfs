@@ -1,3 +1,4 @@
+from agrf.magic import Switch
 from ..layouts import named_tiles
 
 
@@ -32,3 +33,66 @@ def get_tile_sym(name, desc):
     if desc == "d":
         return named_tiles[name]
     return named_tiles[name + "_n"]
+
+
+def make_cb14(get_front_index, get_central_index, get_single_index):
+    return Switch(
+        ranges={
+            **(
+                {
+                    (0, 1): Switch(
+                        ranges={
+                            l: Switch(
+                                ranges={r: get_single_index(l, r) for r in range(16)},
+                                default=named_tiles.tiny,
+                                code="var(0x41, shift=0, and=0x0000000f)",
+                            )
+                            for l in range(16)
+                        },
+                        default=named_tiles.tiny,
+                        code="var(0x41, shift=4, and=0x0000000f)",
+                    )
+                }
+                if get_single_index is not None
+                else {}
+            ),
+            (2, 3): Switch(
+                ranges={
+                    l: Switch(
+                        ranges={r: get_front_index(l, r).T for r in range(16)},
+                        default=named_tiles.tiny,
+                        code="var(0x41, shift=0, and=0x0000000f)",
+                    )
+                    for l in range(16)
+                },
+                default=named_tiles.tiny,
+                code="var(0x41, shift=4, and=0x0000000f)",
+            ),
+            (4, 5): Switch(
+                ranges={
+                    l: Switch(
+                        ranges={r: get_front_index(l, r) for r in range(16)},
+                        default=named_tiles.tiny,
+                        code="var(0x41, shift=0, and=0x0000000f)",
+                    )
+                    for l in range(16)
+                },
+                default=named_tiles.tiny,
+                code="var(0x41, shift=4, and=0x0000000f)",
+            ),
+            (6, 7): Switch(
+                ranges={
+                    l: Switch(
+                        ranges={r: get_central_index(l, r) for r in range(16)},
+                        default=named_tiles.tiny,
+                        code="var(0x41, shift=0, and=0x0000000f)",
+                    )
+                    for l in range(16)
+                },
+                default=named_tiles.tiny,
+                code="var(0x41, shift=4, and=0x0000000f)",
+            ),
+        },
+        default=named_tiles.tiny,
+        code="var(0x41, shift=24, and=0x0000000f)",
+    )
