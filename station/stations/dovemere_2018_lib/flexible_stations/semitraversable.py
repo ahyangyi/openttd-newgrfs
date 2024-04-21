@@ -6,6 +6,11 @@ from .common import horizontal_layout, get_tile, get_tile_sym, make_cb14
 
 named_tiles.globalize()
 
+# FIXME
+front_normal_platform = front_normal
+front_gate_platform = front_gate
+front_gate_extender_platform = front_gate_extender
+
 my_demos = [
     Demo(
         "4×4 semitraversable flexible station layout",
@@ -46,6 +51,20 @@ layouts.extend(demo_layouts)
 
 
 def determine_platform(t, d):
+    if d > t:
+        return {"f": "n", "n": "f", "d": "d"}[determine_platform(d, t)]
+    if (t + d) % 2 == 1:
+        return "fn"[t % 2]
+    if (t + d) % 4 == 0:
+        if t < d - 1:
+            return "fn"[t % 2]
+        return "d"
+    if t < d:
+        return "fn"[t % 2]
+    return "d"
+
+
+def determine_platform_2(t, d):
     if (t + d) % 2 == 1:
         return "fn"[t % 2]
     if (t + d) % 4 == 0:
@@ -81,55 +100,71 @@ def get_left_index(t, d, cb):
     return get_tile_sym("side_c", cb(t, d))
 
 
-left_wall = Switch(
-    ranges={
-        t: Switch(
-            ranges={d: get_left_index(t, d, determine_platform) for d in range(1, 16)},
-            default=side_c,
-            code="var(0x41, shift=8, and=0x0000000f)",
-        )
-        for t in range(1, 16)
-    },
-    default=side_c,
-    code="var(0x41, shift=12, and=0x0000000f)",
-)
+def get_left_wall(cb):
+    return Switch(
+        ranges={
+            t: Switch(
+                ranges={d: get_left_index(t, d, cb) for d in range(1, 16)},
+                default=side_c,
+                code="var(0x41, shift=8, and=0x0000000f)",
+            )
+            for t in range(1, 16)
+        },
+        default=side_c,
+        code="var(0x41, shift=12, and=0x0000000f)",
+    )
 
-left_wall_2 = Switch(
-    ranges={
-        t: Switch(
-            ranges={
-                d: (
-                    side_a2_windowed
-                    if (t, d) == (1, 1)
-                    else (
-                        get_tile("side_a3_windowed", determine_platform(t, d))
-                        if t == 1
+
+def get_left_wall_2(cb):
+    return Switch(
+        ranges={
+            t: Switch(
+                ranges={
+                    d: (
+                        side_a2_windowed
+                        if (t, d) == (1, 1)
                         else (
-                            get_tile("side_a3_windowed", determine_platform(d, t)).T
-                            if d == 1
-                            else get_tile_sym("side_d", determine_platform(t, d))
+                            get_tile("side_a3_windowed", cb(t, d))
+                            if t == 1
+                            else (
+                                get_tile("side_a3_windowed", cb(d, t)).T if d == 1 else get_tile_sym("side_d", cb(t, d))
+                            )
                         )
                     )
-                )
-                for d in range(1, 16)
-            },
-            default=side_d,
-            code="var(0x41, shift=8, and=0x0000000f)",
-        )
-        for t in range(1, 16)
-    },
-    default=side_d,
-    code="var(0x41, shift=12, and=0x0000000f)",
-)
+                    for d in range(1, 16)
+                },
+                default=side_d,
+                code="var(0x41, shift=8, and=0x0000000f)",
+            )
+            for t in range(1, 16)
+        },
+        default=side_d,
+        code="var(0x41, shift=12, and=0x0000000f)",
+    )
 
 
-def get_central_index(l, r):
+def get_v_central(cb):
+    return Switch(
+        ranges={
+            t: Switch(
+                ranges={d: get_tile_sym("v_central", cb(t, d)) for d in range(1, 16)},
+                default=v_central,
+                code="var(0x41, shift=8, and=0x0000000f)",
+            )
+            for t in range(1, 16)
+        },
+        default=v_central,
+        code="var(0x41, shift=12, and=0x0000000f)",
+    )
+
+
+def get_central_index(l, r, cb):
     return horizontal_layout(
         l,
         r,
-        v_central,
-        left_wall_2,
-        left_wall,
+        get_v_central(cb),
+        get_left_wall_2(cb),
+        get_left_wall(cb),
         central,
         central_windowed,
         central_windowed_extender,
@@ -137,19 +172,27 @@ def get_central_index(l, r):
     )
 
 
-def get_back_index(l, r):
-    return get_front_index(l, r).T
-
-
 def get_front_index(l, r):
+    return horizontal_layout(
+        l,
+        r,
+        v_end_gate_platform,
+        corner_gate_platform,
+        corner_platform,
+        front_normal_platform,
+        front_gate_platform,
+        front_gate_extender_platform,
+    )
+
+
+def get_front_index_2(l, r):
     return horizontal_layout(l, r, v_end_gate, corner_gate, corner, front_normal, front_gate, front_gate_extender)
 
 
-def get_single_index(l, r):
-    return horizontal_layout(l, r, tiny, h_end_gate, h_end, h_normal, h_gate, h_gate_extender)
-
-
-cb14 = make_cb14(get_front_index, get_central_index, None).to_index(layouts)
+cb14_0 = make_cb14(get_front_index, lambda l, r: get_central_index(l, r, determine_platform), None).to_index(layouts)
+cb14_1 = make_cb14(get_front_index_2, lambda l, r: get_central_index(l, r, determine_platform_2), None).to_index(
+    layouts
+)
 
 semitraversable_station = AStation(
     id=0x00,
@@ -173,7 +216,7 @@ semitraversable_station = AStation(
                 code="(extra_callback_info1 >> 20) & 0xf",
             )
         ),
-        "select_sprite_layout": grf.DualCallback(default=cb14, purchase=layouts.index(demo_layouts[0])),
+        "select_sprite_layout": grf.DualCallback(default=cb14_0, purchase=layouts.index(demo_layouts[0])),
     },
 )
 
@@ -199,6 +242,6 @@ semitraversable_station_no_side = AStation(
                 code="(extra_callback_info1 >> 20) & 0xf",
             )
         ),
-        "select_sprite_layout": grf.DualCallback(default=cb14, purchase=layouts.index(demo_layouts[2])),
+        "select_sprite_layout": grf.DualCallback(default=cb14_1, purchase=layouts.index(demo_layouts[2])),
     },
 )

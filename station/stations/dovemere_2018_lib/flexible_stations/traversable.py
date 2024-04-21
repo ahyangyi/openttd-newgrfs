@@ -2,7 +2,7 @@ import grf
 from station.lib import AStation, ALayout, AGroundSprite, AParentSprite, LayoutSprite, Demo
 from agrf.magic import Switch
 from ..layouts import named_tiles, layouts
-from .semitraversable import horizontal_layout, get_single_index
+from .semitraversable import horizontal_layout
 
 named_tiles.globalize()
 
@@ -104,6 +104,10 @@ def get_front_index(l, r):
         front_gate,
         front_gate_extender,
     )
+
+
+def get_single_index(l, r):
+    return horizontal_layout(l, r, tiny, h_end_gate, h_end, h_normal, h_gate, h_gate_extender)
 
 
 cb14 = Switch(
