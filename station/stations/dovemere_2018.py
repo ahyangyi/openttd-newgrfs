@@ -1,13 +1,23 @@
 from station.lib import AStation, AMetaStation
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos
-from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_station
-from .dovemere_2018_lib.flexible_stations.traversable import traversable_station
+from .dovemere_2018_lib.flexible_stations.semitraversable import (
+    semitraversable_station,
+    semitraversable_station_no_side,
+)
+from .dovemere_2018_lib.flexible_stations.traversable import traversable_station, traversable_station_no_side
 from .dovemere_2018_lib.flexible_stations.side import side_station, back_side_station
 
 
 the_stations = AMetaStation(
-    [semitraversable_station, traversable_station, side_station, back_side_station]
+    [
+        semitraversable_station,
+        semitraversable_station_no_side,
+        traversable_station,
+        traversable_station_no_side,
+        side_station,
+        back_side_station,
+    ]
     + [
         AStation(
             id=0x10 + i,
@@ -29,7 +39,7 @@ the_stations = AMetaStation(
         + [(r * 16 + c).to_bytes(1, "little") for r in [9, 10, 11, 12] for c in [0, 1, 2, 3]]
         + [b"\xF1", b"\xF2"]
     ],
-    entries,
+    flexible_entries + entries,
     [
         demos.normal_demo,
         demos.big_demo,
