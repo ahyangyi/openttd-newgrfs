@@ -96,3 +96,93 @@ def make_cb14(get_front_index, get_central_index, get_single_index):
         default=named_tiles.tiny,
         code="var(0x41, shift=24, and=0x0000000f)",
     )
+
+
+def get_left_index(t, d, cb):
+    if t > d:
+        return get_left_index(d, t, cb).T
+    if t + d == 2:
+        return named_tiles.side_a2
+    if t + d == 3:
+        return [get_tile("side_a3", cb(1, 2))][t - 1]
+    if t + d == 4:
+        return [get_tile("side_a", cb(1, 3)), get_tile_sym("side_b2", cb(2, 2))][t - 1]
+    if t == d:
+        return named_tiles.side_c
+    if t == 1:
+        return get_tile("side_a", cb(t, d))
+    if t == 2:
+        return get_tile("side_b", cb(t, d))
+    return get_tile_sym("side_c", cb(t, d))
+
+
+def get_left_wall(cb):
+    return Switch(
+        ranges={
+            t: Switch(
+                ranges={d: get_left_index(t, d, cb) for d in range(1, 16)},
+                default=named_tiles.side_c,
+                code="var(0x41, shift=8, and=0x0000000f)",
+            )
+            for t in range(1, 16)
+        },
+        default=named_tiles.side_c,
+        code="var(0x41, shift=12, and=0x0000000f)",
+    )
+
+
+def get_left_wall_2(cb):
+    return Switch(
+        ranges={
+            t: Switch(
+                ranges={
+                    d: (
+                        named_tiles.side_a2_windowed
+                        if (t, d) == (1, 1)
+                        else (
+                            get_tile("side_a3_windowed", cb(t, d))
+                            if t == 1
+                            else (
+                                get_tile("side_a3_windowed", cb(d, t)).T if d == 1 else get_tile_sym("side_d", cb(t, d))
+                            )
+                        )
+                    )
+                    for d in range(1, 16)
+                },
+                default=named_tiles.side_d,
+                code="var(0x41, shift=8, and=0x0000000f)",
+            )
+            for t in range(1, 16)
+        },
+        default=named_tiles.side_d,
+        code="var(0x41, shift=12, and=0x0000000f)",
+    )
+
+
+def get_v_central(cb):
+    return Switch(
+        ranges={
+            t: Switch(
+                ranges={d: get_tile_sym("v_central", cb(t, d)) for d in range(1, 16)},
+                default=named_tiles.v_central,
+                code="var(0x41, shift=8, and=0x0000000f)",
+            )
+            for t in range(1, 16)
+        },
+        default=named_tiles.v_central,
+        code="var(0x41, shift=12, and=0x0000000f)",
+    )
+
+
+def get_central_index(l, r, cb):
+    return horizontal_layout(
+        l,
+        r,
+        get_v_central(cb),
+        get_left_wall_2(cb),
+        get_left_wall(cb),
+        named_tiles.central,
+        named_tiles.central_windowed,
+        named_tiles.central_windowed_extender,
+        # TODO: a3 or a2_windowed for threetile?
+    )
