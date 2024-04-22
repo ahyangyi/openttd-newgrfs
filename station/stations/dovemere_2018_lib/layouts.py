@@ -168,7 +168,7 @@ class TwoFloorMixin:
             f1base = f2base = voxel
             f2v = f2base.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
             f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
-        f1v = f1base.mask_clip("station/voxels/dovemere_2018/masks/ground_level.vox", "f1")
+        f1v = f1base.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x))
         return [
             AParentSprite(f1, (16, self.f1x, 48), (0, 16 - self.f1x, 0)),
@@ -201,13 +201,13 @@ class SideDouble(LoadType):
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
         SideFull(
             self.name,
-            (v.discard_layers(("ground level - platform"), "full"), f2),
+            (v.discard_layers(("ground level - platform",), "full"), f2),
             self.symmetry,
             self.internal_category,
         ).load()
         SidePlatform(
             self.name + "_platform",
-            (v.discard_layers(("ground level"), "platform"), f2),
+            (v.discard_layers(("ground level",), "platform"), f2),
             self.symmetry,
             self.internal_category,
         ).load()
@@ -254,6 +254,7 @@ def quickload(source, type, traversable, groundtype, category):
 
 layouts = []
 entries = []
+flexible_entries = []
 named_tiles = AttrDict()
 for name, symmetry, traversable, groundtype, category in [
     ("corner", BuildingSpriteSheetFull, False, "triple", "F1"),

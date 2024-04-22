@@ -70,12 +70,16 @@ class AGroundSprite:
         )
 
     def graphics(self, scale, bpp):
+        if self.sprite is grf.EMPTY_SPRITE:
+            return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 
     def __repr__(self):
         return f"<AGroundSprite:{self.sprite}>"
 
     def __getattr__(self, name):
+        if self.sprite is grf.EMPTY_SPRITE:
+            return AGroundSprite(self.sprite)
         return AGroundSprite(getattr(self.sprite, name))
 
     def __call__(self, *args, **kwargs):

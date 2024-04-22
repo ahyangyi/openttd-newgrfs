@@ -143,22 +143,6 @@ class LazyVoxel(Config):
         )
 
     @functools.cache
-    def mask_clip(self, subvoxel, suffix):
-        def voxel_getter(subvoxel=subvoxel):
-            old_path = self.voxel_getter()
-            new_path = os.path.join(self.prefix, suffix)
-            if isinstance(subvoxel, str):
-                subvoxel_path = subvoxel
-            else:
-                subvoxel_path = subvoxel.voxel_getter()
-            compose(old_path, subvoxel_path, new_path, {"type": "clip", "mask_original": True})
-            return os.path.join(new_path, f"{self.name}.vox")
-
-        return LazyVoxel(
-            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=deepcopy(self.config)
-        )
-
-    @functools.cache
     def mask_clip_away(self, subvoxel, suffix):
         def voxel_getter(subvoxel=subvoxel):
             old_path = self.voxel_getter()
@@ -168,7 +152,10 @@ class LazyVoxel(Config):
             else:
                 subvoxel_path = subvoxel.voxel_getter()
             compose(
-                old_path, subvoxel_path, new_path, {"ignore_mask": True, "overwrite": True, "n": 0, "truncate": True}
+                old_path,
+                subvoxel_path,
+                new_path,
+                {"ignore_mask": True, "overwrite": True, "n": 0, "truncate": True, "blend_mode": "atop"},
             )
             return os.path.join(new_path, f"{self.name}.vox")
 
