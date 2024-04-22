@@ -1,8 +1,7 @@
 import math
 import os
-import grf
 import functools
-from pygorender import Config, render, hill_positor_1, stairstep, compose, self_compose, produce_empty
+from pygorender import Config, render, hill_positor_1, stairstep, compose, self_compose, produce_empty, discard_layers
 from agrf.graphics.rotator import unnatural_dimens
 from agrf.graphics.spritesheet import spritesheet_template
 from copy import deepcopy
@@ -13,7 +12,7 @@ class LazyVoxel(Config):
     def __init__(self, name, *, prefix=None, voxel_getter=None, load_from=None, config=None, subset=None):
         super().__init__(load_from=load_from, config=config)
         if subset is not None:
-            self.config = self.subset(subset).config
+            self.in_place_subset(subset)
         self.name = name
         self.prefix = prefix
         self.voxel_getter = voxel_getter
@@ -30,6 +29,9 @@ class LazyVoxel(Config):
                     x["angle"], bounding_box, self.config["agrf_scale"], unnaturalness=self.config["agrf_unnaturalness"]
                 ),
             )
+
+    def in_place_subset(self, subset):
+        self.config = self.subset(subset).config
 
     @functools.cache
     def rotate(self, delta, suffix):
@@ -141,14 +143,47 @@ class LazyVoxel(Config):
         )
 
     @functools.cache
+    def mask_clip_away(self, subvoxel, suffix):
+        def voxel_getter(subvoxel=subvoxel):
+            old_path = self.voxel_getter()
+            new_path = os.path.join(self.prefix, suffix)
+            if isinstance(subvoxel, str):
+                subvoxel_path = subvoxel
+            else:
+                subvoxel_path = subvoxel.voxel_getter()
+            compose(
+                old_path,
+                subvoxel_path,
+                new_path,
+                {"ignore_mask": True, "overwrite": True, "n": 0, "truncate": True, "blend_mode": "atop"},
+            )
+            return os.path.join(new_path, f"{self.name}.vox")
+
+        return LazyVoxel(
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=deepcopy(self.config)
+        )
+
+    @functools.cache
+    def discard_layers(self, discards, suffix):
+        def voxel_getter():
+            old_path = self.voxel_getter()
+            new_path = os.path.join(self.prefix, suffix, f"{self.name}.vox")
+            discard_layers(discards, old_path, new_path)
+            return new_path
+
+        return LazyVoxel(
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=deepcopy(self.config)
+        )
+
+    @functools.cache
     def render(self):
         voxel_path = self.voxel_getter()
         render(self, voxel_path, os.path.join(self.prefix, self.name))
 
     @functools.cache
-    def spritesheet(self, xdiff=0, shift=0):
-        real_xdiff = 0.5
-        real_ydiff = self.config.get("agrf_zdiff", 0) * 0.5 * self.config.get("agrf_scale", 1)
+    def spritesheet(self, xdiff=0, zdiff=0, shift=0):
+        real_xdiff = 0 if self.config.get("agrf_road_mode", False) else 0.5
+        real_ydiff = (self.config.get("agrf_zdiff", 0) + zdiff) * 0.5 * self.config.get("agrf_scale", 1)
 
         return spritesheet_template(
             self,
@@ -158,6 +193,7 @@ class LazyVoxel(Config):
             [x["angle"] for x in self.config["sprites"]],
             bbox=self.config["size"],
             deltas=self.config.get("agrf_deltas", None),  # no default -- erroring out is graceful
+            z_scale=self.config.get("z_scale", 1.0),
             bbox_joggle=self.config.get("agrf_bbox_joggle", None),
             xdiff=real_xdiff,
             ydiff=real_ydiff,
@@ -168,7 +204,7 @@ class LazyVoxel(Config):
         )
 
     @functools.cache
-    def get_action(self, feature, xdiff=0, shift=0):
+    def get_action(self, feature, xdiff=0, zdiff=0, shift=0):
         return FakeReferencingGenericSpriteLayout(feature, (self.spritesheet(xdiff, shift),))
 
     def get_default_graphics(self):
@@ -188,7 +224,7 @@ class LazySpriteSheet:
         return method
 
     @functools.cache
-    def spritesheet(self, xdiff=0, shift=0):
+    def spritesheet(self, xdiff=0, zdiff=0, shift=0):
         spritesheets = [x.spritesheet(xdiff, shift) for x in self.sprites]
         return [spritesheets[i][j] for (i, j) in self.indices]
 
@@ -216,7 +252,7 @@ class LazyAlternatives:
         return method
 
     @functools.cache
-    def get_action(self, feature, xdiff=0, shift=0):
+    def get_action(self, feature, xdiff=0, zdiff=0, shift=0):
         return FakeReferencingGenericSpriteLayout(
             feature,
             tuple(x.spritesheet(xdiff, shift) for x in self.sprites),
