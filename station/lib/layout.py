@@ -70,12 +70,16 @@ class AGroundSprite:
         )
 
     def graphics(self, scale, bpp):
+        if self.sprite is grf.EMPTY_SPRITE:
+            return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 
     def __repr__(self):
         return f"<AGroundSprite:{self.sprite}>"
 
     def __getattr__(self, name):
+        if self.sprite is grf.EMPTY_SPRITE:
+            return AGroundSprite(self.sprite)
         return AGroundSprite(getattr(self.sprite, name))
 
     def __call__(self, *args, **kwargs):
@@ -148,18 +152,23 @@ class ALayout:
         self.category = category
         self.notes = notes or []
 
+    @property
+    def sorted_parent_sprites(self):
+        return sorted(
+            self.parent_sprites,
+            key=lambda x: (x.offset[0] + x.offset[1] + x.extent[0] + x.extent[1], x.offset[2] + x.extent[2]),
+        )
+
     def to_grf(self, sprite_list):
         return grf.SpriteLayout(
-            [self.ground_sprite.to_grf(sprite_list)] + [sprite.to_grf(sprite_list) for sprite in self.parent_sprites]
+            [self.ground_sprite.to_grf(sprite_list)]
+            + [sprite.to_grf(sprite_list) for sprite in self.sorted_parent_sprites]
         )
 
     def graphics(self, scale, bpp, remap=None, context=None):
         context = context or grf.DummyWriteContext()
         img = self.ground_sprite.graphics(scale, bpp).copy()
-        for sprite in sorted(
-            self.parent_sprites,
-            key=lambda x: (x.offset[0] + x.offset[1] + x.extent[0] + x.extent[1], x.offset[2] + x.extent[2]),
-        ):
+        for sprite in self.sorted_parent_sprites:
             masked_sprite = LayeredImage.from_sprite(
                 sprite.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
             ).copy()

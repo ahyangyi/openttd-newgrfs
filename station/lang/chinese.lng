@@ -2,18 +2,34 @@
 STR_GRF_NAME                    :AWSS - Ahyangyi 的芜湖车站包
 STR_GRF_DESC                    :基于芜湖的车站设计的模组
 
-STR_STATION_DEFAULT                 :站房
-STR_STATION_UNTRAVERSABLE           :站房（无轨道）
-STR_STATION_PLATFORM                :平台
-STR_STATION_PLATFORM_UNTRAVERSABLE  :平台（无轨道）
-STR_STATION_FLEXIBLE                :自动站房
-STR_STATION_FLEXIBLE_UNTRAVERSABLE  :自动站房（头尾无轨道）
+STR_STATION_DEFAULT                             :站房
+STR_STATION_UNTRAVERSABLE                       :站房（无轨道）
+STR_STATION_PLATFORM                            :平台
+STR_STATION_PLATFORM_UNTRAVERSABLE              :平台（无轨道）
+STR_STATION_FLEXIBLE_SIDE                       :自动站房（头尾有轨道）
+STR_STATION_FLEXIBLE_NO_SIDE                    :自动站房（头尾有轨道但无站台）
+STR_STATION_FLEXIBLE_UNTRAVERSABLE_SIDE         :自动站房（头尾无轨道，有侧式站台）
+STR_STATION_FLEXIBLE_UNTRAVERSABLE_NO_SIDE      :自动站房（头尾无轨道，无侧式站台）
+STR_STATION_FLEXIBLE_FRONT_SIDE                 :自动站房（线侧，前）
+STR_STATION_FLEXIBLE_BACK_SIDE                  :自动站房（线侧，后）
 
 STR_STATION_CLASS_E88A9CA       :AWSS: 芜湖站 - 自动
 STR_STATION_CLASS_E88A9C80      :AWSS: 芜湖站 - 模块化（前）
-STR_STATION_CLASS_E88A9C81      :AWSS: 芜湖站 - 模块化（前角）
+STR_STATION_CLASS_E88A9C81      :AWSS: 芜湖站 - 模块化（前，带站台）
+STR_STATION_CLASS_E88A9C82      :AWSS: 芜湖站 - 模块化（前，有轨道）
+STR_STATION_CLASS_E88A9C83      :AWSS: 芜湖站 - 模块化（前，轨+站）
+STR_STATION_CLASS_E88A9C84      :AWSS: 芜湖站 - 模块化（前角）
+STR_STATION_CLASS_E88A9C85      :AWSS: 芜湖站 - 模块化（前角，带站台）
+STR_STATION_CLASS_E88A9C86      :AWSS: 芜湖站 - 模块化（前角，有轨道）
+STR_STATION_CLASS_E88A9C87      :AWSS: 芜湖站 - 模块化（前角，轨+站）
 STR_STATION_CLASS_E88A9C88      :AWSS: 芜湖站 - 模块化（后）
-STR_STATION_CLASS_E88A9C89      :AWSS: 芜湖站 - 模块化（后角）
+STR_STATION_CLASS_E88A9C89      :AWSS: 芜湖站 - 模块化（后，带站台）
+STR_STATION_CLASS_E88A9C8A      :AWSS: 芜湖站 - 模块化（后，有轨道）
+STR_STATION_CLASS_E88A9C8B      :AWSS: 芜湖站 - 模块化（后，轨+站）
+STR_STATION_CLASS_E88A9C8C      :AWSS: 芜湖站 - 模块化（后角）
+STR_STATION_CLASS_E88A9C8D      :AWSS: 芜湖站 - 模块化（后角，带站台）
+STR_STATION_CLASS_E88A9C8E      :AWSS: 芜湖站 - 模块化（后角，有轨道）
+STR_STATION_CLASS_E88A9C8F      :AWSS: 芜湖站 - 模块化（后角，轨+站）
 STR_STATION_CLASS_E88A9CF0      :AWSS: 芜湖站 - 模块化（中）
 STR_STATION_CLASS_E88A9C90      :AWSS: 芜湖站 - 模块化（侧1，无站台）
 STR_STATION_CLASS_E88A9C91      :AWSS: 芜湖站 - 模块化（侧1，近侧站台）
