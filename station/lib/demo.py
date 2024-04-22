@@ -27,6 +27,10 @@ class Demo:
         return img
 
     @property
+    def T(self):
+        return Demo(self.title, [[tile and tile.T for tile in row] for row in self.tiles[::-1]], self.remap)
+
+    @property
     def M(self):
         return Demo(
             self.title, [[tile and tile.M for tile in row[::-1]] for row in list(zip(*self.tiles))[::-1]], self.remap
