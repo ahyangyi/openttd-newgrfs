@@ -36,7 +36,7 @@ def get_side_index(l, r):
         tiny_asym_platform,
         h_end_asym_gate_platform,
         h_end_asym_platform,
-        h_normal,  # FIXME need a platform version
+        h_normal_platform,
         h_gate_1_platform,
         h_gate_extender_1_platform,
     )

@@ -7,6 +7,7 @@ from .dovemere_2018_lib.flexible_stations.semitraversable import (
 )
 from .dovemere_2018_lib.flexible_stations.traversable import traversable_station, traversable_station_no_side
 from .dovemere_2018_lib.flexible_stations.side import side_station, back_side_station
+from .dovemere_2018_lib.flexible_stations.side_third import side_third_station, back_side_third_station
 
 
 the_stations = AMetaStation(
@@ -17,6 +18,8 @@ the_stations = AMetaStation(
         traversable_station_no_side,
         side_station,
         back_side_station,
+        side_third_station,
+        back_side_third_station,
     ]
     + [
         AStation(
@@ -48,6 +51,7 @@ the_stations = AMetaStation(
         demos.full_auto_demo,
         demos.semi_auto_demo,
         demos.side_auto_demo,
+        demos.side_third_auto_demo,
         demos.special_demo_g,
         demos.special_demo_p,
         demos.special_demo_cn,
