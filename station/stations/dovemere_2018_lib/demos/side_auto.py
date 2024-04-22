@@ -1,7 +1,9 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import *
+from station.stations.dovemere_2018_lib.layouts import named_tiles, platform, platform_s_nt
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
+
+named_tiles.globalize()
 
 station_building = [
     tiny_asym_platform,
@@ -20,7 +22,7 @@ station_building = [
 ]
 
 side_auto_demo = Demo(
-    "Semitraversable automatic stations",
+    "Nontraversable automatic stations",
     [[x.T for x in station_building], [platform] * 13, station_building],
     remap=get_1cc_remap(CompanyColour.BLUE),
 )

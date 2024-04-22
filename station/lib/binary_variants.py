@@ -57,6 +57,10 @@ class BuildingSpriteSheetFull(BinaryVariantMixin):
     def break_y_symmetry(classobj):
         return classobj
 
+    @classmethod
+    def add_y_symmetry(classobj):
+        return BuildingSpriteSheetSymmetricalY
+
 
 class BuildingSpriteSheetSymmetricalX(BinaryVariantMixin):
     def __init__(self, obj):
@@ -73,6 +77,10 @@ class BuildingSpriteSheetSymmetricalX(BinaryVariantMixin):
     @classmethod
     def break_y_symmetry(classobj):
         return classobj
+
+    @classmethod
+    def add_y_symmetry(classobj):
+        return BuildingSpriteSheetSymmetrical
 
 
 class BuildingSpriteSheetSymmetricalY(BinaryVariantMixin):
@@ -91,6 +99,10 @@ class BuildingSpriteSheetSymmetricalY(BinaryVariantMixin):
     def break_y_symmetry(classobj):
         return BuildingSpriteSheetFull
 
+    @classmethod
+    def add_y_symmetry(classobj):
+        return BuildingSpriteSheetSymmetricalY
+
 
 class BuildingSpriteSheetSymmetrical(BinaryVariantMixin):
     def __init__(self, obj):
@@ -107,6 +119,10 @@ class BuildingSpriteSheetSymmetrical(BinaryVariantMixin):
     @classmethod
     def break_y_symmetry(classobj):
         return BuildingSpriteSheetSymmetricalX
+
+    @classmethod
+    def add_y_symmetry(classobj):
+        return BuildingSpriteSheetSymmetrical
 
 
 class BuildingSpriteSheetRotational(BinaryVariantMixin):
@@ -125,6 +141,11 @@ class BuildingSpriteSheetRotational(BinaryVariantMixin):
     def break_y_symmetry(classobj):
         return BuildingSpriteSheetFull
 
+    @classmethod
+    def add_y_symmetry(classobj):
+        # FIXME more symmetrical than this?
+        return BuildingSpriteSheetSymmetrical
+
 
 class BuildingSpriteSheetDiagonal(BinaryVariantMixin):
     def __init__(self, obj):
@@ -141,3 +162,8 @@ class BuildingSpriteSheetDiagonal(BinaryVariantMixin):
     @classmethod
     def break_y_symmetry(classobj):
         return BuildingSpriteSheetFull
+
+    @classmethod
+    def add_y_symmetry(classobj):
+        # FIXME more symmetrical than this?
+        return BuildingSpriteSheetSymmetrical
