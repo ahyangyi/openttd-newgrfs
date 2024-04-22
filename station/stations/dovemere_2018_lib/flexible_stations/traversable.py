@@ -14,11 +14,6 @@ from .common import (
 
 named_tiles.globalize()
 
-# XXX
-front_normal_third_f = front_normal_third = front_normal
-front_gate_third_f = front_gate_third = front_gate
-front_gate_extender_third_f = front_gate_extender_third = front_gate_extender
-
 my_demos = [
     Demo(
         "4×4 traversable flexible station layout",
