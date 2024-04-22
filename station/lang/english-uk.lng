@@ -6,8 +6,8 @@ STR_STATION_DEFAULT                             :Station Building
 STR_STATION_UNTRAVERSABLE                       :Station Building (No Rail)
 STR_STATION_PLATFORM                            :Platform
 STR_STATION_PLATFORM_UNTRAVERSABLE              :Platform (No Rail)
-STR_STATION_FLEXIBLE_SIDE                       :Flexible Station Building (All tracks, side platform)
-STR_STATION_FLEXIBLE_NO_SIDE                    :Flexible Station Building (All tracks, no side platform)
+STR_STATION_FLEXIBLE_SIDE                       :Flexible Station Building (All tracks)
+STR_STATION_FLEXIBLE_NO_SIDE                    :Flexible Station Building (All tracks, no platform at ends)
 STR_STATION_FLEXIBLE_UNTRAVERSABLE_SIDE         :Flexible Station Building (No track at ends, side platform)
 STR_STATION_FLEXIBLE_UNTRAVERSABLE_NO_SIDE      :Flexible Station Building (No track at ends, no side platform)
 STR_STATION_FLEXIBLE_FRONT_SIDE                 :Flexible Station Building (Track-side, front)

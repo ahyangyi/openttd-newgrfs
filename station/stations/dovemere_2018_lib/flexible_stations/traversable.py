@@ -23,19 +23,19 @@ my_demos = [
     Demo(
         "4×4 traversable flexible station layout",
         [
-            [corner_third.T, front_gate.T, front_gate.TR, corner_third.TR],
-            [side_a3_f.T, central_windowed, central_windowed.R, side_a3_f.TR],
-            [side_a3_f, central_windowed, central_windowed.R, side_a3_f.R],
-            [corner_third, front_gate, front_gate.R, corner_third.R],
+            [corner_third_f.T, front_gate.T, front_gate.TR, corner_third_f.TR],
+            [side_a3_n.T, central_windowed, central_windowed.R, side_a3_n.TR],
+            [side_a3_n, central_windowed, central_windowed.R, side_a3_n.R],
+            [corner_third_f, front_gate, front_gate.R, corner_third_f.R],
         ],
     ),
     Demo(
         "4×4 semitraversable flexible station layout",
         [
-            [corner_third_f.T, front_gate.T, front_gate.TR, corner_third_f.TR],
-            [side_a3_n.T, central_windowed, central_windowed.R, side_a3_n.TR],
-            [side_a3_n, central_windowed, central_windowed.R, side_a3_n.R],
-            [corner_third_f, front_gate, front_gate.R, corner_third_f.R],
+            [corner_third.T, front_gate.T, front_gate.TR, corner_third.TR],
+            [side_a3_f.T, central_windowed, central_windowed.R, side_a3_f.TR],
+            [side_a3_f, central_windowed, central_windowed.R, side_a3_f.R],
+            [corner_third, front_gate, front_gate.R, corner_third.R],
         ],
     ),
 ]
@@ -90,10 +90,10 @@ def get_front_index_2(l, r):
     )
 
 
-cb14_0 = make_cb14(get_front_index, lambda l, r: get_central_index(l, r, determine_platform_even), None).to_index(
+cb14_0 = make_cb14(get_front_index, lambda l, r: get_central_index(l, r, determine_platform_odd), None).to_index(
     layouts
 )
-cb14_1 = make_cb14(get_front_index_2, lambda l, r: get_central_index(l, r, determine_platform_odd), None).to_index(
+cb14_1 = make_cb14(get_front_index_2, lambda l, r: get_central_index(l, r, determine_platform_even), None).to_index(
     layouts
 )
 
