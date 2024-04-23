@@ -1,6 +1,9 @@
 Ahyangyi's OpenTTD NewGRFs
 ==========================
 
+![Unit tests](https://github.com/ahyangyi/openttd-newgrfs/actions/workflows/unit-tests.yml/badge.svg)
+![Docs](https://github.com/ahyangyi/openttd-newgrfs/actions/workflows/jekyll-gh-pages.yml/badge.svg)
+
 This repo contains the source code for Ahyangyi’s NewGRFs.
 
 A monorepo is used to increase the chance of code sharing. The possibility of refactoring this repo into multiple smaller ones remains, but it is too early to worry about that.
