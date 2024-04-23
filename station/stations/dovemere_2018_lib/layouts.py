@@ -76,7 +76,7 @@ class LoadType:
         return [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))]
 
     def make_platform_variants(self, ground, parents):
-        self.register(ALayout(ground, parents, True))
+        self.register(ALayout([ground], parents, True))
 
     def load(self):
         if isinstance(self.source, str):
@@ -123,14 +123,14 @@ class TraversablePlatform(Traversable):
 
     def make_platform_variants(self, ground, parents):
         if self.symmetry.is_symmetrical_y():
-            self.register(ALayout(ground, parents, True), "_x")
-            self.register(ALayout(ground, parents + [plat], True, notes=["y", "near"]), "_n")
-            self.register(ALayout(ground, parents + [plat, plat.T], True, notes=["both"]))
+            self.register(ALayout([ground], parents, True), "_x")
+            self.register(ALayout([ground], parents + [plat], True, notes=["y", "near"]), "_n")
+            self.register(ALayout([ground], parents + [plat, plat.T], True, notes=["both"]))
         else:
-            self.register(ALayout(ground, parents, True), "_x")
-            self.register(ALayout(ground, parents + [plat], True, notes=["near"]), "_n")
-            self.register(ALayout(ground, parents + [plat.T], True, notes=["near"]), "_f")
-            self.register(ALayout(ground, parents + [plat, plat.T], True, notes=["both"]))
+            self.register(ALayout([ground], parents, True), "_x")
+            self.register(ALayout([ground], parents + [plat], True, notes=["near"]), "_n")
+            self.register(ALayout([ground], parents + [plat.T], True, notes=["near"]), "_f")
+            self.register(ALayout([ground], parents + [plat, plat.T], True, notes=["both"]))
 
 
 class TraversablePlatformSide(Traversable):
@@ -140,14 +140,14 @@ class TraversablePlatformSide(Traversable):
 
     def make_platform_variants(self, ground, parents):
         if self.symmetry.is_symmetrical_y():
-            self.register(ALayout(ground, parents, True), "_x")
-            self.register(ALayout(ground, parents + [plat_shed], True, notes=["y", "near"]), "_n")
-            self.register(ALayout(ground, parents + [plat_shed, plat_shed.T], True, notes=["both"]))
+            self.register(ALayout([ground], parents, True), "_x")
+            self.register(ALayout([ground], parents + [plat_shed], True, notes=["y", "near"]), "_n")
+            self.register(ALayout([ground], parents + [plat_shed, plat_shed.T], True, notes=["both"]))
         else:
-            self.register(ALayout(ground, parents, True), "_x")
-            self.register(ALayout(ground, parents + [plat_shed], True, notes=["near"]), "_n")
-            self.register(ALayout(ground, parents + [plat_shed.T], True, notes=["near"]), "_f")
-            self.register(ALayout(ground, parents + [plat_shed, plat_shed.T], True, notes=["both"]))
+            self.register(ALayout([ground], parents, True), "_x")
+            self.register(ALayout([ground], parents + [plat_shed], True, notes=["near"]), "_n")
+            self.register(ALayout([ground], parents + [plat_shed.T], True, notes=["near"]), "_f")
+            self.register(ALayout([ground], parents + [plat_shed, plat_shed.T], True, notes=["both"]))
 
 
 class TraversableCorridor(Traversable):
@@ -184,15 +184,15 @@ class SidePlatform(TwoFloorMixin, Side):
     f1x = 10
 
     def make_platform_variants(self, ground, parents):
-        self.register(ALayout(ground, parents + [plat_shed_nt.T], True, notes=["far"]))
+        self.register(ALayout([ground], parents + [plat_shed_nt.T], True, notes=["far"]))
 
 
 class SideThird(TwoFloorMixin, Traversable):
     f1x = 6
 
     def make_platform_variants(self, ground, parents):
-        self.register(ALayout(ground, parents, True, notes=["third"]))
-        self.register(ALayout(ground, parents + [plat_shed.T], True, notes=["third", "far"]), "_f")
+        self.register(ALayout([ground], parents, True, notes=["third"]))
+        self.register(ALayout([ground], parents + [plat_shed.T], True, notes=["third", "far"]), "_f")
 
 
 class SideDouble(LoadType):

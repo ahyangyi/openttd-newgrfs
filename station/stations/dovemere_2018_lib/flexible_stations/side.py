@@ -18,12 +18,7 @@ for i, demo in enumerate([my_demo, my_demo.M, my_demo.T, my_demo.T.M]):
             for bpp in [32]
         ]
     )
-    layout = ALayout(
-        AGroundSprite(grf.EMPTY_SPRITE),
-        [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))],
-        False,
-        category=b"\xe8\x8a\x9cA",
-    )
+    layout = ALayout([], [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False, category=b"\xe8\x8a\x9cA")
     demo_layouts.append(layout)
 layouts.extend(demo_layouts)
 flexible_entries.extend([x for x in demo_layouts[::2]])

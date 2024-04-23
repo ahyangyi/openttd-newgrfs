@@ -44,12 +44,7 @@ for demo in my_demos:
             )
         )
 demo_layouts = [
-    ALayout(
-        AGroundSprite(grf.EMPTY_SPRITE),
-        [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))],
-        False,
-        category=b"\xe8\x8a\x9cA",
-    )
+    ALayout([], [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False, category=b"\xe8\x8a\x9cA")
     for sprite in demo_sprites
 ]
 layouts.extend(demo_layouts)

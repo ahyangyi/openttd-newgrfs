@@ -12,7 +12,7 @@ def quickload(name, type):
     )
     sprite = type.create_variants(v.spritesheet())
     sprites.extend(sprite.all_variants)
-    l = ALayout(AGroundSprite(sprite), [], False)
+    l = ALayout([AGroundSprite(sprite)], [], False)
     return sprite, l
 
 
