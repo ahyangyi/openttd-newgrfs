@@ -1,7 +1,7 @@
 import grf
 from station.lib import AStation, ALayout, AGroundSprite, AParentSprite, LayoutSprite, Demo
 from agrf.magic import Switch
-from ..layouts import named_tiles, layouts, platform, flexible_entries
+from ..layouts import named_tiles, layouts, flexible_entries
 from .semitraversable import horizontal_layout
 
 named_tiles.globalize()
