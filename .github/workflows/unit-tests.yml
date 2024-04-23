@@ -28,9 +28,9 @@ jobs:
       # - name: Install golang deps
       #   run: ./install-go-dependencies.sh
       - name: Install system python deps
-        run: sudo apt update && sudo apt install python3-ply python3-pil pytest
+        run: sudo apt update && sudo apt install python3-ply python3-pil
       - name: Install python deps
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt && pip install pytest
       - name: Test stations
         run: pytest station
       - name: Test AEGIS
