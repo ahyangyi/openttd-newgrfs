@@ -18,6 +18,8 @@ from station.stations.platforms import (
     pl1_low_white_shed_d as platform,
     pl1_low_white_shed as platform_s,
     pl1_low_white_side_shed as platform_s_nt,
+    platform_height,
+    shed_height,
 )
 from station.stations.ground import gray, gray_third, gray_layout
 from station.stations.misc import rail
@@ -55,14 +57,13 @@ def get_category(internal_category, back, notes):
     return b"\xe8\x8a\x9c" + ret.to_bytes(1, "little")
 
 
-platform_height = 15
-base_height = 16
+base_height = 14
 building_height = 48
 overpass_height = building_height - base_height
 plat = AParentSprite(platform_sprites.pl1_low_white, (16, 6, platform_height), (0, 10, 0))
 plat_nt = AParentSprite(platform_sprites.pl1_low_white_side, (16, 6, platform_height), (0, 10, 0))
-plat_shed = AParentSprite(platform_sprites.pl1_low_white_shed_building, (16, 6, platform_height), (0, 10, 0))
-plat_shed_nt = AParentSprite(platform_sprites.pl1_low_white_side_shed, (16, 6, platform_height), (0, 10, 0))
+plat_shed = AParentSprite(platform_sprites.pl1_low_white_shed_building, (16, 6, shed_height), (0, 10, 0))
+plat_shed_nt = AParentSprite(platform_sprites.pl1_low_white_side_shed, (16, 6, shed_height), (0, 10, 0))
 third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
 
 

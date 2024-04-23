@@ -14,6 +14,10 @@ from agrf.graphics.voxel import LazyVoxel
 from .ground import gray
 
 
+platform_height = 6
+shed_height = 13
+
+
 def quickload(name):
     v = LazyVoxel(
         name,
@@ -34,7 +38,7 @@ def quickload(name):
             sprite = symmetry.create_variants(v2.spritesheet(xdiff=10))
             named_sprites[name + suffix] = sprite
 
-            ps = AParentSprite(sprite, (16, 6, 10 if "shed" in shed_flavor else 6), (0, 10, 0))
+            ps = AParentSprite(sprite, (16, 6, shed_height if "shed" in shed_flavor else platform_height), (0, 10, 0))
 
             for l, make_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
                 groundsprite = ADefaultGroundSprite(1012) if traversable else AGroundSprite(gray)
