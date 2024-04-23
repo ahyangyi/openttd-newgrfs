@@ -206,7 +206,7 @@ class SideThird(TwoFloorMixin, Traversable):
         )
 
 
-class HorizontalSingle(Traversable):
+class HorizontalSingle(TraversableCorridor):
     def load(self):
         v = LazyVoxel(
             os.path.basename(self.source),
@@ -233,9 +233,12 @@ class HorizontalSingle(Traversable):
         f1s = AParentSprite(f1, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
 
-        self.register(ALayout(ground, [f1s, f1s.T, f2s], True), "")
-        self.register(ALayout(ground, [f1s, f2s], True, notes=["third", "y"]), "_third")
-        self.register(ALayout(ground, [f1s, f2s, plat_shed.T], True, notes=["third", "y", "far"]), "_third_f")
+        self.register(ALayout(ground, fake_ground_sprites + [f1s, f1s.T, f2s], True), "")
+        self.register(ALayout(ground, fake_ground_sprites + [f1s, f2s], True, notes=["third", "y"]), "_third")
+        self.register(
+            ALayout(ground, fake_ground_sprites + [f1s, f2s, plat_shed.T], True, notes=["third", "y", "far"]),
+            "_third_f",
+        )
 
 
 class HorizontalSingleAsym(Traversable):
