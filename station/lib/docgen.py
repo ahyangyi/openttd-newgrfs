@@ -17,7 +17,7 @@ def gen_docs(string_manager, metastations):
                 f"""---
 layout: default
 title: {translation}
-parent: AWSS - Ahyangyi's Wuhu Station Set
+parent: CNSPS Addon: Wuhu
 nav_order: {i+1}
 ---
 """,
