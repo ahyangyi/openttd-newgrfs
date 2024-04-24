@@ -6,9 +6,10 @@ from .semitraversable import horizontal_layout
 
 named_tiles.globalize()
 
-my_demo = Demo("1×4 side station layout", [[h_end_third_f, h_gate_1_third_f, h_gate_1_third_f.R, h_end_third_f.R]])
+demo1 = Demo("1×4 side station layout", [[h_end_third_f, h_gate_1_third_f, h_gate_1_third_f.R, h_end_third_f.R]])
+demo2 = Demo("1×4 side station layout", [[h_end_third, h_gate_1_third, h_gate_1_third.R, h_end_third.R]])
 demo_layouts = []
-for i, demo in enumerate([my_demo, my_demo.M, my_demo.T, my_demo.T.M]):
+for i, demo in enumerate([var for base in [demo1, demo2] for var in [base, base.M, base.T, base.T.M]]):
     sprite = grf.AlternativeSprites(
         *[
             LayoutSprite(demo, 64 * scale, 64 * scale, xofs=(16 - i % 2 * 32) * scale, yofs=0, scale=scale, bpp=bpp)
@@ -93,7 +94,7 @@ side_third_station_np = AStation(
     callbacks={
         "select_tile_layout": 0,
         "select_sprite_layout": grf.DualCallback(
-            default=cb14.to_index(layouts), purchase=layouts.index(demo_layouts[0])
+            default=cb14.to_index(layouts), purchase=layouts.index(demo_layouts[4])
         ),
     },
 )
@@ -108,7 +109,7 @@ back_side_third_station_np = AStation(
     callbacks={
         "select_tile_layout": 0,
         "select_sprite_layout": grf.DualCallback(
-            default=cb14.T.to_index(layouts), purchase=layouts.index(demo_layouts[2])
+            default=cb14.T.to_index(layouts), purchase=layouts.index(demo_layouts[6])
         ),
     },
 )
