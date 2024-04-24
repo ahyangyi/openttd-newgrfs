@@ -54,7 +54,7 @@ cb14 = Switch(
 )
 
 side_third_station = AStation(
-    id=0x06,
+    id=0x08,
     translation_name="FLEXIBLE_FRONT_SIDE",
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
@@ -69,7 +69,7 @@ side_third_station = AStation(
 )
 
 back_side_third_station = AStation(
-    id=0x07,
+    id=0x09,
     translation_name="FLEXIBLE_BACK_SIDE",
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
