@@ -88,9 +88,9 @@ back_side_station = AStation(
     },
 )
 
-side_station_nt = AStation(
+side_station_np = AStation(
     id=0x06,
-    translation_name="FLEXIBLE_FRONT_SIDE_NT",
+    translation_name="FLEXIBLE_FRONT_SIDE_NP",
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
@@ -104,9 +104,9 @@ side_station_nt = AStation(
     },
 )
 
-back_side_station_nt = AStation(
+back_side_station_np = AStation(
     id=0x07,
-    translation_name="FLEXIBLE_BACK_SIDE_NT",
+    translation_name="FLEXIBLE_BACK_SIDE_NP",
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,

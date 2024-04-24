@@ -55,7 +55,7 @@ cb14 = Switch(
 
 side_third_station = AStation(
     id=0x08,
-    translation_name="FLEXIBLE_FRONT_SIDE",
+    translation_name="FLEXIBLE_FRONT_SIDE_THIRD",
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
@@ -70,7 +70,37 @@ side_third_station = AStation(
 
 back_side_third_station = AStation(
     id=0x09,
-    translation_name="FLEXIBLE_BACK_SIDE",
+    translation_name="FLEXIBLE_BACK_SIDE_THIRD",
+    layouts=layouts,
+    class_label=b"\xe8\x8a\x9cA",
+    cargo_threshold=40,
+    disabled_platforms=0b11111110,
+    callbacks={
+        "select_tile_layout": 0,
+        "select_sprite_layout": grf.DualCallback(
+            default=cb14.T.to_index(layouts), purchase=layouts.index(demo_layouts[2])
+        ),
+    },
+)
+
+side_third_station_np = AStation(
+    id=0x0A,
+    translation_name="FLEXIBLE_FRONT_SIDE_THIRD_NP",
+    layouts=layouts,
+    class_label=b"\xe8\x8a\x9cA",
+    cargo_threshold=40,
+    disabled_platforms=0b11111110,
+    callbacks={
+        "select_tile_layout": 0,
+        "select_sprite_layout": grf.DualCallback(
+            default=cb14.to_index(layouts), purchase=layouts.index(demo_layouts[0])
+        ),
+    },
+)
+
+back_side_third_station_np = AStation(
+    id=0x0B,
+    translation_name="FLEXIBLE_BACK_SIDE_THIRD_NP",
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,

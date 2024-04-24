@@ -12,8 +12,12 @@ STR_STATION_FLEXIBLE_UNTRAVERSABLE_SIDE         :Flexible Station Building (No t
 STR_STATION_FLEXIBLE_UNTRAVERSABLE_NO_SIDE      :Flexible Station Building (No track at ends, no side platform)
 STR_STATION_FLEXIBLE_FRONT_SIDE                 :Flexible Station Building (Track-side, front)
 STR_STATION_FLEXIBLE_BACK_SIDE                  :Flexible Station Building (Track-side, back)
-STR_STATION_FLEXIBLE_FRONT_SIDE_NT              :Flexible Station Building (Track-side, front, no platform)
-STR_STATION_FLEXIBLE_BACK_SIDE_NT               :Flexible Station Building (Track-side, back, no platform)
+STR_STATION_FLEXIBLE_FRONT_SIDE_NP              :Flexible Station Building (Track-side, front, no platform)
+STR_STATION_FLEXIBLE_BACK_SIDE_NP               :Flexible Station Building (Track-side, back, no platform)
+STR_STATION_FLEXIBLE_FRONT_SIDE_THIRD           :Flexible Station Building (With track, front)
+STR_STATION_FLEXIBLE_BACK_SIDE_THIRD            :Flexible Station Building (With track, back)
+STR_STATION_FLEXIBLE_FRONT_SIDE_THIRD_NP        :Flexible Station Building (With track, front, no platform)
+STR_STATION_FLEXIBLE_BACK_SIDE_THIRD_NP         :Flexible Station Building (With track, back, no platform)
 
 STR_STATION_CLASS_E88A9CA       :AWSS: Wuhu - Flexible
 STR_STATION_CLASS_E88A9C80      :AWSS: Wuhu - Modular, Front

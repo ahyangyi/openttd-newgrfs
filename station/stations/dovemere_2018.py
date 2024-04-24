@@ -9,10 +9,15 @@ from .dovemere_2018_lib.flexible_stations.traversable import traversable_station
 from .dovemere_2018_lib.flexible_stations.side import (
     side_station,
     back_side_station,
-    side_station_nt,
-    back_side_station_nt,
+    side_station_np,
+    back_side_station_np,
 )
-from .dovemere_2018_lib.flexible_stations.side_third import side_third_station, back_side_third_station
+from .dovemere_2018_lib.flexible_stations.side_third import (
+    side_third_station,
+    back_side_third_station,
+    side_third_station_np,
+    back_side_third_station_np,
+)
 
 
 the_stations = AMetaStation(
@@ -23,10 +28,12 @@ the_stations = AMetaStation(
         traversable_station_no_side,
         side_station,
         back_side_station,
-        side_station_nt,
-        back_side_station_nt,
+        side_station_np,
+        back_side_station_np,
         side_third_station,
         back_side_third_station,
+        side_third_station_np,
+        back_side_third_station_np,
     ]
     + [
         AStation(
