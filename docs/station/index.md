@@ -1,6 +1,6 @@
 ---
 layout: default
-title: AWSS - Ahyangyi's Wuhu Station Set
+title: CNSPS Addon: Wuhu
 has_children: True
 nav_order: 4
 ---
