@@ -144,6 +144,33 @@ class AParentSprite:
         return [self.sprite]
 
 
+class AChildSprite:
+    def __init__(self, sprite, offset):
+        self.sprite = sprite
+        self.offset = offset
+
+    def __repr__(self):
+        return f"<AChildSprite:{self.sprite}:{self.offset}>"
+
+    def to_grf(self, sprite_list):
+        return grf.ChildSprite(
+            sprite=grf.SpriteRef(
+                id=0x42D + sprite_list.index(self.sprite),
+                pal=0,
+                is_global=False,
+                use_recolour=True,
+                always_transparent=False,
+                no_transparent=False,
+            ),
+            xofs=self.offset[0],
+            yofs=self.offset[1],
+        )
+
+    @property
+    def sprites(self):
+        return [self.sprite]
+
+
 class ALayout:
     def __init__(self, ground_sprite, parent_sprites, traversable, category=None, notes=None):
         self.ground_sprite = ground_sprite
@@ -154,15 +181,15 @@ class ALayout:
 
     @property
     def sorted_parent_sprites(self):
+        # FIXME include child sprites
         return sorted(
-            self.parent_sprites,
+            [x for x in self.parent_sprites if isinstance(x, AParentSprite)],
             key=lambda x: (x.offset[0] + x.offset[1] + x.extent[0] + x.extent[1], x.offset[2] + x.extent[2]),
         )
 
     def to_grf(self, sprite_list):
         return grf.SpriteLayout(
-            [self.ground_sprite.to_grf(sprite_list)]
-            + [sprite.to_grf(sprite_list) for sprite in self.sorted_parent_sprites]
+            [self.ground_sprite.to_grf(sprite_list)] + [sprite.to_grf(sprite_list) for sprite in self.parent_sprites]
         )
 
     def graphics(self, scale, bpp, remap=None, context=None):
