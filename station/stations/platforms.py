@@ -16,6 +16,7 @@ from .ground import gray
 
 platform_height = 6
 shed_height = 13
+pillar_height = 14
 
 
 def quickload(name):
@@ -29,12 +30,16 @@ def quickload(name):
     platform_components = {"side_platform", "platform"}
     shed_components = {"shed", "shed_building", "pillar"}
 
-    for platform_flavor, traversable, pkeeps in [("", True, {"platform"}), ("_side", False, {"side_platform"})]:
-        for shed_flavor, symmetry, skeeps in [
-            ("", BuildingSpriteSheetSymmetricalX, set()),
-            ("_shed", BuildingSpriteSheetSymmetricalX, {"shed"}),
-            ("_shed_building", BuildingSpriteSheetFull, {"shed_building"}),
-            ("_pillar", BuildingSpriteSheetSymmetricalX, {"pillar"}),
+    for platform_flavor, traversable, pkeeps, pheight in [
+        ("np", True, set(), 0),
+        ("", True, {"platform"}, platform_height),
+        ("_side", False, {"side_platform"}, platform_height),
+    ]:
+        for shed_flavor, symmetry, skeeps, sheight in [
+            ("", BuildingSpriteSheetSymmetricalX, set(), 0),
+            ("_shed", BuildingSpriteSheetSymmetricalX, {"shed"}, shed_height),
+            ("_shed_building", BuildingSpriteSheetFull, {"shed_building"}, shed_height),
+            ("_pillar", BuildingSpriteSheetSymmetricalX, {"pillar"}, pillar_height),
         ]:
             suffix = platform_flavor + shed_flavor
             v2 = v.discard_layers(
@@ -44,7 +49,8 @@ def quickload(name):
             sprite = symmetry.create_variants(v2.spritesheet(xdiff=10))
             named_sprites[name + suffix] = sprite
 
-            ps = AParentSprite(sprite, (16, 6, shed_height if "shed" in shed_flavor else platform_height), (0, 10, 0))
+            height = max(pheight, sheight)
+            ps = AParentSprite(sprite, (16, 6, height), (0, 10, 0))
 
             for l, make_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
                 groundsprite = ADefaultGroundSprite(1012) if traversable else AGroundSprite(gray)
