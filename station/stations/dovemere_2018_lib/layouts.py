@@ -62,6 +62,8 @@ def get_category(internal_category, back, notes):
 base_height = 14
 building_height = 48
 overpass_height = building_height - base_height
+np_pillar = platform_ps.pl1_low_white_np_pillar
+plat_pillar = platform_ps.pl1_low_white_pillar
 plat = platform_ps.pl1_low_white
 plat_nt = platform_ps.pl1_low_white_side
 plat_shed = platform_ps.pl1_low_white_shed_building
@@ -129,14 +131,14 @@ class TraversablePlatform(Traversable):
 
     def make_platform_variants(self, grounds, parents):
         if self.symmetry.is_symmetrical_y():
-            self.register(ALayout(grounds, parents, True), "_x")
-            self.register(ALayout(grounds, parents + [plat], True, notes=["y", "near"]), "_n")
-            self.register(ALayout(grounds, parents + [plat, plat.T], True, notes=["both"]))
+            self.register(ALayout(grounds, parents + [np_pillar, np_pillar.T], True), "_x")
+            self.register(ALayout(grounds, parents + [plat_pillar, np_pillar.T], True, notes=["y", "near"]), "_n")
+            self.register(ALayout(grounds, parents + [plat_pillar, plat_pillar.T], True, notes=["both"]))
         else:
-            self.register(ALayout(grounds, parents, True), "_x")
-            self.register(ALayout(grounds, parents + [plat], True, notes=["near"]), "_n")
-            self.register(ALayout(grounds, parents + [plat.T], True, notes=["near"]), "_f")
-            self.register(ALayout(grounds, parents + [plat, plat.T], True, notes=["both"]))
+            self.register(ALayout(grounds, parents + [np_pillar, np_pillar.T], True), "_x")
+            self.register(ALayout(grounds, parents + [plat_pillar, np_pillar.T], True, notes=["near"]), "_n")
+            self.register(ALayout(grounds, parents + [np_pillar, plat_pillar.T], True, notes=["near"]), "_f")
+            self.register(ALayout(grounds, parents + [plat_pillar, plat_pillar.T], True, notes=["both"]))
 
 
 class TraversablePlatformSide(Traversable):

@@ -31,7 +31,7 @@ def quickload(name):
     shed_components = {"shed", "shed_building", "pillar"}
 
     for platform_flavor, traversable, pkeeps, pheight in [
-        ("np", True, set(), 0),
+        ("_np", True, set(), 0),
         ("", True, {"platform"}, platform_height),
         ("_side", False, {"side_platform"}, platform_height),
     ]:
