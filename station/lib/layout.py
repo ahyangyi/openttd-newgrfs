@@ -170,6 +170,9 @@ class AChildSprite:
     def sprites(self):
         return [self.sprite]
 
+    def __getattr__(self, name):
+        return AChildSprite(getattr(self.sprite, name), self.offset)
+
 
 class ALayout:
     def __init__(self, ground_sprites, parent_sprites, traversable, category=None, notes=None):

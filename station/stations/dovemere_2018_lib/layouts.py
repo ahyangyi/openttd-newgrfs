@@ -9,6 +9,7 @@ from station.lib import (
     ADefaultGroundSprite,
     AGroundSprite,
     AParentSprite,
+    AChildSprite,
     ALayout,
     AttrDict,
 )
@@ -61,8 +62,8 @@ plat = AParentSprite(platform_sprites.pl1_low_white, (16, 6, platform_height), (
 plat_nt = AParentSprite(platform_sprites.pl1_low_white_side, (16, 6, platform_height), (0, 10, 0))
 plat_shed = AParentSprite(platform_sprites.pl1_low_white_shed_building, (16, 6, platform_height), (0, 10, 0))
 plat_shed_nt = AParentSprite(platform_sprites.pl1_low_white_side_shed, (16, 6, platform_height), (0, 10, 0))
-third = AGroundSprite(gray_third)
-third_T = AGroundSprite(gray_third.T)
+third = AChildSprite(gray_third, (0, 0))
+third_T = AChildSprite(gray_third.T, (0, 0))
 
 
 class LoadType:
