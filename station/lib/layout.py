@@ -170,10 +170,16 @@ class AChildSprite:
     def sprites(self):
         return [self.sprite]
 
+    def __getattr__(self, name):
+        return AChildSprite(getattr(self.sprite, name), self.offset)
+
 
 class ALayout:
-    def __init__(self, ground_sprite, parent_sprites, traversable, category=None, notes=None):
-        self.ground_sprite = ground_sprite
+    def __init__(self, ground_sprites, parent_sprites, traversable, category=None, notes=None):
+        assert isinstance(ground_sprites, list)
+        if ground_sprites == []:
+            ground_sprites = [AGroundSprite(grf.EMPTY_SPRITE)]
+        self.ground_sprites = ground_sprites
         self.parent_sprites = parent_sprites
         self.traversable = traversable
         self.category = category
@@ -189,12 +195,17 @@ class ALayout:
 
     def to_grf(self, sprite_list):
         return grf.SpriteLayout(
-            [self.ground_sprite.to_grf(sprite_list)] + [sprite.to_grf(sprite_list) for sprite in self.parent_sprites]
+            [sprite.to_grf(sprite_list) for sprite in self.ground_sprites]
+            + [sprite.to_grf(sprite_list) for sprite in self.parent_sprites]
         )
 
     def graphics(self, scale, bpp, remap=None, context=None):
         context = context or grf.DummyWriteContext()
-        img = self.ground_sprite.graphics(scale, bpp).copy()
+        img = LayeredImage.empty()
+        for sprite in self.ground_sprites:
+            new_img = sprite.graphics(scale, bpp).copy()
+            img.blend_over(new_img)
+
         for sprite in self.sorted_parent_sprites:
             masked_sprite = LayeredImage.from_sprite(
                 sprite.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
@@ -219,19 +230,24 @@ class ALayout:
 
     def __getattr__(self, name):
         call = lambda x: getattr(x, name)
-        new_ground_sprite = call(self.ground_sprite)
+        new_ground_sprites = [call(sprite) for sprite in self.ground_sprites]
         new_sprites = [call(sprite) for sprite in self.parent_sprites]
-        return ALayout(new_ground_sprite, new_sprites, self.traversable, self.category, self.notes)
+        return ALayout(new_ground_sprites, new_sprites, self.traversable, self.category, self.notes)
 
     def __call__(self, *args, **kwargs):
         call = lambda x: x(*args, **kwargs)
-        new_ground_sprite = call(self.ground_sprite)
-        new_sprites = call(self.parent_sprites)
-        return ALayout(new_ground_sprite, new_sprites, self.traversable, self.category, self.notes)
+        new_ground_sprites = [call(sprite) for sprite in self.ground_sprites]
+        new_sprites = [call(sprite) for sprite in self.parent_sprites]
+        return ALayout(new_ground_sprites, new_sprites, self.traversable, self.category, self.notes)
 
     @property
     def sprites(self):
-        return [*dict.fromkeys(self.ground_sprite.sprites + [sub for s in self.parent_sprites for sub in s.sprites])]
+        return [
+            *dict.fromkeys(
+                [sub for s in self.ground_sprites for sub in s.sprites]
+                + [sub for s in self.parent_sprites for sub in s.sprites]
+            )
+        ]
 
 
 class LayoutSprite(grf.Sprite):
