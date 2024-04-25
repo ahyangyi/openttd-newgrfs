@@ -27,13 +27,13 @@ def quickload(name):
         load_from="station/files/csps-gorender.json",
     )
 
-    platform_components = {"side_platform", "platform"}
+    platform_components = {"white", "white_side", "modernnarrow", "modernnarrow_side"}
     shed_components = {"shed", "shed_building", "pillar"}
 
     for platform_flavor, traversable, pkeeps, pheight in [
         ("_np", True, set(), 0),
-        ("", True, {"platform"}, platform_height),
-        ("_side", False, {"side_platform"}, platform_height),
+        ("", True, {"modernnarrow"}, platform_height),
+        ("_side", False, {"modernnarrow_side"}, platform_height),
     ]:
         for shed_flavor, symmetry, skeeps, sheight in [
             ("", BuildingSpriteSheetSymmetricalX, set(), 0),
