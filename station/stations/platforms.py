@@ -26,14 +26,20 @@ def quickload(name):
         load_from="station/files/csps-gorender.json",
     )
 
-    for platform_flavor, traversable, p_discards in [("", True, ["side_platform"]), ("_side", False, ["platform"])]:
-        for shed_flavor, symmetry, s_discards in [
-            ("", BuildingSpriteSheetSymmetricalX, ["shed", "shed_building"]),
-            ("_shed", BuildingSpriteSheetSymmetricalX, ["shed_building"]),
-            ("_shed_building", BuildingSpriteSheetFull, ["shed"]),
+    platform_components = {"side_platform", "platform"}
+    shed_components = {"shed", "shed_building", "pillar"}
+
+    for platform_flavor, traversable, pkeeps in [("", True, {"platform"}), ("_side", False, {"side_platform"})]:
+        for shed_flavor, symmetry, skeeps in [
+            ("", BuildingSpriteSheetSymmetricalX, set()),
+            ("_shed", BuildingSpriteSheetSymmetricalX, {"shed"}),
+            ("_shed_building", BuildingSpriteSheetFull, {"shed_building"}),
+            ("_pillar", BuildingSpriteSheetSymmetricalX, {"pillar"}),
         ]:
             suffix = platform_flavor + shed_flavor
-            v2 = v.discard_layers(tuple(p_discards + s_discards), "subset" + suffix)
+            v2 = v.discard_layers(
+                tuple(sorted(tuple(platform_components - pkeeps) + tuple(shed_components - skeeps))), "subset" + suffix
+            )
             v2.in_place_subset(symmetry.render_indices())
             sprite = symmetry.create_variants(v2.spritesheet(xdiff=10))
             named_sprites[name + suffix] = sprite
