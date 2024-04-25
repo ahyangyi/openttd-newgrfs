@@ -46,7 +46,7 @@ def quickload(name):
                     cur_symmetry = symmetry.add_y_symmetry()
                 else:
                     cur_symmetry = symmetry
-                var = cur_symmetry.get_all_variants(ALayout(groundsprite, l, True))
+                var = cur_symmetry.get_all_variants(ALayout([groundsprite], l, True))
                 layouts.extend(var)
                 l = cur_symmetry.create_variants(var)
                 named_tiles[name + suffix + extra_suffix] = l

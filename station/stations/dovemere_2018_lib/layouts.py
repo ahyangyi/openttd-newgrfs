@@ -9,6 +9,7 @@ from station.lib import (
     ADefaultGroundSprite,
     AGroundSprite,
     AParentSprite,
+    AChildSprite,
     ALayout,
     AttrDict,
 )
@@ -64,7 +65,8 @@ plat = AParentSprite(platform_sprites.pl1_low_white, (16, 6, platform_height), (
 plat_nt = AParentSprite(platform_sprites.pl1_low_white_side, (16, 6, platform_height), (0, 10, 0))
 plat_shed = AParentSprite(platform_sprites.pl1_low_white_shed_building, (16, 6, shed_height), (0, 10, 0))
 plat_shed_nt = AParentSprite(platform_sprites.pl1_low_white_side_shed, (16, 6, shed_height), (0, 10, 0))
-third = AParentSprite(gray_third, (16, 16, 1), (0, 0, 0))
+third = AChildSprite(gray_third, (0, 0))
+third_T = AChildSprite(gray_third.T, (0, 0))
 
 
 class LoadType:
@@ -78,8 +80,8 @@ class LoadType:
         sprite = self.symmetry.create_variants(voxel.spritesheet())
         return [AParentSprite(sprite, (16, 16, building_height), (0, 0, 0))]
 
-    def make_platform_variants(self, ground, parents):
-        self.register(ALayout(ground, parents, True))
+    def make_platform_variants(self, grounds, parents):
+        self.register(ALayout(grounds, parents, True))
 
     def load(self):
         if isinstance(self.source, str):
@@ -95,10 +97,10 @@ class LoadType:
         self.do_work(v)
 
     def do_work(self, v):
-        ground, fake_ground_sprites = self.get_ground_sprites()
+        grounds = self.get_ground_sprites()
         sprites = self.get_sprites(v)
 
-        self.make_platform_variants(ground, fake_ground_sprites + sprites)
+        self.make_platform_variants(grounds, sprites)
 
     def register(self, l, suffix=""):
         if "y" in l.notes:
@@ -116,7 +118,7 @@ class LoadType:
 
 class Traversable(LoadType):
     def get_ground_sprites(self):
-        return ADefaultGroundSprite(1012), []
+        return [ADefaultGroundSprite(1012)]
 
 
 class TraversablePlatform(Traversable):
@@ -124,16 +126,16 @@ class TraversablePlatform(Traversable):
         sprite = self.symmetry.create_variants(voxel.spritesheet(zdiff=base_height * 2))
         return [AParentSprite(sprite, (16, 16, overpass_height), (0, 0, base_height))]
 
-    def make_platform_variants(self, ground, parents):
+    def make_platform_variants(self, grounds, parents):
         if self.symmetry.is_symmetrical_y():
-            self.register(ALayout(ground, parents, True), "_x")
-            self.register(ALayout(ground, parents + [plat], True, notes=["y", "near"]), "_n")
-            self.register(ALayout(ground, parents + [plat, plat.T], True, notes=["both"]))
+            self.register(ALayout(grounds, parents, True), "_x")
+            self.register(ALayout(grounds, parents + [plat], True, notes=["y", "near"]), "_n")
+            self.register(ALayout(grounds, parents + [plat, plat.T], True, notes=["both"]))
         else:
-            self.register(ALayout(ground, parents, True), "_x")
-            self.register(ALayout(ground, parents + [plat], True, notes=["near"]), "_n")
-            self.register(ALayout(ground, parents + [plat.T], True, notes=["near"]), "_f")
-            self.register(ALayout(ground, parents + [plat, plat.T], True, notes=["both"]))
+            self.register(ALayout(grounds, parents, True), "_x")
+            self.register(ALayout(grounds, parents + [plat], True, notes=["near"]), "_n")
+            self.register(ALayout(grounds, parents + [plat.T], True, notes=["near"]), "_f")
+            self.register(ALayout(grounds, parents + [plat, plat.T], True, notes=["both"]))
 
 
 class TraversablePlatformSide(Traversable):
@@ -141,26 +143,26 @@ class TraversablePlatformSide(Traversable):
         sprite = self.symmetry.create_variants(voxel.spritesheet(zdiff=base_height * 2))
         return [AParentSprite(sprite, (16, 16, overpass_height), (0, 0, base_height))]
 
-    def make_platform_variants(self, ground, parents):
+    def make_platform_variants(self, grounds, parents):
         if self.symmetry.is_symmetrical_y():
-            self.register(ALayout(ground, parents, True), "_x")
-            self.register(ALayout(ground, parents + [plat_shed], True, notes=["y", "near"]), "_n")
-            self.register(ALayout(ground, parents + [plat_shed, plat_shed.T], True, notes=["both"]))
+            self.register(ALayout(grounds, parents, True), "_x")
+            self.register(ALayout(grounds, parents + [plat_shed], True, notes=["y", "near"]), "_n")
+            self.register(ALayout(grounds, parents + [plat_shed, plat_shed.T], True, notes=["both"]))
         else:
-            self.register(ALayout(ground, parents, True), "_x")
-            self.register(ALayout(ground, parents + [plat_shed], True, notes=["near"]), "_n")
-            self.register(ALayout(ground, parents + [plat_shed.T], True, notes=["near"]), "_f")
-            self.register(ALayout(ground, parents + [plat_shed, plat_shed.T], True, notes=["both"]))
+            self.register(ALayout(grounds, parents, True), "_x")
+            self.register(ALayout(grounds, parents + [plat_shed], True, notes=["near"]), "_n")
+            self.register(ALayout(grounds, parents + [plat_shed.T], True, notes=["near"]), "_f")
+            self.register(ALayout(grounds, parents + [plat_shed, plat_shed.T], True, notes=["both"]))
 
 
 class TraversableCorridor(Traversable):
     def get_ground_sprites(self):
-        return ADefaultGroundSprite(1012), [third, third.T]
+        return [ADefaultGroundSprite(1012), third, third_T]
 
 
 class Side(LoadType):
     def get_ground_sprites(self):
-        return AGroundSprite(gray), []
+        return [AGroundSprite(gray)]
 
 
 class TwoFloorMixin:
@@ -190,19 +192,19 @@ class SideFull(TwoFloorMixin, Side):
 class SidePlatform(TwoFloorMixin, Side):
     f1x = 10
 
-    def make_platform_variants(self, ground, parents):
+    def make_platform_variants(self, grounds, parents):
         self.register(
-            ALayout(ground, parents + [(plat_shed_nt.T if self.has_shed else plat_nt.T)], True, notes=["far"])
+            ALayout(grounds, parents + [(plat_shed_nt.T if self.has_shed else plat_nt.T)], True, notes=["far"])
         )
 
 
 class SideThird(TwoFloorMixin, Traversable):
     f1x = 6
 
-    def make_platform_variants(self, ground, parents):
-        self.register(ALayout(ground, parents, True, notes=["third"]))
+    def make_platform_variants(self, grounds, parents):
+        self.register(ALayout(grounds, parents, True, notes=["third"]))
         self.register(
-            ALayout(ground, parents + [(plat_shed.T if self.has_shed else plat.T)], True, notes=["third", "far"]), "_f"
+            ALayout(grounds, parents + [(plat_shed.T if self.has_shed else plat.T)], True, notes=["third", "far"]), "_f"
         )
 
 
@@ -219,7 +221,7 @@ class HorizontalSingle(TraversableCorridor):
     f1x = 6
 
     def do_work(self, v):
-        ground, fake_ground_sprites = self.get_ground_sprites()
+        grounds = self.get_ground_sprites()
 
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
         f2v.in_place_subset(self.symmetry.render_indices())
@@ -233,12 +235,9 @@ class HorizontalSingle(TraversableCorridor):
         f1s = AParentSprite(f1, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
 
-        self.register(ALayout(ground, fake_ground_sprites + [f1s, f1s.T, f2s], True), "")
-        self.register(ALayout(ground, fake_ground_sprites + [f1s, f2s], True, notes=["third", "y"]), "_third")
-        self.register(
-            ALayout(ground, fake_ground_sprites + [f1s, f2s, plat_shed.T], True, notes=["third", "y", "far"]),
-            "_third_f",
-        )
+        self.register(ALayout(grounds, [f1s, f1s.T, f2s], True), "")
+        self.register(ALayout(grounds, [f1s, f2s], True, notes=["third", "y"]), "_third")
+        self.register(ALayout(grounds, [f1s, f2s, plat_shed.T], True, notes=["third", "y", "far"]), "_third_f")
 
 
 class HorizontalSingleAsym(Traversable):
@@ -254,7 +253,7 @@ class HorizontalSingleAsym(Traversable):
     f1x = 6
 
     def do_work(self, v):
-        ground, fake_ground_sprites = self.get_ground_sprites()
+        grounds = self.get_ground_sprites()
 
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
         f2v.in_place_subset(self.symmetry.render_indices())
@@ -273,9 +272,9 @@ class HorizontalSingleAsym(Traversable):
         f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 0, 0))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
 
-        self.register(ALayout(ground, [f1fs, f1bs, f2s], True), "")
-        self.register(ALayout(ground, [f1fs, f2s], True, notes=["third", "y"]), "_third")
-        self.register(ALayout(ground, [f1fs, f2s, plat_shed.T], True, notes=["third", "y", "far"]), "_third_f")
+        self.register(ALayout(grounds, [f1fs, f1bs, f2s], True), "")
+        self.register(ALayout(grounds, [f1fs, f2s], True, notes=["third", "y"]), "_third")
+        self.register(ALayout(grounds, [f1fs, f2s, plat_shed.T], True, notes=["third", "y", "far"]), "_third_f")
 
 
 class HorizontalDouble(LoadType):
@@ -320,7 +319,7 @@ class HorizontalTriple(Traversable):
     f1x = 6
 
     def do_work(self, v):
-        ground, fake_ground_sprites = self.get_ground_sprites()
+        grounds = self.get_ground_sprites()
 
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
         f2v.in_place_subset(self.symmetry.render_indices())
@@ -337,9 +336,9 @@ class HorizontalTriple(Traversable):
         f1s = AParentSprite(f1, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
 
-        self.register(ALayout(ground, [f1s, f1s.T, f2s], True, notes=["third"]), "")
-        self.register(ALayout(ground, [f1s, f2s], True, notes=["third"]), "_third")
-        self.register(ALayout(ground, [f1s, f2s, plat_shed.T], True, notes=["third", "far"]), "_third_f")
+        self.register(ALayout(grounds, [f1s, f1s.T, f2s], True, notes=["third"]), "")
+        self.register(ALayout(grounds, [f1s, f2s], True, notes=["third"]), "_third")
+        self.register(ALayout(grounds, [f1s, f2s, plat_shed.T], True, notes=["third", "far"]), "_third_f")
         SidePlatform(self.name + "_platform", (plat_f1, f2), f1_symmetry, self.internal_category).load()
 
 
@@ -356,7 +355,7 @@ class HorizontalTripleAsym(Traversable):
     f1x = 6
 
     def do_work(self, v):
-        ground, fake_ground_sprites = self.get_ground_sprites()
+        grounds = self.get_ground_sprites()
 
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
         f2v.in_place_subset(self.symmetry.render_indices())
@@ -381,9 +380,9 @@ class HorizontalTripleAsym(Traversable):
         f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 0, 0))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
 
-        self.register(ALayout(ground, [f1fs, f1bs, f2s], True), "")
-        self.register(ALayout(ground, [f1fs, f2s], True, notes=["third", "y"]), "_third")
-        self.register(ALayout(ground, [f1fs, f2s, plat_shed.T], True, notes=["third", "y", "far"]), "_third_f")
+        self.register(ALayout(grounds, [f1fs, f1bs, f2s], True), "")
+        self.register(ALayout(grounds, [f1fs, f2s], True, notes=["third", "y"]), "_third")
+        self.register(ALayout(grounds, [f1fs, f2s, plat_shed.T], True, notes=["third", "y", "far"]), "_third_f")
         SidePlatform(self.name + "_platform", (plat_f1, f2), f1_symmetry, self.internal_category).load()
 
 
