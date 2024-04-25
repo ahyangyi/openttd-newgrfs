@@ -16,6 +16,7 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
     named_sprites as platform_sprites,
+    named_ps as platform_ps,
     pl1_low_white_shed_d as platform,
     pl1_low_white_shed as platform_s,
     pl1_low_white_side_shed as platform_s_nt,
@@ -61,10 +62,10 @@ def get_category(internal_category, back, notes):
 base_height = 14
 building_height = 48
 overpass_height = building_height - base_height
-plat = AParentSprite(platform_sprites.pl1_low_white, (16, 6, platform_height), (0, 10, 0))
-plat_nt = AParentSprite(platform_sprites.pl1_low_white_side, (16, 6, platform_height), (0, 10, 0))
-plat_shed = AParentSprite(platform_sprites.pl1_low_white_shed_building, (16, 6, shed_height), (0, 10, 0))
-plat_shed_nt = AParentSprite(platform_sprites.pl1_low_white_side_shed, (16, 6, shed_height), (0, 10, 0))
+plat = platform_ps.pl1_low_white
+plat_nt = platform_ps.pl1_low_white_side
+plat_shed = platform_ps.pl1_low_white_shed_building
+plat_shed_nt = platform_ps.pl1_low_white_side_shed
 third = AChildSprite(gray_third, (0, 0))
 third_T = AChildSprite(gray_third.T, (0, 0))
 

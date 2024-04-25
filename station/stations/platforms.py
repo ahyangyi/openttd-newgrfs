@@ -51,6 +51,7 @@ def quickload(name):
 
             height = max(pheight, sheight)
             ps = AParentSprite(sprite, (16, 6, height), (0, 10, 0))
+            named_ps[name + suffix] = ps
 
             for l, make_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
                 groundsprite = ADefaultGroundSprite(1012) if traversable else AGroundSprite(gray)
@@ -66,6 +67,7 @@ def quickload(name):
 
 layouts = []
 named_sprites = AttrDict()
+named_ps = AttrDict()
 named_tiles = AttrDict()
 
 for name in ["pl1_low_white"]:
