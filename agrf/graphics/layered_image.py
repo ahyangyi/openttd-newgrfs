@@ -89,23 +89,36 @@ class LayeredImage:
         h = max(other.h + other.yofs - self.yofs, self.h) - min(0, other.yofs - self.yofs)
         x0 = max(0, self.xofs - other.xofs)
         y0 = max(0, self.yofs - other.yofs)
+
         if w == self.w and h == self.h:
+            if self.rgb is None and other.rgb is not None:
+                self.rgb = np.zeros((h, w, 3), dtype=np.uint8)
+            if self.alpha is None and other.alpha is not None:
+                self.alpha = np.zeros((h, w), dtype=np.uint8)
+            if self.mask is None and other.mask is not None:
+                self.mask = np.zeros((h, w), dtype=np.uint8)
             return
 
         if self.rgb is not None:
             new_rgb = np.zeros((h, w, 3), dtype=np.uint8)
             new_rgb[y0 : y0 + self.h, x0 : x0 + self.w] = self.rgb
             self.rgb = new_rgb
+        elif other.rgb is not None:
+            self.rgb = np.zeros((h, w, 3), dtype=np.uint8)
 
         if self.alpha is not None:
             new_alpha = np.zeros((h, w), dtype=np.uint8)
             new_alpha[y0 : y0 + self.h, x0 : x0 + self.w] = self.alpha
             self.alpha = new_alpha
+        elif other.rgb is not None:
+            self.alpha = np.zeros((h, w), dtype=np.uint8)
 
         if self.mask is not None:
             new_mask = np.zeros((h, w), dtype=np.uint8)
             new_mask[y0 : y0 + self.h, x0 : x0 + self.w] = self.mask
             self.mask = new_mask
+        elif other.rgb is not None:
+            self.mask = np.zeros((h, w), dtype=np.uint8)
 
         self.w = w
         self.h = h
