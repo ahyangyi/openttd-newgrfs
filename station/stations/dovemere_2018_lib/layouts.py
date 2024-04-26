@@ -184,12 +184,15 @@ class TwoFloorMixin:
 class SideFull(TwoFloorMixin, Side):
     f1x = 16
 
+    def make_platform_variants(self, grounds, parents):
+        self.register(ALayout(grounds, parents, False))
+
 
 class SidePlatform(TwoFloorMixin, Side):
     f1x = 10
 
     def make_platform_variants(self, grounds, parents):
-        self.register(ALayout(grounds, parents + [plat_shed_nt.T], True, notes=["far"]))
+        self.register(ALayout(grounds, parents + [plat_shed_nt.T], False, notes=["far"]))
 
 
 class SideThird(TwoFloorMixin, Traversable):
