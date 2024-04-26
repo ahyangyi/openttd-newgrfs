@@ -6,9 +6,6 @@ from .semitraversable import horizontal_layout
 
 named_tiles.globalize()
 
-# XXX
-tiny_asym = tiny_asym_platform
-
 demo1 = Demo(
     "1×4 side station layout", [[h_end_asym_platform, h_gate_1_platform, h_gate_1_platform.R, h_end_asym_platform.R]]
 )

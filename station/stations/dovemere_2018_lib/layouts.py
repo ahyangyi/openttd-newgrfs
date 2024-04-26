@@ -17,9 +17,9 @@ from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
     named_sprites as platform_sprites,
     named_ps as platform_ps,
-    pl1_low_white_shed_d as platform,
-    pl1_low_white_shed as platform_s,
-    pl1_low_white_side_shed as platform_s_nt,
+    cnsps_shed_d as platform,
+    cnsps_shed as platform_s,
+    cnsps_side_shed as platform_s_nt,
     platform_height,
     shed_height,
 )
@@ -65,14 +65,14 @@ def get_category(internal_category, back, notes, tra):
 base_height = 14
 building_height = 48
 overpass_height = building_height - base_height
-np_pillar = platform_ps.pl1_low_white_np_pillar
-np_pillar_building = platform_ps.pl1_low_white_np_pillar_building
-plat_pillar = platform_ps.pl1_low_white_pillar
-plat = platform_ps.pl1_low_white
-plat_nt = platform_ps.pl1_low_white_side
-plat_shed = platform_ps.pl1_low_white_shed_building
-plat_shed_v = platform_ps.pl1_low_white_shed_building_v
-plat_shed_nt = platform_ps.pl1_low_white_side_shed
+np_pillar = platform_ps.cnsps_np_pillar
+np_pillar_building = platform_ps.cnsps_np_pillar_building
+plat_pillar = platform_ps.cnsps_pillar
+plat = platform_ps.cnsps
+plat_nt = platform_ps.cnsps_side
+plat_shed = platform_ps.cnsps_shed_building
+plat_shed_v = platform_ps.cnsps_shed_building_v
+plat_shed_nt = platform_ps.cnsps_side_shed
 third = AChildSprite(gray_third, (0, 0))
 third_T = AChildSprite(gray_third.T, (0, 0))
 
@@ -532,7 +532,7 @@ for name, symmetry, traversable, groundtype, category in [
     ("side_c", BuildingSpriteSheetSymmetricalY, True, True, "C"),
     ("side_d", BuildingSpriteSheetSymmetricalY, True, True, "D"),
     ("h_end", BuildingSpriteSheetSymmetricalY, True, "single", "H"),
-    ("h_end_asym", BuildingSpriteSheetFull, False, "double", "H"),
+    ("h_end_asym", BuildingSpriteSheetFull, False, "triple", "H"),
     ("h_end_asym_gate", BuildingSpriteSheetFull, False, "triple", "H"),
     ("h_end_gate", BuildingSpriteSheetSymmetricalY, True, False, "H"),
     ("h_end_gate_1", BuildingSpriteSheetFull, True, "single-1", "H"),
@@ -547,7 +547,7 @@ for name, symmetry, traversable, groundtype, category in [
     ("v_end_gate", BuildingSpriteSheetSymmetricalX, False, "triple", "F0"),
     ("v_central", BuildingSpriteSheetSymmetrical, True, "twoside", "N"),
     ("tiny", BuildingSpriteSheetSymmetrical, True, "single", "H"),
-    ("tiny_asym_platform", BuildingSpriteSheetSymmetricalX, False, True, "H"),
+    ("tiny_asym", BuildingSpriteSheetSymmetricalX, False, "triple", "H"),
     ("irregular/turn", BuildingSpriteSheetFull, False, False, "T"),
     ("irregular/turn_gate", BuildingSpriteSheetFull, False, False, "T"),
     ("irregular/tee", BuildingSpriteSheetSymmetricalX, False, "double", "T"),

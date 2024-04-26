@@ -22,9 +22,9 @@ pillar_height = 14
 def quickload(name):
     v = LazyVoxel(
         name,
-        prefix="station/voxels/render/csps",
-        voxel_getter=lambda path=f"station/voxels/csps/{name}.vox": path,
-        load_from="station/files/csps-gorender.json",
+        prefix="station/voxels/render/cnsps",
+        voxel_getter=lambda path=f"station/voxels/cnsps/{name}.vox": path,
+        load_from="station/files/cnsps-gorender.json",
     )
 
     platform_components = {"white", "white_side", "modernnarrow", "modernnarrow_side"}
@@ -41,7 +41,7 @@ def quickload(name):
             ("_shed_building", BuildingSpriteSheetFull, {"shed_building"}, shed_height),
             ("_shed_building_v", BuildingSpriteSheetSymmetricalX, {"shed_building_v"}, shed_height),
             ("_pillar", BuildingSpriteSheetSymmetricalX, {"pillar"}, pillar_height),
-            ("_pillar_building", BuildingSpriteSheetSymmetricalX, {"pillar_building"}, pillar_height),
+            ("_pillar_building", BuildingSpriteSheetFull, {"pillar_building"}, pillar_height),
         ]:
             suffix = platform_flavor + shed_flavor
             v2 = v.discard_layers(
@@ -72,7 +72,7 @@ named_sprites = AttrDict()
 named_ps = AttrDict()
 named_tiles = AttrDict()
 
-for name in ["pl1_low_white"]:
+for name in ["cnsps"]:
     quickload(name)
 
 named_tiles.globalize()
@@ -93,8 +93,8 @@ the_stations = AMetaStation(
     None,
     layouts,
     [
-        Demo("Platform", [[pl1_low_white], [pl1_low_white_d], [pl1_low_white.T]]),
-        Demo("Platform with concrete grounds", [[pl1_low_white_side], [pl1_low_white_d], [pl1_low_white_side.T]]),
-        Demo("Platform with shed", [[pl1_low_white_shed], [pl1_low_white_shed_d], [pl1_low_white_shed.T]]),
+        Demo("Platform", [[cnsps], [cnsps_d], [cnsps.T]]),
+        Demo("Platform with concrete grounds", [[cnsps_side], [cnsps_d], [cnsps_side.T]]),
+        Demo("Platform with shed", [[cnsps_shed], [cnsps_shed_d], [cnsps_shed.T]]),
     ],
 )
