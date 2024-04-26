@@ -44,12 +44,7 @@ for demo in my_demos:
             )
         )
 demo_layouts = [
-    ALayout(
-        AGroundSprite(grf.EMPTY_SPRITE),
-        [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))],
-        False,
-        category=b"\xe8\x8a\x9cA",
-    )
+    ALayout([], [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False, category=b"\xe8\x8a\x9cA")
     for sprite in demo_sprites
 ]
 layouts.extend(demo_layouts)
@@ -82,12 +77,16 @@ def get_front_index_2(l, r):
     )
 
 
-cb14_0 = make_cb14(get_front_index, lambda l, r: get_central_index(l, r, determine_platform_odd), None).to_index(
-    layouts
-)
-cb14_1 = make_cb14(get_front_index_2, lambda l, r: get_central_index(l, r, determine_platform_even), None).to_index(
-    layouts
-)
+def get_single_index(l, r):
+    return horizontal_layout(l, r, tiny, h_end_gate, h_end, h_normal, h_gate, h_gate_extender)
+
+
+cb14_0 = make_cb14(
+    get_front_index, lambda l, r: get_central_index(l, r, determine_platform_odd), get_single_index
+).to_index(layouts)
+cb14_1 = make_cb14(
+    get_front_index_2, lambda l, r: get_central_index(l, r, determine_platform_even), get_single_index
+).to_index(layouts)
 
 traversable_station = AStation(
     id=0x02,
@@ -96,6 +95,7 @@ traversable_station = AStation(
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
     non_traversable_tiles=0b00111100,
+    disabled_platforms=0b1,
     callbacks={
         "select_tile_layout": grf.PurchaseCallback(
             purchase=Switch(

@@ -189,12 +189,12 @@ def get_central_index(l, r, cb):
 
 
 def determine_platform_odd(t, d):
-    if d > t:
+    if t > d:
         return {"f": "n", "n": "f", "d": "d"}[determine_platform_odd(d, t)]
     if (t + d) % 2 == 1:
         return "fn"[t % 2]
     if (t + d) % 4 == 0:
-        if t < d - 1:
+        if t < d - 2:
             return "fn"[t % 2]
         return "d"
     if t < d:
@@ -203,7 +203,7 @@ def determine_platform_odd(t, d):
 
 
 def determine_platform_even(t, d):
-    if d > t:
+    if t > d:
         return {"f": "n", "n": "f", "d": "d"}[determine_platform_even(d, t)]
     if (t + d) % 2 == 1:
         return "nf"[t % 2]
@@ -211,6 +211,6 @@ def determine_platform_even(t, d):
         if t < d:
             return "nf"[t % 2]
         return "d"
-    if t < d - 1:
+    if t < d - 2:
         return "nf"[t % 2]
     return "d"
