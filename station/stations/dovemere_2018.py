@@ -37,7 +37,7 @@ the_stations = AMetaStation(
         + [(r * 16 + c).to_bytes(1, "little") for r in [8] for c in range(16)]
         + [b"\xF0"]
         + [(r * 16 + c).to_bytes(1, "little") for r in [9, 10, 11, 12] for c in [0, 1, 2, 3]]
-        + [b"\xF1", b"\xF2"]
+        + [b"\xD0", b"\xF1", b"\xF2"]
     ],
     flexible_entries + entries,
     [
