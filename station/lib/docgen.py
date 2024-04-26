@@ -17,7 +17,7 @@ def gen_docs(string_manager, metastations):
                 f"""---
 layout: default
 title: {translation}
-parent: CNSPS Addon: Wuhu
+parent: "CNSPS Addon: Wuhu"
 nav_order: {i+1}
 ---
 """,
