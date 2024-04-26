@@ -66,10 +66,12 @@ base_height = 14
 building_height = 48
 overpass_height = building_height - base_height
 np_pillar = platform_ps.pl1_low_white_np_pillar
+np_pillar_building = platform_ps.pl1_low_white_np_pillar_building
 plat_pillar = platform_ps.pl1_low_white_pillar
 plat = platform_ps.pl1_low_white
 plat_nt = platform_ps.pl1_low_white_side
 plat_shed = platform_ps.pl1_low_white_shed_building
+plat_shed_v = platform_ps.pl1_low_white_shed_building_v
 plat_shed_nt = platform_ps.pl1_low_white_side_shed
 third = AChildSprite(gray_third, (0, 0))
 third_T = AChildSprite(gray_third.T, (0, 0))
@@ -151,14 +153,33 @@ class TraversablePlatformSide(Traversable):
 
     def make_platform_variants(self, grounds, parents):
         if self.symmetry.is_symmetrical_y():
-            self.register(ALayout(grounds, parents, True), "_x")
-            self.register(ALayout(grounds, parents + [plat_shed], True, notes=["y", "near"]), "_n")
+            self.register(ALayout(grounds, parents + [np_pillar_building, np_pillar_building.T], True), "_x")
+            self.register(
+                ALayout(grounds, parents + [plat_shed, np_pillar_building.T], True, notes=["y", "near"]), "_n"
+            )
             self.register(ALayout(grounds, parents + [plat_shed, plat_shed.T], True, notes=["both"]))
         else:
-            self.register(ALayout(grounds, parents, True), "_x")
-            self.register(ALayout(grounds, parents + [plat_shed], True, notes=["near"]), "_n")
-            self.register(ALayout(grounds, parents + [plat_shed.T], True, notes=["far"]), "_f")
+            self.register(ALayout(grounds, parents + [np_pillar_building, np_pillar_building.T], True), "_x")
+            self.register(ALayout(grounds, parents + [plat_shed, np_pillar_building.T], True, notes=["near"]), "_n")
+            self.register(ALayout(grounds, parents + [np_pillar_building, plat_shed.T], True, notes=["far"]), "_f")
             self.register(ALayout(grounds, parents + [plat_shed, plat_shed.T], True, notes=["both"]))
+
+
+class TraversablePlatformTwoSide(Traversable):
+    def get_sprites(self, voxel):
+        sprite = self.symmetry.create_variants(voxel.spritesheet(zdiff=base_height * 2))
+        return [AParentSprite(sprite, (16, 16, overpass_height), (0, 0, base_height))]
+
+    def make_platform_variants(self, grounds, parents):
+        if self.symmetry.is_symmetrical_y():
+            self.register(ALayout(grounds, parents, True), "_x")
+            self.register(ALayout(grounds, parents + [plat_shed_v], True, notes=["y", "near"]), "_n")
+            self.register(ALayout(grounds, parents + [plat_shed_v, plat_shed_v.T], True, notes=["both"]))
+        else:
+            self.register(ALayout(grounds, parents, True), "_x")
+            self.register(ALayout(grounds, parents + [plat_shed_v], True, notes=["near"]), "_n")
+            self.register(ALayout(grounds, parents + [plat_shed_v.T], True, notes=["far"]), "_f")
+            self.register(ALayout(grounds, parents + [plat_shed_v, plat_shed_v.T], True, notes=["both"]))
 
 
 class TraversableCorridor(Traversable):
@@ -467,6 +488,7 @@ def quickload(source, type, traversable, groundtype, category):
     worker_class = {
         (True, "central"): TraversablePlatform,
         (True, True): TraversablePlatformSide,
+        (True, "twoside"): TraversablePlatformTwoSide,
         (True, False): TraversableCorridor,
         (True, "single"): HorizontalSingle,
         (True, "single-1"): HorizontalSingleAsym,
@@ -523,7 +545,7 @@ for name, symmetry, traversable, groundtype, category in [
     ("h_windowed_extender", BuildingSpriteSheetSymmetrical, True, False, "H"),
     ("v_end", BuildingSpriteSheetSymmetricalX, False, "triple", "F0"),
     ("v_end_gate", BuildingSpriteSheetSymmetricalX, False, "triple", "F0"),
-    ("v_central", BuildingSpriteSheetSymmetrical, True, True, "N"),
+    ("v_central", BuildingSpriteSheetSymmetrical, True, "twoside", "N"),
     ("tiny", BuildingSpriteSheetSymmetrical, True, "single", "H"),
     ("tiny_asym_platform", BuildingSpriteSheetSymmetricalX, False, True, "H"),
     ("irregular/turn", BuildingSpriteSheetFull, False, False, "T"),
