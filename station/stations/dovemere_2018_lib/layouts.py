@@ -131,7 +131,7 @@ class TraversablePlatform(Traversable):
         else:
             self.register(ALayout(grounds, parents, True), "_x")
             self.register(ALayout(grounds, parents + [plat], True, notes=["near"]), "_n")
-            self.register(ALayout(grounds, parents + [plat.T], True, notes=["near"]), "_f")
+            self.register(ALayout(grounds, parents + [plat.T], True, notes=["far"]), "_f")
             self.register(ALayout(grounds, parents + [plat, plat.T], True, notes=["both"]))
 
 
@@ -148,7 +148,7 @@ class TraversablePlatformSide(Traversable):
         else:
             self.register(ALayout(grounds, parents, True), "_x")
             self.register(ALayout(grounds, parents + [plat_shed], True, notes=["near"]), "_n")
-            self.register(ALayout(grounds, parents + [plat_shed.T], True, notes=["near"]), "_f")
+            self.register(ALayout(grounds, parents + [plat_shed.T], True, notes=["far"]), "_f")
             self.register(ALayout(grounds, parents + [plat_shed, plat_shed.T], True, notes=["both"]))
 
 
