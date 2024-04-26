@@ -50,14 +50,14 @@ STR_STATION_CLASS_E88A9CAC      :CNSPS: Wuhu - Side D, No Platform
 STR_STATION_CLASS_E88A9CAD      :CNSPS: Wuhu - Side D, Near Platform
 STR_STATION_CLASS_E88A9CAE      :CNSPS: Wuhu - Side D, Far Platform
 STR_STATION_CLASS_E88A9CAF      :CNSPS: Wuhu - Side D, Platforms
-STR_STATION_CLASS_E88A9CB0      :CNSPS: Wuhu - Side D, No Platform
-STR_STATION_CLASS_E88A9CB1      :CNSPS: Wuhu - Side D, Near Platform
-STR_STATION_CLASS_E88A9CB2      :CNSPS: Wuhu - Side D, Far Platform
-STR_STATION_CLASS_E88A9CB3      :CNSPS: Wuhu - Side D, Platforms
-STR_STATION_CLASS_E88A9CB4      :CNSPS: Wuhu - Side D, Track
-STR_STATION_CLASS_E88A9CB5      :CNSPS: Wuhu - Side D, Track + Near
-STR_STATION_CLASS_E88A9CB6      :CNSPS: Wuhu - Side D, Track + Far
-STR_STATION_CLASS_E88A9CB7      :CNSPS: Wuhu - Side D, Track + Platforms
+STR_STATION_CLASS_E88A9CB0      :CNSPS: Wuhu - Narrow, No Platform
+STR_STATION_CLASS_E88A9CB1      :CNSPS: Wuhu - Narrow, Near Platform
+STR_STATION_CLASS_E88A9CB2      :CNSPS: Wuhu - Narrow, Far Platform
+STR_STATION_CLASS_E88A9CB3      :CNSPS: Wuhu - Narrow, Platforms
+STR_STATION_CLASS_E88A9CB4      :CNSPS: Wuhu - Narrow, Track
+STR_STATION_CLASS_E88A9CB5      :CNSPS: Wuhu - Narrow, Track + Near
+STR_STATION_CLASS_E88A9CB6      :CNSPS: Wuhu - Narrow, Track + Far
+STR_STATION_CLASS_E88A9CB7      :CNSPS: Wuhu - Narrow, Track + Platforms
 STR_STATION_CLASS_E88A9CF1      :CNSPS: Wuhu - Irregular
 STR_STATION_CLASS_E88A9CF2      :CNSPS: Wuhu - Junction
 
