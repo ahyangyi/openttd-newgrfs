@@ -24,7 +24,7 @@ from station.stations.ground import gray, gray_third, gray_layout
 from station.stations.misc import rail
 
 
-def get_category(internal_category, back, notes):
+def get_category(internal_category, back, notes, tra):
     if internal_category in ["F0", "F1"]:
         ret = 0x80
         if "far" in notes:
@@ -35,18 +35,21 @@ def get_category(internal_category, back, notes):
             ret += 0x4
         if back:
             ret += 0x8
-    elif internal_category in ["A", "B", "C", "D"]:
-        ret = 0x90 + 0x10 * (ord(internal_category) - ord("A"))
+    elif internal_category in ["A", "B", "C", "D", "N", "H"]:
+        if internal_category == "N":
+            ret = 0x90
+        elif internal_category == "H":
+            ret = 0xB0
+            if tra:
+                ret += 0x4
+        else:
+            ret = 0xA0 + 0x04 * (ord(internal_category) - ord("A"))
         if "near" in notes:
             ret += 1 ^ (back * 3)
         elif "far" in notes:
             ret += 2 ^ (back * 3)
         elif "both" in notes:
             ret += 3
-    elif internal_category == "N":
-        ret = 0xF0
-    elif internal_category == "H":
-        ret = 0xD0
     elif internal_category == "T":
         ret = 0xF1
     elif internal_category == "X":
@@ -106,7 +109,7 @@ class LoadType:
             cur_sym = self.symmetry
         l = cur_sym.get_all_variants(l)
         for i, layout in enumerate(l):
-            layout.category = get_category(self.internal_category, i >= len(l) // 2, layout.notes)
+            layout.category = get_category(self.internal_category, i >= len(l) // 2, layout.notes, layout.traversable)
         layouts.extend(l)
         l = cur_sym.create_variants(l)
         entries.extend(cur_sym.get_all_entries(l))
