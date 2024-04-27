@@ -28,7 +28,7 @@ def quickload(name):
     )
 
     platform_components = {"white", "white_side", "modernnarrow", "modernnarrow_side"}
-    shed_components = {"shed", "shed_building", "shed_building_v", "pillar", "pillar_building"}
+    shed_components = {"shed", "shed_building", "shed_building_v", "pillar", "pillar_building", "pillar_central"}
 
     for platform_flavor, traversable, pkeeps, pheight in [
         ("_np", True, set(), 0),
@@ -42,6 +42,7 @@ def quickload(name):
             ("_shed_building_v", BuildingSpriteSheetSymmetricalX, {"shed_building_v"}, shed_height),
             ("_pillar", BuildingSpriteSheetSymmetricalX, {"pillar"}, pillar_height),
             ("_pillar_building", BuildingSpriteSheetFull, {"pillar_building"}, pillar_height),
+            ("_pillar_central", BuildingSpriteSheetSymmetricalX, {"pillar_central"}, pillar_height),
         ]:
             suffix = platform_flavor + shed_flavor
             v2 = v.discard_layers(

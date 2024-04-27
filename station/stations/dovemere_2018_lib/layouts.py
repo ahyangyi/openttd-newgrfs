@@ -67,10 +67,13 @@ building_height = 48
 overpass_height = building_height - base_height
 np_pillar = platform_ps.cnsps_np_pillar
 np_pillar_building = platform_ps.cnsps_np_pillar_building
+np_pillar_central = platform_ps.cnsps_np_pillar_central
 plat = platform_ps.cnsps
 plat_pillar = platform_ps.cnsps_pillar
+plat_pillar_central = platform_ps.cnsps_pillar_central
 plat_nt = platform_ps.cnsps_side
 plat_nt_pillar = platform_ps.cnsps_side_pillar
+plat_nt_pillar_central = platform_ps.cnsps_side_pillar_central
 plat_shed = platform_ps.cnsps_shed_building
 plat_shed_v = platform_ps.cnsps_shed_building_v
 plat_shed_nt = platform_ps.cnsps_side_shed
@@ -203,14 +206,10 @@ class SidePlatform(TwoFloorMixin, Side):
     f1x = 10
 
     def make_platform_variants(self, grounds, parents):
-        self.register(
-            ALayout(
-                grounds,
-                parents + [{"normal": plat_nt_pillar.T, "corner": plat_shed_nt.T}[self.h_pos]],
-                False,
-                notes=["far"],
-            )
-        )
+        cur_plat = {"normal": plat_nt_pillar.T, "corner": plat_shed_nt.T, "tiny_asym": plat_nt_pillar_central.T}[
+            self.h_pos
+        ]
+        self.register(ALayout(grounds, parents + [cur_plat], False, notes=["far"]))
 
 
 class SideThird(TwoFloorMixin, Traversable):
@@ -220,23 +219,10 @@ class SideThird(TwoFloorMixin, Traversable):
         return [ADefaultGroundSprite(1012), third]
 
     def make_platform_variants(self, grounds, parents):
-        self.register(
-            ALayout(
-                grounds,
-                parents + [{"normal": np_pillar.T, "corner": np_pillar_building.T}[self.h_pos]],
-                True,
-                notes=["third"],
-            )
-        )
-        self.register(
-            ALayout(
-                grounds,
-                parents + [{"normal": plat_pillar.T, "corner": plat_shed.T}[self.h_pos]],
-                True,
-                notes=["third", "far"],
-            ),
-            "_f",
-        )
+        cur_np = {"normal": np_pillar.T, "corner": np_pillar_building.T, "tiny_asym": np_pillar_central.T}[self.h_pos]
+        cur_plat = {"normal": plat_pillar.T, "corner": plat_shed.T, "tiny_asym": plat_pillar_central.T}[self.h_pos]
+        self.register(ALayout(grounds, parents + [cur_np], True, notes=["third"]))
+        self.register(ALayout(grounds, parents + [cur_plat], True, notes=["third", "far"]), "_f")
 
 
 class HorizontalSingle(TraversableCorridor):
@@ -512,7 +498,7 @@ SideTriple("v_end_gate", BuildingSpriteSheetSymmetricalX, "F0").load()
 TraversablePlatform("v_central", BuildingSpriteSheetSymmetrical, "N", h_pos="twoside").load()
 
 HorizontalSingle("tiny", BuildingSpriteSheetSymmetrical, "H").load()
-SideTriple("tiny_asym", BuildingSpriteSheetSymmetricalX, "H").load()
+SideTriple("tiny_asym", BuildingSpriteSheetSymmetricalX, "H", h_pos="tiny_asym").load()
 
 SideFull("irregular/turn", BuildingSpriteSheetFull, "T").load()
 SideFull("irregular/turn_gate", BuildingSpriteSheetFull, "T").load()
