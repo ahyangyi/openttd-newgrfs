@@ -133,6 +133,7 @@ class Traversable(LoadType):
 class TraversablePlatform(Traversable):
     def __init__(self, *args, h_pos="normal", **kwargs):
         super().__init__(*args, **kwargs)
+        assert h_pos in {"normal", "side", "twoside"}
         self.h_pos = h_pos
 
     def get_sprites(self, voxel):
@@ -143,9 +144,12 @@ class TraversablePlatform(Traversable):
         if self.h_pos == "normal":
             cur_np = np_pillar
             cur_plat = plat_pillar
-        else:
+        elif self.h_pos == "side":
             cur_np = np_pillar_building
             cur_plat = plat_shed
+        elif self.h_pos == "twoside":
+            cur_np = np_pillar
+            cur_plat = plat_shed_v
 
         if self.symmetry.is_symmetrical_y():
             self.register(ALayout(grounds, parents + [cur_np, cur_np.T], True), "_x")
@@ -156,23 +160,6 @@ class TraversablePlatform(Traversable):
             self.register(ALayout(grounds, parents + [cur_plat, cur_np.T], True, notes=["near"]), "_n")
             self.register(ALayout(grounds, parents + [cur_np, cur_plat.T], True, notes=["far"]), "_f")
             self.register(ALayout(grounds, parents + [cur_plat, cur_plat.T], True, notes=["both"]))
-
-
-class TraversablePlatformTwoSide(Traversable):
-    def get_sprites(self, voxel):
-        sprite = self.symmetry.create_variants(voxel.spritesheet(zdiff=base_height * 2))
-        return [AParentSprite(sprite, (16, 16, overpass_height), (0, 0, base_height))]
-
-    def make_platform_variants(self, grounds, parents):
-        if self.symmetry.is_symmetrical_y():
-            self.register(ALayout(grounds, parents + [np_pillar, np_pillar.T], True), "_x")
-            self.register(ALayout(grounds, parents + [plat_shed_v, np_pillar.T], True, notes=["y", "near"]), "_n")
-            self.register(ALayout(grounds, parents + [plat_shed_v, plat_shed_v.T], True, notes=["both"]))
-        else:
-            self.register(ALayout(grounds, parents + [np_pillar, np_pillar.T], True), "_x")
-            self.register(ALayout(grounds, parents + [plat_shed_v, np_pillar.T], True, notes=["near"]), "_n")
-            self.register(ALayout(grounds, parents + [np_pillar, plat_shed_v.T], True, notes=["far"]), "_f")
-            self.register(ALayout(grounds, parents + [plat_shed_v, plat_shed_v.T], True, notes=["both"]))
 
 
 class TraversableCorridor(Traversable):
@@ -280,7 +267,7 @@ class HorizontalSingle(TraversableCorridor):
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
 
         self.register(ALayout(grounds, [f1s, f1s.T, f2s], True), "")
-        self.register(ALayout(grounds, [f1s, f2s], True, notes=["third", "y"]), "_third")
+        self.register(ALayout(grounds, [f1s, np_pillar.T, f2s], True, notes=["third", "y"]), "_third")
         self.register(ALayout(grounds, [f1s, f2s, plat_shed.T], True, notes=["third", "y", "far"]), "_third_f")
 
 
@@ -317,7 +304,7 @@ class HorizontalSingleAsym(Traversable):
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
 
         self.register(ALayout(grounds, [f1fs, f1bs, f2s], True), "")
-        self.register(ALayout(grounds, [f1fs, f2s], True, notes=["third", "y"]), "_third")
+        self.register(ALayout(grounds, [f1fs, np_pillar.T, f2s], True, notes=["third", "y"]), "_third")
         self.register(ALayout(grounds, [f1fs, f2s, plat_shed.T], True, notes=["third", "y", "far"]), "_third_f")
 
 
@@ -381,7 +368,7 @@ class HorizontalTriple(TraversableCorridor):
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
 
         self.register(ALayout(grounds, [f1s, f1s.T, f2s], True, notes=["third"]), "")
-        self.register(ALayout(grounds, [f1s, f2s], True, notes=["third"]), "_third")
+        self.register(ALayout(grounds, [f1s, np_pillar.T, f2s], True, notes=["third"]), "_third")
         self.register(ALayout(grounds, [f1s, f2s, plat_shed.T], True, notes=["third", "far"]), "_third_f")
         SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
 
@@ -425,8 +412,8 @@ class HorizontalTripleAsym(TraversableCorridor):
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
 
         self.register(ALayout(grounds, [f1fs, f1bs, f2s], True), "")
-        self.register(ALayout(grounds, [f1fs, f2s, np_pillar.T], True, notes=["third", "y"]), "_third")
-        self.register(ALayout(grounds, [f1fs, f2s, plat_pillar.T], True, notes=["third", "y", "far"]), "_third_f")
+        self.register(ALayout(grounds, [f1fs, np_pillar.T, f2s], True, notes=["third", "y"]), "_third")
+        self.register(ALayout(grounds, [f1fs, plat_pillar.T, f2s], True, notes=["third", "y", "far"]), "_third_f")
         SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
 
 
@@ -478,25 +465,6 @@ class SideTriple(LoadType):
         ).load()
 
 
-def quickload(source, type, traversable, groundtype, category):
-    worker_class = {
-        (True, "twoside"): TraversablePlatformTwoSide,
-        (True, False): TraversableCorridor,
-        (True, "single"): HorizontalSingle,
-        (True, "single-1"): HorizontalSingleAsym,
-        (True, "double"): HorizontalDouble,
-        (True, "triple"): HorizontalTriple,
-        (True, "triple-1"): HorizontalTripleAsym,
-        (True, "third"): SideThird,
-        (False, True): SidePlatform,
-        (False, False): SideFull,
-        (False, "double"): SideDouble,
-        (False, "triple"): SideTriple,
-    }[(traversable, groundtype)]
-
-    worker_class(source, type, category).load()
-
-
 layouts = []
 entries = []
 flexible_entries = []
@@ -532,34 +500,33 @@ SideTriple("h_end_asym_gate", BuildingSpriteSheetFull, "H").load()
 TraversableCorridor("h_end_gate", BuildingSpriteSheetSymmetricalY, "H").load()
 HorizontalSingleAsym("h_end_gate_1", BuildingSpriteSheetFull, "H").load()
 HorizontalTriple("h_normal", BuildingSpriteSheetSymmetrical, "H").load()
+TraversableCorridor("h_gate", BuildingSpriteSheetSymmetricalY, "H").load()
+HorizontalTripleAsym("h_gate_1", BuildingSpriteSheetFull, "H").load()
+TraversableCorridor("h_gate_extender", BuildingSpriteSheetSymmetrical, "H").load()
+HorizontalTriple("h_gate_extender_1", BuildingSpriteSheetSymmetricalX, "H").load()
+TraversableCorridor("h_windowed", BuildingSpriteSheetSymmetricalY, "H").load()
+TraversableCorridor("h_windowed_extender", BuildingSpriteSheetSymmetrical, "H").load()
 
+SideTriple("v_end", BuildingSpriteSheetSymmetricalX, "F0").load()
+SideTriple("v_end_gate", BuildingSpriteSheetSymmetricalX, "F0").load()
+TraversablePlatform("v_central", BuildingSpriteSheetSymmetrical, "N", h_pos="twoside").load()
 
-for name, symmetry, traversable, groundtype, category in [
-    ("h_gate", BuildingSpriteSheetSymmetricalY, True, False, "H"),
-    ("h_gate_1", BuildingSpriteSheetFull, True, "triple-1", "H"),
-    ("h_gate_extender", BuildingSpriteSheetSymmetrical, True, False, "H"),
-    ("h_gate_extender_1", BuildingSpriteSheetSymmetricalX, True, "triple", "H"),
-    ("h_windowed", BuildingSpriteSheetSymmetricalY, True, False, "H"),
-    ("h_windowed_extender", BuildingSpriteSheetSymmetrical, True, False, "H"),
-    ("v_end", BuildingSpriteSheetSymmetricalX, False, "triple", "F0"),
-    ("v_end_gate", BuildingSpriteSheetSymmetricalX, False, "triple", "F0"),
-    ("v_central", BuildingSpriteSheetSymmetrical, True, "twoside", "N"),
-    ("tiny", BuildingSpriteSheetSymmetrical, True, "single", "H"),
-    ("tiny_asym", BuildingSpriteSheetSymmetricalX, False, "triple", "H"),
-    ("irregular/turn", BuildingSpriteSheetFull, False, False, "T"),
-    ("irregular/turn_gate", BuildingSpriteSheetFull, False, False, "T"),
-    ("irregular/tee", BuildingSpriteSheetSymmetricalX, False, "double", "T"),
-    ("irregular/cross", BuildingSpriteSheetSymmetrical, False, False, "T"),
-    ("irregular/double_corner", BuildingSpriteSheetRotational, False, False, "T"),
-    ("irregular/funnel", BuildingSpriteSheetFull, False, False, "T"),
-    ("irregular/inner_corner", BuildingSpriteSheetFull, False, False, "T"),
-    ("irregular/double_inner_corner", BuildingSpriteSheetSymmetricalY, False, False, "T"),
-    ("irregular/v_funnel", BuildingSpriteSheetFull, False, False, "T"),
-    ("irregular/v_funnel_2", BuildingSpriteSheetFull, False, False, "T"),
-    ("junction/front_corner", BuildingSpriteSheetDiagonal, False, False, "X"),
-    ("junction/front_gate_extender_corner", BuildingSpriteSheetDiagonal, False, False, "X"),
-    ("junction/double_corner_2", BuildingSpriteSheetDiagonal, False, False, "X"),
-    ("junction/bicorner", BuildingSpriteSheetDiagonal, False, False, "X"),
-    ("junction/bicorner_2", BuildingSpriteSheetDiagonal, False, False, "X"),
-]:
-    quickload(name, symmetry, traversable, groundtype, category)
+HorizontalSingle("tiny", BuildingSpriteSheetSymmetrical, "H").load()
+SideTriple("tiny_asym", BuildingSpriteSheetSymmetricalX, "H").load()
+
+SideFull("irregular/turn", BuildingSpriteSheetFull, "T").load()
+SideFull("irregular/turn_gate", BuildingSpriteSheetFull, "T").load()
+SideDouble("irregular/tee", BuildingSpriteSheetSymmetricalX, "T").load()
+SideFull("irregular/cross", BuildingSpriteSheetSymmetrical, "T").load()
+SideFull("irregular/double_corner", BuildingSpriteSheetRotational, "T").load()
+SideFull("irregular/funnel", BuildingSpriteSheetFull, "T").load()
+SideFull("irregular/inner_corner", BuildingSpriteSheetFull, "T").load()
+SideFull("irregular/double_inner_corner", BuildingSpriteSheetSymmetricalY, "T").load()
+SideFull("irregular/v_funnel", BuildingSpriteSheetFull, "T").load()
+SideFull("irregular/v_funnel_2", BuildingSpriteSheetFull, "T").load()
+
+SideFull("junction/front_corner", BuildingSpriteSheetDiagonal, "X").load()
+SideFull("junction/front_gate_extender_corner", BuildingSpriteSheetDiagonal, "X").load()
+SideFull("junction/double_corner_2", BuildingSpriteSheetDiagonal, "X").load()
+SideFull("junction/bicorner", BuildingSpriteSheetDiagonal, "X").load()
+SideFull("junction/bicorner_2", BuildingSpriteSheetDiagonal, "X").load()
