@@ -290,16 +290,16 @@ class HorizontalSingleAsym(Traversable):
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         f1v = v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
-        f1vb = v.mask_clip_away("station/voxels/dovemere_2018/masks/front.vox", "f1")
-        f1vf = v.mask_clip_away("station/voxels/dovemere_2018/masks/back.vox", "f1")
+        f1vb = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/front.vox", "back")
+        f1vf = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/back.vox", "front")
         f1_symmetry = self.symmetry.break_y_symmetry()
         f1vb.in_place_subset(f1_symmetry.render_indices())
         f1vf.in_place_subset(f1_symmetry.render_indices())
         f1f = f1_symmetry.create_variants(f1vf.spritesheet(xdiff=16 - self.f1x))
-        f1b = f1_symmetry.create_variants(f1vb.spritesheet())
+        f1b = f1_symmetry.create_variants(f1vb.spritesheet(xdiff=16 - self.f1x))
 
         f1fs = AParentSprite(f1f, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
-        f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 0, 0))
+        f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
 
         self.register(ALayout(grounds, [f1fs, f1bs, f2s], True), "")
@@ -398,16 +398,16 @@ class HorizontalTripleAsym(Traversable):
         plat_f1.in_place_subset(f1_symmetry.render_indices())
 
         f1v = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
-        f1vb = v.mask_clip_away("station/voxels/dovemere_2018/masks/front.vox", "f1")
-        f1vf = v.mask_clip_away("station/voxels/dovemere_2018/masks/back.vox", "f1")
+        f1vb = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/front.vox", "back")
+        f1vf = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/back.vox", "front")
         f1_symmetry = self.symmetry.break_y_symmetry()
         f1vb.in_place_subset(f1_symmetry.render_indices())
         f1vf.in_place_subset(f1_symmetry.render_indices())
         f1f = f1_symmetry.create_variants(f1vf.spritesheet(xdiff=16 - self.f1x))
-        f1b = f1_symmetry.create_variants(f1vb.spritesheet())
+        f1b = f1_symmetry.create_variants(f1vb.spritesheet(xdiff=16 - self.f1x))
 
         f1fs = AParentSprite(f1f, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
-        f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 0, 0))
+        f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
 
         self.register(ALayout(grounds, [f1fs, f1bs, f2s], True), "")
