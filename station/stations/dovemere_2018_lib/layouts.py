@@ -173,13 +173,13 @@ class TraversablePlatformTwoSide(Traversable):
 
     def make_platform_variants(self, grounds, parents):
         if self.symmetry.is_symmetrical_y():
-            self.register(ALayout(grounds, parents, True), "_x")
-            self.register(ALayout(grounds, parents + [plat_shed_v], True, notes=["y", "near"]), "_n")
+            self.register(ALayout(grounds, parents + [np_pillar, np_pillar.T], True), "_x")
+            self.register(ALayout(grounds, parents + [plat_shed_v, np_pillar.T], True, notes=["y", "near"]), "_n")
             self.register(ALayout(grounds, parents + [plat_shed_v, plat_shed_v.T], True, notes=["both"]))
         else:
-            self.register(ALayout(grounds, parents, True), "_x")
-            self.register(ALayout(grounds, parents + [plat_shed_v], True, notes=["near"]), "_n")
-            self.register(ALayout(grounds, parents + [plat_shed_v.T], True, notes=["far"]), "_f")
+            self.register(ALayout(grounds, parents + [np_pillar, np_pillar.T], True), "_x")
+            self.register(ALayout(grounds, parents + [plat_shed_v, np_pillar.T], True, notes=["near"]), "_n")
+            self.register(ALayout(grounds, parents + [np_pillar, plat_shed_v.T], True, notes=["far"]), "_f")
             self.register(ALayout(grounds, parents + [plat_shed_v, plat_shed_v.T], True, notes=["both"]))
 
 
@@ -521,7 +521,7 @@ SideTriple("corner_2", BuildingSpriteSheetFull, "F1", h_pos="corner").load()
 SideTriple("corner_gate_2", BuildingSpriteSheetFull, "F1", h_pos="corner").load()
 TraversablePlatform("central", BuildingSpriteSheetSymmetrical, "N").load()
 TraversablePlatform("central_windowed", BuildingSpriteSheetSymmetricalY, "N").load()
-TraversablePlatform("central_extender", BuildingSpriteSheetSymmetrical, "N").load()
+TraversablePlatform("central_windowed_extender", BuildingSpriteSheetSymmetrical, "N").load()
 
 for name, symmetry, traversable, groundtype, category in [
     ("side_a", BuildingSpriteSheetFull, True, True, "A"),
