@@ -201,7 +201,7 @@ class ALayout:
     def to_grf(self, sprite_list):
         return grf.SpriteLayout(
             [sprite.to_grf(sprite_list) for sprite in self.ground_sprites]
-            + [sprite.to_grf(sprite_list) for sprite in self.parent_sprites]
+            + [sprite.to_grf(sprite_list) for sprite in self.sorted_parent_sprites]
         )
 
     def graphics(self, scale, bpp, remap=None, context=None):
