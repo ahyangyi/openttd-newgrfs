@@ -372,7 +372,7 @@ class HorizontalTriple(TraversableCorridor):
 
         self.register(ALayout(grounds, [f1s, f1s.T, f2s], True, notes=["third"]), "")
         self.register(ALayout(grounds, [f1s, np_pillar.T, f2s], True, notes=["third"]), "_third")
-        self.register(ALayout(grounds, [f1s, f2s, plat_shed.T], True, notes=["third", "far"]), "_third_f")
+        self.register(ALayout(grounds, [f1s, f2s, plat_pillar.T], True, notes=["third", "far"]), "_third_f")
         SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
 
 
