@@ -276,7 +276,7 @@ class HorizontalSingle(TraversableCorridor):
             self.register(ALayout(grounds, [f1s, f2s, plat_shed.T], True, notes=["third", "y", "far"]), "_third_f")
 
 
-class HorizontalSingleAsym(Traversable):
+class HorizontalSingleAsym(TraversableCorridor):
     def load(self):
         v = LazyVoxel(
             os.path.basename(self.source),
@@ -498,7 +498,7 @@ TraversablePlatform("side_c", BuildingSpriteSheetSymmetricalY, "C", h_pos="side"
 TraversablePlatform("side_d", BuildingSpriteSheetSymmetricalY, "D", h_pos="side").load()
 
 HorizontalSingle("h_end", BuildingSpriteSheetSymmetricalY, "H").load()
-SideTriple("h_end_asym", BuildingSpriteSheetFull, "H").load()
+SideTriple("h_end_asym", BuildingSpriteSheetFull, "H", h_pos="corner").load()
 SideTriple("h_end_asym_gate", BuildingSpriteSheetFull, "H", h_pos="corner").load()
 HorizontalSingle("h_end_gate", BuildingSpriteSheetSymmetricalY, "H", force_corridor=True).load()
 HorizontalSingleAsym("h_end_gate_1", BuildingSpriteSheetFull, "H").load()
