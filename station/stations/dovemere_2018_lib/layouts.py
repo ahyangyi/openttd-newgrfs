@@ -78,11 +78,11 @@ third_T = AChildSprite(gray_third.T, (0, 0))
 
 
 class LoadType:
-    def __init__(self, name, source, symmetry, internal_category):
-        self.name = name
+    def __init__(self, source, symmetry, internal_category, name=None):
         self.source = source
         self.symmetry = symmetry
         self.internal_category = internal_category
+        self.name = name or source.split("/")[-1]
 
     def get_sprites(self, voxel):
         sprite = self.symmetry.create_variants(voxel.spritesheet())
@@ -193,8 +193,8 @@ class Side(LoadType):
 
 
 class TwoFloorMixin:
-    def __init__(self, name, source, symmetry, internal_category, has_shed=True):
-        super().__init__(name, source, symmetry, internal_category)
+    def __init__(self, source, symmetry, internal_category, name=None, has_shed=True):
+        super().__init__(source, symmetry, internal_category, name=name)
         self.has_shed = has_shed
 
     def get_sprites(self, voxel):
@@ -231,8 +231,13 @@ class SidePlatform(TwoFloorMixin, Side):
 class SideThird(TwoFloorMixin, Traversable):
     f1x = 6
 
+    def get_ground_sprites(self):
+        return [ADefaultGroundSprite(1012), third]
+
     def make_platform_variants(self, grounds, parents):
-        self.register(ALayout(grounds, parents, True, notes=["third"]))
+        self.register(
+            ALayout(grounds, parents + [np_pillar_building.T if self.has_shed else np_pillar.T], True, notes=["third"])
+        )
         self.register(
             ALayout(grounds, parents + [(plat_shed.T if self.has_shed else plat.T)], True, notes=["third", "far"]), "_f"
         )
@@ -331,9 +336,9 @@ class HorizontalDouble(LoadType):
         plat_f1.in_place_subset(plat_symmetry.render_indices())
 
         TraversableCorridor(
-            self.name, corridor, self.symmetry, self.internal_category  # XXX not a two-floor thing for now
+            corridor, self.symmetry, self.internal_category, name=self.name  # XXX not a two-floor thing for now
         ).load()
-        SidePlatform(self.name + "_platform", (plat_f1, f2), plat_symmetry, self.internal_category).load()
+        SidePlatform((plat_f1, f2), plat_symmetry, self.internal_category, name=self.name + "_platform").load()
 
 
 class HorizontalTriple(Traversable):
@@ -369,7 +374,7 @@ class HorizontalTriple(Traversable):
         self.register(ALayout(grounds, [f1s, f1s.T, f2s], True, notes=["third"]), "")
         self.register(ALayout(grounds, [f1s, f2s], True, notes=["third"]), "_third")
         self.register(ALayout(grounds, [f1s, f2s, plat_shed.T], True, notes=["third", "far"]), "_third_f")
-        SidePlatform(self.name + "_platform", (plat_f1, f2), f1_symmetry, self.internal_category).load()
+        SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
 
 
 class HorizontalTripleAsym(Traversable):
@@ -413,7 +418,7 @@ class HorizontalTripleAsym(Traversable):
         self.register(ALayout(grounds, [f1fs, f1bs, f2s], True), "")
         self.register(ALayout(grounds, [f1fs, f2s, np_pillar.T], True, notes=["third", "y"]), "_third")
         self.register(ALayout(grounds, [f1fs, f2s, plat_pillar.T], True, notes=["third", "y", "far"]), "_third_f")
-        SidePlatform(self.name + "_platform", (plat_f1, f2), f1_symmetry, self.internal_category).load()
+        SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
 
 
 class SideDouble(LoadType):
@@ -421,16 +426,16 @@ class SideDouble(LoadType):
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
         SideFull(
-            self.name,
             (v.discard_layers(("ground level - platform",), "full"), f2),
             self.symmetry,
             self.internal_category,
+            name=self.name,
         ).load()
         SidePlatform(
-            self.name + "_platform",
             (v.discard_layers(("ground level",), "platform"), f2),
             self.symmetry,
             self.internal_category,
+            name=self.name + "_platform",
         ).load()
 
 
@@ -439,22 +444,22 @@ class SideTriple(LoadType):
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
         SideFull(
-            self.name,
             (v.discard_layers(("ground level - platform", "ground level - third"), "full"), f2),
             self.symmetry,
             self.internal_category,
+            name=self.name,
         ).load()
         SidePlatform(
-            self.name + "_platform",
             (v.discard_layers(("ground level", "ground level - third"), "platform"), f2),
             self.symmetry,
             self.internal_category,
+            name=self.name + "_platform",
         ).load()
         SideThird(
-            self.name + "_third",
             (v.discard_layers(("ground level", "ground level - platform"), "third"), f2),
             self.symmetry,
             self.internal_category,
+            name=self.name + "_third",
         ).load()
 
 
@@ -463,24 +468,24 @@ class SideFrontTriple(LoadType):
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
         SideFull(
-            self.name,
             (v.discard_layers(("ground level - platform", "ground level - third"), "full"), f2),
             self.symmetry,
             self.internal_category,
+            name=self.name,
         ).load()
         SidePlatform(
-            self.name + "_platform",
             (v.discard_layers(("ground level", "ground level - third"), "platform"), f2),
             self.symmetry,
             self.internal_category,
             has_shed=False,
+            name=self.name + "_platform",
         ).load()
         SideThird(
-            self.name + "_third",
             (v.discard_layers(("ground level", "ground level - platform"), "third"), f2),
             self.symmetry,
             self.internal_category,
             has_shed=False,
+            name=self.name + "_third",
         ).load()
 
 
@@ -503,21 +508,23 @@ def quickload(source, type, traversable, groundtype, category):
         (False, "f-triple"): SideFrontTriple,
     }[(traversable, groundtype)]
 
-    worker_class(source.split("/")[-1], source, type, category).load()
+    worker_class(source, type, category).load()
 
 
 layouts = []
 entries = []
 flexible_entries = []
 named_tiles = AttrDict()
+
+SideTriple("corner", BuildingSpriteSheetFull, "F1").load()
+SideTriple("corner_gate", BuildingSpriteSheetFull, "F1").load()
+SideTriple("corner_2", BuildingSpriteSheetFull, "F1").load()
+SideTriple("corner_gate_2", BuildingSpriteSheetFull, "F1").load()
+SideFrontTriple("front_normal", BuildingSpriteSheetSymmetricalX, "F0").load()
+SideFrontTriple("front_gate", BuildingSpriteSheetFull, "F0").load()
+SideFrontTriple("front_gate_extender", BuildingSpriteSheetSymmetricalX, "F0").load()
+
 for name, symmetry, traversable, groundtype, category in [
-    ("corner", BuildingSpriteSheetFull, False, "triple", "F1"),
-    ("corner_gate", BuildingSpriteSheetFull, False, "triple", "F1"),
-    ("corner_2", BuildingSpriteSheetFull, False, "triple", "F1"),
-    ("corner_gate_2", BuildingSpriteSheetFull, False, "triple", "F1"),
-    ("front_normal", BuildingSpriteSheetSymmetricalX, False, "f-triple", "F0"),
-    ("front_gate", BuildingSpriteSheetFull, False, "f-triple", "F0"),
-    ("front_gate_extender", BuildingSpriteSheetSymmetricalX, False, "f-triple", "F0"),
     ("central", BuildingSpriteSheetSymmetrical, True, "central", "N"),
     ("central_windowed", BuildingSpriteSheetSymmetricalY, True, "central", "N"),
     ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True, "central", "N"),
