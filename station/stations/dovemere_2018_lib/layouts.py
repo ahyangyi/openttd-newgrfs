@@ -76,7 +76,7 @@ plat_nt_pillar = platform_ps.cnsps_side_pillar
 plat_nt_pillar_central = platform_ps.cnsps_side_pillar_central
 plat_shed = platform_ps.cnsps_shed_building
 plat_shed_v = platform_ps.cnsps_shed_building_v
-plat_shed_nt = platform_ps.cnsps_side_shed
+plat_shed_nt = platform_ps.cnsps_side_shed_building
 third = AChildSprite(gray_third, (0, 0))
 third_T = AChildSprite(gray_third.T, (0, 0))
 
@@ -482,7 +482,7 @@ TraversablePlatform("side_d", BuildingSpriteSheetSymmetricalY, "D", h_pos="side"
 
 HorizontalSingle("h_end", BuildingSpriteSheetSymmetricalY, "H").load()
 SideTriple("h_end_asym", BuildingSpriteSheetFull, "H").load()
-SideTriple("h_end_asym_gate", BuildingSpriteSheetFull, "H").load()
+SideTriple("h_end_asym_gate", BuildingSpriteSheetFull, "H", h_pos="corner").load()
 TraversableCorridor("h_end_gate", BuildingSpriteSheetSymmetricalY, "H").load()
 HorizontalSingleAsym("h_end_gate_1", BuildingSpriteSheetFull, "H").load()
 HorizontalTriple("h_normal", BuildingSpriteSheetSymmetrical, "H").load()
