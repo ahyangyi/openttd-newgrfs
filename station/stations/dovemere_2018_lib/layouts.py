@@ -350,7 +350,7 @@ class HorizontalDouble(LoadType):
         SidePlatform((plat_f1, f2), plat_symmetry, self.internal_category, name=self.name + "_platform").load()
 
 
-class HorizontalTriple(Traversable):
+class HorizontalTriple(TraversableCorridor):
     def load(self):
         v = LazyVoxel(
             os.path.basename(self.source),
@@ -386,7 +386,7 @@ class HorizontalTriple(Traversable):
         SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
 
 
-class HorizontalTripleAsym(Traversable):
+class HorizontalTripleAsym(TraversableCorridor):
     def load(self):
         v = LazyVoxel(
             os.path.basename(self.source),
@@ -505,13 +505,16 @@ named_tiles = AttrDict()
 SideTriple("front_normal", BuildingSpriteSheetSymmetricalX, "F0").load()
 SideTriple("front_gate", BuildingSpriteSheetFull, "F0").load()
 SideTriple("front_gate_extender", BuildingSpriteSheetSymmetricalX, "F0").load()
+
 SideTriple("corner", BuildingSpriteSheetFull, "F1", h_pos="corner").load()
 SideTriple("corner_gate", BuildingSpriteSheetFull, "F1", h_pos="corner").load()
 SideTriple("corner_2", BuildingSpriteSheetFull, "F1", h_pos="corner").load()
 SideTriple("corner_gate_2", BuildingSpriteSheetFull, "F1", h_pos="corner").load()
+
 TraversablePlatform("central", BuildingSpriteSheetSymmetrical, "N").load()
 TraversablePlatform("central_windowed", BuildingSpriteSheetSymmetricalY, "N").load()
 TraversablePlatform("central_windowed_extender", BuildingSpriteSheetSymmetrical, "N").load()
+
 TraversablePlatform("side_a", BuildingSpriteSheetFull, "A", h_pos="side").load()
 TraversablePlatform("side_a_windowed", BuildingSpriteSheetFull, "A", h_pos="side").load()
 TraversablePlatform("side_a2", BuildingSpriteSheetSymmetricalY, "A", h_pos="side").load()
@@ -523,14 +526,15 @@ TraversablePlatform("side_b2", BuildingSpriteSheetSymmetricalY, "B", h_pos="side
 TraversablePlatform("side_c", BuildingSpriteSheetSymmetricalY, "C", h_pos="side").load()
 TraversablePlatform("side_d", BuildingSpriteSheetSymmetricalY, "D", h_pos="side").load()
 
+HorizontalSingle("h_end", BuildingSpriteSheetSymmetricalY, "H").load()
+SideTriple("h_end_asym", BuildingSpriteSheetFull, "H").load()
+SideTriple("h_end_asym_gate", BuildingSpriteSheetFull, "H").load()
+TraversableCorridor("h_end_gate", BuildingSpriteSheetSymmetricalY, "H").load()
+HorizontalSingleAsym("h_end_gate_1", BuildingSpriteSheetFull, "H").load()
+HorizontalTriple("h_normal", BuildingSpriteSheetSymmetrical, "H").load()
+
 
 for name, symmetry, traversable, groundtype, category in [
-    ("h_end", BuildingSpriteSheetSymmetricalY, True, "single", "H"),
-    ("h_end_asym", BuildingSpriteSheetFull, False, "triple", "H"),
-    ("h_end_asym_gate", BuildingSpriteSheetFull, False, "triple", "H"),
-    ("h_end_gate", BuildingSpriteSheetSymmetricalY, True, False, "H"),
-    ("h_end_gate_1", BuildingSpriteSheetFull, True, "single-1", "H"),
-    ("h_normal", BuildingSpriteSheetSymmetrical, True, "triple", "H"),
     ("h_gate", BuildingSpriteSheetSymmetricalY, True, False, "H"),
     ("h_gate_1", BuildingSpriteSheetFull, True, "triple-1", "H"),
     ("h_gate_extender", BuildingSpriteSheetSymmetrical, True, False, "H"),
