@@ -519,11 +519,11 @@ SideTriple("corner", BuildingSpriteSheetFull, "F1", h_pos="corner").load()
 SideTriple("corner_gate", BuildingSpriteSheetFull, "F1", h_pos="corner").load()
 SideTriple("corner_2", BuildingSpriteSheetFull, "F1", h_pos="corner").load()
 SideTriple("corner_gate_2", BuildingSpriteSheetFull, "F1", h_pos="corner").load()
+TraversablePlatform("central", BuildingSpriteSheetSymmetrical, "N").load()
+TraversablePlatform("central_windowed", BuildingSpriteSheetSymmetricalY, "N").load()
+TraversablePlatform("central_extender", BuildingSpriteSheetSymmetrical, "N").load()
 
 for name, symmetry, traversable, groundtype, category in [
-    ("central", BuildingSpriteSheetSymmetrical, True, "central", "N"),
-    ("central_windowed", BuildingSpriteSheetSymmetricalY, True, "central", "N"),
-    ("central_windowed_extender", BuildingSpriteSheetSymmetrical, True, "central", "N"),
     ("side_a", BuildingSpriteSheetFull, True, True, "A"),
     ("side_a_windowed", BuildingSpriteSheetFull, True, True, "A"),
     ("side_a2", BuildingSpriteSheetSymmetricalY, True, True, "A"),
