@@ -131,39 +131,31 @@ class Traversable(LoadType):
 
 
 class TraversablePlatform(Traversable):
+    def __init__(self, *args, h_pos="normal", **kwargs):
+        super().__init__(*args, **kwargs)
+        self.h_pos = h_pos
+
     def get_sprites(self, voxel):
         sprite = self.symmetry.create_variants(voxel.spritesheet(zdiff=base_height * 2))
         return [AParentSprite(sprite, (16, 16, overpass_height), (0, 0, base_height))]
 
     def make_platform_variants(self, grounds, parents):
-        if self.symmetry.is_symmetrical_y():
-            self.register(ALayout(grounds, parents + [np_pillar, np_pillar.T], True), "_x")
-            self.register(ALayout(grounds, parents + [plat_pillar, np_pillar.T], True, notes=["y", "near"]), "_n")
-            self.register(ALayout(grounds, parents + [plat_pillar, plat_pillar.T], True, notes=["both"]))
+        if self.h_pos == "normal":
+            cur_np = np_pillar
+            cur_plat = plat_pillar
         else:
-            self.register(ALayout(grounds, parents + [np_pillar, np_pillar.T], True), "_x")
-            self.register(ALayout(grounds, parents + [plat_pillar, np_pillar.T], True, notes=["near"]), "_n")
-            self.register(ALayout(grounds, parents + [np_pillar, plat_pillar.T], True, notes=["far"]), "_f")
-            self.register(ALayout(grounds, parents + [plat_pillar, plat_pillar.T], True, notes=["both"]))
+            cur_np = np_pillar_building
+            cur_plat = plat_shed
 
-
-class TraversablePlatformSide(Traversable):
-    def get_sprites(self, voxel):
-        sprite = self.symmetry.create_variants(voxel.spritesheet(zdiff=base_height * 2))
-        return [AParentSprite(sprite, (16, 16, overpass_height), (0, 0, base_height))]
-
-    def make_platform_variants(self, grounds, parents):
         if self.symmetry.is_symmetrical_y():
-            self.register(ALayout(grounds, parents + [np_pillar_building, np_pillar_building.T], True), "_x")
-            self.register(
-                ALayout(grounds, parents + [plat_shed, np_pillar_building.T], True, notes=["y", "near"]), "_n"
-            )
-            self.register(ALayout(grounds, parents + [plat_shed, plat_shed.T], True, notes=["both"]))
+            self.register(ALayout(grounds, parents + [cur_np, cur_np.T], True), "_x")
+            self.register(ALayout(grounds, parents + [cur_plat, cur_np.T], True, notes=["y", "near"]), "_n")
+            self.register(ALayout(grounds, parents + [cur_plat, cur_plat.T], True, notes=["both"]))
         else:
-            self.register(ALayout(grounds, parents + [np_pillar_building, np_pillar_building.T], True), "_x")
-            self.register(ALayout(grounds, parents + [plat_shed, np_pillar_building.T], True, notes=["near"]), "_n")
-            self.register(ALayout(grounds, parents + [np_pillar_building, plat_shed.T], True, notes=["far"]), "_f")
-            self.register(ALayout(grounds, parents + [plat_shed, plat_shed.T], True, notes=["both"]))
+            self.register(ALayout(grounds, parents + [cur_np, cur_np.T], True), "_x")
+            self.register(ALayout(grounds, parents + [cur_plat, cur_np.T], True, notes=["near"]), "_n")
+            self.register(ALayout(grounds, parents + [cur_np, cur_plat.T], True, notes=["far"]), "_f")
+            self.register(ALayout(grounds, parents + [cur_plat, cur_plat.T], True, notes=["both"]))
 
 
 class TraversablePlatformTwoSide(Traversable):
@@ -488,8 +480,6 @@ class SideTriple(LoadType):
 
 def quickload(source, type, traversable, groundtype, category):
     worker_class = {
-        (True, "central"): TraversablePlatform,
-        (True, True): TraversablePlatformSide,
         (True, "twoside"): TraversablePlatformTwoSide,
         (True, False): TraversableCorridor,
         (True, "single"): HorizontalSingle,
@@ -522,18 +512,19 @@ SideTriple("corner_gate_2", BuildingSpriteSheetFull, "F1", h_pos="corner").load(
 TraversablePlatform("central", BuildingSpriteSheetSymmetrical, "N").load()
 TraversablePlatform("central_windowed", BuildingSpriteSheetSymmetricalY, "N").load()
 TraversablePlatform("central_windowed_extender", BuildingSpriteSheetSymmetrical, "N").load()
+TraversablePlatform("side_a", BuildingSpriteSheetFull, "A", h_pos="side").load()
+TraversablePlatform("side_a_windowed", BuildingSpriteSheetFull, "A", h_pos="side").load()
+TraversablePlatform("side_a2", BuildingSpriteSheetSymmetricalY, "A", h_pos="side").load()
+TraversablePlatform("side_a2_windowed", BuildingSpriteSheetSymmetricalY, "A", h_pos="side").load()
+TraversablePlatform("side_a3", BuildingSpriteSheetFull, "A", h_pos="side").load()
+TraversablePlatform("side_a3_windowed", BuildingSpriteSheetFull, "A", h_pos="side").load()
+TraversablePlatform("side_b", BuildingSpriteSheetFull, "B", h_pos="side").load()
+TraversablePlatform("side_b2", BuildingSpriteSheetSymmetricalY, "B", h_pos="side").load()
+TraversablePlatform("side_c", BuildingSpriteSheetSymmetricalY, "C", h_pos="side").load()
+TraversablePlatform("side_d", BuildingSpriteSheetSymmetricalY, "D", h_pos="side").load()
+
 
 for name, symmetry, traversable, groundtype, category in [
-    ("side_a", BuildingSpriteSheetFull, True, True, "A"),
-    ("side_a_windowed", BuildingSpriteSheetFull, True, True, "A"),
-    ("side_a2", BuildingSpriteSheetSymmetricalY, True, True, "A"),
-    ("side_a2_windowed", BuildingSpriteSheetSymmetricalY, True, True, "A"),
-    ("side_a3", BuildingSpriteSheetFull, True, True, "A"),
-    ("side_a3_windowed", BuildingSpriteSheetFull, True, True, "A"),
-    ("side_b", BuildingSpriteSheetFull, True, True, "B"),
-    ("side_b2", BuildingSpriteSheetSymmetricalY, True, True, "B"),
-    ("side_c", BuildingSpriteSheetSymmetricalY, True, True, "C"),
-    ("side_d", BuildingSpriteSheetSymmetricalY, True, True, "D"),
     ("h_end", BuildingSpriteSheetSymmetricalY, True, "single", "H"),
     ("h_end_asym", BuildingSpriteSheetFull, False, "triple", "H"),
     ("h_end_asym_gate", BuildingSpriteSheetFull, False, "triple", "H"),
