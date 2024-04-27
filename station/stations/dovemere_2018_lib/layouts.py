@@ -361,6 +361,7 @@ class HorizontalTriple(TraversableCorridor):
 
         f1_symmetry = self.symmetry.break_y_symmetry()
         f1v = v.discard_layers(("ground level - platform",), "full")
+        f1v = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         f1v.in_place_subset(f1_symmetry.render_indices())
         f1 = f1_symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x))
 
@@ -371,8 +372,8 @@ class HorizontalTriple(TraversableCorridor):
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
 
         self.register(ALayout(grounds, [f1s, f1s.T, f2s], True, notes=["third"]), "")
-        self.register(ALayout(grounds, [f1s, np_pillar.T, f2s], True, notes=["third"]), "_third")
-        self.register(ALayout(grounds, [f1s, f2s, plat_pillar.T], True, notes=["third", "far"]), "_third_f")
+        self.register(ALayout(grounds, [f1s, np_pillar.T, f2s], True, notes=["third", "y"]), "_third")
+        self.register(ALayout(grounds, [f1s, f2s, plat_pillar.T], True, notes=["third", "y", "far"]), "_third_f")
         SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
 
 

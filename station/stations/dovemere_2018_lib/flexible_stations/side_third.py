@@ -36,10 +36,29 @@ def get_side_index(l, r):
     )
 
 
+def get_side_index_2(l, r):
+    return horizontal_layout(
+        l, r, tiny_third, h_end_gate_1_third, h_end_third, h_normal_third, h_gate_1_third, h_gate_extender_1_third
+    )
+
+
 cb14 = Switch(
     ranges={
         l: Switch(
             ranges={r: get_side_index(l, r) for r in range(16)},
+            default=h_normal,
+            code="var(0x41, shift=0, and=0x0000000f)",
+        )
+        for l in range(16)
+    },
+    default=h_normal,
+    code="var(0x41, shift=4, and=0x0000000f)",
+)
+
+cb14_2 = Switch(
+    ranges={
+        l: Switch(
+            ranges={r: get_side_index_2(l, r) for r in range(16)},
             default=h_normal,
             code="var(0x41, shift=0, and=0x0000000f)",
         )
@@ -89,7 +108,7 @@ side_third_station_np = AStation(
     callbacks={
         "select_tile_layout": 0,
         "select_sprite_layout": grf.DualCallback(
-            default=cb14.to_index(layouts), purchase=layouts.index(demo_layouts[4])
+            default=cb14_2.to_index(layouts), purchase=layouts.index(demo_layouts[4])
         ),
     },
 )
@@ -104,7 +123,7 @@ back_side_third_station_np = AStation(
     callbacks={
         "select_tile_layout": 0,
         "select_sprite_layout": grf.DualCallback(
-            default=cb14.T.to_index(layouts), purchase=layouts.index(demo_layouts[6])
+            default=cb14_2.T.to_index(layouts), purchase=layouts.index(demo_layouts[6])
         ),
     },
 )
