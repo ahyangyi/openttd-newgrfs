@@ -6,7 +6,18 @@ from .dovemere_2018_lib.flexible_stations.semitraversable import (
     semitraversable_station_no_side,
 )
 from .dovemere_2018_lib.flexible_stations.traversable import traversable_station, traversable_station_no_side
-from .dovemere_2018_lib.flexible_stations.side import side_station, back_side_station
+from .dovemere_2018_lib.flexible_stations.side import (
+    side_station,
+    back_side_station,
+    side_station_np,
+    back_side_station_np,
+)
+from .dovemere_2018_lib.flexible_stations.side_third import (
+    side_third_station,
+    back_side_third_station,
+    side_third_station_np,
+    back_side_third_station_np,
+)
 
 
 the_stations = AMetaStation(
@@ -17,6 +28,12 @@ the_stations = AMetaStation(
         traversable_station_no_side,
         side_station,
         back_side_station,
+        side_station_np,
+        back_side_station_np,
+        side_third_station,
+        back_side_third_station,
+        side_third_station_np,
+        back_side_third_station_np,
     ]
     + [
         AStation(
@@ -35,9 +52,11 @@ the_stations = AMetaStation(
         b"\xe8\x8a\x9c" + x
         for x in [b"A"]
         + [(r * 16 + c).to_bytes(1, "little") for r in [8] for c in range(16)]
+        + [(r * 16 + c).to_bytes(1, "little") for r in [9] for c in range(4)]
+        + [x.to_bytes(1, "little") for x in range(0xA0, 0xB0)]
+        + [x.to_bytes(1, "little") for x in range(0xB0, 0xB8)]
+        + [x.to_bytes(1, "little") for x in range(0xC0, 0xC8)]
         + [b"\xF0"]
-        + [(r * 16 + c).to_bytes(1, "little") for r in [9, 10, 11, 12] for c in [0, 1, 2, 3]]
-        + [b"\xF1", b"\xF2"]
     ],
     flexible_entries + entries,
     [
@@ -48,6 +67,7 @@ the_stations = AMetaStation(
         demos.full_auto_demo,
         demos.semi_auto_demo,
         demos.side_auto_demo,
+        demos.side_third_auto_demo,
         demos.special_demo_g,
         demos.special_demo_p,
         demos.special_demo_cn,

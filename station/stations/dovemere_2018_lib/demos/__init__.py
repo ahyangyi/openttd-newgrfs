@@ -4,6 +4,7 @@ from .real_yard import real_yard_demo
 from .full_auto import full_auto_demo
 from .semi_auto import semi_auto_demo
 from .side_auto import side_auto_demo
+from .side_third_auto import side_third_auto_demo
 from .special_g import special_demo_g
 from .special_p import special_demo_p
 from .special_cn import special_demo_cn

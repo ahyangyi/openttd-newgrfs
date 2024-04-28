@@ -7,15 +7,21 @@ named_tiles.globalize()
 
 
 normal_demo = Demo(
-    "Normal 5×7 station layout (roughly 1 grid = 40m)",
+    "5×7 station layout (roughly 1 grid = 40m)",
     [
-        [corner.T, front_gate.T, front_gate_extender.T, front_gate.TR, corner.TR],
+        [
+            corner_platform.T,
+            front_gate_platform.T,
+            front_gate_extender_platform.T,
+            front_gate_platform.TR,
+            corner_platform.TR,
+        ],
         [side_a_n.T, central_windowed, central_windowed_extender, central_windowed.R, side_a_n.TR],
         [side_b_f.T, central_windowed, central_windowed_extender, central_windowed.R, side_b_f.TR],
         [side_c, central_windowed, central_windowed_extender, central_windowed.R, side_c.R],
         [side_b_f, central_windowed, central_windowed_extender, central_windowed.R, side_b_f.R],
         [side_a_n, central_windowed, central_windowed_extender, central_windowed.R, side_a_n.R],
-        [corner, front_gate, front_gate_extender, front_gate.R, corner.R],
+        [corner_platform, front_gate_platform, front_gate_extender_platform, front_gate_platform.R, corner_platform.R],
     ],
     remap=get_1cc_remap(CompanyColour.WHITE),
 )

@@ -6,11 +6,6 @@ from .common import horizontal_layout, make_cb14, get_central_index, determine_p
 
 named_tiles.globalize()
 
-# FIXME
-front_normal_platform = front_normal
-front_gate_platform = front_gate
-front_gate_extender_platform = front_gate_extender
-
 my_demos = [
     Demo(
         "4×4 semitraversable flexible station layout",
@@ -44,12 +39,7 @@ for demo in my_demos:
             )
         )
 demo_layouts = [
-    ALayout(
-        AGroundSprite(grf.EMPTY_SPRITE),
-        [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))],
-        False,
-        category=b"\xe8\x8a\x9cA",
-    )
+    ALayout([], [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False, category=b"\xe8\x8a\x9cA")
     for sprite in demo_sprites
 ]
 layouts.extend(demo_layouts)
