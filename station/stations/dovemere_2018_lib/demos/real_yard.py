@@ -31,5 +31,5 @@ near_lines = [
 far_lines = [[el.T for el in line] for line in near_lines[::-1]]
 
 real_yard_demo = Demo(
-    "14×22 rail yard (roughly 1 grid = 12.5m)", far_lines + near_lines, remap=get_1cc_remap(CompanyColour.WHITE)
+    "14×22 rail yard, including pass-through tracks", far_lines + near_lines, remap=get_1cc_remap(CompanyColour.WHITE)
 )
