@@ -272,7 +272,10 @@ class HorizontalSingle(TraversableCorridor):
 
         self.register(ALayout(grounds, [f1s, f1s.T, f2s], True), "")
         if not self.force_corridor:
-            self.register(ALayout(grounds, [f1s, np_pillar.T, f2s], True, notes=["third", "y"]), "_third")
+            self.register(
+                ALayout([ADefaultGroundSprite(1012), third], [f1s, np_pillar.T, f2s], True, notes=["third", "y"]),
+                "_third",
+            )
             self.register(ALayout(grounds, [f1s, f2s, plat_shed.T], True, notes=["third", "y", "far"]), "_third_f")
 
 
@@ -309,7 +312,9 @@ class HorizontalSingleAsym(TraversableCorridor):
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
 
         self.register(ALayout(grounds, [f1fs, f1bs, f2s], True), "")
-        self.register(ALayout(grounds, [f1fs, np_pillar.T, f2s], True, notes=["third", "y"]), "_third")
+        self.register(
+            ALayout([ADefaultGroundSprite(1012), third], [f1fs, np_pillar.T, f2s], True, notes=["third", "y"]), "_third"
+        )
         self.register(ALayout(grounds, [f1fs, f2s, plat_shed.T], True, notes=["third", "y", "far"]), "_third_f")
 
 

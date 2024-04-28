@@ -6,8 +6,10 @@ from .semitraversable import horizontal_layout
 
 named_tiles.globalize()
 
-demo1 = Demo("1×4 side station layout", [[h_end_third_f, h_gate_1_third_f, h_gate_1_third_f.R, h_end_third_f.R]])
-demo2 = Demo("1×4 side station layout", [[h_end_third, h_gate_1_third, h_gate_1_third.R, h_end_third.R]])
+demo1 = Demo(
+    "1×4 side station layout", [[h_end_asym_third_f, h_gate_1_third_f, h_gate_1_third_f.R, h_end_asym_third_f.R]]
+)
+demo2 = Demo("1×4 side station layout", [[h_end_asym_third, h_gate_1_third, h_gate_1_third.R, h_end_asym_third.R]])
 demo_layouts = []
 for i, demo in enumerate([var for base in [demo1, demo2] for var in [base, base.M, base.T, base.T.M]]):
     sprite = grf.AlternativeSprites(
@@ -28,8 +30,8 @@ def get_side_index(l, r):
         l,
         r,
         tiny_third_f,
-        h_end_gate_1_third_f,
-        h_end_third_f,
+        h_end_asym_gate_third_f,
+        h_end_asym_third_f,
         h_normal_third_f,
         h_gate_1_third_f,
         h_gate_extender_1_third_f,
@@ -38,7 +40,14 @@ def get_side_index(l, r):
 
 def get_side_index_2(l, r):
     return horizontal_layout(
-        l, r, tiny_third, h_end_gate_1_third, h_end_third, h_normal_third, h_gate_1_third, h_gate_extender_1_third
+        l,
+        r,
+        tiny_third,
+        h_end_asym_gate_third,
+        h_end_asym_third,
+        h_normal_third,
+        h_gate_1_third,
+        h_gate_extender_1_third,
     )
 
 
