@@ -7,7 +7,7 @@ named_tiles.globalize()
 
 
 normal_demo = Demo(
-    "Normal 5×7 station layout (roughly 1 grid = 40m)",
+    "5×7 station layout (roughly 1 grid = 40m)",
     [
         [corner.T, front_gate.T, front_gate_extender.T, front_gate.TR, corner.TR],
         [side_a_n.T, central_windowed, central_windowed_extender, central_windowed.R, side_a_n.TR],
