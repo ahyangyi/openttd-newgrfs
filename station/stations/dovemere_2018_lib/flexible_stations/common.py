@@ -4,8 +4,8 @@ from station.lib import make_horizontal_switch, make_vertical_switch, ALayout, A
 from ..layouts import named_tiles, layouts, flexible_entries
 
 
-def make_demo(switch, w, h):
-    demo = Demo("", switch.demo(w, h))
+def make_demo(switch, w, h, preswitch=None):
+    demo = Demo("", switch.demo(w, h, preswitch))
     for i, var in enumerate([var for var in [demo, demo.M]]):
         sprite = grf.AlternativeSprites(
             *[

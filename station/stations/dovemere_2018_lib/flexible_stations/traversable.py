@@ -1,48 +1,16 @@
 import grf
 from station.lib import AStation, ALayout, AParentSprite, LayoutSprite, Demo, StationTileSwitch, make_vertical_switch
 from ..layouts import named_tiles, layouts, flexible_entries
-from .common import horizontal_layout, make_cb14, get_central_index, determine_platform_odd, determine_platform_even
+from .common import (
+    horizontal_layout,
+    make_cb14,
+    get_central_index,
+    determine_platform_odd,
+    determine_platform_even,
+    make_demo,
+)
 
 named_tiles.globalize()
-
-my_demos = [
-    Demo(
-        "4×4 traversable flexible station layout",
-        [
-            [corner_third_f.T, front_gate.T, front_gate.T.R, corner_third_f.T.R],
-            [side_a3_n.T, central_windowed, central_windowed.R, side_a3_n.T.R],
-            [side_a3_n, central_windowed, central_windowed.R, side_a3_n.R],
-            [corner_third_f, front_gate, front_gate.R, corner_third_f.R],
-        ],
-    ),
-    Demo(
-        "4×4 semitraversable flexible station layout",
-        [
-            [corner_third.T, front_gate.T, front_gate.T.R, corner_third.T.R],
-            [side_a3_f.T, central_windowed, central_windowed.R, side_a3_f.T.R],
-            [side_a3_f, central_windowed, central_windowed.R, side_a3_f.R],
-            [corner_third, front_gate, front_gate.R, corner_third.R],
-        ],
-    ),
-]
-demo_sprites = []
-for demo in my_demos:
-    for direction in [demo, demo.M]:
-        demo_sprites.append(
-            grf.AlternativeSprites(
-                *[
-                    LayoutSprite(direction, 64 * scale, 64 * scale, xofs=0, yofs=0, scale=scale, bpp=bpp)
-                    for scale in [1, 2, 4]
-                    for bpp in [32]
-                ]
-            )
-        )
-demo_layouts = [
-    ALayout([], [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False, category=b"\xe8\x8a\x9cA")
-    for sprite in demo_sprites
-]
-layouts.extend(demo_layouts)
-flexible_entries.extend([x for x in demo_layouts[::2]])
 
 
 def get_front_index(l, r):
@@ -78,6 +46,29 @@ def get_single_index(l, r):
 cb24_0 = make_vertical_switch(lambda l, r: {"n": 2, "f": 4, "d": 6}[determine_platform_odd(l, r)], cb24=True)
 cb24_1 = make_vertical_switch(lambda l, r: {"n": 2, "f": 4, "d": 6}[determine_platform_even(l, r)], cb24=True)
 
+cb14_2 = make_vertical_switch(
+    lambda l, r: (
+        get_front_index_2(l, r)
+        if l == 0
+        else get_front_index_2(r, l).T if r == 0 else get_central_index(l, r, lambda l, r: "n")
+    )
+)
+cb14_4 = make_vertical_switch(
+    lambda l, r: (
+        get_front_index(l, r)
+        if l == 0
+        else get_front_index(r, l).T if r == 0 else get_central_index(l, r, lambda l, r: "f")
+    )
+)
+cb14_6 = make_vertical_switch(
+    lambda l, r: (
+        get_front_index(l, r)
+        if l == 0
+        else get_front_index(r, l).T if r == 0 else get_central_index(l, r, lambda l, r: "d")
+    )
+)
+
+cb14 = StationTileSwitch("T", {2: cb14_2, 3: cb14_2, 4: cb14_4, 5: cb14_4, 6: cb14_6, 7: cb14_6})
 cb14_0 = make_cb14(
     get_front_index, lambda l, r: get_central_index(l, r, determine_platform_odd), get_single_index
 ).to_index(layouts)
@@ -94,7 +85,7 @@ traversable_station = AStation(
     disabled_platforms=0b1,
     callbacks={
         "select_tile_layout": 0,
-        "select_sprite_layout": grf.DualCallback(default=cb14_0, purchase=layouts.index(demo_layouts[0])),
+        "select_sprite_layout": grf.DualCallback(default=cb14_0, purchase=layouts.index(make_demo(cb14, 4, 4, cb24_0))),
     },
 )
 
@@ -106,6 +97,6 @@ traversable_station_no_side = AStation(
     cargo_threshold=40,
     callbacks={
         "select_tile_layout": 0,
-        "select_sprite_layout": grf.DualCallback(default=cb14_1, purchase=layouts.index(demo_layouts[2])),
+        "select_sprite_layout": grf.DualCallback(default=cb14_1, purchase=layouts.index(make_demo(cb14, 4, 4, cb24_0))),
     },
 )

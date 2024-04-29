@@ -55,8 +55,10 @@ class StationTileSwitch:
         else:
             raise NotImplementedError()
 
-    def demo(self, w, h):
-        return [[self.lookup(w, h, x, y) for x in range(w)] for y in range(h)]
+    def demo(self, w, h, preswitch=None):
+        return [
+            [self.lookup(w, h, x, y, preswitch and preswitch.lookup(w, h, x, y)) for x in range(w)] for y in range(h)
+        ]
 
 
 def make_horizontal_switch(f):
@@ -65,7 +67,3 @@ def make_horizontal_switch(f):
 
 def make_vertical_switch(f, cb24=False):
     return StationTileSwitch("t", {t: StationTileSwitch("d", {d: f(t, d) for d in range(16)}) for t in range(16)}, cb24)
-
-
-def two_cb_demo(cb24, cb14):
-    return [[cb14.lookup(w, h, x, y, cb24.lookup(w, h, x, y)) for x in range(w)] for y in range(h)]
