@@ -1,4 +1,4 @@
-from agrf.magic import CachedFunctorMixin
+from agrf.magic import CachedFunctorMixin, Switch
 
 
 class StationTileSwitch(CachedFunctorMixin):
@@ -21,9 +21,18 @@ class StationTileSwitch(CachedFunctorMixin):
         )
         return StationTileSwitch(new_var, {k: f(v) for k, v in self.ranges})
 
+    def to_grf(self, sprite_list):
+        return Switch(ranges=self.ranges, default=min(self.items())[1], code=self.var2code[self.var])
+
     def lookup(self, w, h, x, y):
         if self.var == "l":
-            pass
+            return self.ranges[min(x, 15)]
+        elif self.var == "r":
+            return self.ranges[min(w - x - 1, 15)]
+        elif self.var == "t":
+            return self.ranges[min(y, 15)]
+        elif self.var == "d":
+            return self.ranges[min(h - y - 1, 15)]
         else:
             raise NotImplementedError()
 
