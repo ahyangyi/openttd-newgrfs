@@ -43,28 +43,28 @@ def get_single_index(l, r):
     return horizontal_layout(l, r, tiny, h_end_gate, h_end, h_normal, h_gate, h_gate_extender)
 
 
-cb24_0 = make_vertical_switch(lambda l, r: {"n": 2, "f": 4, "d": 6}[determine_platform_odd(l, r)], cb24=True)
-cb24_1 = make_vertical_switch(lambda l, r: {"n": 2, "f": 4, "d": 6}[determine_platform_even(l, r)], cb24=True)
+cb24_0 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_odd(t, d)], cb24=True)
+cb24_1 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_even(t, d)], cb24=True)
 
 cb14_2 = make_vertical_switch(
-    lambda l, r: (
-        get_front_index_2(l, r)
-        if l == 0
-        else get_front_index_2(r, l).T if r == 0 else get_central_index(l, r, lambda l, r: "n")
+    lambda t, d: (
+        make_horizontal_switch(get_front_index_2)
+        if t == 0
+        else make_horizontal_switch(get_front_index_2).T if d == 0 else get_central_index(t, d, lambda t, d: "n")
     )
 )
 cb14_4 = make_vertical_switch(
-    lambda l, r: (
-        get_front_index(l, r)
-        if l == 0
-        else get_front_index(r, l).T if r == 0 else get_central_index(l, r, lambda l, r: "f")
+    lambda t, d: (
+        make_horizontal_switch(get_front_index)
+        if t == 0
+        else make_horizontal_switch(get_front_index).T if d == 0 else get_central_index(t, d, lambda t, d: "f")
     )
 )
 cb14_6 = make_vertical_switch(
-    lambda l, r: (
-        get_front_index(l, r)
-        if l == 0
-        else get_front_index(r, l).T if r == 0 else get_central_index(l, r, lambda l, r: "d")
+    lambda t, d: (
+        make_horizontal_switch(get_front_index)
+        if t == 0
+        else make_horizontal_switch(get_front_index).T if d == 0 else get_central_index(t, d, lambda t, d: "d")
     )
 )
 
