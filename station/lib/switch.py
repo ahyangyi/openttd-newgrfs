@@ -1,4 +1,11 @@
 from agrf.magic import Switch
+from .layout import ALayout
+
+
+def lookup(thing, w, h, x, y):
+    if isinstance(thing, ALayout):
+        return thing
+    return thing.lookup(w, h, x, y)
 
 
 class StationTileSwitch:
@@ -34,15 +41,18 @@ class StationTileSwitch:
 
     def lookup(self, w, h, x, y):
         if self.var == "l":
-            return self.ranges[min(x, 15)].lookup(w, h, x, y)
+            return lookup(self.ranges[min(x, 15)], w, h, x, y)
         elif self.var == "r":
-            return self.ranges[min(w - x - 1, 15)].lookup(w, h, x, y)
+            return lookup(self.ranges[min(w - x - 1, 15)], w, h, x, y)
         elif self.var == "t":
-            return self.ranges[min(y, 15)].lookup(w, h, x, y)
+            return lookup(self.ranges[min(y, 15)], w, h, x, y)
         elif self.var == "d":
-            return self.ranges[min(h - y - 1, 15)].lookup(w, h, x, y)
+            return lookup(self.ranges[min(h - y - 1, 15)], w, h, x, y)
         else:
             raise NotImplementedError()
+
+    def demo(self, w, h):
+        return [[self.lookup(w, h, x, y) for x in range(w)] for y in range(h)]
 
 
 def make_horizontal_switch(f):

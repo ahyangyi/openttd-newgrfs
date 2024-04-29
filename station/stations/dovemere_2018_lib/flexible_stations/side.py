@@ -6,24 +6,6 @@ from .semitraversable import horizontal_layout
 
 named_tiles.globalize()
 
-demo1 = Demo(
-    "1×4 side station layout", [[h_end_asym_platform, h_gate_1_platform, h_gate_1_platform.R, h_end_asym_platform.R]]
-)
-demo2 = Demo("1×4 side station layout", [[h_end_asym, h_gate_1, h_gate_1.R, h_end_asym.R]])
-demo_layouts = []
-for i, demo in enumerate([var for base in [demo1, demo2] for var in [base, base.M, base.T, base.T.M]]):
-    sprite = grf.AlternativeSprites(
-        *[
-            LayoutSprite(demo, 64 * scale, 64 * scale, xofs=(16 - i % 2 * 32) * scale, yofs=0, scale=scale, bpp=bpp)
-            for scale in [1, 2, 4]
-            for bpp in [32]
-        ]
-    )
-    layout = ALayout([], [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False, category=b"\xe8\x8a\x9cA")
-    demo_layouts.append(layout)
-layouts.extend(demo_layouts)
-flexible_entries.extend([x for x in demo_layouts[::2]])
-
 
 def get_side_index(l, r):
     return horizontal_layout(
@@ -44,6 +26,24 @@ def get_side_index_2(l, r):
 
 cb14 = make_horizontal_switch(get_side_index)
 cb14_2 = make_horizontal_switch(get_side_index_2)
+
+### DEMOS
+demo1 = Demo("1×4 side station layout", cb14.demo(4, 1))
+demo2 = Demo("1×4 side station layout", cb14_2.demo(4, 1))
+demo_layouts = []
+for i, demo in enumerate([var for base in [demo1, demo2] for var in [base, base.M, base.T, base.T.M]]):
+    sprite = grf.AlternativeSprites(
+        *[
+            LayoutSprite(demo, 64 * scale, 64 * scale, xofs=(16 - i % 2 * 32) * scale, yofs=0, scale=scale, bpp=bpp)
+            for scale in [1, 2, 4]
+            for bpp in [32]
+        ]
+    )
+    layout = ALayout([], [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False, category=b"\xe8\x8a\x9cA")
+    demo_layouts.append(layout)
+layouts.extend(demo_layouts)
+flexible_entries.extend([x for x in demo_layouts[::2]])
+
 
 side_station = AStation(
     id=0x04,
