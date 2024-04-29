@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from collections.abc import Collection, Mapping, Hashable
 
+
 def deep_freeze(thing):
     if thing is None or isinstance(thing, str):
         return thing
@@ -12,7 +13,6 @@ def deep_freeze(thing):
         raise TypeError(f"unfreezable type: '{type(thing)}'")
     else:
         return thing
-
 
 
 class CachedFunctorMixin(ABC):
