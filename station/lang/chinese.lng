@@ -1,6 +1,6 @@
 ##grflangid 0x56
-STR_GRF_NAME                    :CNSPS Addon: 芜湖
-STR_GRF_DESC                    :基于芜湖站设计的模块化车站包。{}{}本 NewGRF 是 {PUSH_COLOUR}{GOLD}ChinaSet: Platforms and Stations (CNSPS){POP_COLOUR} 的扩展包。
+STR_GRF_NAME                    :中国包：站台与车站 - 芜湖 {WHITE}0.1.1
+STR_GRF_DESC                    :本 NewGRF 是 {PUSH_COLOUR}{GOLD}中国{RED}包{SILVER}：站台与车站{POP_COLOUR} 的扩展包，提供基于{PUSH_COLOUR}{SILVER}芜湖站{POP_COLOUR}的 {PUSH_COLOUR}{GOLD}423{POP_COLOUR} 种模块化地块和 {PUSH_COLOUR}{GOLD}12{POP_COLOUR} 种车站模版。{}{}{PUSH_COLOUR}{SILVER}图形绘制者{POP_COLOUR}:{}Ahyangyi, NACHN.{}{PUSH_COLOUR}{SILVER}程序编写者{POP_COLOUR}:{}Ahyangyi{}在 {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR} 下分发。
 
 STR_STATION_DEFAULT                             :站房
 STR_STATION_UNTRAVERSABLE                       :站房（无轨道）
@@ -64,8 +64,15 @@ STR_STATION_CLASS_E88A9CB4      :CNSPS: 芜湖站 - 扁，轨道
 STR_STATION_CLASS_E88A9CB5      :CNSPS: 芜湖站 - 扁，轨+近台
 STR_STATION_CLASS_E88A9CB6      :CNSPS: 芜湖站 - 扁，轨+远台
 STR_STATION_CLASS_E88A9CB7      :CNSPS: 芜湖站 - 扁，轨+双台
-STR_STATION_CLASS_E88A9CF1      :CNSPS: 芜湖站 - 异
-STR_STATION_CLASS_E88A9CF2      :CNSPS: 芜湖站 - 汇
+STR_STATION_CLASS_E88A9CC0      :CNSPS: 芜湖站 - 异，无站台
+STR_STATION_CLASS_E88A9CC1      :CNSPS: 芜湖站 - 异，近侧站台
+STR_STATION_CLASS_E88A9CC2      :CNSPS: 芜湖站 - 异，远侧站台
+STR_STATION_CLASS_E88A9CC3      :CNSPS: 芜湖站 - 异，双侧站台
+STR_STATION_CLASS_E88A9CC4      :CNSPS: 芜湖站 - 异，轨道
+STR_STATION_CLASS_E88A9CC5      :CNSPS: 芜湖站 - 异，轨+近台
+STR_STATION_CLASS_E88A9CC6      :CNSPS: 芜湖站 - 异，轨+远台
+STR_STATION_CLASS_E88A9CC7      :CNSPS: 芜湖站 - 异，轨+双台
+STR_STATION_CLASS_E88A9CF0      :CNSPS: 芜湖站 - 汇
 
 STR_STATION_CLASS_E88A9Ca       :CNSPS: 芜湖站 (1992)
 
@@ -73,7 +80,7 @@ STR_STATION_CLASS_E88A9C0       :CNSPS: 芜湖站 (1933)
 
 STR_STATION_CLASS_E9B8A0A       :CNSPS：芜湖北 (2018)
 
-STR_STATION_CLASS_PLAT          :CNSPS: 芜湖 - 额外站台
+STR_STATION_CLASS_PLAT          :CNSPS: 芜湖包 - 站台
 
 STR_METASTATION_CLASS_E88A9CA   :芜湖站 (2015)
 STR_METASTATION_CLASS_E88A9Ca   :芜湖站 (1992)
