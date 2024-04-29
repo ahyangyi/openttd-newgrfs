@@ -1,5 +1,5 @@
 import grf
-from station.lib import AStation, ALayout, AGroundSprite, AParentSprite, LayoutSprite, Demo
+from station.lib import AStation, ALayout, AGroundSprite, AParentSprite, LayoutSprite, Demo, make_horizontal_switch
 from agrf.magic import Switch
 from ..layouts import named_tiles, layouts, flexible_entries
 from .semitraversable import horizontal_layout
@@ -42,31 +42,8 @@ def get_side_index_2(l, r):
     return horizontal_layout(l, r, tiny_asym, h_end_asym_gate, h_end_asym, h_normal, h_gate_1, h_gate_extender_1)
 
 
-cb14 = Switch(
-    ranges={
-        l: Switch(
-            ranges={r: get_side_index(l, r) for r in range(16)},
-            default=h_normal,
-            code="var(0x41, shift=0, and=0x0000000f)",
-        )
-        for l in range(16)
-    },
-    default=h_normal,
-    code="var(0x41, shift=4, and=0x0000000f)",
-)
-
-cb14_2 = Switch(
-    ranges={
-        l: Switch(
-            ranges={r: get_side_index_2(l, r) for r in range(16)},
-            default=h_normal,
-            code="var(0x41, shift=0, and=0x0000000f)",
-        )
-        for l in range(16)
-    },
-    default=h_normal,
-    code="var(0x41, shift=4, and=0x0000000f)",
-)
+cb14 = make_horizontal_switch(get_side_index)
+cb14_2 = make_horizontal_switch(get_side_index_2)
 
 side_station = AStation(
     id=0x04,

@@ -91,19 +91,7 @@ traversable_station = AStation(
     cargo_threshold=40,
     disabled_platforms=0b1,
     callbacks={
-        "select_tile_layout": grf.PurchaseCallback(
-            purchase=Switch(
-                ranges={
-                    (2, 15): Switch(
-                        ranges={0: 2},
-                        default=Switch(ranges={0: 4}, default=6, code="(extra_callback_info1 >> 12) & 0xf"),
-                        code="(extra_callback_info1 >> 8) & 0xf",
-                    )
-                },
-                default=0,
-                code="(extra_callback_info1 >> 20) & 0xf",
-            )
-        ),
+        "select_tile_layout": 0,
         "select_sprite_layout": grf.DualCallback(default=cb14_0, purchase=layouts.index(demo_layouts[0])),
     },
 )
@@ -115,19 +103,7 @@ traversable_station_no_side = AStation(
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
     callbacks={
-        "select_tile_layout": grf.PurchaseCallback(
-            purchase=Switch(
-                ranges={
-                    (2, 15): Switch(
-                        ranges={0: 2},
-                        default=Switch(ranges={0: 4}, default=6, code="(extra_callback_info1 >> 12) & 0xf"),
-                        code="(extra_callback_info1 >> 8) & 0xf",
-                    )
-                },
-                default=0,
-                code="(extra_callback_info1 >> 20) & 0xf",
-            )
-        ),
+        "select_tile_layout": 0,
         "select_sprite_layout": grf.DualCallback(default=cb14_1, purchase=layouts.index(demo_layouts[2])),
     },
 )
