@@ -23,21 +23,21 @@ class Switch(grf.Switch):
         self.attr_cache = {}
         self.call_cache = {}
 
-    def __getattr__(self, name):
-        if name in self.attr_cache:
-            return self.attr_cache[name]
-        call = lambda x: getattr(x, name)
-        new_ranges = {(r.low, r.high): call(r.ref) for r in self._ranges}
-        new_default = call(self.default)
-        ret = Switch(
+    def derive(self, callback):
+        return Switch(
             self.code,
-            new_ranges,
-            new_default,
+            {(r.low, r.high): callback(r.ref) for r in self._ranges},
+            callback(self.default),
             feature=self.feature,
             ref_id=self.ref_id,
             related_scope=self.related_scope,
             subroutines=self.subroutines,
         )
+
+    def __getattr__(self, name):
+        if name in self.attr_cache:
+            return self.attr_cache[name]
+        ret = self.derive(lambda x: getattr(x, name))
         self.attr_cache[name] = ret
         return ret
 
@@ -45,18 +45,7 @@ class Switch(grf.Switch):
         key = deep_freeze((args, kwargs))
         if key in self.call_cache:
             return self.call_cache[key]
-        call = lambda x: x(*args, **kwargs)
-        new_ranges = {(r.low, r.high): call(r.ref) for r in self._ranges}
-        new_default = call(self.default)
-        ret = Switch(
-            self.code,
-            new_ranges,
-            new_default,
-            feature=self.feature,
-            ref_id=self.ref_id,
-            related_scope=self.related_scope,
-            subroutines=self.subroutines,
-        )
+        ret = self.derive(lambda x: x(*args, **kwargs))
         self.call_cache[key] = ret
         return ret
 
