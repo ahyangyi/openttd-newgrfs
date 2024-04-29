@@ -242,12 +242,7 @@ class ALayout:
 
     @property
     def sprites(self):
-        return [
-            *dict.fromkeys(
-                [sub for s in self.ground_sprites for sub in s.sprites]
-                + [sub for s in self.parent_sprites for sub in s.sprites]
-            )
-        ]
+        return list(dict.fromkeys([sub for s in self.ground_sprites + self.parent_sprites for sub in s.sprites]))
 
 
 class LayoutSprite(grf.Sprite):
