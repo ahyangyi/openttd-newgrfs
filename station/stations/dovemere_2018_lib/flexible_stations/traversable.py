@@ -89,7 +89,6 @@ traversable_station = AStation(
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
-    non_traversable_tiles=0b00111100,
     disabled_platforms=0b1,
     callbacks={
         "select_tile_layout": grf.PurchaseCallback(
@@ -115,7 +114,6 @@ traversable_station_no_side = AStation(
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
-    non_traversable_tiles=0b00111100,
     callbacks={
         "select_tile_layout": grf.PurchaseCallback(
             purchase=Switch(
