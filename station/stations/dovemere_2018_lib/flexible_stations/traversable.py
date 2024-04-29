@@ -1,5 +1,5 @@
 import grf
-from station.lib import AStation, ALayout, AParentSprite, LayoutSprite, Demo
+from station.lib import AStation, ALayout, AParentSprite, LayoutSprite, Demo, StationTileSwitch, make_vertical_switch
 from ..layouts import named_tiles, layouts, flexible_entries
 from .common import horizontal_layout, make_cb14, get_central_index, determine_platform_odd, determine_platform_even
 
@@ -74,6 +74,9 @@ def get_front_index_2(l, r):
 def get_single_index(l, r):
     return horizontal_layout(l, r, tiny, h_end_gate, h_end, h_normal, h_gate, h_gate_extender)
 
+
+cb24_0 = make_vertical_switch(lambda l, r: {"n": 2, "f": 4, "d": 6}[determine_platform_odd(l, r)], cb24=True)
+cb24_1 = make_vertical_switch(lambda l, r: {"n": 2, "f": 4, "d": 6}[determine_platform_even(l, r)], cb24=True)
 
 cb14_0 = make_cb14(
     get_front_index, lambda l, r: get_central_index(l, r, determine_platform_odd), get_single_index
