@@ -13,6 +13,9 @@ class MockValue:
     def R(self):
         return MockValue(self.v ^ 1)
 
+    def lookup(self, w, h, x, y):
+        return self.v
+
 
 def test_horizontal_switch():
     a = make_horizontal_switch(lambda l, r: MockValue(l * 0x100 + r * 0x10))

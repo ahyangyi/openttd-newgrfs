@@ -19,7 +19,7 @@ class StationTileSwitch(CachedFunctorMixin):
         new_var = (
             {"T": {"t": "d", "d": "t"}, "R": {"l": "r", "r": "l"}}.get(special_property, {}).get(self.var, self.var)
         )
-        return StationTileSwitch(new_var, {k: f(v) for k, v in self.ranges})
+        return StationTileSwitch(new_var, {k: f(v) for k, v in self.ranges.items()})
 
     def to_grf(self, sprite_list):
         new_ranges = {k: v.to_grf(sprite_list) for k, v in self.ranges.items()}
@@ -27,16 +27,16 @@ class StationTileSwitch(CachedFunctorMixin):
 
     def lookup(self, w, h, x, y):
         if self.var == "l":
-            return self.ranges[min(x, 15)]
+            return self.ranges[min(x, 15)].lookup(w, h, x, y)
         elif self.var == "r":
-            return self.ranges[min(w - x - 1, 15)]
+            return self.ranges[min(w - x - 1, 15)].lookup(w, h, x, y)
         elif self.var == "t":
-            return self.ranges[min(y, 15)]
+            return self.ranges[min(y, 15)].lookup(w, h, x, y)
         elif self.var == "d":
-            return self.ranges[min(h - y - 1, 15)]
+            return self.ranges[min(h - y - 1, 15)].lookup(w, h, x, y)
         else:
             raise NotImplementedError()
 
 
 def make_horizontal_switch(f):
-    return StationTileSwitch("l", {StationTileSwitch("r", {f(l, r) for r in range(16)}) for l in range(16)})
+    return StationTileSwitch("l", {l: StationTileSwitch("r", {r: f(l, r) for r in range(16)}) for l in range(16)})
