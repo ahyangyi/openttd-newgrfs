@@ -22,7 +22,8 @@ class StationTileSwitch(CachedFunctorMixin):
         return StationTileSwitch(new_var, {k: f(v) for k, v in self.ranges})
 
     def to_grf(self, sprite_list):
-        return Switch(ranges=self.ranges, default=min(self.items())[1], code=self.var2code[self.var])
+        new_ranges = {k: v.to_grf(sprite_list) for k, v in self.ranges.items()}
+        return Switch(ranges=new_ranges, default=min(new_ranges.items())[1], code=self.var2code[self.var])
 
     def lookup(self, w, h, x, y):
         if self.var == "l":
