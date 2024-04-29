@@ -6,7 +6,7 @@ from agrf.graphics.palette import CompanyColour
 named_tiles.globalize()
 
 big_demo = Demo(
-    "8×12 station layout (roughly 1 grid = 25m)",
+    "8×12 station layout (roughly 1 tile = 25m)",
     [
         [
             corner_platform.T,
@@ -122,5 +122,5 @@ big_demo = Demo(
     remap=get_1cc_remap(CompanyColour.WHITE),
 )
 big_half_demo = Demo(
-    "8×6 half-station layout (roughly 1 grid = 25m)", big_demo.tiles[:6], remap=get_1cc_remap(CompanyColour.WHITE)
+    "8×6 half-station layout (roughly 1 tile = 25m)", big_demo.tiles[:6], remap=get_1cc_remap(CompanyColour.WHITE)
 )

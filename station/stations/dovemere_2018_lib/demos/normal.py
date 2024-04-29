@@ -7,7 +7,7 @@ named_tiles.globalize()
 
 
 normal_demo = Demo(
-    "5×7 station layout (roughly 1 grid = 40m)",
+    "5×7 station layout (roughly 1 tile = 40m)",
     [
         [
             corner_platform.T,
