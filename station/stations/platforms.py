@@ -11,7 +11,7 @@ from station.lib import (
     AttrDict,
 )
 from agrf.graphics.voxel import LazyVoxel
-from .ground import gray
+from .ground import gray_ps
 
 
 platform_height = 6
@@ -27,7 +27,14 @@ def quickload(name):
         load_from="station/files/cnsps-gorender.json",
     )
 
-    platform_components = {"white", "white_side", "modernnarrow", "modernnarrow_side"}
+    platform_components = {
+        "white",
+        "white_side",
+        "modernnarrow",
+        "modernnarrow_side",
+        "modernnarrow_high",
+        "modernnarrow_high_side",
+    }
     shed_components = {"shed", "shed_building", "shed_building_v", "pillar", "pillar_building", "pillar_central"}
 
     for platform_flavor, traversable, pkeeps, pheight in [
@@ -35,46 +42,48 @@ def quickload(name):
         ("", True, {"modernnarrow"}, platform_height),
         ("_side", False, {"modernnarrow_side"}, platform_height),
     ]:
-        for shed_flavor, symmetry, skeeps, sheight in [
-            ("", BuildingSpriteSheetSymmetricalX, set(), 0),
-            ("_shed", BuildingSpriteSheetSymmetricalX, {"shed"}, shed_height),
-            ("_shed_building", BuildingSpriteSheetFull, {"shed_building"}, shed_height),
-            ("_shed_building_v", BuildingSpriteSheetSymmetricalX, {"shed_building_v"}, shed_height),
-            ("_pillar", BuildingSpriteSheetSymmetricalX, {"pillar"}, pillar_height),
-            ("_pillar_building", BuildingSpriteSheetFull, {"pillar_building"}, pillar_height),
-            ("_pillar_central", BuildingSpriteSheetSymmetricalX, {"pillar_central"}, pillar_height),
+        for shed_flavor, symmetry, skeeps, sheight, buildable in [
+            ("", BuildingSpriteSheetSymmetricalX, set(), 0, True),
+            ("_shed", BuildingSpriteSheetSymmetricalX, {"shed"}, shed_height, True),
+            ("_shed_building", BuildingSpriteSheetFull, {"shed_building"}, shed_height, False),
+            ("_shed_building_v", BuildingSpriteSheetSymmetricalX, {"shed_building_v"}, shed_height, False),
+            ("_pillar", BuildingSpriteSheetSymmetricalX, {"pillar"}, pillar_height, False),
+            ("_pillar_building", BuildingSpriteSheetFull, {"pillar_building"}, pillar_height, False),
+            ("_pillar_central", BuildingSpriteSheetSymmetricalX, {"pillar_central"}, pillar_height, False),
         ]:
+            if (platform_flavor, shed_flavor) == ("_np", ""):
+                # Don't create the "nothing" tile
+                continue
+
             suffix = platform_flavor + shed_flavor
             v2 = v.discard_layers(
                 tuple(sorted(tuple(platform_components - pkeeps) + tuple(shed_components - skeeps))), "subset" + suffix
             )
             v2.in_place_subset(symmetry.render_indices())
             sprite = symmetry.create_variants(v2.spritesheet(xdiff=10))
-            named_sprites[name + suffix] = sprite
 
             height = max(pheight, sheight)
             ps = AParentSprite(sprite, (16, 6, height), (0, 10, 0))
             named_ps[name + suffix] = ps
 
             for l, make_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
-                groundsprite = ADefaultGroundSprite(1012) if traversable else AGroundSprite(gray)
+                groundsprite = ADefaultGroundSprite(1012) if traversable else gray_ps
                 if make_symmetrical:
                     cur_symmetry = symmetry.add_y_symmetry()
                 else:
                     cur_symmetry = symmetry
-                var = cur_symmetry.get_all_variants(ALayout([groundsprite], l, True))
-                layouts.extend(var)
+                var = cur_symmetry.get_all_variants(ALayout([groundsprite], l, traversable))
                 l = cur_symmetry.create_variants(var)
+                if buildable and platform_flavor != "_np":
+                    entries.extend(cur_symmetry.get_all_entries(l))
                 named_tiles[name + suffix + extra_suffix] = l
 
 
-layouts = []
-named_sprites = AttrDict()
+entries = []
 named_ps = AttrDict()
 named_tiles = AttrDict()
 
-for name in ["cnsps"]:
-    quickload(name)
+quickload("cnsps")
 
 named_tiles.globalize()
 
@@ -82,17 +91,18 @@ the_stations = AMetaStation(
     [
         AStation(
             id=0xF000 + i,
-            translation_name="PLATFORM" if layout[0].traversable else "PLATFORM_UNTRAVERSABLE",
-            layouts=layout,
+            translation_name="PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE",
+            layouts=[entry, entry.M],
             class_label=b"PLAT",
             cargo_threshold=40,
+            non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0},
         )
-        for i, layout in enumerate(zip(layouts[::2], layouts[1::2]))
+        for i, entry in enumerate(entries)
     ],
     b"PLAT",
     None,
-    layouts,
+    entries,
     [
         Demo("Platform", [[cnsps], [cnsps_d], [cnsps.T]]),
         Demo("Platform with concrete grounds", [[cnsps_side], [cnsps_d], [cnsps_side.T]]),
