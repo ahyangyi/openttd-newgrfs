@@ -53,8 +53,9 @@ class ADefaultGroundSprite:
 
 
 class AGroundSprite:
-    def __init__(self, sprite):
+    def __init__(self, sprite, alternatives=None):
         self.sprite = sprite
+        self.alternatives = alternatives or []
 
     def to_grf(self, sprite_list):
         return grf.GroundSprite(
@@ -87,7 +88,7 @@ class AGroundSprite:
 
     @property
     def sprites(self):
-        return [self.sprite]
+        return [self.sprite] + self.alternatives
 
 
 class AParentSprite:

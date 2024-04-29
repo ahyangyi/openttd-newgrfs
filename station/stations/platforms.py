@@ -11,7 +11,7 @@ from station.lib import (
     AttrDict,
 )
 from agrf.graphics.voxel import LazyVoxel
-from .ground import gray
+from .ground import gray_ps
 
 
 platform_height = 6
@@ -54,14 +54,13 @@ def quickload(name):
             )
             v2.in_place_subset(symmetry.render_indices())
             sprite = symmetry.create_variants(v2.spritesheet(xdiff=10))
-            named_sprites[name + suffix] = sprite
 
             height = max(pheight, sheight)
             ps = AParentSprite(sprite, (16, 6, height), (0, 10, 0))
             named_ps[name + suffix] = ps
 
             for l, make_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
-                groundsprite = ADefaultGroundSprite(1012) if traversable else AGroundSprite(gray)
+                groundsprite = ADefaultGroundSprite(1012) if traversable else gray_ps
                 if make_symmetrical:
                     cur_symmetry = symmetry.add_y_symmetry()
                 else:
@@ -74,7 +73,6 @@ def quickload(name):
 
 
 entries = []
-named_sprites = AttrDict()
 named_ps = AttrDict()
 named_tiles = AttrDict()
 

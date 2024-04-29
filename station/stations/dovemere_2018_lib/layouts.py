@@ -15,7 +15,6 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
-    named_sprites as platform_sprites,
     named_ps as platform_ps,
     cnsps_shed_d as platform,
     cnsps_shed as platform_s,
@@ -23,7 +22,7 @@ from station.stations.platforms import (
     platform_height,
     shed_height,
 )
-from station.stations.ground import gray, gray_third, gray_layout
+from station.stations.ground import gray, gray_third, gray_ps, gray_layout
 from station.stations.misc import rail
 
 
@@ -175,7 +174,7 @@ class TraversableCorridor(Traversable):
 
 class Side(LoadType):
     def get_ground_sprites(self):
-        return [AGroundSprite(gray)]
+        return [gray_ps]
 
 
 class TwoFloorMixin:
