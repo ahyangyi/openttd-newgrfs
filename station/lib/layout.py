@@ -2,6 +2,7 @@ import grf
 from PIL import Image
 import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
+from agrf.magic import CachedFunctorMixin
 
 
 class ADefaultGroundSprite:
@@ -52,8 +53,9 @@ class ADefaultGroundSprite:
         return []
 
 
-class AGroundSprite:
+class AGroundSprite(CachedFunctorMixin):
     def __init__(self, sprite, alternatives=None):
+        super().__init__()
         self.sprite = sprite
         self.alternatives = alternatives or []
 
@@ -78,13 +80,10 @@ class AGroundSprite:
     def __repr__(self):
         return f"<AGroundSprite:{self.sprite}>"
 
-    def __getattr__(self, name):
-        if self.sprite is grf.EMPTY_SPRITE:
-            return AGroundSprite(self.sprite)
-        return AGroundSprite(getattr(self.sprite, name))
-
-    def __call__(self, *args, **kwargs):
-        return AGroundSprite(self.sprite(*args, **kwargs))
+    def fmap(self, f):
+        return AGroundSprite(
+            self.sprite if self.sprite is grf.EMPTY_SPRITE else f(self.sprite), [f(s) for s in self.alternatives]
+        )
 
     @property
     def sprites(self):
@@ -145,8 +144,9 @@ class AParentSprite:
         return [self.sprite]
 
 
-class AChildSprite:
+class AChildSprite(CachedFunctorMixin):
     def __init__(self, sprite, offset):
+        super().__init__()
         self.sprite = sprite
         self.offset = offset
 
@@ -172,12 +172,12 @@ class AChildSprite:
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 
+    def fmap(self, f):
+        return AChildSprite(f(self.sprite), self.offset)
+
     @property
     def sprites(self):
         return [self.sprite]
-
-    def __getattr__(self, name):
-        return AChildSprite(getattr(self.sprite, name), self.offset)
 
 
 class ALayout:

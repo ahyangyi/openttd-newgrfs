@@ -6,6 +6,7 @@ from agrf.graphics.rotator import unnatural_dimens
 from agrf.graphics.spritesheet import spritesheet_template
 from copy import deepcopy
 from agrf.actions import FakeReferencingGenericSpriteLayout
+from agrf.magic import CachedFunctorMixin
 
 
 class LazyVoxel(Config):
@@ -211,17 +212,14 @@ class LazyVoxel(Config):
         return self
 
 
-class LazySpriteSheet:
+class LazySpriteSheet(CachedFunctorMixin):
     def __init__(self, sprites, indices):
+        super().__init__()
         self.sprites = sprites
         self.indices = indices
 
-    def __getattr__(self, name):
-        def method(*args, **kwargs):
-            call = lambda x: getattr(x, name)(*args, **kwargs)
-            return LazySpriteSheet(tuple(call(x) for x in self.sprites), self.indices)
-
-        return method
+    def fmap(self, f):
+        return LazySpriteSheet(tuple(f(x) for x in self.sprites), self.indices)
 
     @functools.cache
     def spritesheet(self, xdiff=0, zdiff=0, shift=0):
@@ -236,20 +234,17 @@ class LazySpriteSheet:
         return self
 
 
-class LazyAlternatives:
+class LazyAlternatives(CachedFunctorMixin):
     def __init__(self, sprites, loading_sprites=None):
+        super().__init__()
         self.sprites = sprites
         self.loading_sprites = loading_sprites
 
-    def __getattr__(self, name):
-        def method(*args, **kwargs):
-            call = lambda x: getattr(x, name)(*args, **kwargs)
-            return LazyAlternatives(
-                tuple(call(x) for x in self.sprites),
-                None if self.loading_sprites is None else tuple(call(x) for x in self.loading_sprites),
+    def fmap(self, f):
+        return LazyAlternatives(
+                tuple(f(x) for x in self.sprites),
+                self.loading_sprites and tuple(f(x) for x in self.loading_sprites),
             )
-
-        return method
 
     @functools.cache
     def get_action(self, feature, xdiff=0, zdiff=0, shift=0):
