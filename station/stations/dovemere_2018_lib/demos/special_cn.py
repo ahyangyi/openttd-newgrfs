@@ -8,11 +8,11 @@ named_tiles.globalize()
 special_demo_cn = Demo(
     "Irregular 7×7 station layout",
     [
-        [corner.T, front_gate.T, front_gate.TR, funnel.TR, h_normal, h_normal, h_end.R],
-        [side_a2, central_windowed, central_windowed.R, side_a3.TR, platform, platform, platform],
+        [corner.T, front_gate.T, front_gate.T.R, funnel.T.R, h_normal, h_normal, h_end.R],
+        [side_a2, central_windowed, central_windowed.R, side_a3.T.R, platform, platform, platform],
         [corner, inner_corner, central, side_a3.R, platform, platform, platform],
-        [None, corner, front_normal, double_corner.R, front_normal.T, corner.TR, None],
-        [platform, platform, platform, side_a3.T, central, inner_corner.TR, corner.TR],
+        [None, corner, front_normal, double_corner.R, front_normal.T, corner.T.R, None],
+        [platform, platform, platform, side_a3.T, central, inner_corner.T.R, corner.T.R],
         [platform, platform, platform, side_a3, central_windowed, central_windowed.R, side_a2.R],
         [h_end, h_normal, h_normal, funnel, front_gate, front_gate.R, corner.R],
     ],
