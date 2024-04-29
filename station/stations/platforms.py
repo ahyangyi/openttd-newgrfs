@@ -27,7 +27,14 @@ def quickload(name):
         load_from="station/files/cnsps-gorender.json",
     )
 
-    platform_components = {"white", "white_side", "modernnarrow", "modernnarrow_side"}
+    platform_components = {
+        "white",
+        "white_side",
+        "modernnarrow",
+        "modernnarrow_side",
+        "modernnarrow_high",
+        "modernnarrow_high_side",
+    }
     shed_components = {"shed", "shed_building", "shed_building_v", "pillar", "pillar_building", "pillar_central"}
 
     for platform_flavor, traversable, pkeeps, pheight in [
