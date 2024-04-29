@@ -40,7 +40,7 @@ class ADefaultGroundSprite:
     def L(self):
         return self
 
-    R = T = TL = TR = L
+    R = T = L
 
     @property
     def M(self):
@@ -132,12 +132,6 @@ class AParentSprite:
     def T(self):
         new_offset = (self.offset[0], 16 - self.offset[1] - self.extent[1], self.offset[2])
         return AParentSprite(self.sprite.T, self.extent, new_offset)
-
-    TL = T
-
-    @property
-    def TR(self):
-        return self.T.R
 
     @property
     def sprites(self):

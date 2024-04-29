@@ -14,9 +14,9 @@ big_demo = Demo(
             front_gate_platform.T,
             front_gate_extender_platform.T,
             front_gate_extender_platform.T,
-            front_gate_platform.TR,
+            front_gate_platform.T.R,
             front_normal_platform.T,
-            corner_platform.TR,
+            corner_platform.T.R,
         ],
         [
             side_a_n.T,
@@ -26,7 +26,7 @@ big_demo = Demo(
             central_windowed_extender,
             central_windowed.R,
             central,
-            side_a_n.TR,
+            side_a_n.T.R,
         ],
         [
             side_b_f.T,
@@ -36,7 +36,7 @@ big_demo = Demo(
             central_windowed_extender,
             central_windowed.R,
             central,
-            side_b_f.TR,
+            side_b_f.T.R,
         ],
         [
             side_c_n.T,
@@ -46,7 +46,7 @@ big_demo = Demo(
             central_windowed_extender,
             central_windowed.R,
             central,
-            side_c_n.TR,
+            side_c_n.T.R,
         ],
         [
             side_c_n,
@@ -76,7 +76,7 @@ big_demo = Demo(
             central_windowed_extender,
             central_windowed.R,
             central,
-            side_c_n.TR,
+            side_c_n.T.R,
         ],
         [
             side_c_n,

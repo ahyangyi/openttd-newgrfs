@@ -10,8 +10,8 @@ my_demos = [
     Demo(
         "4×4 traversable flexible station layout",
         [
-            [corner_third_f.T, front_gate.T, front_gate.TR, corner_third_f.TR],
-            [side_a3_n.T, central_windowed, central_windowed.R, side_a3_n.TR],
+            [corner_third_f.T, front_gate.T, front_gate.T.R, corner_third_f.T.R],
+            [side_a3_n.T, central_windowed, central_windowed.R, side_a3_n.T.R],
             [side_a3_n, central_windowed, central_windowed.R, side_a3_n.R],
             [corner_third_f, front_gate, front_gate.R, corner_third_f.R],
         ],
@@ -19,8 +19,8 @@ my_demos = [
     Demo(
         "4×4 semitraversable flexible station layout",
         [
-            [corner_third.T, front_gate.T, front_gate.TR, corner_third.TR],
-            [side_a3_f.T, central_windowed, central_windowed.R, side_a3_f.TR],
+            [corner_third.T, front_gate.T, front_gate.T.R, corner_third.T.R],
+            [side_a3_f.T, central_windowed, central_windowed.R, side_a3_f.T.R],
             [side_a3_f, central_windowed, central_windowed.R, side_a3_f.R],
             [corner_third, front_gate, front_gate.R, corner_third.R],
         ],
