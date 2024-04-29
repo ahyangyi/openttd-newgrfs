@@ -1,5 +1,5 @@
 from agrf.magic import Switch
-from station.lib import make_horizontal_switch
+from station.lib import make_horizontal_switch, make_vertical_switch
 from ..layouts import named_tiles
 
 
@@ -68,61 +68,25 @@ def get_left_index(t, d, cb):
 
 
 def get_left_wall(cb):
-    return Switch(
-        ranges={
-            t: Switch(
-                ranges={d: get_left_index(t, d, cb) for d in range(1, 16)},
-                default=named_tiles.side_c,
-                code="var(0x41, shift=8, and=0x0000000f)",
-            )
-            for t in range(1, 16)
-        },
-        default=named_tiles.side_c,
-        code="var(0x41, shift=12, and=0x0000000f)",
-    )
+    return make_vertical_switch(lambda t, d: get_left_index(t, d, cb))
 
 
 def get_left_wall_2(cb):
-    return Switch(
-        ranges={
-            t: Switch(
-                ranges={
-                    d: (
-                        named_tiles.side_a2_windowed
-                        if (t, d) == (1, 1)
-                        else (
-                            get_tile("side_a3_windowed", cb(t, d))
-                            if t == 1
-                            else (
-                                get_tile("side_a3_windowed", cb(d, t)).T if d == 1 else get_tile_sym("side_d", cb(t, d))
-                            )
-                        )
-                    )
-                    for d in range(1, 16)
-                },
-                default=named_tiles.side_d,
-                code="var(0x41, shift=8, and=0x0000000f)",
+    return make_vertical_switch(
+        lambda t, d: (
+            named_tiles.side_a2_windowed
+            if (t, d) == (1, 1)
+            else (
+                get_tile("side_a3_windowed", cb(t, d))
+                if t == 1
+                else (get_tile("side_a3_windowed", cb(d, t)).T if d == 1 else get_tile_sym("side_d", cb(t, d)))
             )
-            for t in range(1, 16)
-        },
-        default=named_tiles.side_d,
-        code="var(0x41, shift=12, and=0x0000000f)",
+        )
     )
 
 
 def get_v_central(cb):
-    return Switch(
-        ranges={
-            t: Switch(
-                ranges={d: get_tile_sym("v_central", cb(t, d)) for d in range(1, 16)},
-                default=named_tiles.v_central,
-                code="var(0x41, shift=8, and=0x0000000f)",
-            )
-            for t in range(1, 16)
-        },
-        default=named_tiles.v_central,
-        code="var(0x41, shift=12, and=0x0000000f)",
-    )
+    return make_vertical_switch(lambda t, d: get_tile_sym("v_central", cb(t, d)))
 
 
 def get_central_index(l, r, cb):

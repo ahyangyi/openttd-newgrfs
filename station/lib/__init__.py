@@ -11,4 +11,4 @@ from .layout import ADefaultGroundSprite, AGroundSprite, AParentSprite, AChildSp
 from .metastation import AMetaStation
 from .demo import Demo
 from .utils import AttrDict
-from .switch import StationTileSwitch, make_horizontal_switch
+from .switch import StationTileSwitch, make_horizontal_switch, make_vertical_switch
