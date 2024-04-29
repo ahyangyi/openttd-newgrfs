@@ -16,9 +16,7 @@ def get_string_manager():
 
 
 def gen():
-    s = grf.StringManager()
-    s.import_lang_dir("station/lang", default_lang_file="english-uk.lng")
-
+    s = get_string_manager()
     g = grf.NewGRF(
         grfid=b"\xE5\xBC\x8Bs",
         name=s["STR_GRF_NAME"],
@@ -27,6 +25,7 @@ def gen():
         min_compatible_version=1,
         id_map_file="station/id_map.json",
         sprite_cache_path="station/.cache",
+        url="https://www.tt-forums.net/viewtopic.php?t=91092",
         strings=s,
         preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
