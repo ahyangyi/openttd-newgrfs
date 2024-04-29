@@ -16,7 +16,10 @@ class StationTileSwitch(CachedFunctorMixin):
     }
 
     def fmap(self, f, special_property=None):
-        return StationTileSwitch(self.var, {k: f(v) for k, v in self.ranges})
+        new_var = (
+            {"T": {"t": "d", "d": "t"}, "R": {"l": "r", "r": "l"}}.get(special_property, {}).get(self.var, self.var)
+        )
+        return StationTileSwitch(new_var, {k: f(v) for k, v in self.ranges})
 
     def lookup(self, w, h, x, y):
         if self.var == "l":
