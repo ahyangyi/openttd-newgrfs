@@ -1,9 +1,8 @@
-from agrf.magic import CachedFunctorMixin, Switch
+from agrf.magic import Switch
 
 
-class StationTileSwitch(CachedFunctorMixin):
+class StationTileSwitch:
     def __init__(self, var, ranges):
-        super().__init__()
         code = StationTileSwitch.var2code[var]
         self.var = var
         self.ranges = ranges
@@ -21,8 +20,16 @@ class StationTileSwitch(CachedFunctorMixin):
         )
         return StationTileSwitch(new_var, {k: f(v) for k, v in self.ranges.items()})
 
-    def to_grf(self, sprite_list):
-        new_ranges = {k: v.to_grf(sprite_list) for k, v in self.ranges.items()}
+    @property
+    def T(self):
+        return self.fmap(lambda x: x.T, special_property="T")
+
+    @property
+    def R(self):
+        return self.fmap(lambda x: x.R, special_property="R")
+
+    def to_index(self, sprite_list):
+        new_ranges = {k: v.to_index(sprite_list) for k, v in self.ranges.items()}
         return Switch(ranges=new_ranges, default=min(new_ranges.items())[1], code=self.var2code[self.var])
 
     def lookup(self, w, h, x, y):

@@ -1,4 +1,4 @@
-from .switches import make_horizontal_switch
+from .switch import make_horizontal_switch
 
 
 class MockValue:
