@@ -1,6 +1,25 @@
+import grf
 from agrf.magic import Switch
-from station.lib import make_horizontal_switch, make_vertical_switch
-from ..layouts import named_tiles
+from station.lib import make_horizontal_switch, make_vertical_switch, ALayout, AParentSprite, LayoutSprite, Demo
+from ..layouts import named_tiles, layouts, flexible_entries
+
+
+def make_demo(switch, w, h):
+    demo = Demo("", switch.demo(w, h))
+    for i, var in enumerate([var for var in [demo, demo.M]]):
+        sprite = grf.AlternativeSprites(
+            *[
+                LayoutSprite(var, 64 * scale, 64 * scale, xofs=(16 - i % 2 * 32) * scale, yofs=0, scale=scale, bpp=bpp)
+                for scale in [1, 2, 4]
+                for bpp in [32]
+            ]
+        )
+        layout = ALayout([], [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False, category=b"\xe8\x8a\x9cA")
+        layouts.append(layout)
+        if i == 0:
+            ret = layout
+    flexible_entries.append(ret)
+    return ret
 
 
 def horizontal_layout(l, r, onetile, twotile, lwall, general, window, window_extender, threetile=None):
