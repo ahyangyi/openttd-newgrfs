@@ -44,15 +44,13 @@ single = make_row(tiny, h_end_gate, h_end, h_normal, h_gate, h_gate_extender)
 cb24_0 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_odd(t, d)], cb24=True)
 cb24_1 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_even(t, d)], cb24=True)
 
-cb14_2 = make_vertical_switch(
-    lambda t, d: (front2 if d == 0 else front2.T if t == 0 else get_central_index(t, d, lambda t, d: "n"))
-)
-cb14_4 = make_vertical_switch(
-    lambda t, d: (front if d == 0 else front.T if t == 0 else get_central_index(t, d, lambda t, d: "f"))
-)
-cb14_6 = make_vertical_switch(
-    lambda t, d: (front if d == 0 else front.T if t == 0 else get_central_index(t, d, lambda t, d: "d"))
-)
+h_n = make_horizontal_switch(lambda l, r: get_central_index(l, r, lambda t, d: "n"))
+h_f = make_horizontal_switch(lambda l, r: get_central_index(l, r, lambda t, d: "f"))
+h_d = make_horizontal_switch(lambda l, r: get_central_index(l, r, lambda t, d: "d"))
+
+cb14_2 = make_vertical_switch(lambda t, d: (front2 if d == 0 else front2.T if t == 0 else h_n))
+cb14_4 = make_vertical_switch(lambda t, d: (front if d == 0 else front.T if t == 0 else h_f))
+cb14_6 = make_vertical_switch(lambda t, d: (front if d == 0 else front.T if t == 0 else h_d))
 
 cb14 = StationTileSwitch("T", {2: cb14_2, 3: cb14_2, 4: cb14_4, 5: cb14_4, 6: cb14_6, 7: cb14_6})
 
