@@ -17,36 +17,24 @@ from .common import (
     determine_platform_odd,
     determine_platform_even,
     make_demo,
+    make_row,
 )
 
 named_tiles.globalize()
 
 
-front = make_horizontal_switch(
-    lambda l, r: horizontal_layout(
-        l,
-        r,
-        v_end_gate_third_f,
-        corner_gate_third_f,
-        corner_third_f,
-        front_normal_third_f,
-        front_gate_third_f,
-        front_gate_extender_third_f,
-    )
+front = make_row(
+    v_end_gate_third_f,
+    corner_gate_third_f,
+    corner_third_f,
+    front_normal_third_f,
+    front_gate_third_f,
+    front_gate_extender_third_f,
 )
 
 
-front2 = make_horizontal_switch(
-    lambda l, r: horizontal_layout(
-        l,
-        r,
-        v_end_gate_third,
-        corner_gate_third,
-        corner_third,
-        front_normal_third,
-        front_gate_third,
-        front_gate_extender_third,
-    )
+front2 = make_row(
+    v_end_gate_third, corner_gate_third, corner_third, front_normal_third, front_gate_third, front_gate_extender_third
 )
 
 

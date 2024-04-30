@@ -39,6 +39,14 @@ def horizontal_layout(l, r, onetile, twotile, lwall, general, window, window_ext
     return ([lwall] + [general] * o + [window] + [window_extender] * c + [window.R] + [general] * o + [lwall.R])[l]
 
 
+def make_row(onetile, twotile, lwall, general, window, window_extender, threetile=None):
+    return make_horizontal_switch(
+        lambda l, r: horizontal_layout(
+            l, r, onetile, twotile, lwall, general, window, window_extender, threetile=threetile
+        )
+    )
+
+
 def get_tile(name, desc):
     if desc == "f":
         return named_tiles[name + "_f"]
@@ -121,9 +129,9 @@ def get_central_index(l, r, cb):
     )
 
 
-def determine_platform_odd(d, t):
+def determine_platform_odd(t, d):
     if d > t:
-        return {"f": "n", "n": "f", "d": "d"}[determine_platform_odd(t, d)]
+        return {"f": "n", "n": "f", "d": "d"}[determine_platform_odd(d, t)]
     if (t + d) % 2 == 1:
         return "fn"[d % 2]
     if (t + d) % 4 == 0:
@@ -135,9 +143,9 @@ def determine_platform_odd(d, t):
     return "d"
 
 
-def determine_platform_even(d, t):
+def determine_platform_even(t, d):
     if d > t:
-        return {"f": "n", "n": "f", "d": "d"}[determine_platform_even(t, d)]
+        return {"f": "n", "n": "f", "d": "d"}[determine_platform_even(d, t)]
     if (t + d) % 2 == 1:
         return "nf"[d % 2]
     if (t + d) % 4 == 0:
