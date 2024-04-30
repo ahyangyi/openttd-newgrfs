@@ -80,19 +80,6 @@ def get_tile_sym(name, desc):
     return named_tiles[name + "_n"]
 
 
-def make_cb14(get_front_index, get_central_index, get_single_index):
-    return Switch(
-        ranges={
-            **({(0, 1): make_horizontal_switch(get_single_index)} if get_single_index is not None else {}),
-            (2, 3): make_horizontal_switch(get_front_index).T,
-            (4, 5): make_horizontal_switch(get_front_index),
-            (6, 7): make_horizontal_switch(get_central_index),
-        },
-        default=named_tiles.tiny,
-        code="var(0x41, shift=24, and=0x0000000f)",
-    )
-
-
 def get_left_index(t, d, cb):
     if t > d:
         return get_left_index(d, t, cb).T
