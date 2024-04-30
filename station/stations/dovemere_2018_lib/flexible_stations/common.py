@@ -118,33 +118,32 @@ def get_central_index(l, r, cb):
         named_tiles.central,
         named_tiles.central_windowed,
         named_tiles.central_windowed_extender,
-        # TODO: a3 or a2_windowed for threetile?
     )
 
 
-def determine_platform_odd(t, d):
-    if t > d:
-        return {"f": "n", "n": "f", "d": "d"}[determine_platform_odd(d, t)]
+def determine_platform_odd(d, t):
+    if d > t:
+        return {"f": "n", "n": "f", "d": "d"}[determine_platform_odd(t, d)]
     if (t + d) % 2 == 1:
-        return "fn"[t % 2]
+        return "fn"[d % 2]
     if (t + d) % 4 == 0:
-        if t < d - 2:
-            return "fn"[t % 2]
+        if d < t - 2:
+            return "fn"[d % 2]
         return "d"
-    if t < d:
-        return "fn"[t % 2]
+    if d < t:
+        return "fn"[d % 2]
     return "d"
 
 
-def determine_platform_even(t, d):
-    if t > d:
-        return {"f": "n", "n": "f", "d": "d"}[determine_platform_even(d, t)]
+def determine_platform_even(d, t):
+    if d > t:
+        return {"f": "n", "n": "f", "d": "d"}[determine_platform_even(t, d)]
     if (t + d) % 2 == 1:
-        return "nf"[t % 2]
+        return "nf"[d % 2]
     if (t + d) % 4 == 0:
-        if t < d:
-            return "nf"[t % 2]
+        if d < t:
+            return "nf"[d % 2]
         return "d"
-    if t < d - 2:
-        return "nf"[t % 2]
+    if d < t - 2:
+        return "nf"[d % 2]
     return "d"

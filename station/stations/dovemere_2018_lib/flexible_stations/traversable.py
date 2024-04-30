@@ -1,5 +1,14 @@
 import grf
-from station.lib import AStation, ALayout, AParentSprite, LayoutSprite, Demo, StationTileSwitch, make_vertical_switch
+from station.lib import (
+    AStation,
+    ALayout,
+    AParentSprite,
+    LayoutSprite,
+    Demo,
+    StationTileSwitch,
+    make_vertical_switch,
+    make_horizontal_switch,
+)
 from ..layouts import named_tiles, layouts, flexible_entries
 from .common import (
     horizontal_layout,
@@ -13,8 +22,8 @@ from .common import (
 named_tiles.globalize()
 
 
-def get_front_index(l, r):
-    return horizontal_layout(
+front = make_horizontal_switch(
+    lambda l, r: horizontal_layout(
         l,
         r,
         v_end_gate_third_f,
@@ -24,10 +33,11 @@ def get_front_index(l, r):
         front_gate_third_f,
         front_gate_extender_third_f,
     )
+)
 
 
-def get_front_index_2(l, r):
-    return horizontal_layout(
+front2 = make_horizontal_switch(
+    lambda l, r: horizontal_layout(
         l,
         r,
         v_end_gate_third,
@@ -37,6 +47,7 @@ def get_front_index_2(l, r):
         front_gate_third,
         front_gate_extender_third,
     )
+)
 
 
 def get_single_index(l, r):
@@ -47,34 +58,16 @@ cb24_0 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_pl
 cb24_1 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_even(t, d)], cb24=True)
 
 cb14_2 = make_vertical_switch(
-    lambda t, d: (
-        make_horizontal_switch(get_front_index_2)
-        if t == 0
-        else make_horizontal_switch(get_front_index_2).T if d == 0 else get_central_index(t, d, lambda t, d: "n")
-    )
+    lambda t, d: (front2 if t == 0 else front2.T if d == 0 else get_central_index(t, d, lambda t, d: "n"))
 )
 cb14_4 = make_vertical_switch(
-    lambda t, d: (
-        make_horizontal_switch(get_front_index)
-        if t == 0
-        else make_horizontal_switch(get_front_index).T if d == 0 else get_central_index(t, d, lambda t, d: "f")
-    )
+    lambda t, d: (front if t == 0 else front.T if d == 0 else get_central_index(t, d, lambda t, d: "f"))
 )
 cb14_6 = make_vertical_switch(
-    lambda t, d: (
-        make_horizontal_switch(get_front_index)
-        if t == 0
-        else make_horizontal_switch(get_front_index).T if d == 0 else get_central_index(t, d, lambda t, d: "d")
-    )
+    lambda t, d: (front if t == 0 else front.T if d == 0 else get_central_index(t, d, lambda t, d: "d"))
 )
 
 cb14 = StationTileSwitch("T", {2: cb14_2, 3: cb14_2, 4: cb14_4, 5: cb14_4, 6: cb14_6, 7: cb14_6})
-cb14_0 = make_cb14(
-    get_front_index, lambda l, r: get_central_index(l, r, determine_platform_odd), get_single_index
-).to_index(layouts)
-cb14_1 = make_cb14(
-    get_front_index_2, lambda l, r: get_central_index(l, r, determine_platform_even), get_single_index
-).to_index(layouts)
 
 traversable_station = AStation(
     id=0x02,
@@ -84,8 +77,10 @@ traversable_station = AStation(
     cargo_threshold=40,
     disabled_platforms=0b1,
     callbacks={
-        "select_tile_layout": 0,
-        "select_sprite_layout": grf.DualCallback(default=cb14_0, purchase=layouts.index(make_demo(cb14, 4, 4, cb24_0))),
+        "select_tile_layout": cb24_0.to_index(None),
+        "select_sprite_layout": grf.DualCallback(
+            default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24_0))
+        ),
     },
 )
 
@@ -96,7 +91,9 @@ traversable_station_no_side = AStation(
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
     callbacks={
-        "select_tile_layout": 0,
-        "select_sprite_layout": grf.DualCallback(default=cb14_1, purchase=layouts.index(make_demo(cb14, 4, 4, cb24_0))),
+        "select_tile_layout": cb24_1.to_index(None),
+        "select_sprite_layout": grf.DualCallback(
+            default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24_0))
+        ),
     },
 )

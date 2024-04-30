@@ -38,7 +38,7 @@ class StationTileSwitch:
         return self.fmap(lambda x: x.R, special_property="R")
 
     def to_index(self, sprite_list):
-        new_ranges = {k: v.to_index(sprite_list) for k, v in self.ranges.items()}
+        new_ranges = {k: v if isinstance(v, int) else v.to_index(sprite_list) for k, v in self.ranges.items()}
         return Switch(ranges=new_ranges, default=min(new_ranges.items())[1], code=self.code)
 
     def lookup(self, w, h, x, y, t=0):

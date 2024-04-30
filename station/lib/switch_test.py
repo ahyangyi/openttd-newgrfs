@@ -13,7 +13,7 @@ class MockValue:
     def R(self):
         return MockValue(self.v ^ 1)
 
-    def lookup(self, w, h, x, y):
+    def lookup(self, w, h, x, y, t):
         return self.v
 
 
