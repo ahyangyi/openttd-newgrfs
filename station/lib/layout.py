@@ -226,7 +226,7 @@ class ALayout:
         return layout_pool.index(self)
 
     def __repr__(self):
-        return f"<ALayout:{self.ground_sprite}:{self.parent_sprites}>"
+        return f"<ALayout:{self.ground_sprites}:{self.parent_sprites}>"
 
     def __getattr__(self, name):
         call = lambda x: getattr(x, name)
