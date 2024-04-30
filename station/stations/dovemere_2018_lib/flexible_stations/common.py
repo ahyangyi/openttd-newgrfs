@@ -95,7 +95,7 @@ def get_left_index(t, d, cb):
 
 
 def get_left_wall(cb):
-    return make_vertical_switch(lambda t, d: get_left_index(t, d, cb))
+    return make_vertical_switch(lambda t, d: get_left_index(d, t, cb))
 
 
 def get_left_wall_2(cb):
@@ -105,8 +105,8 @@ def get_left_wall_2(cb):
             if (t, d) == (1, 1)
             else (
                 get_tile("side_a3_windowed", cb(t, d))
-                if t == 1
-                else (get_tile("side_a3_windowed", cb(d, t)).T if d == 1 else get_tile_sym("side_d", cb(t, d)))
+                if d == 1
+                else (get_tile("side_a3_windowed", cb(d, t)).T if t == 1 else get_tile_sym("side_d", cb(d, t)))
             )
         )
     )
