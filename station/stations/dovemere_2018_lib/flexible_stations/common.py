@@ -9,7 +9,15 @@ def make_demo(switch, w, h, preswitch=None):
     for i, var in enumerate([var for var in [demo, demo.M]]):
         sprite = grf.AlternativeSprites(
             *[
-                LayoutSprite(var, 64 * scale, 64 * scale, xofs=(16 - i % 2 * 32) * scale, yofs=0, scale=scale, bpp=bpp)
+                LayoutSprite(
+                    var,
+                    64 * scale,
+                    64 * scale,
+                    xofs=(1 - i % 2 * 2) * int((w - h) / (w + h + 1) * 32 * scale),
+                    yofs=0,
+                    scale=scale,
+                    bpp=bpp,
+                )
                 for scale in [1, 2, 4]
                 for bpp in [32]
             ]
