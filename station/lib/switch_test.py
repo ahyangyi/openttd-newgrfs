@@ -20,3 +20,6 @@ class MockValue:
 def test_horizontal_switch():
     a = make_horizontal_switch(lambda l, r: MockValue(l * 0x100 + r * 0x10))
     assert 0x30 == a.lookup(4, 4, 0, 0)
+    assert 0x120 == a.lookup(4, 4, 1, 0)
+    assert 0x32 == a.T.lookup(4, 4, 0, 0)
+    assert 0x301 == a.R.lookup(4, 4, 0, 0)

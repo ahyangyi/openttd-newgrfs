@@ -133,6 +133,37 @@ def get_central_index(l, r, cb):
     )
 
 
+def get_left_index_suffix(t, d, suffix):
+    if d > t:
+        return get_left_index_suffix(d, t, suffix).T
+    if t + d == 2:
+        return named_tiles.side_a2
+    if t + d == 3:
+        return [get_tile("side_a3", suffix)][d - 1]
+    if t + d == 4:
+        return [get_tile("side_a", suffix), get_tile_sym("side_b2", suffix)][d - 1]
+    if t == d:
+        return named_tiles.side_c
+    if d == 1:
+        return get_tile("side_a", suffix)
+    if d == 2:
+        return get_tile("side_b", suffix)
+    return get_tile_sym("side_c", suffix)
+
+
+def make_central_row(l, r, suffix):
+    return horizontal_layout(
+        l,
+        r,
+        named_tiles.central,
+        named_tiles.central,
+        make_vertical_switch(lambda t, d: get_left_index_suffix(t, d, suffix)),
+        named_tiles.central,
+        named_tiles.central_windowed,
+        named_tiles.central_windowed_extender,
+    )
+
+
 def determine_platform_odd(t, d):
     if d > t:
         return {"f": "n", "n": "f", "d": "d"}[determine_platform_odd(d, t)]

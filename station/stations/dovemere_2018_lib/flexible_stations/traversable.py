@@ -8,6 +8,7 @@ from .common import (
     make_demo,
     make_row,
     make_front_row,
+    make_central_row,
 )
 
 named_tiles.globalize()
@@ -23,9 +24,9 @@ single = make_row(tiny, h_end_gate, h_end, h_normal, h_gate, h_gate_extender)
 cb24_0 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_odd(t, d)], cb24=True)
 cb24_1 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_even(t, d)], cb24=True)
 
-h_n = make_horizontal_switch(lambda l, r: get_central_index(l, r, lambda t, d: "n"))
-h_f = make_horizontal_switch(lambda l, r: get_central_index(l, r, lambda t, d: "f"))
-h_d = make_horizontal_switch(lambda l, r: get_central_index(l, r, lambda t, d: "d"))
+h_n = make_horizontal_switch(lambda l, r: make_central_row(l, r, "n"))
+h_f = make_horizontal_switch(lambda l, r: make_central_row(l, r, "f"))
+h_d = make_horizontal_switch(lambda l, r: make_central_row(l, r, "d"))
 
 cb14_2 = make_vertical_switch(
     lambda t, d: (single if d == t == 0 else front2 if d == 0 else front2.T if t == 0 else h_n)
