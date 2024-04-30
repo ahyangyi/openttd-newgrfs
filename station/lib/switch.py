@@ -14,6 +14,7 @@ class StationTileSwitch:
         self.var = var
         self.ranges = ranges
         self.cb24 = cb24
+        self.to_index_cache = {}
 
     @property
     def code(self):
@@ -41,8 +42,12 @@ class StationTileSwitch:
         return self.fmap(lambda x: x.R, special_property="R")
 
     def to_index(self, sprite_list):
+        if id(sprite_list) in self.to_index_cache:
+            return self.to_index_cache[id(sprite_list)]
         new_ranges = {k: v if isinstance(v, int) else v.to_index(sprite_list) for k, v in self.ranges.items()}
-        return Switch(ranges=new_ranges, default=min(new_ranges.items())[1], code=self.code)
+        ret = Switch(ranges=new_ranges, default=min(new_ranges.items())[1], code=self.code)
+        self.to_index_cache[id(sprite_list)] = ret
+        return ret
 
     def lookup(self, w, h, x, y, t=0):
         if self.var == "T":
