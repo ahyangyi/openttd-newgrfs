@@ -1,24 +1,7 @@
 import grf
-from station.lib import (
-    AStation,
-    ALayout,
-    AParentSprite,
-    LayoutSprite,
-    Demo,
-    StationTileSwitch,
-    make_vertical_switch,
-    make_horizontal_switch,
-)
-from ..layouts import named_tiles, layouts, flexible_entries
-from .common import (
-    horizontal_layout,
-    make_cb14,
-    get_central_index,
-    determine_platform_odd,
-    determine_platform_even,
-    make_demo,
-    make_row,
-)
+from station.lib import AStation, StationTileSwitch, make_vertical_switch, make_horizontal_switch
+from ..layouts import named_tiles, layouts
+from .common import get_central_index, determine_platform_odd, determine_platform_even, make_demo, make_row
 
 named_tiles.globalize()
 
