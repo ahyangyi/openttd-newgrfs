@@ -1,15 +1,9 @@
 import grf
-from station.lib import AStation, StationTileSwitch, make_horizontal_switch, make_vertical_switch
-from agrf.magic import Switch
-from ..layouts import named_tiles, layouts, flexible_entries
-from .common import (
-    horizontal_layout,
-    determine_platform_odd,
-    determine_platform_even,
-    make_row,
-    make_front_row,
-    make_demo,
-)
+from station.lib import AStation, StationTileSwitch, make_vertical_switch
+from ..layouts import named_tiles, layouts
+from .common import determine_platform_odd, determine_platform_even, make_front_row, make_demo
+from .traversable import cb14_2, cb14_4, cb14_6, single
+
 
 named_tiles.globalize()
 
@@ -22,8 +16,6 @@ cb24_0 = make_vertical_switch(
 cb24_1 = make_vertical_switch(
     lambda t, d: 0 if t == 0 or d == 0 else {"n": 2, "f": 4, "d": 6}[determine_platform_even(t, d)], cb24=True
 )
-
-from .traversable import cb14_2, cb14_4, cb14_6, single
 
 # FIXME need a real single
 # XXX need "unreachable value" support

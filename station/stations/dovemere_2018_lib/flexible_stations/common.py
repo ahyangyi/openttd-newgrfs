@@ -1,5 +1,4 @@
 import grf
-from agrf.magic import Switch
 from station.lib import make_horizontal_switch, make_vertical_switch, ALayout, AParentSprite, LayoutSprite, Demo
 from ..layouts import named_tiles, layouts, flexible_entries
 
@@ -119,9 +118,9 @@ def make_central_row(l, r, suffix):
         make_vertical_switch(lambda t, d: get_tile_sym("v_central", suffix)),
         make_vertical_switch(lambda t, d: get_left_index_suffix_2(t, d, suffix)),
         make_vertical_switch(lambda t, d: get_left_index_suffix(t, d, suffix)),
-        named_tiles.central,
-        named_tiles.central_windowed,
-        named_tiles.central_windowed_extender,
+        make_vertical_switch(lambda t, d: get_tile_sym("central", suffix)),
+        make_vertical_switch(lambda t, d: get_tile_sym("central_windowed", suffix)),
+        make_vertical_switch(lambda t, d: get_tile_sym("central_windowed_extender", suffix)),
     )
 
 
