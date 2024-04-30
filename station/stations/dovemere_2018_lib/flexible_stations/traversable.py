@@ -1,24 +1,20 @@
 import grf
 from station.lib import AStation, StationTileSwitch, make_vertical_switch, make_horizontal_switch
 from ..layouts import named_tiles, layouts
-from .common import get_central_index, determine_platform_odd, determine_platform_even, make_demo, make_row
+from .common import (
+    get_central_index,
+    determine_platform_odd,
+    determine_platform_even,
+    make_demo,
+    make_row,
+    make_front_row,
+)
 
 named_tiles.globalize()
 
 
-front = make_row(
-    v_end_gate_third_f,
-    corner_gate_third_f,
-    corner_third_f,
-    front_normal_third_f,
-    front_gate_third_f,
-    front_gate_extender_third_f,
-)
-
-
-front2 = make_row(
-    v_end_gate_third, corner_gate_third, corner_third, front_normal_third, front_gate_third, front_gate_extender_third
-)
+front = make_front_row("_third_f")
+front2 = make_front_row("_third")
 
 
 single = make_row(tiny, h_end_gate, h_end, h_normal, h_gate, h_gate_extender)

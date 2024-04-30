@@ -2,7 +2,14 @@ import grf
 from station.lib import AStation, ALayout, AParentSprite, LayoutSprite, Demo
 from agrf.magic import Switch
 from ..layouts import named_tiles, layouts, flexible_entries
-from .common import horizontal_layout, make_cb14, get_central_index, determine_platform_odd, determine_platform_even
+from .common import (
+    horizontal_layout,
+    make_cb14,
+    get_central_index,
+    determine_platform_odd,
+    determine_platform_even,
+    make_row,
+)
 
 named_tiles.globalize()
 
@@ -61,6 +68,19 @@ def get_front_index(l, r):
 
 def get_front_index_2(l, r):
     return horizontal_layout(l, r, v_end_gate, corner_gate, corner, front_normal, front_gate, front_gate_extender)
+
+
+front = make_row(
+    v_end_gate_platform,
+    corner_gate_platform,
+    corner_platform,
+    front_normal_platform,
+    front_gate_platform,
+    front_gate_extender_platform,
+)
+
+
+front2 = make_row(v_end_gate, corner_gate, corner, front_normal, front_gate, front_gate_extender)
 
 
 cb14_0 = make_cb14(get_front_index, lambda l, r: get_central_index(l, r, determine_platform_odd), None).to_index(

@@ -47,6 +47,15 @@ def make_row(onetile, twotile, lwall, general, window, window_extender, threetil
     )
 
 
+def make_front_row(suffix):
+    return make_row(
+        *[
+            named_tiles[c + suffix]
+            for c in ["v_end_gate", "corner_gate", "corner", "front_normal", "front_gate", "front_gate_extender"]
+        ]
+    )
+
+
 def get_tile(name, desc):
     if desc == "f":
         return named_tiles[name + "_f"]
