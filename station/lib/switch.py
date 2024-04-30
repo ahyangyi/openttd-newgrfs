@@ -1,3 +1,4 @@
+import functools
 from agrf.magic import Switch
 from .layout import ALayout
 
@@ -16,7 +17,7 @@ class StationTileSwitch:
 
     @property
     def code(self):
-        nibble = {"T": 24, "t": 12, "d": 8, "l": 4, "r": 0}[self.var]
+        nibble = {"T": 24, "d": 12, "t": 8, "l": 4, "r": 0}[self.var]
 
         if self.cb24:
             return (f"(extra_callback_info1 >> {nibble}) & 0xf",)
@@ -30,10 +31,12 @@ class StationTileSwitch:
         return StationTileSwitch(new_var, {k: f(v) for k, v in self.ranges.items()}, cb24=self.cb24)
 
     @property
+    @functools.cache
     def T(self):
         return self.fmap(lambda x: x.T, special_property="T")
 
     @property
+    @functools.cache
     def R(self):
         return self.fmap(lambda x: x.R, special_property="R")
 
