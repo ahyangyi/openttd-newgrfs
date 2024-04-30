@@ -74,4 +74,6 @@ def make_horizontal_switch(f):
 
 
 def make_vertical_switch(f, cb24=False):
-    return StationTileSwitch("t", {t: StationTileSwitch("d", {d: f(t, d) for d in range(16)}) for t in range(16)}, cb24)
+    return StationTileSwitch(
+        "t", {t: StationTileSwitch("d", {d: f(t, d) for d in range(16)}, cb24) for t in range(16)}, cb24
+    )
