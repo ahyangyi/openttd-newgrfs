@@ -2,7 +2,6 @@ import grf
 from station.lib import AStation, StationTileSwitch, make_vertical_switch, make_horizontal_switch
 from ..layouts import named_tiles, layouts
 from .common import (
-    get_central_index,
     determine_platform_odd,
     determine_platform_even,
     make_demo,

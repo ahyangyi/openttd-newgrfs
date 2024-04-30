@@ -26,5 +26,10 @@ def test_determine_platform_even():
 
 def test_get_left_index_suffix():
     assert named_tiles.side_a_f is get_left_index_suffix(3, 1, "f")
-    assert named_tiles.side_a2_n.T is get_left_index_suffix(2, 2, "f")
-    assert named_tiles.side_a_f.T is get_left_index_suffix(1, 3, "f")
+    assert named_tiles.side_b2_n.T is get_left_index_suffix(2, 2, "f")
+    assert named_tiles.side_a_n.T is get_left_index_suffix(1, 3, "f")
+
+    assert named_tiles.side_a_n is get_left_index_suffix(4, 1, "n")
+    assert named_tiles.side_b_n is get_left_index_suffix(3, 2, "n")
+    assert named_tiles.side_b_f.T is get_left_index_suffix(2, 3, "n")
+    assert named_tiles.side_a_f.T is get_left_index_suffix(1, 4, "n")

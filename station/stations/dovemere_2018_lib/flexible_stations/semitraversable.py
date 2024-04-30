@@ -4,7 +4,6 @@ from agrf.magic import Switch
 from ..layouts import named_tiles, layouts, flexible_entries
 from .common import (
     horizontal_layout,
-    get_central_index,
     determine_platform_odd,
     determine_platform_even,
     make_row,

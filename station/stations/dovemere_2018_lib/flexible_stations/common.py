@@ -80,62 +80,13 @@ def get_tile_sym(name, desc):
     return named_tiles[name + "_n"]
 
 
-def get_left_index(t, d, cb):
-    if t > d:
-        return get_left_index(d, t, cb).T
-    if t + d == 2:
-        return named_tiles.side_a2
-    if t + d == 3:
-        return [get_tile("side_a3", cb(1, 2))][t - 1]
-    if t + d == 4:
-        return [get_tile("side_a", cb(1, 3)), get_tile_sym("side_b2", cb(2, 2))][t - 1]
-    if t == d:
-        return named_tiles.side_c
-    if t == 1:
-        return get_tile("side_a", cb(t, d))
-    if t == 2:
-        return get_tile("side_b", cb(t, d))
-    return get_tile_sym("side_c", cb(t, d))
-
-
-def get_left_wall(cb):
-    return make_vertical_switch(lambda t, d: get_left_index(d, t, cb))
-
-
-def get_left_wall_2(cb):
-    return make_vertical_switch(
-        lambda t, d: (
-            named_tiles.side_a2_windowed
-            if (t, d) == (1, 1)
-            else (
-                get_tile("side_a3_windowed", cb(t, d))
-                if d == 1
-                else (get_tile("side_a3_windowed", cb(d, t)).T if t == 1 else get_tile_sym("side_d", cb(d, t)))
-            )
-        )
-    )
-
-
-def get_v_central(cb):
-    return make_vertical_switch(lambda t, d: get_tile_sym("v_central", cb(t, d)))
-
-
-def get_central_index(l, r, cb):
-    return horizontal_layout(
-        l,
-        r,
-        get_v_central(cb),
-        get_left_wall_2(cb),
-        get_left_wall(cb),
-        named_tiles.central,
-        named_tiles.central_windowed,
-        named_tiles.central_windowed_extender,
-    )
+def reverse(x):
+    return {"f": "n", "n": "f", "d": "d"}[x]
 
 
 def get_left_index_suffix(t, d, suffix):
     if d > t:
-        return get_left_index_suffix(d, t, suffix).T
+        return get_left_index_suffix(d, t, reverse(suffix)).T
     if t + d == 2:
         return named_tiles.side_a2
     if t + d == 3:
@@ -151,12 +102,22 @@ def get_left_index_suffix(t, d, suffix):
     return get_tile_sym("side_c", suffix)
 
 
+def get_left_index_suffix_2(t, d, suffix):
+    if t == d == 1:
+        return named_tiles.side_a2_windowed
+    if d == 1:
+        return get_tile("side_a3_windowed", suffix)
+    if t == 1:
+        return get_tile("side_a3_windowed", reverse(suffix)).T
+    return get_tile_sym("side_d", suffix)
+
+
 def make_central_row(l, r, suffix):
     return horizontal_layout(
         l,
         r,
-        named_tiles.central,
-        named_tiles.central,
+        make_vertical_switch(lambda t, d: get_tile_sym("v_central", suffix)),
+        make_vertical_switch(lambda t, d: get_left_index_suffix_2(t, d, suffix)),
         make_vertical_switch(lambda t, d: get_left_index_suffix(t, d, suffix)),
         named_tiles.central,
         named_tiles.central_windowed,
