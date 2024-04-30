@@ -1,5 +1,14 @@
 import grf
-from station.lib import AStation, ALayout, AParentSprite, LayoutSprite, Demo
+from station.lib import (
+    AStation,
+    ALayout,
+    AParentSprite,
+    LayoutSprite,
+    Demo,
+    StationTileSwitch,
+    make_horizontal_switch,
+    make_vertical_switch,
+)
 from agrf.magic import Switch
 from ..layouts import named_tiles, layouts, flexible_entries
 from .common import (
@@ -9,6 +18,7 @@ from .common import (
     determine_platform_odd,
     determine_platform_even,
     make_row,
+    make_front_row,
 )
 
 named_tiles.globalize()
@@ -70,25 +80,32 @@ def get_front_index_2(l, r):
     return horizontal_layout(l, r, v_end_gate, corner_gate, corner, front_normal, front_gate, front_gate_extender)
 
 
-front = make_row(
-    v_end_gate_platform,
-    corner_gate_platform,
-    corner_platform,
-    front_normal_platform,
-    front_gate_platform,
-    front_gate_extender_platform,
-)
-
-
-front2 = make_row(v_end_gate, corner_gate, corner, front_normal, front_gate, front_gate_extender)
-
-
 cb14_0 = make_cb14(get_front_index, lambda l, r: get_central_index(l, r, determine_platform_odd), None).to_index(
     layouts
 )
 cb14_1 = make_cb14(get_front_index_2, lambda l, r: get_central_index(l, r, determine_platform_even), None).to_index(
     layouts
 )
+
+front = make_front_row("_platform")
+front2 = make_front_row("")
+
+cb24_0 = make_vertical_switch(
+    lambda t, d: 0 if t == 0 or d == 0 else {"n": 2, "f": 4, "d": 6}[determine_platform_odd(t, d)], cb24=True
+)
+cb24_1 = make_vertical_switch(
+    lambda t, d: 0 if t == 0 or d == 0 else {"n": 2, "f": 4, "d": 6}[determine_platform_even(t, d)], cb24=True
+)
+
+h_n = make_horizontal_switch(lambda l, r: get_central_index(l, r, lambda t, d: "n"))
+h_f = make_horizontal_switch(lambda l, r: get_central_index(l, r, lambda t, d: "f"))
+h_d = make_horizontal_switch(lambda l, r: get_central_index(l, r, lambda t, d: "d"))
+
+cb14_2 = make_vertical_switch(lambda t, d: (front2 if d == 0 else front2.T if t == 0 else h_n))
+cb14_4 = make_vertical_switch(lambda t, d: (front if d == 0 else front.T if t == 0 else h_f))
+cb14_6 = make_vertical_switch(lambda t, d: (front if d == 0 else front.T if t == 0 else h_d))
+
+cb14 = StationTileSwitch("T", {2: cb14_2, 3: cb14_2, 4: cb14_4, 5: cb14_4, 6: cb14_6, 7: cb14_6})
 
 semitraversable_station = AStation(
     id=0x00,
