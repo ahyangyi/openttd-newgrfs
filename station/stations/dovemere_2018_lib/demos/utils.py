@@ -1,2 +1,10 @@
 def h_merge(layouts, sep):
-    return [[c for cols, s in zip(r, [sep] * len(r)) for c in cols + s][: -len(sep)] for r in zip(*layouts)]
+    ret = []
+    for r in range(len(sep)):
+        cur_row = []
+        for i, l in enumerate(layouts):
+            if i > 0:
+                cur_row.extend(sep[r])
+            cur_row.extend(l[r])
+        ret.append(cur_row)
+    return ret
