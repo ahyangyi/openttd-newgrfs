@@ -1,8 +1,7 @@
 import grf
 from station.lib import AStation, make_horizontal_switch
 from ..layouts import named_tiles, layouts
-from .semitraversable import horizontal_layout
-from .common import make_demo
+from .common import make_demo, horizontal_layout
 
 named_tiles.globalize()
 

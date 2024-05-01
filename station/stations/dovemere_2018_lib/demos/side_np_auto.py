@@ -7,13 +7,13 @@ from .utils import h_merge
 
 named_tiles.globalize()
 
-station_building = h_merge([side.cb14.demo(i, 1) for i in range(1, 5)], [platform_s_nt.T])[0]
+station_building = h_merge([side.cb14_2.demo(i, 1) for i in range(1, 5)], [gray_layout])[0]
 n = len(station_building)
-station_building_2 = h_merge([side.cb14.demo(i, 1) for i in [5, 7]], [platform_s_nt.T])[0]
+station_building_2 = h_merge([side.cb14_2.demo(i, 1) for i in [5, 7]], [gray_layout])[0]
 assert n == len(station_building_2)
 
-side_auto_demo = Demo(
-    "Nontraversable automatic stations",
+side_np_auto_demo = Demo(
+    "Nontraversable automatic stations (no platform)",
     [
         [x.T for x in station_building],
         [platform_s.T] * n,
