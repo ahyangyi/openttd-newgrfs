@@ -10,7 +10,7 @@ def get_side_index(l, r):
     return horizontal_layout(
         l,
         r,
-        tiny_third_f,
+        tiny_asym_third_f,
         h_end_asym_gate_third_f,
         h_end_asym_third_f,
         h_normal_third_f,
@@ -23,7 +23,7 @@ def get_side_index_2(l, r):
     return horizontal_layout(
         l,
         r,
-        tiny_third,
+        tiny_asym_third,
         h_end_asym_gate_third,
         h_end_asym_third,
         h_normal_third,

@@ -55,12 +55,12 @@ def make_row(onetile, twotile, lwall, general, window, window_extender, threetil
 
 
 def make_front_row(suffix):
-    return make_row(
-        *[
-            named_tiles[c + suffix]
-            for c in ["v_end_gate", "corner_gate", "corner", "front_normal", "front_gate", "front_gate_extender"]
-        ]
-    )
+    row = [
+        named_tiles[c + suffix]
+        for c in ["v_end_gate", "corner_gate", "corner", "front_normal", "front_gate", "front_gate_extender"]
+    ]
+    row[1] = make_vertical_switch(lambda t, d: named_tiles["corner_gate_2" + suffix] if t == 1 else row[1])
+    return make_row(*row)
 
 
 def get_tile(name, desc):

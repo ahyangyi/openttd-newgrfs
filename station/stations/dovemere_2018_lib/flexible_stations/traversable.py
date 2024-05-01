@@ -58,6 +58,7 @@ traversable_station_no_side = AStation(
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
+    disabled_platforms=0b100,
     callbacks={
         "select_tile_layout": cb24_1.to_index(None),
         "select_sprite_layout": grf.DualCallback(
