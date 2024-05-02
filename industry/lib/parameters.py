@@ -73,7 +73,7 @@ parameter_list = ParameterListWithPreset(
             "PRESET", 0, {0: "AEGIS", 1: "VANILLA", 2: "FIRS", 3: "YETI", 4: "CARIBBEAN", 5: "LUMBERJACK", 6: "ITI"}
         ),
         Parameter("POLICY", 0, {0: "PRESET", 1: "AUTARKY", 2: "SELF_SUFFICIENT", 3: "FREE_TRADE", 4: "EXPORT"}),
-        Parameter("PAYMENT", 0, {0: "PRESET", 1: "LINEAR", 2: "CONSTANT"}),
+        Parameter("PAYMENT", 0, {0: "PRESET", 1: "LINEAR", 2: "SUBLINEAR", 3: "CONSTANT"}),
         Parameter(
             "WORKFORCE",
             0,
