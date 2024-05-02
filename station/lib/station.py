@@ -45,10 +45,10 @@ class AStation(grf.SpriteGenerator):
                     "class_label": self._props["class_label"],
                     "advanced_layout": grf.SpriteLayoutList([l.to_grf(sprites) for l in self.layouts]),
                     **self._props,
-                    **extra_props,
                 },
             )
         )
+        res.append(grf.Define(feature=grf.STATION, id=self.id, props=extra_props))
 
         res.extend(self.callbacks.make_map_action(definition))
 
