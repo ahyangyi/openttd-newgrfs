@@ -2,10 +2,10 @@ import grf
 
 
 class Cargo(grf.SpriteGenerator):
-    def __init__(self, id, **props):
+    def __init__(self, id, callbacks=None, **props):
         self.id = id
         self._props = props
-        self.callbacks = grf.make_callback_manager(grf.CARGO, {})
+        self.callbacks = grf.make_callback_manager(grf.CARGO, callbacks or {})
 
     @staticmethod
     def translate_strings(props, g):
