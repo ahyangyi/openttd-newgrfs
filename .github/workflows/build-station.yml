@@ -19,8 +19,8 @@ jobs:
       - name: Install python deps
         run: pip install -r requirements.txt
       - name: Generate station
-        run: PATH=${PWD}/gopath/bin:${PATH} make station
+        run: PATH=${PWD}/gopath/bin:${PATH} make station; mkdir release; mv station.grf release/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@main
         with:
-          path: station.grf
+          path: release

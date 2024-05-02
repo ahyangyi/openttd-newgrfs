@@ -1,5 +1,5 @@
 ##grflangid 0x00
-STR_GRF_NAME                    :CNSPS Addon: Wuhu 0.1.1
+STR_GRF_NAME                    :CNSPS Addon: Wuhu 0.1.2
 STR_GRF_DESC                    :An add-on to ChinaSet: Platforms and Stations (CNSPS), this NewGRF provides 423 modular tiles and 12 templated stations modeled after the Wuhu Railway Station in China.
 
 STR_STATION_DEFAULT                             :Station Building

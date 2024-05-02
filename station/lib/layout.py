@@ -2,6 +2,7 @@ import grf
 from PIL import Image
 import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
+from agrf.magic import CachedFunctorMixin
 
 
 class ADefaultGroundSprite:
@@ -39,7 +40,7 @@ class ADefaultGroundSprite:
     def L(self):
         return self
 
-    R = T = TL = TR = L
+    R = T = L
 
     @property
     def M(self):
@@ -52,8 +53,9 @@ class ADefaultGroundSprite:
         return []
 
 
-class AGroundSprite:
+class AGroundSprite(CachedFunctorMixin):
     def __init__(self, sprite, alternatives=None):
+        super().__init__()
         self.sprite = sprite
         self.alternatives = alternatives or []
 
@@ -78,13 +80,10 @@ class AGroundSprite:
     def __repr__(self):
         return f"<AGroundSprite:{self.sprite}>"
 
-    def __getattr__(self, name):
-        if self.sprite is grf.EMPTY_SPRITE:
-            return AGroundSprite(self.sprite)
-        return AGroundSprite(getattr(self.sprite, name))
-
-    def __call__(self, *args, **kwargs):
-        return AGroundSprite(self.sprite(*args, **kwargs))
+    def fmap(self, f):
+        return AGroundSprite(
+            self.sprite if self.sprite is grf.EMPTY_SPRITE else f(self.sprite), [f(s) for s in self.alternatives]
+        )
 
     @property
     def sprites(self):
@@ -134,19 +133,14 @@ class AParentSprite:
         new_offset = (self.offset[0], 16 - self.offset[1] - self.extent[1], self.offset[2])
         return AParentSprite(self.sprite.T, self.extent, new_offset)
 
-    TL = T
-
-    @property
-    def TR(self):
-        return self.T.R
-
     @property
     def sprites(self):
         return [self.sprite]
 
 
-class AChildSprite:
+class AChildSprite(CachedFunctorMixin):
     def __init__(self, sprite, offset):
+        super().__init__()
         self.sprite = sprite
         self.offset = offset
 
@@ -172,12 +166,12 @@ class AChildSprite:
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 
+    def fmap(self, f):
+        return AChildSprite(f(self.sprite), self.offset)
+
     @property
     def sprites(self):
         return [self.sprite]
-
-    def __getattr__(self, name):
-        return AChildSprite(getattr(self.sprite, name), self.offset)
 
 
 class ALayout:
@@ -232,7 +226,7 @@ class ALayout:
         return layout_pool.index(self)
 
     def __repr__(self):
-        return f"<ALayout:{self.ground_sprite}:{self.parent_sprites}>"
+        return f"<ALayout:{self.ground_sprites}:{self.parent_sprites}>"
 
     def __getattr__(self, name):
         call = lambda x: getattr(x, name)
@@ -248,12 +242,7 @@ class ALayout:
 
     @property
     def sprites(self):
-        return [
-            *dict.fromkeys(
-                [sub for s in self.ground_sprites for sub in s.sprites]
-                + [sub for s in self.parent_sprites for sub in s.sprites]
-            )
-        ]
+        return list(dict.fromkeys([sub for s in self.ground_sprites + self.parent_sprites for sub in s.sprites]))
 
 
 class LayoutSprite(grf.Sprite):

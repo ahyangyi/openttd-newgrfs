@@ -32,10 +32,6 @@ class BinaryVariantMixin:
     def all_variants(self):
         return self.get_all_variants(self)
 
-    @property
-    def TR(self):
-        return self.T.R
-
     @classmethod
     def is_symmetrical_y(classobj):
         return classobj._t_offset == 0
