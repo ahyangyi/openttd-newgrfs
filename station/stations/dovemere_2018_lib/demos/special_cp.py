@@ -8,7 +8,7 @@ named_tiles.globalize()
 special_demo_cp = Demo(
     "Irregular 7×7 station layout",
     [
-        [h_end, tee.T, h_normal, turn.TR, None, None, None],
+        [h_end, tee.T, h_normal, turn.T.R, None, None, None],
         [platform, v_central, platform, v_central, platform, platform, platform],
         [platform, v_central, platform, v_central, platform, platform, platform],
         [platform, v_central, platform, v_central, corner.T, front_normal.T, corner.T.R],

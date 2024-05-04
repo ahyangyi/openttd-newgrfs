@@ -1,126 +1,13 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import named_tiles
+from station.stations.dovemere_2018_lib.flexible_stations import semitraversable
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 
-named_tiles.globalize()
-
 big_demo = Demo(
-    "8×12 station layout (roughly 1 grid = 25m)",
-    [
-        [
-            corner_platform.T,
-            front_normal_platform.T,
-            front_gate_platform.T,
-            front_gate_extender_platform.T,
-            front_gate_extender_platform.T,
-            front_gate_platform.TR,
-            front_normal_platform.T,
-            corner_platform.TR,
-        ],
-        [
-            side_a_n.T,
-            central,
-            central_windowed,
-            central_windowed_extender,
-            central_windowed_extender,
-            central_windowed.R,
-            central,
-            side_a_n.TR,
-        ],
-        [
-            side_b_f.T,
-            central,
-            central_windowed,
-            central_windowed_extender,
-            central_windowed_extender,
-            central_windowed.R,
-            central,
-            side_b_f.TR,
-        ],
-        [
-            side_c_n.T,
-            central,
-            central_windowed,
-            central_windowed_extender,
-            central_windowed_extender,
-            central_windowed.R,
-            central,
-            side_c_n.TR,
-        ],
-        [
-            side_c_n,
-            central,
-            central_windowed,
-            central_windowed_extender,
-            central_windowed_extender,
-            central_windowed.R,
-            central,
-            side_c_n.R,
-        ],
-        [
-            side_c,
-            central,
-            central_windowed,
-            central_windowed_extender,
-            central_windowed_extender,
-            central_windowed.R,
-            central,
-            side_c.R,
-        ],
-        [
-            side_c_n.T,
-            central,
-            central_windowed,
-            central_windowed_extender,
-            central_windowed_extender,
-            central_windowed.R,
-            central,
-            side_c_n.TR,
-        ],
-        [
-            side_c_n,
-            central,
-            central_windowed,
-            central_windowed_extender,
-            central_windowed_extender,
-            central_windowed.R,
-            central,
-            side_c_n.R,
-        ],
-        [
-            side_b_f,
-            central,
-            central_windowed,
-            central_windowed_extender,
-            central_windowed_extender,
-            central_windowed.R,
-            central,
-            side_b_f.R,
-        ],
-        [
-            side_a_n,
-            central,
-            central_windowed,
-            central_windowed_extender,
-            central_windowed_extender,
-            central_windowed.R,
-            central,
-            side_a_n.R,
-        ],
-        [
-            corner_platform,
-            front_normal_platform,
-            front_gate_platform,
-            front_gate_extender_platform,
-            front_gate_extender_platform,
-            front_gate_platform.R,
-            front_normal_platform,
-            corner_platform.R,
-        ],
-    ],
+    "8×12 station layout (roughly 1 tile = 25m)",
+    semitraversable.cb14a.demo(8, 12, semitraversable.cb24_0),
     remap=get_1cc_remap(CompanyColour.WHITE),
 )
 big_half_demo = Demo(
-    "8×6 half-station layout (roughly 1 grid = 25m)", big_demo.tiles[:6], remap=get_1cc_remap(CompanyColour.WHITE)
+    "8×6 half-station layout (roughly 1 tile = 25m)", big_demo.tiles[:6], remap=get_1cc_remap(CompanyColour.WHITE)
 )

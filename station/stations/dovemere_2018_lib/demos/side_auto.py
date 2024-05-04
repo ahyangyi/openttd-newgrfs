@@ -1,28 +1,28 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import named_tiles, platform, platform_s, platform_s_nt
+from station.stations.dovemere_2018_lib.layouts import named_tiles, platform_s, platform_s_nt, gray_layout
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
+from station.stations.dovemere_2018_lib.flexible_stations import side
+from .utils import h_merge
 
-named_tiles.globalize()
-
-station_building = [
-    tiny_asym_platform,
-    platform_s_nt.T,
-    h_end_asym_gate_platform,
-    h_end_asym_gate_platform.R,
-    platform_s_nt.T,
-    h_end_asym_gate_platform,
-    h_gate_extender_1_platform,
-    h_end_asym_gate_platform.R,
-    platform_s_nt.T,
-    h_end_asym_platform,
-    h_gate_1_platform,
-    h_gate_1_platform.R,
-    h_end_asym_platform.R,
-]
+station_building = h_merge([side.cb14.demo(i, 1) for i in range(1, 5)], [[platform_s_nt.T]])[0]
+n = len(station_building)
+station_building_2 = h_merge([side.cb14.demo(i, 1) for i in [5, 7]], [[platform_s_nt.T]])[0]
+assert n == len(station_building_2)
 
 side_auto_demo = Demo(
     "Nontraversable automatic stations",
-    [[x.T for x in station_building], [platform_s.T] * 13, [platform_s] * 13, station_building],
+    [
+        [x.T for x in station_building],
+        [platform_s.T] * n,
+        [platform_s] * n,
+        station_building,
+        [gray_layout] * n,
+        [gray_layout] * n,
+        [x.T for x in station_building_2],
+        [platform_s.T] * n,
+        [platform_s] * n,
+        station_building_2,
+    ],
     remap=get_1cc_remap(CompanyColour.BLUE),
 )

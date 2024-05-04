@@ -55,7 +55,8 @@ the_stations = AMetaStation(
         + [(r * 16 + c).to_bytes(1, "little") for r in [9] for c in range(4)]
         + [x.to_bytes(1, "little") for x in range(0xA0, 0xB0)]
         + [x.to_bytes(1, "little") for x in range(0xB0, 0xB8)]
-        + [b"\xF1", b"\xF2"]
+        + [x.to_bytes(1, "little") for x in range(0xC0, 0xC8)]
+        + [b"\xF0"]
     ],
     flexible_entries + entries,
     [
@@ -64,9 +65,13 @@ the_stations = AMetaStation(
         demos.big_half_demo,
         demos.real_yard_demo,
         demos.full_auto_demo,
+        demos.full_np_auto_demo,
         demos.semi_auto_demo,
+        demos.semi_np_auto_demo,
         demos.side_auto_demo,
+        demos.side_np_auto_demo,
         demos.side_third_auto_demo,
+        demos.side_third_np_auto_demo,
         demos.special_demo_g,
         demos.special_demo_p,
         demos.special_demo_cn,

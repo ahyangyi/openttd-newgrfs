@@ -15,7 +15,6 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
-    named_sprites as platform_sprites,
     named_ps as platform_ps,
     cnsps_shed_d as platform,
     cnsps_shed as platform_s,
@@ -23,8 +22,12 @@ from station.stations.platforms import (
     platform_height,
     shed_height,
 )
-from station.stations.ground import gray, gray_third, gray_layout
+from station.stations.ground import named_ps as ground_ps, named_tiles as ground_tiles, gray, gray_third
 from station.stations.misc import rail
+
+
+gray_layout = ground_tiles.gray
+gray_ps = ground_ps.gray
 
 
 def get_category(internal_category, back, notes, tra):
@@ -38,11 +41,15 @@ def get_category(internal_category, back, notes, tra):
             ret += 0x4
         if back:
             ret += 0x8
-    elif internal_category in ["A", "B", "C", "D", "N", "H"]:
+    elif internal_category in ["A", "B", "C", "D", "N", "H", "T"]:
         if internal_category == "N":
             ret = 0x90
         elif internal_category == "H":
             ret = 0xB0
+            if tra:
+                ret += 0x4
+        elif internal_category == "T":
+            ret = 0xC0
             if tra:
                 ret += 0x4
         else:
@@ -53,10 +60,8 @@ def get_category(internal_category, back, notes, tra):
             ret += 2 ^ (back * 3)
         elif "both" in notes:
             ret += 3
-    elif internal_category == "T":
-        ret = 0xF1
     elif internal_category == "X":
-        ret = 0xF2
+        ret = 0xF0
     else:
         raise KeyError(f"Unsupported internal category {internal_category}")
     return b"\xe8\x8a\x9c" + ret.to_bytes(1, "little")
@@ -173,7 +178,7 @@ class TraversableCorridor(Traversable):
 
 class Side(LoadType):
     def get_ground_sprites(self):
-        return [AGroundSprite(gray)]
+        return [gray_ps]
 
 
 class TwoFloorMixin:

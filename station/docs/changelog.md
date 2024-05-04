@@ -1,0 +1,14 @@
+China Set: Stations & Platforms Addons: Wuhu Changelog
+=========================
+
+0.1.2 (2024-04-30)
+--------------------
+Fix traversability of fully-traversable templates.
+
+0.1.1 (2024-04-29)
+--------------------
+Urgent quick fix for broken platform graphics.
+
+0.1.0 (2024-04-29)
+--------------------
+Initial release. Adds the Wuhu Station (2015), featuring 12 station templates and 423 modular station tiles.
