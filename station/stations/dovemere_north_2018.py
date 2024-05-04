@@ -13,7 +13,7 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
-from .platforms import sprites as platform_sprites
+from .platforms import named_ps as platform_ps
 
 
 def quickload(name, type, traversable):
@@ -28,8 +28,8 @@ def quickload(name, type, traversable):
 
     ground = ADefaultGroundSprite(1012 if traversable else 1420)
     parent = AParentSprite(sprite, (16, 10, 48), (0, 6, 0))
-    plat = AParentSprite(platform_sprites[0].T, (16, 6, 6), (0, 0, 8))
-    candidates = [ALayout(ground, [plat, parent], False)]
+    plat = platform_ps.cnsps
+    candidates = [ALayout([ground], [plat, parent], False)]
 
     ret = []
     for l in candidates:
