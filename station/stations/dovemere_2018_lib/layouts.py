@@ -84,6 +84,7 @@ plat_shed = platform_ps.cnsps_shed_building
 plat_shed_v = platform_ps.cnsps_shed_building_v
 plat_shed_nt = platform_ps.cnsps_side_shed_building
 plat_shed_nt_v = platform_ps.cnsps_side_shed_building_v
+foundation = platform_ps.foundation
 third = AChildSprite(gray_third, (0, 0))
 third_T = AChildSprite(gray_third.T, (0, 0))
 
@@ -209,6 +210,21 @@ class TwoFloorMixin:
 
 class SideFull(TwoFloorMixin, SideBase):
     f1x = 16
+
+    def get_sprites(self, voxel):
+        if isinstance(voxel, tuple):
+            f1base, f2 = voxel
+        else:
+            f1base = f2base = voxel
+            f2v = f2base.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+            f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
+        f1v = f1base.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
+        f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x))
+        return [
+            AParentSprite(f1, (16, self.f1x, base_height), (0, 16 - self.f1x, platform_height)),
+            AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height)),
+            foundation,
+        ]
 
     def make_platform_variants(self, grounds, parents):
         self.register(ALayout(grounds, parents, False))
