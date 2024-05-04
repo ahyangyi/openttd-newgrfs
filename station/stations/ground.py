@@ -25,12 +25,12 @@ def quickload(name, type):
     named_ps[name] = ps
     l = ALayout([ps], [], False)
     named_tiles[name] = l
-    return sprite, ps, l
+    return sprite
 
 
 named_ps = AttrDict()
 named_tiles = AttrDict()
-((gray, gray_ps, gray_layout), (gray_third, gray_third_ps, gray_third_layout)) = [
+gray, gray_third = [
     quickload(name, type)
     for name, type in [("gray", BuildingSpriteSheetSymmetrical), ("gray_third", BuildingSpriteSheetSymmetricalX)]
 ]

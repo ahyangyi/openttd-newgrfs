@@ -1,87 +1,41 @@
 import grf
-from station.lib import AStation, ALayout, AGroundSprite, AParentSprite, LayoutSprite, Demo
-from agrf.magic import Switch
-from ..layouts import named_tiles, layouts, flexible_entries
-from .common import horizontal_layout, make_cb14, get_central_index, determine_platform_odd, determine_platform_even
+from station.lib import AStation, StationTileSwitch, make_vertical_switch, make_horizontal_switch
+from ..layouts import named_tiles, layouts
+from .common import (
+    determine_platform_odd,
+    determine_platform_even,
+    make_demo,
+    make_row,
+    make_front_row,
+    make_central_row,
+)
 
 named_tiles.globalize()
 
-my_demos = [
-    Demo(
-        "4×4 traversable flexible station layout",
-        [
-            [corner_third_f.T, front_gate.T, front_gate.TR, corner_third_f.TR],
-            [side_a3_n.T, central_windowed, central_windowed.R, side_a3_n.TR],
-            [side_a3_n, central_windowed, central_windowed.R, side_a3_n.R],
-            [corner_third_f, front_gate, front_gate.R, corner_third_f.R],
-        ],
-    ),
-    Demo(
-        "4×4 semitraversable flexible station layout",
-        [
-            [corner_third.T, front_gate.T, front_gate.TR, corner_third.TR],
-            [side_a3_f.T, central_windowed, central_windowed.R, side_a3_f.TR],
-            [side_a3_f, central_windowed, central_windowed.R, side_a3_f.R],
-            [corner_third, front_gate, front_gate.R, corner_third.R],
-        ],
-    ),
-]
-demo_sprites = []
-for demo in my_demos:
-    for direction in [demo, demo.M]:
-        demo_sprites.append(
-            grf.AlternativeSprites(
-                *[
-                    LayoutSprite(direction, 64 * scale, 64 * scale, xofs=0, yofs=0, scale=scale, bpp=bpp)
-                    for scale in [1, 2, 4]
-                    for bpp in [32]
-                ]
-            )
-        )
-demo_layouts = [
-    ALayout([], [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False, category=b"\xe8\x8a\x9cA")
-    for sprite in demo_sprites
-]
-layouts.extend(demo_layouts)
-flexible_entries.extend([x for x in demo_layouts[::2]])
+
+front = make_front_row("_third_f")
+front2 = make_front_row("_third")
 
 
-def get_front_index(l, r):
-    return horizontal_layout(
-        l,
-        r,
-        v_end_gate_third_f,
-        corner_gate_third_f,
-        corner_third_f,
-        front_normal_third_f,
-        front_gate_third_f,
-        front_gate_extender_third_f,
-    )
+single = make_row(tiny, h_end_gate, h_end, h_normal, h_gate, h_gate_extender)
 
 
-def get_front_index_2(l, r):
-    return horizontal_layout(
-        l,
-        r,
-        v_end_gate_third,
-        corner_gate_third,
-        corner_third,
-        front_normal_third,
-        front_gate_third,
-        front_gate_extender_third,
-    )
+cb24_0 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_odd(t, d)], cb24=True)
+cb24_1 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_even(t, d)], cb24=True)
 
+h_n = make_horizontal_switch(lambda l, r: make_central_row(l, r, "n"))
+h_f = make_horizontal_switch(lambda l, r: make_central_row(l, r, "f"))
+h_d = make_horizontal_switch(lambda l, r: make_central_row(l, r, "d"))
 
-def get_single_index(l, r):
-    return horizontal_layout(l, r, tiny, h_end_gate, h_end, h_normal, h_gate, h_gate_extender)
+cb14_2 = make_vertical_switch(
+    lambda t, d: (single if d == t == 0 else front2 if d == 0 else front.T if t == 0 else h_n)
+)
+cb14_4 = make_vertical_switch(
+    lambda t, d: (single if d == t == 0 else front if d == 0 else front2.T if t == 0 else h_f)
+)
+cb14_6 = make_vertical_switch(lambda t, d: (single if d == t == 0 else front if d == 0 else front.T if t == 0 else h_d))
 
-
-cb14_0 = make_cb14(
-    get_front_index, lambda l, r: get_central_index(l, r, determine_platform_odd), get_single_index
-).to_index(layouts)
-cb14_1 = make_cb14(
-    get_front_index_2, lambda l, r: get_central_index(l, r, determine_platform_even), get_single_index
-).to_index(layouts)
+cb14 = StationTileSwitch("T", {2: cb14_2, 3: cb14_2, 4: cb14_4, 5: cb14_4, 6: cb14_6, 7: cb14_6})
 
 traversable_station = AStation(
     id=0x02,
@@ -89,23 +43,12 @@ traversable_station = AStation(
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
-    non_traversable_tiles=0b00111100,
     disabled_platforms=0b1,
     callbacks={
-        "select_tile_layout": grf.PurchaseCallback(
-            purchase=Switch(
-                ranges={
-                    (2, 15): Switch(
-                        ranges={0: 2},
-                        default=Switch(ranges={0: 4}, default=6, code="(extra_callback_info1 >> 12) & 0xf"),
-                        code="(extra_callback_info1 >> 8) & 0xf",
-                    )
-                },
-                default=0,
-                code="(extra_callback_info1 >> 20) & 0xf",
-            )
+        "select_tile_layout": cb24_0.to_index(None),
+        "select_sprite_layout": grf.DualCallback(
+            default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24_0))
         ),
-        "select_sprite_layout": grf.DualCallback(default=cb14_0, purchase=layouts.index(demo_layouts[0])),
     },
 )
 
@@ -115,21 +58,11 @@ traversable_station_no_side = AStation(
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
-    non_traversable_tiles=0b00111100,
+    disabled_platforms=0b100,
     callbacks={
-        "select_tile_layout": grf.PurchaseCallback(
-            purchase=Switch(
-                ranges={
-                    (2, 15): Switch(
-                        ranges={0: 2},
-                        default=Switch(ranges={0: 4}, default=6, code="(extra_callback_info1 >> 12) & 0xf"),
-                        code="(extra_callback_info1 >> 8) & 0xf",
-                    )
-                },
-                default=0,
-                code="(extra_callback_info1 >> 20) & 0xf",
-            )
+        "select_tile_layout": cb24_1.to_index(None),
+        "select_sprite_layout": grf.DualCallback(
+            default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24_0))
         ),
-        "select_sprite_layout": grf.DualCallback(default=cb14_1, purchase=layouts.index(demo_layouts[2])),
     },
 )

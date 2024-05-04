@@ -15,7 +15,7 @@ special_demo_sa = Demo(
             v_central_n.M,
             v_central_n.T.M,
             v_funnel_2.R.M,
-            bicorner_2.TR,
+            bicorner_2.T.R,
         ],
         [platform_s_nt.T.M, platform_s.M, platform_s.T.M, platform_s.M, corner.R.M, double_corner_2, v_funnel_2.R],
         [platform_s_nt.T.M, platform_s.M, platform_s.T.M, corner.R.M, double_corner_2, corner.R, v_central_n.T],

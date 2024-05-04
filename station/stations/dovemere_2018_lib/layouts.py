@@ -22,8 +22,12 @@ from station.stations.platforms import (
     platform_height,
     shed_height,
 )
-from station.stations.ground import gray, gray_third, gray_ps, gray_layout
+from station.stations.ground import named_ps as ground_ps, named_tiles as ground_tiles, gray, gray_third
 from station.stations.misc import rail
+
+
+gray_layout = ground_tiles.gray
+gray_ps = ground_ps.gray
 
 
 def get_category(internal_category, back, notes, tra):

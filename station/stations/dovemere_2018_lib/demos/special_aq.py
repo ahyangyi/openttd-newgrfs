@@ -9,11 +9,11 @@ rail_row = [platform_s_nt.T.M, platform_s.M, platform_s.T.M, platform.M, platfor
 top_building = [
     corner_gate_platform.R.M,
     side_a3_windowed_f.R.M,
-    side_a3_windowed_f.TR.M,
+    side_a3_windowed_f.T.R.M,
     side_a3_windowed.R.M,
-    side_a3_windowed_f.TR.M,
-    side_a2_windowed_n.TR.M,
-    corner_gate_platform.TR.M,
+    side_a3_windowed_f.T.R.M,
+    side_a2_windowed_n.T.R.M,
+    corner_gate_platform.T.R.M,
 ]
 bottom_building = [
     corner_gate_platform.M,
