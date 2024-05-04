@@ -1,6 +1,7 @@
 from station.lib import (
     AStation,
     AMetaStation,
+    BuildingSpriteSheetSymmetrical,
     BuildingSpriteSheetSymmetricalX,
     BuildingSpriteSheetFull,
     Demo,
@@ -82,11 +83,31 @@ def quickload(name):
                 named_tiles[name + suffix + extra_suffix] = l
 
 
+def load_foundation(name):
+    v = LazyVoxel(
+        name,
+        prefix="station/voxels/render/cnsps",
+        voxel_getter=lambda path=f"station/voxels/cnsps/{name}.vox": path,
+        load_from="station/files/cnsps-gorender.json",
+    )
+    symmetry = BuildingSpriteSheetSymmetrical
+    sprite = symmetry.create_variants(v.spritesheet())
+    ps = AParentSprite(sprite, (16, 16, platform_height), (0, 0, 0))
+    named_ps[name] = ps
+
+    groundsprite = gray_ps
+    var = symmetry.get_all_variants(ALayout([groundsprite], [ps], False))
+    l = symmetry.create_variants(var)
+    entries.extend(symmetry.get_all_entries(l))
+    named_tiles[name] = l
+
+
 entries = []
 named_ps = AttrDict()
 named_tiles = AttrDict()
 
 quickload("cnsps")
+load_foundation("foundation")
 
 named_tiles.globalize()
 
