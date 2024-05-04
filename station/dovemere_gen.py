@@ -15,7 +15,7 @@ metastations = [
 
 def get_string_manager():
     s = grf.StringManager()
-    s.import_lang_dir("station/lang", default_lang_file="english-fallback.lng")
+    s.import_lang_dir("station/lang", default_lang_file="english-uk.lng")
 
     return s
 
