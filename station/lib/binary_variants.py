@@ -50,6 +50,10 @@ class BuildingSpriteSheetFull(BinaryVariantMixin):
     _t_offset = 4
 
     @classmethod
+    def break_x_symmetry(classobj):
+        return classobj
+
+    @classmethod
     def break_y_symmetry(classobj):
         return classobj
 
@@ -69,6 +73,10 @@ class BuildingSpriteSheetSymmetricalX(BinaryVariantMixin):
     _m_offset = 1
     _r_offset = 0
     _t_offset = 2
+
+    @classmethod
+    def break_x_symmetry(classobj):
+        return BuildingSpriteSheetFull
 
     @classmethod
     def break_y_symmetry(classobj):
@@ -92,6 +100,10 @@ class BuildingSpriteSheetSymmetricalY(BinaryVariantMixin):
     _t_offset = 0
 
     @classmethod
+    def break_x_symmetry(classobj):
+        return BuildingSpriteSheetSymmetricalY
+
+    @classmethod
     def break_y_symmetry(classobj):
         return BuildingSpriteSheetFull
 
@@ -111,6 +123,10 @@ class BuildingSpriteSheetSymmetrical(BinaryVariantMixin):
     _m_offset = 1
     _r_offset = 0
     _t_offset = 0
+
+    @classmethod
+    def break_x_symmetry(classobj):
+        return BuildingSpriteSheetSymmetricalY
 
     @classmethod
     def break_y_symmetry(classobj):

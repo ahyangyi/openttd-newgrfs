@@ -154,9 +154,22 @@ class Traversable(LoadType):
 
 
 class TraversablePlatform(Traversable):
-    def __init__(self, *args, h_pos=Normal, **kwargs):
+    def __init__(self, *args, h_pos=Normal, windowed=0, **kwargs):
         super().__init__(*args, **kwargs)
         self.h_pos = h_pos
+        self.windowed = windowed
+
+    def do_work(self, v):
+        if self.windowed == 1:
+            TraversablePlatform(
+                v, self.symmetry, self.internal_category, name=self.name + "_windowed", h_pos=self.h_pos
+            ).load()
+            unwindowed = v.discard_layers(("window",), "unwindowed")
+            TraversablePlatform(
+                unwindowed, self.symmetry.break_x_symmetry(), self.internal_category, name=self.name, h_pos=self.h_pos
+            ).load()
+            return
+        super().do_work(v)
 
     def get_sprites(self, voxel):
         sprite = self.symmetry.create_variants(voxel.spritesheet(zdiff=base_height * 2))
@@ -486,8 +499,7 @@ SideTriple("corner_gate", BuildingSpriteSheetFull, "F1", h_pos=Side).load()
 SideTriple("corner_2", BuildingSpriteSheetFull, "F1", h_pos=Side).load()
 SideTriple("corner_gate_2", BuildingSpriteSheetFull, "F1", h_pos=Side).load()
 
-TraversablePlatform("central", BuildingSpriteSheetSymmetrical, "N").load()
-TraversablePlatform("central_windowed", BuildingSpriteSheetSymmetricalY, "N").load()
+TraversablePlatform("central", BuildingSpriteSheetSymmetrical, "N", windowed=1).load()
 TraversablePlatform("central_windowed_extender", BuildingSpriteSheetSymmetrical, "N").load()
 
 TraversablePlatform("side_a", BuildingSpriteSheetFull, "A", h_pos=Side).load()
