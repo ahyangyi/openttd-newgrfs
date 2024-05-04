@@ -21,10 +21,8 @@ class AObject(grf.SpriteGenerator):
         res = []
 
         extra_props = {
-            "station_name": g.strings.add(g.strings[f"STR_OBJECT_{self.translation_name}"]).get_persistent_id(),
-            "station_class_name": g.strings.add(
-                g.strings[f"STR_OBJECT_CLASS_{self.class_label_plain}"]
-            ).get_persistent_id(),
+            "name_id": g.strings.add(g.strings[f"STR_OBJECT_{self.translation_name}"]).get_persistent_id(),
+            "class_name_id": g.strings.add(g.strings[f"STR_OBJECT_CLASS_{self.class_label_plain}"]).get_persistent_id(),
         }
 
         self.callbacks.graphics = grf.GenericSpriteLayout(ent1=[0], ent2=[0], feature=grf.OBJECT)
