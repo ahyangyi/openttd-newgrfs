@@ -11,7 +11,10 @@ from station.lib import (
     AttrDict,
 )
 from agrf.graphics.voxel import LazyVoxel
-from .ground import gray_ps
+from .ground import named_ps as ground_ps
+
+
+gray_ps = ground_ps.gray
 
 
 platform_height = 6
