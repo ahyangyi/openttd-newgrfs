@@ -520,8 +520,8 @@ HorizontalSingle("h_gate", BuildingSpriteSheetSymmetricalY, "H", force_corridor=
 HorizontalTripleAsym("h_gate_1", BuildingSpriteSheetFull, "H").load()
 HorizontalSingle("h_gate_extender", BuildingSpriteSheetSymmetrical, "H", force_corridor=True).load()
 HorizontalTripleAsym("h_gate_extender_1", BuildingSpriteSheetSymmetricalX, "H").load()
-HorizontalSingle("h_windowed", BuildingSpriteSheetSymmetricalY, "H", force_corridor=True).load()
-HorizontalSingle("h_windowed_extender", BuildingSpriteSheetSymmetrical, "H", force_corridor=True).load()
+HorizontalTriple("h_windowed", BuildingSpriteSheetSymmetricalY, "H").load()
+HorizontalTriple("h_windowed_extender", BuildingSpriteSheetSymmetrical, "H").load()
 
 SideTriple("v_end", BuildingSpriteSheetSymmetricalX, "F0", h_pos="v").load()
 SideTriple("v_end_gate", BuildingSpriteSheetSymmetricalX, "F0", h_pos="v").load()
