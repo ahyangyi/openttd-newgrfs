@@ -24,7 +24,7 @@ def quickload(name, type):
     sprite = type.create_variants(v.spritesheet())
     groundsprite = AGroundSprite(gray)
     ps = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
-    l = ALayout(groundsprite, [ps], False)
+    l = ALayout([groundsprite], [ps], False)
     var = type.get_all_variants(l)
     layouts.extend(var)
     return type.create_variants(var)
