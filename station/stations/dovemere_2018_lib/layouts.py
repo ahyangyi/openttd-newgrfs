@@ -21,6 +21,7 @@ from station.stations.platforms import (
     cnsps_side_shed as platform_s_nt,
     platform_height,
     shed_height,
+    platform_width,
 )
 from station.stations.ground import named_ps as ground_ps, named_tiles as ground_tiles, gray, gray_third
 from station.stations.misc import rail
@@ -215,7 +216,7 @@ class SideFull(TwoFloorMixin, SideBase):
 
 
 class SidePlatform(TwoFloorMixin, SideBase):
-    f1x = 10
+    f1x = 16 - platform_width
 
     def make_platform_variants(self, grounds, parents):
         cur_plat = self.h_pos.platform_back.T
@@ -223,7 +224,7 @@ class SidePlatform(TwoFloorMixin, SideBase):
 
 
 class SideThird(TwoFloorMixin, Traversable):
-    f1x = 6
+    f1x = platform_width
 
     def get_ground_sprites(self):
         return [ADefaultGroundSprite(1012), third]
@@ -249,7 +250,7 @@ class HorizontalSingle(TraversableCorridor):
         )
         self.do_work(v)
 
-    f1x = 6
+    f1x = platform_width
 
     def do_work(self, v):
         grounds = self.get_ground_sprites()
@@ -285,7 +286,7 @@ class HorizontalSingleAsym(TraversableCorridor):
         )
         self.do_work(v)
 
-    f1x = 6
+    f1x = platform_width
 
     def do_work(self, v):
         grounds = self.get_ground_sprites()
@@ -351,7 +352,7 @@ class HorizontalTriple(TraversableCorridor):
         )
         self.do_work(v)
 
-    f1x = 6
+    f1x = platform_width
 
     def do_work(self, v):
         grounds = self.get_ground_sprites()
@@ -388,7 +389,7 @@ class HorizontalTripleAsym(TraversableCorridor):
         )
         self.do_work(v)
 
-    f1x = 6
+    f1x = platform_width
 
     def do_work(self, v):
         grounds = self.get_ground_sprites()
