@@ -23,7 +23,7 @@ def quickload(name, type, traversable):
     sprite = type.create_variants(v.spritesheet())
     ground = ADefaultGroundSprite(1012 if traversable else 1420)
     parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
-    candidates = [ALayout(ground, [parent], False)]
+    candidates = [ALayout([ground], [parent], False)]
     ret = []
     for l in candidates:
         l = type.get_all_variants(l)
