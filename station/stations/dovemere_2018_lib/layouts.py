@@ -112,7 +112,7 @@ class LoadType:
 
     def get_sprites(self, voxel):
         sprite = self.symmetry.create_variants(voxel.spritesheet())
-        return [AParentSprite(sprite, (16, 16, building_height), (0, 0, platform_height))]
+        return [AParentSprite(sprite, (16, 16, building_height), (0, 0, platform_height)), foundation]
 
     def make_platform_variants(self, grounds, parents):
         self.register(ALayout(grounds, parents, True))
@@ -236,7 +236,7 @@ class SidePlatform(TwoFloorMixin, SideBase):
 
     def make_platform_variants(self, grounds, parents):
         cur_plat = self.h_pos.platform_back.T
-        self.register(ALayout(grounds, parents + [cur_plat], False, notes=["far"]))
+        self.register(ALayout(grounds, parents + [cur_plat, foundation], False, notes=["far"]))
 
 
 class SideThird(TwoFloorMixin, Traversable):
@@ -248,8 +248,8 @@ class SideThird(TwoFloorMixin, Traversable):
     def make_platform_variants(self, grounds, parents):
         cur_np = self.h_pos.non_platform.T
         cur_plat = self.h_pos.platform.T
-        self.register(ALayout(grounds, parents + [cur_np], True, notes=["third"]))
-        self.register(ALayout(grounds, parents + [cur_plat], True, notes=["third", "far"]), "_f")
+        self.register(ALayout(grounds, parents + [cur_np, plat_nt], True, notes=["third"]))
+        self.register(ALayout(grounds, parents + [cur_plat, plat_nt], True, notes=["third", "far"]), "_f")
 
 
 class HorizontalSingle(TraversableCorridor):
