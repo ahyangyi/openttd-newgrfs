@@ -287,7 +287,14 @@ class LayoutSprite(grf.Sprite):
         self.bpp = bpp
 
     def get_fingerprint(self):
-        return {"layout": self.layout.get_fingerprint(), "w": self.w, "h": self.h, "bpp": self.bpp}
+        return {
+            "layout": self.layout.get_fingerprint(),
+            "w": self.w,
+            "h": self.h,
+            "bpp": self.bpp,
+            "xofs": self.xofs,
+            "yofs": self.yofs,
+        }
 
     def get_resource_files(self):
         return self.layout.get_resource_files()
