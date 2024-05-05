@@ -1,4 +1,5 @@
 from agrf.graphics import LayeredImage
+from agrf.utils import unique_tuple
 
 
 class Demo:
@@ -35,3 +36,9 @@ class Demo:
         return Demo(
             self.title, [[tile and tile.M for tile in row[::-1]] for row in list(zip(*self.tiles))[::-1]], self.remap
         )
+
+    def get_fingerprint(self):
+        return {"tiles": [[x and x.get_fingerprint() for x in row] for row in self.tiles], "remap": "FIXME"}  # FIXME
+
+    def get_resource_files(self):
+        return unique_tuple(f for row in self.tiles for x in row for f in x.get_resource_files())
