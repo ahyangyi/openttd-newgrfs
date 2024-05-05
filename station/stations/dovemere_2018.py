@@ -27,7 +27,7 @@ def make_tile_preview(tile):
     for var in [demo, demo.M]:
         sprite = grf.AlternativeSprites(
             *[
-                LayoutSprite(var, 96 * scale, 96 * scale, xofs=0, yofs=16 * scale, scale=scale, bpp=bpp)
+                LayoutSprite(var, 64 * scale, 64 * scale, xofs=0, yofs=8 * scale, scale=scale, bpp=bpp)
                 for scale in [1, 2, 4]
                 for bpp in [32]
             ]
