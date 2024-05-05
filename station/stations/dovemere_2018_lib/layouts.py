@@ -112,7 +112,7 @@ class LoadType:
 
     def get_sprites(self, voxel):
         sprite = self.symmetry.create_variants(voxel.spritesheet())
-        return [AParentSprite(sprite, (16, 16, building_height), (0, 0, 0))]
+        return [AParentSprite(sprite, (16, 16, building_height), (0, 0, platform_height))]
 
     def make_platform_variants(self, grounds, parents):
         self.register(ALayout(grounds, parents, True))
@@ -162,7 +162,7 @@ class TraversablePlatform(Traversable):
 
     def get_sprites(self, voxel):
         sprite = self.symmetry.create_variants(voxel.spritesheet(zdiff=base_height * 2))
-        return [AParentSprite(sprite, (16, 16, overpass_height), (0, 0, base_height))]
+        return [AParentSprite(sprite, (16, 16, overpass_height), (0, 0, base_height + platform_height))]
 
     def make_platform_variants(self, grounds, parents):
         cur_np = self.h_pos.non_platform
@@ -204,8 +204,8 @@ class TwoFloorMixin:
         f1v = f1base.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x))
         return [
-            AParentSprite(f1, (16, self.f1x, base_height), (0, 16 - self.f1x, 0)),
-            AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height)),
+            AParentSprite(f1, (16, self.f1x, base_height), (0, 16 - self.f1x, platform_height)),
+            AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height)),
         ]
 
 
@@ -280,8 +280,8 @@ class HorizontalSingle(TraversableCorridor):
         f1v.in_place_subset(f1_symmetry.render_indices())
         f1 = f1_symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x))
 
-        f1s = AParentSprite(f1, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
-        f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
+        f1s = AParentSprite(f1, (16, self.f1x, base_height), (0, 16 - self.f1x, platform_height))
+        f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
         self.register(ALayout(grounds, [f1s, f1s.T, f2s], True), "")
         if not self.force_corridor:
@@ -320,9 +320,9 @@ class HorizontalSingleAsym(TraversableCorridor):
         f1f = f1_symmetry.create_variants(f1vf.spritesheet(xdiff=16 - self.f1x))
         f1b = f1_symmetry.create_variants(f1vb.spritesheet(xdiff=16 - self.f1x))
 
-        f1fs = AParentSprite(f1f, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
-        f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
-        f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
+        f1fs = AParentSprite(f1f, (16, self.f1x, base_height), (0, 16 - self.f1x, platform_height))
+        f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 16 - self.f1x, platform_height))
+        f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
         self.register(ALayout(grounds, [f1fs, f1bs, f2s], True), "")
         self.register(
@@ -386,8 +386,8 @@ class HorizontalTriple(TraversableCorridor):
         plat_f1 = v.discard_layers(("ground level",), "platform")
         plat_f1.in_place_subset(f1_symmetry.render_indices())
 
-        f1s = AParentSprite(f1, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
-        f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
+        f1s = AParentSprite(f1, (16, self.f1x, base_height), (0, 16 - self.f1x, platform_height))
+        f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
         self.register(ALayout(grounds, [f1s, f1s.T, f2s], True, notes=["third"]), "")
         self.register(ALayout(grounds, [f1s, np_pillar.T, f2s], True, notes=["third", "y"]), "_third")
@@ -429,9 +429,9 @@ class HorizontalTripleAsym(TraversableCorridor):
         f1f = f1_symmetry.create_variants(f1vf.spritesheet(xdiff=16 - self.f1x))
         f1b = f1_symmetry.create_variants(f1vb.spritesheet(xdiff=16 - self.f1x))
 
-        f1fs = AParentSprite(f1f, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
-        f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
-        f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
+        f1fs = AParentSprite(f1f, (16, self.f1x, base_height), (0, 16 - self.f1x, platform_height))
+        f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 16 - self.f1x, platform_height))
+        f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
         self.register(ALayout(grounds, [f1fs, f1bs, f2s], True), "")
         self.register(
