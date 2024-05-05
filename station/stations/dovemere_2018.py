@@ -1,4 +1,5 @@
-from station.lib import AStation, AMetaStation
+import grf
+from station.lib import AStation, AMetaStation, Demo, LayoutSprite
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos
 from .dovemere_2018_lib.flexible_stations.semitraversable import (
@@ -20,6 +21,22 @@ from .dovemere_2018_lib.flexible_stations.side_third import (
 )
 
 
+def make_tile_preview(tile):
+    demo = Demo("", [[tile]])
+    ret = []
+    for var in [demo, demo.M]:
+        sprite = grf.AlternativeSprites(
+            *[
+                LayoutSprite(var, 96 * scale, 96 * scale, xofs=0, yofs=16 * scale, scale=scale, bpp=bpp)
+                for scale in [1, 2, 4]
+                for bpp in [32]
+            ]
+        )
+        layout = ALayout([], [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False)
+        ret.append(layout)
+    return ret
+
+
 the_stations = AMetaStation(
     [
         semitraversable_station,
@@ -39,11 +56,11 @@ the_stations = AMetaStation(
         AStation(
             id=0x10 + i,
             translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
-            layouts=[entry, entry.M],
+            layouts=[entry, entry.M] + make_tile_preview(entry),
             class_label=entry.category,
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
-            callbacks={"select_tile_layout": 0},
+            callbacks={"select_tile_layout": 0, "select_sprite_layout": grf.DualCallback(default=0, purchase=2)},
         )
         for i, entry in enumerate(sorted(entries, key=lambda x: x.category))
     ],
