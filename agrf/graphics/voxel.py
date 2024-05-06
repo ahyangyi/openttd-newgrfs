@@ -242,9 +242,8 @@ class LazyAlternatives(CachedFunctorMixin):
 
     def fmap(self, f):
         return LazyAlternatives(
-                tuple(f(x) for x in self.sprites),
-                self.loading_sprites and tuple(f(x) for x in self.loading_sprites),
-            )
+            tuple(f(x) for x in self.sprites), self.loading_sprites and tuple(f(x) for x in self.loading_sprites)
+        )
 
     @functools.cache
     def get_action(self, feature, xdiff=0, zdiff=0, shift=0):
