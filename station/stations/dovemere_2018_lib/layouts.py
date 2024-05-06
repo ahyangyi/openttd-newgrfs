@@ -241,22 +241,12 @@ class HorizontalSingle(TraversableCorridor):
         super().__init__(*args, **kwargs)
         self.force_corridor = force_corridor
 
-    def load(self):
-        v = LazyVoxel(
-            os.path.basename(self.source),
-            prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(self.source)),
-            voxel_getter=lambda path=f"station/voxels/dovemere_2018/{self.source}.vox": path,
-            load_from="station/files/gorender.json",
-        )
-        self.do_work(v)
-
     f1x = platform_width
 
     def do_work(self, v):
         grounds = self.get_ground_sprites()
 
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
-        f2v.in_place_subset(self.symmetry.render_indices())
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         f1v = v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
@@ -277,22 +267,12 @@ class HorizontalSingle(TraversableCorridor):
 
 
 class HorizontalSingleAsym(TraversableCorridor):
-    def load(self):
-        v = LazyVoxel(
-            os.path.basename(self.source),
-            prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(self.source)),
-            voxel_getter=lambda path=f"station/voxels/dovemere_2018/{self.source}.vox": path,
-            load_from="station/files/gorender.json",
-        )
-        self.do_work(v)
-
     f1x = platform_width
 
     def do_work(self, v):
         grounds = self.get_ground_sprites()
 
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
-        f2v.in_place_subset(self.symmetry.render_indices())
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         f1v = v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
@@ -316,15 +296,6 @@ class HorizontalSingleAsym(TraversableCorridor):
 
 
 class HorizontalDouble(LoadType):
-    def load(self):
-        v = LazyVoxel(
-            os.path.basename(self.source),
-            prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(self.source)),
-            voxel_getter=lambda path=f"station/voxels/dovemere_2018/{self.source}.vox": path,
-            load_from="station/files/gorender.json",
-        )
-        self.do_work(v)
-
     def do_work(self, v):
         plat_symmetry = self.symmetry.break_y_symmetry()
 
@@ -333,7 +304,6 @@ class HorizontalDouble(LoadType):
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         corridor = v.discard_layers(("ground level - platform",), "full")
-        corridor.in_place_subset(self.symmetry.render_indices())
 
         plat_f1 = v.discard_layers(("ground level",), "platform")
         plat_f1.in_place_subset(plat_symmetry.render_indices())
@@ -343,22 +313,12 @@ class HorizontalDouble(LoadType):
 
 
 class HorizontalTriple(TraversableCorridor):
-    def load(self):
-        v = LazyVoxel(
-            os.path.basename(self.source),
-            prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(self.source)),
-            voxel_getter=lambda path=f"station/voxels/dovemere_2018/{self.source}.vox": path,
-            load_from="station/files/gorender.json",
-        )
-        self.do_work(v)
-
     f1x = platform_width
 
     def do_work(self, v):
         grounds = self.get_ground_sprites()
 
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
-        f2v.in_place_subset(self.symmetry.render_indices())
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         f1_symmetry = self.symmetry.break_y_symmetry()
@@ -380,22 +340,12 @@ class HorizontalTriple(TraversableCorridor):
 
 
 class HorizontalTripleAsym(TraversableCorridor):
-    def load(self):
-        v = LazyVoxel(
-            os.path.basename(self.source),
-            prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(self.source)),
-            voxel_getter=lambda path=f"station/voxels/dovemere_2018/{self.source}.vox": path,
-            load_from="station/files/gorender.json",
-        )
-        self.do_work(v)
-
     f1x = platform_width
 
     def do_work(self, v):
         grounds = self.get_ground_sprites()
 
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
-        f2v.in_place_subset(self.symmetry.render_indices())
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         f1_symmetry = self.symmetry.break_y_symmetry()
