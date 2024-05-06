@@ -16,9 +16,9 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
     named_ps as platform_ps,
-    cnsps_shed_d as platform,
-    cnsps_shed as platform_s,
-    cnsps_side_shed as platform_s_nt,
+    cns_shed_d as platform,
+    cns_shed as platform_s,
+    cns_side_shed as platform_s_nt,
     platform_height,
     shed_height,
     platform_width,
@@ -72,19 +72,19 @@ def get_category(internal_category, back, notes, tra):
 base_height = 14
 building_height = 48
 overpass_height = building_height - base_height
-np_pillar = platform_ps.cnsps_np_pillar
-np_pillar_building = platform_ps.cnsps_np_pillar_building
-np_pillar_central = platform_ps.cnsps_np_pillar_central
-plat = platform_ps.cnsps
-plat_pillar = platform_ps.cnsps_pillar
-plat_pillar_central = platform_ps.cnsps_pillar_central
-plat_nt = platform_ps.cnsps_side
-plat_nt_pillar = platform_ps.cnsps_side_pillar
-plat_nt_pillar_central = platform_ps.cnsps_side_pillar_central
-plat_shed = platform_ps.cnsps_shed_building
-plat_shed_v = platform_ps.cnsps_shed_building_v
-plat_shed_nt = platform_ps.cnsps_side_shed_building
-plat_shed_nt_v = platform_ps.cnsps_side_shed_building_v
+np_pillar = platform_ps.cns_np_pillar
+np_pillar_building = platform_ps.cns_np_pillar_building
+np_pillar_central = platform_ps.cns_np_pillar_central
+plat = platform_ps.cns
+plat_pillar = platform_ps.cns_pillar
+plat_pillar_central = platform_ps.cns_pillar_central
+plat_nt = platform_ps.cns_side
+plat_nt_pillar = platform_ps.cns_side_pillar
+plat_nt_pillar_central = platform_ps.cns_side_pillar_central
+plat_shed = platform_ps.cns_shed_building
+plat_shed_v = platform_ps.cns_shed_building_v
+plat_shed_nt = platform_ps.cns_side_shed_building
+plat_shed_nt_v = platform_ps.cns_side_shed_building_v
 third = AChildSprite(gray_third, (0, 0))
 third_T = AChildSprite(gray_third.T, (0, 0))
 

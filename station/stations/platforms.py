@@ -26,9 +26,9 @@ pillar_height = 14
 def quickload(name):
     v = LazyVoxel(
         name,
-        prefix="station/voxels/render/cnsps",
-        voxel_getter=lambda path=f"station/voxels/cnsps/{name}.vox": path,
-        load_from="station/files/cnsps-gorender.json",
+        prefix="station/voxels/render/cns",
+        voxel_getter=lambda path=f"station/voxels/cns/{name}.vox": path,
+        load_from="station/files/cns-gorender.json",
     )
 
     platform_components = {"modernnarrow", "modernnarrow_side"}
@@ -80,7 +80,7 @@ entries = []
 named_ps = AttrDict()
 named_tiles = AttrDict()
 
-quickload("cnsps")
+quickload("cns")
 
 named_tiles.globalize()
 
@@ -101,8 +101,8 @@ the_stations = AMetaStation(
     None,
     entries,
     [
-        Demo("Platform", [[cnsps], [cnsps_d], [cnsps.T]]),
-        Demo("Platform with concrete grounds", [[cnsps_side], [cnsps_d], [cnsps_side.T]]),
-        Demo("Platform with shed", [[cnsps_shed], [cnsps_shed_d], [cnsps_shed.T]]),
+        Demo("Platform", [[cns], [cns_d], [cns.T]]),
+        Demo("Platform with concrete grounds", [[cns_side], [cns_d], [cns_side.T]]),
+        Demo("Platform with shed", [[cns_shed], [cns_shed_d], [cns_shed.T]]),
     ],
 )
