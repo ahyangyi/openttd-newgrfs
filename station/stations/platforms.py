@@ -17,7 +17,8 @@ from .ground import named_ps as ground_ps
 gray_ps = ground_ps.gray
 
 
-platform_height = 6
+platform_height = 4
+platform_width = 5
 shed_height = 13
 pillar_height = 14
 
@@ -56,10 +57,10 @@ def quickload(name):
                 tuple(sorted(tuple(platform_components - pkeeps) + tuple(shed_components - skeeps))), "subset" + suffix
             )
             v2.in_place_subset(symmetry.render_indices())
-            sprite = symmetry.create_variants(v2.spritesheet(xdiff=10))
+            sprite = symmetry.create_variants(v2.spritesheet(xdiff=16 - platform_width))
 
             height = max(pheight, sheight)
-            ps = AParentSprite(sprite, (16, 6, height), (0, 10, 0))
+            ps = AParentSprite(sprite, (16, platform_width, height), (0, 16 - platform_width, 0))
             named_ps[name + suffix] = ps
 
             for l, make_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
