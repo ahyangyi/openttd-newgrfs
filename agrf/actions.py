@@ -21,7 +21,7 @@ from agrf.graphics.spritesheet import LazyAlternativeSprites
 
 class FakeAlternativeSprites(LazyAlternativeSprites, grf.ReferenceableAction):
     def __init__(self, sprite, feature, ref_id=None):
-        super().__init__(sprite.voxel, sprite.debug_info, *[s for s in sprite.sprites])
+        super().__init__(sprite.voxel, sprite.part, *[s for s in sprite.sprites])
         self.feature = feature
         self.ref_id = ref_id
 
