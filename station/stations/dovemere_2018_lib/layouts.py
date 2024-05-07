@@ -453,6 +453,7 @@ TraversablePlatform("side_c", BuildingSpriteSheetSymmetricalY, "C", h_pos=Side).
 TraversablePlatform("side_d", BuildingSpriteSheetSymmetricalY, "D", h_pos=Side).load()
 
 HorizontalSingle("h_end", BuildingSpriteSheetSymmetricalY, "H").load()
+SideFull("h_end_untraversable", BuildingSpriteSheetSymmetricalY, "H").load()
 SideTriple("h_end_asym", BuildingSpriteSheetFull, "H", h_pos=Side).load()
 SideTriple("h_end_asym_gate", BuildingSpriteSheetFull, "H", h_pos=Side).load()
 HorizontalSingle("h_end_gate", BuildingSpriteSheetSymmetricalY, "H", force_corridor=True).load()
