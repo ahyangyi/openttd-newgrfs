@@ -1,5 +1,5 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import named_tiles, platform_s, rail, gray_layout
+from station.stations.dovemere_2018_lib.layouts import named_tiles, platform_s, track, gray_layout
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 
@@ -12,7 +12,7 @@ def make_line(x, a, b, c, d):
 
 c_n = make_line(platform_s, side_c_n, central, central_windowed, central_windowed_extender)
 c_f = [x.T for x in c_n]
-c_x = make_line(rail, side_c_x, central, central_windowed, central_windowed_extender)
+c_x = make_line(track, side_c_x, central, central_windowed, central_windowed_extender)
 
 near_lines = [
     c_x,
@@ -31,5 +31,5 @@ near_lines = [
 far_lines = [[el.T for el in line] for line in near_lines[::-1]]
 
 real_yard_demo = Demo(
-    "14×22 rail yard, including pass-through tracks", far_lines + near_lines, remap=get_1cc_remap(CompanyColour.WHITE)
+    "14×22 track yard, including pass-through tracks", far_lines + near_lines, remap=get_1cc_remap(CompanyColour.WHITE)
 )

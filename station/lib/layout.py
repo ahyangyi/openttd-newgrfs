@@ -3,6 +3,7 @@ from PIL import Image
 import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.magic import CachedFunctorMixin
+from agrf.utils import unique_tuple
 
 
 class ADefaultGroundSprite:
@@ -52,6 +53,12 @@ class ADefaultGroundSprite:
     def sprites(self):
         return []
 
+    def get_fingerprint(self):
+        return {"default_ground_sprite": self.sprite}
+
+    def get_resource_files(self):
+        return ()
+
 
 class AGroundSprite(CachedFunctorMixin):
     def __init__(self, sprite, alternatives=None):
@@ -88,6 +95,12 @@ class AGroundSprite(CachedFunctorMixin):
     @property
     def sprites(self):
         return [self.sprite] + self.alternatives
+
+    def get_fingerprint(self):
+        return {"ground_sprite": self.sprite.get_fingerprint()}
+
+    def get_resource_files(self):
+        return self.sprite.get_resource_files()
 
 
 class AParentSprite:
@@ -137,6 +150,12 @@ class AParentSprite:
     def sprites(self):
         return [self.sprite]
 
+    def get_fingerprint(self):
+        return {"parent_sprite": self.sprite.get_fingerprint(), "extent": self.extent, "offset": self.offset}
+
+    def get_resource_files(self):
+        return self.sprite.get_resource_files()
+
 
 class AChildSprite(CachedFunctorMixin):
     def __init__(self, sprite, offset):
@@ -172,6 +191,12 @@ class AChildSprite(CachedFunctorMixin):
     @property
     def sprites(self):
         return [self.sprite]
+
+    def get_fingerprint(self):
+        return {"child_sprite": self.sprite.get_fingerprint(), "offset": self.offset}
+
+    def get_resource_files(self):
+        return self.sprite.get_resource_files()
 
 
 class ALayout:
@@ -244,6 +269,15 @@ class ALayout:
     def sprites(self):
         return list(dict.fromkeys([sub for s in self.ground_sprites + self.parent_sprites for sub in s.sprites]))
 
+    def get_fingerprint(self):
+        return {
+            "ground_sprites": [s.get_fingerprint() for s in self.ground_sprites],
+            "parent_sprites": [s.get_fingerprint() for s in self.parent_sprites],
+        }
+
+    def get_resource_files(self):
+        return unique_tuple(f for x in self.ground_sprites + self.parent_sprites for f in x.get_resource_files())
+
 
 class LayoutSprite(grf.Sprite):
     def __init__(self, layout, w, h, scale, bpp, **kwargs):
@@ -253,11 +287,17 @@ class LayoutSprite(grf.Sprite):
         self.bpp = bpp
 
     def get_fingerprint(self):
-        # FIXME don't use id
-        return {"layout": id(self.layout), "w": self.w, "h": self.h, "bpp": self.bpp, "xxx": id(self)}
+        return {
+            "layout": self.layout.get_fingerprint(),
+            "w": self.w,
+            "h": self.h,
+            "bpp": self.bpp,
+            "xofs": self.xofs,
+            "yofs": self.yofs,
+        }
 
-    def get_image_files(self):
-        return ()
+    def get_resource_files(self):
+        return self.layout.get_resource_files()
 
     def get_data_layers(self, context):
         timer = context.start_timer()
