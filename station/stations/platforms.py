@@ -6,7 +6,6 @@ from station.lib import (
     BuildingSpriteSheetFull,
     Demo,
     ADefaultGroundSprite,
-    AGroundSprite,
     AParentSprite,
     ALayout,
     AttrDict,
