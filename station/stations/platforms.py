@@ -109,15 +109,23 @@ def simple_load(name, symmetry):
     entries.extend(symmetry.get_all_entries(l))
     named_tiles[name] = l
 
-    for shed_flavor, symmetry, _, _, buildable in shed_meta:
+    for shed_flavor, _, _, _, buildable in shed_meta:
         if shed_flavor == "" or not buildable:
             continue
-        var = symmetry.get_all_variants(
-            ALayout([groundsprite], [ps, named_ps["cnsps_cut" + shed_flavor]], False, notes={"concourse"})
-        )
-        l = symmetry.create_variants(var)
-        entries.extend(symmetry.get_all_entries(l))
-        named_tiles[name + shed_flavor] = l
+        for l, needs_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
+            if needs_symmetrical:
+                if symmetry.is_symmetrical_y():
+                    cur_sym = symmetry
+                else:
+                    continue
+            else:
+                cur_sym = BuildingSpriteSheetSymmetricalX
+            var = cur_sym.get_all_variants(
+                ALayout([groundsprite], l + [named_ps["cnsps_cut" + shed_flavor]], False, notes={"concourse"})
+            )
+            l = cur_sym.create_variants(var)
+            entries.extend(cur_sym.get_all_entries(l))
+            named_tiles[name + shed_flavor + extra_suffix] = l
 
 
 entries = []
