@@ -85,7 +85,7 @@ plat_shed = platform_ps.cnsps_shed_building
 plat_shed_v = platform_ps.cnsps_shed_building_v
 plat_shed_nt = platform_ps.cnsps_side_shed_building
 plat_shed_nt_v = platform_ps.cnsps_side_shed_building_v
-foundation = platform_ps.foundation
+foundation = platform_ps.cnsps_foundation
 third = AChildSprite(gray_third, (0, 0))
 third_T = AChildSprite(gray_third.T, (0, 0))
 

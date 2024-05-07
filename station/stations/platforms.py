@@ -36,6 +36,8 @@ def quickload(name):
         "white_side",
         "modernnarrow",
         "modernnarrow_side",
+        "modernnarrow_cut",
+        "modernnarrow_foundation",
         "modernnarrow_high",
         "modernnarrow_high_side",
     }
@@ -45,6 +47,9 @@ def quickload(name):
         ("_np", True, set(), 0),
         ("", True, {"modernnarrow"}, platform_height),
         ("_side", False, {"modernnarrow_side"}, platform_height),
+        ("_cut", False, {"modernnarrow_cut"}, platform_height),
+        ("_foundation", False, {"modernnarrow_foundation"}, platform_height),
+        ("_side_foundation", False, {"modernnarrow_foundation", "modernnarrow_side"}, platform_height),
     ]:
         for shed_flavor, symmetry, skeeps, sheight, buildable in [
             ("", BuildingSpriteSheetSymmetricalX, set(), 0, True),
@@ -57,6 +62,8 @@ def quickload(name):
         ]:
             if (platform_flavor, shed_flavor) == ("_np", ""):
                 # Don't create the "nothing" tile
+                continue
+            if platform_flavor in {"_foundation", "_side_foundation"} and shed_flavor != "":
                 continue
 
             suffix = platform_flavor + shed_flavor
@@ -83,31 +90,11 @@ def quickload(name):
                 named_tiles[name + suffix + extra_suffix] = l
 
 
-def load_foundation(name):
-    v = LazyVoxel(
-        name,
-        prefix="station/voxels/render/cnsps",
-        voxel_getter=lambda path=f"station/voxels/cnsps/{name}.vox": path,
-        load_from="station/files/cnsps-gorender.json",
-    )
-    symmetry = BuildingSpriteSheetSymmetrical
-    sprite = symmetry.create_variants(v.spritesheet())
-    ps = AParentSprite(sprite, (16, 16, platform_height), (0, 0, 0))
-    named_ps[name] = ps
-
-    groundsprite = gray_ps
-    var = symmetry.get_all_variants(ALayout([groundsprite], [ps], False))
-    l = symmetry.create_variants(var)
-    entries.extend(symmetry.get_all_entries(l))
-    named_tiles[name] = l
-
-
 entries = []
 named_ps = AttrDict()
 named_tiles = AttrDict()
 
 quickload("cnsps")
-load_foundation("foundation")
 
 named_tiles.globalize()
 
