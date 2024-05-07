@@ -6,6 +6,7 @@ STR_STATION_DEFAULT                             :站房
 STR_STATION_UNTRAVERSABLE                       :站房（无轨道）
 STR_STATION_PLATFORM                            :站台
 STR_STATION_PLATFORM_UNTRAVERSABLE              :站台（无轨道）
+STR_STATION_CONCOURSE                           :车站广场
 STR_STATION_FLEXIBLE_SIDE                       :自动站房（头尾有轨道）
 STR_STATION_FLEXIBLE_NO_SIDE                    :自动站房（头尾有轨道但无站台）
 STR_STATION_FLEXIBLE_UNTRAVERSABLE_SIDE         :自动站房（头尾无轨道，有侧式站台）

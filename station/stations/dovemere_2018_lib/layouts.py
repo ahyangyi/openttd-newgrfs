@@ -85,7 +85,7 @@ plat_shed = platform_ps.cnsps_shed_building
 plat_shed_v = platform_ps.cnsps_shed_building_v
 plat_shed_nt = platform_ps.cnsps_side_shed_building
 plat_shed_nt_v = platform_ps.cnsps_side_shed_building_v
-foundation = platform_ps.foundation
+concourse = platform_ps.concourse
 third = AChildSprite(gray_third, (0, 0))
 third_T = AChildSprite(gray_third.T, (0, 0))
 
@@ -113,7 +113,7 @@ class LoadType:
 
     def get_sprites(self, voxel):
         sprite = self.symmetry.create_variants(voxel.spritesheet())
-        return [AParentSprite(sprite, (16, 16, building_height), (0, 0, platform_height)), foundation]
+        return [AParentSprite(sprite, (16, 16, building_height), (0, 0, platform_height)), concourse]
 
     def make_platform_variants(self, grounds, parents):
         self.register(ALayout(grounds, parents, True))
@@ -225,7 +225,7 @@ class SideFull(TwoFloorMixin, SideBase):
         return [
             AParentSprite(f1, (16, self.f1x, base_height), (0, 16 - self.f1x, platform_height)),
             AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height)),
-            foundation,
+            concourse,
         ]
 
     def make_platform_variants(self, grounds, parents):
@@ -237,7 +237,7 @@ class SidePlatform(TwoFloorMixin, SideBase):
 
     def make_platform_variants(self, grounds, parents):
         cur_plat = self.h_pos.platform_back_cut.T
-        self.register(ALayout(grounds, parents + [cur_plat, platform_ps.side_foundation.T], False, notes=["far"]))
+        self.register(ALayout(grounds, parents + [cur_plat, platform_ps.side_concourse.T], False, notes=["far"]))
 
 
 class SideThird(TwoFloorMixin, Traversable):

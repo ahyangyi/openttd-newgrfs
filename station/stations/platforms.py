@@ -91,13 +91,14 @@ def simple_load(name, symmetry):
         prefix="station/voxels/render/cnsps",
         voxel_getter=lambda path=f"station/voxels/cnsps/{name}.vox": path,
         load_from="station/files/cnsps-gorender.json",
+        subset=symmetry.render_indices(),
     )
     sprite = symmetry.create_variants(v.spritesheet())
     ps = AParentSprite(sprite, (16, 16, platform_height), (0, 0, 0))
     named_ps[name] = ps
 
     groundsprite = gray_ps
-    var = symmetry.get_all_variants(ALayout([groundsprite], [ps], False))
+    var = symmetry.get_all_variants(ALayout([groundsprite], [ps], False, notes={"concourse"}))
     l = symmetry.create_variants(var)
     entries.extend(symmetry.get_all_entries(l))
     named_tiles[name] = l
@@ -108,8 +109,8 @@ named_ps = AttrDict()
 named_tiles = AttrDict()
 
 quickload("cnsps")
-simple_load("foundation", BuildingSpriteSheetSymmetrical)
-simple_load("side_foundation", BuildingSpriteSheetSymmetricalX)
+simple_load("concourse", BuildingSpriteSheetSymmetrical)
+simple_load("side_concourse", BuildingSpriteSheetSymmetricalX)
 
 named_tiles.globalize()
 
@@ -117,7 +118,11 @@ the_stations = AMetaStation(
     [
         AStation(
             id=0xF000 + i,
-            translation_name="PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE",
+            translation_name=(
+                "CONCOURSE"
+                if "concourse" in entry.notes
+                else "PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE"
+            ),
             layouts=[entry, entry.M],
             class_label=b"PLAT",
             cargo_threshold=40,
