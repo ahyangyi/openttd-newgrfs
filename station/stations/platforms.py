@@ -23,6 +23,17 @@ shed_height = 13
 pillar_height = 14
 
 
+shed_meta = [
+    ("", BuildingSpriteSheetSymmetricalX, set(), 0, True),
+    ("_shed", BuildingSpriteSheetSymmetricalX, {"shed"}, shed_height, True),
+    ("_shed_building", BuildingSpriteSheetFull, {"shed_building"}, shed_height, False),
+    ("_shed_building_v", BuildingSpriteSheetSymmetricalX, {"shed_building_v"}, shed_height, False),
+    ("_pillar", BuildingSpriteSheetSymmetricalX, {"pillar"}, pillar_height, False),
+    ("_pillar_building", BuildingSpriteSheetFull, {"pillar_building"}, pillar_height, False),
+    ("_pillar_central", BuildingSpriteSheetSymmetricalX, {"pillar_central"}, pillar_height, False),
+]
+
+
 def quickload(name):
     v = LazyVoxel(
         name,
@@ -48,15 +59,7 @@ def quickload(name):
         ("_side", False, {"modernnarrow_side"}, platform_height),
         ("_cut", False, {"modernnarrow_cut"}, platform_height),
     ]:
-        for shed_flavor, symmetry, skeeps, sheight, buildable in [
-            ("", BuildingSpriteSheetSymmetricalX, set(), 0, True),
-            ("_shed", BuildingSpriteSheetSymmetricalX, {"shed"}, shed_height, True),
-            ("_shed_building", BuildingSpriteSheetFull, {"shed_building"}, shed_height, False),
-            ("_shed_building_v", BuildingSpriteSheetSymmetricalX, {"shed_building_v"}, shed_height, False),
-            ("_pillar", BuildingSpriteSheetSymmetricalX, {"pillar"}, pillar_height, False),
-            ("_pillar_building", BuildingSpriteSheetFull, {"pillar_building"}, pillar_height, False),
-            ("_pillar_central", BuildingSpriteSheetSymmetricalX, {"pillar_central"}, pillar_height, False),
-        ]:
+        for shed_flavor, symmetry, skeeps, sheight, buildable in shed_meta:
             if (platform_flavor, shed_flavor) == ("_np", ""):
                 # Don't create the "nothing" tile
                 continue
@@ -103,6 +106,16 @@ def simple_load(name, symmetry):
     entries.extend(symmetry.get_all_entries(l))
     named_tiles[name] = l
 
+    for shed_flavor, symmetry, skeeps, sheight, buildable in shed_meta:
+        if shed_flavor == "":
+            continue
+        var = symmetry.get_all_variants(
+            ALayout([groundsprite], [ps, named_ps["cnsps_cut" + shed_flavor]], False, notes={"concourse"})
+        )
+        l = symmetry.create_variants(var)
+        entries.extend(symmetry.get_all_entries(l))
+        named_tiles[name + shed_flavor] = l
+
 
 entries = []
 named_ps = AttrDict()
@@ -121,7 +134,9 @@ the_stations = AMetaStation(
             translation_name=(
                 "CONCOURSE"
                 if "concourse" in entry.notes
-                else "PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE"
+                else "PLATFORM"
+                if entry.traversable
+                else "PLATFORM_UNTRAVERSABLE"
             ),
             layouts=[entry, entry.M],
             class_label=b"PLAT",
