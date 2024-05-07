@@ -1,5 +1,5 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import named_tiles, platform_s, track, gray_layout
+from station.stations.dovemere_2018_lib.layouts import named_tiles, platform_s, track
 from station.stations.platforms import named_tiles as platform_tiles
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
