@@ -19,8 +19,8 @@ gray_ps = ground_ps.gray
 
 platform_height = 4
 platform_width = 5
-shed_height = 13
-pillar_height = 14
+shed_height = 17
+pillar_height = 18
 
 
 shed_meta = [
@@ -69,7 +69,7 @@ def quickload(name):
                 tuple(sorted(tuple(platform_components - pkeeps) + tuple(shed_components - skeeps))), "subset" + suffix
             )
             v2.in_place_subset(symmetry.render_indices())
-            foundation_height = platform_height if shed_flavor == "_cut" else 0
+            foundation_height = platform_height if platform_flavor == "_cut" else 0
             sprite = symmetry.create_variants(v2.spritesheet(xdiff=16 - platform_width, zdiff=foundation_height * 2))
 
             height = max(pheight, sheight)
@@ -86,7 +86,7 @@ def quickload(name):
                     cur_symmetry = symmetry
                 var = cur_symmetry.get_all_variants(ALayout([groundsprite], l, traversable))
                 l = cur_symmetry.create_variants(var)
-                if buildable and platform_flavor != "_np":
+                if buildable and platform_flavor not in {"_np", "_cut"}:
                     entries.extend(cur_symmetry.get_all_entries(l))
                 named_tiles[name + suffix + extra_suffix] = l
 
@@ -109,8 +109,8 @@ def simple_load(name, symmetry):
     entries.extend(symmetry.get_all_entries(l))
     named_tiles[name] = l
 
-    for shed_flavor, symmetry, skeeps, sheight, buildable in shed_meta:
-        if shed_flavor == "":
+    for shed_flavor, symmetry, _, _, buildable in shed_meta:
+        if shed_flavor == "" or not buildable:
             continue
         var = symmetry.get_all_variants(
             ALayout([groundsprite], [ps, named_ps["cnsps_cut" + shed_flavor]], False, notes={"concourse"})
