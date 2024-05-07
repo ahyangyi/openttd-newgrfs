@@ -85,7 +85,7 @@ plat_shed = platform_ps.cnsps_shed_building
 plat_shed_v = platform_ps.cnsps_shed_building_v
 plat_shed_nt = platform_ps.cnsps_side_shed_building
 plat_shed_nt_v = platform_ps.cnsps_side_shed_building_v
-foundation = platform_ps.cnsps_foundation
+foundation = platform_ps.foundation
 third = AChildSprite(gray_third, (0, 0))
 third_T = AChildSprite(gray_third.T, (0, 0))
 
@@ -95,12 +95,13 @@ class HPos:
     non_platform: ALayout
     platform: ALayout
     platform_back: ALayout
+    platform_back_cut: ALayout
 
 
-Normal = HPos(np_pillar, plat_pillar, plat_nt_pillar)
-Side = HPos(np_pillar_building, plat_shed, plat_shed_nt)
-V = HPos(np_pillar, plat_shed_v, plat_shed_nt_v)
-TinyAsym = HPos(np_pillar_central, plat_pillar_central, plat_nt_pillar_central)
+Normal = HPos(np_pillar, plat_pillar, plat_nt_pillar, platform_ps.cnsps_cut_pillar)
+Side = HPos(np_pillar_building, plat_shed, plat_shed_nt, platform_ps.cnsps_cut_shed_building)
+V = HPos(np_pillar, plat_shed_v, plat_shed_nt_v, platform_ps.cnsps_cut_shed_building_v)
+TinyAsym = HPos(np_pillar_central, plat_pillar_central, plat_nt_pillar_central, platform_ps.cnsps_cut_pillar_central)
 
 
 class LoadType:
@@ -235,8 +236,8 @@ class SidePlatform(TwoFloorMixin, SideBase):
     f1x = 16 - platform_width
 
     def make_platform_variants(self, grounds, parents):
-        cur_plat = self.h_pos.platform_back.T
-        self.register(ALayout(grounds, parents + [cur_plat, foundation], False, notes=["far"]))
+        cur_plat = self.h_pos.platform_back_cut.T
+        self.register(ALayout(grounds, parents + [cur_plat, platform_ps.side_foundation.T], False, notes=["far"]))
 
 
 class SideThird(TwoFloorMixin, Traversable):
