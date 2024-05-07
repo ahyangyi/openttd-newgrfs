@@ -213,10 +213,21 @@ class ALayout:
     @property
     def sorted_parent_sprites(self):
         # FIXME include child sprites
-        return sorted(
-            [x for x in self.parent_sprites if isinstance(x, AParentSprite)],
-            key=lambda x: (x.offset[0] + x.offset[1] + x.extent[0] + x.extent[1], x.offset[2] + x.extent[2]),
-        )
+        ret = []
+        for i in range(len(self.parent_sprites)):
+            for j in self.parent_sprites:
+                if j in ret:
+                    continue
+                good = True
+                for k in self.parent_sprites:
+                    if k != j and k not in ret and any(k.offset[d] + k.extent[d] <= j.offset[d] for d in range(3)):
+                        good = False
+                        break
+                if good:
+                    ret.append(j)
+                    break
+            assert len(ret) == i + 1, f"{self.parent_sprites}, {i}, {ret}"
+        return ret
 
     def to_grf(self, sprite_list):
         return grf.SpriteLayout(
