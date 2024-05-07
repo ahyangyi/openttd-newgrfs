@@ -1,5 +1,5 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import platform, platform_s, platform_s_nt, gray_layout
+from station.stations.dovemere_2018_lib.layouts import platform, platform_s, platform_s_nt, concourse_tile
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import semitraversable
@@ -9,7 +9,7 @@ row_3 = h_merge(
     [semitraversable.cb14a.demo(i, 3, semitraversable.cb24_0) for i in range(1, 5)],
     [[platform_s_nt], [platform], [platform_s_nt.T]],
 )
-v_sep = [[gray_layout] * len(row_3[0])] * 2
+v_sep = [[concourse_tile] * len(row_3[0])] * 2
 row_4 = h_merge(
     [semitraversable.cb14a.demo(i, 4, semitraversable.cb24_0) for i in range(1, 5)],
     [[platform_s_nt], [platform_s.T], [platform_s], [platform_s_nt.T]],

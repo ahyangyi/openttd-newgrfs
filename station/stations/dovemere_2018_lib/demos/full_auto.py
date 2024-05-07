@@ -1,12 +1,12 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import platform, platform_s, gray_layout
+from station.stations.dovemere_2018_lib.layouts import platform, platform_s, concourse_tile
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import traversable
 from .utils import h_merge
 
 row_2 = h_merge([traversable.cb14.demo(i, 2, traversable.cb24_0) for i in range(1, 5)], [[platform_s], [platform_s.T]])
-v_sep = [[gray_layout] * len(row_2[0])] * 2
+v_sep = [[concourse_tile] * len(row_2[0])] * 2
 row_3 = h_merge(
     [traversable.cb14.demo(i, 3, traversable.cb24_0) for i in range(1, 5)], [[platform_s], [platform], [platform_s.T]]
 )

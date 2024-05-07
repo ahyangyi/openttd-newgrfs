@@ -19,6 +19,7 @@ from station.stations.platforms import (
     cnsps_shed_d as platform,
     cnsps_shed as platform_s,
     cnsps_side_shed as platform_s_nt,
+    concourse as concourse_tile,
     platform_height,
     shed_height,
     platform_width,
