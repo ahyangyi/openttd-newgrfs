@@ -20,7 +20,7 @@ class Config:
 
     def subset(self, indices):
         new_config = deepcopy(self.config)
-        for k in ["sprites", "agrf_deltas"]:
+        for k in ["sprites", "agrf_deltas", "agrf_offsets"]:
             if k in new_config:
                 new_config[k] = [new_config[k][i] for i in indices]
 
