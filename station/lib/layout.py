@@ -209,9 +209,9 @@ def is_in_front(a, b):
     ax1, ay1, az1 = (x + y for x, y in zip(a.offset, a.extent))
     bx0, by0, bz0 = b.offset
     bx1, by1, bz1 = (x + y for x, y in zip(b.offset, b.extent))
-    if not overlaps(ax0 + az0, ax1 + az1, bx0 + bz0, bx1 + bz1):
+    if not overlaps(ax0 - az1, ax1 - az0, bx0 - bz1, bx1 - bz0):
         return False
-    if not overlaps(ay0 + az0, ay1 + az1, by0 + bz0, by1 + bz1):
+    if not overlaps(ay0 - az1, ay1 - az0, by0 - bz1, by1 - bz0):
         return False
     if not overlaps(ax0 - ay1, ax1 - ay0, bx0 - by1, bx1 - by0):
         return False
@@ -243,7 +243,7 @@ class ALayout:
                     assert not all(
                         i.offset[k] + i.extent[k] > j.offset[k] and j.offset[k] + j.extent[k] > i.offset[k]
                         for k in range(3)
-                    ), f"{i} and {j} overlap"
+                    ), f"{i} and {j} overlap, {self.parent_sprites}"
 
         # FIXME include child sprites
         ret = []

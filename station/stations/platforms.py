@@ -70,7 +70,9 @@ def quickload(name):
             )
             v2.in_place_subset(symmetry.render_indices())
             foundation_height = platform_height if platform_flavor == "_cut" else 0
-            sprite = symmetry.create_variants(v2.spritesheet(xdiff=16 - platform_width, zdiff=foundation_height * 2))
+            sprite = symmetry.create_variants(
+                v2.spritesheet(xdiff=16 - platform_width, xspan=platform_width, zdiff=foundation_height * 2)
+            )
 
             height = max(pheight, sheight)
             ps = AParentSprite(
@@ -112,7 +114,8 @@ def simple_load(name, symmetry):
     for shed_flavor, _, _, _, buildable in shed_meta:
         if shed_flavor == "" or not buildable:
             continue
-        for l, needs_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
+        shed = named_ps["cnsps_cut" + shed_flavor]
+        for l, needs_symmetrical, extra_suffix in [([shed], False, ""), ([shed, shed.T], True, "_d")]:
             if needs_symmetrical:
                 if symmetry.is_symmetrical_y():
                     cur_sym = symmetry
@@ -120,9 +123,7 @@ def simple_load(name, symmetry):
                     continue
             else:
                 cur_sym = BuildingSpriteSheetSymmetricalX
-            var = cur_sym.get_all_variants(
-                ALayout([groundsprite], l + [named_ps["cnsps_cut" + shed_flavor]], False, notes={"concourse"})
-            )
+            var = cur_sym.get_all_variants(ALayout([groundsprite], l + [ps], False, notes={"concourse"}))
             l = cur_sym.create_variants(var)
             entries.extend(cur_sym.get_all_entries(l))
             named_tiles[name + shed_flavor + extra_suffix] = l
