@@ -21,7 +21,7 @@ def gen():
         grfid=b"\xE5\xBC\x8Bs",
         name=s["STR_GRF_NAME"],
         description=s["STR_GRF_DESC"],
-        version=3,
+        version=4,
         min_compatible_version=1,
         id_map_file="station/id_map.json",
         sprite_cache_path="station/.cache",
