@@ -390,9 +390,13 @@ class HorizontalTripleAsym(TraversableCorridor):
         f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 0, platform_height))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
-        self.register(ALayout(grounds, [f1fs, f1bs, f2s], True), "")
-        self.register(ALayout([track_ground, third], [f1fs, np_pillar.T, f2s], True, notes=["third", "y"]), "_third")
-        self.register(ALayout(grounds, [f1fs, plat_pillar.T, f2s], True, notes=["third", "y", "far"]), "_third_f")
+        self.register(ALayout(grounds, [plat_nt, plat_nt.T, f1fs, f1bs, f2s], True), "")
+        self.register(
+            ALayout([track_ground, third], [plat_nt, f1fs, np_pillar.T, f2s], True, notes=["third", "y"]), "_third"
+        )
+        self.register(
+            ALayout(grounds, [plat_nt, f1fs, plat_pillar.T, f2s], True, notes=["third", "y", "far"]), "_third_f"
+        )
         SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
 
 
