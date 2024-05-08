@@ -250,7 +250,7 @@ class SideThird(TwoFloorMixin, Traversable):
     def make_platform_variants(self, grounds, parents):
         cur_np = self.h_pos.non_platform.T
         cur_plat = self.h_pos.platform.T
-        self.register(ALayout(grounds, parents + [cur_np, plat_nt], True, notes=["third"]))
+        self.register(ALayout(grounds, parents + [cur_np, plat], True, notes=["third"]))
         self.register(ALayout(grounds, parents + [cur_plat, plat_nt], True, notes=["third", "far"]), "_f")
 
 
@@ -278,7 +278,7 @@ class HorizontalSingle(TraversableCorridor):
         self.register(ALayout(grounds, [plat_nt, plat_nt.T, f1s, f1s.T, f2s], True), "")
         if not self.force_corridor:
             self.register(
-                ALayout([track_ground, third], [plat_nt, f1s, np_pillar.T, f2s], True, notes=["third", "y"]), "_third"
+                ALayout([track_ground, third], [plat, f1s, np_pillar.T, f2s], True, notes=["third", "y"]), "_third"
             )
             self.register(
                 ALayout(grounds, [plat_nt, f1s, f2s, plat_shed.T], True, notes=["third", "y", "far"]), "_third_f"
@@ -309,7 +309,7 @@ class HorizontalSingleAsym(TraversableCorridor):
 
         self.register(ALayout(grounds, [plat_nt, plat_nt.T, f1fs, f1bs, f2s], True), "")
         self.register(
-            ALayout([track_ground, third], [plat_nt, f1fs, np_pillar.T, f2s], True, notes=["third", "y"]), "_third"
+            ALayout([track_ground, third], [plat, f1fs, np_pillar.T, f2s], True, notes=["third", "y"]), "_third"
         )
         self.register(
             ALayout(grounds, [plat_nt, f1fs, f2s, plat_shed.T], True, notes=["third", "y", "far"]), "_third_f"
@@ -355,9 +355,9 @@ class HorizontalTriple(TraversableCorridor):
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
         self.register(ALayout(grounds, [plat_nt, plat_nt.T, f1s, f1s.T, f2s], True, notes=["third"]), "")
-        self.register(ALayout(grounds, [plat_nt, f1s, np_pillar.T, f2s], True, notes=["third", "y"]), "_third")
+        self.register(ALayout(grounds, [plat, f1s, np_pillar.T, f2s], True, notes=["third", "y"]), "_third")
         self.register(
-            ALayout(grounds, [plat_nt, f1s, f2s, plat_pillar.T], True, notes=["third", "y", "far"]), "_third_f"
+            ALayout(grounds, [plat_nt, f1s, plat_pillar.T, f2s], True, notes=["third", "y", "far"]), "_third_f"
         )
         SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
 
@@ -392,10 +392,11 @@ class HorizontalTripleAsym(TraversableCorridor):
 
         self.register(ALayout(grounds, [plat_nt, plat_nt.T, f1fs, f1bs, f2s], True), "")
         self.register(
-            ALayout([track_ground, third], [plat_nt, f1fs, np_pillar.T, f2s], True, notes=["third", "y"]), "_third"
+            ALayout([track_ground, third], [plat, f1fs, np_pillar.T, f2s], True, notes=["third", "y"]), "_third"
         )
         self.register(
-            ALayout(grounds, [plat_nt, f1fs, plat_pillar.T, f2s], True, notes=["third", "y", "far"]), "_third_f"
+            ALayout([track_ground, third], [plat_nt, f1fs, plat_pillar.T, f2s], True, notes=["third", "y", "far"]),
+            "_third_f",
         )
         SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
 
