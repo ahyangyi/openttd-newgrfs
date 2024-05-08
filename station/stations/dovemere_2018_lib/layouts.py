@@ -275,7 +275,7 @@ class HorizontalSingle(TraversableCorridor):
         f1s = AParentSprite(f1, (16, self.f1x, base_height), (0, 16 - self.f1x, platform_height))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
-        self.register(ALayout(grounds, [plat_nt, plat_nt.T, f1s, f1s.T, f2s], True), "")
+        self.register(ALayout(grounds, [plat, plat.T, f1s, f1s.T, f2s], True), "")
         if not self.force_corridor:
             self.register(
                 ALayout([track_ground, third], [plat, f1s, np_pillar.T, f2s], True, notes=["third", "y"]), "_third"
