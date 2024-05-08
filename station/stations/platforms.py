@@ -63,7 +63,7 @@ def quickload(name):
                 tuple(sorted(tuple(platform_components - pkeeps) + tuple(shed_components - skeeps))), "subset" + suffix
             )
             v2.in_place_subset(symmetry.render_indices())
-            sprite = symmetry.create_variants(v2.spritesheet(xdiff=16 - platform_width))
+            sprite = symmetry.create_variants(v2.spritesheet(xdiff=16 - platform_width, xspan=platform_width))
 
             height = max(pheight, sheight)
             ps = AParentSprite(sprite, (16, platform_width, height), (0, 16 - platform_width, 0))

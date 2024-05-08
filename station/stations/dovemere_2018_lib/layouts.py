@@ -201,7 +201,7 @@ class TwoFloorMixin:
             f2v = f2base.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
             f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
         f1v = f1base.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
-        f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x))
+        f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x, xspan=self.f1x))
         return [
             AParentSprite(f1, (16, self.f1x, base_height), (0, 16 - self.f1x, 0)),
             AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height)),
@@ -252,7 +252,7 @@ class HorizontalSingle(TraversableCorridor):
         f1v = v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         f1_symmetry = self.symmetry.break_y_symmetry()
         f1v.in_place_subset(f1_symmetry.render_indices())
-        f1 = f1_symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x))
+        f1 = f1_symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x, xspan=self.f1x))
 
         f1s = AParentSprite(f1, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
@@ -278,11 +278,11 @@ class HorizontalSingleAsym(TraversableCorridor):
         f1_symmetry = self.symmetry.break_y_symmetry()
         f1vb.in_place_subset(f1_symmetry.render_indices())
         f1vf.in_place_subset(f1_symmetry.render_indices())
-        f1f = f1_symmetry.create_variants(f1vf.spritesheet(xdiff=16 - self.f1x))
-        f1b = f1_symmetry.create_variants(f1vb.spritesheet(xdiff=16 - self.f1x))
+        f1f = f1_symmetry.create_variants(f1vf.spritesheet(xdiff=16 - self.f1x, xspan=self.f1x))
+        f1b = f1_symmetry.create_variants(f1vb.spritesheet(xdiff=0, xspan=self.f1x))
 
         f1fs = AParentSprite(f1f, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
-        f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
+        f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 0, 0))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
 
         self.register(ALayout(grounds, [f1fs, f1bs, f2s], True), "")
@@ -320,7 +320,7 @@ class HorizontalTriple(TraversableCorridor):
         f1v = v.discard_layers(("ground level - platform",), "full")
         f1v = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         f1v.in_place_subset(f1_symmetry.render_indices())
-        f1 = f1_symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x))
+        f1 = f1_symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x, xspan=self.f1x))
 
         plat_f1 = v.discard_layers(("ground level",), "platform")
         plat_f1.in_place_subset(f1_symmetry.render_indices())
@@ -355,11 +355,11 @@ class HorizontalTripleAsym(TraversableCorridor):
         f1_symmetry = self.symmetry.break_y_symmetry()
         f1vb.in_place_subset(f1_symmetry.render_indices())
         f1vf.in_place_subset(f1_symmetry.render_indices())
-        f1f = f1_symmetry.create_variants(f1vf.spritesheet(xdiff=16 - self.f1x))
-        f1b = f1_symmetry.create_variants(f1vb.spritesheet(xdiff=16 - self.f1x))
+        f1f = f1_symmetry.create_variants(f1vf.spritesheet(xdiff=16 - self.f1x, xspan=self.f1x))
+        f1b = f1_symmetry.create_variants(f1vb.spritesheet(xdiff=0, xspan=self.f1x))
 
         f1fs = AParentSprite(f1f, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
-        f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 16 - self.f1x, 0))
+        f1bs = AParentSprite(f1b, (16, self.f1x, base_height), (0, 0, 0))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height))
 
         self.register(ALayout(grounds, [f1fs, f1bs, f2s], True), "")
