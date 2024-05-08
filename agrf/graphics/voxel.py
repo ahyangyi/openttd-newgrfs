@@ -185,7 +185,7 @@ class LazyVoxel(Config):
         render(self, voxel_path, os.path.join(self.prefix, self.name))
 
     @functools.cache
-    def spritesheet(self, xdiff=0, zdiff=0, shift=0):
+    def spritesheet(self, xdiff=0, zdiff=0, shift=0, xspan=16):
         real_xdiff = 0 if self.config.get("agrf_road_mode", False) else 0.5
         real_ydiff = (self.config.get("agrf_zdiff", 0) + zdiff) * 0.5 * self.config.get("agrf_scale", 1)
         if "agrf_subset" in self.config:
@@ -195,11 +195,13 @@ class LazyVoxel(Config):
         return spritesheet_template(
             self,
             xdiff,
+            xspan,
             os.path.join(self.prefix, self.name),
             [(x["width"], x.get("height", 0)) for x in self.config["sprites"]],
             [x["angle"] for x in self.config["sprites"]],
             bbox=self.config["size"],
-            deltas=self.config.get("agrf_deltas", None),  # no default -- erroring out is graceful
+            deltas=self.config.get("agrf_deltas", None),
+            offsets=self.config.get("agrf_offsets", None),
             z_scale=self.config.get("z_scale", 1.0),
             bbox_joggle=self.config.get("agrf_bbox_joggle", None),
             xdiff=real_xdiff,
@@ -212,7 +214,7 @@ class LazyVoxel(Config):
 
     @functools.cache
     def get_action(self, feature, xdiff=0, zdiff=0, shift=0):
-        return FakeReferencingGenericSpriteLayout(feature, (self.spritesheet(xdiff, shift),))
+        return FakeReferencingGenericSpriteLayout(feature, (self.spritesheet(xdiff=xdiff, zdiff=zdiff, shift=shift),))
 
     def get_default_graphics(self):
         return self
@@ -234,7 +236,7 @@ class LazySpriteSheet(CachedFunctorMixin):
 
     @functools.cache
     def get_action(self, xdiff, shift, feature):
-        return FakeReferencingGenericSpriteLayout(feature, (self.spritesheet(xdiff, shift),))
+        return FakeReferencingGenericSpriteLayout(feature, (self.spritesheet(xdiff=xdiff, shift=shift),))
 
     def get_default_graphics(self):
         return self
@@ -255,7 +257,7 @@ class LazyAlternatives(CachedFunctorMixin):
     def get_action(self, feature, xdiff=0, zdiff=0, shift=0):
         return FakeReferencingGenericSpriteLayout(
             feature,
-            tuple(x.spritesheet(xdiff, shift) for x in self.sprites),
+            tuple(x.spritesheet(xdiff=xdiff, shift=shift) for x in self.sprites),
             None if self.loading_sprites is None else tuple(x.spritesheet(xdiff, shift) for x in self.loading_sprites),
         )
 
