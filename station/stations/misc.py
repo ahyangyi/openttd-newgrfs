@@ -1,3 +1,4 @@
 from station.lib import ADefaultGroundSprite, ALayout
 
-rail = ALayout([ADefaultGroundSprite(1012)], [], True)
+track_ground = ADefaultGroundSprite(1012)
+track = ALayout([track_ground], [], True)
