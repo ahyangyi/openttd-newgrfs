@@ -316,23 +316,6 @@ class HorizontalSingleAsym(TraversableCorridor):
         )
 
 
-class HorizontalDouble(LoadType):
-    def do_work(self, v):
-        plat_symmetry = self.symmetry.break_y_symmetry()
-
-        f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
-        f2v.in_place_subset(plat_symmetry.render_indices())
-        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
-
-        corridor = v.discard_layers(("ground level - platform",), "full")
-
-        plat_f1 = v.discard_layers(("ground level",), "platform")
-        plat_f1.in_place_subset(plat_symmetry.render_indices())
-
-        HorizontalSingle(corridor, self.symmetry, self.internal_category, name=self.name, force_corridor=True).load()
-        SidePlatform((plat_f1, f2), plat_symmetry, self.internal_category, name=self.name + "_platform").load()
-
-
 class HorizontalTriple(TraversableCorridor):
     f1x = platform_width
 
