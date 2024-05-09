@@ -238,7 +238,7 @@ class SidePlatform(TwoFloorMixin, SideBase):
 
     def make_platform_variants(self, grounds, parents):
         cur_plat = self.h_pos.platform_back_cut.T
-        self.register(ALayout(grounds, parents + [cur_plat, platform_ps.side_concourse.T], False, notes=["far"]))
+        self.register(ALayout(grounds, parents + [cur_plat, platform_ps.concourse_side.T], False, notes=["far"]))
 
 
 class SideThird(TwoFloorMixin, Traversable):

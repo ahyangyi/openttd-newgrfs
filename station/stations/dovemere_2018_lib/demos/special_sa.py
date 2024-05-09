@@ -5,7 +5,7 @@ from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 
 named_tiles.globalize()
-nt = platform_tiles.side_concourse_shed
+nt = platform_tiles.concourse_side_shed
 
 special_demo_sa = Demo(
     "Irregular 7×7 station layout",

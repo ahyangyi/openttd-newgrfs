@@ -137,40 +137,50 @@ def quickload(name):
                                     ] = l.T
 
 
-def simple_load(name, symmetry):
+def simple_load(name):
     v = LazyVoxel(
         name,
         prefix="station/voxels/render/cnsps",
         voxel_getter=lambda path=f"station/voxels/cnsps/{name}.vox": path,
         load_from="station/files/cnsps-gorender.json",
-        subset=symmetry.render_indices(),
     )
-    sprite = symmetry.create_variants(v.spritesheet())
-    ps = AParentSprite(sprite, (16, 16, platform_height), (0, 0, 0))
-    named_ps[name] = ps
+    concourse_components = {"modernnarrow_side", "modernnarrow_side_t"}
 
-    groundsprite = gray_ps
-    var = symmetry.get_all_variants(ALayout([groundsprite], [ps], False, notes={"concourse"}))
-    l = symmetry.create_variants(var)
-    entries.extend(symmetry.get_all_entries(l))
-    named_tiles[name] = l
+    for concourse_flavor, symmetry, ckeeps in [
+        ("", BuildingSpriteSheetSymmetrical, set()),
+        ("_side", BuildingSpriteSheetSymmetricalX, {"modernnarrow_side"}),
+        ("_side_d", BuildingSpriteSheetSymmetrical, {"modernnarrow_side", "modernnarrow_side_t"}),
+    ]:
+        v2 = v.discard_layers(tuple(sorted(tuple(concourse_components - ckeeps))), "subset" + concourse_flavor)
+        v2.in_place_subset(symmetry.render_indices())
 
-    for shed_flavor, _, _, _, buildable in shed_meta:
-        if shed_flavor == "" or not buildable:
-            continue
-        shed = named_ps["cnsps_cut" + shed_flavor]
-        for l, needs_symmetrical, extra_suffix in [([shed], False, ""), ([shed, shed.T], True, "_d")]:
-            if needs_symmetrical:
-                if symmetry.is_symmetrical_y():
-                    cur_sym = symmetry
-                else:
+        sprite = symmetry.create_variants(v2.spritesheet())
+        ps = AParentSprite(sprite, (16, 16, platform_height), (0, 0, 0))
+        named_ps[name + concourse_flavor] = ps
+
+        groundsprite = gray_ps
+        var = symmetry.get_all_variants(ALayout([groundsprite], [ps], False, notes={"concourse"}))
+        l = symmetry.create_variants(var)
+        entries.extend(symmetry.get_all_entries(l))
+        named_tiles[name + concourse_flavor] = l
+
+        if concourse_flavor != "":
+            for shed_flavor, _, _, _, buildable in shed_meta:
+                if shed_flavor == "" or not buildable:
                     continue
-            else:
-                cur_sym = BuildingSpriteSheetSymmetricalX
-            var = cur_sym.get_all_variants(ALayout([groundsprite], l + [ps], False, notes={"concourse"}))
-            l = cur_sym.create_variants(var)
-            entries.extend(cur_sym.get_all_entries(l))
-            named_tiles[name + shed_flavor + extra_suffix] = l
+                shed = named_ps["cnsps_cut" + shed_flavor]
+                for l, needs_symmetrical, extra_suffix in [([shed], False, ""), ([shed, shed.T], True, "_d")]:
+                    if needs_symmetrical:
+                        if concourse_flavor.endswith("_d"):
+                            cur_sym = symmetry
+                        else:
+                            continue
+                    else:
+                        cur_sym = BuildingSpriteSheetSymmetricalX
+                    var = cur_sym.get_all_variants(ALayout([groundsprite], l + [ps], False, notes={"concourse"}))
+                    l = cur_sym.create_variants(var)
+                    entries.extend(cur_sym.get_all_entries(l))
+                    named_tiles[name + concourse_flavor + shed_flavor + extra_suffix] = l
 
 
 entries = []
@@ -178,8 +188,7 @@ named_ps = AttrDict()
 named_tiles = AttrDict()
 
 quickload("cnsps")
-simple_load("concourse", BuildingSpriteSheetSymmetrical)
-simple_load("side_concourse", BuildingSpriteSheetSymmetricalX)
+simple_load("concourse")
 
 named_tiles.globalize()
 
@@ -190,7 +199,9 @@ the_stations = AMetaStation(
             translation_name=(
                 "CONCOURSE"
                 if "concourse" in entry.notes
-                else "PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE"
+                else "PLATFORM"
+                if entry.traversable
+                else "PLATFORM_UNTRAVERSABLE"
             ),
             layouts=[entry, entry.M],
             class_label=b"PLAT",
