@@ -5,16 +5,16 @@ from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import traversable
 from .utils import h_merge
 
-row_1 = h_merge([traversable.cb14.demo(i, 1, traversable.cb24_1) for i in range(1, 5)], [[track]])
+row_1 = h_merge([traversable.cb14.demo(i, 1, traversable.cb24_1) for i in range(1, 5)], [[platform]])
 v_sep = [[concourse_tile] * len(row_1[0])] * 2
-row_2 = h_merge([traversable.cb14.demo(i, 2, traversable.cb24_1) for i in range(1, 5)], [[track], [track]])
+row_2 = h_merge([traversable.cb14.demo(i, 2, traversable.cb24_1) for i in range(1, 5)], [[platform_s.T], [platform_s]])
 row_4 = h_merge(
     [traversable.cb14.demo(i, 4, traversable.cb24_1) for i in range(1, 5)],
-    [[track], [platform_s], [platform_s.T], [track]],
+    [[platform_s.T], [platform_s], [platform_s.T], [platform_s]],
 )
 row_5 = h_merge(
     [traversable.cb14.demo(i, 5, traversable.cb24_1) for i in range(1, 5)],
-    [[track], [platform_s], [platform], [platform_s.T], [track]],
+    [[platform_s.T], [platform_s], [platform], [platform_s.T], [platform_s]],
 )
 
 full_np_auto_demo = Demo(
