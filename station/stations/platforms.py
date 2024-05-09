@@ -23,6 +23,14 @@ shed_height = 17
 pillar_height = 18
 
 
+plat_meta = [
+    ("_np", False, set(), 0),
+    ("", True, {"modernnarrow"}, platform_height),
+    ("_side", True, {"modernnarrow_side"}, platform_height),
+    ("_cut", False, {"modernnarrow_cut"}, platform_height),
+]
+
+
 shed_meta = [
     ("", BuildingSpriteSheetSymmetricalX, set(), 0, True),
     ("_shed", BuildingSpriteSheetSymmetricalX, {"shed"}, shed_height, True),
@@ -53,13 +61,8 @@ def quickload(name):
     }
     shed_components = {"shed", "shed_building", "shed_building_v", "pillar", "pillar_building", "pillar_central"}
 
-    for platform_flavor, traversable, pkeeps, pheight in [
-        ("_np", True, set(), 0),
-        ("", True, {"modernnarrow"}, platform_height),
-        ("_side", False, {"modernnarrow_side"}, platform_height),
-        ("_cut", False, {"modernnarrow_cut"}, platform_height),
-    ]:
-        for shed_flavor, symmetry, skeeps, sheight, buildable in shed_meta:
+    for platform_flavor, pbuildable, pkeeps, pheight in plat_meta:
+        for shed_flavor, symmetry, skeeps, sheight, sbuildable in shed_meta:
             if (platform_flavor, shed_flavor) == ("_np", ""):
                 # Don't create the "nothing" tile
                 continue
@@ -81,16 +84,47 @@ def quickload(name):
             named_ps[name + suffix] = ps
 
             for l, make_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
-                groundsprite = ADefaultGroundSprite(1012) if traversable else gray_ps
+                groundsprite = ADefaultGroundSprite(1012)
                 if make_symmetrical:
                     cur_symmetry = symmetry.add_y_symmetry()
                 else:
                     cur_symmetry = symmetry
-                var = cur_symmetry.get_all_variants(ALayout([groundsprite], l, traversable))
+                var = cur_symmetry.get_all_variants(ALayout([groundsprite], l, True))
                 l = cur_symmetry.create_variants(var)
-                if buildable and platform_flavor not in {"_np", "_cut"}:
+                if sbuildable and pbuildable:
                     entries.extend(cur_symmetry.get_all_entries(l))
                 named_tiles[name + suffix + extra_suffix] = l
+
+    for platform_flavor, pbuildable, pkeeps, pheight in plat_meta:
+        if pbuildable:
+            for shed_flavor, symmetry, skeeps, sheight, sbuildable in shed_meta:
+                if sbuildable:
+                    for platform_flavor_2, pbuildable_2, _, _ in plat_meta:
+                        if pbuildable_2:
+                            for shed_flavor_2, _, _, sheight_2, sbuildable_2 in shed_meta:
+                                if sbuildable_2 and (
+                                    (platform_flavor, shed_flavor) < (platform_flavor_2, shed_flavor_2)
+                                ):
+                                    groundsprite = ADefaultGroundSprite(1012)
+                                    cur_symmetry = BuildingSpriteSheetSymmetricalX
+                                    var = cur_symmetry.get_all_variants(
+                                        ALayout(
+                                            [groundsprite],
+                                            [
+                                                named_ps[name + platform_flavor + shed_flavor],
+                                                named_ps[name + platform_flavor_2 + shed_flavor_2].T,
+                                            ],
+                                            True,
+                                        )
+                                    )
+                                    l = cur_symmetry.create_variants(var)
+                                    entries.extend(cur_symmetry.get_all_entries(l))
+                                    named_tiles[
+                                        name + platform_flavor + shed_flavor + platform_flavor_2 + shed_flavor_2
+                                    ] = l
+                                    named_tiles[
+                                        name + platform_flavor_2 + shed_flavor_2 + platform_flavor + shed_flavor
+                                    ] = l.T
 
 
 def simple_load(name, symmetry):
