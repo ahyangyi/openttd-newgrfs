@@ -120,10 +120,20 @@ def quickload(name):
                                     l = cur_symmetry.create_variants(var)
                                     entries.extend(cur_symmetry.get_all_entries(l))
                                     named_tiles[
-                                        name + platform_flavor + shed_flavor + platform_flavor_2 + shed_flavor_2
+                                        name
+                                        + platform_flavor
+                                        + shed_flavor
+                                        + "_and"
+                                        + platform_flavor_2
+                                        + shed_flavor_2
                                     ] = l
                                     named_tiles[
-                                        name + platform_flavor_2 + shed_flavor_2 + platform_flavor + shed_flavor
+                                        name
+                                        + platform_flavor_2
+                                        + shed_flavor_2
+                                        + "_and"
+                                        + platform_flavor
+                                        + shed_flavor
                                     ] = l.T
 
 
