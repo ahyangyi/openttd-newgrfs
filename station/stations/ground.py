@@ -10,7 +10,7 @@ from agrf.graphics.voxel import LazyVoxel
 
 def quickload(name, type):
     ret = []
-    for i in range(3):
+    for _ in range(3):
         v = LazyVoxel(
             name,
             prefix="station/voxels/render/ground",

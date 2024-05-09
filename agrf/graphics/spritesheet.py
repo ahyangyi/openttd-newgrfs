@@ -66,11 +66,13 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
 def spritesheet_template(
     voxel,
     diff,
+    xspan,
     path,
     dimens,
     angles,
     bbox,
     deltas,
+    offsets,
     z_scale,
     bbox_joggle=None,
     bpps=(8, 32),
@@ -101,6 +103,11 @@ def spritesheet_template(
         if diff != 0:
             xrel += deltas[direction][0] * diff * scale
             yrel += deltas[direction][1] * diff * scale
+
+        if road_mode and xspan != 16:
+            offset = 16 - xspan
+            xrel += offsets[direction][0] * offset * scale
+            yrel += offsets[direction][1] * offset * scale
 
         if bbox_joggle is not None:
             xrel += bbox_joggle[direction][0] * scale

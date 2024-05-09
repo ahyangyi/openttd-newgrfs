@@ -199,6 +199,31 @@ class AChildSprite(CachedFunctorMixin):
         return self.sprite.get_resource_files()
 
 
+def overlaps(a0, a1, b0, b1):
+    assert a0 <= a1 and b0 <= b1
+    return a1 > b0 and b1 > a0
+
+
+def is_in_front(a, b):
+    ax0, ay0, az0 = a.offset
+    ax1, ay1, az1 = (x + y for x, y in zip(a.offset, a.extent))
+    bx0, by0, bz0 = b.offset
+    bx1, by1, bz1 = (x + y for x, y in zip(b.offset, b.extent))
+    if not overlaps(ax0 - az1, ax1 - az0, bx0 - bz1, bx1 - bz0):
+        return False
+    if not overlaps(ay0 - az1, ay1 - az0, by0 - bz1, by1 - bz0):
+        return False
+    if not overlaps(ax0 - ay1, ax1 - ay0, bx0 - by1, bx1 - by0):
+        return False
+    if ax0 >= bx1:
+        return True
+    if ay0 >= by1:
+        return True
+    if az0 >= bz1:
+        return True
+    return False
+
+
 class ALayout:
     def __init__(self, ground_sprites, parent_sprites, traversable, category=None, notes=None):
         assert isinstance(ground_sprites, list)
@@ -212,11 +237,30 @@ class ALayout:
 
     @property
     def sorted_parent_sprites(self):
+        for i in self.parent_sprites:
+            for j in self.parent_sprites:
+                if i != j:
+                    assert not all(
+                        i.offset[k] + i.extent[k] > j.offset[k] and j.offset[k] + j.extent[k] > i.offset[k]
+                        for k in range(3)
+                    ), f"{i} and {j} overlap, {self.parent_sprites}"
+
         # FIXME include child sprites
-        return sorted(
-            [x for x in self.parent_sprites if isinstance(x, AParentSprite)],
-            key=lambda x: (x.offset[0] + x.offset[1] + x.extent[0] + x.extent[1], x.offset[2] + x.extent[2]),
-        )
+        ret = []
+        for i in range(len(self.parent_sprites)):
+            for j in self.parent_sprites:
+                if j in ret:
+                    continue
+                good = True
+                for k in self.parent_sprites:
+                    if k != j and k not in ret and is_in_front(j, k):
+                        good = False
+                        break
+                if good:
+                    ret.append(j)
+                    break
+            assert len(ret) == i + 1, f"{self.parent_sprites}, {i}, {ret}"
+        return ret
 
     def to_grf(self, sprite_list):
         return grf.SpriteLayout(

@@ -13,7 +13,7 @@ class LazyVoxel(Config):
     def __init__(self, name, *, prefix=None, voxel_getter=None, load_from=None, config=None, subset=None):
         super().__init__(load_from=load_from, config=config)
         if subset is not None:
-            self.in_place_subset(subset)
+            self.config["agrf_subset"] = subset
         self.name = name
         self.prefix = prefix
         self.voxel_getter = voxel_getter
@@ -32,7 +32,7 @@ class LazyVoxel(Config):
             )
 
     def in_place_subset(self, subset):
-        self.config = self.subset(subset).config
+        self.config["agrf_subset"] = subset
 
     @functools.cache
     def rotate(self, delta, suffix):
@@ -178,22 +178,30 @@ class LazyVoxel(Config):
 
     @functools.cache
     def render(self):
+        if "agrf_subset" in self.config:
+            self.config = self.subset(self.config["agrf_subset"]).config
+            del self.config["agrf_subset"]
         voxel_path = self.voxel_getter()
         render(self, voxel_path, os.path.join(self.prefix, self.name))
 
     @functools.cache
-    def spritesheet(self, xdiff=0, zdiff=0, shift=0):
+    def spritesheet(self, xdiff=0, zdiff=0, shift=0, xspan=16):
         real_xdiff = 0 if self.config.get("agrf_road_mode", False) else 0.5
         real_ydiff = (self.config.get("agrf_zdiff", 0) + zdiff) * 0.5 * self.config.get("agrf_scale", 1)
+        if "agrf_subset" in self.config:
+            self.config = self.subset(self.config["agrf_subset"]).config
+            del self.config["agrf_subset"]
 
         return spritesheet_template(
             self,
             xdiff,
+            xspan,
             os.path.join(self.prefix, self.name),
             [(x["width"], x.get("height", 0)) for x in self.config["sprites"]],
             [x["angle"] for x in self.config["sprites"]],
             bbox=self.config["size"],
-            deltas=self.config.get("agrf_deltas", None),  # no default -- erroring out is graceful
+            deltas=self.config.get("agrf_deltas", None),
+            offsets=self.config.get("agrf_offsets", None),
             z_scale=self.config.get("z_scale", 1.0),
             bbox_joggle=self.config.get("agrf_bbox_joggle", None),
             xdiff=real_xdiff,
@@ -206,7 +214,7 @@ class LazyVoxel(Config):
 
     @functools.cache
     def get_action(self, feature, xdiff=0, zdiff=0, shift=0):
-        return FakeReferencingGenericSpriteLayout(feature, (self.spritesheet(xdiff, shift),))
+        return FakeReferencingGenericSpriteLayout(feature, (self.spritesheet(xdiff=xdiff, zdiff=zdiff, shift=shift),))
 
     def get_default_graphics(self):
         return self
@@ -228,7 +236,7 @@ class LazySpriteSheet(CachedFunctorMixin):
 
     @functools.cache
     def get_action(self, xdiff, shift, feature):
-        return FakeReferencingGenericSpriteLayout(feature, (self.spritesheet(xdiff, shift),))
+        return FakeReferencingGenericSpriteLayout(feature, (self.spritesheet(xdiff=xdiff, shift=shift),))
 
     def get_default_graphics(self):
         return self
@@ -249,7 +257,7 @@ class LazyAlternatives(CachedFunctorMixin):
     def get_action(self, feature, xdiff=0, zdiff=0, shift=0):
         return FakeReferencingGenericSpriteLayout(
             feature,
-            tuple(x.spritesheet(xdiff, shift) for x in self.sprites),
+            tuple(x.spritesheet(xdiff=xdiff, shift=shift) for x in self.sprites),
             None if self.loading_sprites is None else tuple(x.spritesheet(xdiff, shift) for x in self.loading_sprites),
         )
 
