@@ -37,7 +37,7 @@ semitraversable_station = AStation(
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
-    non_traversable_tiles=0b00111100,
+    non_traversable_tiles=0b11,
     disabled_platforms=0b11,
     callbacks={
         "select_tile_layout": cb24_0.to_index(None),
@@ -53,7 +53,7 @@ semitraversable_station_no_side = AStation(
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
     cargo_threshold=40,
-    non_traversable_tiles=0b00111100,
+    non_traversable_tiles=0b11,
     disabled_platforms=0b111,
     callbacks={
         "select_tile_layout": cb24_1.to_index(None),
