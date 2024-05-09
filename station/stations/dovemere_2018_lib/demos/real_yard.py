@@ -1,5 +1,6 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import named_tiles, platform_s, track, gray_layout
+from station.stations.dovemere_2018_lib.layouts import named_tiles, platform_s, track
+from station.stations.platforms import named_tiles as platform_tiles
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 
@@ -25,7 +26,13 @@ near_lines = [
     c_n,
     make_line(platform_s.T, side_b_f, central, central_windowed, central_windowed_extender),
     make_line(platform_s, side_a_n, central, central_windowed, central_windowed_extender),
-    make_line(gray_layout, corner_platform, front_normal_platform, front_gate_platform, front_gate_extender_platform),
+    make_line(
+        platform_tiles.concourse_side_shed.T,
+        corner_platform,
+        front_normal_platform,
+        front_gate_platform,
+        front_gate_extender_platform,
+    ),
 ]
 
 far_lines = [[el.T for el in line] for line in near_lines[::-1]]
