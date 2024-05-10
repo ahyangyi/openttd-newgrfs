@@ -519,6 +519,7 @@ SideTriple("v_end_gate", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V).load()
 TraversablePlatform("v_central", BuildingSpriteSheetSymmetrical, "N", h_pos=V).load()
 
 HorizontalSingle("tiny", BuildingSpriteSheetSymmetrical, "H", h_pos=V).load()
+SideFull("tiny_untraversable", BuildingSpriteSheetSymmetrical, "H").load()
 SideTriple("tiny_asym", BuildingSpriteSheetSymmetricalX, "H", h_pos=TinyAsym).load()
 
 SideFull("irregular/turn", BuildingSpriteSheetFull, "T").load()
