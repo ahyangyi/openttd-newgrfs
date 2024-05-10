@@ -18,10 +18,9 @@ cb24_1 = make_vertical_switch(
 )
 
 single = make_row(tiny, h_end_gate_untraversable, h_end_untraversable, h_normal_full, h_gate_full, h_gate_extender)
-# XXX need "unreachable value" support
-cb14_0a = make_vertical_switch(lambda t, d: single if d == t == 0 else front if d == 0 else front.T if t == 0 else tiny)
+cb14_0a = make_vertical_switch(lambda t, d: single if d == t == 0 else front if d == 0 else front.T if t == 0 else None)
 cb14_0b = make_vertical_switch(
-    lambda t, d: single if d == t == 0 else front2 if d == 0 else front2.T if t == 0 else tiny
+    lambda t, d: single if d == t == 0 else front2 if d == 0 else front2.T if t == 0 else None
 )
 
 cb14a = StationTileSwitch(
