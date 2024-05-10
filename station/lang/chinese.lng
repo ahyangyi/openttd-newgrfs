@@ -1,6 +1,6 @@
 ##grflangid 0x56
-STR_GRF_NAME                    :中国包：站台与车站 - 芜湖 {WHITE}0.2.0-indev
-STR_GRF_DESC                    :本 NewGRF 是 {PUSH_COLOUR}{GOLD}中国{RED}包{SILVER}：站台与车站{POP_COLOUR} 的扩展包，提供基于{PUSH_COLOUR}{SILVER}芜湖站{POP_COLOUR}的 {PUSH_COLOUR}{GOLD}423{POP_COLOUR} 种模块化地块和 {PUSH_COLOUR}{GOLD}12{POP_COLOUR} 种车站模版。{}{}{PUSH_COLOUR}{SILVER}图形绘制者{POP_COLOUR}:{}Ahyangyi, NACHN.{}{PUSH_COLOUR}{SILVER}程序编写者{POP_COLOUR}:{}Ahyangyi{}在 {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR} 下分发。
+STR_GRF_NAME                    :中国包：车站 - 芜湖 {WHITE}0.2.0-indev
+STR_GRF_DESC                    :本 NewGRF 是 {PUSH_COLOUR}{GOLD}中国{RED}包{SILVER}：车站{POP_COLOUR} (CNS) 的扩展包，提供基于{PUSH_COLOUR}{SILVER}芜湖站{POP_COLOUR}的 {PUSH_COLOUR}{GOLD}423{POP_COLOUR} 种模块化地块和 {PUSH_COLOUR}{GOLD}12{POP_COLOUR} 种车站模版。{}{}{PUSH_COLOUR}{SILVER}图形绘制者{POP_COLOUR}:{}Ahyangyi, WenSim, NACHN.{}{PUSH_COLOUR}{SILVER}程序编写者{POP_COLOUR}:{}Ahyangyi{}在 {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR} 下分发。
 
 STR_STATION_DEFAULT                             :站房
 STR_STATION_UNTRAVERSABLE                       :站房（无轨道）
