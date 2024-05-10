@@ -16,9 +16,9 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
     named_ps as platform_ps,
-    cnsps_shed_d as platform,
-    cnsps_shed as platform_s,
-    cnsps_side_shed as platform_s_nt,
+    cns_shed_d as platform,
+    cns_shed as platform_s,
+    cns_side_shed as platform_s_nt,
     concourse as concourse_tile,
     platform_height,
     shed_height,
@@ -34,15 +34,15 @@ building_height = 48
 gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
 overpass_height = building_height - base_height
-np_pillar = platform_ps.cnsps_np_pillar
-np_pillar_building = platform_ps.cnsps_np_pillar_building
-np_pillar_central = platform_ps.cnsps_np_pillar_central
-plat = platform_ps.cnsps
-plat_pillar = platform_ps.cnsps_pillar
-plat_pillar_central = platform_ps.cnsps_pillar_central
-plat_nt = platform_ps.cnsps_side
-plat_shed = platform_ps.cnsps_shed_building
-plat_shed_v = platform_ps.cnsps_shed_building_v
+np_pillar = platform_ps.cns_np_pillar
+np_pillar_building = platform_ps.cns_np_pillar_building
+np_pillar_central = platform_ps.cns_np_pillar_central
+plat = platform_ps.cns
+plat_pillar = platform_ps.cns_pillar
+plat_pillar_central = platform_ps.cns_pillar_central
+plat_nt = platform_ps.cns_side
+plat_shed = platform_ps.cns_shed_building
+plat_shed_v = platform_ps.cns_shed_building_v
 concourse = platform_ps.concourse
 third = AChildSprite(gray_third, (0, 0))
 third_T = AChildSprite(gray_third.T, (0, 0))
@@ -92,10 +92,10 @@ class HPos:
     platform_back_cut: ALayout
 
 
-Normal = HPos(np_pillar, plat_pillar, platform_ps.cnsps_cut_pillar)
-Side = HPos(np_pillar_building, plat_shed, platform_ps.cnsps_cut_shed_building)
-V = HPos(np_pillar, plat_shed_v, platform_ps.cnsps_cut_shed_building_v)
-TinyAsym = HPos(np_pillar_central, plat_pillar_central, platform_ps.cnsps_cut_pillar_central)
+Normal = HPos(np_pillar, plat_pillar, platform_ps.cns_cut_pillar)
+Side = HPos(np_pillar_building, plat_shed, platform_ps.cns_cut_shed_building)
+V = HPos(np_pillar, plat_shed_v, platform_ps.cns_cut_shed_building_v)
+TinyAsym = HPos(np_pillar_central, plat_pillar_central, platform_ps.cns_cut_pillar_central)
 
 
 class LoadType:
