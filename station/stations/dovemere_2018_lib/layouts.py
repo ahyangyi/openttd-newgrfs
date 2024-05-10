@@ -380,6 +380,46 @@ class HorizontalTripleAsym(TraversableCorridor):
         SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
 
 
+class HorizontalQuadrupal(TraversableCorridor):
+    def __init__(self, *args, h_pos=Normal, force_corridor=False, make_platform=True, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.h_pos = h_pos
+        self.make_platform = make_platform
+        self.force_corridor = force_corridor
+
+    def do_work(self, v):
+        grounds = self.get_ground_sprites()
+        cur_np = self.h_pos.non_platform
+        cur_plat = self.h_pos.platform
+
+        f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
+
+        f1_symmetry = self.symmetry.break_y_symmetry()
+        f1v = v.discard_layers(("ground level - platform", "ground level - full", "entrace - t"), "third")
+        f1v = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
+        f1v.in_place_subset(f1_symmetry.render_indices())
+        f1 = f1_symmetry.create_variants(f1v.spritesheet(xdiff=16 - platform_width, xspan=platform_width))
+
+        plat_f1 = v.discard_layers(("ground level", "ground level - full", "entrace - t"), "platform")
+        plat_f1.in_place_subset(f1_symmetry.render_indices())
+
+        full_f1 = v.discard_layers(("ground level", "ground level - platform"), "full")
+
+        f1s = AParentSprite(f1, (16, platform_width, base_height), (0, 16 - platform_width, platform_height))
+        f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
+
+        self.register(ALayout(grounds, [plat_nt, plat_nt.T, f1s, f1s.T, f2s], True, notes=["third"]), "")
+        if not self.force_corridor:
+            self.register(ALayout(grounds, [plat, f1s, cur_np.T, f2s], True, notes=["third", "y"]), "_third")
+            self.register(
+                ALayout(grounds, [plat_nt, f1s, cur_plat.T, f2s], True, notes=["third", "y", "far"]), "_third_f"
+            )
+        if self.make_platform:
+            SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
+        SideFull((full_f1, f2), self.symmetry, self.internal_category, name=self.name + "_full").load()
+
+
 class SideDouble(LoadType):
     def do_work(self, v):
         f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
@@ -458,23 +498,28 @@ TraversablePlatform("side_c", BuildingSpriteSheetSymmetricalY, "C", h_pos=Side).
 TraversablePlatform("side_d", BuildingSpriteSheetSymmetricalY, "D", h_pos=Side).load()
 
 HorizontalSingle("h_end", BuildingSpriteSheetSymmetricalY, "H").load()
+SideFull("h_end_untraversable", BuildingSpriteSheetSymmetricalY, "H").load()
 SideTriple("h_end_asym", BuildingSpriteSheetFull, "H", h_pos=Side).load()
 SideTriple("h_end_asym_gate", BuildingSpriteSheetFull, "H", h_pos=Side).load()
 HorizontalSingle("h_end_gate", BuildingSpriteSheetSymmetricalY, "H", force_corridor=True).load()
+SideFull("h_end_gate_untraversable", BuildingSpriteSheetSymmetricalY, "H").load()
 HorizontalSingleAsym("h_end_gate_1", BuildingSpriteSheetFull, "H").load()
-HorizontalTriple("h_normal", BuildingSpriteSheetSymmetrical, "H").load()
-HorizontalSingle("h_gate", BuildingSpriteSheetSymmetricalY, "H", force_corridor=True).load()
+HorizontalQuadrupal("h_normal", BuildingSpriteSheetSymmetrical, "H").load()
+HorizontalQuadrupal("h_gate", BuildingSpriteSheetSymmetricalY, "H", force_corridor=True, make_platform=False).load()
 HorizontalTripleAsym("h_gate_1", BuildingSpriteSheetFull, "H").load()
-HorizontalSingle("h_gate_extender", BuildingSpriteSheetSymmetrical, "H", force_corridor=True).load()
+HorizontalQuadrupal(
+    "h_gate_extender", BuildingSpriteSheetSymmetrical, "H", force_corridor=True, make_platform=False
+).load()
 HorizontalTripleAsym("h_gate_extender_1", BuildingSpriteSheetSymmetricalX, "H").load()
-HorizontalSingle("h_windowed", BuildingSpriteSheetSymmetricalY, "H", force_corridor=True).load()
-HorizontalSingle("h_windowed_extender", BuildingSpriteSheetSymmetrical, "H", force_corridor=True).load()
+HorizontalTriple("h_windowed", BuildingSpriteSheetSymmetricalY, "H").load()
+HorizontalTriple("h_windowed_extender", BuildingSpriteSheetSymmetrical, "H").load()
 
 SideTriple("v_end", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V).load()
 SideTriple("v_end_gate", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V).load()
 TraversablePlatform("v_central", BuildingSpriteSheetSymmetrical, "N", h_pos=V).load()
 
 HorizontalSingle("tiny", BuildingSpriteSheetSymmetrical, "H", h_pos=V).load()
+SideFull("tiny_untraversable", BuildingSpriteSheetSymmetrical, "H").load()
 SideTriple("tiny_asym", BuildingSpriteSheetSymmetricalX, "H", h_pos=TinyAsym).load()
 
 SideFull("irregular/turn", BuildingSpriteSheetFull, "T").load()
