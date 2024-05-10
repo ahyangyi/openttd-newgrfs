@@ -191,9 +191,7 @@ the_stations = AMetaStation(
             translation_name=(
                 "CONCOURSE"
                 if "concourse" in entry.notes
-                else "PLATFORM"
-                if entry.traversable
-                else "PLATFORM_UNTRAVERSABLE"
+                else "PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE"
             ),
             layouts=[entry, entry.M],
             class_label=b"PLAT",
