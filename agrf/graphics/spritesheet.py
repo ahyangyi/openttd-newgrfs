@@ -86,7 +86,7 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
         return f"LazyAlternativeSprites<{self.voxel.name}:{self.part}>"
 
     def translate(self, xofs, yofs):
-        return LazyAlternativeSprites(self.voxel, self.part, [translate(s, xofs, yofs) for s in self.sprites])
+        return LazyAlternativeSprites(self.voxel, self.part, *[translate(s, xofs, yofs) for s in self.sprites])
 
 
 def spritesheet_template(

@@ -146,6 +146,9 @@ class AParentSprite:
         new_offset = (self.offset[0], 16 - self.offset[1] - self.extent[1], self.offset[2])
         return AParentSprite(self.sprite.T, self.extent, new_offset)
 
+    def translate(self, xofs, yofs):
+        return AParentSprite(self.sprite.translate(xofs, yofs), self.extent, self.offset)
+
     @property
     def sprites(self):
         return [self.sprite]
