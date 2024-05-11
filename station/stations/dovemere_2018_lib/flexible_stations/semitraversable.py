@@ -1,8 +1,8 @@
 import grf
 from station.lib import AStation, StationTileSwitch, make_vertical_switch
 from ..layouts import named_tiles, layouts
-from .common import determine_platform_odd, determine_platform_even, make_front_row, make_demo
-from .traversable import cb14_2, cb14_4, cb14_6, single
+from .common import determine_platform_odd, determine_platform_even, make_front_row, make_demo, make_row
+from .traversable import cb14_2, cb14_4, cb14_6
 
 
 named_tiles.globalize()
@@ -17,11 +17,12 @@ cb24_1 = make_vertical_switch(
     lambda t, d: 0 if t == 0 or d == 0 else {"n": 2, "f": 4, "d": 6}[determine_platform_even(t, d)], cb24=True
 )
 
-# FIXME need a real single
-# XXX need "unreachable value" support
-cb14_0a = make_vertical_switch(lambda t, d: single if d == t == 0 else front if d == 0 else front.T if t == 0 else tiny)
+single = make_row(
+    tiny_untraversable, h_end_gate_untraversable, h_end_untraversable, h_normal_full, h_gate_full, h_gate_extender_full
+)
+cb14_0a = make_vertical_switch(lambda t, d: single if d == t == 0 else front if d == 0 else front.T if t == 0 else None)
 cb14_0b = make_vertical_switch(
-    lambda t, d: single if d == t == 0 else front2 if d == 0 else front2.T if t == 0 else tiny
+    lambda t, d: single if d == t == 0 else front2 if d == 0 else front2.T if t == 0 else None
 )
 
 cb14a = StationTileSwitch(
