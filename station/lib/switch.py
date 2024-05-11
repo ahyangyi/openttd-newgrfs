@@ -9,10 +9,18 @@ def lookup(thing, w, h, x, y, t):
     return thing.lookup(w, h, x, y, t)
 
 
+def calc_mode(d):
+    value_count = {}
+    for v in d.values():
+        value_count[v] = value_count.get(v, 0) + 1
+    max_count = max(value_count.values())
+    return [v for v, c in value_count.items() if c == max_count][0]
+
+
 class StationTileSwitch:
     def __init__(self, var, ranges, cb24=False):
         self.var = var
-        self.ranges = ranges
+        self.ranges = {k: v for k, v in ranges.items() if v is not None}
         self.cb24 = cb24
         self.to_index_cache = {}
 
@@ -44,8 +52,13 @@ class StationTileSwitch:
     def to_index(self, sprite_list):
         if id(sprite_list) in self.to_index_cache:
             return self.to_index_cache[id(sprite_list)]
-        new_ranges = {k: v if isinstance(v, int) else v.to_index(sprite_list) for k, v in self.ranges.items()}
-        ret = Switch(ranges=new_ranges, default=min(new_ranges.items())[1], code=self.code)
+        mode = calc_mode(self.ranges)
+        f = lambda v: v if isinstance(v, int) else v.to_index(sprite_list)
+        new_ranges = {k: f(v) for k, v in self.ranges.items() if v != mode}
+        if len(new_ranges) == 0:
+            ret = f(mode)
+        else:
+            ret = Switch(ranges=new_ranges, default=f(mode), code=self.code)
         self.to_index_cache[id(sprite_list)] = ret
         return ret
 
