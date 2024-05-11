@@ -38,6 +38,29 @@ def guess_dimens(width, height, angle, bbox, z_scale):
     return height, delta, z
 
 
+def translate(sprite, xofs, yofs):
+    if isinstance(sprite, grf.FileSprite):
+        return grf.FileSprite(
+            sprite.file,
+            sprite.x,
+            sprite.y,
+            sprite.w,
+            sprite.h,
+            xofs=sprite.xofs + xofs,
+            yofs=sprite.yofs + yofs,
+            zoom=sprite.zoom,
+            bpp=sprite.bpp,
+            crop=sprite.crop,
+            name=sprite.name,
+            **sprite.kw,
+        )
+    if isinstance(sprite, grf.WithMask):
+        return grf.WithMask(
+            translate(sprite.sprite, xofs, yofs), translate(sprite.mask, xofs, yofs), name=sprite.name, mode=sprite.mode
+        )
+    assert False
+
+
 class LazyAlternativeSprites(grf.AlternativeSprites):
     def __init__(self, voxel, part, *sprites):
         super().__init__(*sprites)
@@ -61,6 +84,9 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
 
     def __repr__(self):
         return f"LazyAlternativeSprites<{self.voxel.name}:{self.part}>"
+
+    def translate(self, xofs, yofs):
+        return LazyAlternativeSprites(self.voxel, self.part, [translate(s, xofs, yofs) for s in self.sprites])
 
 
 def spritesheet_template(
