@@ -45,20 +45,12 @@ shed_meta = [
 def quickload(name):
     v = LazyVoxel(
         name,
-        prefix="station/voxels/render/cnsps",
-        voxel_getter=lambda path=f"station/voxels/cnsps/{name}.vox": path,
-        load_from="station/files/cnsps-gorender.json",
+        prefix="station/voxels/render/cns",
+        voxel_getter=lambda path=f"station/voxels/cns/{name}.vox": path,
+        load_from="station/files/cns-gorender.json",
     )
 
-    platform_components = {
-        "white",
-        "white_side",
-        "modernnarrow",
-        "modernnarrow_side",
-        "modernnarrow_cut",
-        "modernnarrow_high",
-        "modernnarrow_high_side",
-    }
+    platform_components = {"modernnarrow", "modernnarrow_side"}
     shed_components = {"shed", "shed_building", "shed_building_v", "pillar", "pillar_building", "pillar_central"}
 
     for platform_flavor, pbuildable, pkeeps, pheight in plat_meta:
@@ -140,9 +132,9 @@ def quickload(name):
 def simple_load(name):
     v = LazyVoxel(
         name,
-        prefix="station/voxels/render/cnsps",
-        voxel_getter=lambda path=f"station/voxels/cnsps/{name}.vox": path,
-        load_from="station/files/cnsps-gorender.json",
+        prefix="station/voxels/render/cns",
+        voxel_getter=lambda path=f"station/voxels/cns/{name}.vox": path,
+        load_from="station/files/cns-gorender.json",
     )
     concourse_components = {"modernnarrow_side", "modernnarrow_side_t"}
 
@@ -168,7 +160,7 @@ def simple_load(name):
             for shed_flavor, _, _, _, buildable in shed_meta:
                 if shed_flavor == "" or not buildable:
                     continue
-                shed = named_ps["cnsps_cut" + shed_flavor]
+                shed = named_ps["cns_cut" + shed_flavor]
                 for l, needs_symmetrical, extra_suffix in [([shed], False, ""), ([shed, shed.T], True, "_d")]:
                     if needs_symmetrical:
                         if concourse_flavor.endswith("_d"):
@@ -187,7 +179,7 @@ entries = []
 named_ps = AttrDict()
 named_tiles = AttrDict()
 
-quickload("cnsps")
+quickload("cns")
 simple_load("concourse")
 
 named_tiles.globalize()
@@ -199,9 +191,7 @@ the_stations = AMetaStation(
             translation_name=(
                 "CONCOURSE"
                 if "concourse" in entry.notes
-                else "PLATFORM"
-                if entry.traversable
-                else "PLATFORM_UNTRAVERSABLE"
+                else "PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE"
             ),
             layouts=[entry, entry.M],
             class_label=b"PLAT",
@@ -215,8 +205,8 @@ the_stations = AMetaStation(
     None,
     entries,
     [
-        Demo("Platform", [[cnsps], [cnsps_d], [cnsps.T]]),
-        Demo("Platform with concrete grounds", [[cnsps_side], [cnsps_d], [cnsps_side.T]]),
-        Demo("Platform with shed", [[cnsps_shed], [cnsps_shed_d], [cnsps_shed.T]]),
+        Demo("Platform", [[cns], [cns_d], [cns.T]]),
+        Demo("Platform with concrete grounds", [[cns_side], [cns_d], [cns_side.T]]),
+        Demo("Platform with shed", [[cns_shed], [cns_shed_d], [cns_shed.T]]),
     ],
 )
