@@ -7,10 +7,10 @@ STR_STATION_UNTRAVERSABLE                       :站房（无轨道）
 STR_STATION_PLATFORM                            :站台
 STR_STATION_PLATFORM_UNTRAVERSABLE              :站台（无轨道）
 STR_STATION_CONCOURSE                           :车站广场
-STR_STATION_FLEXIBLE_SIDE                       :自动站房（头尾有轨道）
-STR_STATION_FLEXIBLE_NO_SIDE                    :自动站房（头尾有轨道但无站台）
-STR_STATION_FLEXIBLE_UNTRAVERSABLE_SIDE         :自动站房（头尾无轨道，有侧式站台）
-STR_STATION_FLEXIBLE_UNTRAVERSABLE_NO_SIDE      :自动站房（头尾无轨道，无侧式站台）
+STR_STATION_FLEXIBLE_SIDE                       :自动站房（| 岛 | | 岛 | | 岛 |）
+STR_STATION_FLEXIBLE_NO_SIDE                    :自动站房（侧 | | 岛 | | 岛 | 侧）
+STR_STATION_FLEXIBLE_UNTRAVERSABLE_SIDE         :自动站房（厅侧 | | 岛 | | 岛 | | 侧厅）
+STR_STATION_FLEXIBLE_UNTRAVERSABLE_NO_SIDE      :自动站房（厅| 岛 | | 岛 | | 岛 | 厅）
 STR_STATION_FLEXIBLE_FRONT_SIDE                 :自动站房（线侧，前）
 STR_STATION_FLEXIBLE_BACK_SIDE                  :自动站房（线侧，后）
 STR_STATION_FLEXIBLE_FRONT_SIDE_NP              :自动站房（线侧，前，无站台）
