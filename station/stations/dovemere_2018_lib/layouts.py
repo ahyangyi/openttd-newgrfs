@@ -98,6 +98,21 @@ V = HPos(np_pillar, plat_shed_v, platform_ps.cns_cut_shed_building_v)
 TinyAsym = HPos(np_pillar_central, plat_pillar_central, platform_ps.cns_cut_pillar_central)
 
 
+def make_f2(v):
+    return v.discard_layers(
+        (
+            "ground level",
+            "ground level - platform",
+            "ground level - third",
+            "ground level - full",
+            "entrance",
+            "entrance - t",
+            "pillar",
+        ),
+        "f2",
+    )
+
+
 class LoadType:
     def __init__(self, source, symmetry, internal_category, name=None):
         self.source = source
@@ -194,7 +209,7 @@ class TwoFloorMixin:
             f1base, f2 = voxel
         else:
             f1base = f2base = voxel
-            f2v = f2base.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+            f2v = make_f2(f2base)
             f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
         f1v = f1base.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x, xspan=self.f1x))
@@ -212,7 +227,7 @@ class SideFull(TwoFloorMixin, SideBase):
             f1base, f2 = voxel
         else:
             f1base = f2base = voxel
-            f2v = f2base.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+            f2v = make_f2(f2base)
             f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
         f1v = f1base.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x))
@@ -260,7 +275,7 @@ class HorizontalSingle(TraversableCorridor):
         cur_np = self.h_pos.non_platform
         cur_plat = self.h_pos.platform
 
-        f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f2v = make_f2(v)
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         f1v = v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
@@ -287,7 +302,7 @@ class HorizontalSingleAsym(TraversableCorridor):
     def do_work(self, v):
         grounds = self.get_ground_sprites()
 
-        f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f2v = make_f2(v)
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         f1v = v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
@@ -318,7 +333,7 @@ class HorizontalTriple(TraversableCorridor):
     def do_work(self, v):
         grounds = self.get_ground_sprites()
 
-        f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f2v = make_f2(v)
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         f1_symmetry = self.symmetry.break_y_symmetry()
@@ -347,7 +362,7 @@ class HorizontalTripleAsym(TraversableCorridor):
     def do_work(self, v):
         grounds = self.get_ground_sprites()
 
-        f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f2v = make_f2(v)
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         f1_symmetry = self.symmetry.break_y_symmetry()
@@ -392,16 +407,16 @@ class HorizontalQuadrupal(TraversableCorridor):
         cur_np = self.h_pos.non_platform
         cur_plat = self.h_pos.platform
 
-        f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f2v = make_f2(v)
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         f1_symmetry = self.symmetry.break_y_symmetry()
-        f1v = v.discard_layers(("ground level - platform", "ground level - full", "entrace - t"), "third")
+        f1v = v.discard_layers(("ground level - platform", "ground level - full", "entrance - t"), "third")
         f1v = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         f1v.in_place_subset(f1_symmetry.render_indices())
         f1 = f1_symmetry.create_variants(f1v.spritesheet(xdiff=16 - platform_width, xspan=platform_width))
 
-        plat_f1 = v.discard_layers(("ground level", "ground level - full", "entrace - t"), "platform")
+        plat_f1 = v.discard_layers(("ground level", "ground level - full", "entrance - t"), "platform")
         plat_f1.in_place_subset(f1_symmetry.render_indices())
 
         full_f1 = v.discard_layers(("ground level", "ground level - platform"), "full")
@@ -422,7 +437,7 @@ class HorizontalQuadrupal(TraversableCorridor):
 
 class SideDouble(LoadType):
     def do_work(self, v):
-        f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f2v = make_f2(v)
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
         SideFull(
             (v.discard_layers(("ground level - platform",), "full"), f2),
@@ -444,7 +459,7 @@ class SideTriple(LoadType):
         self.h_pos = h_pos
 
     def do_work(self, v):
-        f2v = v.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+        f2v = make_f2(v)
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
         SideFull(
             (v.discard_layers(("ground level - platform", "ground level - third"), "full"), f2),
