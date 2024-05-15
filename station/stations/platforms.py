@@ -29,6 +29,9 @@ plat_meta = [
     ("", True, {"concrete"}, platform_height),
     ("_side", True, {"concrete_side"}, platform_height),
     ("_cut", False, {"concrete_cut"}, platform_height),
+    ("_brick", True, {"brick"}, platform_height),
+    ("_brick_side", True, {"brick_side"}, platform_height),
+    ("_brick_cut", False, {"brick_cut"}, platform_height),
 ]
 
 
@@ -48,6 +51,9 @@ shelter_meta = [
     ("_shelter", BuildingSpriteSheetSymmetricalX, {"shelter_1"}, shelter_height, True),
     ("_shelter_building", BuildingSpriteSheetFull, {"shelter_1_building"}, shelter_height, False),
     ("_shelter_building_v", BuildingSpriteSheetSymmetricalX, {"shelter_1_building_v"}, shelter_height, False),
+    ("_shelter_2", BuildingSpriteSheetSymmetricalX, {"shelter_2"}, shelter_height, True),
+    ("_shelter_2_building", BuildingSpriteSheetFull, {"shelter_2_building"}, shelter_height, False),
+    ("_shelter_2_building_v", BuildingSpriteSheetSymmetricalX, {"shelter_2_building_v"}, shelter_height, False),
     ("_pillar", BuildingSpriteSheetSymmetricalX, {"pillar"}, pillar_height, False),
     ("_pillar_building", BuildingSpriteSheetFull, {"pillar_building"}, pillar_height, False),
     ("_pillar_central", BuildingSpriteSheetSymmetricalX, {"pillar_central"}, pillar_height, False),
