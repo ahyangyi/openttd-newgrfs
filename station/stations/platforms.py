@@ -19,23 +19,35 @@ gray_ps = ground_ps.gray
 
 platform_height = 4
 platform_width = 5
-shed_height = 17
+shelter_height = 17
 pillar_height = 18
 
 
+platform_components = {"concrete", "concrete_side", "brick", "brick_side"}
 plat_meta = [
     ("_np", False, set(), 0),
-    ("", True, {"modernnarrow"}, platform_height),
-    ("_side", True, {"modernnarrow_side"}, platform_height),
-    ("_cut", False, {"modernnarrow_cut"}, platform_height),
+    ("", True, {"concrete"}, platform_height),
+    ("_side", True, {"concrete_side"}, platform_height),
+    ("_cut", False, {"concrete_cut"}, platform_height),
 ]
 
 
-shed_meta = [
+shelter_components = {
+    "shelter_1",
+    "shelter_1_building",
+    "shelter_1_building_v",
+    "shelter_2",
+    "shelter_2_building",
+    "shelter_2_building_v",
+    "pillar",
+    "pillar_building",
+    "pillar_central",
+}
+shelter_meta = [
     ("", BuildingSpriteSheetSymmetricalX, set(), 0, True),
-    ("_shed", BuildingSpriteSheetSymmetricalX, {"shed"}, shed_height, True),
-    ("_shed_building", BuildingSpriteSheetFull, {"shed_building"}, shed_height, False),
-    ("_shed_building_v", BuildingSpriteSheetSymmetricalX, {"shed_building_v"}, shed_height, False),
+    ("_shelter", BuildingSpriteSheetSymmetricalX, {"shelter_1"}, shelter_height, True),
+    ("_shelter_building", BuildingSpriteSheetFull, {"shelter_1_building"}, shelter_height, False),
+    ("_shelter_building_v", BuildingSpriteSheetSymmetricalX, {"shelter_1_building_v"}, shelter_height, False),
     ("_pillar", BuildingSpriteSheetSymmetricalX, {"pillar"}, pillar_height, False),
     ("_pillar_building", BuildingSpriteSheetFull, {"pillar_building"}, pillar_height, False),
     ("_pillar_central", BuildingSpriteSheetSymmetricalX, {"pillar_central"}, pillar_height, False),
@@ -50,18 +62,16 @@ def quickload(name):
         load_from="station/files/cns-gorender.json",
     )
 
-    platform_components = {"modernnarrow", "modernnarrow_side"}
-    shed_components = {"shed", "shed_building", "shed_building_v", "pillar", "pillar_building", "pillar_central"}
-
     for platform_flavor, pbuildable, pkeeps, pheight in plat_meta:
-        for shed_flavor, symmetry, skeeps, sheight, sbuildable in shed_meta:
-            if (platform_flavor, shed_flavor) == ("_np", ""):
+        for shelter_flavor, symmetry, skeeps, sheight, sbuildable in shelter_meta:
+            if (platform_flavor, shelter_flavor) == ("_np", ""):
                 # Don't create the "nothing" tile
                 continue
 
-            suffix = platform_flavor + shed_flavor
+            suffix = platform_flavor + shelter_flavor
             v2 = v.discard_layers(
-                tuple(sorted(tuple(platform_components - pkeeps) + tuple(shed_components - skeeps))), "subset" + suffix
+                tuple(sorted(tuple(platform_components - pkeeps) + tuple(shelter_components - skeeps))),
+                "subset" + suffix,
             )
             v2.in_place_subset(symmetry.render_indices())
             foundation_height = platform_height if platform_flavor == "_cut" else 0
@@ -89,13 +99,13 @@ def quickload(name):
 
     for platform_flavor, pbuildable, pkeeps, pheight in plat_meta:
         if pbuildable:
-            for shed_flavor, symmetry, skeeps, sheight, sbuildable in shed_meta:
+            for shelter_flavor, symmetry, skeeps, sheight, sbuildable in shelter_meta:
                 if sbuildable:
                     for platform_flavor_2, pbuildable_2, _, _ in plat_meta:
                         if pbuildable_2:
-                            for shed_flavor_2, _, _, sheight_2, sbuildable_2 in shed_meta:
+                            for shelter_flavor_2, _, _, sheight_2, sbuildable_2 in shelter_meta:
                                 if sbuildable_2 and (
-                                    (platform_flavor, shed_flavor) < (platform_flavor_2, shed_flavor_2)
+                                    (platform_flavor, shelter_flavor) < (platform_flavor_2, shelter_flavor_2)
                                 ):
                                     groundsprite = ADefaultGroundSprite(1012)
                                     cur_symmetry = BuildingSpriteSheetSymmetricalX
@@ -103,8 +113,8 @@ def quickload(name):
                                         ALayout(
                                             [groundsprite],
                                             [
-                                                named_ps[name + platform_flavor + shed_flavor],
-                                                named_ps[name + platform_flavor_2 + shed_flavor_2].T,
+                                                named_ps[name + platform_flavor + shelter_flavor],
+                                                named_ps[name + platform_flavor_2 + shelter_flavor_2].T,
                                             ],
                                             True,
                                         )
@@ -114,18 +124,18 @@ def quickload(name):
                                     named_tiles[
                                         name
                                         + platform_flavor
-                                        + shed_flavor
+                                        + shelter_flavor
                                         + "_and"
                                         + platform_flavor_2
-                                        + shed_flavor_2
+                                        + shelter_flavor_2
                                     ] = l
                                     named_tiles[
                                         name
                                         + platform_flavor_2
-                                        + shed_flavor_2
+                                        + shelter_flavor_2
                                         + "_and"
                                         + platform_flavor
-                                        + shed_flavor
+                                        + shelter_flavor
                                     ] = l.T
 
 
@@ -136,12 +146,12 @@ def simple_load(name):
         voxel_getter=lambda path=f"station/voxels/cns/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
     )
-    concourse_components = {"modernnarrow_side", "modernnarrow_side_t"}
+    concourse_components = {"concrete", "concrete_t"}
 
     for concourse_flavor, symmetry, ckeeps in [
         ("", BuildingSpriteSheetSymmetrical, set()),
-        ("_side", BuildingSpriteSheetSymmetricalX, {"modernnarrow_side"}),
-        ("_side_d", BuildingSpriteSheetSymmetrical, {"modernnarrow_side", "modernnarrow_side_t"}),
+        ("_side", BuildingSpriteSheetSymmetricalX, {"concrete"}),
+        ("_side_d", BuildingSpriteSheetSymmetrical, {"concrete", "concrete_t"}),
     ]:
         v2 = v.discard_layers(tuple(sorted(tuple(concourse_components - ckeeps))), "subset" + concourse_flavor)
         v2.in_place_subset(symmetry.render_indices())
@@ -157,11 +167,11 @@ def simple_load(name):
         named_tiles[name + concourse_flavor] = l
 
         if concourse_flavor != "":
-            for shed_flavor, _, _, _, buildable in shed_meta:
-                if shed_flavor == "" or not buildable:
+            for shelter_flavor, _, _, _, buildable in shelter_meta:
+                if shelter_flavor == "" or not buildable:
                     continue
-                shed = named_ps["cns_cut" + shed_flavor]
-                for l, needs_symmetrical, extra_suffix in [([shed], False, ""), ([shed, shed.T], True, "_d")]:
+                shelter = named_ps["cns_cut" + shelter_flavor]
+                for l, needs_symmetrical, extra_suffix in [([shelter], False, ""), ([shelter, shelter.T], True, "_d")]:
                     if needs_symmetrical:
                         if concourse_flavor.endswith("_d"):
                             cur_sym = symmetry
@@ -172,7 +182,7 @@ def simple_load(name):
                     var = cur_sym.get_all_variants(ALayout([groundsprite], l + [ps], False, notes={"concourse"}))
                     l = cur_sym.create_variants(var)
                     entries.extend(cur_sym.get_all_entries(l))
-                    named_tiles[name + concourse_flavor + shed_flavor + extra_suffix] = l
+                    named_tiles[name + concourse_flavor + shelter_flavor + extra_suffix] = l
 
 
 entries = []
@@ -191,9 +201,7 @@ the_stations = AMetaStation(
             translation_name=(
                 "CONCOURSE"
                 if "concourse" in entry.notes
-                else "PLATFORM"
-                if entry.traversable
-                else "PLATFORM_UNTRAVERSABLE"
+                else "PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE"
             ),
             layouts=[entry, entry.M],
             class_label=b"PLAT",
@@ -209,6 +217,6 @@ the_stations = AMetaStation(
     [
         Demo("Platform", [[cns], [cns_d], [cns.T]]),
         Demo("Platform with concrete grounds", [[cns_side], [cns_d], [cns_side.T]]),
-        Demo("Platform with shed", [[cns_shed], [cns_shed_d], [cns_shed.T]]),
+        Demo("Platform with shelter", [[cns_shelter], [cns_shelter_d], [cns_shelter.T]]),
     ],
 )

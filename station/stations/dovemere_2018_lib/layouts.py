@@ -16,12 +16,12 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
     named_ps as platform_ps,
-    cns_shed_d as platform,
-    cns_shed as platform_s,
-    cns_side_shed as platform_s_nt,
+    cns_shelter_d as platform,
+    cns_shelter as platform_s,
+    cns_side_shelter as platform_s_nt,
     concourse as concourse_tile,
     platform_height,
-    shed_height,
+    shelter_height,
     platform_width,
 )
 from station.stations.ground import named_ps as ground_ps, named_tiles as ground_tiles, gray, gray_third
@@ -95,8 +95,8 @@ def make_hpos(pillar_style, platform_style):
 
 
 Normal = make_hpos("", "_pillar")
-Side = make_hpos("_building", "_shed_building")
-V = make_hpos("", "_shed_building_v")
+Side = make_hpos("_building", "_shelter_building")
+V = make_hpos("", "_shelter_building_v")
 TinyAsym = make_hpos("_central", "_pillar_central")
 
 
