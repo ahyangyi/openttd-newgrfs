@@ -25,13 +25,13 @@ pillar_height = 18
 
 platform_components = {"concrete", "concrete_side", "brick", "brick_side"}
 plat_meta = [
-    ("_np", False, set(), 0),
-    ("", True, {"concrete"}, platform_height),
-    ("_side", True, {"concrete_side"}, platform_height),
-    ("_cut", False, {"concrete_cut"}, platform_height),
-    ("_brick", True, {"brick"}, platform_height),
-    ("_brick_side", True, {"brick_side"}, platform_height),
-    ("_brick_cut", False, {"brick_cut"}, platform_height),
+    ("_np", "", False, set(), 0),
+    ("", "concrete", True, {"concrete"}, platform_height),
+    ("_side", "concrete", True, {"concrete_side"}, platform_height),
+    ("_cut", "concrete", False, {"concrete_cut"}, platform_height),
+    ("_brick", "brick", True, {"brick"}, platform_height),
+    ("_brick_side", "brick", True, {"brick_side"}, platform_height),
+    ("_brick_cut", "brick", False, {"brick_cut"}, platform_height),
 ]
 
 
@@ -47,16 +47,30 @@ shelter_components = {
     "pillar_central",
 }
 shelter_meta = [
-    ("", BuildingSpriteSheetSymmetricalX, set(), 0, True),
-    ("_shelter", BuildingSpriteSheetSymmetricalX, {"shelter_1"}, shelter_height, True),
-    ("_shelter_building", BuildingSpriteSheetFull, {"shelter_1_building"}, shelter_height, False),
-    ("_shelter_building_v", BuildingSpriteSheetSymmetricalX, {"shelter_1_building_v"}, shelter_height, False),
-    ("_shelter_2", BuildingSpriteSheetSymmetricalX, {"shelter_2"}, shelter_height, True),
-    ("_shelter_2_building", BuildingSpriteSheetFull, {"shelter_2_building"}, shelter_height, False),
-    ("_shelter_2_building_v", BuildingSpriteSheetSymmetricalX, {"shelter_2_building_v"}, shelter_height, False),
-    ("_pillar", BuildingSpriteSheetSymmetricalX, {"pillar"}, pillar_height, False),
-    ("_pillar_building", BuildingSpriteSheetFull, {"pillar_building"}, pillar_height, False),
-    ("_pillar_central", BuildingSpriteSheetSymmetricalX, {"pillar_central"}, pillar_height, False),
+    ("", "", BuildingSpriteSheetSymmetricalX, set(), 0, True),
+    ("_shelter", "shelter_1", BuildingSpriteSheetSymmetricalX, {"shelter_1"}, shelter_height, True),
+    ("_shelter_building", "shelter_1", BuildingSpriteSheetFull, {"shelter_1_building"}, shelter_height, False),
+    (
+        "_shelter_building_v",
+        "shelter_1",
+        BuildingSpriteSheetSymmetricalX,
+        {"shelter_1_building_v"},
+        shelter_height,
+        False,
+    ),
+    ("_shelter_2", "shelter_2", BuildingSpriteSheetSymmetricalX, {"shelter_2"}, shelter_height, True),
+    ("_shelter_2_building", "shelter_2", BuildingSpriteSheetFull, {"shelter_2_building"}, shelter_height, False),
+    (
+        "_shelter_2_building_v",
+        "shelter_2",
+        BuildingSpriteSheetSymmetricalX,
+        {"shelter_2_building_v"},
+        shelter_height,
+        False,
+    ),
+    ("_pillar", "pillar", BuildingSpriteSheetSymmetricalX, {"pillar"}, pillar_height, False),
+    ("_pillar_building", "pillar", BuildingSpriteSheetFull, {"pillar_building"}, pillar_height, False),
+    ("_pillar_central", "pillar", BuildingSpriteSheetSymmetricalX, {"pillar_central"}, pillar_height, False),
 ]
 
 
@@ -68,8 +82,8 @@ def quickload(name):
         load_from="station/files/cns-gorender.json",
     )
 
-    for platform_flavor, pbuildable, pkeeps, pheight in plat_meta:
-        for shelter_flavor, symmetry, skeeps, sheight, sbuildable in shelter_meta:
+    for platform_flavor, _pclass, pbuildable, pkeeps, pheight in plat_meta:
+        for shelter_flavor, _sclass, symmetry, skeeps, sheight, sbuildable in shelter_meta:
             if (platform_flavor, shelter_flavor) == ("_np", ""):
                 # Don't create the "nothing" tile
                 continue
@@ -103,15 +117,17 @@ def quickload(name):
                     entries.extend(cur_symmetry.get_all_entries(l))
                 named_tiles[name + suffix + extra_suffix] = l
 
-    for platform_flavor, pbuildable, pkeeps, pheight in plat_meta:
+    for platform_flavor, pclass, pbuildable, pkeeps, pheight in plat_meta:
         if pbuildable:
-            for shelter_flavor, symmetry, skeeps, sheight, sbuildable in shelter_meta:
+            for shelter_flavor, sclass, symmetry, skeeps, sheight, sbuildable in shelter_meta:
                 if sbuildable:
-                    for platform_flavor_2, pbuildable_2, _, _ in plat_meta:
-                        if pbuildable_2:
-                            for shelter_flavor_2, _, _, sheight_2, sbuildable_2 in shelter_meta:
-                                if sbuildable_2 and (
-                                    (platform_flavor, shelter_flavor) < (platform_flavor_2, shelter_flavor_2)
+                    for platform_flavor_2, pclass2, pbuildable_2, _, _ in plat_meta:
+                        if pbuildable_2 and (pclass == "" or pclass2 == "" or pclass == pclass2):
+                            for shelter_flavor_2, sclass2, _, _, sheight_2, sbuildable_2 in shelter_meta:
+                                if (
+                                    sbuildable_2
+                                    and (sclass == "" or sclass2 == "" or sclass == sclass2)
+                                    and ((platform_flavor, shelter_flavor) < (platform_flavor_2, shelter_flavor_2))
                                 ):
                                     groundsprite = ADefaultGroundSprite(1012)
                                     cur_symmetry = BuildingSpriteSheetSymmetricalX
@@ -173,7 +189,7 @@ def simple_load(name):
         named_tiles[name + concourse_flavor] = l
 
         if concourse_flavor != "":
-            for shelter_flavor, _, _, _, buildable in shelter_meta:
+            for shelter_flavor, _, _, _, _, buildable in shelter_meta:
                 if shelter_flavor == "" or not buildable:
                     continue
                 shelter = named_ps["cns_cut" + shelter_flavor]
