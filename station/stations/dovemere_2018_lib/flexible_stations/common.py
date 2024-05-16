@@ -60,6 +60,7 @@ def make_front_row(suffix):
         for c in ["v_end_gate", "corner_gate", "corner", "front_normal", "front_gate", "front_gate_extender"]
     ]
     row[1] = make_vertical_switch(lambda t, d: named_tiles["corner_gate_2" + suffix] if t == 1 else row[1])
+    row[2] = make_vertical_switch(lambda t, d: named_tiles["corner_2" + suffix] if t == 1 else row[1])
     return make_row(*row)
 
 
