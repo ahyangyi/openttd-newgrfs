@@ -6,7 +6,7 @@ from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import traversable
 from .utils import h_merge
 
-platform_asym = platform_tiles.cns_side_and_shed
+platform_asym = platform_tiles.cns_side_and_shelter
 
 row_2 = h_merge(
     [traversable.cb14.demo(i, 2, traversable.cb24_0) for i in range(1, 5)], [[platform_asym.T], [platform_asym]]
