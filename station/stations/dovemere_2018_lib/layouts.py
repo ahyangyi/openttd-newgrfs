@@ -106,6 +106,7 @@ def make_f2(v):
             "ground level",
             "ground level - platform",
             "ground level - third",
+            "ground level - third - t",
             "entrance",
             "entrance - t",
             "pillar",
