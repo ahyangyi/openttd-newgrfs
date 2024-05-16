@@ -106,10 +106,10 @@ def make_f2(v):
             "ground level",
             "ground level - platform",
             "ground level - third",
-            "ground level - full",
             "entrance",
             "entrance - t",
             "pillar",
+            "pillar - t",
         ),
         "f2",
     )
@@ -353,15 +353,15 @@ class HorizontalQuadrupal(TraversableCorridor):
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         f1_symmetry = self.symmetry.break_y_symmetry()
-        f1v = v.discard_layers(("ground level - platform", "ground level - full", "entrance - t"), "third")
+        f1v = v.discard_layers(("ground level - platform", "ground level", "entrance - t", "pillar - t"), "third")
         f1v = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         f1v.in_place_subset(f1_symmetry.render_indices())
         f1 = f1_symmetry.create_variants(f1v.spritesheet(xdiff=16 - platform_width, xspan=platform_width))
 
-        plat_f1 = v.discard_layers(("ground level", "ground level - full", "entrance - t"), "platform")
+        plat_f1 = v.discard_layers(("ground level", "ground level - third", "entrance - t", "pillar - t"), "platform")
         plat_f1.in_place_subset(f1_symmetry.render_indices())
 
-        full_f1 = v.discard_layers(("ground level", "ground level - platform"), "full")
+        full_f1 = v.discard_layers(("ground level - third", "ground level - platform"), "full")
 
         f1s = AParentSprite(f1, (16, platform_width, base_height), (0, 16 - platform_width, platform_height))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
