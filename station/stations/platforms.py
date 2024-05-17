@@ -26,12 +26,11 @@ pillar_height = 18
 platform_components = {"concrete", "concrete_side", "brick", "brick_side"}
 plat_meta = [
     ("_np", "", False, set(), 0),
+    ("_cut", "", False, {"cut"}, platform_height),
     ("", "concrete", True, {"concrete"}, platform_height),
     ("_side", "concrete", True, {"concrete_side"}, platform_height),
-    ("_cut", "concrete", False, {"concrete_cut"}, platform_height),
     ("_brick", "brick", True, {"brick"}, platform_height),
     ("_brick_side", "brick", True, {"brick_side"}, platform_height),
-    ("_brick_cut", "brick", False, {"brick_cut"}, platform_height),
 ]
 
 
