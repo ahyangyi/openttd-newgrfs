@@ -226,12 +226,7 @@ class TwoFloorMixin:
         self.h_pos = h_pos
 
     def get_sprites(self, voxel):
-        if isinstance(voxel, tuple):
-            f1base, f2 = voxel
-        else:
-            f1base = f2base = voxel
-            f2v = make_f2(f2base)
-            f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
+        f1base, f2 = voxel
         f1v = f1base.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         f1 = self.symmetry.create_variants(f1v.spritesheet(xdiff=16 - self.f1x, xspan=self.f1x))
         return [
