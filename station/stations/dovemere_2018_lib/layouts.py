@@ -278,13 +278,21 @@ class HorizontalSingleAsym(TraversableCorridor):
         f2v = make_f2(v)
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
-        f1v = v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
-        f1vb = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/front.vox", "back")
-        f1vf = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/back.vox", "front")
         f1_symmetry = self.symmetry.break_y_symmetry()
-        f1vb.in_place_subset(f1_symmetry.render_indices())
+
+        f1vf = v.discard_layers(
+            ("ground level - platform", "ground level", "ground level - third - t", "entrance - t", "pillar - t"),
+            "thirdv",
+        )
+        f1vf = f1vf.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         f1vf.in_place_subset(f1_symmetry.render_indices())
         f1f = f1_symmetry.create_variants(f1vf.spritesheet(xdiff=16 - platform_width, xspan=platform_width))
+
+        f1vb = v.discard_layers(
+            ("ground level - platform", "ground level", "ground level - third", "entrance", "pillar"), "third_t"
+        )
+        f1vb = f1vb.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
+        f1vb.in_place_subset(f1_symmetry.render_indices())
         f1b = f1_symmetry.create_variants(f1vb.spritesheet(xdiff=0, xspan=platform_width))
 
         f1fs = AParentSprite(f1f, (16, platform_width, base_height), (0, 16 - platform_width, platform_height))
@@ -315,13 +323,19 @@ class HorizontalTripleAsym(TraversableCorridor):
         plat_f1 = v.discard_layers(("ground level",), "platform")
         plat_f1.in_place_subset(f1_symmetry.render_indices())
 
-        f1v = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
-        f1vb = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/front.vox", "back")
-        f1vf = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/back.vox", "front")
-        f1_symmetry = self.symmetry.break_y_symmetry()
-        f1vb.in_place_subset(f1_symmetry.render_indices())
+        f1vf = v.discard_layers(
+            ("ground level - platform", "ground level", "ground level - third - t", "entrance - t", "pillar - t"),
+            "thirdv",
+        )
+        f1vf = f1vf.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         f1vf.in_place_subset(f1_symmetry.render_indices())
         f1f = f1_symmetry.create_variants(f1vf.spritesheet(xdiff=16 - platform_width, xspan=platform_width))
+
+        f1vb = v.discard_layers(
+            ("ground level - platform", "ground level", "ground level - third", "entrance", "pillar"), "third_t"
+        )
+        f1vb = f1vb.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
+        f1vb.in_place_subset(f1_symmetry.render_indices())
         f1b = f1_symmetry.create_variants(f1vb.spritesheet(xdiff=0, xspan=platform_width))
 
         f1fs = AParentSprite(f1f, (16, platform_width, base_height), (0, 16 - platform_width, platform_height))
