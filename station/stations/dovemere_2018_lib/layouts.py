@@ -146,6 +146,10 @@ def register(l, symmetry, internal_category, name):
     named_tiles[name] = l
 
 
+solid_ground = [gray_ps]
+corridor_ground = [track_ground, third, third_T]
+
+
 class LoadType:
     def __init__(self, source, symmetry, internal_category, name=None):
         self.source = source
@@ -208,11 +212,6 @@ class TraversablePlatform(LoadType):
             self.register(ALayout(grounds, parents + [cur_plat, cur_np.T], True, notes=["near"]), "_n")
             self.register(ALayout(grounds, parents + [cur_np, cur_plat.T], True, notes=["far"]), "_f")
             self.register(ALayout(grounds, parents + [cur_plat, cur_plat.T], True, notes=["both"]))
-
-
-class TraversableCorridor(LoadType):
-    def get_ground_sprites(self):
-        return [track_ground, third, third_T]
 
 
 class SideBase(LoadType):
@@ -278,13 +277,12 @@ class SideThird(TwoFloorMixin, LoadType):
         self.register(ALayout(grounds, parents + [cur_plat, plat_nt], True, notes=["third", "far"]), "_f")
 
 
-class HorizontalSingleAsym(TraversableCorridor):
+class HorizontalSingleAsym(LoadType):
     def __init__(self, *args, h_pos=Normal, **kwargs):
         super().__init__(*args, **kwargs)
         self.h_pos = h_pos
 
     def do_work(self, v):
-        grounds = self.get_ground_sprites()
         cur_np = self.h_pos.non_platform
         cur_plat = self.h_pos.platform
 
@@ -300,18 +298,19 @@ class HorizontalSingleAsym(TraversableCorridor):
         f1bs = AParentSprite(f1b, (16, platform_width, base_height), (0, 0, platform_height))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
-        self.register(ALayout(grounds, [plat_nt, plat_nt.T, f1fs, f1bs, f2s], True), "")
+        self.register(ALayout(corridor_ground, [plat_nt, plat_nt.T, f1fs, f1bs, f2s], True), "")
         self.register(ALayout([track_ground, third], [plat, f1fs, cur_np.T, f2s], True, notes=["third", "y"]), "_third")
-        self.register(ALayout(grounds, [plat_nt, f1fs, f2s, cur_plat.T], True, notes=["third", "y", "far"]), "_third_f")
+        self.register(
+            ALayout(corridor_ground, [plat_nt, f1fs, f2s, cur_plat.T], True, notes=["third", "y", "far"]), "_third_f"
+        )
 
 
-class HorizontalTripleAsym(TraversableCorridor):
+class HorizontalTripleAsym(LoadType):
     def __init__(self, *args, h_pos=Normal, **kwargs):
         super().__init__(*args, **kwargs)
         self.h_pos = h_pos
 
     def do_work(self, v):
-        grounds = self.get_ground_sprites()
         cur_np = self.h_pos.non_platform
         cur_plat = self.h_pos.platform
 
@@ -331,7 +330,7 @@ class HorizontalTripleAsym(TraversableCorridor):
         f1bs = AParentSprite(f1b, (16, platform_width, base_height), (0, 0, platform_height))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
-        self.register(ALayout(grounds, [plat_nt, plat_nt.T, f1fs, f1bs, f2s], True), "")
+        self.register(ALayout(corridor_ground, [plat_nt, plat_nt.T, f1fs, f1bs, f2s], True), "")
         self.register(ALayout([track_ground, third], [plat, f1fs, cur_np.T, f2s], True, notes=["third", "y"]), "_third")
         self.register(
             ALayout([track_ground, third], [plat_nt, f1fs, cur_plat.T, f2s], True, notes=["third", "y", "far"]),
@@ -340,7 +339,7 @@ class HorizontalTripleAsym(TraversableCorridor):
         SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
 
 
-class HorizontalQuadrupal(TraversableCorridor):
+class HorizontalQuadrupal(LoadType):
     def __init__(self, *args, h_pos=Normal, force_corridor=False, make_platform=True, full=True, **kwargs):
         super().__init__(*args, **kwargs)
         self.h_pos = h_pos
@@ -349,7 +348,6 @@ class HorizontalQuadrupal(TraversableCorridor):
         self.full = full
 
     def do_work(self, v):
-        grounds = self.get_ground_sprites()
         cur_np = self.h_pos.non_platform
         cur_plat = self.h_pos.platform
 
@@ -370,11 +368,11 @@ class HorizontalQuadrupal(TraversableCorridor):
         f1s = AParentSprite(f1, (16, platform_width, base_height), (0, 16 - platform_width, platform_height))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
-        self.register(ALayout(grounds, [plat_nt, plat_nt.T, f1s, f1s.T, f2s], True, notes=["third"]), "")
+        self.register(ALayout(corridor_ground, [plat_nt, plat_nt.T, f1s, f1s.T, f2s], True, notes=["third"]), "")
         if not self.force_corridor:
-            self.register(ALayout(grounds, [plat, f1s, cur_np.T, f2s], True, notes=["third", "y"]), "_third")
+            self.register(ALayout(corridor_ground, [plat, f1s, cur_np.T, f2s], True, notes=["third", "y"]), "_third")
             self.register(
-                ALayout(grounds, [plat_nt, f1s, cur_plat.T, f2s], True, notes=["third", "y", "far"]), "_third_f"
+                ALayout(corridor_ground, [plat_nt, f1s, cur_plat.T, f2s], True, notes=["third", "y", "far"]), "_third_f"
             )
         if self.make_platform:
             SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
