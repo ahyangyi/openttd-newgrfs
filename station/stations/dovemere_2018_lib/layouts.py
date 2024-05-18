@@ -149,6 +149,7 @@ def register(l, symmetry, internal_category, name):
 solid_ground = [gray_ps]
 corridor_ground = [track_ground, third, third_T]
 one_side_ground = [track_ground, third]
+one_side_ground_t = [track_ground, third_T]
 empty_ground = [track_ground]
 
 
@@ -169,30 +170,36 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal):
         broken_symmetry = symmetry.break_y_symmetry()
         register(ALayout(empty_ground, [f2, cur_np, cur_np.T], True), symmetry, internal_category, name + "_x")
         register(
-            ALayout(empty_ground, [f2, cur_plat, cur_np.T], True, notes=["near"]),
+            ALayout(one_side_ground, [f2, cur_plat, cur_np.T], True, notes=["near"]),
             broken_symmetry,
             internal_category,
             name + "_n",
         )
         register(
-            ALayout(empty_ground, [f2, cur_plat, cur_plat.T], True, notes=["both"]), symmetry, internal_category, name
+            ALayout(corridor_ground, [f2, cur_plat, cur_plat.T], True, notes=["both"]),
+            symmetry,
+            internal_category,
+            name,
         )
     else:
         register(ALayout(empty_ground, [f2, cur_np, cur_np.T], True), symmetry, internal_category, name + "_x")
         register(
-            ALayout(empty_ground, [f2, cur_plat, cur_np.T], True, notes=["near"]),
+            ALayout(one_side_ground, [f2, cur_plat, cur_np.T], True, notes=["near"]),
             symmetry,
             internal_category,
             name + "_n",
         )
         register(
-            ALayout(empty_ground, [f2, cur_np, cur_plat.T], True, notes=["far"]),
+            ALayout(one_side_ground_t, [f2, cur_np, cur_plat.T], True, notes=["far"]),
             symmetry,
             internal_category,
             name + "_f",
         )
         register(
-            ALayout(empty_ground, [f2, cur_plat, cur_plat.T], True, notes=["both"]), symmetry, internal_category, name
+            ALayout(corridor_ground, [f2, cur_plat, cur_plat.T], True, notes=["both"]),
+            symmetry,
+            internal_category,
+            name,
         )
 
 
