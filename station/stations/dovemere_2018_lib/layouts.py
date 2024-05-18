@@ -148,6 +148,7 @@ def register(l, symmetry, internal_category, name):
 
 solid_ground = [gray_ps]
 corridor_ground = [track_ground, third, third_T]
+one_side_ground = [track_ground, third]
 
 
 class LoadType:
@@ -268,7 +269,7 @@ class SideThird(TwoFloorMixin, LoadType):
     f1x = platform_width
 
     def get_ground_sprites(self):
-        return [track_ground, third]
+        return one_side_ground
 
     def make_platform_variants(self, grounds, parents):
         cur_np = self.h_pos.non_platform.T
@@ -318,7 +319,7 @@ class HorizontalQuadrupal(LoadType):
         if not self.force_corridor:
             self.register(ALayout(corridor_ground, [plat, f1s, cur_np.T, f2s], True, notes=["third", "y"]), "_third")
             self.register(
-                ALayout(corridor_ground, [plat_nt, f1s, cur_plat.T, f2s], True, notes=["third", "y", "far"]), "_third_f"
+                ALayout(one_side_ground, [plat_nt, f1s, cur_plat.T, f2s], True, notes=["third", "y", "far"]), "_third_f"
             )
         if self.make_platform:
             SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
