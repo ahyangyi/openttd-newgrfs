@@ -5,7 +5,7 @@ from ..layouts import named_tiles, layouts, flexible_entries
 
 def make_demo(switch, w, h, preswitch=None):
     demo = Demo("", switch.demo(w, h, preswitch))
-    for i, var in enumerate([var for var in [demo, demo.M]]):
+    for i, var in enumerate([demo, demo.M]):
         sprite = grf.AlternativeSprites(
             *[
                 LayoutSprite(
@@ -60,6 +60,7 @@ def make_front_row(suffix):
         for c in ["v_end_gate", "corner_gate", "corner", "front_normal", "front_gate", "front_gate_extender"]
     ]
     row[1] = make_vertical_switch(lambda t, d: named_tiles["corner_gate_2" + suffix] if t == 1 else row[1])
+    row[2] = make_vertical_switch(lambda t, d: named_tiles["corner_2" + suffix] if t == 1 else row[2])
     return make_row(*row)
 
 

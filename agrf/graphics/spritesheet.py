@@ -3,6 +3,16 @@ import math
 from .misc import SCALE_TO_ZOOM
 
 
+__image_file_cache = {}
+
+
+def make_image_file(path):
+    if path in __image_file_cache:
+        return __image_file_cache[path]
+    __image_file_cache[path] = grf.ImageFile(path)
+    return __image_file_cache[path]
+
+
 def guess_dimens(width, height, angle, bbox, z_scale):
     radian = math.radians(angle)
     cos, sin = math.cos(radian), math.sin(radian)
@@ -29,14 +39,17 @@ def guess_dimens(width, height, angle, bbox, z_scale):
 
 
 class LazyAlternativeSprites(grf.AlternativeSprites):
-    def __init__(self, voxel, debug_info, *sprites):
+    def __init__(self, voxel, part, *sprites):
         super().__init__(*sprites)
         self.voxel = voxel
-        self.debug_info = debug_info
+        self.part = part
 
     def get_sprite(self, *, zoom=None, bpp=None):
         self.voxel.render()
         return super().get_sprite(zoom=zoom, bpp=bpp)
+
+    def get_fingerprint(self):
+        return {"name": self.voxel.name, "part": self.part, "prefix": self.voxel.prefix}
 
     def get_resources(self):
         self.voxel.render()
@@ -47,17 +60,19 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
         return super().get_resource_files()
 
     def __repr__(self):
-        return f"LazyAlternativeSprites<{self.voxel.name}:{self.debug_info}>"
+        return f"LazyAlternativeSprites<{self.voxel.name}:{self.part}>"
 
 
 def spritesheet_template(
     voxel,
     diff,
+    xspan,
     path,
     dimens,
     angles,
     bbox,
     deltas,
+    offsets,
     z_scale,
     bbox_joggle=None,
     bpps=(8, 32),
@@ -89,6 +104,11 @@ def spritesheet_template(
             xrel += deltas[direction][0] * diff * scale
             yrel += deltas[direction][1] * diff * scale
 
+        if road_mode and xspan != 16:
+            offset = 16 - xspan
+            xrel += offsets[direction][0] * offset * scale
+            yrel += offsets[direction][1] * offset * scale
+
         if bbox_joggle is not None:
             xrel += bbox_joggle[direction][0] * scale
             yrel += bbox_joggle[direction][1] * scale
@@ -103,11 +123,11 @@ def spritesheet_template(
     return [
         LazyAlternativeSprites(
             voxel,
-            f"{idx}",
+            idx,
             *(
                 with_optional_mask(
                     grf.FileSprite(
-                        grf.ImageFile(f"{path}_{scale}x_{bpp}bpp.png"),
+                        make_image_file(f"{path}_{scale}x_{bpp}bpp.png"),
                         (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale,
                         0,
                         guessed_dimens[i][0] * scale,
@@ -119,7 +139,7 @@ def spritesheet_template(
                     ),
                     (
                         grf.FileSprite(
-                            grf.ImageFile(f"{path}_{scale}x_mask.png"),
+                            make_image_file(f"{path}_{scale}x_mask.png"),
                             (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale,
                             0,
                             guessed_dimens[i][0] * scale,
