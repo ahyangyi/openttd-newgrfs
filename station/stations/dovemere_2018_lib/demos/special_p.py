@@ -14,9 +14,9 @@ special_demo_p = Demo(
         [
             h_end_corridor,
             h_windowed_corridor,
-            cross,
+            cross_corridor,
             h_windowed_extender_corridor,
-            cross,
+            cross_corridor,
             h_windowed_corridor.R,
             h_end_corridor.R,
         ],
