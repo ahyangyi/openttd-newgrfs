@@ -4,6 +4,7 @@ import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.magic import CachedFunctorMixin
 from agrf.utils import unique_tuple
+from grf.sprites import EmptySprite
 
 
 class ADefaultGroundSprite:
@@ -223,8 +224,6 @@ def is_in_front(a, b):
         return True
     return False
 
-
-from grf.sprites import EmptySprite
 
 empty_sprite_1 = EmptySprite()
 empty_sprite_2 = EmptySprite()
