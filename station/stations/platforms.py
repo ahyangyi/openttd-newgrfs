@@ -116,13 +116,13 @@ def quickload(name):
                     entries.extend(cur_symmetry.get_all_entries(l))
                 named_tiles[name + suffix + extra_suffix] = l
 
-    for platform_flavor, pclass, pbuildable, pkeeps, pheight in plat_meta:
+    for platform_flavor, pclass, pbuildable, _, _ in plat_meta:
         if pbuildable:
-            for shelter_flavor, sclass, symmetry, skeeps, sheight, sbuildable in shelter_meta:
+            for shelter_flavor, sclass, _, _, _, sbuildable in shelter_meta:
                 if sbuildable:
                     for platform_flavor_2, pclass2, pbuildable_2, _, _ in plat_meta:
                         if pbuildable_2 and (pclass == "" or pclass2 == "" or pclass == pclass2):
-                            for shelter_flavor_2, sclass2, _, _, sheight_2, sbuildable_2 in shelter_meta:
+                            for shelter_flavor_2, sclass2, _, _, _, sbuildable_2 in shelter_meta:
                                 if (
                                     sbuildable_2
                                     and (sclass == "" or sclass2 == "" or sclass == sclass2)
