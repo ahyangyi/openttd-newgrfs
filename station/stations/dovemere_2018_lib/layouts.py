@@ -305,47 +305,14 @@ class HorizontalSingleAsym(LoadType):
         )
 
 
-class HorizontalTripleAsym(LoadType):
-    def __init__(self, *args, h_pos=Normal, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.h_pos = h_pos
-
-    def do_work(self, v):
-        cur_np = self.h_pos.non_platform
-        cur_plat = self.h_pos.platform
-
-        f2v = make_f2(v)
-        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
-
-        f1_symmetry = self.symmetry.break_y_symmetry()
-        f1v = v.discard_layers(("ground level - platform",), "full")
-
-        plat_f1 = v.discard_layers(("ground level",), "platform")
-        plat_f1.in_place_subset(f1_symmetry.render_indices())
-
-        f1f = make_f1f(v, f1_symmetry)
-        f1b = make_f1b(v, f1_symmetry)
-
-        f1fs = AParentSprite(f1f, (16, platform_width, base_height), (0, 16 - platform_width, platform_height))
-        f1bs = AParentSprite(f1b, (16, platform_width, base_height), (0, 0, platform_height))
-        f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
-
-        self.register(ALayout(corridor_ground, [plat_nt, plat_nt.T, f1fs, f1bs, f2s], True), "")
-        self.register(ALayout([track_ground, third], [plat, f1fs, cur_np.T, f2s], True, notes=["third", "y"]), "_third")
-        self.register(
-            ALayout([track_ground, third], [plat_nt, f1fs, cur_plat.T, f2s], True, notes=["third", "y", "far"]),
-            "_third_f",
-        )
-        SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
-
-
 class HorizontalQuadrupal(LoadType):
-    def __init__(self, *args, h_pos=Normal, force_corridor=False, make_platform=True, full=True, **kwargs):
+    def __init__(self, *args, h_pos=Normal, force_corridor=False, make_platform=True, full=True, asym=False, **kwargs):
         super().__init__(*args, **kwargs)
         self.h_pos = h_pos
         self.make_platform = make_platform
         self.force_corridor = force_corridor
         self.full = full
+        self.asym = asym
 
     def do_work(self, v):
         cur_np = self.h_pos.non_platform
@@ -355,10 +322,11 @@ class HorizontalQuadrupal(LoadType):
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         f1_symmetry = self.symmetry.break_y_symmetry()
-        f1v = v.discard_layers(("ground level - platform", "ground level", "entrance - t", "pillar - t"), "third")
-        f1v = f1v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
-        f1v.in_place_subset(f1_symmetry.render_indices())
-        f1 = f1_symmetry.create_variants(f1v.spritesheet(xdiff=16 - platform_width, xspan=platform_width))
+        f1 = make_f1f(v, f1_symmetry)
+        if self.asym:
+            f1b = make_f1b(v, f1_symmetry)
+        else:
+            f1b = f1.T
 
         plat_f1 = v.discard_layers(("ground level", "ground level - third", "entrance - t", "pillar - t"), "platform")
         plat_f1.in_place_subset(f1_symmetry.render_indices())
@@ -366,9 +334,10 @@ class HorizontalQuadrupal(LoadType):
         full_f1 = v.discard_layers(("ground level - third", "ground level - platform"), "full")
 
         f1s = AParentSprite(f1, (16, platform_width, base_height), (0, 16 - platform_width, platform_height))
+        f1bs = AParentSprite(f1b, (16, platform_width, base_height), (0, 0, platform_height))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
-        self.register(ALayout(corridor_ground, [plat_nt, plat_nt.T, f1s, f1s.T, f2s], True, notes=["third"]), "")
+        self.register(ALayout(corridor_ground, [plat, plat.T, f1s, f1bs, f2s], True, notes=["third"]), "")
         if not self.force_corridor:
             self.register(ALayout(corridor_ground, [plat, f1s, cur_np.T, f2s], True, notes=["third", "y"]), "_third")
             self.register(
@@ -388,6 +357,11 @@ class HorizontalSingle(HorizontalQuadrupal):
 class HorizontalTriple(HorizontalQuadrupal):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, full=False, **kwargs)
+
+
+class HorizontalTripleAsym(HorizontalQuadrupal):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, asym=True, **kwargs)
 
 
 class SideTriple(LoadType):
