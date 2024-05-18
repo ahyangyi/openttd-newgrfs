@@ -128,7 +128,8 @@ def make_f1(v, subset, sym):
     v = v.discard_layers(tuple(all_f1_layers_set - keep_layers), subset)
     v = v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
     v.in_place_subset(sym.render_indices())
-    return sym.create_variants(v.spritesheet(xdiff=xdiff, xspan=xspan))
+    s = sym.create_variants(v.spritesheet(xdiff=xdiff, xspan=xspan))
+    return AParentSprite(s, (16, xspan, base_height), (0, xdiff, platform_height))
 
 
 def register(l, symmetry, internal_category, name):
@@ -308,15 +309,13 @@ class ALoader(LoadType):
             ("ground level - third", "ground level - third - t", "ground level - platform"), "full"
         )
 
-        f1s = AParentSprite(f1, (16, platform_width, base_height), (0, 16 - platform_width, platform_height))
-        f1bs = AParentSprite(f1b, (16, platform_width, base_height), (0, 0, platform_height))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
-        self.register(ALayout(corridor_ground, [plat, plat.T, f1s, f1bs, f2s], True, notes=["third"]), "_corridor")
+        self.register(ALayout(corridor_ground, [plat, plat.T, f1, f1b, f2s], True, notes=["third"]), "_corridor")
         if not self.force_corridor:
-            self.register(ALayout(one_side_ground, [plat, f1s, cur_np.T, f2s], True, notes=["third", "y"]), "_third")
+            self.register(ALayout(one_side_ground, [plat, f1, cur_np.T, f2s], True, notes=["third", "y"]), "_third")
             self.register(
-                ALayout(corridor_ground, [plat_nt, f1s, cur_plat.T, f2s], True, notes=["third", "y", "far"]), "_third_f"
+                ALayout(corridor_ground, [plat_nt, f1, cur_plat.T, f2s], True, notes=["third", "y", "far"]), "_third_f"
             )
         if self.make_platform:
             SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
