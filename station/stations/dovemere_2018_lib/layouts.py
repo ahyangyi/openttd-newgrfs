@@ -166,23 +166,19 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal):
     cur_np = h_pos.non_platform
     cur_plat = h_pos.platform
 
+    register(ALayout(empty_ground, [f2, cur_np, cur_np.T], True), symmetry, internal_category, name + "_empty")
+    register(
+        ALayout(corridor_ground, [f2, cur_plat, cur_plat.T], True, notes=["both"]), symmetry, internal_category, name
+    )
     if symmetry.is_symmetrical_y():
         broken_symmetry = symmetry.break_y_symmetry()
-        register(ALayout(empty_ground, [f2, cur_np, cur_np.T], True), symmetry, internal_category, name + "_x")
         register(
             ALayout(one_side_ground, [f2, cur_plat, cur_np.T], True, notes=["near"]),
             broken_symmetry,
             internal_category,
             name + "_n",
         )
-        register(
-            ALayout(corridor_ground, [f2, cur_plat, cur_plat.T], True, notes=["both"]),
-            symmetry,
-            internal_category,
-            name,
-        )
     else:
-        register(ALayout(empty_ground, [f2, cur_np, cur_np.T], True), symmetry, internal_category, name + "_x")
         register(
             ALayout(one_side_ground, [f2, cur_plat, cur_np.T], True, notes=["near"]),
             symmetry,
@@ -194,12 +190,6 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal):
             symmetry,
             internal_category,
             name + "_f",
-        )
-        register(
-            ALayout(corridor_ground, [f2, cur_plat, cur_plat.T], True, notes=["both"]),
-            symmetry,
-            internal_category,
-            name,
         )
 
 
