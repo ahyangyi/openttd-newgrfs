@@ -100,38 +100,35 @@ V = make_hpos("", "_shelter_building_v")
 TinyAsym = make_hpos("_central", "_pillar_central")
 
 
+all_f1_layers = (
+    "ground level",
+    "ground level - platform",
+    "ground level - third",
+    "ground level - third - t",
+    "entrance",
+    "entrance - t",
+    "pillar",
+    "pillar - t",
+)
+all_f1_layers_set = set(all_f1_layers)
+
+
+f1_subsets = {
+    "third": ({"ground level - third", "entrance", "pillar"}, 16 - platform_width, platform_width),
+    "third_t": ({"ground level - third - t", "entrance - t", "pillar - t"}, 0, platform_width),
+}
+
+
 def make_f2(v):
-    return v.discard_layers(
-        (
-            "ground level",
-            "ground level - platform",
-            "ground level - third",
-            "ground level - third - t",
-            "entrance",
-            "entrance - t",
-            "pillar",
-            "pillar - t",
-        ),
-        "f2",
-    )
+    return v.discard_layers(all_f1_layers, "f2")
 
 
-def make_f1f(v, sym):
-    f1vf = v.discard_layers(
-        ("ground level - platform", "ground level", "ground level - third - t", "entrance - t", "pillar - t"), "third"
-    )
-    f1vf = f1vf.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
-    f1vf.in_place_subset(sym.render_indices())
-    return sym.create_variants(f1vf.spritesheet(xdiff=16 - platform_width, xspan=platform_width))
-
-
-def make_f1b(v, sym):
-    f1vb = v.discard_layers(
-        ("ground level - platform", "ground level", "ground level - third", "entrance", "pillar"), "third_t"
-    )
-    f1vb = f1vb.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
-    f1vb.in_place_subset(sym.render_indices())
-    return sym.create_variants(f1vb.spritesheet(xdiff=0, xspan=platform_width))
+def make_f1(v, subset, sym):
+    keep_layers, xdiff, xspan = f1_subsets[subset]
+    v = v.discard_layers(tuple(all_f1_layers_set - keep_layers), subset)
+    v = v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
+    v.in_place_subset(sym.render_indices())
+    return sym.create_variants(v.spritesheet(xdiff=xdiff, xspan=xspan))
 
 
 def register(l, symmetry, internal_category, name):
@@ -295,9 +292,9 @@ class ALoader(LoadType):
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
         f1_symmetry = self.symmetry.break_y_symmetry()
-        f1 = make_f1f(v, f1_symmetry)
+        f1 = make_f1(v, "third", f1_symmetry)
         if self.asym:
-            f1b = make_f1b(v, f1_symmetry)
+            f1b = make_f1(v, "third_t", f1_symmetry)
         else:
             f1b = f1.T
 
