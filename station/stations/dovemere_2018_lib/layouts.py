@@ -419,7 +419,7 @@ SideTriple("tiny_asym", BuildingSpriteSheetSymmetricalX, "H", h_pos=TinyAsym).lo
 
 SideFull("irregular/turn", BuildingSpriteSheetFull, "T").load()
 SideFull("irregular/turn_gate", BuildingSpriteSheetFull, "T").load()
-SideTriple("irregular/tee", BuildingSpriteSheetSymmetricalX, "T", third=False).load()
+SideTriple("irregular/tee", BuildingSpriteSheetSymmetricalX, "T").load()
 SideFull("irregular/cross", BuildingSpriteSheetSymmetrical, "T").load()
 SideFull("irregular/double_corner", BuildingSpriteSheetRotational, "T").load()
 SideTriple("irregular/funnel", BuildingSpriteSheetFull, "T").load()
