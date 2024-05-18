@@ -300,10 +300,15 @@ class HorizontalQuadrupal(LoadType):
         else:
             f1b = f1.T
 
-        plat_f1 = v.discard_layers(("ground level", "ground level - third", "entrance - t", "pillar - t"), "platform")
+        plat_f1 = v.discard_layers(
+            ("ground level", "ground level - third", "ground level - third - t", "entrance - t", "pillar - t"),
+            "platform",
+        )
         plat_f1.in_place_subset(f1_symmetry.render_indices())
 
-        full_f1 = v.discard_layers(("ground level - third", "ground level - platform"), "full")
+        full_f1 = v.discard_layers(
+            ("ground level - third", "ground level - third - t", "ground level - platform"), "full"
+        )
 
         f1s = AParentSprite(f1, (16, platform_width, base_height), (0, 16 - platform_width, platform_height))
         f1bs = AParentSprite(f1b, (16, platform_width, base_height), (0, 0, platform_height))
