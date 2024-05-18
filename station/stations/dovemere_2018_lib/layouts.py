@@ -121,8 +121,10 @@ f1_subsets = {
 }
 
 
-def make_f2(v):
-    return v.discard_layers(all_f1_layers, "f2")
+def make_f2(v, symmetry):
+    v = v.discard_layers(all_f1_layers, "f2")
+    s = symmetry.create_variants(v.spritesheet(zdiff=base_height * 2))
+    return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
 
 def make_f1(v, subset, sym):
@@ -135,8 +137,6 @@ def make_f1(v, subset, sym):
 
 
 def register(l, symmetry, internal_category, name):
-    if "y" in l.notes:
-        symmetry = symmetry.break_y_symmetry()
     l = symmetry.get_all_variants(l)
     for i, layout in enumerate(l):
         layout.category = get_category(internal_category, i >= len(l) // 2, layout.notes, layout.traversable)
@@ -161,40 +161,38 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal):
         load_from="station/files/gorender.json",
         subset=symmetry.render_indices(),
     )
-    f2v = make_f2(v)
-    f2 = symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
-    f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
+    f2 = make_f2(v, symmetry)
     cur_np = h_pos.non_platform
     cur_plat = h_pos.platform
 
     if symmetry.is_symmetrical_y():
         broken_symmetry = symmetry.break_y_symmetry()
-        register(ALayout(empty_ground, [f2s, cur_np, cur_np.T], True), symmetry, internal_category, name + "_x")
+        register(ALayout(empty_ground, [f2, cur_np, cur_np.T], True), symmetry, internal_category, name + "_x")
         register(
-            ALayout(empty_ground, [f2s, cur_plat, cur_np.T], True, notes=["y", "near"]),
+            ALayout(empty_ground, [f2, cur_plat, cur_np.T], True, notes=["near"]),
             broken_symmetry,
             internal_category,
             name + "_n",
         )
         register(
-            ALayout(empty_ground, [f2s, cur_plat, cur_plat.T], True, notes=["both"]), symmetry, internal_category, name
+            ALayout(empty_ground, [f2, cur_plat, cur_plat.T], True, notes=["both"]), symmetry, internal_category, name
         )
     else:
-        register(ALayout(empty_ground, [f2s, cur_np, cur_np.T], True), symmetry, internal_category, name + "_x")
+        register(ALayout(empty_ground, [f2, cur_np, cur_np.T], True), symmetry, internal_category, name + "_x")
         register(
-            ALayout(empty_ground, [f2s, cur_plat, cur_np.T], True, notes=["near"]),
+            ALayout(empty_ground, [f2, cur_plat, cur_np.T], True, notes=["near"]),
             symmetry,
             internal_category,
             name + "_n",
         )
         register(
-            ALayout(empty_ground, [f2s, cur_np, cur_plat.T], True, notes=["far"]),
+            ALayout(empty_ground, [f2, cur_np, cur_plat.T], True, notes=["far"]),
             symmetry,
             internal_category,
             name + "_f",
         )
         register(
-            ALayout(empty_ground, [f2s, cur_plat, cur_plat.T], True, notes=["both"]), symmetry, internal_category, name
+            ALayout(empty_ground, [f2, cur_plat, cur_plat.T], True, notes=["both"]), symmetry, internal_category, name
         )
 
 
@@ -218,8 +216,7 @@ def load(
         load_from="station/files/gorender.json",
         subset=symmetry.render_indices(),
     )
-    f2v = make_f2(v)
-    f2 = symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
+    f2 = make_f2(v, symmetry)
 
     broken_symmetry = symmetry.break_y_symmetry()
     f1 = make_f1(v, "third", broken_symmetry)
@@ -231,24 +228,22 @@ def load(
     plat_f1 = make_f1(v, "platform", broken_symmetry)
     full_f1 = make_f1(v, "full", symmetry)
 
-    f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
-
     if corridor:
         register(
-            ALayout(corridor_ground, [plat, plat.T, f1, f1b, f2s], True, notes=["third"]),
+            ALayout(corridor_ground, [plat, plat.T, f1, f1b, f2], True, notes=["third"]),
             symmetry,
             internal_category,
             name + "_corridor",
         )
     if third:
         register(
-            ALayout(one_side_ground, [plat, f1, h_pos.non_platform.T, f2s], True, notes=["third", "y"]),
+            ALayout(one_side_ground, [plat, f1, h_pos.non_platform.T, f2], True, notes=["third"]),
             broken_symmetry,
             internal_category,
             name + "_third",
         )
         register(
-            ALayout(corridor_ground, [plat_nt, f1, h_pos.platform.T, f2s], True, notes=["third", "y", "far"]),
+            ALayout(corridor_ground, [plat_nt, f1, h_pos.platform.T, f2], True, notes=["third", "far"]),
             broken_symmetry,
             internal_category,
             name + "_third_f",
@@ -257,7 +252,7 @@ def load(
         register(
             ALayout(
                 solid_ground,
-                [plat_f1, f2s, h_pos.platform_back_cut.T, platform_ps.concourse_side.T],
+                [plat_f1, f2, h_pos.platform_back_cut.T, platform_ps.concourse_side.T],
                 False,
                 notes=["far"],
             ),
@@ -266,7 +261,7 @@ def load(
             name + "_platform",
         )
     if full:
-        register(ALayout(solid_ground, [full_f1, f2s, concourse], False), symmetry, internal_category, name)
+        register(ALayout(solid_ground, [full_f1, f2, concourse], False), symmetry, internal_category, name)
 
 
 def load_full(source, symmetry, internal_category, name=None, h_pos=Normal):
