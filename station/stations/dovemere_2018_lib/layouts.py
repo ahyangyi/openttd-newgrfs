@@ -117,6 +117,7 @@ f1_subsets = {
     "third": ({"ground level - third", "entrance", "pillar"}, 16 - platform_width, platform_width),
     "third_t": ({"ground level - third - t", "entrance - t", "pillar - t"}, 0, platform_width),
     "platform": ({"ground level - platform", "entrance", "pillar"}, platform_width, 16 - platform_width),
+    "full": ({"ground level", "entrance", "pillar", "entrance - t", "pillar - t"}, 0, 16),
 }
 
 
@@ -287,9 +288,6 @@ class ALoader(LoadType):
         self.asym = asym
 
     def do_work(self, v):
-        cur_np = self.h_pos.non_platform
-        cur_plat = self.h_pos.platform
-
         f2v = make_f2(v)
         f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
@@ -301,10 +299,7 @@ class ALoader(LoadType):
             f1b = f1.T
 
         plat_f1 = make_f1(v, "platform", f1_symmetry)
-
-        full_f1 = v.discard_layers(
-            ("ground level - third", "ground level - third - t", "ground level - platform"), "full"
-        )
+        full_f1 = make_f1(v, "full", self.symmetry)
 
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
@@ -316,13 +311,13 @@ class ALoader(LoadType):
         )
         if not self.force_corridor:
             register(
-                ALayout(one_side_ground, [plat, f1, cur_np.T, f2s], True, notes=["third", "y"]),
+                ALayout(one_side_ground, [plat, f1, self.h_pos.non_platform.T, f2s], True, notes=["third", "y"]),
                 f1_symmetry,
                 self.internal_category,
                 self.name + "_third",
             )
             register(
-                ALayout(corridor_ground, [plat_nt, f1, cur_plat.T, f2s], True, notes=["third", "y", "far"]),
+                ALayout(corridor_ground, [plat_nt, f1, self.h_pos.platform.T, f2s], True, notes=["third", "y", "far"]),
                 f1_symmetry,
                 self.internal_category,
                 self.name + "_third_f",
@@ -340,7 +335,12 @@ class ALoader(LoadType):
                 self.name + "_platform",
             )
         if self.full:
-            SideFull((full_f1, f2), self.symmetry, self.internal_category, name=self.name).load()
+            register(
+                ALayout(solid_ground, [full_f1, f2s, concourse], False),
+                self.symmetry,
+                self.internal_category,
+                self.name,
+            )
 
 
 class HorizontalSingle(ALoader):
