@@ -23,7 +23,7 @@ shelter_height = 17
 pillar_height = 18
 
 
-platform_components = {"concrete", "concrete_side", "brick", "brick_side"}
+platform_components = {"cut", "concrete", "concrete_side", "brick", "brick_side"}
 plat_meta = [
     ("_np", "", False, set(), 0),
     ("_cut", "", False, {"cut"}, platform_height),
