@@ -149,70 +149,53 @@ def register(l, symmetry, internal_category, name):
 solid_ground = [gray_ps]
 corridor_ground = [track_ground, third, third_T]
 one_side_ground = [track_ground, third]
+empty_ground = [track_ground]
 
 
-class LoadType:
-    def __init__(self, source, symmetry, internal_category, name=None):
-        self.source = source
-        self.symmetry = symmetry
-        self.internal_category = internal_category
-        self.name = name or source.split("/")[-1]
+def load_central(source, symmetry, internal_category, name=None, h_pos=Normal):
+    name = name or source.split("/")[-1]
+    v = LazyVoxel(
+        os.path.basename(source),
+        prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(source)),
+        voxel_getter=lambda path=f"station/voxels/dovemere_2018/{source}.vox": path,
+        load_from="station/files/gorender.json",
+        subset=symmetry.render_indices(),
+    )
+    f2v = make_f2(v)
+    f2 = symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
+    f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
+    cur_np = h_pos.non_platform
+    cur_plat = h_pos.platform
 
-    def get_sprites(self, voxel):
-        sprite = self.symmetry.create_variants(voxel.spritesheet())
-        return [AParentSprite(sprite, (16, 16, building_height), (0, 0, platform_height)), concourse]
-
-    def make_platform_variants(self, grounds, parents):
-        self.register(ALayout(grounds, parents, True))
-
-    def load(self):
-        if isinstance(self.source, str):
-            v = LazyVoxel(
-                os.path.basename(self.source),
-                prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(self.source)),
-                voxel_getter=lambda path=f"station/voxels/dovemere_2018/{self.source}.vox": path,
-                load_from="station/files/gorender.json",
-                subset=self.symmetry.render_indices(),
-            )
-        else:
-            v = self.source
-        self.do_work(v)
-
-    def do_work(self, v):
-        grounds = self.get_ground_sprites()
-        sprites = self.get_sprites(v)
-
-        self.make_platform_variants(grounds, sprites)
-
-    def register(self, l, suffix=""):
-        register(l, self.symmetry, self.internal_category, self.name + suffix)
-
-
-class TraversablePlatform(LoadType):
-    def __init__(self, *args, h_pos=Normal, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.h_pos = h_pos
-
-    def get_ground_sprites(self):
-        return [track_ground]
-
-    def get_sprites(self, voxel):
-        sprite = self.symmetry.create_variants(voxel.spritesheet(zdiff=base_height * 2))
-        return [AParentSprite(sprite, (16, 16, overpass_height), (0, 0, base_height + platform_height))]
-
-    def make_platform_variants(self, grounds, parents):
-        cur_np = self.h_pos.non_platform
-        cur_plat = self.h_pos.platform
-
-        if self.symmetry.is_symmetrical_y():
-            self.register(ALayout(grounds, parents + [cur_np, cur_np.T], True), "_x")
-            self.register(ALayout(grounds, parents + [cur_plat, cur_np.T], True, notes=["y", "near"]), "_n")
-            self.register(ALayout(grounds, parents + [cur_plat, cur_plat.T], True, notes=["both"]))
-        else:
-            self.register(ALayout(grounds, parents + [cur_np, cur_np.T], True), "_x")
-            self.register(ALayout(grounds, parents + [cur_plat, cur_np.T], True, notes=["near"]), "_n")
-            self.register(ALayout(grounds, parents + [cur_np, cur_plat.T], True, notes=["far"]), "_f")
-            self.register(ALayout(grounds, parents + [cur_plat, cur_plat.T], True, notes=["both"]))
+    if symmetry.is_symmetrical_y():
+        broken_symmetry = symmetry.break_y_symmetry()
+        register(ALayout(empty_ground, [f2s, cur_np, cur_np.T], True), symmetry, internal_category, name + "_x")
+        register(
+            ALayout(empty_ground, [f2s, cur_plat, cur_np.T], True, notes=["y", "near"]),
+            broken_symmetry,
+            internal_category,
+            name + "_n",
+        )
+        register(
+            ALayout(empty_ground, [f2s, cur_plat, cur_plat.T], True, notes=["both"]), symmetry, internal_category, name
+        )
+    else:
+        register(ALayout(empty_ground, [f2s, cur_np, cur_np.T], True), symmetry, internal_category, name + "_x")
+        register(
+            ALayout(empty_ground, [f2s, cur_plat, cur_np.T], True, notes=["near"]),
+            symmetry,
+            internal_category,
+            name + "_n",
+        )
+        register(
+            ALayout(empty_ground, [f2s, cur_np, cur_plat.T], True, notes=["far"]),
+            symmetry,
+            internal_category,
+            name + "_f",
+        )
+        register(
+            ALayout(empty_ground, [f2s, cur_plat, cur_plat.T], True, notes=["both"]), symmetry, internal_category, name
+        )
 
 
 def load(
@@ -238,14 +221,14 @@ def load(
     f2v = make_f2(v)
     f2 = symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
 
-    f1_symmetry = symmetry.break_y_symmetry()
-    f1 = make_f1(v, "third", f1_symmetry)
+    broken_symmetry = symmetry.break_y_symmetry()
+    f1 = make_f1(v, "third", broken_symmetry)
     if asym:
-        f1b = make_f1(v, "third_t", f1_symmetry)
+        f1b = make_f1(v, "third_t", broken_symmetry)
     else:
         f1b = f1.T
 
-    plat_f1 = make_f1(v, "platform", f1_symmetry)
+    plat_f1 = make_f1(v, "platform", broken_symmetry)
     full_f1 = make_f1(v, "full", symmetry)
 
     f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
@@ -260,13 +243,13 @@ def load(
     if third:
         register(
             ALayout(one_side_ground, [plat, f1, h_pos.non_platform.T, f2s], True, notes=["third", "y"]),
-            f1_symmetry,
+            broken_symmetry,
             internal_category,
             name + "_third",
         )
         register(
             ALayout(corridor_ground, [plat_nt, f1, h_pos.platform.T, f2s], True, notes=["third", "y", "far"]),
-            f1_symmetry,
+            broken_symmetry,
             internal_category,
             name + "_third_f",
         )
@@ -278,7 +261,7 @@ def load(
                 False,
                 notes=["far"],
             ),
-            f1_symmetry,
+            broken_symmetry,
             internal_category,
             name + "_platform",
         )
@@ -304,20 +287,20 @@ load("corner_gate", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False)
 load("corner_2", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False)
 load("corner_gate_2", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False)
 
-TraversablePlatform("central", BuildingSpriteSheetSymmetrical, "N").load()
-TraversablePlatform("central_windowed", BuildingSpriteSheetSymmetricalY, "N").load()
-TraversablePlatform("central_windowed_extender", BuildingSpriteSheetSymmetrical, "N").load()
+load_central("central", BuildingSpriteSheetSymmetrical, "N")
+load_central("central_windowed", BuildingSpriteSheetSymmetricalY, "N")
+load_central("central_windowed_extender", BuildingSpriteSheetSymmetrical, "N")
 
-TraversablePlatform("side_a", BuildingSpriteSheetFull, "A", h_pos=Side).load()
-TraversablePlatform("side_a_windowed", BuildingSpriteSheetFull, "A", h_pos=Side).load()
-TraversablePlatform("side_a2", BuildingSpriteSheetSymmetricalY, "A", h_pos=Side).load()
-TraversablePlatform("side_a2_windowed", BuildingSpriteSheetSymmetricalY, "A", h_pos=Side).load()
-TraversablePlatform("side_a3", BuildingSpriteSheetFull, "A", h_pos=Side).load()
-TraversablePlatform("side_a3_windowed", BuildingSpriteSheetFull, "A", h_pos=Side).load()
-TraversablePlatform("side_b", BuildingSpriteSheetFull, "B", h_pos=Side).load()
-TraversablePlatform("side_b2", BuildingSpriteSheetSymmetricalY, "B", h_pos=Side).load()
-TraversablePlatform("side_c", BuildingSpriteSheetSymmetricalY, "C", h_pos=Side).load()
-TraversablePlatform("side_d", BuildingSpriteSheetSymmetricalY, "D", h_pos=Side).load()
+load_central("side_a", BuildingSpriteSheetFull, "A", h_pos=Side)
+load_central("side_a_windowed", BuildingSpriteSheetFull, "A", h_pos=Side)
+load_central("side_a2", BuildingSpriteSheetSymmetricalY, "A", h_pos=Side)
+load_central("side_a2_windowed", BuildingSpriteSheetSymmetricalY, "A", h_pos=Side)
+load_central("side_a3", BuildingSpriteSheetFull, "A", h_pos=Side)
+load_central("side_a3_windowed", BuildingSpriteSheetFull, "A", h_pos=Side)
+load_central("side_b", BuildingSpriteSheetFull, "B", h_pos=Side)
+load_central("side_b2", BuildingSpriteSheetSymmetricalY, "B", h_pos=Side)
+load_central("side_c", BuildingSpriteSheetSymmetricalY, "C", h_pos=Side)
+load_central("side_d", BuildingSpriteSheetSymmetricalY, "D", h_pos=Side)
 
 load("h_end", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False)
 load_full("h_end_untraversable", BuildingSpriteSheetSymmetricalY, "H")
@@ -336,7 +319,7 @@ load("h_windowed_extender", BuildingSpriteSheetSymmetrical, "H")
 
 load("v_end", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V, corridor=False)
 load("v_end_gate", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V, corridor=False)
-TraversablePlatform("v_central", BuildingSpriteSheetSymmetrical, "N", h_pos=V).load()
+load_central("v_central", BuildingSpriteSheetSymmetrical, "N", h_pos=V)
 
 load("tiny", BuildingSpriteSheetSymmetrical, "H", h_pos=V, full=False, platform=False)
 load_full("tiny_untraversable", BuildingSpriteSheetSymmetrical, "H")
