@@ -21,7 +21,9 @@ def get_side_index(l, r):
 
 def get_side_index_2(l, r):
     # FIXME: a mixture of "trackless" and "track" tiles
-    return horizontal_layout(l, r, tiny_asym, h_end_asym_gate, h_end_asym, h_normal_full, h_gate_1, h_gate_extender_1)
+    return horizontal_layout(
+        l, r, tiny_asym, h_end_asym_gate, h_end_asym, h_normal_full, h_gate_1_full, h_gate_extender_1_full
+    )
 
 
 cb14 = make_horizontal_switch(get_side_index)

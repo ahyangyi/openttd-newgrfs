@@ -359,11 +359,6 @@ class HorizontalTriple(HorizontalQuadrupal):
         super().__init__(*args, full=False, **kwargs)
 
 
-class HorizontalTripleAsym(HorizontalQuadrupal):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, asym=True, **kwargs)
-
-
 class SideTriple(LoadType):
     def __init__(self, *args, h_pos=Normal, third=True, **kwargs):
         super().__init__(*args, **kwargs)
@@ -434,11 +429,11 @@ SideFull("h_end_gate_untraversable", BuildingSpriteSheetSymmetricalY, "H").load(
 HorizontalSingleAsym("h_end_gate_1", BuildingSpriteSheetFull, "H").load()
 HorizontalQuadrupal("h_normal", BuildingSpriteSheetSymmetrical, "H").load()
 HorizontalQuadrupal("h_gate", BuildingSpriteSheetSymmetricalY, "H", force_corridor=True, make_platform=False).load()
-HorizontalTripleAsym("h_gate_1", BuildingSpriteSheetFull, "H").load()
+HorizontalQuadrupal("h_gate_1", BuildingSpriteSheetFull, "H", asym=True).load()
 HorizontalQuadrupal(
     "h_gate_extender", BuildingSpriteSheetSymmetrical, "H", force_corridor=True, make_platform=False
 ).load()
-HorizontalTripleAsym("h_gate_extender_1", BuildingSpriteSheetSymmetricalX, "H").load()
+HorizontalQuadrupal("h_gate_extender_1", BuildingSpriteSheetSymmetricalX, "H", asym=True).load()
 HorizontalTriple("h_windowed", BuildingSpriteSheetSymmetricalY, "H").load()
 HorizontalTriple("h_windowed_extender", BuildingSpriteSheetSymmetrical, "H").load()
 
