@@ -277,34 +277,6 @@ class SideThird(TwoFloorMixin, LoadType):
         self.register(ALayout(grounds, parents + [cur_plat, plat_nt], True, notes=["third", "far"]), "_f")
 
 
-class HorizontalSingleAsym(LoadType):
-    def __init__(self, *args, h_pos=Normal, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.h_pos = h_pos
-
-    def do_work(self, v):
-        cur_np = self.h_pos.non_platform
-        cur_plat = self.h_pos.platform
-
-        f2v = make_f2(v)
-        f2 = self.symmetry.create_variants(f2v.spritesheet(zdiff=base_height * 2))
-
-        f1_symmetry = self.symmetry.break_y_symmetry()
-
-        f1f = make_f1f(v, f1_symmetry)
-        f1b = make_f1b(v, f1_symmetry)
-
-        f1fs = AParentSprite(f1f, (16, platform_width, base_height), (0, 16 - platform_width, platform_height))
-        f1bs = AParentSprite(f1b, (16, platform_width, base_height), (0, 0, platform_height))
-        f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
-
-        self.register(ALayout(corridor_ground, [plat_nt, plat_nt.T, f1fs, f1bs, f2s], True), "")
-        self.register(ALayout([track_ground, third], [plat, f1fs, cur_np.T, f2s], True, notes=["third", "y"]), "_third")
-        self.register(
-            ALayout(corridor_ground, [plat_nt, f1fs, f2s, cur_plat.T], True, notes=["third", "y", "far"]), "_third_f"
-        )
-
-
 class HorizontalQuadrupal(LoadType):
     def __init__(self, *args, h_pos=Normal, force_corridor=False, make_platform=True, full=True, asym=False, **kwargs):
         super().__init__(*args, **kwargs)
@@ -426,7 +398,7 @@ SideTriple("h_end_asym", BuildingSpriteSheetFull, "H", h_pos=Side).load()
 SideTriple("h_end_asym_gate", BuildingSpriteSheetFull, "H", h_pos=Side).load()
 HorizontalSingle("h_end_gate", BuildingSpriteSheetSymmetricalY, "H", force_corridor=True).load()
 SideFull("h_end_gate_untraversable", BuildingSpriteSheetSymmetricalY, "H").load()
-HorizontalSingleAsym("h_end_gate_1", BuildingSpriteSheetFull, "H").load()
+HorizontalQuadrupal("h_end_gate_1", BuildingSpriteSheetFull, "H", asym=True, make_platform=False).load()
 HorizontalQuadrupal("h_normal", BuildingSpriteSheetSymmetrical, "H").load()
 HorizontalQuadrupal("h_gate", BuildingSpriteSheetSymmetricalY, "H", force_corridor=True, make_platform=False).load()
 HorizontalQuadrupal("h_gate_1", BuildingSpriteSheetFull, "H", asym=True).load()
