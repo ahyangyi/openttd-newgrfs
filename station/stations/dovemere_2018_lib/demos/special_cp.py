@@ -10,7 +10,7 @@ nt = platform_tiles.concourse_side_shelter
 special_demo_cp = Demo(
     "Irregular 7×7 station layout",
     [
-        [h_end, tee.T, h_normal, turn.T.R, None, None, None],
+        [h_end_corridor, tee.T, h_normal_corridor, turn.T.R, None, None, None],
         [platform_s, v_central_n, platform_s, v_central_n, platform, platform, platform],
         [platform_s.T, v_central_n.T, platform_s.T, v_central_n.T, platform, platform, platform],
         [platform_s, v_central_n, platform_s, v_central_n, corner.T, front_normal.T, corner.T.R],

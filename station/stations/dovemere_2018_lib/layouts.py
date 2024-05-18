@@ -315,7 +315,7 @@ class ALoader(LoadType):
         f1bs = AParentSprite(f1b, (16, platform_width, base_height), (0, 0, platform_height))
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
-        self.register(ALayout(corridor_ground, [plat, plat.T, f1s, f1bs, f2s], True, notes=["third"]), "")
+        self.register(ALayout(corridor_ground, [plat, plat.T, f1s, f1bs, f2s], True, notes=["third"]), "_corridor")
         if not self.force_corridor:
             self.register(ALayout(one_side_ground, [plat, f1s, cur_np.T, f2s], True, notes=["third", "y"]), "_third")
             self.register(
@@ -324,7 +324,7 @@ class ALoader(LoadType):
         if self.make_platform:
             SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
         if self.full:
-            SideFull((full_f1, f2), self.symmetry, self.internal_category, name=self.name + "_full").load()
+            SideFull((full_f1, f2), self.symmetry, self.internal_category, name=self.name).load()
 
 
 class HorizontalSingle(ALoader):
