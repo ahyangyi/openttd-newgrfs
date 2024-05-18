@@ -278,7 +278,7 @@ class SideThird(TwoFloorMixin, LoadType):
         self.register(ALayout(grounds, parents + [cur_plat, plat_nt], True, notes=["third", "far"]), "_f")
 
 
-class HorizontalQuadrupal(LoadType):
+class ALoader(LoadType):
     def __init__(self, *args, h_pos=Normal, force_corridor=False, make_platform=True, full=True, asym=False, **kwargs):
         super().__init__(*args, **kwargs)
         self.h_pos = h_pos
@@ -327,12 +327,12 @@ class HorizontalQuadrupal(LoadType):
             SideFull((full_f1, f2), self.symmetry, self.internal_category, name=self.name + "_full").load()
 
 
-class HorizontalSingle(HorizontalQuadrupal):
+class HorizontalSingle(ALoader):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, make_platform=False, full=False, **kwargs)
 
 
-class HorizontalTriple(HorizontalQuadrupal):
+class HorizontalTriple(ALoader):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, full=False, **kwargs)
 
@@ -404,14 +404,12 @@ SideTriple("h_end_asym", BuildingSpriteSheetFull, "H", h_pos=Side).load()
 SideTriple("h_end_asym_gate", BuildingSpriteSheetFull, "H", h_pos=Side).load()
 HorizontalSingle("h_end_gate", BuildingSpriteSheetSymmetricalY, "H", force_corridor=True).load()
 SideFull("h_end_gate_untraversable", BuildingSpriteSheetSymmetricalY, "H").load()
-HorizontalQuadrupal("h_end_gate_1", BuildingSpriteSheetFull, "H", asym=True, make_platform=False, full=False).load()
-HorizontalQuadrupal("h_normal", BuildingSpriteSheetSymmetrical, "H").load()
-HorizontalQuadrupal("h_gate", BuildingSpriteSheetSymmetricalY, "H", force_corridor=True, make_platform=False).load()
-HorizontalQuadrupal("h_gate_1", BuildingSpriteSheetFull, "H", asym=True).load()
-HorizontalQuadrupal(
-    "h_gate_extender", BuildingSpriteSheetSymmetrical, "H", force_corridor=True, make_platform=False
-).load()
-HorizontalQuadrupal("h_gate_extender_1", BuildingSpriteSheetSymmetricalX, "H", asym=True).load()
+ALoader("h_end_gate_1", BuildingSpriteSheetFull, "H", asym=True, make_platform=False, full=False).load()
+ALoader("h_normal", BuildingSpriteSheetSymmetrical, "H").load()
+ALoader("h_gate", BuildingSpriteSheetSymmetricalY, "H", force_corridor=True, make_platform=False).load()
+ALoader("h_gate_1", BuildingSpriteSheetFull, "H", asym=True).load()
+ALoader("h_gate_extender", BuildingSpriteSheetSymmetrical, "H", force_corridor=True, make_platform=False).load()
+ALoader("h_gate_extender_1", BuildingSpriteSheetSymmetricalX, "H", asym=True).load()
 HorizontalTriple("h_windowed", BuildingSpriteSheetSymmetricalY, "H").load()
 HorizontalTriple("h_windowed_extender", BuildingSpriteSheetSymmetrical, "H").load()
 
