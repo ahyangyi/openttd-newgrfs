@@ -13,16 +13,16 @@ def make_line(x, a, b, c, d):
 
 c_n = make_line(platform_s, side_c_n, central, central_windowed, central_windowed_extender)
 c_f = [x.T for x in c_n]
-c_x = make_line(track, side_c_x, central, central_windowed, central_windowed_extender)
+c_empty = make_line(track, side_c_empty, central, central_windowed, central_windowed_extender)
 
 near_lines = [
-    c_x,
+    c_empty,
     c_n,
     c_f,
     c_n,
     c_f,
-    c_x,
-    c_x,
+    c_empty,
+    c_empty,
     c_n,
     make_line(platform_s.T, side_b_f, central, central_windowed, central_windowed_extender),
     make_line(platform_s, side_a_n, central, central_windowed, central_windowed_extender),
