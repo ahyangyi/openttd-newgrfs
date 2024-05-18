@@ -178,6 +178,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal):
             internal_category,
             name + "_n",
         )
+        named_tiles[name + "_f"] = named_tiles[name + "_n"].T
     else:
         register(
             ALayout(one_side_ground, [f2, cur_plat, cur_np.T], True, notes=["near"]),

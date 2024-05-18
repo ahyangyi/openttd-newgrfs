@@ -72,14 +72,6 @@ def get_tile(name, desc):
     return named_tiles[name + "_n"]
 
 
-def get_tile_sym(name, desc):
-    if desc == "f":
-        return named_tiles[name + "_n"].T
-    if desc == "d":
-        return named_tiles[name]
-    return named_tiles[name + "_n"]
-
-
 def reverse(x):
     return {"f": "n", "n": "f", "d": "d"}[x]
 
@@ -92,14 +84,14 @@ def get_left_index_suffix(t, d, suffix):
     if t + d == 3:
         return [get_tile("side_a3", suffix)][d - 1]
     if t + d == 4:
-        return [get_tile("side_a", suffix), get_tile_sym("side_b2", suffix)][d - 1]
+        return [get_tile("side_a", suffix), get_tile("side_b2", suffix)][d - 1]
     if t == d:
         return named_tiles.side_c
     if d == 1:
         return get_tile("side_a", suffix)
     if d == 2:
         return get_tile("side_b", suffix)
-    return get_tile_sym("side_c", suffix)
+    return get_tile("side_c", suffix)
 
 
 def get_left_index_suffix_2(t, d, suffix):
@@ -109,19 +101,19 @@ def get_left_index_suffix_2(t, d, suffix):
         return get_tile("side_a3_windowed", suffix)
     if t == 1:
         return get_tile("side_a3_windowed", reverse(suffix)).T
-    return get_tile_sym("side_d", suffix)
+    return get_tile("side_d", suffix)
 
 
 def make_central_row(l, r, suffix):
     return horizontal_layout(
         l,
         r,
-        make_vertical_switch(lambda t, d: get_tile_sym("v_central", suffix)),
+        make_vertical_switch(lambda t, d: get_tile("v_central", suffix)),
         make_vertical_switch(lambda t, d: get_left_index_suffix_2(t, d, suffix)),
         make_vertical_switch(lambda t, d: get_left_index_suffix(t, d, suffix)),
-        make_vertical_switch(lambda t, d: get_tile_sym("central", suffix)),
-        make_vertical_switch(lambda t, d: get_tile_sym("central_windowed", suffix)),
-        make_vertical_switch(lambda t, d: get_tile_sym("central_windowed_extender", suffix)),
+        make_vertical_switch(lambda t, d: get_tile("central", suffix)),
+        make_vertical_switch(lambda t, d: get_tile("central_windowed", suffix)),
+        make_vertical_switch(lambda t, d: get_tile("central_windowed_extender", suffix)),
     )
 
 
