@@ -116,6 +116,7 @@ all_f1_layers_set = set(all_f1_layers)
 f1_subsets = {
     "third": ({"ground level - third", "entrance", "pillar"}, 16 - platform_width, platform_width),
     "third_t": ({"ground level - third - t", "entrance - t", "pillar - t"}, 0, platform_width),
+    "platform": ({"ground level - platform", "entrance", "pillar"}, platform_width, 16 - platform_width),
 }
 
 
@@ -299,11 +300,7 @@ class ALoader(LoadType):
         else:
             f1b = f1.T
 
-        plat_f1 = v.discard_layers(
-            ("ground level", "ground level - third", "ground level - third - t", "entrance - t", "pillar - t"),
-            "platform",
-        )
-        plat_f1.in_place_subset(f1_symmetry.render_indices())
+        plat_f1 = make_f1(v, "platform", f1_symmetry)
 
         full_f1 = v.discard_layers(
             ("ground level - third", "ground level - third - t", "ground level - platform"), "full"
@@ -311,14 +308,37 @@ class ALoader(LoadType):
 
         f2s = AParentSprite(f2, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
-        self.register(ALayout(corridor_ground, [plat, plat.T, f1, f1b, f2s], True, notes=["third"]), "_corridor")
+        register(
+            ALayout(corridor_ground, [plat, plat.T, f1, f1b, f2s], True, notes=["third"]),
+            self.symmetry,
+            self.internal_category,
+            self.name + "_corridor",
+        )
         if not self.force_corridor:
-            self.register(ALayout(one_side_ground, [plat, f1, cur_np.T, f2s], True, notes=["third", "y"]), "_third")
-            self.register(
-                ALayout(corridor_ground, [plat_nt, f1, cur_plat.T, f2s], True, notes=["third", "y", "far"]), "_third_f"
+            register(
+                ALayout(one_side_ground, [plat, f1, cur_np.T, f2s], True, notes=["third", "y"]),
+                f1_symmetry,
+                self.internal_category,
+                self.name + "_third",
+            )
+            register(
+                ALayout(corridor_ground, [plat_nt, f1, cur_plat.T, f2s], True, notes=["third", "y", "far"]),
+                f1_symmetry,
+                self.internal_category,
+                self.name + "_third_f",
             )
         if self.make_platform:
-            SidePlatform((plat_f1, f2), f1_symmetry, self.internal_category, name=self.name + "_platform").load()
+            register(
+                ALayout(
+                    solid_ground,
+                    [plat_f1, f2s, self.h_pos.platform_back_cut.T, platform_ps.concourse_side.T],
+                    False,
+                    notes=["far"],
+                ),
+                f1_symmetry,
+                self.internal_category,
+                self.name + "_platform",
+            )
         if self.full:
             SideFull((full_f1, f2), self.symmetry, self.internal_category, name=self.name).load()
 
