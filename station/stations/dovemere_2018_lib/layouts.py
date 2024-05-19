@@ -275,8 +275,18 @@ def load(
         register(ALayout(solid_ground, [full_f1, f2, concourse], False), symmetry, internal_category, name)
 
 
-def load_full(source, symmetry, internal_category, name=None, h_pos=Normal):
-    load(source, symmetry, internal_category, name=name, h_pos=h_pos, corridor=False, third=False, platform=False)
+def load_full(source, symmetry, internal_category, name=None, h_pos=Normal, borrow_f1=None):
+    load(
+        source,
+        symmetry,
+        internal_category,
+        name=name,
+        h_pos=h_pos,
+        borrow_f1=borrow_f1,
+        corridor=False,
+        third=False,
+        platform=False,
+    )
 
 
 layouts = []
@@ -335,10 +345,10 @@ load_full("irregular/turn", BuildingSpriteSheetFull, "T")
 load_full("irregular/turn_gate", BuildingSpriteSheetFull, "T")
 load("irregular/tee", BuildingSpriteSheetSymmetricalX, "T", corridor=False, borrow_f1="h_normal")
 load("irregular/cross", BuildingSpriteSheetSymmetrical, "T", platform=False, full=False, borrow_f1="h_normal")
-load_full("irregular/double_corner", BuildingSpriteSheetRotational, "T")
-load("irregular/funnel", BuildingSpriteSheetFull, "T", corridor=False)
+load_full("irregular/double_corner", BuildingSpriteSheetRotational, "T", borrow_f1="h_normal")
+load("irregular/funnel", BuildingSpriteSheetFull, "T", corridor=False, borrow_f1="h_normal")
 load_full("irregular/inner_corner", BuildingSpriteSheetFull, "T")
-load_full("irregular/double_inner_corner", BuildingSpriteSheetSymmetricalY, "T")
+load_full("irregular/double_inner_corner", BuildingSpriteSheetSymmetricalY, "T", borrow_f1="h_normal")
 load_full("irregular/v_funnel", BuildingSpriteSheetFull, "T")
 load_full("irregular/v_funnel_2", BuildingSpriteSheetFull, "T")
 
