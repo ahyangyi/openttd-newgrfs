@@ -127,13 +127,20 @@ def make_f2(v, symmetry):
     return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
 
+f1_cache = {}
+
+
 def make_f1(v, subset, sym):
-    keep_layers, xdiff, xspan = f1_subsets[subset]
-    v = v.discard_layers(tuple(all_f1_layers_set - keep_layers), subset)
-    v = v.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
-    v.in_place_subset(sym.render_indices())
-    s = sym.create_variants(v.spritesheet(xdiff=xdiff, xspan=xspan))
-    return AParentSprite(s, (16, xspan, base_height), (0, xdiff, platform_height))
+    if (v, subset) not in f1_cache:
+        keep_layers, xdiff, xspan = f1_subsets[subset]
+        V = v.discard_layers(tuple(all_f1_layers_set - keep_layers), subset)
+        V = V.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
+        V.in_place_subset(sym.render_indices())
+        s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan))
+        f1_cache[(v, subset)] = AParentSprite(s, (16, xspan, base_height), (0, xdiff, platform_height)), sym
+    ret, ret_sym = f1_cache[(v, subset)]
+    assert sym is ret_sym
+    return ret
 
 
 def register(l, symmetry, internal_category, name):
@@ -215,11 +222,16 @@ def load(
     platform=True,
     full=True,
     asym=False,
+    borrow_f1=None,
 ):
     name = name or source.split("/")[-1]
     v = make_voxel(source)
     f2 = make_f2(v, symmetry)
 
+    if borrow_f1 is not None:
+        v = make_voxel(borrow_f1)
+        # FIXME
+        symmetry = BuildingSpriteSheetSymmetrical
     broken_symmetry = symmetry.break_y_symmetry()
     f1 = make_f1(v, "third", broken_symmetry)
     f1b = make_f1(v, "third_t", broken_symmetry) if asym else f1.T
@@ -307,8 +319,8 @@ load("h_gate", BuildingSpriteSheetSymmetricalY, "H", third=False, platform=False
 load("h_gate_1", BuildingSpriteSheetFull, "H", asym=True)
 load("h_gate_extender", BuildingSpriteSheetSymmetrical, "H", third=False, platform=False)
 load("h_gate_extender_1", BuildingSpriteSheetSymmetricalX, "H", asym=True)
-load("h_windowed", BuildingSpriteSheetSymmetricalY, "H")
-load("h_windowed_extender", BuildingSpriteSheetSymmetrical, "H")
+load("h_windowed", BuildingSpriteSheetSymmetricalY, "H", borrow_f1="h_normal")
+load("h_windowed_extender", BuildingSpriteSheetSymmetrical, "H", borrow_f1="h_normal")
 
 load("v_end", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V, corridor=False)
 load("v_end_gate", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V, corridor=False)
