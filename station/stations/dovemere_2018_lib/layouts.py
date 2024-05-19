@@ -160,7 +160,6 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal):
         prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(source)),
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/{source}.vox": path,
         load_from="station/files/gorender.json",
-        subset=symmetry.render_indices(),
     )
     f2 = make_f2(v, symmetry)
     cur_np = h_pos.non_platform
@@ -212,17 +211,12 @@ def load(
         prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(source)),
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/{source}.vox": path,
         load_from="station/files/gorender.json",
-        subset=symmetry.render_indices(),
     )
     f2 = make_f2(v, symmetry)
 
     broken_symmetry = symmetry.break_y_symmetry()
     f1 = make_f1(v, "third", broken_symmetry)
-    if asym:
-        f1b = make_f1(v, "third_t", broken_symmetry)
-    else:
-        f1b = f1.T
-
+    f1b = make_f1(v, "third_t", broken_symmetry) if asym else f1.T
     plat_f1 = make_f1(v, "platform", broken_symmetry)
     full_f1 = make_f1(v, "full", symmetry)
 
