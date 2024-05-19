@@ -65,11 +65,7 @@ def make_front_row(suffix):
 
 
 def get_tile(name, desc):
-    if desc == "f":
-        return named_tiles[name + "_f"]
-    if desc == "d":
-        return named_tiles[name]
-    return named_tiles[name + "_n"]
+    return named_tiles[f"{name}_{desc}"]
 
 
 def reverse(x):
@@ -80,13 +76,13 @@ def get_left_index_suffix(t, d, suffix):
     if d > t:
         return get_left_index_suffix(d, t, reverse(suffix)).T
     if t + d == 2:
-        return named_tiles.side_a2
+        return named_tiles.side_a2_d
     if t + d == 3:
         return [get_tile("side_a3", suffix)][d - 1]
     if t + d == 4:
         return [get_tile("side_a", suffix), get_tile("side_b2", suffix)][d - 1]
     if t == d:
-        return named_tiles.side_c
+        return named_tiles.side_c_d
     if d == 1:
         return get_tile("side_a", suffix)
     if d == 2:
@@ -96,7 +92,7 @@ def get_left_index_suffix(t, d, suffix):
 
 def get_left_index_suffix_2(t, d, suffix):
     if t == d == 1:
-        return named_tiles.side_a2_windowed
+        return named_tiles.side_a2_windowed_d
     if d == 1:
         return get_tile("side_a3_windowed", suffix)
     if t == 1:

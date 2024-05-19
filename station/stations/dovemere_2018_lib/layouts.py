@@ -167,7 +167,10 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal):
 
     register(ALayout(empty_ground, [f2, cur_np, cur_np.T], True), symmetry, internal_category, name + "_empty")
     register(
-        ALayout(corridor_ground, [f2, cur_plat, cur_plat.T], True, notes=["both"]), symmetry, internal_category, name
+        ALayout(corridor_ground, [f2, cur_plat, cur_plat.T], True, notes=["both"]),
+        symmetry,
+        internal_category,
+        name + "_d",
     )
     if symmetry.is_symmetrical_y():
         broken_symmetry = symmetry.break_y_symmetry()

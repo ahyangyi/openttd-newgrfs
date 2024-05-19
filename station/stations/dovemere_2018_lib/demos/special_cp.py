@@ -14,7 +14,7 @@ special_demo_cp = Demo(
         [platform_n, v_central_n, platform_n, v_central_n, platform_d, platform_d, platform_d],
         [platform_n.T, v_central_n.T, platform_n.T, v_central_n.T, platform_d, platform_d, platform_d],
         [platform_n, v_central_n, platform_n, v_central_n, corner.T, front_normal.T, corner.T.R],
-        [nt.T, v_end_platform, nt.T, turn, double_inner_corner, central_windowed_extender, side_a2_windowed.R],
+        [nt.T, v_end_platform, nt.T, turn, double_inner_corner, central_windowed_extender_d, side_a2_windowed_d.R],
         [None, None, None, None, v_funnel, front_normal, corner.R],
         [None, None, None, None, v_end_gate, None, None],
     ],

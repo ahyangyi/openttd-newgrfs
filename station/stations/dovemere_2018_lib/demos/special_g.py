@@ -7,7 +7,7 @@ named_tiles.globalize()
 
 rail_near = [platform_n, v_central_n, platform_n, platform_n, platform_n, v_central_n, platform_n]
 rail_far = [x.T for x in rail_near]
-rail_both = [platform_d, v_central, platform_d, platform_d, platform_d, v_central, platform_d]
+rail_both = [platform_d, v_central_d, platform_d, platform_d, platform_d, v_central_d, platform_d]
 station = [
     h_end_asym_platform,
     tee_platform,
