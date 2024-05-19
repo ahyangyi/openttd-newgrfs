@@ -152,15 +152,23 @@ one_side_ground = [track_ground, third]
 one_side_ground_t = [track_ground, third_T]
 empty_ground = [track_ground]
 
+voxel_cache = {}
+
+
+def make_voxel(source):
+    if source not in voxel_cache:
+        voxel_cache[source] = LazyVoxel(
+            os.path.basename(source),
+            prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(source)),
+            voxel_getter=lambda path=f"station/voxels/dovemere_2018/{source}.vox": path,
+            load_from="station/files/gorender.json",
+        )
+    return voxel_cache[source]
+
 
 def load_central(source, symmetry, internal_category, name=None, h_pos=Normal):
     name = name or source.split("/")[-1]
-    v = LazyVoxel(
-        os.path.basename(source),
-        prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(source)),
-        voxel_getter=lambda path=f"station/voxels/dovemere_2018/{source}.vox": path,
-        load_from="station/files/gorender.json",
-    )
+    v = make_voxel(source)
     f2 = make_f2(v, symmetry)
     cur_np = h_pos.non_platform
     cur_plat = h_pos.platform
@@ -209,12 +217,7 @@ def load(
     asym=False,
 ):
     name = name or source.split("/")[-1]
-    v = LazyVoxel(
-        os.path.basename(source),
-        prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(source)),
-        voxel_getter=lambda path=f"station/voxels/dovemere_2018/{source}.vox": path,
-        load_from="station/files/gorender.json",
-    )
+    v = make_voxel(source)
     f2 = make_f2(v, symmetry)
 
     broken_symmetry = symmetry.break_y_symmetry()
