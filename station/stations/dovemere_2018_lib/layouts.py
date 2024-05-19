@@ -333,8 +333,8 @@ load("tiny_asym", BuildingSpriteSheetSymmetricalX, "H", h_pos=TinyAsym, corridor
 
 load_full("irregular/turn", BuildingSpriteSheetFull, "T")
 load_full("irregular/turn_gate", BuildingSpriteSheetFull, "T")
-load("irregular/tee", BuildingSpriteSheetSymmetricalX, "T", corridor=False)
-load("irregular/cross", BuildingSpriteSheetSymmetrical, "T", platform=False, full=False)
+load("irregular/tee", BuildingSpriteSheetSymmetricalX, "T", corridor=False, borrow_f1="h_normal")
+load("irregular/cross", BuildingSpriteSheetSymmetrical, "T", platform=False, full=False, borrow_f1="h_normal")
 load_full("irregular/double_corner", BuildingSpriteSheetRotational, "T")
 load("irregular/funnel", BuildingSpriteSheetFull, "T", corridor=False)
 load_full("irregular/inner_corner", BuildingSpriteSheetFull, "T")
