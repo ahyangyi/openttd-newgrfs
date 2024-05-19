@@ -17,7 +17,9 @@ front = make_front_row("_third_f")
 front2 = make_front_row("_third")
 
 
-single = make_row(tiny, h_end_gate, h_end, h_normal, h_gate, h_gate_extender)
+single = make_row(
+    tiny_corridor, h_end_gate_corridor, h_end_corridor, h_normal_corridor, h_gate_corridor, h_gate_extender_corridor
+)
 
 
 cb24_0 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_odd(t, d)], cb24=True)
@@ -62,7 +64,7 @@ traversable_station_no_side = AStation(
     callbacks={
         "select_tile_layout": cb24_1.to_index(None),
         "select_sprite_layout": grf.DualCallback(
-            default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24_0))
+            default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24_1))
         ),
     },
 )
