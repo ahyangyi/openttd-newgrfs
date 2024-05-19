@@ -121,9 +121,10 @@ f1_subsets = {
 }
 
 
-def make_f2(v, symmetry):
+def make_f2(v, sym):
     v = v.discard_layers(all_f1_layers, "f2")
-    s = symmetry.create_variants(v.spritesheet(zdiff=base_height * 2))
+    v.in_place_subset(sym.render_indices())
+    s = sym.create_variants(v.spritesheet(zdiff=base_height * 2))
     return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
 
