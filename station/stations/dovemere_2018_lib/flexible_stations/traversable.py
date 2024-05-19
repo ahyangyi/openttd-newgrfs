@@ -64,7 +64,7 @@ traversable_station_no_side = AStation(
     callbacks={
         "select_tile_layout": cb24_1.to_index(None),
         "select_sprite_layout": grf.DualCallback(
-            default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24_0))
+            default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24_1))
         ),
     },
 )
