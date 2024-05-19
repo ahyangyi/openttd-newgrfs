@@ -13,7 +13,7 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
-from .platforms import named_ps as platform_ps
+from .platforms import named_ps as platform_ps, platform_width
 
 
 def quickload(name, type, traversable):
@@ -24,12 +24,12 @@ def quickload(name, type, traversable):
         load_from="station/files/gorender.json",
         subset=type.render_indices(),
     )
-    sprite = type.create_variants(v.spritesheet(zdiff=16, xdiff=6))
+    sprite = type.create_variants(v.spritesheet(zdiff=16, xdiff=platform_width))
 
     ground = ADefaultGroundSprite(1012 if traversable else 1420)
-    parent = AParentSprite(sprite, (16, 10, 48), (0, 6, 0))
+    parent = AParentSprite(sprite, (16, 16 - platform_width, 48), (0, platform_width, 0))
     plat = platform_ps.cns
-    candidates = [ALayout([ground], [plat, parent], False)]
+    candidates = [ALayout([ground], [plat.T, parent], False)]
 
     ret = []
     for l in candidates:
