@@ -1,5 +1,5 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import platform_s, concourse_tile
+from station.stations.dovemere_2018_lib.layouts import platform_n, concourse_tile
 from station.stations.platforms import named_tiles as platform_tiles
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
@@ -17,14 +17,14 @@ side_third_auto_demo = Demo(
     "Traversable automatic stations",
     [
         [x.T for x in station_building],
-        [platform_s.T] * n,
-        [platform_s] * n,
+        [platform_n.T] * n,
+        [platform_n] * n,
         station_building,
         [concourse_tile] * n,
         [concourse_tile] * n,
         [x.T for x in station_building_2],
-        [platform_s.T] * n,
-        [platform_s] * n,
+        [platform_n.T] * n,
+        [platform_n] * n,
         station_building_2,
     ],
     remap=get_1cc_remap(CompanyColour.BLUE),
