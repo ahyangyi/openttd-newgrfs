@@ -157,6 +157,10 @@ class AParentSprite:
     def get_resource_files(self):
         return self.sprite.get_resource_files()
 
+    def up(self, zdiff):
+        new_offset = (self.offset[0], self.offset[1], self.offset[2] + zdiff)
+        return AParentSprite(self.sprite, self.extent, new_offset)
+
 
 class AChildSprite(CachedFunctorMixin):
     def __init__(self, sprite, offset):

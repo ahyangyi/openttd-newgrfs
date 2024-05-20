@@ -28,7 +28,7 @@ def quickload(name, type, traversable):
 
     ground = ADefaultGroundSprite(1012 if traversable else 1420)
     parent = AParentSprite(sprite, (16, 16 - platform_width, 48), (0, platform_width, 0))
-    plat = platform_ps.cns
+    plat = platform_ps.cns_side_shelter.up(8)
     candidates = [ALayout([ground], [plat.T, parent], False)]
 
     ret = []
