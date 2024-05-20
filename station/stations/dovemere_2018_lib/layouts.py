@@ -224,6 +224,7 @@ def load(
     full=True,
     asym=False,
     borrow_f1=None,
+    borrow_f1_symmetry=BuildingSpriteSheetSymmetrical,
 ):
     name = name or source.split("/")[-1]
     v = make_voxel(source)
@@ -231,13 +232,15 @@ def load(
 
     if borrow_f1 is not None:
         v = make_voxel(borrow_f1)
-        # FIXME
-        symmetry = BuildingSpriteSheetSymmetrical
+        f1_symmetry = borrow_f1_symmetry
+    else:
+        f1_symmetry = symmetry
+    broken_f1_symmetry = f1_symmetry.break_y_symmetry()
     broken_symmetry = symmetry.break_y_symmetry()
-    f1 = make_f1(v, "third", broken_symmetry)
-    f1b = make_f1(v, "third_t", broken_symmetry) if asym else f1.T
-    plat_f1 = make_f1(v, "platform", broken_symmetry)
-    full_f1 = make_f1(v, "full", symmetry)
+    f1 = make_f1(v, "third", broken_f1_symmetry)
+    f1b = make_f1(v, "third_t", broken_f1_symmetry) if asym else f1.T
+    plat_f1 = make_f1(v, "platform", broken_f1_symmetry)
+    full_f1 = make_f1(v, "full", f1_symmetry)
 
     if corridor:
         register(
