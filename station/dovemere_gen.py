@@ -5,6 +5,7 @@ from station.lib.docgen import gen_docs
 import station.stations.dovemere_2018
 import station.stations.dovemere_1933
 import station.stations.platforms
+from station.lib.parameters import parameter_list
 
 metastations = [
     station.stations.dovemere_2018.the_stations,
@@ -35,6 +36,7 @@ def gen():
         preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
 
+    parameter_list.add(g, s)
     for metastation in metastations:
         g.add(metastation)
 
