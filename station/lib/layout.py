@@ -4,6 +4,7 @@ import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.magic import CachedFunctorMixin
 from agrf.utils import unique_tuple
+from grf.sprites import EmptySprite
 
 
 class ADefaultGroundSprite:
@@ -224,11 +225,15 @@ def is_in_front(a, b):
     return False
 
 
+empty_sprite_1 = EmptySprite()
+empty_sprite_2 = EmptySprite()
+
+
 class ALayout:
     def __init__(self, ground_sprites, parent_sprites, traversable, category=None, notes=None):
         assert isinstance(ground_sprites, list)
         if ground_sprites == []:
-            ground_sprites = [AGroundSprite(grf.EMPTY_SPRITE)]
+            ground_sprites = [AGroundSprite(grf.EMPTY_SPRITE, alternatives=[empty_sprite_1, empty_sprite_2])]
         self.ground_sprites = ground_sprites
         self.parent_sprites = parent_sprites
         self.traversable = traversable
