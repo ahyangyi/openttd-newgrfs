@@ -49,10 +49,10 @@ shelter_components = {
 shelter_classes = ["shelter_1", "shelter_2"]
 shelter_meta = [
     ("", "", BuildingSpriteSheetSymmetricalX, set(), 0, True),
-    ("_shelter", "shelter_1", BuildingSpriteSheetSymmetricalX, {"shelter_1"}, shelter_height, True),
-    ("_shelter_building", "shelter_1", BuildingSpriteSheetFull, {"shelter_1_building"}, shelter_height, False),
+    ("_shelter_1", "shelter_1", BuildingSpriteSheetSymmetricalX, {"shelter_1"}, shelter_height, True),
+    ("_shelter_1_building", "shelter_1", BuildingSpriteSheetFull, {"shelter_1_building"}, shelter_height, False),
     (
-        "_shelter_building_v",
+        "_shelter_1_building_v",
         "shelter_1",
         BuildingSpriteSheetSymmetricalX,
         {"shelter_1_building_v"},
@@ -240,6 +240,6 @@ the_stations = AMetaStation(
     [
         Demo("Platform", [[cns], [cns_d], [cns.T]]),
         Demo("Platform with concrete grounds", [[cns_side], [cns_d], [cns_side.T]]),
-        Demo("Platform with shelter", [[cns_shelter], [cns_shelter_d], [cns_shelter.T]]),
+        Demo("Platform with shelter", [[cns_shelter_1], [cns_shelter_1_d], [cns_shelter_1.T]]),
     ],
 )

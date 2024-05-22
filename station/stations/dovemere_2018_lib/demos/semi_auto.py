@@ -6,7 +6,7 @@ from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import semitraversable
 from .utils import h_merge
 
-nt = platform_tiles.concourse_side_shelter
+nt = platform_tiles.concourse_side_shelter_1
 
 row_3 = h_merge(
     [semitraversable.cb14a.demo(i, 3, semitraversable.cb24_0) for i in range(1, 5)], [[nt], [platform_d], [nt.T]]

@@ -5,7 +5,7 @@ from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 
 named_tiles.globalize()
-nt = platform_tiles.concourse_side_shelter
+nt = platform_tiles.concourse_side_shelter_1
 
 rail_row = [nt.T.M, platform_n.M, platform_n.T.M, platform_d.M, platform_n.M, platform_n.T.M, nt.M]
 top_building = [
