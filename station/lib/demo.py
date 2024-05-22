@@ -3,10 +3,11 @@ from agrf.utils import unique_tuple
 
 
 class Demo:
-    def __init__(self, title, tiles, remap=None):
+    def __init__(self, title, tiles, remap=None, climate="temperate"):
         self.title = title
         self.tiles = tiles
         self.remap = remap
+        self.climate = climate
 
     def graphics(self, scale, bpp, remap=None):
         remap = remap or self.remap
@@ -23,7 +24,7 @@ class Demo:
             for c, sprite in enumerate(row[::-1]):
                 if sprite is None:
                     continue
-                subimg = sprite.graphics(scale, bpp, remap=remap)
+                subimg = sprite.graphics(scale, bpp, remap=remap, climate=self.climate)
                 img.blend_over(subimg.move((32 * r - 32 * c) * scale, (16 * r + 16 * c) * scale))
         return img
 
