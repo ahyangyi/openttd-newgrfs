@@ -24,6 +24,7 @@ pillar_height = 18
 
 
 platform_components = {"cut", "concrete", "concrete_side", "brick", "brick_side"}
+plat_classes = ["concrete", "brick"]
 plat_meta = [
     ("_np", "", False, set(), 0),
     ("_cut", "", False, {"cut"}, platform_height),
@@ -45,6 +46,7 @@ shelter_components = {
     "pillar_building",
     "pillar_central",
 }
+shelter_classes = ["shelter_1", "shelter_2"]
 shelter_meta = [
     ("", "", BuildingSpriteSheetSymmetricalX, set(), 0, True),
     ("_shelter", "shelter_1", BuildingSpriteSheetSymmetricalX, {"shelter_1"}, shelter_height, True),
