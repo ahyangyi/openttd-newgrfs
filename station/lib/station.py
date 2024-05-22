@@ -3,7 +3,7 @@ from .utils import class_label_printable
 
 
 class AStation(grf.SpriteGenerator):
-    def __init__(self, *, id, translation_name, layouts, callbacks=None, **props):
+    def __init__(self, *, id, translation_name, layouts, callbacks=None, non_traversable_tiles=0x0, **props):
         super().__init__()
         self.id = id
         self.translation_name = translation_name
@@ -11,7 +11,12 @@ class AStation(grf.SpriteGenerator):
         if callbacks is None:
             callbacks = {}
         self.callbacks = grf.make_callback_manager(grf.STATION, callbacks)
-        self._props = props
+        self._props = {
+            **props,
+            "non_traversable_tiles": non_traversable_tiles,
+            "draw_pylon_tiles": 0xFF ^ non_traversable_tiles,
+            "hide_wire_tiles": non_traversable_tiles,
+        }
 
     @property
     def class_label_plain(self):
