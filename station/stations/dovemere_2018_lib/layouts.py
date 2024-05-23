@@ -92,7 +92,9 @@ class HPos:
 def make_hpos(pillar_style, platform_style):
     return HPos(
         platform_ps["cns_np_pillar" + pillar_style],
-        lambda p="concrete", x="shelter_1": platform_ps["cns" + platform_style.replace("shelter", x)],
+        lambda p="concrete", x="shelter_1": platform_ps[
+            "cns" + ("" if p == "concrete" else "_" + p) + platform_style.replace("shelter", x)
+        ],
         lambda x="shelter_1": platform_ps["cns_cut" + platform_style.replace("shelter", x)],
         "shelter" in platform_style,
     )
