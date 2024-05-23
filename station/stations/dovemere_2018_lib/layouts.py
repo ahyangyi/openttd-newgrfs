@@ -92,7 +92,7 @@ class HPos:
 def make_hpos(pillar_style, platform_style):
     return HPos(
         platform_ps["cns_np_pillar" + pillar_style],
-        lambda x="shelter_1": platform_ps["cns" + platform_style.replace("shelter", x)],
+        lambda p="concrete", x="shelter_1": platform_ps["cns" + platform_style.replace("shelter", x)],
         lambda x="shelter_1": platform_ps["cns_cut" + platform_style.replace("shelter", x)],
         "shelter" in platform_style,
     )
@@ -187,7 +187,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal):
     register(ALayout(empty_ground, [f2, cur_np, cur_np.T], True), symmetry, internal_category, name + "_empty")
     for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
         for platform_class in platform_classes:
-            cur_plat = h_pos.platform(shelter_class)
+            cur_plat = h_pos.platform(platform_class, shelter_class)
             shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
             platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
             sname = name + shelter_postfix + platform_postfix
