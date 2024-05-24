@@ -253,38 +253,41 @@ def load(
     plat_f1 = make_f1(v, "platform", broken_f1_symmetry)
     full_f1 = make_f1(v, "full", f1_symmetry)
 
-    if corridor:
-        register(
-            ALayout(corridor_ground, [plat, plat.T, f1, f1b, f2], True, notes=["third"]),
-            symmetry,
-            internal_category,
-            name + "_corridor",
-        )
-    if third:
-        register(
-            ALayout(one_side_ground, [plat, f1, h_pos.non_platform.T, f2], True, notes=["third"]),
-            broken_symmetry,
-            internal_category,
-            name + "_third",
-        )
-        register(
-            ALayout(corridor_ground, [plat_nt, f1, h_pos.platform().T, f2], True, notes=["third", "far"]),
-            broken_symmetry,
-            internal_category,
-            name + "_third_f",
-        )
-    if platform:
-        register(
-            ALayout(
-                solid_ground,
-                [plat_f1, f2, h_pos.platform_back_cut().T, platform_ps.concourse_side.T],
-                False,
-                notes=["far"],
-            ),
-            broken_symmetry,
-            internal_category,
-            name + "_platform",
-        )
+    for platform_class in platform_classes:
+        platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
+        pname = name + shelter_postfix + platform_postfix
+        if corridor:
+            register(
+                ALayout(corridor_ground, [plat, plat.T, f1, f1b, f2], True, notes=["third"]),
+                symmetry,
+                internal_category,
+                pname + "_corridor",
+            )
+        if third:
+            register(
+                ALayout(one_side_ground, [plat, f1, h_pos.non_platform.T, f2], True, notes=["third"]),
+                broken_symmetry,
+                internal_category,
+                pname + "_third",
+            )
+            register(
+                ALayout(corridor_ground, [plat_nt, f1, h_pos.platform().T, f2], True, notes=["third", "far"]),
+                broken_symmetry,
+                internal_category,
+                pname + "_third_f",
+            )
+        if platform:
+            register(
+                ALayout(
+                    solid_ground,
+                    [plat_f1, f2, h_pos.platform_back_cut().T, platform_ps.concourse_side.T],
+                    False,
+                    notes=["far"],
+                ),
+                broken_symmetry,
+                internal_category,
+                pname + "_platform",
+            )
     if full:
         register(ALayout(solid_ground, [full_f1, f2, concourse], False), symmetry, internal_category, name)
 
