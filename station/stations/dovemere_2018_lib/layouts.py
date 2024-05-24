@@ -255,23 +255,25 @@ def load(
 
     for platform_class in platform_classes:
         platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
+        cur_plat = platform_ps["cns" + platform_postfix]
+        cur_plat_nt = platform_ps["cns" + platform_postfix + "_side"]
         pname = name + platform_postfix
         if corridor:
             register(
-                ALayout(corridor_ground, [plat, plat.T, f1, f1b, f2], True, notes=["third"]),
+                ALayout(corridor_ground, [cur_plat, cur_plat.T, f1, f1b, f2], True, notes=["third"]),
                 symmetry,
                 internal_category,
                 pname + "_corridor",
             )
         if third:
             register(
-                ALayout(one_side_ground, [plat, f1, h_pos.non_platform.T, f2], True, notes=["third"]),
+                ALayout(one_side_ground, [cur_plat, f1, h_pos.non_platform.T, f2], True, notes=["third"]),
                 broken_symmetry,
                 internal_category,
                 pname + "_third",
             )
             register(
-                ALayout(corridor_ground, [plat_nt, f1, h_pos.platform().T, f2], True, notes=["third", "far"]),
+                ALayout(corridor_ground, [cur_plat_nt, f1, h_pos.platform().T, f2], True, notes=["third", "far"]),
                 broken_symmetry,
                 internal_category,
                 pname + "_third_f",
