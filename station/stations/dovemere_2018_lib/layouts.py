@@ -255,7 +255,7 @@ def load(
 
     for platform_class in platform_classes:
         platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
-        pname = name + shelter_postfix + platform_postfix
+        pname = name + platform_postfix
         if corridor:
             register(
                 ALayout(corridor_ground, [plat, plat.T, f1, f1b, f2], True, notes=["third"]),
