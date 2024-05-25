@@ -282,7 +282,7 @@ def load(
             register(
                 ALayout(
                     solid_ground,
-                    [plat_f1, f2, h_pos.platform_back_cut().T, platform_ps.concourse_side.T],
+                    [plat_f1, f2, h_pos.platform_back_cut().T, platform_ps[f"concourse{platform_postfix}_side"].T],
                     False,
                     notes=["far"],
                 ),
