@@ -272,24 +272,38 @@ def load(
                 internal_category,
                 pname + "_third",
             )
-            register(
-                ALayout(corridor_ground, [cur_plat_nt, f1, h_pos.platform().T, f2], True, notes=["third", "far"]),
-                broken_symmetry,
-                internal_category,
-                pname + "_third_f",
-            )
-        if platform:
-            register(
-                ALayout(
-                    solid_ground,
-                    [plat_f1, f2, h_pos.platform_back_cut().T, platform_ps[f"concourse{platform_postfix}_side"].T],
-                    False,
-                    notes=["far"],
-                ),
-                broken_symmetry,
-                internal_category,
-                pname + "_platform",
-            )
+        for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
+            shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
+            sname = name + shelter_postfix + platform_postfix
+            if third:
+                register(
+                    ALayout(
+                        corridor_ground,
+                        [cur_plat_nt, f1, h_pos.platform(platform_class, shelter_class).T, f2],
+                        True,
+                        notes=["third", "far"],
+                    ),
+                    broken_symmetry,
+                    internal_category,
+                    sname + "_third_f",
+                )
+            if platform:
+                register(
+                    ALayout(
+                        solid_ground,
+                        [
+                            plat_f1,
+                            f2,
+                            h_pos.platform_back_cut(shelter_class).T,
+                            platform_ps[f"concourse{platform_postfix}_side"].T,
+                        ],
+                        False,
+                        notes=["far"],
+                    ),
+                    broken_symmetry,
+                    internal_category,
+                    sname + "_platform",
+                )
     if full:
         register(ALayout(solid_ground, [full_f1, f2, concourse], False), symmetry, internal_category, name)
 
