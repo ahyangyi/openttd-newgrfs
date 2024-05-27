@@ -22,4 +22,5 @@ special_demo_g = Demo(
     "Irregular 7×7 station layout",
     [[x.T for x in station], rail_far, rail_near, rail_both, rail_far, rail_near, station],
     remap=get_1cc_remap(CompanyColour.YELLOW),
+    climate="arctic",
 )

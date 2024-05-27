@@ -19,4 +19,5 @@ special_demo_cp = Demo(
         [None, None, None, None, v_end_gate, None, None],
     ],
     remap=get_1cc_remap(CompanyColour.CREAM),
+    climate="toyland",
 )

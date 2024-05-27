@@ -17,4 +17,5 @@ special_demo_cn = Demo(
         [h_end_corridor, h_normal_corridor, h_normal_corridor, funnel, front_gate, front_gate.R, corner.R],
     ],
     remap=get_1cc_remap(CompanyColour.MAUVE),
+    climate="temperate",
 )

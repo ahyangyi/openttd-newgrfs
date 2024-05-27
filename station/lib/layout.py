@@ -24,10 +24,8 @@ class ADefaultGroundSprite:
             flags=0,
         )
 
-    def graphics(self, scale, bpp):
-        if self.sprite not in [1012, 1011]:
-            return LayeredImage.empty()
-        img = np.asarray(ADefaultGroundSprite.default_rail[1012 - self.sprite])
+    def graphics(self, scale, bpp, climate="temperate"):
+        img = np.asarray(ADefaultGroundSprite.default_rail[(climate, self.sprite)])
         ret = LayeredImage(-128, 0, 256, 127, img[:, :, :3], img[:, :, 3], None)
         if scale == 2:
             ret.resize(128, 63)
@@ -48,7 +46,11 @@ class ADefaultGroundSprite:
     def M(self):
         return ADefaultGroundSprite(self.sprite - 1 if self.sprite % 2 == 0 else self.sprite + 1)
 
-    default_rail = [Image.open("third_party/opengfx2/1012.png"), Image.open("third_party/opengfx2/1011.png")]
+    default_rail = {
+        (climate, k): Image.open(f"third_party/opengfx2/{climate}/{k}.png")
+        for climate in ["temperate", "arctic", "tropical", "toyland"]
+        for k in [1011, 1012, 1037, 1038]
+    }
 
     @property
     def sprites(self):
@@ -80,7 +82,7 @@ class AGroundSprite(CachedFunctorMixin):
             flags=0,
         )
 
-    def graphics(self, scale, bpp):
+    def graphics(self, scale, bpp, climate="temperate"):
         if self.sprite is grf.EMPTY_SPRITE:
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
@@ -181,7 +183,7 @@ class AChildSprite(CachedFunctorMixin):
             yofs=self.offset[1],
         )
 
-    def graphics(self, scale, bpp):
+    def graphics(self, scale, bpp, climate="temperate"):
         if self.sprite is grf.EMPTY_SPRITE:
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
@@ -273,11 +275,11 @@ class ALayout:
             + [sprite.to_grf(sprite_list) for sprite in self.sorted_parent_sprites]
         )
 
-    def graphics(self, scale, bpp, remap=None, context=None):
+    def graphics(self, scale, bpp, remap=None, context=None, climate="temperate"):
         context = context or grf.DummyWriteContext()
         img = LayeredImage.empty()
         for sprite in self.ground_sprites:
-            new_img = sprite.graphics(scale, bpp).copy()
+            new_img = sprite.graphics(scale, bpp, climate=climate).copy()
             img.blend_over(new_img)
 
         for sprite in self.sorted_parent_sprites:
