@@ -8,8 +8,9 @@ from grf.sprites import EmptySprite
 
 
 class ADefaultGroundSprite:
-    def __init__(self, sprite):
+    def __init__(self, sprite, flags_with_registers=None):
         self.sprite = sprite
+        self.flags_with_registers = flags_with_registers or {}
 
     def to_grf(self, sprite_list):
         return grf.GroundSprite(
@@ -21,7 +22,8 @@ class ADefaultGroundSprite:
                 always_transparent=False,
                 no_transparent=False,
             ),
-            flags=0,
+            flags=sum(self.flags_with_registers.keys()),
+            registers={k: v for k, v in self.flags_with_registers if v is not None},
         )
 
     def graphics(self, scale, bpp, climate="temperate"):
