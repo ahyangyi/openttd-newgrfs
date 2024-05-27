@@ -22,7 +22,7 @@ class ADefaultGroundSprite:
                 always_transparent=False,
                 no_transparent=False,
             ),
-            flags=sum(self.flags_with_registers.keys()),
+            flags=sum(SPRITE_FLAGS[k][1] for k in self.flags_with_registers.keys()),
             registers={k: v for k, v in self.flags_with_registers if v is not None},
         )
 
@@ -46,7 +46,9 @@ class ADefaultGroundSprite:
 
     @property
     def M(self):
-        return ADefaultGroundSprite(self.sprite - 1 if self.sprite % 2 == 0 else self.sprite + 1)
+        return ADefaultGroundSprite(
+            self.sprite - 1 if self.sprite % 2 == 0 else self.sprite + 1, self.flags_with_registers
+        )
 
     default_rail = {
         (climate, k): Image.open(f"third_party/opengfx2/{climate}/{k}.png")
@@ -63,6 +65,9 @@ class ADefaultGroundSprite:
 
     def get_resource_files(self):
         return ()
+
+
+rail_sprite = ADefaultGroundSprite(1012, {"add": grf.Temp(0)})
 
 
 class AGroundSprite(CachedFunctorMixin):
