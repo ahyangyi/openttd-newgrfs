@@ -8,8 +8,9 @@ from grf.sprites import EmptySprite
 
 
 class ADefaultGroundSprite:
-    def __init__(self, sprite):
+    def __init__(self, sprite, flags_with_registers=None):
         self.sprite = sprite
+        self.flags_with_registers = flags_with_registers or {}
 
     def to_grf(self, sprite_list):
         return grf.GroundSprite(
@@ -21,11 +22,14 @@ class ADefaultGroundSprite:
                 always_transparent=False,
                 no_transparent=False,
             ),
-            flags=0,
+            flags=sum(grf.SPRITE_FLAGS[k][1] for k in self.flags_with_registers.keys()),
+            registers={k: v for k, v in self.flags_with_registers.items() if v is not None},
         )
 
-    def graphics(self, scale, bpp, climate="temperate"):
-        img = np.asarray(ADefaultGroundSprite.default_rail[(climate, self.sprite)])
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
+        img = np.asarray(
+            ADefaultGroundSprite.default_rail[(climate, self.sprite + (26 if subclimate != "default" else 0))]
+        )
         ret = LayeredImage(-128, 0, 256, 127, img[:, :, :3], img[:, :, 3], None)
         if scale == 2:
             ret.resize(128, 63)
@@ -44,7 +48,9 @@ class ADefaultGroundSprite:
 
     @property
     def M(self):
-        return ADefaultGroundSprite(self.sprite - 1 if self.sprite % 2 == 0 else self.sprite + 1)
+        return ADefaultGroundSprite(
+            self.sprite - 1 if self.sprite % 2 == 0 else self.sprite + 1, self.flags_with_registers
+        )
 
     default_rail = {
         (climate, k): Image.open(f"third_party/opengfx2/{climate}/{k}.png")
@@ -82,7 +88,7 @@ class AGroundSprite(CachedFunctorMixin):
             flags=0,
         )
 
-    def graphics(self, scale, bpp, climate="temperate"):
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
@@ -183,7 +189,7 @@ class AChildSprite(CachedFunctorMixin):
             yofs=self.offset[1],
         )
 
-    def graphics(self, scale, bpp, climate="temperate"):
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
@@ -275,11 +281,11 @@ class ALayout:
             + [sprite.to_grf(sprite_list) for sprite in self.sorted_parent_sprites]
         )
 
-    def graphics(self, scale, bpp, remap=None, context=None, climate="temperate"):
+    def graphics(self, scale, bpp, remap=None, context=None, climate="temperate", subclimate="default"):
         context = context or grf.DummyWriteContext()
         img = LayeredImage.empty()
         for sprite in self.ground_sprites:
-            new_img = sprite.graphics(scale, bpp, climate=climate).copy()
+            new_img = sprite.graphics(scale, bpp, climate=climate, subclimate=subclimate).copy()
             img.blend_over(new_img)
 
         for sprite in self.sorted_parent_sprites:
