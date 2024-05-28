@@ -215,6 +215,8 @@ simple_load("concourse")
 
 named_tiles.globalize()
 
+from agrf.magic import Switch  # FIXME: write a wrapped version
+
 the_stations = AMetaStation(
     [
         AStation(
@@ -228,7 +230,12 @@ the_stations = AMetaStation(
             class_label=b"PLAT",
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
-            callbacks={"select_tile_layout": 0},
+            callbacks={
+                "select_tile_layout": 0,
+                "select_sprite_layout": Switch(
+                    ranges={0: 0}, code="TEMP[0x00] = 26 * ((terrain_type | 0x5) > 0)", default=0
+                ),
+            },
         )
         for i, entry in enumerate(entries)
     ],
