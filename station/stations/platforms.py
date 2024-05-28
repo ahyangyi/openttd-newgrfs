@@ -213,6 +213,8 @@ simple_load("concourse")
 
 named_tiles.globalize()
 
+from agrf.magic import Switch  # FIXME: write a wrapped version
+
 the_stations = AMetaStation(
     [
         AStation(
