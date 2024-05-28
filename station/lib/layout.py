@@ -22,8 +22,8 @@ class ADefaultGroundSprite:
                 always_transparent=False,
                 no_transparent=False,
             ),
-            flags=sum(SPRITE_FLAGS[k][1] for k in self.flags_with_registers.keys()),
-            registers={k: v for k, v in self.flags_with_registers if v is not None},
+            flags=sum(grf.SPRITE_FLAGS[k][1] for k in self.flags_with_registers.keys()),
+            registers={k: v for k, v in self.flags_with_registers.items() if v is not None},
         )
 
     def graphics(self, scale, bpp, climate="temperate"):
@@ -65,9 +65,6 @@ class ADefaultGroundSprite:
 
     def get_resource_files(self):
         return ()
-
-
-rail_sprite = ADefaultGroundSprite(1012, {"add": grf.Temp(0)})
 
 
 class AGroundSprite(CachedFunctorMixin):
