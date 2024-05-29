@@ -14,7 +14,8 @@ single = make_row(tiny_untraversable, h_end_gate_untraversable, h_end_untraversa
 semitraversable_stations = []
 global_id = 0x00
 for pclass in platform_classes:
-    front = make_front_row("_platform")
+    pclass_desc = "" if pclass == "concrete" else "_" + pclass
+    front = make_front_row(pclass_desc + "_platform")
     for sclass in shelter_classes:
         cb24 = make_vertical_switch(
             lambda t, d: 0 if t == 0 or d == 0 else {"n": 2, "f": 4, "d": 6}[determine_platform_odd(t, d)], cb24=True
@@ -62,7 +63,7 @@ for pclass in platform_classes:
             demo_2 = lambda r, c, cb14=cb14, cb24=cb24: cb14.demo(r, c, cb24)
         semitraversable_stations.append(
             AStation(
-                id=0x01,
+                id=global_id,
                 translation_name="FLEXIBLE_UNTRAVERSABLE_NO_SIDE",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
@@ -77,3 +78,4 @@ for pclass in platform_classes:
                 },
             )
         )
+        global_id += 1
