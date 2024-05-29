@@ -40,7 +40,7 @@ cb14_6 = make_vertical_switch(lambda t, d: (single if d == t == 0 else front if 
 cb14 = StationTileSwitch("T", {2: cb14_2, 3: cb14_2, 4: cb14_4, 5: cb14_4, 6: cb14_6, 7: cb14_6})
 
 traversable_station = AStation(
-    id=0x02,
+    id=0x08,
     translation_name="FLEXIBLE_SIDE",
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
@@ -55,7 +55,7 @@ traversable_station = AStation(
 )
 
 traversable_station_no_side = AStation(
-    id=0x03,
+    id=0x09,
     translation_name="FLEXIBLE_NO_SIDE",
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
