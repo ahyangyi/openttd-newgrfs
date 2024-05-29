@@ -3,7 +3,7 @@ from .utils import class_label_printable
 
 
 class AStation(grf.SpriteGenerator):
-    def __init__(self, *, id, translation_name, layouts, callbacks=None, **props):
+    def __init__(self, *, id, translation_name, layouts, callbacks=None, non_traversable_tiles=0x0, **props):
         super().__init__()
         self.id = id
         self.translation_name = translation_name
@@ -11,7 +11,12 @@ class AStation(grf.SpriteGenerator):
         if callbacks is None:
             callbacks = {}
         self.callbacks = grf.make_callback_manager(grf.STATION, callbacks)
-        self._props = props
+        self._props = {
+            **props,
+            "non_traversable_tiles": non_traversable_tiles,
+            "draw_pylon_tiles": 0xFF ^ non_traversable_tiles,
+            "hide_wire_tiles": non_traversable_tiles,
+        }
 
     @property
     def class_label_plain(self):
@@ -27,8 +32,13 @@ class AStation(grf.SpriteGenerator):
             ).get_persistent_id(),
         }
 
-        self.callbacks.graphics = grf.GenericSpriteLayout(ent1=[0], ent2=[0], feature=grf.STATION)
-        self.callbacks.set_flag_props(self._props)
+        graphics = grf.GenericSpriteLayout(ent1=[0], ent2=[0], feature=grf.STATION)
+        self.callbacks.graphics = grf.Switch(
+            ranges={0: graphics}, code="TEMP[0x00] = 26 * ((terrain_type & 0x5) > 0)", default=graphics
+        )
+
+        cb_props = {}
+        self.callbacks.set_flag_props(cb_props)
 
         if sprites is None:
             sprites = self.sprites
@@ -46,6 +56,7 @@ class AStation(grf.SpriteGenerator):
                     "advanced_layout": grf.SpriteLayoutList([l.to_grf(sprites) for l in self.layouts]),
                     **self._props,
                     **extra_props,
+                    **cb_props,
                 },
             )
         )

@@ -3,11 +3,14 @@ from PIL import Image
 import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.magic import CachedFunctorMixin
+from agrf.utils import unique_tuple
+from grf.sprites import EmptySprite
 
 
 class ADefaultGroundSprite:
-    def __init__(self, sprite):
+    def __init__(self, sprite, flags_with_registers=None):
         self.sprite = sprite
+        self.flags_with_registers = flags_with_registers or {}
 
     def to_grf(self, sprite_list):
         return grf.GroundSprite(
@@ -19,13 +22,14 @@ class ADefaultGroundSprite:
                 always_transparent=False,
                 no_transparent=False,
             ),
-            flags=0,
+            flags=sum(grf.SPRITE_FLAGS[k][1] for k in self.flags_with_registers.keys()),
+            registers={k: v for k, v in self.flags_with_registers.items() if v is not None},
         )
 
-    def graphics(self, scale, bpp):
-        if self.sprite not in [1012, 1011]:
-            return LayeredImage.empty()
-        img = np.asarray(ADefaultGroundSprite.default_rail[1012 - self.sprite])
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
+        img = np.asarray(
+            ADefaultGroundSprite.default_rail[(climate, self.sprite + (26 if subclimate != "default" else 0))]
+        )
         ret = LayeredImage(-128, 0, 256, 127, img[:, :, :3], img[:, :, 3], None)
         if scale == 2:
             ret.resize(128, 63)
@@ -44,13 +48,25 @@ class ADefaultGroundSprite:
 
     @property
     def M(self):
-        return ADefaultGroundSprite(self.sprite - 1 if self.sprite % 2 == 0 else self.sprite + 1)
+        return ADefaultGroundSprite(
+            self.sprite - 1 if self.sprite % 2 == 0 else self.sprite + 1, self.flags_with_registers
+        )
 
-    default_rail = [Image.open("third_party/opengfx2/1012.png"), Image.open("third_party/opengfx2/1011.png")]
+    default_rail = {
+        (climate, k): Image.open(f"third_party/opengfx2/{climate}/{k}.png")
+        for climate in ["temperate", "arctic", "tropical", "toyland"]
+        for k in [1011, 1012, 1037, 1038]
+    }
 
     @property
     def sprites(self):
         return []
+
+    def get_fingerprint(self):
+        return {"default_ground_sprite": self.sprite}
+
+    def get_resource_files(self):
+        return ()
 
 
 class AGroundSprite(CachedFunctorMixin):
@@ -72,7 +88,7 @@ class AGroundSprite(CachedFunctorMixin):
             flags=0,
         )
 
-    def graphics(self, scale, bpp):
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
@@ -88,6 +104,12 @@ class AGroundSprite(CachedFunctorMixin):
     @property
     def sprites(self):
         return [self.sprite] + self.alternatives
+
+    def get_fingerprint(self):
+        return {"ground_sprite": self.sprite.get_fingerprint()}
+
+    def get_resource_files(self):
+        return self.sprite.get_resource_files()
 
 
 class AParentSprite:
@@ -137,6 +159,12 @@ class AParentSprite:
     def sprites(self):
         return [self.sprite]
 
+    def get_fingerprint(self):
+        return {"parent_sprite": self.sprite.get_fingerprint(), "extent": self.extent, "offset": self.offset}
+
+    def get_resource_files(self):
+        return self.sprite.get_resource_files()
+
 
 class AChildSprite(CachedFunctorMixin):
     def __init__(self, sprite, offset):
@@ -161,7 +189,7 @@ class AChildSprite(CachedFunctorMixin):
             yofs=self.offset[1],
         )
 
-    def graphics(self, scale, bpp):
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
@@ -173,12 +201,47 @@ class AChildSprite(CachedFunctorMixin):
     def sprites(self):
         return [self.sprite]
 
+    def get_fingerprint(self):
+        return {"child_sprite": self.sprite.get_fingerprint(), "offset": self.offset}
+
+    def get_resource_files(self):
+        return self.sprite.get_resource_files()
+
+
+def overlaps(a0, a1, b0, b1):
+    assert a0 <= a1 and b0 <= b1
+    return a1 > b0 and b1 > a0
+
+
+def is_in_front(a, b):
+    ax0, ay0, az0 = a.offset
+    ax1, ay1, az1 = (x + y for x, y in zip(a.offset, a.extent))
+    bx0, by0, bz0 = b.offset
+    bx1, by1, bz1 = (x + y for x, y in zip(b.offset, b.extent))
+    if not overlaps(ax0 - az1, ax1 - az0, bx0 - bz1, bx1 - bz0):
+        return False
+    if not overlaps(ay0 - az1, ay1 - az0, by0 - bz1, by1 - bz0):
+        return False
+    if not overlaps(ax0 - ay1, ax1 - ay0, bx0 - by1, bx1 - by0):
+        return False
+    if ax0 >= bx1:
+        return True
+    if ay0 >= by1:
+        return True
+    if az0 >= bz1:
+        return True
+    return False
+
+
+empty_sprite_1 = EmptySprite()
+empty_sprite_2 = EmptySprite()
+
 
 class ALayout:
     def __init__(self, ground_sprites, parent_sprites, traversable, category=None, notes=None):
         assert isinstance(ground_sprites, list)
         if ground_sprites == []:
-            ground_sprites = [AGroundSprite(grf.EMPTY_SPRITE)]
+            ground_sprites = [AGroundSprite(grf.EMPTY_SPRITE, alternatives=[empty_sprite_1, empty_sprite_2])]
         self.ground_sprites = ground_sprites
         self.parent_sprites = parent_sprites
         self.traversable = traversable
@@ -187,11 +250,30 @@ class ALayout:
 
     @property
     def sorted_parent_sprites(self):
+        for i in self.parent_sprites:
+            for j in self.parent_sprites:
+                if i != j:
+                    assert not all(
+                        i.offset[k] + i.extent[k] > j.offset[k] and j.offset[k] + j.extent[k] > i.offset[k]
+                        for k in range(3)
+                    ), f"{i} and {j} overlap, {self.parent_sprites}"
+
         # FIXME include child sprites
-        return sorted(
-            [x for x in self.parent_sprites if isinstance(x, AParentSprite)],
-            key=lambda x: (x.offset[0] + x.offset[1] + x.extent[0] + x.extent[1], x.offset[2] + x.extent[2]),
-        )
+        ret = []
+        for i in range(len(self.parent_sprites)):
+            for j in self.parent_sprites:
+                if j in ret:
+                    continue
+                good = True
+                for k in self.parent_sprites:
+                    if k != j and k not in ret and is_in_front(j, k):
+                        good = False
+                        break
+                if good:
+                    ret.append(j)
+                    break
+            assert len(ret) == i + 1, f"{self.parent_sprites}, {i}, {ret}"
+        return ret
 
     def to_grf(self, sprite_list):
         return grf.SpriteLayout(
@@ -199,11 +281,11 @@ class ALayout:
             + [sprite.to_grf(sprite_list) for sprite in self.sorted_parent_sprites]
         )
 
-    def graphics(self, scale, bpp, remap=None, context=None):
+    def graphics(self, scale, bpp, remap=None, context=None, climate="temperate", subclimate="default"):
         context = context or grf.DummyWriteContext()
         img = LayeredImage.empty()
         for sprite in self.ground_sprites:
-            new_img = sprite.graphics(scale, bpp).copy()
+            new_img = sprite.graphics(scale, bpp, climate=climate, subclimate=subclimate).copy()
             img.blend_over(new_img)
 
         for sprite in self.sorted_parent_sprites:
@@ -244,6 +326,15 @@ class ALayout:
     def sprites(self):
         return list(dict.fromkeys([sub for s in self.ground_sprites + self.parent_sprites for sub in s.sprites]))
 
+    def get_fingerprint(self):
+        return {
+            "ground_sprites": [s.get_fingerprint() for s in self.ground_sprites],
+            "parent_sprites": [s.get_fingerprint() for s in self.parent_sprites],
+        }
+
+    def get_resource_files(self):
+        return unique_tuple(f for x in self.ground_sprites + self.parent_sprites for f in x.get_resource_files())
+
 
 class LayoutSprite(grf.Sprite):
     def __init__(self, layout, w, h, scale, bpp, **kwargs):
@@ -253,11 +344,17 @@ class LayoutSprite(grf.Sprite):
         self.bpp = bpp
 
     def get_fingerprint(self):
-        # FIXME don't use id
-        return {"layout": id(self.layout), "w": self.w, "h": self.h, "bpp": self.bpp, "xxx": id(self)}
+        return {
+            "layout": self.layout.get_fingerprint(),
+            "w": self.w,
+            "h": self.h,
+            "bpp": self.bpp,
+            "xofs": self.xofs,
+            "yofs": self.yofs,
+        }
 
-    def get_image_files(self):
-        return ()
+    def get_resource_files(self):
+        return self.layout.get_resource_files()
 
     def get_data_layers(self, context):
         timer = context.start_timer()
