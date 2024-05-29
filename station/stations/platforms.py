@@ -227,7 +227,7 @@ the_stations = AMetaStation(
                 else "PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE"
             ),
             layouts=[entry, entry.M],
-            class_label=b"PLAT",
+            class_label=b"\xe8\x8a\x9cP",
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0},

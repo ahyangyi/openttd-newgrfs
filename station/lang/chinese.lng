@@ -4,8 +4,8 @@ STR_GRF_DESC                    :本 NewGRF 是 {PUSH_COLOUR}{GOLD}中国{RED}�
 
 STR_STATION_DEFAULT                             :站房
 STR_STATION_UNTRAVERSABLE                       :站房（无轨道）
-STR_STATION_E88A9CPFORM                            :站台
-STR_STATION_E88A9CPFORM_UNTRAVERSABLE              :站台（无轨道）
+STR_STATION_PLATFORM                            :站台
+STR_STATION_PLATFORM_UNTRAVERSABLE              :站台（无轨道）
 STR_STATION_CONCOURSE                           :车站广场
 STR_STATION_FLEXIBLE_SIDE                       :自动站房（两侧有轨道）
 STR_STATION_FLEXIBLE_NO_SIDE                    :自动站房（两侧有轨道但无站台）
