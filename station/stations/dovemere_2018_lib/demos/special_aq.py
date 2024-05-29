@@ -31,4 +31,6 @@ special_demo_aq = Demo(
     "Irregular 7×7 station layout",
     [rail_row, top_building, bottom_building, rail_row, top_building, bottom_building, rail_row],
     remap=get_1cc_remap(CompanyColour.LIGHT_BLUE),
+    climate="arctic",
+    subclimate="snow",
 )

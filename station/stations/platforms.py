@@ -12,6 +12,7 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from .ground import named_ps as ground_ps
+from .misc import track_ground
 
 
 gray_ps = ground_ps.gray
@@ -105,12 +106,11 @@ def quickload(name):
             named_ps[name + suffix] = ps
 
             for l, make_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
-                groundsprite = ADefaultGroundSprite(1012)
                 if make_symmetrical:
                     cur_symmetry = symmetry.add_y_symmetry()
                 else:
                     cur_symmetry = symmetry
-                var = cur_symmetry.get_all_variants(ALayout([groundsprite], l, True))
+                var = cur_symmetry.get_all_variants(ALayout([track_ground], l, True))
                 l = cur_symmetry.create_variants(var)
                 if sbuildable and pbuildable:
                     entries.extend(cur_symmetry.get_all_entries(l))
@@ -128,11 +128,10 @@ def quickload(name):
                                     and (sclass == "" or sclass2 == "" or sclass == sclass2)
                                     and ((platform_flavor, shelter_flavor) < (platform_flavor_2, shelter_flavor_2))
                                 ):
-                                    groundsprite = ADefaultGroundSprite(1012)
                                     cur_symmetry = BuildingSpriteSheetSymmetricalX
                                     var = cur_symmetry.get_all_variants(
                                         ALayout(
-                                            [groundsprite],
+                                            [track_ground],
                                             [
                                                 named_ps[name + platform_flavor + shelter_flavor],
                                                 named_ps[name + platform_flavor_2 + shelter_flavor_2].T,
@@ -181,8 +180,7 @@ def simple_load(name):
         ps = AParentSprite(sprite, (16, 16, platform_height), (0, 0, 0))
         named_ps[name + concourse_flavor] = ps
 
-        groundsprite = gray_ps
-        var = symmetry.get_all_variants(ALayout([groundsprite], [ps], False, notes={"concourse"}))
+        var = symmetry.get_all_variants(ALayout([gray_ps], [ps], False, notes={"concourse"}))
         l = symmetry.create_variants(var)
         entries.extend(symmetry.get_all_entries(l))
         named_tiles[name + concourse_flavor] = l
@@ -200,7 +198,7 @@ def simple_load(name):
                             continue
                     else:
                         cur_sym = BuildingSpriteSheetSymmetricalX
-                    var = cur_sym.get_all_variants(ALayout([groundsprite], l + [ps], False, notes={"concourse"}))
+                    var = cur_sym.get_all_variants(ALayout([gray_ps], l + [ps], False, notes={"concourse"}))
                     l = cur_sym.create_variants(var)
                     entries.extend(cur_sym.get_all_entries(l))
                     named_tiles[name + concourse_flavor + shelter_flavor + extra_suffix] = l
