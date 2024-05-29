@@ -234,7 +234,7 @@ the_stations = AMetaStation(
         )
         for i, entry in enumerate(entries)
     ],
-    b"PLAT",
+    b"\xe8\x8a\x9cP",
     None,
     entries,
     [
