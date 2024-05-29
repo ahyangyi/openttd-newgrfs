@@ -28,4 +28,5 @@ special_demo_sa = Demo(
     ],
     remap=get_1cc_remap(CompanyColour.PURPLE),
     climate="tropical",
+    subclimate="desert",
 )

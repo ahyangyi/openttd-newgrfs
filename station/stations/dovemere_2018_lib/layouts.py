@@ -6,7 +6,6 @@ from station.lib import (
     BuildingSpriteSheetSymmetricalY,
     BuildingSpriteSheetRotational,
     BuildingSpriteSheetDiagonal,
-    ADefaultGroundSprite,
     AGroundSprite,
     AParentSprite,
     AChildSprite,

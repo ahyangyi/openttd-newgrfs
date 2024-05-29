@@ -32,4 +32,5 @@ special_demo_aq = Demo(
     [rail_row, top_building, bottom_building, rail_row, top_building, bottom_building, rail_row],
     remap=get_1cc_remap(CompanyColour.LIGHT_BLUE),
     climate="arctic",
+    subclimate="snow",
 )

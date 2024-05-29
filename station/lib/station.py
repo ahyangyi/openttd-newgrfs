@@ -32,8 +32,13 @@ class AStation(grf.SpriteGenerator):
             ).get_persistent_id(),
         }
 
-        self.callbacks.graphics = grf.GenericSpriteLayout(ent1=[0], ent2=[0], feature=grf.STATION)
-        self.callbacks.set_flag_props(self._props)
+        graphics = grf.GenericSpriteLayout(ent1=[0], ent2=[0], feature=grf.STATION)
+        self.callbacks.graphics = grf.Switch(
+            ranges={0: graphics}, code="TEMP[0x00] = 26 * ((terrain_type & 0x5) > 0)", default=graphics
+        )
+
+        cb_props = {}
+        self.callbacks.set_flag_props(cb_props)
 
         if sprites is None:
             sprites = self.sprites
@@ -51,6 +56,7 @@ class AStation(grf.SpriteGenerator):
                     "advanced_layout": grf.SpriteLayoutList([l.to_grf(sprites) for l in self.layouts]),
                     **self._props,
                     **extra_props,
+                    **cb_props,
                 },
             )
         )
