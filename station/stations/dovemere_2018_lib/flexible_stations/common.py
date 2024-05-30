@@ -69,7 +69,7 @@ def get_tile(name, desc):
 
 
 def reverse(x):
-    return {"_f": "_n", "_n": "_f", "_d": "_d"}[x]
+    return x[:-1] + {"f": "n", "n": "f", "d": "d"}[x[-1]]
 
 
 def get_left_index_suffix(t, d, suffix):

@@ -191,7 +191,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal):
             cur_plat = h_pos.platform(platform_class, shelter_class)
             shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
             platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
-            sname = name + shelter_postfix + platform_postfix
+            sname = name + platform_postfix + shelter_postfix
             register(
                 ALayout(corridor_ground, [f2, cur_plat, cur_plat.T], True, notes=["both"]),
                 symmetry,
@@ -273,7 +273,7 @@ def load(
             )
         for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
             shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
-            sname = name + shelter_postfix + platform_postfix
+            sname = name + platform_postfix + shelter_postfix
             if third:
                 register(
                     ALayout(
