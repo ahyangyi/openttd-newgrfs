@@ -82,18 +82,17 @@ for pclass in platform_classes:
         )
 
 traversable_stations = []
-global_id = 0x140
 
 cb24 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_odd(t, d)], cb24=True)
-for pclass in platform_classes:
+for p, pclass in enumerate(platform_classes):
     pclass_desc = "" if pclass == "concrete" else "_" + pclass
     front = make_front_row(pclass_desc + "_platform")
-    for sclass in shelter_classes:
+    for s, sclass in enumerate(shelter_classes):
         if pclass == "concrete" and sclass == "shelter_1":
             demo_1 = lambda r, c, cb14=cb14[pclass][sclass], cb24=cb24: cb14.demo(r, c, cb24)
         traversable_stations.append(
             AStation(
-                id=global_id,
+                id=0x300 + p * 0x10 + s,
                 translation_name="FLEXIBLE_SIDE",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
@@ -108,18 +107,17 @@ for pclass in platform_classes:
                 },
             )
         )
-        global_id += 1
 
 cb24 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_even(t, d)], cb24=True)
-for pclass in platform_classes:
+for p, pclass in enumerate(platform_classes):
     pclass_desc = "" if pclass == "concrete" else "_" + pclass
     front = make_front_row(pclass_desc + "_platform")
-    for sclass in shelter_classes:
+    for s, sclass in enumerate(shelter_classes):
         if pclass == "concrete" and sclass == "shelter_1":
             demo_2 = lambda r, c, cb14=cb14[pclass][sclass], cb24=cb24: cb14.demo(r, c, cb24)
         traversable_stations.append(
             AStation(
-                id=global_id,
+                id=0x400 + p * 0x10 + s,
                 translation_name="FLEXIBLE_NO_SIDE",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
@@ -134,4 +132,3 @@ for pclass in platform_classes:
                 },
             )
         )
-        global_id += 1

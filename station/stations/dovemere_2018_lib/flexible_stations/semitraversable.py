@@ -12,11 +12,10 @@ named_tiles.globalize()
 single = make_row(tiny_untraversable, h_end_gate_untraversable, h_end_untraversable, h_normal, h_gate, h_gate_extender)
 
 semitraversable_stations = []
-global_id = 0x100
-for pclass in platform_classes:
+for p, pclass in enumerate(platform_classes):
     pclass_desc = "" if pclass == "concrete" else "_" + pclass
     front = make_front_row(pclass_desc + "_platform")
-    for sclass in shelter_classes:
+    for s, sclass in enumerate(shelter_classes):
         cb24 = make_vertical_switch(
             lambda t, d: 0 if t == 0 or d == 0 else {"n": 2, "f": 4, "d": 6}[determine_platform_odd(t, d)], cb24=True
         )
@@ -30,7 +29,7 @@ for pclass in platform_classes:
             demo_1 = lambda r, c, cb14=cb14, cb24=cb24: cb14.demo(r, c, cb24)
         semitraversable_stations.append(
             AStation(
-                id=global_id,
+                id=0x100 + p * 0x10 + s,
                 translation_name="FLEXIBLE_UNTRAVERSABLE_SIDE",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
@@ -45,11 +44,10 @@ for pclass in platform_classes:
                 },
             )
         )
-        global_id += 1
 
 front = make_front_row("")
-for pclass in platform_classes:
-    for sclass in shelter_classes:
+for p, pclass in enumerate(platform_classes):
+    for s, sclass in enumerate(shelter_classes):
         cb24 = make_vertical_switch(
             lambda t, d: 0 if t == 0 or d == 0 else {"n": 2, "f": 4, "d": 6}[determine_platform_even(t, d)], cb24=True
         )
@@ -63,7 +61,7 @@ for pclass in platform_classes:
             demo_2 = lambda r, c, cb14=cb14, cb24=cb24: cb14.demo(r, c, cb24)
         semitraversable_stations.append(
             AStation(
-                id=global_id,
+                id=0x200 + p * 0x10 + s,
                 translation_name="FLEXIBLE_UNTRAVERSABLE_NO_SIDE",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
@@ -78,4 +76,3 @@ for pclass in platform_classes:
                 },
             )
         )
-        global_id += 1
