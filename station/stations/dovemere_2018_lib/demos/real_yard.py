@@ -27,7 +27,7 @@ near_lines = [
     make_line(platform_n.T, side_b_f, central_d, central_windowed_d, central_windowed_extender_d),
     make_line(platform_n, side_a_n, central_d, central_windowed_d, central_windowed_extender_d),
     make_line(
-        platform_tiles.concourse_side_shelter.T,
+        platform_tiles.concourse_side_shelter_1.T,
         corner_platform,
         front_normal_platform,
         front_gate_platform,

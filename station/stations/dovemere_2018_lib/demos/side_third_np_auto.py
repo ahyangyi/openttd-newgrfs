@@ -5,9 +5,9 @@ from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import side_third
 from .utils import h_merge
 
-station_building = h_merge([side_third.cb14_2.demo(i, 1) for i in range(1, 5)], [[platform_n]])[0]
+station_building = h_merge([side_third.side_third_station_np_demo(i, 1) for i in range(1, 5)], [[platform_n]])[0]
 n = len(station_building)
-station_building_2 = h_merge([side_third.cb14_2.demo(i, 1) for i in [5, 7]], [[platform_n]])[0]
+station_building_2 = h_merge([side_third.side_third_station_np_demo(i, 1) for i in [5, 7]], [[platform_n]])[0]
 assert n == len(station_building_2)
 
 side_third_np_auto_demo = Demo(

@@ -23,8 +23,9 @@ This is an add-on to the China Set: Stations and Platforms set, providing additi
 
 ### 2.1 Requirements
 
-- OpenTTD 1.14.0 or higher
+- OpenTTD 14.0 or higher
     * this NewGRF relies on new-style station string properties
+    * Work is being done to support older versions of OpenTTD, stay tuned...
 - Not compatible with TTDPatch
 
 
@@ -42,7 +43,12 @@ Management:
 
 Graphics:
 - Ahyangyi
-- NACHN
+
+Also includes graphics from China Set: Stations, by
+- WenSim
+
+And OpenGFX2, by
+- Zephyris
 
 Code:
 - Ahyangyi

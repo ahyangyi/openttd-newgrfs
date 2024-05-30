@@ -1,6 +1,16 @@
 China Set: Stations & Platforms Addons: Wuhu Changelog
 =========================
 
+0.2.0 (ETA 2024-05-31)
+--------------------
+Redesign graphics, now the station building is always built atop a concrete platform. Corresponding tiles ("concourse") are also made buildable.
+
+Switch platform/shelter graphics to the new ones from China Set: Stations.
+
+Rework templates, now it is guaranteed that any rectangle-shaped subset of a template also has a coherent look-and-feel, and the existence of any platform is remembered during such (de)construction.
+
+Make groundsprites climate aware: now desert and snow tiles show the respective ground type correctly.
+
 0.1.2 (2024-04-30)
 --------------------
 Fix traversability of fully-traversable templates.

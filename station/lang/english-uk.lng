@@ -1,6 +1,6 @@
 ##grflangid 0x01
 STR_GRF_NAME                    :CNS Addon: Wuhu {WHITE}0.2.0-indev
-STR_GRF_DESC                    :An add-on to {PUSH_COLOUR}{GOLD}China{RED}Set{SILVER}: Stations (CNS){POP_COLOUR}, this NewGRF provides {PUSH_COLOUR}{GOLD}467{POP_COLOUR} modular tiles and {PUSH_COLOUR}{GOLD}12{POP_COLOUR} templated stations modeled after the {PUSH_COLOUR}{SILVER}Wuhu Railway Station{POP_COLOUR} in China.{}{}{PUSH_COLOUR}{SILVER}Graphics contributors{POP_COLOUR}:{}Ahyangyi, WenSim, NACHN.{}{PUSH_COLOUR}{SILVER}Coding contributors{POP_COLOUR}:{}Ahyangyi{}Distributed under {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR}.
+STR_GRF_DESC                    :An add-on to {PUSH_COLOUR}{GOLD}China{RED}Set{SILVER}: Stations (CNS){POP_COLOUR}, this NewGRF provides {PUSH_COLOUR}{GOLD}1095{POP_COLOUR} modular tiles and {PUSH_COLOUR}{GOLD}38{POP_COLOUR} templated stations modeled after the {PUSH_COLOUR}{SILVER}Wuhu Railway Station{POP_COLOUR} in China.{}{}{PUSH_COLOUR}{SILVER}Graphics contributors{POP_COLOUR}:{}Ahyangyi, WenSim, NACHN.{}{PUSH_COLOUR}{SILVER}Coding contributors{POP_COLOUR}:{}Ahyangyi{}Distributed under {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR}.
 
 STR_STATION_DEFAULT                             :Station Building
 STR_STATION_UNTRAVERSABLE                       :Station Building (No Track)
@@ -81,10 +81,10 @@ STR_STATION_CLASS_E88A9C0       :CNS: Wuhu (1933)
 
 STR_STATION_CLASS_E9B8A0A       :CNS: Wuhu North (2018)
 
-STR_STATION_CLASS_PLAT          :CNS: Wuhu - Extra Platforms
+STR_STATION_CLASS_E88A9CP       :CNS: Wuhu - Extra Platforms
 
 STR_METASTATION_CLASS_E88A9CA   :Wuhu Station (2015)
 STR_METASTATION_CLASS_E88A9Ca   :Wuhu Station (1992)
 STR_METASTATION_CLASS_E88A9C0   :Wuhu Station (1933)
 STR_METASTATION_CLASS_E9B8A0A   :Wuhu North Station (2018)
-STR_METASTATION_CLASS_PLAT      :Platforms
+STR_METASTATION_CLASS_E88A9CP   :Platforms
