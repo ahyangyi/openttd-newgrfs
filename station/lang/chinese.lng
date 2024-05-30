@@ -7,7 +7,8 @@ STR_PARAM_INTRODUCTION_YEAR_DESC        :决定本 NewGRF 内每个车站是否�
 STR_PARAM_INTRODUCTION_YEAR_DISABLED    :任何年份都可以建造任何车站
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :特定年份后才可以建造车站
 
-STR_PARAM_E88A9CA_INTRODUCTION_YEAR     :芜湖站可建造年份
+STR_PARAM_E88A9CA_INTRODUCTION_YEAR         :芜湖站 - 可建造年份
+STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :选择芜湖站的可用年份。0 表示默认值 (2005)。
 
 STR_STATION_DEFAULT                             :站房
 STR_STATION_UNTRAVERSABLE                       :站房（无轨道）
