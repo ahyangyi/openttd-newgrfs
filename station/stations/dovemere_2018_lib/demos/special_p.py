@@ -25,4 +25,5 @@ special_demo_p = Demo(
         [None, h_end_asym_gate, turn_gate.R, None, turn_gate, h_end_asym_gate.R, None],
     ],
     remap=get_1cc_remap(CompanyColour.PALE_GREEN),
+    climate="tropical",
 )

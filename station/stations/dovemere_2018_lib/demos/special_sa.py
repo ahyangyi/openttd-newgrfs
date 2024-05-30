@@ -27,4 +27,6 @@ special_demo_sa = Demo(
         [front_gate_extender_corner, corner_gate.R, nt.T, nt.T, nt.T, nt.T, v_end_platform],
     ],
     remap=get_1cc_remap(CompanyColour.PURPLE),
+    climate="tropical",
+    subclimate="desert",
 )
