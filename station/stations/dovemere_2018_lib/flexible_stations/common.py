@@ -54,9 +54,9 @@ def make_row(onetile, twotile, lwall, general, window, window_extender, threetil
     )
 
 
-def make_front_row(suffix):
+def make_front_row(suffix, fallback_suffix=None):
     row = [
-        named_tiles[c + suffix]
+        named_tiles[c + suffix] if c + suffix in named_tiles else named_tiles[c + fallback_suffix]
         for c in ["v_end_gate", "corner_gate", "corner", "front_normal", "front_gate", "front_gate_extender"]
     ]
     row[1] = make_vertical_switch(lambda t, d: named_tiles["corner_gate_2" + suffix] if t == 1 else row[1])
