@@ -7,6 +7,8 @@ STR_PARAM_INTRODUCTION_YEAR_DESC        :Choose whether each station in this New
 STR_PARAM_INTRODUCTION_YEAR_DISABLED    :Always available
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :Only available after set year
 
+STR_PARAM_E88A9CA_INTRODUCTION_YEAR     :Start year for Wuhu Station
+
 STR_STATION_DEFAULT                             :Station Building
 STR_STATION_UNTRAVERSABLE                       :Station Building (No Track)
 STR_STATION_PLATFORM                            :Platform
