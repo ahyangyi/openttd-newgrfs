@@ -9,6 +9,7 @@ from .common import (
     make_front_row,
     make_central_row,
 )
+from station.stations.platforms import platform_classes, shelter_classes
 
 named_tiles.globalize()
 
@@ -39,32 +40,48 @@ cb14_6 = make_vertical_switch(lambda t, d: (single if d == t == 0 else front if 
 
 cb14 = StationTileSwitch("T", {2: cb14_2, 3: cb14_2, 4: cb14_4, 5: cb14_4, 6: cb14_6, 7: cb14_6})
 
-traversable_station = AStation(
-    id=0x08,
-    translation_name="FLEXIBLE_SIDE",
-    layouts=layouts,
-    class_label=b"\xe8\x8a\x9cA",
-    cargo_threshold=40,
-    disabled_platforms=0b1,
-    callbacks={
-        "select_tile_layout": cb24_0.to_index(None),
-        "select_sprite_layout": grf.DualCallback(
-            default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24_0))
-        ),
-    },
-)
+traversable_stations = []
+global_id = 0x08
+for pclass in platform_classes:
+    pclass_desc = "" if pclass == "concrete" else "_" + pclass
+    front = make_front_row(pclass_desc + "_platform")
+    for sclass in shelter_classes:
+        traversable_stations.append(
+            AStation(
+                id=global_id,
+                translation_name="FLEXIBLE_SIDE",
+                layouts=layouts,
+                class_label=b"\xe8\x8a\x9cA",
+                cargo_threshold=40,
+                disabled_platforms=0b1,
+                callbacks={
+                    "select_tile_layout": cb24_0.to_index(None),
+                    "select_sprite_layout": grf.DualCallback(
+                        default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24_0))
+                    ),
+                },
+            )
+        )
+        global_id += 1
 
-traversable_station_no_side = AStation(
-    id=0x09,
-    translation_name="FLEXIBLE_NO_SIDE",
-    layouts=layouts,
-    class_label=b"\xe8\x8a\x9cA",
-    cargo_threshold=40,
-    disabled_platforms=0b100,
-    callbacks={
-        "select_tile_layout": cb24_1.to_index(None),
-        "select_sprite_layout": grf.DualCallback(
-            default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24_1))
-        ),
-    },
-)
+for pclass in platform_classes:
+    pclass_desc = "" if pclass == "concrete" else "_" + pclass
+    front = make_front_row(pclass_desc + "_platform")
+    for sclass in shelter_classes:
+        traversable_stations.append(
+            AStation(
+                id=global_id,
+                translation_name="FLEXIBLE_NO_SIDE",
+                layouts=layouts,
+                class_label=b"\xe8\x8a\x9cA",
+                cargo_threshold=40,
+                disabled_platforms=0b100,
+                callbacks={
+                    "select_tile_layout": cb24_1.to_index(None),
+                    "select_sprite_layout": grf.DualCallback(
+                        default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24_1))
+                    ),
+                },
+            )
+        )
+        global_id += 1
