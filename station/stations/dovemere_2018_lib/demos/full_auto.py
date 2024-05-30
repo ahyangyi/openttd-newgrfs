@@ -6,22 +6,16 @@ from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import traversable
 from .utils import h_merge
 
-platform_asym = platform_tiles.cns_side_and_shelter
+platform_asym = platform_tiles.cns_side_and_shelter_1
 
-row_2 = h_merge(
-    [traversable.cb14.demo(i, 2, traversable.cb24_0) for i in range(1, 5)], [[platform_asym.T], [platform_asym]]
-)
+row_2 = h_merge([traversable.demo_1(i, 2) for i in range(1, 5)], [[platform_asym.T], [platform_asym]])
 v_sep = [[concourse_tile] * len(row_2[0])] * 2
-row_3 = h_merge(
-    [traversable.cb14.demo(i, 3, traversable.cb24_0) for i in range(1, 5)],
-    [[platform_asym.T], [platform_d], [platform_asym]],
-)
+row_3 = h_merge([traversable.demo_1(i, 3) for i in range(1, 5)], [[platform_asym.T], [platform_d], [platform_asym]])
 row_4 = h_merge(
-    [traversable.cb14.demo(i, 4, traversable.cb24_0) for i in range(1, 5)],
-    [[platform_asym.T], [platform_n.T], [platform_n], [platform_asym]],
+    [traversable.demo_1(i, 4) for i in range(1, 5)], [[platform_asym.T], [platform_n.T], [platform_n], [platform_asym]]
 )
 row_5 = h_merge(
-    [traversable.cb14.demo(i, 5, traversable.cb24_0) for i in range(1, 5)],
+    [traversable.demo_1(i, 5) for i in range(1, 5)],
     [[platform_asym.T], [platform_d], [platform_d], [platform_d], [platform_asym]],
 )
 
