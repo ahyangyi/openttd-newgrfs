@@ -32,7 +32,7 @@ the_stations = AMetaStation(
     ]
     + [
         AStation(
-            id=0x100 + i,
+            id=0x1000 + i,
             translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
             layouts=[entry, entry.M],
             class_label=entry.category,

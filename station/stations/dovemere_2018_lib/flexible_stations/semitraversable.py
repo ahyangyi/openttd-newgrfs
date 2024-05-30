@@ -2,7 +2,7 @@ import grf
 from station.lib import AStation, StationTileSwitch, make_vertical_switch
 from ..layouts import named_tiles, layouts
 from .common import determine_platform_odd, determine_platform_even, make_front_row, make_demo, make_row
-from .traversable import cb14_2, cb14_4, cb14_6
+from .traversable import cb14_2, cb14_4, cb14_6, fill_odd
 from station.stations.platforms import platform_classes, shelter_classes
 
 
@@ -12,7 +12,7 @@ named_tiles.globalize()
 single = make_row(tiny_untraversable, h_end_gate_untraversable, h_end_untraversable, h_normal, h_gate, h_gate_extender)
 
 semitraversable_stations = []
-global_id = 0x00
+global_id = 0x100
 for pclass in platform_classes:
     pclass_desc = "" if pclass == "concrete" else "_" + pclass
     front = make_front_row(pclass_desc + "_platform")
@@ -24,7 +24,7 @@ for pclass in platform_classes:
             lambda t, d: single if d == t == 0 else front if d == 0 else front.T if t == 0 else None
         )
         cb14 = StationTileSwitch(
-            "T", {0: cb14_0, 1: cb14_0, 2: cb14_2, 3: cb14_2, 4: cb14_4, 5: cb14_4, 6: cb14_6, 7: cb14_6}
+            "T", fill_odd({0: cb14_0, 2: cb14_2[pclass][sclass], 4: cb14_4[pclass][sclass], 6: cb14_6[pclass][sclass]})
         )
         if pclass == "concrete" and sclass == "shelter_1":
             demo_1 = lambda r, c, cb14=cb14, cb24=cb24: cb14.demo(r, c, cb24)
@@ -57,7 +57,7 @@ for pclass in platform_classes:
             lambda t, d: single if d == t == 0 else front if d == 0 else front.T if t == 0 else None
         )
         cb14 = StationTileSwitch(
-            "T", {0: cb14_0, 1: cb14_0, 2: cb14_2, 3: cb14_2, 4: cb14_4, 5: cb14_4, 6: cb14_6, 7: cb14_6}
+            "T", fill_odd({0: cb14_0, 2: cb14_2[pclass][sclass], 4: cb14_4[pclass][sclass], 6: cb14_6[pclass][sclass]})
         )
         if pclass == "concrete" and sclass == "shelter_1":
             demo_2 = lambda r, c, cb14=cb14, cb24=cb24: cb14.demo(r, c, cb24)

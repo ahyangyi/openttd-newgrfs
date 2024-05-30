@@ -13,12 +13,23 @@ from station.stations.platforms import platform_classes, shelter_classes
 
 named_tiles.globalize()
 
-front = {}
+
+def fill_odd(d):
+    return {**d, **{k + 1: v for k, v in d.items()}}
+
+
+front = {pclass: {} for pclass in platform_classes}
 front2 = {}
 single = {}
+h_n = {pclass: {} for pclass in platform_classes}
+h_f = {pclass: {} for pclass in platform_classes}
+h_d = {pclass: {} for pclass in platform_classes}
+cb14_2 = {pclass: {} for pclass in platform_classes}
+cb14_4 = {pclass: {} for pclass in platform_classes}
+cb14_6 = {pclass: {} for pclass in platform_classes}
+cb14 = {pclass: {} for pclass in platform_classes}
 for pclass in platform_classes:
     pclass_desc = "" if pclass == "concrete" else "_" + pclass
-    front[pclass] = {}
     front2[pclass] = make_front_row(pclass_desc + "_third")
     single[pclass] = make_row(
         tiny_corridor, h_end_gate_corridor, h_end_corridor, h_normal_corridor, h_gate_corridor, h_gate_extender_corridor
@@ -29,37 +40,38 @@ for pclass in platform_classes:
             sclass_desc + pclass_desc + "_third_f", fallback_suffix=pclass_desc + "_third_f"
         )
 
+        h_n[pclass][sclass] = make_horizontal_switch(lambda l, r: make_central_row(l, r, "_n"))
+        h_f[pclass][sclass] = make_horizontal_switch(lambda l, r: make_central_row(l, r, "_f"))
+        h_d[pclass][sclass] = make_horizontal_switch(lambda l, r: make_central_row(l, r, "_d"))
 
-h_n = make_horizontal_switch(lambda l, r: make_central_row(l, r, "n"))
-h_f = make_horizontal_switch(lambda l, r: make_central_row(l, r, "f"))
-h_d = make_horizontal_switch(lambda l, r: make_central_row(l, r, "d"))
+        cb14_2[pclass][sclass] = make_vertical_switch(
+            lambda t, d: (
+                single[pclass]
+                if d == t == 0
+                else front2[pclass] if d == 0 else front[pclass][sclass].T if t == 0 else h_n[pclass][sclass]
+            )
+        )
+        cb14_4[pclass][sclass] = make_vertical_switch(
+            lambda t, d: (
+                single[pclass]
+                if d == t == 0
+                else front[pclass][sclass] if d == 0 else front2[pclass].T if t == 0 else h_f[pclass][sclass]
+            )
+        )
+        cb14_6[pclass][sclass] = make_vertical_switch(
+            lambda t, d: (
+                single[pclass]
+                if d == t == 0
+                else front[pclass][sclass] if d == 0 else front[pclass][sclass].T if t == 0 else h_d[pclass][sclass]
+            )
+        )
 
-cb14_2 = make_vertical_switch(
-    lambda t, d: (
-        single["concrete"]
-        if d == t == 0
-        else front2["concrete"] if d == 0 else front["concrete"]["shelter_1"].T if t == 0 else h_n
-    )
-)
-cb14_4 = make_vertical_switch(
-    lambda t, d: (
-        single["concrete"]
-        if d == t == 0
-        else front["concrete"]["shelter_1"] if d == 0 else front2["concrete"].T if t == 0 else h_f
-    )
-)
-cb14_6 = make_vertical_switch(
-    lambda t, d: (
-        single["concrete"]
-        if d == t == 0
-        else front["concrete"]["shelter_1"] if d == 0 else front["concrete"]["shelter_1"].T if t == 0 else h_d
-    )
-)
-
-cb14 = StationTileSwitch("T", {2: cb14_2, 3: cb14_2, 4: cb14_4, 5: cb14_4, 6: cb14_6, 7: cb14_6})
+        cb14[pclass][sclass] = StationTileSwitch(
+            "T", fill_odd({2: cb14_2[pclass][sclass], 4: cb14_4[pclass][sclass], 6: cb14_6[pclass][sclass]})
+        )
 
 traversable_stations = []
-global_id = 0x08
+global_id = 0x140
 
 cb24 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_odd(t, d)], cb24=True)
 for pclass in platform_classes:
@@ -67,7 +79,7 @@ for pclass in platform_classes:
     front = make_front_row(pclass_desc + "_platform")
     for sclass in shelter_classes:
         if pclass == "concrete" and sclass == "shelter_1":
-            demo_1 = lambda r, c, cb14=cb14, cb24=cb24: cb14.demo(r, c, cb24)
+            demo_1 = lambda r, c, cb14=cb14[pclass][sclass], cb24=cb24: cb14.demo(r, c, cb24)
         traversable_stations.append(
             AStation(
                 id=global_id,
@@ -79,7 +91,8 @@ for pclass in platform_classes:
                 callbacks={
                     "select_tile_layout": cb24.to_index(None),
                     "select_sprite_layout": grf.DualCallback(
-                        default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24))
+                        default=cb14[pclass][sclass].to_index(layouts),
+                        purchase=layouts.index(make_demo(cb14[pclass][sclass], 4, 4, cb24)),
                     ),
                 },
             )
@@ -92,7 +105,7 @@ for pclass in platform_classes:
     front = make_front_row(pclass_desc + "_platform")
     for sclass in shelter_classes:
         if pclass == "concrete" and sclass == "shelter_1":
-            demo_2 = lambda r, c, cb14=cb14, cb24=cb24: cb14.demo(r, c, cb24)
+            demo_2 = lambda r, c, cb14=cb14[pclass][sclass], cb24=cb24: cb14.demo(r, c, cb24)
         traversable_stations.append(
             AStation(
                 id=global_id,
@@ -104,7 +117,8 @@ for pclass in platform_classes:
                 callbacks={
                     "select_tile_layout": cb24.to_index(None),
                     "select_sprite_layout": grf.DualCallback(
-                        default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24))
+                        default=cb14[pclass][sclass].to_index(layouts),
+                        purchase=layouts.index(make_demo(cb14[pclass][sclass], 4, 4, cb24)),
                     ),
                 },
             )

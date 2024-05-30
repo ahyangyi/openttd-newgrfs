@@ -36,7 +36,7 @@ cb14 = make_horizontal_switch(get_side_index)
 cb14_2 = make_horizontal_switch(get_side_index_2)
 
 side_third_station = AStation(
-    id=0x14,
+    id=0x184,
     translation_name="FLEXIBLE_FRONT_SIDE_THIRD",
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
@@ -51,7 +51,7 @@ side_third_station = AStation(
 )
 
 back_side_third_station = AStation(
-    id=0x15,
+    id=0x185,
     translation_name="FLEXIBLE_BACK_SIDE_THIRD",
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
@@ -66,7 +66,7 @@ back_side_third_station = AStation(
 )
 
 side_third_station_np = AStation(
-    id=0x16,
+    id=0x186,
     translation_name="FLEXIBLE_FRONT_SIDE_THIRD_NP",
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",
@@ -81,7 +81,7 @@ side_third_station_np = AStation(
 )
 
 back_side_third_station_np = AStation(
-    id=0x17,
+    id=0x187,
     translation_name="FLEXIBLE_BACK_SIDE_THIRD_NP",
     layouts=layouts,
     class_label=b"\xe8\x8a\x9cA",

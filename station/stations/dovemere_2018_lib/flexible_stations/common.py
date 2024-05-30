@@ -65,11 +65,11 @@ def make_front_row(suffix, fallback_suffix=None):
 
 
 def get_tile(name, desc):
-    return named_tiles[f"{name}_{desc}"]
+    return named_tiles[f"{name}{desc}"]
 
 
 def reverse(x):
-    return {"f": "n", "n": "f", "d": "d"}[x]
+    return {"_f": "_n", "_n": "_f", "_d": "_d"}[x]
 
 
 def get_left_index_suffix(t, d, suffix):
