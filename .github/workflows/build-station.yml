@@ -20,6 +20,8 @@ jobs:
         run: pip install -r requirements.txt
       - name: Generate station
         run: PATH=${PWD}/gopath/bin:${PATH} make station; mkdir release; mv station.grf release/
+      - name: Pack documentation
+        run: cp station/docs/changelog.md release/changelog.txt; cp station/docs/readme.md release/readme.txt
       - name: Upload artifact
         uses: actions/upload-pages-artifact@main
         with:
