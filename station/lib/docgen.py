@@ -18,7 +18,7 @@ def gen_docs(string_manager, metastations):
 layout: default
 title: {translation}
 parent: "CNS Addon: Wuhu"
-nav_order: {i+1}
+nav_order: {i+2}
 ---
 """,
                 file=f,
