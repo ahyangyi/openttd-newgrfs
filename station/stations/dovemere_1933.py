@@ -19,6 +19,7 @@ def quickload(name, type):
         prefix="station/voxels/render/dovemere_1933",
         voxel_getter=lambda path=f"station/voxels/dovemere_1933/{name}.vox": path,
         load_from="station/files/gorender.json",
+        config={"agrf_palette": "station/files/dovemere_1933_palette.json", "z_scale": 1.0},
         subset=type.render_indices(),
     )
     sprite = type.create_variants(v.spritesheet())
