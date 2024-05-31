@@ -7,18 +7,18 @@ STR_STATION_UNTRAVERSABLE                       :Station Building (No Track)
 STR_STATION_PLATFORM                            :Platform
 STR_STATION_PLATFORM_UNTRAVERSABLE              :Platform (No Track)
 STR_STATION_CONCOURSE                           :Concourse
-STR_STATION_FLEXIBLE_SIDE                       :Flexible Station Building (All tracks)
-STR_STATION_FLEXIBLE_NO_SIDE                    :Flexible Station Building (All tracks, no platform at sides)
+STR_STATION_FLEXIBLE_SIDE                       :Flexible Station Building (All tracks, no side platform)
+STR_STATION_FLEXIBLE_NO_SIDE                    :Flexible Station Building (All tracks, side platform)
 STR_STATION_FLEXIBLE_UNTRAVERSABLE_SIDE         :Flexible Station Building (No track at sides, side platform)
 STR_STATION_FLEXIBLE_UNTRAVERSABLE_NO_SIDE      :Flexible Station Building (No track at sides, no side platform)
 STR_STATION_FLEXIBLE_FRONT_SIDE                 :Flexible Station Building (Track-side, front)
 STR_STATION_FLEXIBLE_BACK_SIDE                  :Flexible Station Building (Track-side, back)
 STR_STATION_FLEXIBLE_FRONT_SIDE_NP              :Flexible Station Building (Track-side, front, no platform)
 STR_STATION_FLEXIBLE_BACK_SIDE_NP               :Flexible Station Building (Track-side, back, no platform)
-STR_STATION_FLEXIBLE_FRONT_SIDE_THIRD           :Flexible Station Building (With track, front)
-STR_STATION_FLEXIBLE_BACK_SIDE_THIRD            :Flexible Station Building (With track, back)
-STR_STATION_FLEXIBLE_FRONT_SIDE_THIRD_NP        :Flexible Station Building (With track, front, no platform)
-STR_STATION_FLEXIBLE_BACK_SIDE_THIRD_NP         :Flexible Station Building (With track, back, no platform)
+STR_STATION_FLEXIBLE_FRONT_SIDE_THIRD           :Flexible Station Building (With track, front, no side platform)
+STR_STATION_FLEXIBLE_BACK_SIDE_THIRD            :Flexible Station Building (With track, back, no side platform)
+STR_STATION_FLEXIBLE_FRONT_SIDE_THIRD_NP        :Flexible Station Building (With track, front, side platform)
+STR_STATION_FLEXIBLE_BACK_SIDE_THIRD_NP         :Flexible Station Building (With track, back, side platform)
 
 STR_STATION_CLASS_E88A9CA       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu - Template
 STR_STATION_CLASS_E88A9C80      :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} Front
