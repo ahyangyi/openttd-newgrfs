@@ -5,7 +5,7 @@ from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 
 named_tiles.globalize()
-nt = platform_tiles.concourse_side_shelter
+nt = platform_tiles.concourse_side_shelter_1
 
 special_demo_sa = Demo(
     "Irregular 7×7 station layout",
@@ -27,4 +27,6 @@ special_demo_sa = Demo(
         [front_gate_extender_corner, corner_gate.R, nt.T, nt.T, nt.T, nt.T, v_end_platform],
     ],
     remap=get_1cc_remap(CompanyColour.PURPLE),
+    climate="tropical",
+    subclimate="desert",
 )

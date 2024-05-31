@@ -12,6 +12,7 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from .ground import named_ps as ground_ps
+from .misc import track_ground
 
 
 gray_ps = ground_ps.gray
@@ -24,7 +25,8 @@ pillar_height = 18
 
 
 platform_components = {"cut", "concrete", "concrete_side", "brick", "brick_side"}
-plat_meta = [
+platform_classes = ["concrete", "brick"]
+platform_meta = [
     ("_np", "", False, set(), 0),
     ("_cut", "", False, {"cut"}, platform_height),
     ("", "concrete", True, {"concrete"}, platform_height),
@@ -45,12 +47,13 @@ shelter_components = {
     "pillar_building",
     "pillar_central",
 }
+shelter_classes = ["shelter_1", "shelter_2"]
 shelter_meta = [
     ("", "", BuildingSpriteSheetSymmetricalX, set(), 0, True),
-    ("_shelter", "shelter_1", BuildingSpriteSheetSymmetricalX, {"shelter_1"}, shelter_height, True),
-    ("_shelter_building", "shelter_1", BuildingSpriteSheetFull, {"shelter_1_building"}, shelter_height, False),
+    ("_shelter_1", "shelter_1", BuildingSpriteSheetSymmetricalX, {"shelter_1"}, shelter_height, True),
+    ("_shelter_1_building", "shelter_1", BuildingSpriteSheetFull, {"shelter_1_building"}, shelter_height, False),
     (
-        "_shelter_building_v",
+        "_shelter_1_building_v",
         "shelter_1",
         BuildingSpriteSheetSymmetricalX,
         {"shelter_1_building_v"},
@@ -81,7 +84,7 @@ def quickload(name):
         load_from="station/files/cns-gorender.json",
     )
 
-    for platform_flavor, _pclass, pbuildable, pkeeps, pheight in plat_meta:
+    for platform_flavor, _pclass, pbuildable, pkeeps, pheight in platform_meta:
         for shelter_flavor, _sclass, symmetry, skeeps, sheight, sbuildable in shelter_meta:
             if (platform_flavor, shelter_flavor) == ("_np", ""):
                 # Don't create the "nothing" tile
@@ -105,22 +108,21 @@ def quickload(name):
             named_ps[name + suffix] = ps
 
             for l, make_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
-                groundsprite = ADefaultGroundSprite(1012)
                 if make_symmetrical:
                     cur_symmetry = symmetry.add_y_symmetry()
                 else:
                     cur_symmetry = symmetry
-                var = cur_symmetry.get_all_variants(ALayout([groundsprite], l, True))
+                var = cur_symmetry.get_all_variants(ALayout([track_ground], l, True))
                 l = cur_symmetry.create_variants(var)
                 if sbuildable and pbuildable:
                     entries.extend(cur_symmetry.get_all_entries(l))
                 named_tiles[name + suffix + extra_suffix] = l
 
-    for platform_flavor, pclass, pbuildable, _, _ in plat_meta:
+    for platform_flavor, pclass, pbuildable, _, _ in platform_meta:
         if pbuildable:
             for shelter_flavor, sclass, _, _, _, sbuildable in shelter_meta:
                 if sbuildable:
-                    for platform_flavor_2, pclass2, pbuildable_2, _, _ in plat_meta:
+                    for platform_flavor_2, pclass2, pbuildable_2, _, _ in platform_meta:
                         if pbuildable_2 and (pclass == "" or pclass2 == "" or pclass == pclass2):
                             for shelter_flavor_2, sclass2, _, _, _, sbuildable_2 in shelter_meta:
                                 if (
@@ -128,11 +130,10 @@ def quickload(name):
                                     and (sclass == "" or sclass2 == "" or sclass == sclass2)
                                     and ((platform_flavor, shelter_flavor) < (platform_flavor_2, shelter_flavor_2))
                                 ):
-                                    groundsprite = ADefaultGroundSprite(1012)
                                     cur_symmetry = BuildingSpriteSheetSymmetricalX
                                     var = cur_symmetry.get_all_variants(
                                         ALayout(
-                                            [groundsprite],
+                                            [track_ground],
                                             [
                                                 named_ps[name + platform_flavor + shelter_flavor],
                                                 named_ps[name + platform_flavor_2 + shelter_flavor_2].T,
@@ -167,12 +168,14 @@ def simple_load(name):
         voxel_getter=lambda path=f"station/voxels/cns/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
     )
-    concourse_components = {"concrete", "concrete_t"}
+    concourse_components = {f"{c}{postfix}" for c in platform_classes for postfix in ["", "_t"]}
 
     for concourse_flavor, symmetry, ckeeps in [
         ("", BuildingSpriteSheetSymmetrical, set()),
         ("_side", BuildingSpriteSheetSymmetricalX, {"concrete"}),
         ("_side_d", BuildingSpriteSheetSymmetrical, {"concrete", "concrete_t"}),
+        ("_brick_side", BuildingSpriteSheetSymmetricalX, {"brick"}),
+        ("_brick_side_d", BuildingSpriteSheetSymmetrical, {"brick", "brick_t"}),
     ]:
         v2 = v.discard_layers(tuple(sorted(tuple(concourse_components - ckeeps))), "subset" + concourse_flavor)
         v2.in_place_subset(symmetry.render_indices())
@@ -181,8 +184,7 @@ def simple_load(name):
         ps = AParentSprite(sprite, (16, 16, platform_height), (0, 0, 0))
         named_ps[name + concourse_flavor] = ps
 
-        groundsprite = gray_ps
-        var = symmetry.get_all_variants(ALayout([groundsprite], [ps], False, notes={"concourse"}))
+        var = symmetry.get_all_variants(ALayout([gray_ps], [ps], False, notes={"concourse"}))
         l = symmetry.create_variants(var)
         entries.extend(symmetry.get_all_entries(l))
         named_tiles[name + concourse_flavor] = l
@@ -200,7 +202,7 @@ def simple_load(name):
                             continue
                     else:
                         cur_sym = BuildingSpriteSheetSymmetricalX
-                    var = cur_sym.get_all_variants(ALayout([groundsprite], l + [ps], False, notes={"concourse"}))
+                    var = cur_sym.get_all_variants(ALayout([gray_ps], l + [ps], False, notes={"concourse"}))
                     l = cur_sym.create_variants(var)
                     entries.extend(cur_sym.get_all_entries(l))
                     named_tiles[name + concourse_flavor + shelter_flavor + extra_suffix] = l
@@ -225,19 +227,19 @@ the_stations = AMetaStation(
                 else "PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE"
             ),
             layouts=[entry, entry.M],
-            class_label=b"PLAT",
+            class_label=b"\xe8\x8a\x9cP",
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0},
         )
         for i, entry in enumerate(entries)
     ],
-    b"PLAT",
+    b"\xe8\x8a\x9cP",
     None,
     entries,
     [
         Demo("Platform", [[cns], [cns_d], [cns.T]]),
         Demo("Platform with concrete grounds", [[cns_side], [cns_d], [cns_side.T]]),
-        Demo("Platform with shelter", [[cns_shelter], [cns_shelter_d], [cns_shelter.T]]),
+        Demo("Platform with shelter", [[cns_shelter_1], [cns_shelter_1_d], [cns_shelter_1.T]]),
     ],
 )
