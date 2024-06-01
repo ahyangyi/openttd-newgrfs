@@ -17,6 +17,7 @@ def remove_control_letters(s):
                 i += 6
             else:
                 i += 3
-        ret.append(s[i])
-        i += 1
+        else:
+            ret.append(s[i])
+            i += 1
     return "".join(ret)
