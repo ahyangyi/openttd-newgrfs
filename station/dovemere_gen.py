@@ -8,7 +8,7 @@ import station.stations.platforms
 from station.lib.parameters import parameter_list
 
 metastations = [
-    station.stations.dovemere_2018.the_stations,
+    #    station.stations.dovemere_2018.the_stations,
     station.stations.dovemere_1933.the_stations,
     station.stations.platforms.the_stations,
 ]
