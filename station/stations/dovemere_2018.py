@@ -19,6 +19,7 @@ the_stations = AMetaStation(
             layouts=[entry, entry.M],
             class_label=entry.category,
             cargo_threshold=40,
+            min_bridge_height=(6, 6, 6, 6, 6, 6, 6, 6),
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0},
         )
