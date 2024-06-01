@@ -52,5 +52,5 @@ the_stations = AMetaStation(
     b"\xe8\x8a\x9c0",
     None,
     layouts,
-    [],
+    [Demo("The building", [[front_normal]])],
 )
