@@ -8,6 +8,7 @@ from station.lib import (
     AGroundSprite,
     AParentSprite,
     ALayout,
+    AttrDict,
 )
 from agrf.graphics.voxel import LazyVoxel
 from .ground import gray
@@ -30,12 +31,14 @@ def quickload(name, symmetry):
     layouts.extend(var)
     ret = symmetry.create_variants(var)
     entries.extend(symmetry.get_all_entries(ret))
-    return ret
+    named_tiles[name] = ret
 
 
 layouts = []
 entries = []
-[front_normal] = [quickload(name, symmetry) for name, symmetry in [("front_normal", BuildingSpriteSheetSymmetricalX)]]
+named_tiles = AttrDict()
+for name, symmetry in [("regular", BuildingSpriteSheetSymmetricalX)]:
+    quickload(name, symmetry)
 
 the_stations = AMetaStation(
     [
@@ -52,5 +55,5 @@ the_stations = AMetaStation(
     b"\xe8\x8a\x9c0",
     None,
     layouts,
-    [Demo("The building", [[front_normal]])],
+    [Demo("The building", [[named_tiles.regular]])],
 )
