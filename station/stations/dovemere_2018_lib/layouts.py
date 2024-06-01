@@ -15,13 +15,15 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
     named_ps as platform_ps,
-    cns_shelter_d as platform_d,
-    cns_shelter as platform_n,
-    cns_side_shelter as platform_s_nt,
+    cns_shelter_1_d as platform_d,
+    cns_shelter_1 as platform_n,
+    cns_side_shelter_1 as platform_s_nt,
     concourse as concourse_tile,
     platform_height,
     shelter_height,
     platform_width,
+    platform_classes,
+    shelter_classes,
 )
 from station.stations.ground import named_ps as ground_ps, named_tiles as ground_tiles, gray, gray_third
 from station.stations.misc import track_ground, track
@@ -81,15 +83,19 @@ def get_category(internal_category, back, notes, tra):
 @dataclass
 class HPos:
     non_platform: ALayout
-    platform: ALayout
-    platform_back_cut: ALayout
+    platform: None
+    platform_back_cut: None
+    has_shelter: bool
 
 
 def make_hpos(pillar_style, platform_style):
     return HPos(
         platform_ps["cns_np_pillar" + pillar_style],
-        platform_ps["cns" + platform_style],
-        platform_ps["cns_cut" + platform_style],
+        lambda p="concrete", x="shelter_1": platform_ps[
+            "cns" + ("" if p == "concrete" else "_" + p) + platform_style.replace("shelter", x)
+        ],
+        lambda x="shelter_1": platform_ps["cns_cut" + platform_style.replace("shelter", x)],
+        "shelter" in platform_style,
     )
 
 
@@ -177,38 +183,43 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal):
     name = name or source.split("/")[-1]
     v = make_voxel(source)
     f2 = make_f2(v, symmetry)
-    cur_np = h_pos.non_platform
-    cur_plat = h_pos.platform
 
+    cur_np = h_pos.non_platform
     register(ALayout(empty_ground, [f2, cur_np, cur_np.T], True), symmetry, internal_category, name + "_empty")
-    register(
-        ALayout(corridor_ground, [f2, cur_plat, cur_plat.T], True, notes=["both"]),
-        symmetry,
-        internal_category,
-        name + "_d",
-    )
-    if symmetry.is_symmetrical_y():
-        broken_symmetry = symmetry.break_y_symmetry()
-        register(
-            ALayout(one_side_ground, [f2, cur_plat, cur_np.T], True, notes=["near"]),
-            broken_symmetry,
-            internal_category,
-            name + "_n",
-        )
-        named_tiles[name + "_f"] = named_tiles[name + "_n"].T
-    else:
-        register(
-            ALayout(one_side_ground, [f2, cur_plat, cur_np.T], True, notes=["near"]),
-            symmetry,
-            internal_category,
-            name + "_n",
-        )
-        register(
-            ALayout(one_side_ground_t, [f2, cur_np, cur_plat.T], True, notes=["far"]),
-            symmetry,
-            internal_category,
-            name + "_f",
-        )
+    for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
+        for platform_class in platform_classes:
+            cur_plat = h_pos.platform(platform_class, shelter_class)
+            shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
+            platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
+            sname = name + platform_postfix + shelter_postfix
+            register(
+                ALayout(corridor_ground, [f2, cur_plat, cur_plat.T], True, notes=["both"]),
+                symmetry,
+                internal_category,
+                sname + "_d",
+            )
+            if symmetry.is_symmetrical_y():
+                broken_symmetry = symmetry.break_y_symmetry()
+                register(
+                    ALayout(one_side_ground, [f2, cur_plat, cur_np.T], True, notes=["near"]),
+                    broken_symmetry,
+                    internal_category,
+                    sname + "_n",
+                )
+                named_tiles[sname + "_f"] = named_tiles[sname + "_n"].T
+            else:
+                register(
+                    ALayout(one_side_ground, [f2, cur_plat, cur_np.T], True, notes=["near"]),
+                    symmetry,
+                    internal_category,
+                    sname + "_n",
+                )
+                register(
+                    ALayout(one_side_ground_t, [f2, cur_np, cur_plat.T], True, notes=["far"]),
+                    symmetry,
+                    internal_category,
+                    sname + "_f",
+                )
 
 
 def load(
@@ -241,38 +252,57 @@ def load(
     plat_f1 = make_f1(v, "platform", broken_f1_symmetry)
     full_f1 = make_f1(v, "full", f1_symmetry)
 
-    if corridor:
-        register(
-            ALayout(corridor_ground, [plat, plat.T, f1, f1b, f2], True, notes=["third"]),
-            symmetry,
-            internal_category,
-            name + "_corridor",
-        )
-    if third:
-        register(
-            ALayout(one_side_ground, [plat, f1, h_pos.non_platform.T, f2], True, notes=["third"]),
-            broken_symmetry,
-            internal_category,
-            name + "_third",
-        )
-        register(
-            ALayout(corridor_ground, [plat_nt, f1, h_pos.platform.T, f2], True, notes=["third", "far"]),
-            broken_symmetry,
-            internal_category,
-            name + "_third_f",
-        )
-    if platform:
-        register(
-            ALayout(
-                solid_ground,
-                [plat_f1, f2, h_pos.platform_back_cut.T, platform_ps.concourse_side.T],
-                False,
-                notes=["far"],
-            ),
-            broken_symmetry,
-            internal_category,
-            name + "_platform",
-        )
+    for platform_class in platform_classes:
+        platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
+        cur_plat = platform_ps["cns" + platform_postfix]
+        cur_plat_nt = platform_ps["cns" + platform_postfix + "_side"]
+        pname = name + platform_postfix
+        if corridor:
+            register(
+                ALayout(corridor_ground, [cur_plat, cur_plat.T, f1, f1b, f2], True, notes=["third"]),
+                symmetry,
+                internal_category,
+                pname + "_corridor",
+            )
+        if third:
+            register(
+                ALayout(one_side_ground, [cur_plat, f1, h_pos.non_platform.T, f2], True, notes=["third"]),
+                broken_symmetry,
+                internal_category,
+                pname + "_third",
+            )
+        for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
+            shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
+            sname = name + platform_postfix + shelter_postfix
+            if third:
+                register(
+                    ALayout(
+                        corridor_ground,
+                        [cur_plat_nt, f1, h_pos.platform(platform_class, shelter_class).T, f2],
+                        True,
+                        notes=["third", "far"],
+                    ),
+                    broken_symmetry,
+                    internal_category,
+                    sname + "_third_f",
+                )
+            if platform:
+                register(
+                    ALayout(
+                        solid_ground,
+                        [
+                            plat_f1,
+                            f2,
+                            h_pos.platform_back_cut(shelter_class).T,
+                            platform_ps[f"concourse{platform_postfix}_side"].T,
+                        ],
+                        False,
+                        notes=["far"],
+                    ),
+                    broken_symmetry,
+                    internal_category,
+                    sname + "_platform",
+                )
     if full:
         register(ALayout(solid_ground, [full_f1, f2, concourse], False), symmetry, internal_category, name)
 
