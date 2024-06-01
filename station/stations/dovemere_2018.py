@@ -1,6 +1,6 @@
 from station.lib import AStation, AMetaStation
 from .dovemere_2018_lib.layouts import *
-from .dovemere_2018_lib import demos
+from .dovemere_2018_lib import demos, common_properties
 from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_stations
 from .dovemere_2018_lib.flexible_stations.traversable import traversable_stations
 from .dovemere_2018_lib.flexible_stations.side import side_stations
@@ -18,8 +18,7 @@ the_stations = AMetaStation(
             translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
             layouts=[entry, entry.M],
             class_label=entry.category,
-            cargo_threshold=40,
-            min_bridge_height=(6, 6, 6, 6, 6, 6, 6, 6),
+            **common_properties,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0},
         )

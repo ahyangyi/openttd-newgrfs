@@ -1,5 +1,6 @@
 import grf
 from station.lib import AStation, make_horizontal_switch
+from .. import common_properties
 from ..layouts import named_tiles, layouts
 from .common import make_demo, horizontal_layout
 from station.stations.platforms import platform_classes, shelter_classes
@@ -106,7 +107,7 @@ for p, pclass in enumerate(platform_classes):
             translation_name="FLEXIBLE_FRONT_SIDE_THIRD_NP",
             layouts=layouts,
             class_label=b"\xe8\x8a\x9cA",
-            cargo_threshold=40,
+            **common_properties,
             disabled_platforms=0b11111110,
             callbacks={
                 "select_tile_layout": 0,
@@ -126,7 +127,7 @@ for p, pclass in enumerate(platform_classes):
             translation_name="FLEXIBLE_BACK_SIDE_THIRD_NP",
             layouts=layouts,
             class_label=b"\xe8\x8a\x9cA",
-            cargo_threshold=40,
+            **common_properties,
             disabled_platforms=0b11111110,
             callbacks={
                 "select_tile_layout": 0,

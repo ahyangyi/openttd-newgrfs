@@ -1,5 +1,6 @@
 import grf
 from station.lib import AStation, StationTileSwitch, make_vertical_switch
+from .. import common_properties
 from ..layouts import named_tiles, layouts
 from .common import determine_platform_odd, determine_platform_even, make_front_row, make_demo, make_row
 from .traversable import cb14_2, cb14_4, cb14_6, fill_odd
@@ -33,7 +34,7 @@ for p, pclass in enumerate(platform_classes):
                 translation_name="FLEXIBLE_UNTRAVERSABLE_SIDE",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
-                cargo_threshold=40,
+                **common_properties,
                 non_traversable_tiles=0b11,
                 disabled_platforms=0b11,
                 callbacks={
@@ -65,7 +66,7 @@ for p, pclass in enumerate(platform_classes):
                 translation_name="FLEXIBLE_UNTRAVERSABLE_NO_SIDE",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
-                cargo_threshold=40,
+                **common_properties,
                 non_traversable_tiles=0b11,
                 disabled_platforms=0b111,
                 callbacks={

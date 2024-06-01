@@ -1,5 +1,6 @@
 import grf
 from station.lib import AStation, StationTileSwitch, make_vertical_switch, make_horizontal_switch
+from .. import common_properties
 from ..layouts import named_tiles, layouts
 from .common import (
     determine_platform_odd,
@@ -96,7 +97,7 @@ for p, pclass in enumerate(platform_classes):
                 translation_name="FLEXIBLE_SIDE",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
-                cargo_threshold=40,
+                **common_properties,
                 disabled_platforms=0b1,
                 callbacks={
                     "select_tile_layout": cb24.to_index(None),
@@ -121,7 +122,7 @@ for p, pclass in enumerate(platform_classes):
                 translation_name="FLEXIBLE_NO_SIDE",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
-                cargo_threshold=40,
+                **common_properties,
                 disabled_platforms=0b100,
                 callbacks={
                     "select_tile_layout": cb24.to_index(None),
