@@ -70,10 +70,11 @@ class ADefaultGroundSprite:
 
 
 class AGroundSprite(CachedFunctorMixin):
-    def __init__(self, sprite, alternatives=None):
+    def __init__(self, sprite, alternatives=None, flags_with_registers=None):
         super().__init__()
         self.sprite = sprite
         self.alternatives = alternatives or []
+        self.flags_with_registers = flags_with_registers or {}
 
     def to_grf(self, sprite_list):
         return grf.GroundSprite(
@@ -85,7 +86,8 @@ class AGroundSprite(CachedFunctorMixin):
                 always_transparent=False,
                 no_transparent=False,
             ),
-            flags=0,
+            flags=sum(grf.SPRITE_FLAGS[k][1] for k in self.flags_with_registers.keys()),
+            registers={k: v for k, v in self.flags_with_registers.items() if v is not None},
         )
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
@@ -98,7 +100,9 @@ class AGroundSprite(CachedFunctorMixin):
 
     def fmap(self, f):
         return AGroundSprite(
-            self.sprite if self.sprite is grf.EMPTY_SPRITE else f(self.sprite), [f(s) for s in self.alternatives]
+            self.sprite if self.sprite is grf.EMPTY_SPRITE else f(self.sprite),
+            alternatives=[f(s) for s in self.alternatives],
+            flags_with_registers=self.flags_with_registers,
         )
 
     @property

@@ -1,6 +1,10 @@
 China Set: Stations & Platforms Addons: Wuhu Changelog
 =========================
 
+0.2.1 (2024-06-02)
+--------------------
+Fix monorail and maglev graphics (broken by the climate-aware groundsprite).
+
 0.2.0 (2024-05-31)
 --------------------
 Redesign graphics, now the station building is always built atop a concrete platform. Corresponding tiles ("concourse") are also made buildable.
