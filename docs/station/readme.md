@@ -92,7 +92,7 @@ contact Ahyangyi via Private Message at www.tt-forums.net.
 
 ## 5 License
 
-China Set: Stations & Platforms Addons: Wuhu
+China Set: Stations - Wuhu
 
 Copyright (C) 2024 China Set Team
 
