@@ -6,22 +6,16 @@ from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import semitraversable
 from .utils import h_merge
 
-nt = platform_tiles.concourse_side_shelter
+nt = platform_tiles.concourse_side_shelter_1
 
-row_3 = h_merge(
-    [semitraversable.cb14a.demo(i, 3, semitraversable.cb24_0) for i in range(1, 5)], [[nt], [platform_d], [nt.T]]
-)
+row_3 = h_merge([semitraversable.demo_1(i, 3) for i in range(1, 5)], [[nt], [platform_d], [nt.T]])
 v_sep = [[concourse_tile] * len(row_3[0])] * 2
-row_4 = h_merge(
-    [semitraversable.cb14a.demo(i, 4, semitraversable.cb24_0) for i in range(1, 5)],
-    [[nt], [platform_n.T], [platform_n], [nt.T]],
-)
+row_4 = h_merge([semitraversable.demo_1(i, 4) for i in range(1, 5)], [[nt], [platform_n.T], [platform_n], [nt.T]])
 row_5 = h_merge(
-    [semitraversable.cb14a.demo(i, 5, semitraversable.cb24_0) for i in range(1, 5)],
-    [[nt], [platform_d], [platform_d], [platform_d], [nt.T]],
+    [semitraversable.demo_1(i, 5) for i in range(1, 5)], [[nt], [platform_d], [platform_d], [platform_d], [nt.T]]
 )
 row_6 = h_merge(
-    [semitraversable.cb14a.demo(i, 6, semitraversable.cb24_0) for i in range(1, 5)],
+    [semitraversable.demo_1(i, 6) for i in range(1, 5)],
     [[nt], [platform_n.T], [platform_n], [platform_n.T], [platform_n], [nt.T]],
 )
 
