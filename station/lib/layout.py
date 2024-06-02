@@ -7,6 +7,22 @@ from agrf.utils import unique_tuple
 from grf.sprites import EmptySprite
 
 
+class ParentSpriteMixin:
+    def __init__(self, child_sprites):
+        self.child_sprites = child_sprites
+
+
+class RegistersMixin:
+    def __init__(self, flags_with_registers):
+        self.flags_with_registers = flags_with_registers or {}
+
+    def to_grf_dict(self):
+        return {
+            "flags": sum(grf.SPRITE_FLAGS[k][1] for k in self.flags_with_registers.keys()),
+            "registers": {k: v for k, v in self.flags_with_registers.items() if v is not None},
+        }
+
+
 class ADefaultGroundSprite:
     def __init__(self, sprite, flags_with_registers=None):
         self.sprite = sprite
