@@ -2,12 +2,12 @@
 STR_GRF_NAME                    :China Set: Stations - Wuhu {WHITE}0.2.2-indev
 STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}China{RED} Set{POP_COLOUR}: Stations {PUSH_COLOUR}{SILVER}Wuhu {WHITE}0.2.2-indev{POP_COLOUR}{}{}An add-on to {PUSH_COLOUR}{GOLD}China{RED} Set{POP_COLOUR}: Stations (CNS), this NewGRF provides {PUSH_COLOUR}{GOLD}1095{POP_COLOUR} modular tiles and {PUSH_COLOUR}{GOLD}38{POP_COLOUR} templated stations modeled after the {PUSH_COLOUR}{SILVER}Wuhu Railway Station{POP_COLOUR} in China.{}{}{PUSH_COLOUR}{WHITE}Contributors{POP_COLOUR}:{}Ahyangyi, WenSim.{}{}Distributed under {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR}.
 
-STR_PARAM_INTRODUCTION_YEAR             :Station availability
+STR_PARAM_INTRODUCTION_YEAR             :Global - Station availability
 STR_PARAM_INTRODUCTION_YEAR_DESC        :Choose whether each station in this NewGRF can only be built after a certain year
 STR_PARAM_INTRODUCTION_YEAR_DISABLED    :Always available
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :Only available after set year
 
-STR_PARAM_E88A9CA_INTRODUCTION_YEAR         :Start year for Wuhu Station
+STR_PARAM_E88A9CA_INTRODUCTION_YEAR         :Wuhu Station - Available Year
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station becomes available. 0 means default (2005).
 
 STR_STATION_DEFAULT                             :Station Building

@@ -2,7 +2,7 @@
 STR_GRF_NAME                    :中国包：车站 - 芜湖 {WHITE}0.2.2-indev
 STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}中国{RED}包{POP_COLOUR}：车站 - {PUSH_COLOUR}{SILVER}芜湖 {WHITE}0.2.2-indev{POP_COLOUR}{}{}本 NewGRF 是 {PUSH_COLOUR}{GOLD}中国{RED}包{POP_COLOUR}：车站 (CNS) 的扩展包，提供基于{PUSH_COLOUR}{SILVER}芜湖站{POP_COLOUR}的 {PUSH_COLOUR}{GOLD}1095{POP_COLOUR} 种模块化地块和 {PUSH_COLOUR}{GOLD}38{POP_COLOUR} 种车站模版。{}{}{PUSH_COLOUR}{WHITE}贡献者{POP_COLOUR}:{}Ahyangyi, WenSim.{}{}在 {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR} 下分发。
 
-STR_PARAM_INTRODUCTION_YEAR             :启用年份
+STR_PARAM_INTRODUCTION_YEAR             :全局设置 - 限定可建造年份
 STR_PARAM_INTRODUCTION_YEAR_DESC        :决定本 NewGRF 内每个车站是否在特定年份后才可用
 STR_PARAM_INTRODUCTION_YEAR_DISABLED    :任何年份都可以建造任何车站
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :特定年份后才可以建造车站
