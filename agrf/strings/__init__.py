@@ -8,6 +8,7 @@ def get_translation(stringref, lang_id=0x7F):
         return grfstrings.get_translation(ns, lang_id)
     return grfstrings.get_translation(ns)
 
+
 def remove_control_letters(s):
     ret = []
     i = 0
