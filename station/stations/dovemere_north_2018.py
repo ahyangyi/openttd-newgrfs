@@ -52,7 +52,7 @@ layouts = []
 the_stations = AMetaStation(
     [
         AStation(
-            id=0x1000 + i,
+            id=0x3000 + i,
             translation_name="UNTRAVERSABLE",
             layouts=layouts,
             class_label=b"\xe9\xb8\xa0A",
