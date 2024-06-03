@@ -19,6 +19,11 @@ class ParentSpriteMixin:
     def sprites_from_child(self):
         return unique_tuple([s for c in self.child_sprites for s in c.sprites])
 
+    def blend_graphics(self, base, scale, bpp, climate="temperate", subclimate="default"):
+        for c in self.child_sprites:
+            masked_sprite = c.graphics(scale, bpp, climate=climate, subclimate=subclimate)
+            base.blend_over(masked_sprite)
+
 
 class RegistersMixin:
     def __init__(self, *args, flags=None, **kwargs):
@@ -55,10 +60,13 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin
             ADefaultGroundSprite.default_rail[(climate, self.sprite + (26 if subclimate != "default" else 0))]
         )
         ret = LayeredImage(-128, 0, 256, 127, img[:, :, :3], img[:, :, 3], None)
-        if scale == 2:
+        if scale == 4:
+            ret = ret.copy()
+        elif scale == 2:
             ret.resize(128, 63)
         elif scale == 1:
             ret.resize(64, 31)
+        self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
 
     def __repr__(self):
@@ -116,8 +124,11 @@ class AGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin):
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
-            return LayeredImage.empty()
-        return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
+            ret = LayeredImage.empty()
+        else:
+            ret = LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)).copy()
+        self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
+        return ret
 
     def __repr__(self):
         return f"<AGroundSprite:{self.sprite}>"
@@ -165,6 +176,11 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
             offset=self.offset,
             flags=0,
         )
+
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
+        ret = LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)).copy()
+        self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
+        return ret
 
     @property
     def L(self):
@@ -329,9 +345,7 @@ class ALayout:
             img.blend_over(new_img)
 
         for sprite in self.sorted_parent_sprites:
-            masked_sprite = LayeredImage.from_sprite(
-                sprite.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
-            ).copy()
+            masked_sprite = sprite.graphics(scale, bpp, climate=climate, subclimate=subclimate)
             if remap is not None:
                 masked_sprite.remap(remap)
                 masked_sprite.apply_mask()
