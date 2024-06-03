@@ -8,7 +8,8 @@ from grf.sprites import EmptySprite
 
 
 class ParentSpriteMixin:
-    def __init__(self, child_sprites):
+    def __init__(self, child_sprites, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.child_sprites = child_sprites
 
 
@@ -30,17 +31,19 @@ class ADefaultGroundSprite(RegistersMixin):
         self.sprite = sprite
 
     def to_grf(self, sprite_list):
-        return grf.GroundSprite(
-            sprite=grf.SpriteRef(
-                id=self.sprite,
-                pal=0,
-                is_global=True,
-                use_recolour=False,
-                always_transparent=False,
-                no_transparent=False,
-            ),
-            **self.registers_to_grf_dict(),
-        )
+        return [
+            grf.GroundSprite(
+                sprite=grf.SpriteRef(
+                    id=self.sprite,
+                    pal=0,
+                    is_global=True,
+                    use_recolour=False,
+                    always_transparent=False,
+                    no_transparent=False,
+                ),
+                **self.registers_to_grf_dict(),
+            )
+        ]
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         img = np.asarray(
@@ -92,17 +95,19 @@ class AGroundSprite(RegistersMixin, CachedFunctorMixin):
         self.alternatives = alternatives or []
 
     def to_grf(self, sprite_list):
-        return grf.GroundSprite(
-            sprite=grf.SpriteRef(
-                id=0x42D + sprite_list.index(self.sprite),
-                pal=0,
-                is_global=False,
-                use_recolour=False,
-                always_transparent=False,
-                no_transparent=False,
-            ),
-            **self.registers_to_grf_dict(),
-        )
+        return [
+            grf.GroundSprite(
+                sprite=grf.SpriteRef(
+                    id=0x42D + sprite_list.index(self.sprite),
+                    pal=0,
+                    is_global=False,
+                    use_recolour=False,
+                    always_transparent=False,
+                    no_transparent=False,
+                ),
+                **self.registers_to_grf_dict(),
+            )
+        ]
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
@@ -140,19 +145,21 @@ class AParentSprite:
         return f"<AParentSprite:{self.sprite}:{self.extent}:{self.offset}>"
 
     def to_grf(self, sprite_list):
-        return grf.ParentSprite(
-            sprite=grf.SpriteRef(
-                id=0x42D + sprite_list.index(self.sprite),
-                pal=0,
-                is_global=False,
-                use_recolour=True,
-                always_transparent=False,
-                no_transparent=False,
-            ),
-            extent=self.extent,
-            offset=self.offset,
-            flags=0,
-        )
+        return [
+            grf.ParentSprite(
+                sprite=grf.SpriteRef(
+                    id=0x42D + sprite_list.index(self.sprite),
+                    pal=0,
+                    is_global=False,
+                    use_recolour=True,
+                    always_transparent=False,
+                    no_transparent=False,
+                ),
+                extent=self.extent,
+                offset=self.offset,
+                flags=0,
+            )
+        ]
 
     @property
     def L(self):
@@ -296,8 +303,8 @@ class ALayout:
 
     def to_grf(self, sprite_list):
         return grf.SpriteLayout(
-            [sprite.to_grf(sprite_list) for sprite in self.ground_sprites]
-            + [sprite.to_grf(sprite_list) for sprite in self.sorted_parent_sprites]
+            [s for sprite in self.ground_sprites for s in sprite.to_grf(sprite_list)]
+            + [s for sprite in self.sorted_parent_sprites for s in sprite.to_grf(sprite_list)]
         )
 
     def graphics(self, scale, bpp, remap=None, context=None, climate="temperate", subclimate="default"):
