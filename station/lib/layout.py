@@ -30,7 +30,7 @@ class RegistersMixin:
 
 class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin):
     def __init__(self, sprite, child_sprites=None, flags=None):
-        super().__init__(self, child_sprites=child_sprites, flags=flags)
+        super().__init__(child_sprites=child_sprites, flags=flags)
         self.sprite = sprite
 
     def parent_to_grf(self, sprite_list):
@@ -93,7 +93,7 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin):
 
 class AGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin):
     def __init__(self, sprite, alternatives=None, child_sprites=None, flags=None):
-        super().__init__(self, child_sprites=child_sprites, flags=flags)
+        super().__init__(child_sprites=child_sprites, flags=flags)
         self.sprite = sprite
         self.alternatives = alternatives or []
 
@@ -139,7 +139,7 @@ class AGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin):
 
 class AParentSprite(ParentSpriteMixin, RegistersMixin):
     def __init__(self, sprite, extent, offset, child_sprites=None, flags=None):
-        super().__init__(self, child_sprites=child_sprites, flags=flags)
+        super().__init__(child_sprites=child_sprites, flags=flags)
         self.sprite = sprite
         self.extent = extent
         self.offset = offset
