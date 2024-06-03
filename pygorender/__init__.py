@@ -34,8 +34,10 @@ def render(config, vox_path, output_path=None):
     else:
         output_clause = []
 
+    scales = ",".join(map(str, config.config.get("agrf_scales", [1])))
+
     if config is None:
-        subprocess.run(["gorender", "-s", "4,2,1", "-p"] + output_clause + [vox_path], check=True)
+        subprocess.run(["gorender", "-s", scales, "-p"] + output_clause + [vox_path], check=True)
         return
 
     if config.config.get("agrf_palette"):
@@ -47,7 +49,7 @@ def render(config, vox_path, output_path=None):
         json.dump(config.config, f)
         f.flush()
         subprocess.run(
-            ["gorender", "-s", "4,2,1", "-m", f.name, "-p"] + palette_clause + output_clause + [vox_path], check=True
+            ["gorender", "-s", scales, "-m", f.name, "-p"] + palette_clause + output_clause + [vox_path], check=True
         )
 
 
