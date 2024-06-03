@@ -1,5 +1,6 @@
 import grf
 from .utils import class_label_printable
+from .registers import code
 
 
 class AStation(grf.SpriteGenerator):
@@ -33,9 +34,7 @@ class AStation(grf.SpriteGenerator):
         }
 
         graphics = grf.GenericSpriteLayout(ent1=[0], ent2=[0], feature=grf.STATION)
-        self.callbacks.graphics = grf.Switch(
-            ranges={0: graphics}, code="TEMP[0x00] = 26 * ((terrain_type & 0x5) > 0)", default=graphics
-        )
+        self.callbacks.graphics = grf.Switch(ranges={0: graphics}, code=code, default=graphics)
 
         cb_props = {}
         self.callbacks.set_flag_props(cb_props)
