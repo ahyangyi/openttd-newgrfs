@@ -27,7 +27,7 @@ def guess_dimens(width, height, angle, bbox, z_scale):
     if height == 0:
         ratio = (horizontal_height + z) / (pxcom + pycom)
         height_float = ratio * width
-        height = math.ceil(height_float)
+        height = int(height_float)
 
     real_ratio = (horizontal_height + z) / (pxcom + pycom)
     real_height_float = real_ratio * width
@@ -130,8 +130,8 @@ def spritesheet_template(
                         make_image_file(f"{path}_{scale}x_{bpp}bpp.png"),
                         (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale,
                         0,
-                        guessed_dimens[i][0] * scale,
-                        guessed_dimens[i][1] * scale,
+                        int(guessed_dimens[i][0] * scale),
+                        int(guessed_dimens[i][1] * scale),
                         xofs=get_rels(i, diff, scale)[0],
                         yofs=get_rels(i, diff, scale)[1],
                         bpp=bpp,
@@ -142,8 +142,8 @@ def spritesheet_template(
                             make_image_file(f"{path}_{scale}x_mask.png"),
                             (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale,
                             0,
-                            guessed_dimens[i][0] * scale,
-                            guessed_dimens[i][1] * scale,
+                            int(guessed_dimens[i][0] * scale),
+                            int(guessed_dimens[i][1] * scale),
                         )
                         if bpp == 32
                         else None
