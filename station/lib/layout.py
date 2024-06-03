@@ -15,6 +15,10 @@ class ParentSpriteMixin:
     def to_grf(self, sprite_list):
         return [self.parent_to_grf(sprite_list)] + [cs.to_grf(sprite_list) for cs in self.child_sprites]
 
+    @property
+    def sprites_from_child(self):
+        return unique_tuple([s for c in self.child_sprites for s in c.sprites])
+
 
 class RegistersMixin:
     def __init__(self, *args, flags=None, **kwargs):
@@ -70,7 +74,7 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin):
     def M(self):
         return ADefaultGroundSprite(
             self.sprite - 1 if self.sprite % 2 == 0 else self.sprite + 1,
-            child_sprites=self.child_sprites,
+            child_sprites=[c.M for c in self.child_sprites],
             flags=self.flags,
         )
 
@@ -82,7 +86,7 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin):
 
     @property
     def sprites(self):
-        return []
+        return self.sprites_from_child
 
     def get_fingerprint(self):
         return {"default_ground_sprite": self.sprite}
@@ -90,12 +94,15 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin):
     def get_resource_files(self):
         return ()
 
+    def __add__(self, child_sprite):
+        return ADefaultGroundSprite(self.sprite, child_sprites=self.child_sprites + [child_sprite], flags=self.flags)
+
 
 class AGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin):
     def __init__(self, sprite, alternatives=None, child_sprites=None, flags=None):
         super().__init__(child_sprites=child_sprites, flags=flags)
         self.sprite = sprite
-        self.alternatives = alternatives or []
+        self.alternatives = alternatives or tuple()
 
     def parent_to_grf(self, sprite_list):
         return grf.GroundSprite(
@@ -121,14 +128,14 @@ class AGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin):
     def fmap(self, f):
         return AGroundSprite(
             self.sprite if self.sprite is grf.EMPTY_SPRITE else f(self.sprite),
-            alternatives=[f(s) for s in self.alternatives],
-            child_sprites=self.child_sprites,
+            alternatives=tuple(f(s) for s in self.alternatives),
+            child_sprites=[f(c) for c in self.child_sprites],
             flags=self.flags,
         )
 
     @property
     def sprites(self):
-        return [self.sprite] + self.alternatives
+        return unique_tuple((self.sprite,) + self.alternatives + self.sprites_from_child)
 
     def get_fingerprint(self):
         return {"ground_sprite": self.sprite.get_fingerprint()}
@@ -170,22 +177,30 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
     def M(self):
         mirror = lambda x: (x[1], x[0], x[2])
         return AParentSprite(
-            self.sprite.M, mirror(self.extent), mirror(self.offset), child_sprites=self.child_sprites, flags=self.flags
+            self.sprite.M,
+            mirror(self.extent),
+            mirror(self.offset),
+            child_sprites=[c.M for c in self.child_sprites],
+            flags=self.flags,
         )
 
     @property
     def R(self):
         new_offset = (16 - self.offset[0] - self.extent[0], self.offset[1], self.offset[2])
-        return AParentSprite(self.sprite.R, self.extent, new_offset, child_sprites=self.child_sprites, flags=self.flags)
+        return AParentSprite(
+            self.sprite.R, self.extent, new_offset, child_sprites=[c.R for c in self.child_sprites], flags=self.flags
+        )
 
     @property
     def T(self):
         new_offset = (self.offset[0], 16 - self.offset[1] - self.extent[1], self.offset[2])
-        return AParentSprite(self.sprite.T, self.extent, new_offset, child_sprites=self.child_sprites, flags=self.flags)
+        return AParentSprite(
+            self.sprite.T, self.extent, new_offset, child_sprites=[c.T for c in self.child_sprites], flags=self.flags
+        )
 
     @property
     def sprites(self):
-        return [self.sprite]
+        return unique_tuple((self.sprite,) + self.sprites_from_child)
 
     def get_fingerprint(self):
         return {"parent_sprite": self.sprite.get_fingerprint(), "extent": self.extent, "offset": self.offset}
@@ -196,7 +211,7 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
 
 class AChildSprite(RegistersMixin, CachedFunctorMixin):
     def __init__(self, sprite, offset, flags=None):
-        super().__init__(flags)
+        super().__init__(flags=flags)
         self.sprite = sprite
         self.offset = offset
 
@@ -270,7 +285,7 @@ class ALayout:
     def __init__(self, ground_sprites, parent_sprites, traversable, category=None, notes=None):
         assert isinstance(ground_sprites, list)
         if ground_sprites == []:
-            ground_sprites = [AGroundSprite(grf.EMPTY_SPRITE, alternatives=[empty_sprite_1, empty_sprite_2])]
+            ground_sprites = [AGroundSprite(grf.EMPTY_SPRITE, alternatives=(empty_sprite_1, empty_sprite_2))]
         self.ground_sprites = ground_sprites
         self.parent_sprites = parent_sprites
         self.traversable = traversable
