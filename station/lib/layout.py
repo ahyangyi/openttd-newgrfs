@@ -299,7 +299,6 @@ class ALayout:
                         for k in range(3)
                     ), f"{i} and {j} overlap, {self.parent_sprites}"
 
-        # FIXME include child sprites
         ret = []
         for i in range(len(self.parent_sprites)):
             for j in self.parent_sprites:
