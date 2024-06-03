@@ -32,7 +32,7 @@ class RegistersMixin:
         }
 
 
-class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin):
+class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin):
     def __init__(self, sprite, child_sprites=None, flags=None):
         super().__init__(child_sprites=child_sprites, flags=flags)
         self.sprite = sprite
@@ -64,11 +64,8 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin):
     def __repr__(self):
         return f"<ADefaultGroundSprite:{self.sprite}>"
 
-    @property
-    def L(self):
-        return self
-
-    R = T = L
+    def fmap(self, f):
+        return ADefaultGroundSprite(self.sprite, child_sprites=[f(c) for c in self.child_sprites], flags=self.flags)
 
     @property
     def M(self):
