@@ -24,6 +24,7 @@ class AStation(grf.SpriteGenerator):
         return class_label_printable(self._props["class_label"])
 
     def get_sprites(self, g, sprites=None):
+        is_managed_by_metastation = sprites is not None
         res = []
 
         extra_props = {
@@ -46,7 +47,7 @@ class AStation(grf.SpriteGenerator):
             for s in self.sprites:
                 res.append(s)
 
-        if self.id >= 0xFF:
+        if self.id >= 0xFF and not is_managed_by_metastation:
             res.append(grf.If(is_static=True, variable=0xA1, condition=0x04, value=0x1E000000, skip=1, varsize=4))
         res.append(
             definition := grf.Define(
@@ -66,7 +67,8 @@ class AStation(grf.SpriteGenerator):
         map_actions = self.callbacks.make_map_action(definition)
         res.extend(map_actions)
 
-        res.append(grf.Label(255, bytes()))
+        if self.id >= 0xFF and not is_managed_by_metastation:
+            res.append(grf.Label(255, bytes()))
 
         return res
 
