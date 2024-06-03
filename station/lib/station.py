@@ -60,11 +60,13 @@ class AStation(grf.SpriteGenerator):
                 },
             )
         )
-        res.append(grf.If(is_static=True, variable=0xA1, condition=0x04, value=0x1E000000, skip=1, varsize=4))
+        res.append(grf.If(is_static=True, variable=0xA1, condition=0x04, value=0x1E000000, skip=255, varsize=4))
         res.append(grf.Define(feature=grf.STATION, id=self.id, props=extra_props))
 
         map_actions = self.callbacks.make_map_action(definition)
         res.extend(map_actions)
+
+        res.append(grf.Label(255, bytes()))
 
         return res
 
