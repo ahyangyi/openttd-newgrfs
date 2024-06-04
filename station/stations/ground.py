@@ -19,7 +19,7 @@ def quickload(name, type):
     )
 
     sprite = type.create_variants(v.spritesheet())
-    ps = AGroundSprite(sprite, flags_with_registers={"add": Registers.ZERO})
+    ps = AGroundSprite(sprite, flags={"add": Registers.ZERO})
     named_ps[name] = ps
     l = ALayout([ps], [], False)
     named_tiles[name] = l
