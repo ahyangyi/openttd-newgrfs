@@ -290,15 +290,13 @@ def is_in_front(a, b):
     return False
 
 
-empty_sprite_1 = EmptySprite()
-empty_sprite_2 = EmptySprite()
-
-
 class ALayout:
     def __init__(self, ground_sprites, parent_sprites, traversable, category=None, notes=None):
         assert isinstance(ground_sprites, list)
         if ground_sprites == []:
-            ground_sprites = [AGroundSprite(grf.EMPTY_SPRITE, alternatives=(empty_sprite_1, empty_sprite_2))]
+            from station.stations.misc import empty_ground
+
+            ground_sprites = [empty_ground]
         self.ground_sprites = ground_sprites
         self.parent_sprites = parent_sprites
         self.traversable = traversable
