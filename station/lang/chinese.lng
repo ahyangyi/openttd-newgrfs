@@ -8,7 +8,7 @@ STR_PARAM_INTRODUCTION_YEAR_DISABLED    :任何年份都可以建造任何车站
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :特定年份后才可以建造车站
 
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR         :芜湖站 - 可建造年份
-STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :选择芜湖站从哪一年开始可以被建造。
+STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :选择芜湖站从哪一年开始可以被建造。{}{}注意：本选项是否生效由“全局设置 - 限定可建造年份”所控制。
 
 STR_STATION_DEFAULT                             :站房
 STR_STATION_UNTRAVERSABLE                       :站房（无轨道）
