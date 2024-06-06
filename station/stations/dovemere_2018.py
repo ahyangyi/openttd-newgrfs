@@ -1,6 +1,6 @@
 from station.lib import AStation, AMetaStation
 from .dovemere_2018_lib.layouts import *
-from .dovemere_2018_lib import demos
+from .dovemere_2018_lib import demos, common_cb
 from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_stations
 from .dovemere_2018_lib.flexible_stations.traversable import traversable_stations
 from .dovemere_2018_lib.flexible_stations.side import side_stations
@@ -20,7 +20,7 @@ the_stations = AMetaStation(
             class_label=entry.category,
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
-            callbacks={"select_tile_layout": 0},
+            callbacks={"select_tile_layout": 0, **common_cb},
         )
         for i, entry in enumerate(sorted(entries, key=lambda x: x.category))
     ],
