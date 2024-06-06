@@ -5,17 +5,19 @@ import grf
 class ParameterReverseLookup:
     def __init__(self, enum):
         self.enum = enum
-        self.reverse_lookup = {v: k for k, v in self.enum.items()}
+        if self.enum is not None:
+            self.reverse_lookup = {v: k for k, v in self.enum.items()}
 
     def enum_index(self, name):
         return self.reverse_lookup[name]
 
 
 class Parameter(ParameterReverseLookup):
-    def __init__(self, name, default, enum):
+    def __init__(self, name, default, enum=None, limits=None):
         super().__init__(enum)
         self.name = name
         self.default = default
+        self._limits = limits
 
     def add(self, g, s):
         g.add_int_parameter(
@@ -23,7 +25,7 @@ class Parameter(ParameterReverseLookup):
             description=s[f"STR_PARAM_{self.name}_DESC"],
             default=self.default,
             limits=self.limits,
-            enum={k: s[f"STR_PARAM_{self.name}_{v}"] for k, v in self.enum.items()},
+            enum=self.enum and {k: s[f"STR_PARAM_{self.name}_{v}"] for k, v in self.enum.items()},
         )
 
     @property
@@ -36,6 +38,8 @@ class Parameter(ParameterReverseLookup):
 
     @property
     def limits(self):
+        if self.enum is None:
+            return self._limits
         return (self.min_value, self.max_value)
 
     @property
