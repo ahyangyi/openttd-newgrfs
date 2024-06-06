@@ -28,13 +28,11 @@ def quickload(name, symmetry):
     ps = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
     l = ALayout([groundsprite], [ps], False)
     var = symmetry.get_all_variants(l)
-    layouts.extend(var)
     ret = symmetry.create_variants(var)
     entries.extend(symmetry.get_all_entries(ret))
     named_tiles[name] = ret
 
 
-layouts = []
 entries = []
 named_tiles = AttrDict()
 for name, symmetry in [("regular", BuildingSpriteSheetSymmetricalX)]:
@@ -54,6 +52,6 @@ the_stations = AMetaStation(
     ],
     b"\xe8\x8a\x9c0",
     None,
-    layouts,
+    entries,
     [Demo("The building", [[named_tiles.regular]])],
 )
