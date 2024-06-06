@@ -24,11 +24,11 @@ def quickload(name, type, traversable):
         load_from="station/files/gorender.json",
         subset=type.render_indices(),
     )
-    sprite = type.create_variants(v.spritesheet(zdiff=16, xdiff=platform_width))
+    sprite = type.create_variants(v.spritesheet(zdiff=16, xdiff=platform_width, xspan=16 - platform_width))
 
-    ground = ADefaultGroundSprite(1012 if traversable else 1420)
+    ground = ADefaultGroundSprite(1420)
     parent = AParentSprite(sprite, (16, 16 - platform_width, 48), (0, platform_width, 0))
-    plat = platform_ps.cns_side_shelter.up(8)
+    plat = platform_ps.cns_side_shelter_1.up(8)
     candidates = [ALayout([ground], [plat.T, parent], False)]
 
     ret = []
