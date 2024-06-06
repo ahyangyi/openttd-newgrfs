@@ -1,6 +1,7 @@
 import grf
 from station.lib import AStation, make_horizontal_switch
 from ..layouts import named_tiles, layouts
+from .. import common_cb
 from .common import make_demo, horizontal_layout
 from station.stations.platforms import platform_classes, shelter_classes
 
@@ -53,6 +54,7 @@ for p, pclass in enumerate(platform_classes):
                         default=cb14[pclass][sclass].to_index(layouts),
                         purchase=layouts.index(make_demo(cb14[pclass][sclass], 4, 1)),
                     ),
+                    **common_cb,
                 },
             )
         )
@@ -76,6 +78,7 @@ for p, pclass in enumerate(platform_classes):
                         default=cb14[pclass][sclass].T.to_index(layouts),
                         purchase=layouts.index(make_demo(cb14[pclass][sclass].T, 4, 1)),
                     ),
+                    **common_cb,
                 },
             )
         )
@@ -102,6 +105,7 @@ side_stations.append(
             "select_sprite_layout": grf.DualCallback(
                 default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 1))
             ),
+            **common_cb,
         },
     )
 )
@@ -120,6 +124,7 @@ side_stations.append(
             "select_sprite_layout": grf.DualCallback(
                 default=cb14.T.to_index(layouts), purchase=layouts.index(make_demo(cb14.T, 4, 1))
             ),
+            **common_cb,
         },
     )
 )
