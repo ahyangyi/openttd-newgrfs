@@ -7,6 +7,11 @@ STR_PARAM_INTRODUCTION_YEAR_DESC        :Choose whether each station in this New
 STR_PARAM_INTRODUCTION_YEAR_DISABLED    :Always available
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :Only available after set year
 
+STR_PARAM_SNOW_TRACK                    :Global - Snow
+STR_PARAM_SNOW_TRACK_DESC               :Choose whether to keep the snow on the ground when beneath a station building.
+STR_PARAM_SNOW_TRACK_ENABLED            :Keep snow
+STR_PARAM_SNOW_TRACK_DISABLED           :Remove snow
+
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR         :Wuhu Station - Available Year
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (Modern) becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR         :Wuhu Station (1934) - Available Year
