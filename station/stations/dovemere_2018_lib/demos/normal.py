@@ -5,7 +5,5 @@ from station.stations.dovemere_2018_lib.flexible_stations import semitraversable
 
 
 normal_demo = Demo(
-    "5×7 station layout (roughly 1 tile = 40m)",
-    semitraversable.cb14a.demo(5, 7, semitraversable.cb24_0),
-    remap=get_1cc_remap(CompanyColour.WHITE),
+    "5×7 station layout (roughly 1 tile = 40m)", semitraversable.demo_1(5, 7), remap=get_1cc_remap(CompanyColour.WHITE)
 )
