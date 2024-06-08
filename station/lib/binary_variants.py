@@ -150,6 +150,10 @@ class BuildingSpriteSheetRotational(BinaryVariantMixin):
     _t_offset = 2
 
     @classmethod
+    def break_x_symmetry(classobj):
+        return BuildingSpriteSheetFull
+
+    @classmethod
     def break_y_symmetry(classobj):
         return BuildingSpriteSheetFull
 
@@ -170,6 +174,10 @@ class BuildingSpriteSheetDiagonal(BinaryVariantMixin):
     _m_offset = 0
     _r_offset = 1
     _t_offset = 2
+
+    @classmethod
+    def break_x_symmetry(classobj):
+        return BuildingSpriteSheetFull
 
     @classmethod
     def break_y_symmetry(classobj):

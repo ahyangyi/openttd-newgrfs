@@ -137,9 +137,10 @@ def make_f2(v, sym):
 
 
 def make_f2_window(v, sym):
-    v = v.discard_layers(all_f1_layers + ["overpass"], "f2")
+    sym = sym.break_x_symmetry()
+    v = v.discard_layers(all_f1_layers + ("overpass",), "f2")
     v.in_place_subset(sym.render_indices())
-    s = sym.break_x_symmetry().create_variants(v.spritesheet(zdiff=base_height * 2))
+    s = sym.create_variants(v.spritesheet(zdiff=base_height * 2))
     return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
 
@@ -189,47 +190,57 @@ def make_voxel(source):
     return voxel_cache[source]
 
 
-def load_central(source, symmetry, internal_category, name=None, h_pos=Normal):
+def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, window=False):
     name = name or source.split("/")[-1]
     v = make_voxel(source)
     f2 = make_f2(v, symmetry)
+    f2_window = make_f2_window(v, symmetry)
 
     cur_np = h_pos.non_platform
-    register(ALayout(empty_ground, [f2, cur_np, cur_np.T], True), symmetry, internal_category, name + "_empty")
-    for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
-        for platform_class in platform_classes:
-            cur_plat = h_pos.platform(platform_class, shelter_class)
-            shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
-            platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
-            sname = name + platform_postfix + shelter_postfix
-            register(
-                ALayout(corridor_ground, [f2, cur_plat, cur_plat.T], True, notes=["both"]),
-                symmetry,
-                internal_category,
-                sname + "_d",
-            )
-            if symmetry.is_symmetrical_y():
-                broken_symmetry = symmetry.break_y_symmetry()
+    for window_class in ["none"] + (["windowed"] if window else []):
+        window_postfix = "" if window_class == "none" else "_" + window_class
+        f2_name = name + window_postfix
+        f2_component = [f2] + {"none": [], "windowed": [f2_window]}[window_class]
+        register(
+            ALayout(empty_ground, [cur_np, cur_np.T] + f2_component, True),
+            symmetry,
+            internal_category,
+            f2_name + "_empty",
+        )
+        for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
+            for platform_class in platform_classes:
+                cur_plat = h_pos.platform(platform_class, shelter_class)
+                shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
+                platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
+                sname = f2_name + platform_postfix + shelter_postfix
                 register(
-                    ALayout(one_side_ground, [f2, cur_plat, cur_np.T], True, notes=["near"]),
-                    broken_symmetry,
-                    internal_category,
-                    sname + "_n",
-                )
-                named_tiles[sname + "_f"] = named_tiles[sname + "_n"].T
-            else:
-                register(
-                    ALayout(one_side_ground, [f2, cur_plat, cur_np.T], True, notes=["near"]),
+                    ALayout(corridor_ground, [cur_plat, cur_plat.T] + f2_component, True, notes=["both"]),
                     symmetry,
                     internal_category,
-                    sname + "_n",
+                    sname + "_d",
                 )
-                register(
-                    ALayout(one_side_ground_t, [f2, cur_np, cur_plat.T], True, notes=["far"]),
-                    symmetry,
-                    internal_category,
-                    sname + "_f",
-                )
+                if symmetry.is_symmetrical_y():
+                    broken_symmetry = symmetry.break_y_symmetry()
+                    register(
+                        ALayout(one_side_ground, [cur_plat, cur_np.T] + f2_component, True, notes=["near"]),
+                        broken_symmetry,
+                        internal_category,
+                        sname + "_n",
+                    )
+                    named_tiles[sname + "_f"] = named_tiles[sname + "_n"].T
+                else:
+                    register(
+                        ALayout(one_side_ground, [cur_plat, cur_np.T] + f2_component, True, notes=["near"]),
+                        symmetry,
+                        internal_category,
+                        sname + "_n",
+                    )
+                    register(
+                        ALayout(one_side_ground_t, [cur_np, cur_plat.T] + f2_component, True, notes=["far"]),
+                        symmetry,
+                        internal_category,
+                        sname + "_f",
+                    )
 
 
 def load(
@@ -264,10 +275,10 @@ def load(
     plat_f1 = make_f1(v, "platform", broken_f1_symmetry)
     full_f1 = make_f1(v, "full", f1_symmetry)
 
-    for window_class in ["none"] + (["window"] if window else []):
+    for window_class in ["none"] + (["windowed"] if window else []):
         window_postfix = "" if window_class == "none" else "_" + window_class
         f2_name = name + window_postfix
-        f2_component = [f2] + {"none": [], "window": [f2_window]}[window_class]
+        f2_component = [f2] + {"none": [], "windowed": [f2_window]}[window_class]
         for platform_class in platform_classes:
             platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
             cur_plat = platform_ps["cns" + platform_postfix]
