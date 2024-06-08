@@ -27,6 +27,7 @@ from station.stations.platforms import (
 )
 from station.stations.ground import named_ps as ground_ps, named_tiles as ground_tiles, gray, gray_third
 from station.stations.misc import track_ground, track
+from agrf.graphics.recolour import PROCESS_COLOUR
 from dataclasses import dataclass
 
 
@@ -138,7 +139,9 @@ def make_f2(v, sym):
 
 def make_f2_window(v, sym):
     sym = sym.break_x_symmetry()
+    v2 = v.discard_layers(all_f1_layers + all_f2_layers, "f2")
     v = v.discard_layers(all_f1_layers + ("overpass",), "f2_window")
+    v = v.compose(v2, "f2_window_merged", ignore_mask=True, colour_map=PROCESS_COLOUR)
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet(zdiff=base_height * 2))
     return AChildSprite(s, (0, 0))
