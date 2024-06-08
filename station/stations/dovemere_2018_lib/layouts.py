@@ -105,6 +105,9 @@ V = make_hpos("", "_shelter_building_v")
 TinyAsym = make_hpos("_central", "_pillar_central")
 
 
+all_f2_layers = ("window",)
+
+
 all_f1_layers = (
     "ground level",
     "ground level - platform",
@@ -127,7 +130,7 @@ f1_subsets = {
 
 
 def make_f2(v, sym):
-    v = v.discard_layers(all_f1_layers, "f2")
+    v = v.discard_layers(all_f1_layers + all_f2_layers, "f2")
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet(zdiff=base_height * 2))
     return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height))
