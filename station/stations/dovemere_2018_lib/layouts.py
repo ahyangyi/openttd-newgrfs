@@ -138,7 +138,7 @@ def make_f2(v, sym):
 
 def make_f2_window(v, sym):
     sym = sym.break_x_symmetry()
-    v = v.discard_layers(all_f1_layers + ("overpass",), "f2")
+    v = v.discard_layers(all_f1_layers + ("overpass",), "f2_window")
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet(zdiff=base_height * 2))
     return AChildSprite(s, (0, 0))
@@ -202,11 +202,13 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
         f2_name = name + window_postfix
         if window_class == "none":
             f2_component = f2
+            cur_sym = symmetry
         elif window_class == "windowed":
             f2_component = f2 + f2_window
+            cur_sym = symmetry.break_x_symmetry()
         register(
             ALayout(empty_ground, [cur_np, cur_np.T, f2_component], True),
-            symmetry,
+            cur_sym,
             internal_category,
             f2_name + "_empty",
         )
@@ -218,12 +220,12 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                 sname = f2_name + platform_postfix + shelter_postfix
                 register(
                     ALayout(corridor_ground, [cur_plat, cur_plat.T, f2_component], True, notes=["both"]),
-                    symmetry,
+                    cur_sym,
                     internal_category,
                     sname + "_d",
                 )
                 if symmetry.is_symmetrical_y():
-                    broken_symmetry = symmetry.break_y_symmetry()
+                    broken_symmetry = cur_sym.break_y_symmetry()
                     register(
                         ALayout(one_side_ground, [cur_plat, cur_np.T, f2_component], True, notes=["near"]),
                         broken_symmetry,
@@ -234,13 +236,13 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                 else:
                     register(
                         ALayout(one_side_ground, [cur_plat, cur_np.T, f2_component], True, notes=["near"]),
-                        symmetry,
+                        cur_sym,
                         internal_category,
                         sname + "_n",
                     )
                     register(
                         ALayout(one_side_ground_t, [cur_np, cur_plat.T, f2_component], True, notes=["far"]),
-                        symmetry,
+                        cur_sym,
                         internal_category,
                         sname + "_f",
                     )
@@ -283,8 +285,12 @@ def load(
         f2_name = name + window_postfix
         if window_class == "none":
             f2_component = f2
+            cur_sym = symmetry
+            cur_bsym = broken_symmetry
         elif window_class == "windowed":
             f2_component = f2 + f2_window
+            cur_sym = symmetry.break_x_symmetry()
+            cur_bsym = broken_symmetry.break_x_symmetry()
         for platform_class in platform_classes:
             platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
             cur_plat = platform_ps["cns" + platform_postfix]
@@ -293,14 +299,14 @@ def load(
             if corridor:
                 register(
                     ALayout(corridor_ground, [cur_plat, cur_plat.T, f1, f1b, f2_component], True, notes=["third"]),
-                    symmetry,
+                    cur_sym,
                     internal_category,
                     pname + "_corridor",
                 )
             if third:
                 register(
                     ALayout(one_side_ground, [cur_plat, f1, h_pos.non_platform.T, f2_component], True, notes=["third"]),
-                    broken_symmetry,
+                    cur_bsym,
                     internal_category,
                     pname + "_third",
                 )
@@ -315,7 +321,7 @@ def load(
                             True,
                             notes=["third", "far"],
                         ),
-                        broken_symmetry,
+                        cur_bsym,
                         internal_category,
                         sname + "_third_f",
                     )
@@ -332,14 +338,12 @@ def load(
                             False,
                             notes=["far"],
                         ),
-                        broken_symmetry,
+                        cur_bsym,
                         internal_category,
                         sname + "_platform",
                     )
         if full:
-            register(
-                ALayout(solid_ground, [full_f1, concourse, f2_component], False), symmetry, internal_category, name
-            )
+            register(ALayout(solid_ground, [full_f1, concourse, f2_component], False), cur_sym, internal_category, name)
 
 
 def load_full(source, symmetry, internal_category, name=None, h_pos=Normal, borrow_f1=None):
