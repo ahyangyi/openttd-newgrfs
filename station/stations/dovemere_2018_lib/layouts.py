@@ -285,7 +285,10 @@ def load(
 
     for window_class in ["none"] + (["windowed"] if window else []):
         window_postfix = "" if window_class == "none" else "_" + window_class
-        f2_name = name + window_postfix
+        if window_postfix != "" and name.endswith("_normal"):
+            f2_name = name[:-7] + window_postfix
+        else:
+            f2_name = name + window_postfix
         if window_class == "none":
             f2_component = f2
             cur_sym = symmetry
@@ -398,12 +401,11 @@ load("h_end_asym_gate", BuildingSpriteSheetFull, "H", h_pos=Side, corridor=False
 load("h_end_gate", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False, third=False)
 load_full("h_end_gate_untraversable", BuildingSpriteSheetSymmetricalY, "H")
 load("h_end_gate_1", BuildingSpriteSheetFull, "H", asym=True, platform=False, full=False)
-load("h_normal", BuildingSpriteSheetSymmetrical, "H")
+load("h_normal", BuildingSpriteSheetSymmetrical, "H", window=True)
 load("h_gate", BuildingSpriteSheetSymmetricalY, "H", third=False, platform=False)
 load("h_gate_1", BuildingSpriteSheetFull, "H", asym=True)
 load("h_gate_extender", BuildingSpriteSheetSymmetrical, "H", third=False, platform=False)
 load("h_gate_extender_1", BuildingSpriteSheetSymmetricalX, "H", asym=True)
-load("h_windowed", BuildingSpriteSheetSymmetricalY, "H", borrow_f1="h_normal")
 load("h_windowed_extender", BuildingSpriteSheetSymmetrical, "H", borrow_f1="h_normal")
 
 load("v_end", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V, corridor=False)
