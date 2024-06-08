@@ -141,7 +141,7 @@ def make_f2_window(v, sym):
     v = v.discard_layers(all_f1_layers + ("overpass",), "f2")
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet(zdiff=base_height * 2))
-    return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height))
+    return AChildSprite(s, (0, 0))
 
 
 f1_cache = {}
@@ -200,9 +200,12 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
     for window_class in ["none"] + (["windowed"] if window else []):
         window_postfix = "" if window_class == "none" else "_" + window_class
         f2_name = name + window_postfix
-        f2_component = [f2] + {"none": [], "windowed": [f2_window]}[window_class]
+        if window_class == "none":
+            f2_component = f2
+        elif window_class == "windowed":
+            f2_component = f2 + f2_window
         register(
-            ALayout(empty_ground, [cur_np, cur_np.T] + f2_component, True),
+            ALayout(empty_ground, [cur_np, cur_np.T, f2_component], True),
             symmetry,
             internal_category,
             f2_name + "_empty",
@@ -214,7 +217,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                 platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
                 sname = f2_name + platform_postfix + shelter_postfix
                 register(
-                    ALayout(corridor_ground, [cur_plat, cur_plat.T] + f2_component, True, notes=["both"]),
+                    ALayout(corridor_ground, [cur_plat, cur_plat.T, f2_component], True, notes=["both"]),
                     symmetry,
                     internal_category,
                     sname + "_d",
@@ -222,7 +225,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                 if symmetry.is_symmetrical_y():
                     broken_symmetry = symmetry.break_y_symmetry()
                     register(
-                        ALayout(one_side_ground, [cur_plat, cur_np.T] + f2_component, True, notes=["near"]),
+                        ALayout(one_side_ground, [cur_plat, cur_np.T, f2_component], True, notes=["near"]),
                         broken_symmetry,
                         internal_category,
                         sname + "_n",
@@ -230,13 +233,13 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                     named_tiles[sname + "_f"] = named_tiles[sname + "_n"].T
                 else:
                     register(
-                        ALayout(one_side_ground, [cur_plat, cur_np.T] + f2_component, True, notes=["near"]),
+                        ALayout(one_side_ground, [cur_plat, cur_np.T, f2_component], True, notes=["near"]),
                         symmetry,
                         internal_category,
                         sname + "_n",
                     )
                     register(
-                        ALayout(one_side_ground_t, [cur_np, cur_plat.T] + f2_component, True, notes=["far"]),
+                        ALayout(one_side_ground_t, [cur_np, cur_plat.T, f2_component], True, notes=["far"]),
                         symmetry,
                         internal_category,
                         sname + "_f",
@@ -278,7 +281,10 @@ def load(
     for window_class in ["none"] + (["windowed"] if window else []):
         window_postfix = "" if window_class == "none" else "_" + window_class
         f2_name = name + window_postfix
-        f2_component = [f2] + {"none": [], "windowed": [f2_window]}[window_class]
+        if window_class == "none":
+            f2_component = f2
+        elif window_class == "windowed":
+            f2_component = f2 + f2_window
         for platform_class in platform_classes:
             platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
             cur_plat = platform_ps["cns" + platform_postfix]
@@ -286,16 +292,14 @@ def load(
             pname = f2_name + platform_postfix
             if corridor:
                 register(
-                    ALayout(corridor_ground, [cur_plat, cur_plat.T, f1, f1b] + f2_component, True, notes=["third"]),
+                    ALayout(corridor_ground, [cur_plat, cur_plat.T, f1, f1b, f2_component], True, notes=["third"]),
                     symmetry,
                     internal_category,
                     pname + "_corridor",
                 )
             if third:
                 register(
-                    ALayout(
-                        one_side_ground, [cur_plat, f1, h_pos.non_platform.T] + f2_component, True, notes=["third"]
-                    ),
+                    ALayout(one_side_ground, [cur_plat, f1, h_pos.non_platform.T, f2_component], True, notes=["third"]),
                     broken_symmetry,
                     internal_category,
                     pname + "_third",
@@ -307,7 +311,7 @@ def load(
                     register(
                         ALayout(
                             corridor_ground,
-                            [cur_plat_nt, f1, h_pos.platform(platform_class, shelter_class).T] + f2_component,
+                            [cur_plat_nt, f1, h_pos.platform(platform_class, shelter_class).T, f2_component],
                             True,
                             notes=["third", "far"],
                         ),
@@ -323,8 +327,8 @@ def load(
                                 plat_f1,
                                 h_pos.platform_back_cut(shelter_class).T,
                                 platform_ps[f"concourse{platform_postfix}_side"].T,
-                            ]
-                            + f2_component,
+                                f2_component,
+                            ],
                             False,
                             notes=["far"],
                         ),
@@ -334,7 +338,7 @@ def load(
                     )
         if full:
             register(
-                ALayout(solid_ground, [full_f1, concourse] + f2_component, False), symmetry, internal_category, name
+                ALayout(solid_ground, [full_f1, concourse, f2_component], False), symmetry, internal_category, name
             )
 
 
