@@ -349,7 +349,9 @@ def load(
                         sname + "_platform",
                     )
         if full:
-            register(ALayout(solid_ground, [full_f1, concourse, f2_component], False), cur_sym, internal_category, name)
+            register(
+                ALayout(solid_ground, [full_f1, concourse, f2_component], False), cur_sym, internal_category, f2_name
+            )
 
 
 def load_full(source, symmetry, internal_category, name=None, h_pos=Normal, borrow_f1=None):
