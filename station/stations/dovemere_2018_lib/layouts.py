@@ -195,7 +195,7 @@ def make_voxel(source):
     return voxel_cache[source]
 
 
-def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, window=False):
+def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, window=None):
     name = name or source.split("/")[-1]
     v = make_voxel(source)
     f2 = make_f2(v, symmetry)
@@ -203,7 +203,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
     f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
 
     cur_np = h_pos.non_platform
-    for window_class in ["none"] + (["windowed", "windowed_extender"] if window else []):
+    for window_class in ["none"] + (window or []):
         window_postfix = "" if window_class == "none" else "_" + window_class
         f2_name = name + window_postfix
         if window_class == "none":
@@ -270,7 +270,7 @@ def load(
     asym=False,
     borrow_f1=None,
     borrow_f1_symmetry=BuildingSpriteSheetSymmetrical,
-    window=False,
+    window=None,
 ):
     name = name or source.split("/")[-1]
     v = make_voxel(source)
@@ -290,7 +290,7 @@ def load(
     plat_f1 = make_f1(v, "platform", broken_f1_symmetry)
     full_f1 = make_f1(v, "full", f1_symmetry)
 
-    for window_class in ["none"] + (["windowed", "windowed_extender"] if window else []):
+    for window_class in ["none"] + (window or []):
         window_postfix = "" if window_class == "none" else "_" + window_class
         if window_postfix != "" and name.endswith("_normal"):
             f2_name = name[:-7] + window_postfix
@@ -395,14 +395,11 @@ load("corner_gate", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False)
 load("corner_2", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False)
 load("corner_gate_2", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False)
 
-load_central("central", BuildingSpriteSheetSymmetrical, "N", window=True)
+load_central("central", BuildingSpriteSheetSymmetrical, "N", window=["windowed", "windowed_extender"])
 
-load_central("side_a", BuildingSpriteSheetFull, "A", h_pos=Side)
-load_central("side_a_windowed", BuildingSpriteSheetFull, "A", h_pos=Side)
-load_central("side_a2", BuildingSpriteSheetSymmetricalY, "A", h_pos=Side)
-load_central("side_a2_windowed", BuildingSpriteSheetSymmetricalY, "A", h_pos=Side)
-load_central("side_a3", BuildingSpriteSheetFull, "A", h_pos=Side)
-load_central("side_a3_windowed", BuildingSpriteSheetFull, "A", h_pos=Side)
+load_central("side_a", BuildingSpriteSheetFull, "A", h_pos=Side, window=["windowed"])
+load_central("side_a2", BuildingSpriteSheetSymmetricalY, "A", h_pos=Side, window=["windowed"])
+load_central("side_a3", BuildingSpriteSheetFull, "A", h_pos=Side, window=["windowed"])
 load_central("side_b", BuildingSpriteSheetFull, "B", h_pos=Side)
 load_central("side_b2", BuildingSpriteSheetSymmetricalY, "B", h_pos=Side)
 load_central("side_c", BuildingSpriteSheetSymmetricalY, "C", h_pos=Side)
@@ -415,7 +412,7 @@ load("h_end_asym_gate", BuildingSpriteSheetFull, "H", h_pos=Side, corridor=False
 load("h_end_gate", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False, third=False)
 load_full("h_end_gate_untraversable", BuildingSpriteSheetSymmetricalY, "H")
 load("h_end_gate_1", BuildingSpriteSheetFull, "H", asym=True, platform=False, full=False)
-load("h_normal", BuildingSpriteSheetSymmetrical, "H", window=True)
+load("h_normal", BuildingSpriteSheetSymmetrical, "H", window=["windowed", "windowed_extender"])
 load("h_gate", BuildingSpriteSheetSymmetricalY, "H", third=False, platform=False)
 load("h_gate_1", BuildingSpriteSheetFull, "H", asym=True)
 load("h_gate_extender", BuildingSpriteSheetSymmetrical, "H", third=False, platform=False)
