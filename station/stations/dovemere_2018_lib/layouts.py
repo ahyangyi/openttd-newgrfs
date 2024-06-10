@@ -142,7 +142,7 @@ def make_f2_extra(v, sym, name):
     if name == "window":
         sym = sym.break_x_symmetry()
     v2 = v.discard_layers(all_f1_layers + all_f2_layers, "f2")
-    v = v.discard_layers(all_f1_layers + tuple(all_f2_layers_set - {name}) + ("overpass",), f"f2_{name}")
+    v = v.discard_layers(all_f1_layers + tuple(all_f2_layers_set - {name}) + ("overpass", "foundation"), f"f2_{name}")
     v = v.compose(v2, "merge", ignore_mask=True, colour_map=PROCESS_COLOUR)
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet(zdiff=(base_height + overpass_height) * 2))
