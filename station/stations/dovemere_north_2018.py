@@ -23,12 +23,13 @@ def quickload(name, type, traversable):
         voxel_getter=lambda path=f"station/voxels/dovemere_north_2018/{name}.vox": path,
         load_from="station/files/gorender.json",
         subset=type.render_indices(),
+        config={"z_scale": 1.0},
     )
     sprite = type.create_variants(v.spritesheet(zdiff=16, xdiff=platform_width, xspan=16 - platform_width))
 
     ground = ADefaultGroundSprite(1420)
     parent = AParentSprite(sprite, (16, 16 - platform_width, 48), (0, platform_width, 0))
-    plat = platform_ps.cns_side_shelter_1.up(8)
+    plat = platform_ps.cns_side_shelter_2.up(8)
     candidates = [ALayout([ground], [plat.T, parent], False)]
 
     ret = []
