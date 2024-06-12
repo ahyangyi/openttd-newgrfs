@@ -386,7 +386,7 @@ def load(
             )
 
 
-def load_full(source, symmetry, internal_category, name=None, h_pos=Normal, borrow_f1=None):
+def load_full(source, symmetry, internal_category, name=None, h_pos=Normal, borrow_f1=None, window=None):
     load(
         source,
         symmetry,
@@ -397,6 +397,7 @@ def load_full(source, symmetry, internal_category, name=None, h_pos=Normal, borr
         corridor=False,
         third=False,
         platform=False,
+        window=window,
     )
 
 
@@ -405,13 +406,13 @@ entries = []
 flexible_entries = []
 named_tiles = AttrDict()
 
-load("front_normal", BuildingSpriteSheetSymmetricalX, "F0", corridor=False)
+load("front_normal", BuildingSpriteSheetSymmetricalX, "F0", corridor=False, window=[])
 load("front_gate", BuildingSpriteSheetFull, "F0", corridor=False)
 load("front_gate_extender", BuildingSpriteSheetSymmetricalX, "F0", corridor=False)
 
-load("corner", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False)
+load("corner", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False, window=[])
 load("corner_gate", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False)
-load("corner_2", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False)
+load("corner_2", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False, window=[])
 load("corner_gate_2", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False)
 
 load_central("central", BuildingSpriteSheetSymmetrical, "N", window=["windowed", "windowed_extender"])
@@ -419,14 +420,14 @@ load_central("central", BuildingSpriteSheetSymmetrical, "N", window=["windowed",
 load_central("side_a", BuildingSpriteSheetFull, "A", h_pos=Side, window=["windowed"])
 load_central("side_a2", BuildingSpriteSheetSymmetricalY, "A", h_pos=Side, window=["windowed"])
 load_central("side_a3", BuildingSpriteSheetFull, "A", h_pos=Side, window=["windowed"])
-load_central("side_b", BuildingSpriteSheetFull, "B", h_pos=Side)
-load_central("side_b2", BuildingSpriteSheetSymmetricalY, "B", h_pos=Side)
-load_central("side_c", BuildingSpriteSheetSymmetricalY, "C", h_pos=Side)
+load_central("side_b", BuildingSpriteSheetFull, "B", h_pos=Side, window=[])
+load_central("side_b2", BuildingSpriteSheetSymmetricalY, "B", h_pos=Side, window=[])
+load_central("side_c", BuildingSpriteSheetSymmetricalY, "C", h_pos=Side, window=[])
 load_central("side_d", BuildingSpriteSheetSymmetricalY, "D", h_pos=Side)
 
-load("h_end", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False)
-load_full("h_end_untraversable", BuildingSpriteSheetSymmetricalY, "H")
-load("h_end_asym", BuildingSpriteSheetFull, "H", h_pos=Side, corridor=False)
+load("h_end", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False, window=[])
+load_full("h_end_untraversable", BuildingSpriteSheetSymmetricalY, "H", window=[])
+load("h_end_asym", BuildingSpriteSheetFull, "H", h_pos=Side, corridor=False, window=[])
 load("h_end_asym_gate", BuildingSpriteSheetFull, "H", h_pos=Side, corridor=False)
 load("h_end_gate", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False, third=False)
 load_full("h_end_gate_untraversable", BuildingSpriteSheetSymmetricalY, "H")
