@@ -142,7 +142,9 @@ def make_f2_extra(v, sym, name):
     if name == "window":
         sym = sym.break_x_symmetry()
     v2 = v.discard_layers(all_f1_layers + all_f2_layers, "f2")
-    v = v.discard_layers(all_f1_layers + tuple(all_f2_layers_set - {name}) + ("overpass", "foundation"), f"f2_{name}")
+    v = v.discard_layers(
+        all_f1_layers + tuple(all_f2_layers_set - {name}) + ("overpass", "foundation", "circle"), f"f2_{name}"
+    )
     v = v.compose(v2, "merge", ignore_mask=True, colour_map=PROCESS_COLOUR)
     v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
     v.in_place_subset(sym.render_indices())
@@ -204,9 +206,18 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
     f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
 
     cur_np = h_pos.non_platform
-    for window_class in ["none"] + (window or []):
+    if window is None:
+        window_classes = ["windowed"]
+    else:
+        window_classes = ["none"] + window
+    for window_class in window_classes:
         window_postfix = "" if window_class == "none" else "_" + window_class
-        f2_name = name + window_postfix
+        if window is None:
+            f2_name = name
+        elif window_postfix != "" and name.endswith("_normal"):
+            f2_name = name[:-7] + window_postfix
+        else:
+            f2_name = name + window_postfix
         if window_class == "none":
             f2_component = [f2]
             cur_sym = symmetry
@@ -291,9 +302,16 @@ def load(
     plat_f1 = make_f1(v, "platform", broken_f1_symmetry)
     full_f1 = make_f1(v, "full", f1_symmetry)
 
-    for window_class in ["none"] + (window or []):
+    if window is None:
+        window_classes = ["windowed"]
+    else:
+        window_classes = ["none"] + window
+
+    for window_class in window_classes:
         window_postfix = "" if window_class == "none" else "_" + window_class
-        if window_postfix != "" and name.endswith("_normal"):
+        if window is None:
+            f2_name = name
+        elif window_postfix != "" and name.endswith("_normal"):
             f2_name = name[:-7] + window_postfix
         else:
             f2_name = name + window_postfix
