@@ -457,8 +457,8 @@ load_full("irregular/double_inner_corner", BuildingSpriteSheetSymmetricalY, "T",
 load_full("irregular/v_funnel", BuildingSpriteSheetFull, "T")
 load_full("irregular/v_funnel_2", BuildingSpriteSheetFull, "T")
 
-load_full("junction/front_corner", BuildingSpriteSheetDiagonal, "X")
+load_full("junction/front_corner", BuildingSpriteSheetDiagonal, "X", window=[])
 load_full("junction/front_gate_extender_corner", BuildingSpriteSheetDiagonal, "X")
-load_full("junction/double_corner_2", BuildingSpriteSheetDiagonal, "X")
-load_full("junction/bicorner", BuildingSpriteSheetDiagonal, "X")
-load_full("junction/bicorner_2", BuildingSpriteSheetDiagonal, "X")
+load_full("junction/double_corner_2", BuildingSpriteSheetDiagonal, "X", window=[])
+load_full("junction/bicorner", BuildingSpriteSheetDiagonal, "X", window=[])
+load_full("junction/bicorner_2", BuildingSpriteSheetDiagonal, "X", window=[])
