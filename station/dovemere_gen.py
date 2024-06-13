@@ -4,6 +4,7 @@ import argparse
 from station.lib.docgen import gen_docs
 import station.stations.dovemere_2018
 import station.stations.platforms
+from station.lib.parameters import parameter_list
 
 metastations = [station.stations.dovemere_2018.the_stations, station.stations.platforms.the_stations]
 
@@ -21,7 +22,7 @@ def gen():
         grfid=b"\xE5\xBC\x8Bs",
         name=s["STR_GRF_NAME"],
         description=s["STR_GRF_DESC"],
-        version=7,
+        version=9,
         min_compatible_version=7,
         id_map_file="station/id_map.json",
         sprite_cache_path="station/.cache",
@@ -30,6 +31,7 @@ def gen():
         preferred_blitter=grf.NewGRF.BLITTER_BPP_32,
     )
 
+    parameter_list.add(g, s)
     for metastation in metastations:
         g.add(metastation)
 

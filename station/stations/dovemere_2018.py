@@ -1,49 +1,26 @@
 from station.lib import AStation, AMetaStation
 from .dovemere_2018_lib.layouts import *
-from .dovemere_2018_lib import demos
-from .dovemere_2018_lib.flexible_stations.semitraversable import (
-    semitraversable_station,
-    semitraversable_station_no_side,
-)
-from .dovemere_2018_lib.flexible_stations.traversable import traversable_station, traversable_station_no_side
-from .dovemere_2018_lib.flexible_stations.side import (
-    side_station,
-    back_side_station,
-    side_station_np,
-    back_side_station_np,
-)
-from .dovemere_2018_lib.flexible_stations.side_third import (
-    side_third_station,
-    back_side_third_station,
-    side_third_station_np,
-    back_side_third_station_np,
-)
+from .dovemere_2018_lib import demos, common_cb
+from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_stations
+from .dovemere_2018_lib.flexible_stations.traversable import traversable_stations
+from .dovemere_2018_lib.flexible_stations.side import side_stations
+from .dovemere_2018_lib.flexible_stations.side_third import side_third_stations
 
 
 the_stations = AMetaStation(
-    [
-        semitraversable_station,
-        semitraversable_station_no_side,
-        traversable_station,
-        traversable_station_no_side,
-        side_station,
-        back_side_station,
-        side_station_np,
-        back_side_station_np,
-        side_third_station,
-        back_side_third_station,
-        side_third_station_np,
-        back_side_third_station_np,
-    ]
+    semitraversable_stations
+    + traversable_stations
+    + side_stations
+    + side_third_stations
     + [
         AStation(
-            id=0x10 + i,
+            id=0x1000 + i,
             translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
             layouts=[entry, entry.M],
             class_label=entry.category,
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
-            callbacks={"select_tile_layout": 0},
+            callbacks={"select_tile_layout": 0, **common_cb},
         )
         for i, entry in enumerate(sorted(entries, key=lambda x: x.category))
     ],

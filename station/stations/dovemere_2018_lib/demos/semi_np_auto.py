@@ -1,26 +1,26 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import platform, platform_s, concourse_tile
+from station.stations.dovemere_2018_lib.layouts import platform_d, platform_n, concourse_tile
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import semitraversable
 from .utils import h_merge
 
 row_4 = h_merge(
-    [semitraversable.cb14b.demo(i, 4, semitraversable.cb24_1) for i in range(1, 5)],
-    [[concourse_tile], [platform_s], [platform_s.T], [concourse_tile]],
+    [semitraversable.demo_2(i, 4) for i in range(1, 5)],
+    [[concourse_tile], [platform_n], [platform_n.T], [concourse_tile]],
 )
 v_sep = [[concourse_tile] * len(row_4[0])] * 2
 row_5 = h_merge(
-    [semitraversable.cb14b.demo(i, 5, semitraversable.cb24_1) for i in range(1, 5)],
-    [[concourse_tile], [platform_s], [platform], [platform_s.T], [concourse_tile]],
+    [semitraversable.demo_2(i, 5) for i in range(1, 5)],
+    [[concourse_tile], [platform_n], [platform_d], [platform_n.T], [concourse_tile]],
 )
 row_6 = h_merge(
-    [semitraversable.cb14b.demo(i, 6, semitraversable.cb24_1) for i in range(1, 5)],
-    [[concourse_tile], [platform_s], [platform_s.T], [platform_s], [platform_s.T], [concourse_tile]],
+    [semitraversable.demo_2(i, 6) for i in range(1, 5)],
+    [[concourse_tile], [platform_n], [platform_n.T], [platform_n], [platform_n.T], [concourse_tile]],
 )
 row_7 = h_merge(
-    [semitraversable.cb14b.demo(i, 7, semitraversable.cb24_1) for i in range(1, 5)],
-    [[concourse_tile], [platform_s], [platform], [platform], [platform], [platform_s.T], [concourse_tile]],
+    [semitraversable.demo_2(i, 7) for i in range(1, 5)],
+    [[concourse_tile], [platform_n], [platform_d], [platform_d], [platform_d], [platform_n.T], [concourse_tile]],
 )
 
 semi_np_auto_demo = Demo(
