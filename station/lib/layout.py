@@ -222,6 +222,11 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
     def get_resource_files(self):
         return self.sprite.get_resource_files()
 
+    def __add__(self, child_sprite):
+        return AParentSprite(
+            self.sprite, self.extent, self.offset, child_sprites=self.child_sprites + [child_sprite], flags=self.flags
+        )
+
 
 class AChildSprite(RegistersMixin, CachedFunctorMixin):
     def __init__(self, sprite, offset, flags=None):
