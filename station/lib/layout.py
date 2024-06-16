@@ -56,6 +56,7 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin
         )
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
+        # FIXME handle climates correctly
         img = np.asarray(
             ADefaultGroundSprite.default_rail[(climate, self.sprite + (26 if subclimate != "default" else 0))]
         )
@@ -86,7 +87,7 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin
     default_rail = {
         (climate, k): Image.open(f"third_party/opengfx2/{climate}/{k}.png")
         for climate in ["temperate", "arctic", "tropical", "toyland"]
-        for k in [1011, 1012, 1037, 1038]
+        for k in [1011, 1012, 1037, 1038, 3981, 4550]
     }
 
     @property
@@ -221,6 +222,11 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
     def get_resource_files(self):
         return self.sprite.get_resource_files()
 
+    def __add__(self, child_sprite):
+        return AParentSprite(
+            self.sprite, self.extent, self.offset, child_sprites=self.child_sprites + [child_sprite], flags=self.flags
+        )
+
 
 class AChildSprite(RegistersMixin, CachedFunctorMixin):
     def __init__(self, sprite, offset, flags=None):
@@ -290,15 +296,13 @@ def is_in_front(a, b):
     return False
 
 
-empty_sprite_1 = EmptySprite()
-empty_sprite_2 = EmptySprite()
-
-
 class ALayout:
     def __init__(self, ground_sprites, parent_sprites, traversable, category=None, notes=None):
         assert isinstance(ground_sprites, list)
         if ground_sprites == []:
-            ground_sprites = [AGroundSprite(grf.EMPTY_SPRITE, alternatives=(empty_sprite_1, empty_sprite_2))]
+            from station.stations.misc import empty_ground
+
+            ground_sprites = [empty_ground]
         self.ground_sprites = ground_sprites
         self.parent_sprites = parent_sprites
         self.traversable = traversable
