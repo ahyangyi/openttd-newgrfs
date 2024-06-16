@@ -226,6 +226,11 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
         new_offset = (self.offset[0], self.offset[1], self.offset[2] + zdiff)
         return AParentSprite(self.sprite, self.extent, new_offset)
 
+    def __add__(self, child_sprite):
+        return AParentSprite(
+            self.sprite, self.extent, self.offset, child_sprites=self.child_sprites + [child_sprite], flags=self.flags
+        )
+
 
 class AChildSprite(RegistersMixin, CachedFunctorMixin):
     def __init__(self, sprite, offset, flags=None):
