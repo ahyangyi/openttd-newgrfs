@@ -106,7 +106,7 @@ V = make_hpos("", "_shelter_building_v")
 TinyAsym = make_hpos("_central", "_pillar_central")
 
 
-all_f2_layers = ("window", "window-extender")
+all_f2_layers = ("window", "window-extender", "snow", "snow-window", "snow-window-extender")
 all_f2_layers_set = set(all_f2_layers)
 
 
