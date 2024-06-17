@@ -52,7 +52,14 @@ shelter_classes = ["shelter_1", "shelter_2"]
 shelter_meta = [
     ("", "", BuildingSpriteSheetSymmetricalX, set(), 0, True),
     ("_shelter_1", "shelter_1", BuildingSpriteSheetSymmetricalX, {"shelter_1"}, shelter_height, True),
-    ("_shelter_1_building", "shelter_1", BuildingSpriteSheetFull, {"shelter_1_building", "escalator"}, shelter_height, False),
+    (
+        "_shelter_1_building",
+        "shelter_1",
+        BuildingSpriteSheetFull,
+        {"shelter_1_building", "escalator"},
+        shelter_height,
+        False,
+    ),
     (
         "_shelter_1_building_v",
         "shelter_1",
@@ -62,7 +69,14 @@ shelter_meta = [
         False,
     ),
     ("_shelter_2", "shelter_2", BuildingSpriteSheetSymmetricalX, {"shelter_2"}, shelter_height, True),
-    ("_shelter_2_building", "shelter_2", BuildingSpriteSheetFull, {"shelter_2_building", "escalator"}, shelter_height, False),
+    (
+        "_shelter_2_building",
+        "shelter_2",
+        BuildingSpriteSheetFull,
+        {"shelter_2_building", "escalator"},
+        shelter_height,
+        False,
+    ),
     (
         "_shelter_2_building_v",
         "shelter_2",
