@@ -1,8 +1,8 @@
 ##grflangid 0x01
-STR_GRF_NAME                    :China Set: Stations - Wuhu {WHITE}0.2.2-indev
-STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}China{RED} Set{POP_COLOUR}: Stations {PUSH_COLOUR}{SILVER}Wuhu {WHITE}0.2.2-indev{POP_COLOUR}{}{}An add-on to {PUSH_COLOUR}{GOLD}China{RED} Set{POP_COLOUR}: Stations (CNS), this NewGRF provides {PUSH_COLOUR}{GOLD}1095{POP_COLOUR} modular tiles and {PUSH_COLOUR}{GOLD}38{POP_COLOUR} templated stations modeled after the {PUSH_COLOUR}{SILVER}Wuhu Railway Station{POP_COLOUR} in China.{}{}{PUSH_COLOUR}{WHITE}Contributors{POP_COLOUR}:{}Ahyangyi, WenSim.{}{}Distributed under {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR}.
+STR_GRF_NAME                    :China Set: Stations - Wuhu {WHITE}0.2.3-indev
+STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}China{RED} Set{POP_COLOUR}: Stations {PUSH_COLOUR}{SILVER}Wuhu {WHITE}0.2.3-indev{POP_COLOUR}{}{}An add-on to {PUSH_COLOUR}{GOLD}China{RED} Set{POP_COLOUR}: Stations (CNS), this NewGRF provides {PUSH_COLOUR}{GOLD}1095{POP_COLOUR} modular tiles and {PUSH_COLOUR}{GOLD}38{POP_COLOUR} templated stations modeled after the {PUSH_COLOUR}{SILVER}Wuhu Railway Station{POP_COLOUR} in China.{}{}{PUSH_COLOUR}{WHITE}Contributors{POP_COLOUR}:{}Ahyangyi, WenSim.{}{}Distributed under {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR}.
 
-STR_PARAM_INTRODUCTION_YEAR             :Global - Station availability
+STR_PARAM_INTRODUCTION_YEAR             :Global - Station Availability
 STR_PARAM_INTRODUCTION_YEAR_DESC        :Choose whether each station in this NewGRF can only be built after a certain year
 STR_PARAM_INTRODUCTION_YEAR_DISABLED    :Always available
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :Only available after set year
@@ -14,7 +14,9 @@ STR_PARAM_NIGHT_MODE_DISABLED   :Disabled
 STR_PARAM_NIGHT_MODE_ENABLED    :Enabled
 
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR         :Wuhu Station - Available Year
-STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
+STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (Modern) becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
+STR_PARAM_E88A9C0_INTRODUCTION_YEAR         :Wuhu Station (1934) - Available Year
+STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1934) becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
 
 STR_STATION_DEFAULT                             :Station Building
 STR_STATION_UNTRAVERSABLE                       :Station Building (No Track)
@@ -25,10 +27,10 @@ STR_STATION_FLEXIBLE_SIDE                       :Flexible Station Building (All 
 STR_STATION_FLEXIBLE_NO_SIDE                    :Flexible Station Building (All tracks, side platform)
 STR_STATION_FLEXIBLE_UNTRAVERSABLE_SIDE         :Flexible Station Building (No track at sides, side platform)
 STR_STATION_FLEXIBLE_UNTRAVERSABLE_NO_SIDE      :Flexible Station Building (No track at sides, no side platform)
-STR_STATION_FLEXIBLE_FRONT_SIDE                 :Flexible Station Building (Track-side, front)
-STR_STATION_FLEXIBLE_BACK_SIDE                  :Flexible Station Building (Track-side, back)
-STR_STATION_FLEXIBLE_FRONT_SIDE_NP              :Flexible Station Building (Track-side, front, no platform)
-STR_STATION_FLEXIBLE_BACK_SIDE_NP               :Flexible Station Building (Track-side, back, no platform)
+STR_STATION_FLEXIBLE_FRONT_SIDE                 :Flexible Station Building (Trackside, front)
+STR_STATION_FLEXIBLE_BACK_SIDE                  :Flexible Station Building (Trackside, back)
+STR_STATION_FLEXIBLE_FRONT_SIDE_NP              :Flexible Station Building (Trackside, front, no platform)
+STR_STATION_FLEXIBLE_BACK_SIDE_NP               :Flexible Station Building (Trackside, back, no platform)
 STR_STATION_FLEXIBLE_FRONT_SIDE_THIRD           :Flexible Station Building (With track, front, no side platform)
 STR_STATION_FLEXIBLE_BACK_SIDE_THIRD            :Flexible Station Building (With track, back, no side platform)
 STR_STATION_FLEXIBLE_FRONT_SIDE_THIRD_NP        :Flexible Station Building (With track, front, side platform)
@@ -93,7 +95,17 @@ STR_STATION_CLASS_E88A9Ca       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu (1992
 
 STR_STATION_CLASS_E88A9C0       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu (1933)
 
-STR_STATION_CLASS_E9B8A0A       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu North (2018)
+STR_STATION_CLASS_E9B8A0A       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu North
+
+STR_STATION_CLASS_E5BC8BA       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu South
+
+STR_STATION_CLASS_E697A0A       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuwei
+
+STR_STATION_CLASS_E6B9BEA       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wanzhi
+
+STR_STATION_CLASS_E999B5A       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Nanling
+
+STR_STATION_CLASS_E7B981W       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Fanchang West
 
 STR_STATION_CLASS_E88A9CP       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu - Extra Platforms
 
