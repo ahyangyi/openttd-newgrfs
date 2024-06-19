@@ -4,13 +4,45 @@ import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.magic import CachedFunctorMixin
 from agrf.utils import unique_tuple
+from grf.sprites import EmptySprite
 
 
-class ADefaultGroundSprite:
-    def __init__(self, sprite):
-        self.sprite = sprite
+class ParentSpriteMixin:
+    def __init__(self, *args, child_sprites=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.child_sprites = child_sprites or []
 
     def to_grf(self, sprite_list):
+        return [self.parent_to_grf(sprite_list)] + [cs.to_grf(sprite_list) for cs in self.child_sprites]
+
+    @property
+    def sprites_from_child(self):
+        return unique_tuple([s for c in self.child_sprites for s in c.sprites])
+
+    def blend_graphics(self, base, scale, bpp, climate="temperate", subclimate="default"):
+        for c in self.child_sprites:
+            masked_sprite = c.graphics(scale, bpp, climate=climate, subclimate=subclimate)
+            base.blend_over(masked_sprite)
+
+
+class RegistersMixin:
+    def __init__(self, *args, flags=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.flags = flags or {}
+
+    def registers_to_grf_dict(self):
+        return {
+            "flags": sum(grf.SPRITE_FLAGS[k][1] for k in self.flags.keys()),
+            "registers": {k: v for k, v in self.flags.items() if v is not None},
+        }
+
+
+class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin):
+    def __init__(self, sprite, child_sprites=None, flags=None):
+        super().__init__(child_sprites=child_sprites, flags=flags)
+        self.sprite = sprite
+
+    def parent_to_grf(self, sprite_list):
         return grf.GroundSprite(
             sprite=grf.SpriteRef(
                 id=self.sprite,
@@ -20,38 +52,47 @@ class ADefaultGroundSprite:
                 always_transparent=False,
                 no_transparent=False,
             ),
-            flags=0,
+            **self.registers_to_grf_dict(),
         )
 
-    def graphics(self, scale, bpp):
-        if self.sprite not in [1012, 1011]:
-            return LayeredImage.empty()
-        img = np.asarray(ADefaultGroundSprite.default_rail[1012 - self.sprite])
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
+        # FIXME handle climates correctly
+        img = np.asarray(
+            ADefaultGroundSprite.default_rail[(climate, self.sprite + (26 if subclimate != "default" else 0))]
+        )
         ret = LayeredImage(-128, 0, 256, 127, img[:, :, :3], img[:, :, 3], None)
-        if scale == 2:
+        if scale == 4:
+            ret = ret.copy()
+        elif scale == 2:
             ret.resize(128, 63)
         elif scale == 1:
             ret.resize(64, 31)
+        self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
 
     def __repr__(self):
         return f"<ADefaultGroundSprite:{self.sprite}>"
 
-    @property
-    def L(self):
-        return self
-
-    R = T = L
+    def fmap(self, f):
+        return ADefaultGroundSprite(self.sprite, child_sprites=[f(c) for c in self.child_sprites], flags=self.flags)
 
     @property
     def M(self):
-        return ADefaultGroundSprite(self.sprite - 1 if self.sprite % 2 == 0 else self.sprite + 1)
+        return ADefaultGroundSprite(
+            self.sprite - 1 if self.sprite % 2 == 0 else self.sprite + 1,
+            child_sprites=[c.M for c in self.child_sprites],
+            flags=self.flags,
+        )
 
-    default_rail = [Image.open("third_party/opengfx2/1012.png"), Image.open("third_party/opengfx2/1011.png")]
+    default_rail = {
+        (climate, k): Image.open(f"third_party/opengfx2/{climate}/{k}.png")
+        for climate in ["temperate", "arctic", "tropical", "toyland"]
+        for k in [1011, 1012, 1037, 1038, 3981, 4550]
+    }
 
     @property
     def sprites(self):
-        return []
+        return self.sprites_from_child
 
     def get_fingerprint(self):
         return {"default_ground_sprite": self.sprite}
@@ -59,14 +100,17 @@ class ADefaultGroundSprite:
     def get_resource_files(self):
         return ()
 
+    def __add__(self, child_sprite):
+        return ADefaultGroundSprite(self.sprite, child_sprites=self.child_sprites + [child_sprite], flags=self.flags)
 
-class AGroundSprite(CachedFunctorMixin):
-    def __init__(self, sprite, alternatives=None):
-        super().__init__()
+
+class AGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin):
+    def __init__(self, sprite, alternatives=None, child_sprites=None, flags=None):
+        super().__init__(child_sprites=child_sprites, flags=flags)
         self.sprite = sprite
-        self.alternatives = alternatives or []
+        self.alternatives = alternatives or tuple()
 
-    def to_grf(self, sprite_list):
+    def parent_to_grf(self, sprite_list):
         return grf.GroundSprite(
             sprite=grf.SpriteRef(
                 id=0x42D + sprite_list.index(self.sprite),
@@ -76,25 +120,31 @@ class AGroundSprite(CachedFunctorMixin):
                 always_transparent=False,
                 no_transparent=False,
             ),
-            flags=0,
+            **self.registers_to_grf_dict(),
         )
 
-    def graphics(self, scale, bpp):
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
-            return LayeredImage.empty()
-        return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
+            ret = LayeredImage.empty()
+        else:
+            ret = LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)).copy()
+        self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
+        return ret
 
     def __repr__(self):
         return f"<AGroundSprite:{self.sprite}>"
 
     def fmap(self, f):
         return AGroundSprite(
-            self.sprite if self.sprite is grf.EMPTY_SPRITE else f(self.sprite), [f(s) for s in self.alternatives]
+            self.sprite if self.sprite is grf.EMPTY_SPRITE else f(self.sprite),
+            alternatives=tuple(f(s) for s in self.alternatives),
+            child_sprites=[f(c) for c in self.child_sprites],
+            flags=self.flags,
         )
 
     @property
     def sprites(self):
-        return [self.sprite] + self.alternatives
+        return unique_tuple((self.sprite,) + self.alternatives + self.sprites_from_child)
 
     def get_fingerprint(self):
         return {"ground_sprite": self.sprite.get_fingerprint()}
@@ -103,8 +153,9 @@ class AGroundSprite(CachedFunctorMixin):
         return self.sprite.get_resource_files()
 
 
-class AParentSprite:
-    def __init__(self, sprite, extent, offset):
+class AParentSprite(ParentSpriteMixin, RegistersMixin):
+    def __init__(self, sprite, extent, offset, child_sprites=None, flags=None):
+        super().__init__(child_sprites=child_sprites, flags=flags)
         self.sprite = sprite
         self.extent = extent
         self.offset = offset
@@ -112,7 +163,7 @@ class AParentSprite:
     def __repr__(self):
         return f"<AParentSprite:{self.sprite}:{self.extent}:{self.offset}>"
 
-    def to_grf(self, sprite_list):
+    def parent_to_grf(self, sprite_list):
         return grf.ParentSprite(
             sprite=grf.SpriteRef(
                 id=0x42D + sprite_list.index(self.sprite),
@@ -127,6 +178,11 @@ class AParentSprite:
             flags=0,
         )
 
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
+        ret = LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)).copy()
+        self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
+        return ret
+
     @property
     def L(self):
         return self
@@ -134,21 +190,31 @@ class AParentSprite:
     @property
     def M(self):
         mirror = lambda x: (x[1], x[0], x[2])
-        return AParentSprite(self.sprite.M, mirror(self.extent), mirror(self.offset))
+        return AParentSprite(
+            self.sprite.M,
+            mirror(self.extent),
+            mirror(self.offset),
+            child_sprites=[c.M for c in self.child_sprites],
+            flags=self.flags,
+        )
 
     @property
     def R(self):
         new_offset = (16 - self.offset[0] - self.extent[0], self.offset[1], self.offset[2])
-        return AParentSprite(self.sprite.R, self.extent, new_offset)
+        return AParentSprite(
+            self.sprite.R, self.extent, new_offset, child_sprites=[c.R for c in self.child_sprites], flags=self.flags
+        )
 
     @property
     def T(self):
         new_offset = (self.offset[0], 16 - self.offset[1] - self.extent[1], self.offset[2])
-        return AParentSprite(self.sprite.T, self.extent, new_offset)
+        return AParentSprite(
+            self.sprite.T, self.extent, new_offset, child_sprites=[c.T for c in self.child_sprites], flags=self.flags
+        )
 
     @property
     def sprites(self):
-        return [self.sprite]
+        return unique_tuple((self.sprite,) + self.sprites_from_child)
 
     def get_fingerprint(self):
         return {"parent_sprite": self.sprite.get_fingerprint(), "extent": self.extent, "offset": self.offset}
@@ -156,10 +222,15 @@ class AParentSprite:
     def get_resource_files(self):
         return self.sprite.get_resource_files()
 
+    def __add__(self, child_sprite):
+        return AParentSprite(
+            self.sprite, self.extent, self.offset, child_sprites=self.child_sprites + [child_sprite], flags=self.flags
+        )
 
-class AChildSprite(CachedFunctorMixin):
-    def __init__(self, sprite, offset):
-        super().__init__()
+
+class AChildSprite(RegistersMixin, CachedFunctorMixin):
+    def __init__(self, sprite, offset, flags=None):
+        super().__init__(flags=flags)
         self.sprite = sprite
         self.offset = offset
 
@@ -178,15 +249,16 @@ class AChildSprite(CachedFunctorMixin):
             ),
             xofs=self.offset[0],
             yofs=self.offset[1],
+            **self.registers_to_grf_dict(),
         )
 
-    def graphics(self, scale, bpp):
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 
     def fmap(self, f):
-        return AChildSprite(f(self.sprite), self.offset)
+        return AChildSprite(f(self.sprite), self.offset, flags=self.flags)
 
     @property
     def sprites(self):
@@ -199,11 +271,38 @@ class AChildSprite(CachedFunctorMixin):
         return self.sprite.get_resource_files()
 
 
+def overlaps(a0, a1, b0, b1):
+    assert a0 <= a1 and b0 <= b1
+    return a1 > b0 and b1 > a0
+
+
+def is_in_front(a, b):
+    ax0, ay0, az0 = a.offset
+    ax1, ay1, az1 = (x + y for x, y in zip(a.offset, a.extent))
+    bx0, by0, bz0 = b.offset
+    bx1, by1, bz1 = (x + y for x, y in zip(b.offset, b.extent))
+    if not overlaps(ax0 - az1, ax1 - az0, bx0 - bz1, bx1 - bz0):
+        return False
+    if not overlaps(ay0 - az1, ay1 - az0, by0 - bz1, by1 - bz0):
+        return False
+    if not overlaps(ax0 - ay1, ax1 - ay0, bx0 - by1, bx1 - by0):
+        return False
+    if ax0 >= bx1:
+        return True
+    if ay0 >= by1:
+        return True
+    if az0 >= bz1:
+        return True
+    return False
+
+
 class ALayout:
     def __init__(self, ground_sprites, parent_sprites, traversable, category=None, notes=None):
         assert isinstance(ground_sprites, list)
         if ground_sprites == []:
-            ground_sprites = [AGroundSprite(grf.EMPTY_SPRITE)]
+            from station.stations.misc import empty_ground
+
+            ground_sprites = [empty_ground]
         self.ground_sprites = ground_sprites
         self.parent_sprites = parent_sprites
         self.traversable = traversable
@@ -212,29 +311,45 @@ class ALayout:
 
     @property
     def sorted_parent_sprites(self):
-        # FIXME include child sprites
-        return sorted(
-            [x for x in self.parent_sprites if isinstance(x, AParentSprite)],
-            key=lambda x: (x.offset[0] + x.offset[1] + x.extent[0] + x.extent[1], x.offset[2] + x.extent[2]),
-        )
+        for i in self.parent_sprites:
+            for j in self.parent_sprites:
+                if i != j:
+                    assert not all(
+                        i.offset[k] + i.extent[k] > j.offset[k] and j.offset[k] + j.extent[k] > i.offset[k]
+                        for k in range(3)
+                    ), f"{i} and {j} overlap, {self.parent_sprites}"
+
+        ret = []
+        for i in range(len(self.parent_sprites)):
+            for j in self.parent_sprites:
+                if j in ret:
+                    continue
+                good = True
+                for k in self.parent_sprites:
+                    if k != j and k not in ret and is_in_front(j, k):
+                        good = False
+                        break
+                if good:
+                    ret.append(j)
+                    break
+            assert len(ret) == i + 1, f"{self.parent_sprites}, {i}, {ret}"
+        return ret
 
     def to_grf(self, sprite_list):
         return grf.SpriteLayout(
-            [sprite.to_grf(sprite_list) for sprite in self.ground_sprites]
-            + [sprite.to_grf(sprite_list) for sprite in self.sorted_parent_sprites]
+            [s for sprite in self.ground_sprites for s in sprite.to_grf(sprite_list)]
+            + [s for sprite in self.sorted_parent_sprites for s in sprite.to_grf(sprite_list)]
         )
 
-    def graphics(self, scale, bpp, remap=None, context=None):
+    def graphics(self, scale, bpp, remap=None, context=None, climate="temperate", subclimate="default"):
         context = context or grf.DummyWriteContext()
         img = LayeredImage.empty()
         for sprite in self.ground_sprites:
-            new_img = sprite.graphics(scale, bpp).copy()
+            new_img = sprite.graphics(scale, bpp, climate=climate, subclimate=subclimate).copy()
             img.blend_over(new_img)
 
         for sprite in self.sorted_parent_sprites:
-            masked_sprite = LayeredImage.from_sprite(
-                sprite.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
-            ).copy()
+            masked_sprite = sprite.graphics(scale, bpp, climate=climate, subclimate=subclimate)
             if remap is not None:
                 masked_sprite.remap(remap)
                 masked_sprite.apply_mask()
