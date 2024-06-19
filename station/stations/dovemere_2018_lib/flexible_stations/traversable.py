@@ -2,6 +2,7 @@ import grf
 from station.lib import AStation, StationTileSwitch, make_vertical_switch, make_horizontal_switch
 from .. import common_properties
 from ..layouts import named_tiles, layouts
+from .. import common_cb
 from .common import (
     determine_platform_odd,
     determine_platform_even,
@@ -105,6 +106,7 @@ for p, pclass in enumerate(platform_classes):
                         default=cb14[pclass][sclass].to_index(layouts),
                         purchase=layouts.index(make_demo(cb14[pclass][sclass], 4, 4, cb24)),
                     ),
+                    **common_cb,
                 },
             )
         )
@@ -130,6 +132,7 @@ for p, pclass in enumerate(platform_classes):
                         default=cb14[pclass][sclass].to_index(layouts),
                         purchase=layouts.index(make_demo(cb14[pclass][sclass], 4, 4, cb24)),
                     ),
+                    **common_cb,
                 },
             )
         )

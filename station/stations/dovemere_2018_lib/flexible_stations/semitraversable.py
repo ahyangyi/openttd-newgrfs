@@ -1,6 +1,6 @@
 import grf
 from station.lib import AStation, StationTileSwitch, make_vertical_switch
-from .. import common_properties
+from .. import common_properties, common_cb
 from ..layouts import named_tiles, layouts
 from .common import determine_platform_odd, determine_platform_even, make_front_row, make_demo, make_row
 from .traversable import cb14_2, cb14_4, cb14_6, fill_odd
@@ -42,6 +42,7 @@ for p, pclass in enumerate(platform_classes):
                     "select_sprite_layout": grf.DualCallback(
                         default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24))
                     ),
+                    **common_cb,
                 },
             )
         )
@@ -74,6 +75,7 @@ for p, pclass in enumerate(platform_classes):
                     "select_sprite_layout": grf.DualCallback(
                         default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 4, cb24))
                     ),
+                    **common_cb,
                 },
             )
         )
