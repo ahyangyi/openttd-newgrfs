@@ -141,6 +141,10 @@ def make_f2(v, sym):
 def make_f2_extra(v, sym, name):
     if name == "window":
         sym = sym.break_x_symmetry()
+    if "snow" in name:
+        zbase = base_height + overpass_height + 1
+    else:
+        zbase = base_height + overpass_height
     v2 = v.discard_layers(all_f1_layers + all_f2_layers, "f2")
     v = v.discard_layers(
         all_f1_layers + tuple(all_f2_layers_set - {name}) + ("overpass", "foundation", "circle"), f"f2_{name}"
@@ -148,8 +152,8 @@ def make_f2_extra(v, sym, name):
     v = v.compose(v2, "merge", ignore_mask=True, colour_map=PROCESS_COLOUR)
     v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
     v.in_place_subset(sym.render_indices())
-    s = sym.create_variants(v.spritesheet(zdiff=(base_height + overpass_height) * 2))
-    return AParentSprite(s, (16, 16, 1), (0, 0, base_height + platform_height + overpass_height))
+    s = sym.create_variants(v.spritesheet(zdiff=zbase * 2))
+    return AParentSprite(s, (16, 16, 1), (0, 0, zbase + platform_height))
 
 
 f1_cache = {}
@@ -289,6 +293,7 @@ def load(
     f2 = make_f2(v, symmetry)
     f2_window = make_f2_extra(v, symmetry, "window")
     f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
+    f2_snow = make_f2_extra(v, symmetry, "snow")
 
     if borrow_f1 is not None:
         v = make_voxel(borrow_f1)
@@ -316,15 +321,15 @@ def load(
         else:
             f2_name = name + window_postfix
         if window_class == "none":
-            f2_component = [f2]
+            f2_component = [f2, f2_snow]
             cur_sym = symmetry
             cur_bsym = broken_symmetry
         elif window_class == "windowed":
-            f2_component = [f2, f2_window]
+            f2_component = [f2, f2_window, f2_snow]
             cur_sym = symmetry.break_x_symmetry()
             cur_bsym = broken_symmetry.break_x_symmetry()
         elif window_class == "windowed_extender":
-            f2_component = [f2, f2_window_extender]
+            f2_component = [f2, f2_window_extender, f2_snow]
             cur_sym = symmetry
             cur_bsym = broken_symmetry
         for platform_class in platform_classes:
