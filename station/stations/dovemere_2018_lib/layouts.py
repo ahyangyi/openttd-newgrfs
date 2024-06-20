@@ -27,7 +27,7 @@ from station.stations.platforms import (
 )
 from station.stations.ground import named_ps as ground_ps, named_tiles as ground_tiles, gray, gray_third
 from station.stations.misc import track_ground, track
-from agrf.graphics.recolour import PROCESS_COLOUR
+from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 from dataclasses import dataclass
 
 
@@ -149,7 +149,7 @@ def make_f2_extra(v, sym, name):
     v = v.discard_layers(
         all_f1_layers + tuple(all_f2_layers_set - {name}) + ("overpass", "foundation", "circle"), f"f2_{name}"
     )
-    v = v.compose(v2, "merge", ignore_mask=True, colour_map=PROCESS_COLOUR)
+    v = v.compose(v2, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
     v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet(zdiff=zbase * 2))
