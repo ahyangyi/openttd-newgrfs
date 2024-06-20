@@ -151,6 +151,8 @@ def make_f2_extra(v, sym, name):
     )
     v = v.compose(v2, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
     v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
+    if "snow" in name:
+        v.config["overlap"] = 1.3
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet(zdiff=zbase * 2))
     return AParentSprite(s, (16, 16, 1), (0, 0, zbase + platform_height))
