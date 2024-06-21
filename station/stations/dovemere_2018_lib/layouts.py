@@ -11,6 +11,7 @@ from station.lib import (
     AChildSprite,
     ALayout,
     AttrDict,
+    Registers,
 )
 from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
@@ -155,7 +156,10 @@ def make_f2_extra(v, sym, name):
         v.config["overlap"] = 1.3
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet(zdiff=zbase * 2))
-    return AParentSprite(s, (16, 16, 1), (0, 0, zbase + platform_height))
+    if "snow" in name:
+        return AParentSprite(s, (16, 16, 1), (0, 0, zbase + platform_height), flags={"dodraw": Registers.SNOW})
+    else:
+        return AParentSprite(s, (16, 16, 1), (0, 0, zbase + platform_height))
 
 
 f1_cache = {}
