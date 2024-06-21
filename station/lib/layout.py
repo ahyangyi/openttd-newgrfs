@@ -175,7 +175,7 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
             ),
             extent=self.extent,
             offset=self.offset,
-            flags=0,
+            **self.registers_to_grf_dict(),
         )
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
