@@ -12,11 +12,11 @@ top_half = [
     [platform_n.T, platform_n.T, v_central_n.T, platform_n.T, v_central_n.T, platform_n.T, platform_n.T],
     [
         h_end_corridor,
-        h_windowed_corridor,
+        h_normal_corridor,
         cross_corridor,
-        h_windowed_extender_corridor,
+        h_normal_corridor,
         cross_corridor,
-        h_windowed_corridor.R,
+        h_normal_corridor,
         h_end_corridor.R,
     ],
 ]
