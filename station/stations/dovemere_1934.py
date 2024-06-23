@@ -12,7 +12,7 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from station.lib.parameters import station_cb
-from .ground import gray
+from .misc import building_ground
 
 
 def quickload(name, symmetry):
@@ -25,9 +25,8 @@ def quickload(name, symmetry):
         subset=symmetry.render_indices(),
     )
     sprite = symmetry.create_variants(v.spritesheet())
-    groundsprite = AGroundSprite(gray)
     ps = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
-    l = ALayout([groundsprite], [ps], False)
+    l = ALayout([building_ground], [ps], False)
     var = symmetry.get_all_variants(l)
     ret = symmetry.create_variants(var)
     entries.extend(symmetry.get_all_entries(ret))
