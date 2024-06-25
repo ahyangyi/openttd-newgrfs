@@ -140,7 +140,7 @@ def make_f2(v, sym):
 
 
 def make_f2_extra(v, sym, name):
-    if name == "window":
+    if name in {"window", "snow-window"}:
         sym = sym.break_x_symmetry()
     if "snow" in name:
         zbase = base_height + overpass_height + 1
