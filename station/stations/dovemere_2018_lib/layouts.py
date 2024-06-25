@@ -215,6 +215,8 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
     f2_window = make_f2_extra(v, symmetry, "window")
     f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
     f2_snow = make_f2_extra(v, symmetry, "snow")
+    f2_snow_window = make_f2_extra(v, symmetry, "snow-window")
+    f2_snow_window_extender = make_f2_extra(v, symmetry, "snow-window-extender")
 
     cur_np = h_pos.non_platform
     if window is None:
@@ -233,10 +235,10 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
             f2_component = [f2, f2_snow]
             cur_sym = symmetry
         elif window_class == "windowed":
-            f2_component = [f2, f2_window, f2_snow]
+            f2_component = [f2, f2_window, f2_snow_window]
             cur_sym = symmetry.break_x_symmetry()
         elif window_class == "windowed_extender":
-            f2_component = [f2, f2_window_extender, f2_snow]
+            f2_component = [f2, f2_window_extender, f2_snow_window_extender]
             cur_sym = symmetry.break_x_symmetry()
         register(
             ALayout(empty_ground, [cur_np, cur_np.T] + f2_component, True),
