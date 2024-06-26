@@ -144,11 +144,10 @@ def make_f2_extra(v, sym, name):
         zbase = base_height + overpass_height + 1
     else:
         zbase = base_height + overpass_height
-    v2 = v.discard_layers(all_f1_layers + all_f2_layers, "f2")
-    v = v.discard_layers(
+    vd = v.discard_layers(
         all_f1_layers + tuple(all_f2_layers_set - {name}) + ("overpass", "foundation", "circle"), f"f2_{name}"
     )
-    v = v.compose(v2, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
+    v = vd.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
     v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
     if "snow" in name:
         v.config["overlap"] = 1.3
