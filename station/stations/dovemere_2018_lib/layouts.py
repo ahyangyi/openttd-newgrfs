@@ -209,7 +209,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
     name = name or source.split("/")[-1]
     v = make_voxel(source)
     f2 = make_f2(v, symmetry)
-    f2_window = make_f2_extra(v, symmetry.break_y_symmetry() if window_asym else symmetry, "window")
+    f2_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
     f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
     f2_snow = make_f2_extra(v, symmetry, "snow")
     f2_snow_window = make_f2_extra(v, symmetry.break_y_symmetry() if window_asym else symmetry, "snow-window")
@@ -302,7 +302,7 @@ def load(
     name = name or source.split("/")[-1]
     v = make_voxel(source)
     f2 = make_f2(v, symmetry)
-    f2_window = make_f2_extra(v, symmetry.break_y_symmetry() if window_asym else symmetry, "window")
+    f2_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
     f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
     f2_snow = make_f2_extra(v, symmetry.break_y_symmetry() if window_asym else symmetry, "snow")
 

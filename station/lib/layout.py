@@ -56,10 +56,13 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin
         )
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
-        # FIXME handle climates correctly
-        img = np.asarray(
-            ADefaultGroundSprite.default_rail[(climate, self.sprite + (26 if subclimate != "default" else 0))]
-        )
+        # FIXME handle flags correctly
+        if self.sprite in self.climate_independent_tiles:
+            img = np.asarray(self.climate_independent_tiles[self.sprite])
+        else:
+            img = np.asarray(
+                self.climate_dependent_tiles[(climate, self.sprite + (26 if subclimate != "default" else 0))]
+            )
         ret = LayeredImage(-128, 0, 256, 127, img[:, :, :3], img[:, :, 3], None)
         if scale == 4:
             ret = ret.copy()
@@ -84,11 +87,12 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin
             flags=self.flags,
         )
 
-    default_rail = {
+    climate_dependent_tiles = {
         (climate, k): Image.open(f"third_party/opengfx2/{climate}/{k}.png")
         for climate in ["temperate", "arctic", "tropical", "toyland"]
         for k in [1011, 1012, 1037, 1038, 3981, 4550]
     }
+    climate_independent_tiles = {k: Image.open(f"third_party/opengfx2/{k}.png") for k in [1420]}
 
     @property
     def sprites(self):
