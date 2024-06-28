@@ -118,7 +118,8 @@
     {
       "_comment": "cyan blues",
       "start": 154,
-      "end": 161
+      "end": 161,
+      "smoothness": -1
     },
     {
       "_comment": "pale reds",

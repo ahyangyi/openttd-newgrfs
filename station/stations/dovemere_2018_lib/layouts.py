@@ -11,6 +11,7 @@ from station.lib import (
     AChildSprite,
     ALayout,
     AttrDict,
+    Registers,
 )
 from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
@@ -27,7 +28,7 @@ from station.stations.platforms import (
 )
 from station.stations.ground import named_ps as ground_ps, named_tiles as ground_tiles, gray, gray_third
 from station.stations.misc import track_ground, track
-from agrf.graphics.recolour import PROCESS_COLOUR
+from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 from dataclasses import dataclass
 
 
@@ -106,7 +107,7 @@ V = make_hpos("", "_shelter_building_v")
 TinyAsym = make_hpos("_central", "_pillar_central")
 
 
-all_f2_layers = ("window", "window-extender")
+all_f2_layers = ("window", "window-extender", "snow", "snow-window", "snow-window-extender")
 all_f2_layers_set = set(all_f2_layers)
 
 
@@ -139,15 +140,23 @@ def make_f2(v, sym):
 
 
 def make_f2_extra(v, sym, name):
-    v2 = v.discard_layers(all_f1_layers + all_f2_layers, "f2")
-    v = v.discard_layers(
+    if "snow" in name:
+        zbase = base_height + overpass_height + 1
+    else:
+        zbase = base_height + overpass_height
+    vd = v.discard_layers(
         all_f1_layers + tuple(all_f2_layers_set - {name}) + ("overpass", "foundation", "circle"), f"f2_{name}"
     )
-    v = v.compose(v2, "merge", ignore_mask=True, colour_map=PROCESS_COLOUR)
+    v = vd.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
     v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
+    if "snow" in name:
+        v.config["overlap"] = 1.3
     v.in_place_subset(sym.render_indices())
-    s = sym.create_variants(v.spritesheet(zdiff=(base_height + overpass_height) * 2))
-    return AParentSprite(s, (16, 16, 1), (0, 0, base_height + platform_height + overpass_height))
+    s = sym.create_variants(v.spritesheet(zdiff=zbase * 2))
+    if "snow" in name:
+        return AParentSprite(s, (16, 16, 1), (0, 0, zbase + platform_height), flags={"dodraw": Registers.SNOW})
+    else:
+        return AParentSprite(s, (16, 16, 1), (0, 0, zbase + platform_height))
 
 
 f1_cache = {}
@@ -202,6 +211,9 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
     f2 = make_f2(v, symmetry)
     f2_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
     f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
+    f2_snow = make_f2_extra(v, symmetry, "snow")
+    f2_snow_window = make_f2_extra(v, symmetry.break_y_symmetry() if window_asym else symmetry, "snow-window")
+    f2_snow_window_extender = make_f2_extra(v, symmetry, "snow-window-extender")
 
     cur_np = h_pos.non_platform
     if window is None:
@@ -217,16 +229,17 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
         else:
             f2_name = name + window_postfix
         if window_class == "none":
-            f2_component = [f2]
+            f2_component = [f2, f2_snow]
             cur_sym = symmetry
         elif window_class == "windowed":
-            f2_component = [f2, f2_window]
+            f2_component = [f2, f2_window, f2_snow_window]
+            cur_sym = symmetry.break_x_symmetry()
             if window_asym:
                 cur_sym = symmetry.break_x_symmetry()
             else:
                 cur_sym = symmetry
         elif window_class == "windowed_extender":
-            f2_component = [f2, f2_window_extender]
+            f2_component = [f2, f2_window_extender, f2_snow_window_extender]
             cur_sym = symmetry.break_x_symmetry()
         register(
             ALayout(empty_ground, [cur_np, cur_np.T] + f2_component, True),
@@ -291,6 +304,7 @@ def load(
     f2 = make_f2(v, symmetry)
     f2_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
     f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
+    f2_snow = make_f2_extra(v, symmetry.break_y_symmetry() if window_asym else symmetry, "snow")
 
     if borrow_f1 is not None:
         v = make_voxel(borrow_f1)
@@ -318,11 +332,11 @@ def load(
         else:
             f2_name = name + window_postfix
         if window_class == "none":
-            f2_component = [f2]
+            f2_component = [f2, f2_snow]
             cur_sym = symmetry
             cur_bsym = broken_symmetry
         elif window_class == "windowed":
-            f2_component = [f2, f2_window]
+            f2_component = [f2, f2_window, f2_snow]
             if window_asym:
                 cur_sym = symmetry.break_x_symmetry()
                 cur_bsym = broken_symmetry.break_x_symmetry()
@@ -330,7 +344,7 @@ def load(
                 cur_sym = symmetry
                 cur_bsym = broken_symmetry
         elif window_class == "windowed_extender":
-            f2_component = [f2, f2_window_extender]
+            f2_component = [f2, f2_window_extender, f2_snow]
             cur_sym = symmetry
             cur_bsym = broken_symmetry
         for platform_class in platform_classes:
