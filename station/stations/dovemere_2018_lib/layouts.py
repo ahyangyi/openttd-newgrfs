@@ -304,7 +304,9 @@ def load(
     f2 = make_f2(v, symmetry)
     f2_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
     f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
-    f2_snow = make_f2_extra(v, symmetry.break_y_symmetry() if window_asym else symmetry, "snow")
+    f2_snow = make_f2_extra(v, symmetry, "snow")
+    f2_snow_window = make_f2_extra(v, symmetry.break_y_symmetry() if window_asym else symmetry, "snow-window")
+    f2_snow_window_extender = make_f2_extra(v, symmetry, "snow-window-extender")
 
     if borrow_f1 is not None:
         v = make_voxel(borrow_f1)
@@ -336,7 +338,7 @@ def load(
             cur_sym = symmetry
             cur_bsym = broken_symmetry
         elif window_class == "windowed":
-            f2_component = [f2, f2_window, f2_snow]
+            f2_component = [f2, f2_window, f2_snow_window]
             if window_asym:
                 cur_sym = symmetry.break_x_symmetry()
                 cur_bsym = broken_symmetry.break_x_symmetry()
@@ -344,7 +346,7 @@ def load(
                 cur_sym = symmetry
                 cur_bsym = broken_symmetry
         elif window_class == "windowed_extender":
-            f2_component = [f2, f2_window_extender, f2_snow]
+            f2_component = [f2, f2_window_extender, f2_snow_window_extender]
             cur_sym = symmetry
             cur_bsym = broken_symmetry
         for platform_class in platform_classes:
@@ -448,8 +450,8 @@ load_central("side_d", BuildingSpriteSheetSymmetricalY, "D", h_pos=Side)
 load("h_end", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False, window=[])
 load_full("h_end_untraversable", BuildingSpriteSheetSymmetricalY, "H", window=[])
 load("h_end_asym", BuildingSpriteSheetFull, "H", h_pos=Side, corridor=False, window=[])
-load("h_end_asym_gate", BuildingSpriteSheetFull, "H", h_pos=Side, corridor=False, window=[])
-load("h_end_gate", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False, third=False, window=[])
+load("h_end_asym_gate", BuildingSpriteSheetFull, "H", h_pos=Side, corridor=False)
+load("h_end_gate", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False, third=False)
 load_full("h_end_gate_untraversable", BuildingSpriteSheetSymmetricalY, "H")
 load("h_end_gate_1", BuildingSpriteSheetFull, "H", asym=True, platform=False, full=False)
 load("h_normal", BuildingSpriteSheetSymmetrical, "H", window=[])
