@@ -200,7 +200,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
     name = name or source.split("/")[-1]
     v = make_voxel(source)
     f2 = make_f2(v, symmetry)
-    f2_window = make_f2_extra(v, symmetry.break_y_symmetry() if window_asym else symmetry, "window")
+    f2_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
     f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
 
     cur_np = h_pos.non_platform
@@ -289,7 +289,7 @@ def load(
     name = name or source.split("/")[-1]
     v = make_voxel(source)
     f2 = make_f2(v, symmetry)
-    f2_window = make_f2_extra(v, symmetry.break_y_symmetry() if window_asym else symmetry, "window")
+    f2_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
     f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
 
     if borrow_f1 is not None:
