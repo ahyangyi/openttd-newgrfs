@@ -212,7 +212,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
     f2_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
     f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
     f2_snow = make_f2_extra(v, symmetry, "snow")
-    f2_snow_window = make_f2_extra(v, symmetry.break_y_symmetry() if window_asym else symmetry, "snow-window")
+    f2_snow_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "snow-window")
     f2_snow_window_extender = make_f2_extra(v, symmetry, "snow-window-extender")
 
     cur_np = h_pos.non_platform
@@ -305,7 +305,7 @@ def load(
     f2_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
     f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
     f2_snow = make_f2_extra(v, symmetry, "snow")
-    f2_snow_window = make_f2_extra(v, symmetry.break_y_symmetry() if window_asym else symmetry, "snow-window")
+    f2_snow_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "snow-window")
     f2_snow_window_extender = make_f2_extra(v, symmetry, "snow-window-extender")
 
     if borrow_f1 is not None:
