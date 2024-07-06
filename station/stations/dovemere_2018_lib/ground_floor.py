@@ -33,6 +33,12 @@ class GroundFloorStyle:
 ground_floor_styles = AttrDict(
     {
         x.name: x
-        for x in [GroundFloorStyle("corridor", [ground_floor_elements.third, ground_floor_elements.third_t], False)]
+        for x in [
+            GroundFloorStyle("corridor", [ground_floor_elements.third, ground_floor_elements.third_t], False),
+            GroundFloorStyle("full", [ground_floor_elements.full], False),
+            GroundFloorStyle("platform", [ground_floor_elements.platform], True),
+            GroundFloorStyle("third", [ground_floor_elements.third], True),
+            GroundFloorStyle("third_t", [ground_floor_elements.third_t], True),
+        ]
     }
 )
