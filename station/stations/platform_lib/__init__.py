@@ -1,26 +1,23 @@
-from typing import List
-from dataclasses import dataclass
-from station.lib import AttrDict
+from abc import ABC, abstractmethod
 
-platform_height = 4
-
-
-@dataclass
-class PlatformSubelement:
-    name: str
-    components: List[str]
-    height: int
-    has_platform: bool
-
-    def get_class_variants(self, class_name):
-        return PlatformSubelement(
-            "_" + class_name + self.name, {x.format(class_name) for x in self.components}, height, has_platform
-        )
+named_ps = AttrDict()
+named_tiles = AttrDict()
 
 
-platform_meta = [
-    PlatformSubelement("_np", set(), 0, False),
-    PlatformSubelement("_cut", {"cut"}, platform_height, False),
-    PlatformSubelement("_platform", {"{}"}, platform_height, True),
-    PlatformSubelement("_side", {"{}_side"}, platform_height, True),
-]
+class PlatformFamily(ABC):
+    @abstractmethod
+    def get_platform_classes(self):
+        pass
+
+    @abstractmethod
+    def get_shelter_classes(self):
+        pass
+
+    @abstractmethod
+    def get_sprite(self, location, platform_class, shelter_class):
+        pass
+
+
+def register(pf: PlatformFmaily):
+    platform_classes = pf.get_platform_classes
+    shelter_classes = pf.get_shelter_classes
