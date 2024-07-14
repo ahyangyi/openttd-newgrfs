@@ -13,7 +13,7 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 from .ground import named_ps as ground_ps
 from .misc import track_ground
-from station.stations.platform_lib import PlatformFamily, register, named_ps, named_tiles
+from station.stations.platform_lib import PlatformFamily, register, named_ps, named_tiles, entries
 
 
 gray_ps = ground_ps.gray
@@ -122,91 +122,6 @@ shelter_meta = [
 ]
 
 
-def quickload(name):
-    v = LazyVoxel(
-        name,
-        prefix="station/voxels/render/cns",
-        voxel_getter=lambda path=f"station/voxels/cns/{name}.vox": path,
-        load_from="station/files/cns-gorender.json",
-    )
-
-    for platform_flavor, _pclass, pbuildable, pkeeps, pheight in platform_meta:
-        for shelter_flavor, _sclass, symmetry, skeeps, sheight, sbuildable in shelter_meta:
-            if (platform_flavor, shelter_flavor) == ("_np", ""):
-                # Don't create the "nothing" tile
-                continue
-
-            suffix = platform_flavor + shelter_flavor
-            v2 = v.discard_layers(
-                tuple(sorted(tuple(platform_components - pkeeps) + tuple(shelter_components - skeeps))),
-                "subset" + suffix,
-            )
-            v2.in_place_subset(symmetry.render_indices())
-            foundation_height = platform_height if platform_flavor == "_cut" else 0
-            sprite = symmetry.create_variants(
-                v2.spritesheet(xdiff=16 - platform_width, xspan=platform_width, zdiff=foundation_height * 2)
-            )
-
-            height = max(pheight, sheight)
-            ps = AParentSprite(
-                sprite, (16, platform_width, height - foundation_height), (0, 16 - platform_width, foundation_height)
-            )
-            named_ps[name + suffix] = ps
-
-            for l, make_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
-                if make_symmetrical:
-                    cur_symmetry = symmetry.add_y_symmetry()
-                else:
-                    cur_symmetry = symmetry
-                var = cur_symmetry.get_all_variants(ALayout([track_ground], l, True))
-                l = cur_symmetry.create_variants(var)
-                if sbuildable and pbuildable:
-                    entries.extend(cur_symmetry.get_all_entries(l))
-                named_tiles[name + suffix + extra_suffix] = l
-
-    for platform_flavor, pclass, pbuildable, _, _ in platform_meta:
-        if pbuildable:
-            for shelter_flavor, sclass, _, _, _, sbuildable in shelter_meta:
-                if sbuildable:
-                    for platform_flavor_2, pclass2, pbuildable_2, _, _ in platform_meta:
-                        if pbuildable_2 and (pclass == "" or pclass2 == "" or pclass == pclass2):
-                            for shelter_flavor_2, sclass2, _, _, _, sbuildable_2 in shelter_meta:
-                                if (
-                                    sbuildable_2
-                                    and (sclass == "" or sclass2 == "" or sclass == sclass2)
-                                    and ((platform_flavor, shelter_flavor) < (platform_flavor_2, shelter_flavor_2))
-                                ):
-                                    cur_symmetry = BuildingSpriteSheetSymmetricalX
-                                    var = cur_symmetry.get_all_variants(
-                                        ALayout(
-                                            [track_ground],
-                                            [
-                                                named_ps[name + platform_flavor + shelter_flavor],
-                                                named_ps[name + platform_flavor_2 + shelter_flavor_2].T,
-                                            ],
-                                            True,
-                                        )
-                                    )
-                                    l = cur_symmetry.create_variants(var)
-                                    entries.extend(cur_symmetry.get_all_entries(l))
-                                    named_tiles[
-                                        name
-                                        + platform_flavor
-                                        + shelter_flavor
-                                        + "_and"
-                                        + platform_flavor_2
-                                        + shelter_flavor_2
-                                    ] = l
-                                    named_tiles[
-                                        name
-                                        + platform_flavor_2
-                                        + shelter_flavor_2
-                                        + "_and"
-                                        + platform_flavor
-                                        + shelter_flavor
-                                    ] = l.T
-
-
 def simple_load(name):
     v = LazyVoxel(
         name,
@@ -254,11 +169,8 @@ def simple_load(name):
                     named_tiles[name + concourse_flavor + shelter_flavor + extra_suffix] = l
 
 
-entries = []
-
 pf = CNSPlatformFamily()
 register(pf)
-# quickload("cns")
 simple_load("concourse")
 
 named_tiles.globalize()
