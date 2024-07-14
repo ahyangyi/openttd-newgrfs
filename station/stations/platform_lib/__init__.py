@@ -76,12 +76,12 @@ def register(pf: PlatformFamily):
                         named_tiles[name + suffix + extra_suffix] = l
 
     for platform_class in platform_classes:
-        for rail_facing_1 in ["", "side"]:
+        for rail_facing in ["", "side"]:
             for rail_facing_2 in ["", "side"]:
                 for shelter_class in [""] + shelter_classes:
                     for shelter_class_2 in [""] + shelter_classes:
                         if (shelter_class == "" or shelter_class_2 == "" or shelter_class == shelter_class_2) and (
-                            (rail_facing_1, shelter_class) < (rail_facing_2, shelter_class_2)
+                            (rail_facing, shelter_class) < (rail_facing_2, shelter_class_2)
                         ):
                             suffix = f"{us(platform_class)}{us(rail_facing)}{us(shelter_class)}"
                             suffix2 = f"{us(platform_class)}{us(rail_facing_2)}{us(shelter_class_2)}"
