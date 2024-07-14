@@ -129,4 +129,3 @@ def register(pf: PlatformFamily):
                         l = cur_sym.create_variants(var)
                         entries.extend(cur_sym.get_all_entries(l))
                         named_tiles[name + concourse_flavor + us(shelter_class) + extra_suffix] = l
->>>>>>> main
