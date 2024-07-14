@@ -23,32 +23,32 @@ def us(s: str):
     return "_" + s if s != "" else s
 
 
-def register(pf: PlatformFmaily):
-    platform_classes = pf.get_platform_classes
-    shelter_classes = pf.get_shelter_classes
+def register(pf: PlatformFamily):
+    platform_classes = pf.get_platform_classes()
+    shelter_classes = pf.get_shelter_classes()
     name = "cns"  # FIXME
 
-    for platform_flavor in ["np", "cut"] + platform_classes:
-        for shelter_flavor in ["", "pillar"] + shelter_classes:
-            if (platform_flavor, shelter_flavor) == ("np", ""):
+    for platform_class in ["np", "cut"] + platform_classes:
+        for shelter_class in ["", "pillar"] + shelter_classes:
+            if (platform_class, shelter_class) == ("np", ""):
                 # Don't create the "nothing" tile
                 continue
 
-            if platform_flavor in ["np", "cut"]:
+            if platform_class in ["np", "cut"]:
                 rail_facings = [""]
             else:
                 rail_facings = ["", "side"]
 
-            if shelter_flavor == "":
+            if shelter_class == "":
                 locations = [""]
-            elif shelter_flavor == "pillar":
+            elif shelter_class == "pillar":
                 locations = ["", "building", "central"]
             else:
                 locations = ["", "building", "building_v"]
 
             for location in locations:
                 for rail_facing in rail_facings:
-                    suffix = f"{us(platform_flavor)}{us(rail_facing)}{us(shelter_flavor)}{us(location)}"
+                    suffix = f"{us(platform_class)}{us(rail_facing)}{us(shelter_class)}{us(location)}"
                     ps = pf.get_sprite(location, rail_facing, platform_class, shelter_class)
                     named_ps[name + suffix] = ps
 
