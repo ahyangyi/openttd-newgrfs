@@ -10,6 +10,7 @@ class BinaryVariantMixin:
                 v.M = variants[i ^ classobj._m_offset]
             v.R = variants[i ^ classobj._r_offset]
             v.T = variants[i ^ classobj._t_offset]
+            v.symmetry = classobj
         return variants[0]
 
     @classmethod
