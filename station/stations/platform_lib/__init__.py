@@ -1,3 +1,4 @@
+from station.lib import AttrDict
 from abc import ABC, abstractmethod
 
 named_ps = AttrDict()
@@ -53,11 +54,11 @@ def register(pf: PlatformFmaily):
 
                     for l, make_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
                         if make_symmetrical:
-                            cur_symmetry = symmetry.add_y_symmetry()
+                            cur_symmetry = ps.symmetry.add_y_symmetry()
                         else:
-                            cur_symmetry = symmetry
+                            cur_symmetry = ps.symmetry
                         var = cur_symmetry.get_all_variants(ALayout([track_ground], l, True))
                         l = cur_symmetry.create_variants(var)
-                        if sbuildable and pbuildable:
-                            entries.extend(cur_symmetry.get_all_entries(l))
-                        named_tiles[name + suffix + extra_suffix] = l
+                        # if sbuildable and pbuildable:
+                        #     entries.extend(cur_symmetry.get_all_entries(l))
+                        # named_tiles[name + suffix + extra_suffix] = l

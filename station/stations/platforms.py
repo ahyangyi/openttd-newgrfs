@@ -13,6 +13,7 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 from .ground import named_ps as ground_ps
 from .misc import track_ground
+from station.stations.platform_lib import PlatformFamily, register
 
 
 gray_ps = ground_ps.gray
@@ -22,6 +23,49 @@ platform_height = 4
 platform_width = 5
 shelter_height = 17
 pillar_height = 18
+
+
+class CNSPlatformFamily(PlatformFamily):
+    def __init__(self):
+        self.v = LazyVoxel(
+            name,
+            prefix="station/voxels/render/cns",
+            voxel_getter=lambda path=f"station/voxels/cns/{name}.vox": path,
+            load_from="station/files/cns-gorender.json",
+        )
+
+    def get_platform_classes(self):
+        return ["concrete", "brick"]
+
+    @abstractmethod
+    def get_shelter_classes(self):
+        return "shelter_1", "shelter_2"
+
+    @abstractmethod
+    def get_sprite(self, location, rail_facing, platform_class, shelter_class):
+        if platform_class == "":
+            pkeeps = set()
+        else:
+            pkeeps = {platform_classs + ("_side" if rail_facing == "side" else "")}
+        if shelter_class == "":
+            skeeps = set()
+        else:
+            pkeeps = {shelter_classs + ("_" if location != "" else "") + location}
+
+        v2 = self.v.discard_layers(
+            tuple(sorted(tuple(platform_components - pkeeps) + tuple(shelter_components - skeeps))),
+            f"subset_{platform_class}_{rail_facing}_{shelter_class}_{location}",
+        )
+        v2.in_place_subset(symmetry.render_indices())
+        foundation_height = platform_height if platform_class == "cut" else 0
+        sprite = symmetry.create_variants(
+            v2.spritesheet(xdiff=16 - platform_width, xspan=platform_width, zdiff=foundation_height * 2)
+        )
+
+        height = max(pheight, sheight)
+        return AParentSprite(
+            sprite, (16, platform_width, height - foundation_height), (0, 16 - platform_width, foundation_height)
+        )
 
 
 platform_components = {"cut", "concrete", "concrete_side", "brick", "brick_side"}
