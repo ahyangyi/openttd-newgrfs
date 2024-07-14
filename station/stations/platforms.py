@@ -30,7 +30,13 @@ class CNSPlatformFamily(PlatformFamily):
         self.v = LazyVoxel(
             "cns",
             prefix="station/voxels/render/cns",
-            voxel_getter=lambda path=f"station/voxels/cns/cns.vox": path,
+            voxel_getter=lambda path="station/voxels/cns/cns.vox": path,
+            load_from="station/files/cns-gorender.json",
+        )
+        self.concourse = LazyVoxel(
+            "concourse",
+            prefix="station/voxels/render/cns",
+            voxel_getter=lambda path="station/voxels/cns/concourse.vox": path,
             load_from="station/files/cns-gorender.json",
         )
 
@@ -68,6 +74,27 @@ class CNSPlatformFamily(PlatformFamily):
         return AParentSprite(
             sprite, (16, platform_width, height - foundation_height), (0, 16 - platform_width, foundation_height)
         )
+
+    def get_concourse_sprite(self, platform_class, side):
+        if platform_class == "":
+            ckeeps = set()
+        elif side == "d":
+            ckeeps = {platform_class, platform_class + "_t"}
+        else:
+            ckeeps = {platform_class}
+
+        if platform_class == "" or side == "d":
+            symmetry = BuildingSpriteSheetSymmetrical
+        else:
+            symmetry = BuildingSpriteSheetSymmetricalX
+
+        v2 = self.concourse.discard_layers(
+            tuple(sorted(tuple(concourse_components - ckeeps))), f"subset_{platform_class}_{side}"
+        )
+        v2.in_place_subset(symmetry.render_indices())
+
+        sprite = symmetry.create_variants(v2.spritesheet())
+        return AParentSprite(sprite, (16, 16, platform_height), (0, 0, 0))
 
 
 platform_components = {"cut", "concrete", "concrete_side", "brick", "brick_side"}
@@ -120,58 +147,11 @@ shelter_meta = [
     ("_pillar_building", "pillar", BuildingSpriteSheetFull, {"pillar_building"}, pillar_height, False),
     ("_pillar_central", "pillar", BuildingSpriteSheetSymmetricalX, {"pillar_central"}, pillar_height, False),
 ]
-
-
-def simple_load(name):
-    v = LazyVoxel(
-        name,
-        prefix="station/voxels/render/cns",
-        voxel_getter=lambda path=f"station/voxels/cns/{name}.vox": path,
-        load_from="station/files/cns-gorender.json",
-    )
-    concourse_components = {f"{c}{postfix}" for c in platform_classes for postfix in ["", "_t"]}
-
-    for concourse_flavor, symmetry, ckeeps in [
-        ("", BuildingSpriteSheetSymmetrical, set()),
-        ("_side", BuildingSpriteSheetSymmetricalX, {"concrete"}),
-        ("_side_d", BuildingSpriteSheetSymmetrical, {"concrete", "concrete_t"}),
-        ("_brick_side", BuildingSpriteSheetSymmetricalX, {"brick"}),
-        ("_brick_side_d", BuildingSpriteSheetSymmetrical, {"brick", "brick_t"}),
-    ]:
-        v2 = v.discard_layers(tuple(sorted(tuple(concourse_components - ckeeps))), "subset" + concourse_flavor)
-        v2.in_place_subset(symmetry.render_indices())
-
-        sprite = symmetry.create_variants(v2.spritesheet())
-        ps = AParentSprite(sprite, (16, 16, platform_height), (0, 0, 0))
-        named_ps[name + concourse_flavor] = ps
-
-        var = symmetry.get_all_variants(ALayout([gray_ps], [ps], False, notes={"concourse"}))
-        l = symmetry.create_variants(var)
-        entries.extend(symmetry.get_all_entries(l))
-        named_tiles[name + concourse_flavor] = l
-
-        if concourse_flavor != "":
-            for shelter_flavor, _, _, _, _, buildable in shelter_meta:
-                if shelter_flavor == "" or not buildable:
-                    continue
-                shelter = named_ps["cns_cut" + shelter_flavor]
-                for l, needs_symmetrical, extra_suffix in [([shelter], False, ""), ([shelter, shelter.T], True, "_d")]:
-                    if needs_symmetrical:
-                        if concourse_flavor.endswith("_d"):
-                            cur_sym = symmetry
-                        else:
-                            continue
-                    else:
-                        cur_sym = BuildingSpriteSheetSymmetricalX
-                    var = cur_sym.get_all_variants(ALayout([gray_ps], l + [ps], False, notes={"concourse"}))
-                    l = cur_sym.create_variants(var)
-                    entries.extend(cur_sym.get_all_entries(l))
-                    named_tiles[name + concourse_flavor + shelter_flavor + extra_suffix] = l
+concourse_components = {f"{c}{postfix}" for c in platform_classes for postfix in ["", "_t"]}
 
 
 pf = CNSPlatformFamily()
 register(pf)
-simple_load("concourse")
 
 named_tiles.globalize()
 
