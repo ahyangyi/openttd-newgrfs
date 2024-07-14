@@ -99,16 +99,6 @@ class CNSPlatformFamily(PlatformFamily):
 
 platform_components = {"cut", "concrete", "concrete_side", "brick", "brick_side"}
 platform_classes = ["concrete", "brick"]
-platform_meta = [
-    ("_np", "", False, set(), 0),
-    ("_cut", "", False, {"cut"}, platform_height),
-    ("", "concrete", True, {"concrete"}, platform_height),
-    ("_side", "concrete", True, {"concrete_side"}, platform_height),
-    ("_brick", "brick", True, {"brick"}, platform_height),
-    ("_brick_side", "brick", True, {"brick_side"}, platform_height),
-]
-
-
 shelter_components = {
     "shelter_1",
     "shelter_1_building",
@@ -121,32 +111,6 @@ shelter_components = {
     "pillar_central",
 }
 shelter_classes = ["shelter_1", "shelter_2"]
-shelter_meta = [
-    ("", "", BuildingSpriteSheetSymmetricalX, set(), 0, True),
-    ("_shelter_1", "shelter_1", BuildingSpriteSheetSymmetricalX, {"shelter_1"}, shelter_height, True),
-    ("_shelter_1_building", "shelter_1", BuildingSpriteSheetFull, {"shelter_1_building"}, shelter_height, False),
-    (
-        "_shelter_1_building_v",
-        "shelter_1",
-        BuildingSpriteSheetSymmetricalX,
-        {"shelter_1_building_v"},
-        shelter_height,
-        False,
-    ),
-    ("_shelter_2", "shelter_2", BuildingSpriteSheetSymmetricalX, {"shelter_2"}, shelter_height, True),
-    ("_shelter_2_building", "shelter_2", BuildingSpriteSheetFull, {"shelter_2_building"}, shelter_height, False),
-    (
-        "_shelter_2_building_v",
-        "shelter_2",
-        BuildingSpriteSheetSymmetricalX,
-        {"shelter_2_building_v"},
-        shelter_height,
-        False,
-    ),
-    ("_pillar", "pillar", BuildingSpriteSheetSymmetricalX, {"pillar"}, pillar_height, False),
-    ("_pillar_building", "pillar", BuildingSpriteSheetFull, {"pillar_building"}, pillar_height, False),
-    ("_pillar_central", "pillar", BuildingSpriteSheetSymmetricalX, {"pillar_central"}, pillar_height, False),
-]
 concourse_components = {f"{c}{postfix}" for c in platform_classes for postfix in ["", "_t"]}
 
 
