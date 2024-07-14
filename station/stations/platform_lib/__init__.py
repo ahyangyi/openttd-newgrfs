@@ -2,24 +2,25 @@ from typing import List
 from dataclasses import dataclass
 from station.lib import AttrDict
 
+platform_height = 4
+
 
 @dataclass
-class PlatformElement:
+class PlatformSubelement:
     name: str
     components: List[str]
-    breaks_y_symmetry: bool
+    height: int
     has_platform: bool
-    has_shelter: bool
+
+    def get_class_variants(self, class_name):
+        return PlatformSubelement(
+            "_" + class_name + self.name, {x.format(class_name) for x in self.components}, height, has_platform
+        )
 
 
-platform_elements = AttrDict(
-    {
-        x.name: x
-        for x in [
-            PlatformElement("full", ["ground level"], False),
-            PlatformElement("platform", ["ground level - platform"], True),
-            PlatformElement("third", ["ground level - third"], True),
-            PlatformElement("third_t", ["ground level - third - t"], True),
-        ]
-    }
-)
+platform_meta = [
+    PlatformSubelement("_np", set(), 0, False),
+    PlatformSubelement("_cut", {"cut"}, platform_height, False),
+    PlatformSubelement("_platform", {"{}"}, platform_height, True),
+    PlatformSubelement("_side", {"{}_side"}, platform_height, True),
+]
