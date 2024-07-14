@@ -14,10 +14,50 @@ class PlatformFamily(ABC):
         pass
 
     @abstractmethod
-    def get_sprite(self, location, platform_class, shelter_class):
+    def get_sprite(self, location, rail_facing, platform_class, shelter_class):
         pass
+
+
+def us(s: str):
+    return "_" + s if s != "" else s
 
 
 def register(pf: PlatformFmaily):
     platform_classes = pf.get_platform_classes
     shelter_classes = pf.get_shelter_classes
+    name = "cns"  # FIXME
+
+    for platform_flavor in ["np", "cut"] + platform_classes:
+        for shelter_flavor in ["", "pillar"] + shelter_classes:
+            if (platform_flavor, shelter_flavor) == ("np", ""):
+                # Don't create the "nothing" tile
+                continue
+
+            if platform_flavor in ["np", "cut"]:
+                rail_facings = [""]
+            else:
+                rail_facings = ["", "side"]
+
+            if shelter_flavor == "":
+                locations = [""]
+            elif shelter_flavor == "pillar":
+                locations = ["", "building", "central"]
+            else:
+                locations = ["", "building", "building_v"]
+
+            for location in locations:
+                for rail_facing in rail_facings:
+                    suffix = f"{us(platform_flavor)}{us(rail_facing)}{us(shelter_flavor)}{us(location)}"
+                    ps = pf.get_sprite(location, rail_facing, platform_class, shelter_class)
+                    named_ps[name + suffix] = ps
+
+                    for l, make_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
+                        if make_symmetrical:
+                            cur_symmetry = symmetry.add_y_symmetry()
+                        else:
+                            cur_symmetry = symmetry
+                        var = cur_symmetry.get_all_variants(ALayout([track_ground], l, True))
+                        l = cur_symmetry.create_variants(var)
+                        if sbuildable and pbuildable:
+                            entries.extend(cur_symmetry.get_all_entries(l))
+                        named_tiles[name + suffix + extra_suffix] = l
