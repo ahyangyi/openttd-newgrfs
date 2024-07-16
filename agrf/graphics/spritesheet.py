@@ -136,7 +136,7 @@ def spritesheet_template(
                         yofs=0 if "f2_window" in path else get_rels(i, diff, scale)[1],
                         bpp=bpp,
                         zoom=SCALE_TO_ZOOM[scale],
-                        crop=False,
+                        crop="f2_window" in path,
                     ),
                     (
                         grf.FileSprite(
