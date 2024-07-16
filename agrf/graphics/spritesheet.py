@@ -136,6 +136,7 @@ def spritesheet_template(
                         yofs=get_rels(i, diff, scale)[1],
                         bpp=bpp,
                         zoom=SCALE_TO_ZOOM[scale],
+                        crop=False,
                     ),
                     (
                         grf.FileSprite(
