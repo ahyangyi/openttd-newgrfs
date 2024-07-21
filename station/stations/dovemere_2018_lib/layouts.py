@@ -147,7 +147,7 @@ def make_f2_extra(v, sym, name):
     v = v.compose(v2, "merge", ignore_mask=True, colour_map=PROCESS_COLOUR)
     v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
     v.in_place_subset(sym.render_indices())
-    s = sym.create_variants(v.spritesheet(zdiff=base_height * 2))
+    s = sym.create_variants(v.spritesheet())
     return AChildSprite(s, (0, 0))
 
 

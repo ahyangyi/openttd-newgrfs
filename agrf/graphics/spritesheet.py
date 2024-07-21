@@ -1,3 +1,4 @@
+import numpy as np
 import grf
 import math
 from .misc import SCALE_TO_ZOOM
@@ -176,13 +177,17 @@ def spritesheet_template(
                         guessed_dimens[i][0] * scale,
                         guessed_dimens[i][1] * scale,
                         xofs=0 if "f2_window" in path else get_rels(i, diff, scale)[0],
-                        yofs=0 if "f2_window" in path else get_rels(i, diff, scale)[1],
+                        yofs=0 * scale if "f2_window" in path else get_rels(i, diff, scale)[1],
                         bpp=bpp,
                         zoom=SCALE_TO_ZOOM[scale],
                         **(
                             {}
                             if manual_crop is None
-                            else {"fixed_crop": True, "crop_amount": (manual_crop[0] * scale, manual_crop[1] * scale)}
+                            else {
+                                "crop": False,
+                                "fixed_crop": True,
+                                "crop_amount": (manual_crop[0] * scale, manual_crop[1] * scale),
+                            }
                         ),
                     ),
                     (
