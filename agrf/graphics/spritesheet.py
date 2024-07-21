@@ -73,8 +73,9 @@ class CustomCropFileSprite(grf.FileSprite):
     def _do_crop(self, context, w, h, rgb, alpha, mask):
         if self.crop:
             return super()._do_crop(context, w, h, rgb, alpha, mask)
-        crop_x, crop_y = self.crop_amount
+        crop_x = crop_y = 0
         if self.fixed_crop:
+            crop_x, crop_y = self.crop_amount
             timer = context.start_timer()
             if alpha is not None:
                 cols_bitset = alpha.any(0)
@@ -125,6 +126,7 @@ def spritesheet_template(
     shift=0,
     road_mode=False,
     manual_crop=None,
+    childsprite=False,
 ):
     guessed_dimens = []
     for i in range(len(dimens)):
@@ -176,8 +178,8 @@ def spritesheet_template(
                         0,
                         guessed_dimens[i][0] * scale,
                         guessed_dimens[i][1] * scale,
-                        xofs=0 if "f2_window" in path else get_rels(i, diff, scale)[0],
-                        yofs=0 * scale if "f2_window" in path else get_rels(i, diff, scale)[1],
+                        xofs=0 if childsprite else get_rels(i, diff, scale)[0],
+                        yofs=0 if childsprite else get_rels(i, diff, scale)[1],
                         bpp=bpp,
                         zoom=SCALE_TO_ZOOM[scale],
                         **(
