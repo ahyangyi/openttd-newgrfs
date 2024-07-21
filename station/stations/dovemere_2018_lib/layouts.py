@@ -134,6 +134,7 @@ f1_subsets = {
 def make_f2(v, sym):
     v = v.discard_layers(all_f1_layers + all_f2_layers, "f2")
     v.in_place_subset(sym.render_indices())
+    v.config["agrf_manual_crop"] = (0, 10)
     s = sym.create_variants(v.spritesheet(zdiff=base_height * 2))
     return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 

@@ -210,6 +210,7 @@ class LazyVoxel(Config):
             bpps=self.config["agrf_bpps"],
             scales=self.config["agrf_scales"],
             shift=shift,
+            manual_crop=self.config.get("agrf_manual_crop", None),
         )
 
     @functools.cache
