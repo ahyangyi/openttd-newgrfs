@@ -55,7 +55,7 @@ class CNSPlatformFamily(PlatformFamily):
             skeeps = set()
         else:
             skeeps = {shelter_class + ("_" if location != "" else "") + location}
-            if platform_class != "" and location == "building":
+            if platform_class != "" and shelter_class != "pillar" and location == "building":
                 skeeps.add("escalator")
 
         v2 = self.v.discard_layers(
