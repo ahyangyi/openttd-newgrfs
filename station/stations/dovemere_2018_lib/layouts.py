@@ -135,6 +135,7 @@ f1_subsets = {
 def make_f2(v, sym):
     v = v.discard_layers(all_f1_layers + all_f2_layers, "f2")
     v.in_place_subset(sym.render_indices())
+    v.config["agrf_manual_crop"] = (0, 10)
     s = sym.create_variants(v.spritesheet(zdiff=base_height * 2))
     return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
@@ -151,12 +152,13 @@ def make_f2_extra(v, sym, name):
     v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
     if "snow" in name:
         v.config["overlap"] = 1.3
+    v.config["agrf_childsprite"] = (0, -10)
     v.in_place_subset(sym.render_indices())
-    s = sym.create_variants(v.spritesheet(zdiff=zbase * 2))
+    s = sym.create_variants(v.spritesheet())
     if "snow" in name:
-        return AParentSprite(s, (16, 16, 1), (0, 0, zbase + platform_height), flags={"dodraw": Registers.SNOW})
+        return AChildSprite(s, (0, 0), flags={"dodraw": Registers.SNOW})
     else:
-        return AParentSprite(s, (16, 16, 1), (0, 0, zbase + platform_height))
+        return AChildSprite(s, (0, 0))
 
 
 f1_cache = {}
@@ -229,17 +231,17 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
         else:
             f2_name = name + window_postfix
         if window_class == "none":
-            f2_component = [f2, f2_snow]
+            f2_component = [f2 + f2_snow]
             cur_sym = symmetry
         elif window_class == "windowed":
-            f2_component = [f2, f2_window, f2_snow_window]
+            f2_component = [f2 + f2_window + f2_snow_window]
             cur_sym = symmetry.break_x_symmetry()
             if window_asym:
                 cur_sym = symmetry.break_x_symmetry()
             else:
                 cur_sym = symmetry
         elif window_class == "windowed_extender":
-            f2_component = [f2, f2_window_extender, f2_snow_window_extender]
+            f2_component = [f2 + f2_window_extender + f2_snow_window_extender]
             cur_sym = symmetry.break_x_symmetry()
         register(
             ALayout(empty_ground, [cur_np, cur_np.T] + f2_component, True),
@@ -334,11 +336,11 @@ def load(
         else:
             f2_name = name + window_postfix
         if window_class == "none":
-            f2_component = [f2, f2_snow]
+            f2_component = [f2 + f2_snow]
             cur_sym = symmetry
             cur_bsym = broken_symmetry
         elif window_class == "windowed":
-            f2_component = [f2, f2_window, f2_snow_window]
+            f2_component = [f2 + f2_window + f2_snow_window]
             if window_asym:
                 cur_sym = symmetry.break_x_symmetry()
                 cur_bsym = broken_symmetry.break_x_symmetry()
@@ -346,7 +348,7 @@ def load(
                 cur_sym = symmetry
                 cur_bsym = broken_symmetry
         elif window_class == "windowed_extender":
-            f2_component = [f2, f2_window_extender, f2_snow_window_extender]
+            f2_component = [f2 + f2_window_extender + f2_snow_window_extender]
             cur_sym = symmetry
             cur_bsym = broken_symmetry
         for platform_class in platform_classes:
