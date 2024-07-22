@@ -84,7 +84,7 @@ class LayeredImage:
 
         return self
 
-    def adjust_canvas(self, other):
+    def adjust_canvas(self, other, childsprite=None):
         w = max(other.w + other.xofs - self.xofs, self.w) - min(0, other.xofs - self.xofs)
         h = max(other.h + other.yofs - self.yofs, self.h) - min(0, other.yofs - self.yofs)
         x0 = max(0, self.xofs - other.xofs)
@@ -127,16 +127,26 @@ class LayeredImage:
 
         return self
 
-    def blend_over(self, other):
+    @staticmethod
+    def _crop_if_childsprite(a, b, childsprite):
+        if childsprite:
+            return a[: b.shape[0], : b.shape[1]]
+        return a
+
+    def blend_over(self, other, childsprite=False):
         if other.rgb is None and other.mask is None:
             return
         if self.rgb is None and self.mask is None:
             self.copy_from(other)
             return
-        self.adjust_canvas(other)
+        if childsprite:
+            x1 = 0
+            y1 = 0
+        else:
+            self.adjust_canvas(other)
 
-        x1 = other.xofs - self.xofs
-        y1 = other.yofs - self.yofs
+            x1 = other.xofs - self.xofs
+            y1 = other.yofs - self.yofs
 
         if self.mask is not None:
             mask_viewport = self.mask[y1 : y1 + other.h, x1 : x1 + other.w]
@@ -147,19 +157,24 @@ class LayeredImage:
             if other.mask is None:
                 mask_viewport[:, :] = mask_viewport * (1 - opacity)
             else:
-                mask_viewport[:, :] = mask_viewport * (1 - opacity) + other.mask * opacity
+                mask_viewport[:, :] = (
+                    mask_viewport * (1 - opacity)
+                    + self._crop_if_childsprite(other.mask, mask_viewport, childsprite) * opacity
+                )
 
         if self.rgb is not None:
             rgb_viewport = self.rgb[y1 : y1 + other.h, x1 : x1 + other.w]
             alpha_viewport = self.alpha[y1 : y1 + other.h, x1 : x1 + other.w]
 
             alpha1 = alpha_viewport.astype(np.uint32)
-            alpha2 = other.alpha.astype(np.uint32)
+            alpha2 = self._crop_if_childsprite(other.alpha, alpha1, childsprite).astype(np.uint32)
             alpha1_component = np.expand_dims(alpha1 * (255 - alpha2), 2)
             alpha2_component = np.expand_dims(alpha2 * 255, 2)
             new_alpha = alpha1_component + alpha2_component
             rgb_viewport[:, :] = (
-                alpha1_component * rgb_viewport + alpha2_component * other.rgb + new_alpha // 2
+                alpha1_component * rgb_viewport
+                + alpha2_component * self._crop_if_childsprite(other.rgb, rgb_viewport, childsprite)
+                + new_alpha // 2
             ) // np.maximum(new_alpha, 1)
             alpha_viewport[:, :] = (new_alpha[:, :, 0] + 128) // 255
 
