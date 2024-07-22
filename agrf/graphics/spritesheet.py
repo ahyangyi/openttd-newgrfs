@@ -3,6 +3,8 @@ import grf
 import math
 from .misc import SCALE_TO_ZOOM
 
+THIS_FILE = grf.PythonFile(__file__)
+
 
 __image_file_cache = {}
 
@@ -64,18 +66,17 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
         return f"LazyAlternativeSprites<{self.voxel.name}:{self.part}>"
 
 
-class CustomCropFileSprite(grf.FileSprite):
-    def __init__(self, file, x, y, w, h, *, fixed_crop=False, crop_amount=(0, 0), **kw):
-        super().__init__(file, x, y, w, h, **kw)
+class CustomCropMixin:
+    def __init__(self, *args, fixed_crop=False, crop_amount=(0, 0), **kw):
+        super().__init__(*args, **kw)
         self.fixed_crop = fixed_crop
         self.crop_amount = crop_amount
 
     def _do_crop(self, context, w, h, rgb, alpha, mask):
-        if self.crop:
-            return super()._do_crop(context, w, h, rgb, alpha, mask)
         crop_x = crop_y = 0
         if self.fixed_crop:
             crop_x, crop_y = self.crop_amount
+
             timer = context.start_timer()
             if alpha is not None:
                 cols_bitset = alpha.any(0)
@@ -103,8 +104,21 @@ class CustomCropFileSprite(grf.FileSprite):
                 mask = mask[crop_y : crop_y + h, crop_x : crop_x + w]
 
             timer.count_custom("Cropping sprites")
+        elif self.crop:
+            return super()._do_crop(context, w, h, rgb, alpha, mask)
 
         return crop_x, crop_y, w, h, rgb, alpha, mask
+
+    def get_resource_files(self):
+        return super().get_resource_files() + (THIS_FILE,)
+
+
+class CustomCropFileSprite(CustomCropMixin, grf.FileSprite):
+    pass
+
+
+class CustomCropWithMask(CustomCropMixin, grf.WithMask):
+    pass
 
 
 def spritesheet_template(
@@ -164,7 +178,7 @@ def spritesheet_template(
     def with_optional_mask(sprite, mask):
         if mask is None:
             return sprite
-        return grf.WithMask(sprite, mask)
+        return CustomCropWithMask(sprite, mask, fixed_crop=sprite.fixed_crop, crop_amount=sprite.crop_amount)
 
     return [
         LazyAlternativeSprites(
@@ -178,18 +192,14 @@ def spritesheet_template(
                         0,
                         guessed_dimens[i][0] * scale,
                         guessed_dimens[i][1] * scale,
-                        xofs=0 if childsprite else get_rels(i, diff, scale)[0],
-                        yofs=0 if childsprite else get_rels(i, diff, scale)[1],
+                        xofs=childsprite[0] * scale if childsprite else get_rels(i, diff, scale)[0],
+                        yofs=childsprite[1] * scale if childsprite else get_rels(i, diff, scale)[1],
                         bpp=bpp,
                         zoom=SCALE_TO_ZOOM[scale],
                         **(
                             {}
                             if manual_crop is None
-                            else {
-                                "crop": False,
-                                "fixed_crop": True,
-                                "crop_amount": (manual_crop[0] * scale, manual_crop[1] * scale),
-                            }
+                            else {"fixed_crop": True, "crop_amount": (manual_crop[0] * scale, manual_crop[1] * scale)}
                         ),
                     ),
                     (
