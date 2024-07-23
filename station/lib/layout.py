@@ -22,7 +22,7 @@ class ParentSpriteMixin:
     def blend_graphics(self, base, scale, bpp, climate="temperate", subclimate="default"):
         for c in self.child_sprites:
             masked_sprite = c.graphics(scale, bpp, climate=climate, subclimate=subclimate)
-            base.blend_over(masked_sprite)
+            base.blend_over(masked_sprite, childsprite=isinstance(self, AParentSprite))
 
 
 class RegistersMixin:
