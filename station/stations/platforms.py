@@ -115,6 +115,7 @@ shelter_components = {
     "pillar_central",
     "escalator",
     "escalator_v",
+    "underground_stairs",  # FIXME
 }
 shelter_classes = ["shelter_1", "shelter_2"]
 concourse_components = {f"{c}{postfix}" for c in platform_classes for postfix in ["", "_t"]}
