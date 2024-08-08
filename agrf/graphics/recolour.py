@@ -45,4 +45,5 @@ CC1_BLACK = ColourMap("cc1_black", [(ColourRange(0xC8, 0xCF), ColourRange(3, 8))
 
 CC2_BLACK = ColourMap("cc2_black", [(ColourRange(0x52, 0x59), ColourRange(3, 8))])
 
-PROCESS_COLOUR = ColourMap("cc2_black", [(ColourRange(0x1, 0xFF), ColourRange(217))])
+PROCESS_COLOUR = ColourMap("process", [(ColourRange(0x1, 0xFF), ColourRange(217))])
+NON_RENDERABLE_COLOUR = ColourMap("non_renderable", [(ColourRange(0x1, 0xFF), ColourRange(255))])
