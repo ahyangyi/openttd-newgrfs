@@ -134,6 +134,7 @@ f1_subsets = {
 def make_f2(v, sym):
     v = v.discard_layers(all_f1_layers + all_f2_layers, "f2")
     v.in_place_subset(sym.render_indices())
+    v.config["agrf_manual_crop"] = (0, 10)
     s = sym.create_variants(v.spritesheet(zdiff=base_height * 2))
     return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
@@ -145,9 +146,10 @@ def make_f2_extra(v, sym, name):
     )
     v = v.compose(v2, "merge", ignore_mask=True, colour_map=PROCESS_COLOUR)
     v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
+    v.config["agrf_childsprite"] = (0, -10)
     v.in_place_subset(sym.render_indices())
-    s = sym.create_variants(v.spritesheet(zdiff=(base_height + overpass_height) * 2))
-    return AParentSprite(s, (16, 16, 1), (0, 0, base_height + platform_height + overpass_height))
+    s = sym.create_variants(v.spritesheet())
+    return AChildSprite(s, (0, 0))
 
 
 f1_cache = {}
@@ -200,7 +202,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
     name = name or source.split("/")[-1]
     v = make_voxel(source)
     f2 = make_f2(v, symmetry)
-    f2_window = make_f2_extra(v, symmetry.break_y_symmetry() if window_asym else symmetry, "window")
+    f2_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
     f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
 
     cur_np = h_pos.non_platform
@@ -220,13 +222,13 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
             f2_component = [f2]
             cur_sym = symmetry
         elif window_class == "windowed":
-            f2_component = [f2, f2_window]
+            f2_component = [f2 + f2_window]
             if window_asym:
                 cur_sym = symmetry.break_x_symmetry()
             else:
                 cur_sym = symmetry
         elif window_class == "windowed_extender":
-            f2_component = [f2, f2_window_extender]
+            f2_component = [f2 + f2_window_extender]
             cur_sym = symmetry.break_x_symmetry()
         register(
             ALayout(empty_ground, [cur_np, cur_np.T] + f2_component, True),
@@ -289,7 +291,7 @@ def load(
     name = name or source.split("/")[-1]
     v = make_voxel(source)
     f2 = make_f2(v, symmetry)
-    f2_window = make_f2_extra(v, symmetry.break_y_symmetry() if window_asym else symmetry, "window")
+    f2_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
     f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
 
     if borrow_f1 is not None:
@@ -322,7 +324,7 @@ def load(
             cur_sym = symmetry
             cur_bsym = broken_symmetry
         elif window_class == "windowed":
-            f2_component = [f2, f2_window]
+            f2_component = [f2 + f2_window]
             if window_asym:
                 cur_sym = symmetry.break_x_symmetry()
                 cur_bsym = broken_symmetry.break_x_symmetry()
@@ -330,7 +332,7 @@ def load(
                 cur_sym = symmetry
                 cur_bsym = broken_symmetry
         elif window_class == "windowed_extender":
-            f2_component = [f2, f2_window_extender]
+            f2_component = [f2 + f2_window_extender]
             cur_sym = symmetry
             cur_bsym = broken_symmetry
         for platform_class in platform_classes:
