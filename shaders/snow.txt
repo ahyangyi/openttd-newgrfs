@@ -7,7 +7,8 @@
 // arg : { name = 'Intensity'  var = 'm_intensity'  range = '0 255'  value = '100'  step = '1'  precision = '0' }
 // arg : { name = 'Color'  var = 'm_color'  range = '0 255'  value = '156'  step = '1'  precision = '0' }
 // arg : { name = 'Color Range'  var = 'm_colors'  range = '0 255'  value = '8'  step = '1'  precision = '0' }
-// arg : { name = 'Seed'  var = 'm_seed' range = '0 2147483647'  value = '1'  step = '1'  precision = '0' }
+// arg : { name = 'Seed'  var = 'm_seed' range = '0 2147483647'  value = '42'  step = '1'  precision = '0' }
+// arg : { name = 'Noise'  var = 'm_noise' range = '0 1000'  value = '10'  step = '1'  precision = '0' }
 // xs_end
 
 int size = int(m_size);
@@ -59,6 +60,10 @@ float map(vec3 v) {
                 int new_z = (z + dz + 256) % 256;
                 float k = get_colour(new_x, new_y, new_z);
                 float weight = (ss - dd) / (dd + ss);
+                if (dx == 0 && dy == 0 && dz == 0)
+                {
+                    weight += m_noise;
+                }
 
                 total += k * weight;
                 total_weight += weight;
