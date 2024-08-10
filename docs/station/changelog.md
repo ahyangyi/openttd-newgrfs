@@ -1,6 +1,10 @@
 China Set: Stations & Platforms Addons: Wuhu Changelog
 =========================
 
+0.3.0 (work-in-progress)
+------------------------
+Add the 1934 Wuhu Station.
+
 0.2.2 (2024-06-14)
 --------------------
 Further fix for the climate-aware groundsprites: they didn't work with custom track NewGRFs.
