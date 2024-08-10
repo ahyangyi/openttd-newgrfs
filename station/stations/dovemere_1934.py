@@ -24,7 +24,7 @@ def quickload(name, symmetry):
         config={"agrf_palette": "station/files/dovemere_1934_palette.json", "z_scale": 1.0},
         subset=symmetry.render_indices(),
     )
-    sprite = symmetry.create_variants(v.spritesheet())
+    sprite = symmetry.create_variants(v.spritesheet(xdiff=1))
     ps = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
     l = ALayout([building_ground], [ps], False)
     var = symmetry.get_all_variants(l)
