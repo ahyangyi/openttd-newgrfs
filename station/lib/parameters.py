@@ -3,7 +3,7 @@ from agrf.magic import Switch
 
 global_settings = [Parameter("INTRODUCTION_YEAR", 0, {0: "DISABLED", 1: "ENABLED"})]
 
-station_meta = [("E88A9CA", 2005)]
+station_meta = [("E88A9CA", 2005), ("E88A9C0", 1911)]
 station_settings = []
 for s, year in station_meta:
     station_settings.append(Parameter(f"{s}_INTRODUCTION_YEAR", year, limits=(0, 9999)))
