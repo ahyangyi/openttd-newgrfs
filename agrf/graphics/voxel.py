@@ -96,7 +96,7 @@ class LazyVoxel(Config):
         )
 
     @functools.cache
-    def compose(self, subvoxel, suffix, colour_map=None):
+    def compose(self, subvoxel, suffix, ignore_mask=False, colour_map=None):
         def voxel_getter(subvoxel=subvoxel):
             old_path = self.voxel_getter()
             new_path = os.path.join(self.prefix, suffix)
@@ -108,7 +108,7 @@ class LazyVoxel(Config):
                 extra_config = colour_map.positor_config()
             else:
                 extra_config = {}
-            compose(old_path, subvoxel_path, new_path, extra_config)
+            compose(old_path, subvoxel_path, new_path, {**extra_config, "ignore_mask": ignore_mask})
             return os.path.join(new_path, f"{self.name}.vox")
 
         return LazyVoxel(
@@ -210,6 +210,8 @@ class LazyVoxel(Config):
             bpps=self.config["agrf_bpps"],
             scales=self.config["agrf_scales"],
             shift=shift,
+            manual_crop=self.config.get("agrf_manual_crop", None),
+            childsprite=self.config.get("agrf_childsprite", False),
         )
 
     @functools.cache
