@@ -3,11 +3,12 @@
 // xs_begin
 // author : '@lachlanmcdonald'
 // arg : { name = 'Size'  var = 'm_size'  range = '0 31'  value = '13'  step = '1'  precision = '0' }
-// arg : { name = 'Symmetry'  var = 'm_symmetry'  range = '0 2'  value = '0'  step = '1'  precision = '0' }
+// arg : { name = 'Style'  var = 'm_symmetry'  range = '0 1'  value = '1'  step = '1'  precision = '0' }
+// arg : { name = 'Inner Seed'  var = 'm_inner_seed' range = '0 2147483647'  value = '0'  step = '1'  precision = '0' }
 // arg : { name = 'Intensity'  var = 'm_intensity'  range = '0 255'  value = '100'  step = '1'  precision = '0' }
 // arg : { name = 'Color'  var = 'm_color'  range = '0 255'  value = '156'  step = '1'  precision = '0' }
 // arg : { name = 'Color Range'  var = 'm_colors'  range = '0 255'  value = '8'  step = '1'  precision = '0' }
-// arg : { name = 'Seed'  var = 'm_seed' range = '0 2147483647'  value = '42'  step = '1'  precision = '0' }
+// arg : { name = 'Seed'  var = 'm_seed' range = '0 2147483647'  value = '0'  step = '1'  precision = '0' }
 // arg : { name = 'Noise'  var = 'm_noise' range = '0 1000'  value = '10'  step = '1'  precision = '0' }
 // xs_end
 
@@ -33,10 +34,36 @@ float get_colour(int x, int y, int z) {
             x = 255 - y;
             y = t;
         }
+        float j = hash(vec2(x, y), m_seed);
+        float k = hash(vec2(j, z), int(m_seed) ^ 0x1357);
+        return k;
     }
-    float j = hash(vec2(x, y), m_seed);
-    float k = hash(vec2(j, z), int(m_seed) ^ 0x1357);
-    return k;
+    else
+    {
+        if (x < m_size || y < m_size || 255 - x < m_size || 255 - y < m_size)
+        {
+            if (x >= 128)
+            {
+                x = 255 - x;
+                y = 255 - y;
+            }
+            if (y >= 128)
+            {
+                int t = x;
+                x = 255 - y;
+                y = t;
+            }
+            float j = hash(vec2(x, y), m_seed);
+            float k = hash(vec2(j, z), int(m_seed) ^ 0x1357);
+            return k;
+        }
+        else
+        {
+            float j = hash(vec2(x, y), m_inner_seed);
+            float k = hash(vec2(j, z), int(m_inner_seed) ^ 0x1357);
+            return k;
+        }
+    }
 }
 
 float map(vec3 v) {
