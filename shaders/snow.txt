@@ -8,7 +8,7 @@
 // arg : { name = 'Intensity'  var = 'm_intensity'  range = '0 255'  value = '100'  step = '1'  precision = '0' }
 // arg : { name = 'Color'  var = 'm_color'  range = '0 255'  value = '156'  step = '1'  precision = '0' }
 // arg : { name = 'Color Range'  var = 'm_colors'  range = '0 255'  value = '8'  step = '1'  precision = '0' }
-// arg : { name = 'Seed'  var = 'm_seed' range = '0 2147483647'  value = '0'  step = '1'  precision = '0' }
+// arg : { name = 'Seed'  var = 'm_seed' range = '0 2147483647'  value = '42'  step = '1'  precision = '0' }
 // arg : { name = 'Noise'  var = 'm_noise' range = '0 1000'  value = '10'  step = '1'  precision = '0' }
 // xs_end
 
