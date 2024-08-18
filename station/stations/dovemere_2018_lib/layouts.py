@@ -141,10 +141,6 @@ def make_f2(v, sym):
 
 
 def make_f2_extra(v, sym, name):
-    if "snow" in name:
-        zbase = base_height + overpass_height + 1
-    else:
-        zbase = base_height + overpass_height
     vd = v.discard_layers(
         all_f1_layers + tuple(all_f2_layers_set - {name}) + ("overpass", "foundation", "circle"), f"f2_{name}"
     )
