@@ -105,6 +105,8 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin
         return ()
 
     def __add__(self, child_sprite):
+        if child_sprite is None:
+            return self
         return ADefaultGroundSprite(self.sprite, child_sprites=self.child_sprites + [child_sprite], flags=self.flags)
 
 
@@ -227,6 +229,8 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
         return self.sprite.get_resource_files()
 
     def __add__(self, child_sprite):
+        if child_sprite is None:
+            return self
         return AParentSprite(
             self.sprite, self.extent, self.offset, child_sprites=self.child_sprites + [child_sprite], flags=self.flags
         )

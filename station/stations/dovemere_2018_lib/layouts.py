@@ -150,9 +150,10 @@ def make_extra(v, sym, name, floor="f2"):
     else:
         vd = vd.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
     v = vd.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
-    v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
     if "snow" in name:
         v.config["overlap"] = 1.3
+    else:
+        v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
     v.config["agrf_childsprite"] = (0, -10)
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet())
@@ -313,10 +314,16 @@ def load(
 
     if window is None:
         window_classes = ["windowed"]
-        f1_snow = make_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "snow-window", floor="f1")
     else:
         window_classes = ["none"] + window
-        f1_snow = make_extra(v, symmetry, "snow", floor="f1")
+
+    if "gate" in name or "tiny" in name:
+        if window is None:
+            f1_snow = make_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "snow-window", floor="f1")
+        else:
+            f1_snow = make_extra(v, symmetry, "snow", floor="f1")
+    else:
+        f1_snow = None
 
     if borrow_f1 is not None:
         v = make_voxel(borrow_f1)
@@ -414,7 +421,10 @@ def load(
                     )
         if full:
             register(
-                ALayout(solid_ground, [full_f1, concourse] + f2_component, False), cur_sym, internal_category, f2_name
+                ALayout(solid_ground, [full_f1 + f1_snow, concourse] + f2_component, False),
+                cur_sym,
+                internal_category,
+                f2_name,
             )
 
 

@@ -52,19 +52,22 @@ def render(config, vox_path, output_path=None):
 
 
 def positor(config, vox_path, new_path):
-    if "file" in config["operations"][0]:
-        other = config["operations"][0]["file"]
-        try:
-            if os.path.getmtime(vox_path) < os.path.getmtime(new_path) and os.path.getmtime(other) < os.path.getmtime(new_path):
-                return
-        except:
-            pass
-    else:
-        try:
-            if os.path.getmtime(vox_path) < os.path.getmtime(new_path):
-                return
-        except:
-            pass
+    # FIXME: new_path isn't the .vox file path, but its containing directory
+    # if "file" in config["operations"][0]:
+    #     other = config["operations"][0]["file"]
+    #     try:
+    #         if os.path.getmtime(vox_path) < os.path.getmtime(new_path) and os.path.getmtime(other) < os.path.getmtime(
+    #             new_path
+    #         ):
+    #             return
+    #     except:
+    #         pass
+    # else:
+    #     try:
+    #         if os.path.getmtime(vox_path) < os.path.getmtime(new_path):
+    #             return
+    #     except:
+    #         pass
 
     os.makedirs(os.path.dirname(new_path), exist_ok=True)
 
