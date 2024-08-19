@@ -7,12 +7,15 @@ from station.lib import (
     ADefaultGroundSprite,
     AGroundSprite,
     AParentSprite,
+    AChildSprite,
     ALayout,
     AttrDict,
+    Registers,
 )
 from agrf.graphics.voxel import LazyVoxel
 from station.lib.parameters import station_cb
 from .misc import building_ground
+from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 
 
 def quickload(name, symmetry):
@@ -24,9 +27,19 @@ def quickload(name, symmetry):
         config={"agrf_palette": "station/files/dovemere_1934_palette.json", "z_scale": 1.0},
         subset=symmetry.render_indices(),
     )
-    sprite = symmetry.create_variants(v.spritesheet(xdiff=1))
-    ps = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
-    l = ALayout([building_ground], [ps], False)
+    building = v.discard_layers(("snow",), "building")
+    snow = v.discard_layers(("building",), "snow")
+    snow = snow.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
+
+    building.config["agrf_manual_crop"] = (0, 10)
+    snow.config["agrf_childsprite"] = (0, -10)
+
+    sprite = symmetry.create_variants(building.spritesheet(xdiff=1, xspan=8))
+    ps = AParentSprite(sprite, (16, 8, 16), (0, 0, 0))
+    snow_sprite = symmetry.create_variants(snow.spritesheet())
+    cs = AChildSprite(snow_sprite, (0, 0), flags={"dodraw": Registers.SNOW})
+
+    l = ALayout([building_ground], [ps + cs], False)
     var = symmetry.get_all_variants(l)
     ret = symmetry.create_variants(var)
     entries.extend(symmetry.get_all_entries(ret))
