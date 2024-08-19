@@ -5,6 +5,8 @@ China Set: Stations & Platforms Addons: Wuhu Changelog
 ------------------------
 Add the 1934 Wuhu Station.
 
+Add snow and escalator graphics for station buildings.
+
 0.2.2 (2024-06-14)
 --------------------
 Further fix for the climate-aware groundsprites: they didn't work with custom track NewGRFs.
