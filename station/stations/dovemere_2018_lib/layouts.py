@@ -107,8 +107,9 @@ V = make_hpos("", "_shelter_building_v")
 TinyAsym = make_hpos("_central", "_pillar_central")
 
 
-all_f2_layers = ("window", "window-extender", "snow", "snow-window", "snow-window-extender")
-all_f2_layers_set = set(all_f2_layers)
+snow_layers = ("snow", "snow-window", "snow-window-extender")
+all_f2_layers = ("window", "window-extender")
+all_f2_layers_set = set(all_f2_layers + snow_layers)
 
 
 all_f1_layers = (
@@ -121,7 +122,7 @@ all_f1_layers = (
     "pillar",
     "pillar - t",
 )
-all_f1_layers_set = set(all_f1_layers)
+all_f1_layers_set = set(all_f1_layers + snow_layers)
 
 
 f1_subsets = {
@@ -133,17 +134,21 @@ f1_subsets = {
 
 
 def make_f2(v, sym):
-    v = v.discard_layers(all_f1_layers + all_f2_layers, "f2")
+    v = v.discard_layers(all_f1_layers + all_f2_layers + snow_layers, "f2")
     v.in_place_subset(sym.render_indices())
     v.config["agrf_manual_crop"] = (0, 10)
     s = sym.create_variants(v.spritesheet(zdiff=base_height * 2))
     return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
 
-def make_f2_extra(v, sym, name):
+def make_extra(v, sym, name, floor="f2"):
     vd = v.discard_layers(
-        all_f1_layers + tuple(all_f2_layers_set - {name}) + ("overpass", "foundation", "circle"), f"f2_{name}"
+        all_f1_layers + tuple(all_f2_layers_set - {name}) + ("overpass", "foundation", "circle"), name
     )
+    if floor == "f2":
+        vd = vd.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
+    else:
+        vd = vd.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
     v = vd.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
     v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
     if "snow" in name:
@@ -207,11 +212,11 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
     name = name or source.split("/")[-1]
     v = make_voxel(source)
     f2 = make_f2(v, symmetry)
-    f2_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
-    f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
-    f2_snow = make_f2_extra(v, symmetry, "snow")
-    f2_snow_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "snow-window")
-    f2_snow_window_extender = make_f2_extra(v, symmetry, "snow-window-extender")
+    f2_window = make_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
+    f2_window_extender = make_extra(v, symmetry, "window-extender")
+    f2_snow = make_extra(v, symmetry, "snow")
+    f2_snow_window = make_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "snow-window")
+    f2_snow_window_extender = make_extra(v, symmetry, "snow-window-extender")
 
     cur_np = h_pos.non_platform
     if window is None:
@@ -300,11 +305,18 @@ def load(
     name = name or source.split("/")[-1]
     v = make_voxel(source)
     f2 = make_f2(v, symmetry)
-    f2_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
-    f2_window_extender = make_f2_extra(v, symmetry, "window-extender")
-    f2_snow = make_f2_extra(v, symmetry, "snow")
-    f2_snow_window = make_f2_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "snow-window")
-    f2_snow_window_extender = make_f2_extra(v, symmetry, "snow-window-extender")
+    f2_window = make_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
+    f2_window_extender = make_extra(v, symmetry, "window-extender")
+    f2_snow = make_extra(v, symmetry, "snow")
+    f2_snow_window = make_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "snow-window")
+    f2_snow_window_extender = make_extra(v, symmetry, "snow-window-extender")
+
+    if window is None:
+        window_classes = ["windowed"]
+        f1_snow = make_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "snow-window", floor="f1")
+    else:
+        window_classes = ["none"] + window
+        f1_snow = make_extra(v, symmetry, "snow", floor="f1")
 
     if borrow_f1 is not None:
         v = make_voxel(borrow_f1)
@@ -317,11 +329,6 @@ def load(
     f1b = make_f1(v, "third_t", broken_f1_symmetry) if asym else f1.T
     plat_f1 = make_f1(v, "platform", broken_f1_symmetry)
     full_f1 = make_f1(v, "full", f1_symmetry)
-
-    if window is None:
-        window_classes = ["windowed"]
-    else:
-        window_classes = ["none"] + window
 
     for window_class in window_classes:
         window_postfix = "" if window_class == "none" else "_" + window_class
@@ -354,7 +361,9 @@ def load(
             pname = f2_name + platform_postfix
             if corridor:
                 register(
-                    ALayout(corridor_ground, [cur_plat, cur_plat.T, f1, f1b] + f2_component, True, notes=["third"]),
+                    ALayout(
+                        corridor_ground, [cur_plat, cur_plat.T, f1 + f1_snow, f1b] + f2_component, True, notes=["third"]
+                    ),
                     cur_sym,
                     internal_category,
                     pname + "_corridor",
@@ -362,7 +371,10 @@ def load(
             if third:
                 register(
                     ALayout(
-                        one_side_ground, [cur_plat, f1, h_pos.non_platform.T] + f2_component, True, notes=["third"]
+                        one_side_ground,
+                        [cur_plat, f1 + f1_snow, h_pos.non_platform.T] + f2_component,
+                        True,
+                        notes=["third"],
                     ),
                     cur_bsym,
                     internal_category,
@@ -375,7 +387,7 @@ def load(
                     register(
                         ALayout(
                             corridor_ground,
-                            [cur_plat_nt, f1, h_pos.platform(platform_class, shelter_class).T] + f2_component,
+                            [cur_plat_nt, f1 + f1_snow, h_pos.platform(platform_class, shelter_class).T] + f2_component,
                             True,
                             notes=["third", "far"],
                         ),
@@ -388,7 +400,7 @@ def load(
                         ALayout(
                             solid_ground,
                             [
-                                plat_f1,
+                                plat_f1 + f1_snow,
                                 h_pos.platform_back_cut(shelter_class).T,
                                 platform_ps[f"concourse{platform_postfix}_side"].T,
                             ]
