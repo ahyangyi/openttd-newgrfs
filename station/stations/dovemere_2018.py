@@ -8,6 +8,9 @@ from .dovemere_2018_lib.flexible_stations.side import side_stations
 from .dovemere_2018_lib.flexible_stations.side_third import side_third_stations
 
 
+test_object = AObject(id=0x0, translation_name="STRAIGHT_STAIR", layouts=None)
+
+
 the_stations = AMetaStation(
     semitraversable_stations
     + traversable_stations
@@ -24,7 +27,8 @@ the_stations = AMetaStation(
             callbacks={"select_tile_layout": 0, **common_cb},
         )
         for i, entry in enumerate(sorted(entries, key=lambda x: x.category))
-    ],
+    ]
+    + [test_object],
     b"\xe8\x8a\x9cA",
     [
         b"\xe8\x8a\x9c" + x
