@@ -11,11 +11,13 @@ from station.lib import (
     ALayout,
     AttrDict,
     Registers,
+    get_1cc_remap,
 )
 from agrf.graphics.voxel import LazyVoxel
 from station.lib.parameters import station_cb
 from .misc import building_ground
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
+from agrf.graphics.palette import CompanyColour
 
 
 def quickload(name, symmetry):
@@ -66,5 +68,14 @@ the_stations = AMetaStation(
     b"\xe8\x8a\x9c0",
     None,
     entries,
-    [Demo("The building", [[named_tiles.regular]])],
+    [
+        Demo("The building", [[named_tiles.regular]]),
+        Demo(
+            "With snow",
+            [[named_tiles.regular]],
+            remap=get_1cc_remap(CompanyColour.PINK),
+            climate="arctic",
+            subclimate="snow",
+        ),
+    ],
 )
