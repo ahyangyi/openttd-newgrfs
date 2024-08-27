@@ -1,4 +1,5 @@
 from station.lib import AStation, AMetaStation
+from grfobject.lib import AObject
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos, common_cb
 from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_stations

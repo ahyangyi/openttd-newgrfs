@@ -1,5 +1,5 @@
 import grf
-from .utils import class_label_printable
+from station.lib.utils import class_label_printable
 
 
 class AObject(grf.SpriteGenerator):
