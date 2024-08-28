@@ -38,7 +38,6 @@ class AObject(grf.SpriteGenerator):
                     feature=grf.HOUSE,
                 )
             )
-        assert len(layouts) == 4
         self.callbacks.graphics = grf.RandomSwitch(
             feature=grf.OBJECT, scope="self", triggers=0, lowest_bit=0, cmp_all=False, groups=layouts)
         self.callbacks.set_flag_props(self._props)
