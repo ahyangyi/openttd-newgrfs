@@ -4,7 +4,6 @@ import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.magic import CachedFunctorMixin
 from agrf.utils import unique_tuple
-from grf.sprites import EmptySprite
 from station.lib.registers import Registers
 
 
@@ -308,13 +307,12 @@ def is_in_front(a, b):
 
 
 class ALayout:
-    def __init__(self, ground_sprites, parent_sprites, traversable, category=None, notes=None):
-        assert isinstance(ground_sprites, list)
-        if ground_sprites == []:
+    def __init__(self, ground_sprite, parent_sprites, traversable, category=None, notes=None):
+        if ground_sprite is None:
             from station.stations.misc import empty_ground
 
-            ground_sprites = [empty_ground]
-        self.ground_sprites = ground_sprites
+            ground_sprite = empty_ground
+        self.ground_sprite = ground_sprite
         self.parent_sprites = parent_sprites
         self.traversable = traversable
         self.category = category
@@ -348,16 +346,16 @@ class ALayout:
 
     def to_grf(self, sprite_list):
         return grf.SpriteLayout(
-            [s for sprite in self.ground_sprites for s in sprite.to_grf(sprite_list)]
+            [s for s in self.ground_sprite.to_grf(sprite_list)]
             + [s for sprite in self.sorted_parent_sprites for s in sprite.to_grf(sprite_list)]
         )
 
     def graphics(self, scale, bpp, remap=None, context=None, climate="temperate", subclimate="default"):
         context = context or grf.DummyWriteContext()
         img = LayeredImage.empty()
-        for sprite in self.ground_sprites:
-            new_img = sprite.graphics(scale, bpp, climate=climate, subclimate=subclimate).copy()
-            img.blend_over(new_img)
+
+        new_img = self.ground_sprite.graphics(scale, bpp, climate=climate, subclimate=subclimate).copy()
+        img.blend_over(new_img)
 
         for sprite in self.sorted_parent_sprites:
             masked_sprite = sprite.graphics(scale, bpp, climate=climate, subclimate=subclimate)
@@ -377,32 +375,32 @@ class ALayout:
         return layout_pool.index(self)
 
     def __repr__(self):
-        return f"<ALayout:{self.ground_sprites}:{self.parent_sprites}>"
+        return f"<ALayout:{self.ground_sprite}:{self.parent_sprites}>"
 
     def __getattr__(self, name):
         call = lambda x: getattr(x, name)
-        new_ground_sprites = [call(sprite) for sprite in self.ground_sprites]
+        new_ground_sprite = call(self.ground_sprite)
         new_sprites = [call(sprite) for sprite in self.parent_sprites]
-        return ALayout(new_ground_sprites, new_sprites, self.traversable, self.category, self.notes)
+        return ALayout(new_ground_sprite, new_sprites, self.traversable, self.category, self.notes)
 
     def __call__(self, *args, **kwargs):
         call = lambda x: x(*args, **kwargs)
-        new_ground_sprites = [call(sprite) for sprite in self.ground_sprites]
+        new_ground_sprite = call(self.ground_sprite)
         new_sprites = [call(sprite) for sprite in self.parent_sprites]
-        return ALayout(new_ground_sprites, new_sprites, self.traversable, self.category, self.notes)
+        return ALayout(new_ground_sprite, new_sprites, self.traversable, self.category, self.notes)
 
     @property
     def sprites(self):
-        return list(dict.fromkeys([sub for s in self.ground_sprites + self.parent_sprites for sub in s.sprites]))
+        return list(dict.fromkeys([sub for s in [self.ground_sprite] + self.parent_sprites for sub in s.sprites]))
 
     def get_fingerprint(self):
         return {
-            "ground_sprites": [s.get_fingerprint() for s in self.ground_sprites],
+            "ground_sprite": self.ground_sprite.get_fingerprint(),
             "parent_sprites": [s.get_fingerprint() for s in self.parent_sprites],
         }
 
     def get_resource_files(self):
-        return unique_tuple(f for x in self.ground_sprites + self.parent_sprites for f in x.get_resource_files())
+        return unique_tuple(f for x in [self.ground_sprite] + self.parent_sprites for f in x.get_resource_files())
 
 
 class LayoutSprite(grf.Sprite):
