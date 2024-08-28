@@ -5,6 +5,7 @@ from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.magic import CachedFunctorMixin
 from agrf.utils import unique_tuple
 from grf.sprites import EmptySprite
+from station.lib.registers import Registers
 
 
 class ParentSpriteMixin:
@@ -22,7 +23,7 @@ class ParentSpriteMixin:
     def blend_graphics(self, base, scale, bpp, climate="temperate", subclimate="default"):
         for c in self.child_sprites:
             masked_sprite = c.graphics(scale, bpp, climate=climate, subclimate=subclimate)
-            base.blend_over(masked_sprite)
+            base.blend_over(masked_sprite, childsprite=isinstance(self, AParentSprite))
 
 
 class RegistersMixin:
@@ -33,7 +34,7 @@ class RegistersMixin:
     def registers_to_grf_dict(self):
         return {
             "flags": sum(grf.SPRITE_FLAGS[k][1] for k in self.flags.keys()),
-            "registers": {k: v for k, v in self.flags.items() if v is not None},
+            "registers": {k: (v if k == "add" else v.get_index()) for k, v in self.flags.items() if v is not None},
         }
 
 
@@ -105,6 +106,8 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin
         return ()
 
     def __add__(self, child_sprite):
+        if child_sprite is None:
+            return self
         return ADefaultGroundSprite(self.sprite, child_sprites=self.child_sprites + [child_sprite], flags=self.flags)
 
 
@@ -179,7 +182,7 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
             ),
             extent=self.extent,
             offset=self.offset,
-            flags=0,
+            **self.registers_to_grf_dict(),
         )
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
@@ -227,6 +230,8 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
         return self.sprite.get_resource_files()
 
     def __add__(self, child_sprite):
+        if child_sprite is None:
+            return self
         return AParentSprite(
             self.sprite, self.extent, self.offset, child_sprites=self.child_sprites + [child_sprite], flags=self.flags
         )
@@ -258,6 +263,8 @@ class AChildSprite(RegistersMixin, CachedFunctorMixin):
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
+            return LayeredImage.empty()
+        if self.flags.get("dodraw") == Registers.SNOW and subclimate != "snow":
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 

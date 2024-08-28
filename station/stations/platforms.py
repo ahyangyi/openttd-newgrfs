@@ -55,6 +55,10 @@ class CNSPlatformFamily(PlatformFamily):
             skeeps = set()
         else:
             skeeps = {shelter_class + ("_" if location != "" else "") + location}
+            if platform_class != "" and shelter_class != "pillar" and location == "building":
+                skeeps.add("escalator")
+            if platform_class != "" and shelter_class != "pillar" and location == "building_v":
+                skeeps.add("escalator_v")
 
         v2 = self.v.discard_layers(
             tuple(sorted(tuple(platform_components - pkeeps) + tuple(shelter_components - skeeps))),
@@ -109,6 +113,9 @@ shelter_components = {
     "pillar",
     "pillar_building",
     "pillar_central",
+    "escalator",
+    "escalator_v",
+    "underground_stairs",  # FIXME
 }
 shelter_classes = ["shelter_1", "shelter_2"]
 concourse_components = {f"{c}{postfix}" for c in platform_classes for postfix in ["", "_t"]}
