@@ -189,11 +189,11 @@ def register(l, symmetry, internal_category, name):
     named_tiles[name] = l
 
 
-solid_ground = [gray_ps]
-corridor_ground = [track_ground + third + third_T]
-one_side_ground = [track_ground + third]
-one_side_ground_t = [track_ground + third_T]
-empty_ground = [track_ground]
+solid_ground = gray_ps
+corridor_ground = track_ground + third + third_T
+one_side_ground = track_ground + third
+one_side_ground_t = track_ground + third_T
+empty_ground = track_ground
 
 voxel_cache = {}
 
