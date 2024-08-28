@@ -1,17 +1,11 @@
 from station.lib import AStation, AMetaStation
-from grfobject.lib import AObject
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos, common_cb
+from .dovemere_2018_lib.objects import test_object
 from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_stations
 from .dovemere_2018_lib.flexible_stations.traversable import traversable_stations
 from .dovemere_2018_lib.flexible_stations.side import side_stations
 from .dovemere_2018_lib.flexible_stations.side_third import side_third_stations
-
-
-from station.lib import ALayout
-
-test_layout = ALayout(ground_ps.gray, [], True)
-test_object = AObject(id=0x0, translation_name="STRAIGHT_STAIR", layouts=[test_layout, test_layout.T])
 
 
 the_stations = AMetaStation(
