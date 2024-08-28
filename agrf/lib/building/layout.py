@@ -352,6 +352,9 @@ class ALayout:
             + [s for sprite in self.sorted_parent_sprites for s in sprite.to_grf(sprite_list)]
         )
 
+    def to_action2(self, feature, sprite_list):
+        return grf.AdvancedSpriteLayout(feature=feature)
+
     def graphics(self, scale, bpp, remap=None, context=None, climate="temperate", subclimate="default"):
         context = context or grf.DummyWriteContext()
         img = LayeredImage.empty()
