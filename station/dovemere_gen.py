@@ -3,10 +3,15 @@ import grf
 import argparse
 from station.lib.docgen import gen_docs
 import station.stations.dovemere_2018
+import station.stations.dovemere_1934
 import station.stations.platforms
 from station.lib.parameters import parameter_list
 
-metastations = [station.stations.dovemere_2018.the_stations, station.stations.platforms.the_stations]
+metastations = [
+    station.stations.dovemere_2018.the_stations,
+    station.stations.dovemere_1934.the_stations,
+    station.stations.platforms.the_stations,
+]
 
 
 def get_string_manager():
@@ -22,8 +27,8 @@ def gen():
         grfid=b"\xE5\xBC\x8Bs",
         name=s["STR_GRF_NAME"],
         description=s["STR_GRF_DESC"],
-        version=10,
-        min_compatible_version=7,
+        version=14,
+        min_compatible_version=14,
         id_map_file="station/id_map.json",
         sprite_cache_path="station/.cache",
         url="https://www.tt-forums.net/viewtopic.php?t=91092",
