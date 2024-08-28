@@ -1,6 +1,9 @@
+import numpy as np
 import grf
 import math
 from .misc import SCALE_TO_ZOOM
+
+THIS_FILE = grf.PythonFile(__file__)
 
 
 __image_file_cache = {}
@@ -63,6 +66,61 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
         return f"LazyAlternativeSprites<{self.voxel.name}:{self.part}>"
 
 
+class CustomCropMixin:
+    def __init__(self, *args, fixed_crop=False, crop_amount=(0, 0), **kw):
+        super().__init__(*args, **kw)
+        self.fixed_crop = fixed_crop
+        self.crop_amount = crop_amount
+
+    def _do_crop(self, context, w, h, rgb, alpha, mask):
+        crop_x = crop_y = 0
+        if self.fixed_crop:
+            crop_x, crop_y = self.crop_amount
+
+            timer = context.start_timer()
+            if alpha is not None:
+                cols_bitset = alpha.any(0)
+                rows_bitset = alpha.any(1)
+            elif rgb is not None:
+                cols_bitset = rgb.any((0, 2))
+                rows_bitset = rgb.any((1, 2))
+            elif mask is not None:
+                cols_bitset = mask.any(0)
+                rows_bitset = mask.any(1)
+            else:
+                raise context.failure(self, "All data layers are None")
+
+            cols_used = np.arange(w)[cols_bitset]
+            rows_used = np.arange(h)[rows_bitset]
+
+            w = max(cols_used, default=0) - crop_x + 1
+            h = max(rows_used, default=0) - crop_y + 1
+
+            if rgb is not None:
+                rgb = rgb[crop_y : crop_y + h, crop_x : crop_x + w]
+            if alpha is not None:
+                alpha = alpha[crop_y : crop_y + h, crop_x : crop_x + w]
+            if mask is not None:
+                mask = mask[crop_y : crop_y + h, crop_x : crop_x + w]
+
+            timer.count_custom("Cropping sprites")
+        elif self.crop:
+            return super()._do_crop(context, w, h, rgb, alpha, mask)
+
+        return crop_x, crop_y, w, h, rgb, alpha, mask
+
+    def get_resource_files(self):
+        return super().get_resource_files() + (THIS_FILE,)
+
+
+class CustomCropFileSprite(CustomCropMixin, grf.FileSprite):
+    pass
+
+
+class CustomCropWithMask(CustomCropMixin, grf.WithMask):
+    pass
+
+
 def spritesheet_template(
     voxel,
     diff,
@@ -81,6 +139,8 @@ def spritesheet_template(
     ydiff=0,
     shift=0,
     road_mode=False,
+    manual_crop=None,
+    childsprite=False,
 ):
     guessed_dimens = []
     for i in range(len(dimens)):
@@ -118,7 +178,7 @@ def spritesheet_template(
     def with_optional_mask(sprite, mask):
         if mask is None:
             return sprite
-        return grf.WithMask(sprite, mask)
+        return CustomCropWithMask(sprite, mask, fixed_crop=sprite.fixed_crop, crop_amount=sprite.crop_amount)
 
     return [
         LazyAlternativeSprites(
@@ -126,19 +186,24 @@ def spritesheet_template(
             idx,
             *(
                 with_optional_mask(
-                    grf.FileSprite(
+                    CustomCropFileSprite(
                         make_image_file(f"{path}_{scale}x_{bpp}bpp.png"),
                         (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale,
                         0,
                         int(guessed_dimens[i][0] * scale),
                         int(guessed_dimens[i][1] * scale),
-                        xofs=get_rels(i, diff, scale)[0],
-                        yofs=get_rels(i, diff, scale)[1],
+                        xofs=childsprite[0] * scale if childsprite else get_rels(i, diff, scale)[0],
+                        yofs=childsprite[1] * scale if childsprite else get_rels(i, diff, scale)[1],
                         bpp=bpp,
                         zoom=SCALE_TO_ZOOM[scale],
+                        **(
+                            {}
+                            if manual_crop is None
+                            else {"fixed_crop": True, "crop_amount": (manual_crop[0] * scale, manual_crop[1] * scale)}
+                        ),
                     ),
                     (
-                        grf.FileSprite(
+                        CustomCropFileSprite(
                             make_image_file(f"{path}_{scale}x_mask.png"),
                             (sum(guessed_dimens[j][0] for j in range(i)) + i * 8) * scale,
                             0,
