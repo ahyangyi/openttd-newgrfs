@@ -41,10 +41,8 @@ class AObject(grf.SpriteGenerator):
         self.callbacks.set_flag_props(self._props)
 
         res.append(
-            definition := grf.Define(
-                feature=grf.OBJECT,
-                id=self.id,
-                props={"class_label": self._props["class_label"], **self._props, **extra_props},
+            definition := grf.Object(
+                id=self.id, **{"class_label": self._props["class_label"], **self._props, **extra_props}
             )
         )
 
