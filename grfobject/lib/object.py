@@ -25,23 +25,6 @@ class AObject(grf.SpriteGenerator):
             "class_name_id": g.strings.add(g.strings[f"STR_OBJECT_CLASS_{self.class_label_plain}"]).get_persistent_id(),
         }
 
-        layouts = []
-        for i, sprite in enumerate(self.sprites):
-            layouts.append(
-                grf.BasicSpriteLayout(
-                    ground={"sprite": grf.SpriteRef(3924, is_global=True)},
-                    building={
-                        "sprite": grf.SpriteRef(i, is_global=False),
-                        "offset": (0, 0),
-                        "extent": (16, 16, 16),
-                    },
-                    feature=grf.HOUSE,
-                )
-            )
-        self.callbacks.graphics = grf.RandomSwitch(
-            feature=grf.OBJECT, scope="self", triggers=0, lowest_bit=0, cmp_all=False, groups=layouts)
-        self.callbacks.set_flag_props(self._props)
-
         if sprites is None:
             sprites = self.sprites
             res.append(grf.Action1(feature=grf.OBJECT, set_count=1, sprite_count=len(self.sprites)))
@@ -49,15 +32,19 @@ class AObject(grf.SpriteGenerator):
             for s in self.sprites:
                 res.append(s)
 
+        layouts = []
+        for i, layout in enumerate(self.layouts):
+            layouts.append(layout.to_action2(feature=grf.OBJECT, sprite_list=sprites))
+        self.callbacks.graphics = grf.RandomSwitch(
+            feature=grf.OBJECT, scope="self", triggers=0, lowest_bit=0, cmp_all=False, groups=layouts
+        )
+        self.callbacks.set_flag_props(self._props)
+
         res.append(
             definition := grf.Define(
                 feature=grf.OBJECT,
                 id=self.id,
-                props={
-                    "class_label": self._props["class_label"],
-                    **self._props,
-                    **extra_props,
-                },
+                props={"class_label": self._props["class_label"], **self._props, **extra_props},
             )
         )
 
