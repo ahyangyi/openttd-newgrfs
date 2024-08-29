@@ -55,7 +55,6 @@ class AObject(grf.SpriteGenerator):
                 id=self.id,
                 props={
                     "class_label": self._props["class_label"],
-                    "advanced_layout": grf.SpriteLayoutList([l.to_grf(sprites) for l in self.layouts]),
                     **self._props,
                     **extra_props,
                 },
