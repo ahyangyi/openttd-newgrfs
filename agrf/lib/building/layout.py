@@ -188,6 +188,14 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
             **self.registers_to_grf_dict(),
         )
 
+    # FIXME who handles childsprites?
+    def to_action2(self, sprite_list):
+        return {
+            "sprite": grf.SpriteRef(sprite_list.index(self.sprite), is_global=False),
+            "offset": self.offset,
+            "extent": self.extent,
+        }
+
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         ret = LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)).copy()
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)

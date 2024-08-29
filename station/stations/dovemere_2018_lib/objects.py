@@ -1,10 +1,20 @@
 import grf
+from station.lib import BuildingSpriteSheetFull, AGroundSprite, AParentSprite, ALayout
+from agrf.graphics.voxel import LazyVoxel
 from datetime import date
 from grfobject.lib import AObject
 from station.lib import ALayout
 from .layouts import solid_ground
 
-test_layout = ALayout(solid_ground, [], True)
+v = LazyVoxel(
+    "west_stair",
+    prefix="station/voxels/render/dovemere_2018/plaza",
+    voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/west_stair.vox": path,
+    load_from="station/files/gorender.json",
+)
+sprite = BuildingSpriteSheetFull.create_variants(v.spritesheet())
+ps = AParentSprite(sprite, (16, 16, 8), (0, 0, 0))
+test_layout = ALayout(solid_ground, [ps], True)
 test_object = AObject(
     id=0x0,
     translation_name="STRAIGHT_STAIR",
