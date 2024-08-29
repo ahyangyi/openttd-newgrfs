@@ -18,16 +18,7 @@ test_layout = ALayout(solid_ground, [ps], True)
 test_object = AObject(
     id=0x0,
     translation_name="STRAIGHT_STAIR",
-    layouts=[
-        test_layout,
-        test_layout.M,
-        # test_layout.T,
-        # test_layout.T.M,
-        test_layout.R,
-        test_layout.R.M,
-        # test_layout.T.R,
-        # test_layout.T.R.M,
-    ],
+    layouts=[test_layout, test_layout.R, test_layout.T, test_layout.T.R],
     class_label=b"\xe8\x8a\x9cZ",
     climates_available=grf.ALL_CLIMATES,
     size=(1, 1),
