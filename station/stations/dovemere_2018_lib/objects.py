@@ -11,4 +11,9 @@ test_object = AObject(
     class_label=b"\xe8\x8a\x9cZ",
     climates_available=grf.ALL_CLIMATES,
     size=(1, 1),
+    num_views=4,
+    introduction_date=0,
+    end_of_life_date=0,
+    height=1,
+    flags=grf.Object.Flags.ONLY_IN_GAME,
 )
