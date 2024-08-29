@@ -32,7 +32,6 @@ class AObject(grf.SpriteGenerator):
 
             for s in self.sprites:
                 res.append(s)
-        print(sprites)
 
         layouts = []
         for i, layout in enumerate(self.layouts):
@@ -49,7 +48,6 @@ class AObject(grf.SpriteGenerator):
         )
 
         res.extend(self.callbacks.make_map_action(definition))
-        print("res", res)
 
         return res
 
