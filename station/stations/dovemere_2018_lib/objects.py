@@ -11,9 +11,10 @@ v = LazyVoxel(
     prefix="station/voxels/render/dovemere_2018/plaza",
     voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/west_stair.vox": path,
     load_from="station/files/cns-gorender.json",
+    # config={"z_scale": 1.01},
 )
 sprite = BuildingSpriteSheetFull.create_variants(v.spritesheet())
-ps = AParentSprite(sprite, (16, 16, 8), (0, 0, 0))
+ps = AParentSprite(sprite, (16, 16, 12), (0, 0, 0))
 test_layout = ALayout(solid_ground, [ps], True)
 test_object = AObject(
     id=0x0,
