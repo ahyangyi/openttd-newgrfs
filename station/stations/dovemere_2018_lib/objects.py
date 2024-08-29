@@ -10,4 +10,5 @@ test_object = AObject(
     layouts=[test_layout, test_layout.T],
     class_label=b"\xe8\x8a\x9cZ",
     climates_available=grf.ALL_CLIMATES,
+    size=(1, 1),
 )
