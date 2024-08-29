@@ -1,4 +1,5 @@
 import grf
+from datetime import date
 from grfobject.lib import AObject
 from station.lib import ALayout
 from .layouts import solid_ground
@@ -12,8 +13,8 @@ test_object = AObject(
     climates_available=grf.ALL_CLIMATES,
     size=(1, 1),
     num_views=4,
-    introduction_date=0,
-    end_of_life_date=0,
+    introduction_date=date(1900, 1, 1),
+    end_of_life_date=date(2025, 1, 1),
     height=1,
     flags=grf.Object.Flags.ONLY_IN_GAME,
 )
