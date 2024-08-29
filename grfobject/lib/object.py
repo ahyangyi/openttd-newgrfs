@@ -1,5 +1,6 @@
 import grf
 from station.lib.utils import class_label_printable
+from agrf.magic import Switch
 
 
 class AObject(grf.SpriteGenerator):
@@ -28,7 +29,7 @@ class AObject(grf.SpriteGenerator):
 
         if sprites is None:
             sprites = self.sprites
-            res.append(grf.Action1(feature=grf.OBJECT, set_count=1, sprite_count=len(self.sprites)))
+            res.append(grf.Action1(feature=grf.OBJECT, set_count=len(self.sprites), sprite_count=1))
 
             for s in self.sprites:
                 res.append(s)
@@ -36,8 +37,8 @@ class AObject(grf.SpriteGenerator):
         layouts = []
         for i, layout in enumerate(self.layouts):
             layouts.append(layout.to_action2(feature=grf.OBJECT, sprite_list=sprites))
-        self.callbacks.graphics = grf.RandomSwitch(
-            feature=grf.OBJECT, scope="self", triggers=0, lowest_bit=0, cmp_all=False, groups=layouts
+        self.callbacks.graphics = Switch(
+            ranges={i: layouts[i] for i in range(len(layouts))}, default=layouts[0], code="view"
         )
         self.callbacks.set_flag_props(self._props)
 
