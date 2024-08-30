@@ -1,7 +1,6 @@
 from station.lib import AStation, AMetaStation
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos, common_cb
-from .dovemere_2018_lib.objects import test_object
 from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_stations
 from .dovemere_2018_lib.flexible_stations.traversable import traversable_stations
 from .dovemere_2018_lib.flexible_stations.side import side_stations
@@ -24,8 +23,7 @@ the_stations = AMetaStation(
             callbacks={"select_tile_layout": 0, **common_cb},
         )
         for i, entry in enumerate(sorted(entries, key=lambda x: x.category))
-    ]
-    + [test_object],
+    ],
     b"\xe8\x8a\x9cA",
     [
         b"\xe8\x8a\x9c" + x
