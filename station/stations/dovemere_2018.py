@@ -11,7 +11,7 @@ from .dovemere_2018_lib.flexible_stations.side_third import side_third_stations
 objects = []
 stations = []
 for entry in sorted(entries, key=lambda x: x.category):
-    if entry.category[-1] in {ord(x) for x in [b"\x90", b"\xA0", b"\xA4", b"\xA8", b"\xAC", b"\xB0", b"\xC0"]}:
+    if entry.category[-1] in {ord(x) for x in [b"\xB0"]}:
         objects.append(
             AObject(
                 id=len(objects),
@@ -27,18 +27,17 @@ for entry in sorted(entries, key=lambda x: x.category):
                 flags=grf.Object.Flags.ONLY_IN_GAME,
             )
         )
-    else:
-        stations.append(
-            AStation(
-                id=0x1000 + len(stations),
-                translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
-                layouts=[entry, entry.M],
-                class_label=entry.category,
-                cargo_threshold=40,
-                non_traversable_tiles=0b00 if entry.traversable else 0b11,
-                callbacks={"select_tile_layout": 0, **common_cb},
-            )
+    stations.append(
+        AStation(
+            id=0x1000 + len(stations),
+            translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
+            layouts=[entry, entry.M],
+            class_label=entry.category,
+            cargo_threshold=40,
+            non_traversable_tiles=0b00 if entry.traversable else 0b11,
+            callbacks={"select_tile_layout": 0, **common_cb},
         )
+    )
 
 
 the_stations = AMetaStation(
