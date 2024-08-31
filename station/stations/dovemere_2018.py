@@ -1,4 +1,6 @@
+import grf
 from station.lib import AStation, AMetaStation
+from grfobject.lib import AObject
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos, common_cb
 from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_stations
@@ -6,24 +8,41 @@ from .dovemere_2018_lib.flexible_stations.traversable import traversable_station
 from .dovemere_2018_lib.flexible_stations.side import side_stations
 from .dovemere_2018_lib.flexible_stations.side_third import side_third_stations
 
+objects = []
+stations = []
+for entry in sorted(entries, key=lambda x: x.category):
+    if entry.category[-1] in {ord(x) for x in [b"\x90", b"\xA0", b"\xA4", b"\xA8", b"\xAC", b"\xB0", b"\xC0"]}:
+        objects.append(
+            AObject(
+                id=len(objects),
+                translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
+                layouts=[entry, entry.M],
+                class_label=entry.category,
+                climates_available=grf.ALL_CLIMATES,
+                size=(1, 1),
+                num_views=2,
+                introduction_date=0,
+                end_of_life_date=0,
+                height=1,
+                flags=grf.Object.Flags.ONLY_IN_GAME,
+            )
+        )
+    else:
+        stations.append(
+            AStation(
+                id=0x1000 + len(stations),
+                translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
+                layouts=[entry, entry.M],
+                class_label=entry.category,
+                cargo_threshold=40,
+                non_traversable_tiles=0b00 if entry.traversable else 0b11,
+                callbacks={"select_tile_layout": 0, **common_cb},
+            )
+        )
+
 
 the_stations = AMetaStation(
-    semitraversable_stations
-    + traversable_stations
-    + side_stations
-    + side_third_stations
-    + [
-        AStation(
-            id=0x1000 + i,
-            translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
-            layouts=[entry, entry.M],
-            class_label=entry.category,
-            cargo_threshold=40,
-            non_traversable_tiles=0b00 if entry.traversable else 0b11,
-            callbacks={"select_tile_layout": 0, **common_cb},
-        )
-        for i, entry in enumerate(sorted(entries, key=lambda x: x.category))
-    ],
+    semitraversable_stations + traversable_stations + side_stations + side_third_stations + stations + objects,
     b"\xe8\x8a\x9cA",
     [
         b"\xe8\x8a\x9c" + x
