@@ -488,7 +488,7 @@ load("v_end", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V, corridor=False)
 load("v_end_gate", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V, corridor=False)
 load_central("v_central", BuildingSpriteSheetSymmetrical, "N", h_pos=V)
 
-load("tiny", BuildingSpriteSheetSymmetrical, "H", h_pos=V, full=False, platform=False)
+load("tiny", BuildingSpriteSheetSymmetrical, "H", h_pos=V, full=False, platform=False, third=False)
 load_full("tiny_untraversable", BuildingSpriteSheetSymmetrical, "H")
 load("tiny_asym", BuildingSpriteSheetSymmetricalX, "H", h_pos=TinyAsym, corridor=False)
 
