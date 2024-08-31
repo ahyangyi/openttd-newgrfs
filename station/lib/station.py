@@ -4,7 +4,9 @@ from .registers import code
 
 
 class AStation(grf.SpriteGenerator):
-    def __init__(self, *, id, translation_name, layouts, callbacks=None, non_traversable_tiles=0x0, **props):
+    def __init__(
+        self, *, id, translation_name, layouts, callbacks=None, non_traversable_tiles=0x0, is_waypoint=False, **props
+    ):
         super().__init__()
         self.id = id
         self.translation_name = translation_name
@@ -12,6 +14,7 @@ class AStation(grf.SpriteGenerator):
         if callbacks is None:
             callbacks = {}
         self.callbacks = grf.make_callback_manager(grf.STATION, callbacks)
+        self.is_waypoint = is_waypoint
         self._props = {
             **props,
             "non_traversable_tiles": non_traversable_tiles,
@@ -51,7 +54,7 @@ class AStation(grf.SpriteGenerator):
                 feature=grf.STATION,
                 id=self.id,
                 props={
-                    "class_label": self._props["class_label"],
+                    "class_label": b"WAYP" if self.is_waypoint else self._props["class_label"],
                     "advanced_layout": grf.SpriteLayoutList([l.to_grf(sprites) for l in self.layouts]),
                     **self._props,
                     **extra_props,
