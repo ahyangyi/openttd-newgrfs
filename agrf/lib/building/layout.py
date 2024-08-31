@@ -4,7 +4,6 @@ import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.magic import CachedFunctorMixin
 from agrf.utils import unique_tuple
-from station.lib.registers import Registers
 
 
 class ParentSpriteMixin:
@@ -275,6 +274,9 @@ class AChildSprite(RegistersMixin, CachedFunctorMixin):
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
             return LayeredImage.empty()
+        # XXX better register handling...?
+        from station.lib.registers import Registers
+
         if self.flags.get("dodraw") == Registers.SNOW and subclimate != "snow":
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
