@@ -21,8 +21,9 @@ the_stations = AMetaStation(
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0, **common_cb},
-            is_waypoint=entry.category[-1]
-            in {ord(x) for x in [b"\x90", b"\xA0", b"\xA4", b"\xA8", b"\xAC", b"\xB0", b"\xC0"]},
+            is_waypoint=(
+                entry.category[-1] in {ord(x) for x in [b"\x90", b"\xA0", b"\xA4", b"\xA8", b"\xAC", b"\xB0"]}
+            ),
         )
         for i, entry in enumerate(sorted(entries, key=lambda x: x.category))
     ],

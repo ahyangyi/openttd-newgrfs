@@ -30,11 +30,12 @@ class AStation(grf.SpriteGenerator):
         res = []
 
         extra_props = {
-            "station_name": g.strings.add(g.strings[f"STR_STATION_{self.translation_name}"]).get_persistent_id(),
-            "station_class_name": g.strings.add(
-                g.strings[f"STR_STATION_CLASS_{self.class_label_plain}"]
-            ).get_persistent_id(),
+            "station_name": g.strings.add(g.strings[f"STR_STATION_{self.translation_name}"]).get_persistent_id()
         }
+        if not self.is_waypoint:
+            extra_props["station_class_name"] = g.strings.add(
+                g.strings[f"STR_STATION_CLASS_{self.class_label_plain}"]
+            ).get_persistent_id()
 
         graphics = grf.GenericSpriteLayout(ent1=[0], ent2=[0], feature=grf.STATION)
         self.callbacks.graphics = grf.Switch(ranges={0: graphics}, code=code, default=graphics)
@@ -56,7 +57,7 @@ class AStation(grf.SpriteGenerator):
                 props={
                     "class_label": b"WAYP" if self.is_waypoint else self._props["class_label"],
                     "advanced_layout": grf.SpriteLayoutList([l.to_grf(sprites) for l in self.layouts]),
-                    **self._props,
+                    **{k: v for k, v in self._props.items() if k != "class_label"},
                     **extra_props,
                     **cb_props,
                 },
