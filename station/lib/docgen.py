@@ -45,7 +45,6 @@ nav_order: 1
                 for layout in metastation.doc_layouts:
                     subsections[layout.category].append(layout)
 
-            i = 0
             for sub in subsections:
                 if sub is not None and len(subsections[sub]) > 0:
                     cat_name = get_translation(string_manager[f"STR_STATION_CLASS_{class_label_printable(sub)}"], 0x7F)
@@ -57,9 +56,6 @@ nav_order: 1
                     img = layout.graphics(4, 32, remap=get_1cc_remap(CompanyColour.BLUE)).crop().to_pil_image()
                     if "station_id" in dir(layout):
                         idstr = f"{layout.station_id:04X}"
-                    else:
-                        idstr = f"X{i:03X}"
-                        i += 1
                     img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{idstr}.png"))
                     print(f'![{idstr}](img/{metastation_label}/tiles/{idstr}.png){{: width="64"}}', file=f)
 
