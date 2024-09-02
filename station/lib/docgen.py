@@ -39,22 +39,26 @@ nav_order: 1
             )
 
             if metastation.categories is None:
-                subsections = [None]
+                subsections = {None: metastation.doc_layouts}
             else:
-                subsections = metastation.categories
+                subsections = {k: [] for k in metastation.categories}
+                for layout in metastation.doc_layouts:
+                    subsections[layout.category].append(layout)
+
             for sub in subsections:
-                if sub is not None:
+                if sub is not None and len(subsections[sub]) > 0:
                     cat_name = get_translation(string_manager[f"STR_STATION_CLASS_{class_label_printable(sub)}"], 0x7F)
                     if "-" in cat_name:
                         cat_name = cat_name.split("-")[-1].strip()
                     cat_name = remove_control_letters(cat_name)
                     print(f"## {cat_name}", file=f)
-                for i, layout in enumerate(metastation.doc_layouts):
-                    if sub is not None and layout.category != sub:
-                        continue
+                for layout in subsections[sub]:
                     img = layout.graphics(4, 32, remap=get_1cc_remap(CompanyColour.BLUE)).crop().to_pil_image()
-                    img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{i}.png"))
-                    print(f'![](img/{metastation_label}/tiles/{i}.png){{: width="64"}}', file=f)
+                    if "station_id" in dir(layout):
+                        idstr = f"{layout.station_id:04X}"
+                    img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{idstr}.png"))
+                    print(f'![{idstr}](img/{metastation_label}/tiles/{idstr}.png){{: width="64"}}', file=f)
+
         with open(os.path.join(prefix, f"{metastation_label}_layouts.md"), "w") as f:
             print(
                 f"""---
