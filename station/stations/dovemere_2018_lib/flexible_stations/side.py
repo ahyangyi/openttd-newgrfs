@@ -39,6 +39,10 @@ for p, pclass in enumerate(platform_classes):
     for s, sclass in enumerate(shelter_classes):
         if pclass == "concrete" and sclass == "shelter_1":
             side_station_demo = lambda r, c, cb14=cb14[pclass][sclass]: cb14.demo(r, c)
+
+        demo_layout = make_demo(cb14[pclass][sclass], 4, 1)
+        demo_layout.station_id = 0x500 + p * 0x10 + s
+
         side_stations.append(
             AStation(
                 id=0x500 + p * 0x10 + s,
@@ -51,8 +55,7 @@ for p, pclass in enumerate(platform_classes):
                 callbacks={
                     "select_tile_layout": 0,
                     "select_sprite_layout": grf.DualCallback(
-                        default=cb14[pclass][sclass].to_index(layouts),
-                        purchase=layouts.index(make_demo(cb14[pclass][sclass], 4, 1)),
+                        default=cb14[pclass][sclass].to_index(layouts), purchase=layouts.index(demo_layout)
                     ),
                     **common_cb,
                 },
@@ -63,6 +66,10 @@ for p, pclass in enumerate(platform_classes):
     for s, sclass in enumerate(shelter_classes):
         if pclass == "concrete" and sclass == "shelter_1":
             back_side_station_demo = lambda r, c, cb14=cb14[pclass][sclass]: cb14.T.demo(r, c)
+
+        demo_layout = make_demo(cb14[pclass][sclass].T, 4, 1)
+        demo_layout.station_id = 0x600 + p * 0x10 + s
+
         side_stations.append(
             AStation(
                 id=0x600 + p * 0x10 + s,
@@ -75,8 +82,7 @@ for p, pclass in enumerate(platform_classes):
                 callbacks={
                     "select_tile_layout": 0,
                     "select_sprite_layout": grf.DualCallback(
-                        default=cb14[pclass][sclass].T.to_index(layouts),
-                        purchase=layouts.index(make_demo(cb14[pclass][sclass].T, 4, 1)),
+                        default=cb14[pclass][sclass].T.to_index(layouts), purchase=layouts.index(demo_layout)
                     ),
                     **common_cb,
                 },
@@ -91,6 +97,8 @@ def get_side_index(l, r):
 cb14 = make_horizontal_switch(get_side_index)
 
 side_station_np_demo = lambda r, c, cb14=cb14: cb14.demo(r, c)
+demo_layout = make_demo(cb14, 4, 1)
+demo_layout.station_id = 0x700
 side_stations.append(
     AStation(
         id=0x700,
@@ -103,13 +111,15 @@ side_stations.append(
         callbacks={
             "select_tile_layout": 0,
             "select_sprite_layout": grf.DualCallback(
-                default=cb14.to_index(layouts), purchase=layouts.index(make_demo(cb14, 4, 1))
+                default=cb14.to_index(layouts), purchase=layouts.index(demo_layout)
             ),
             **common_cb,
         },
     )
 )
 back_side_station_np_demo = lambda r, c, cb14=cb14: cb14.T.demo(r, c)
+demo_layout = make_demo(cb14.T, 4, 1)
+demo_layout.station_id = 0x701
 side_stations.append(
     AStation(
         id=0x701,
@@ -122,7 +132,7 @@ side_stations.append(
         callbacks={
             "select_tile_layout": 0,
             "select_sprite_layout": grf.DualCallback(
-                default=cb14.T.to_index(layouts), purchase=layouts.index(make_demo(cb14.T, 4, 1))
+                default=cb14.T.to_index(layouts), purchase=layouts.index(demo_layout)
             ),
             **common_cb,
         },

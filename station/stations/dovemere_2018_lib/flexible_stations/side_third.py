@@ -38,6 +38,8 @@ for p, pclass in enumerate(platform_classes):
     for s, sclass in enumerate(shelter_classes):
         if pclass == "concrete" and sclass == "shelter_1":
             side_third_station_demo = lambda r, c, cb14=cb14[pclass][sclass]: cb14.demo(r, c)
+        demo_layout = make_demo(cb14[pclass][sclass], 4, 1)
+        demo_layout.station_id = 0x800 + p * 0x10 + s
         side_third_stations.append(
             AStation(
                 id=0x800 + p * 0x10 + s,
@@ -49,8 +51,7 @@ for p, pclass in enumerate(platform_classes):
                 callbacks={
                     "select_tile_layout": 0,
                     "select_sprite_layout": grf.DualCallback(
-                        default=cb14[pclass][sclass].to_index(layouts),
-                        purchase=layouts.index(make_demo(cb14[pclass][sclass], 4, 1)),
+                        default=cb14[pclass][sclass].to_index(layouts), purchase=layouts.index(demo_layout)
                     ),
                     **common_cb,
                 },
@@ -61,6 +62,8 @@ for p, pclass in enumerate(platform_classes):
     for s, sclass in enumerate(shelter_classes):
         if pclass == "concrete" and sclass == "shelter_1":
             back_side_third_station_demo = lambda r, c, cb14=cb14[pclass][sclass]: cb14.T.demo(r, c)
+        demo_layout = make_demo(cb14[pclass][sclass].T, 4, 1)
+        demo_layout.station_id = 0x900 + p * 0x10 + s
         side_third_stations.append(
             AStation(
                 id=0x900 + p * 0x10 + s,
@@ -72,8 +75,7 @@ for p, pclass in enumerate(platform_classes):
                 callbacks={
                     "select_tile_layout": 0,
                     "select_sprite_layout": grf.DualCallback(
-                        default=cb14[pclass][sclass].T.to_index(layouts),
-                        purchase=layouts.index(make_demo(cb14[pclass][sclass].T, 4, 1)),
+                        default=cb14[pclass][sclass].T.to_index(layouts), purchase=layouts.index(demo_layout)
                     ),
                     **common_cb,
                 },
@@ -103,6 +105,8 @@ cb14 = {
 for p, pclass in enumerate(platform_classes):
     if pclass == "concrete":
         side_third_station_np_demo = lambda r, c, cb14=cb14[pclass]: cb14.demo(r, c)
+    demo_layout = make_demo(cb14[pclass], 4, 1)
+    demo_layout.station_id = 0x780 + p
     side_third_stations.append(
         AStation(
             id=0x780 + p,
@@ -114,7 +118,7 @@ for p, pclass in enumerate(platform_classes):
             callbacks={
                 "select_tile_layout": 0,
                 "select_sprite_layout": grf.DualCallback(
-                    default=cb14[pclass].to_index(layouts), purchase=layouts.index(make_demo(cb14[pclass], 4, 1))
+                    default=cb14[pclass].to_index(layouts), purchase=layouts.index(demo_layout)
                 ),
                 **common_cb,
             },
@@ -124,6 +128,8 @@ for p, pclass in enumerate(platform_classes):
 for p, pclass in enumerate(platform_classes):
     if pclass == "concrete":
         back_side_third_station_np_demo = lambda r, c, cb14=cb14[pclass]: cb14.demo(r, c)
+    demo_layout = make_demo(cb14[pclass].T, 4, 1)
+    demo_layout.station_id = 0x790 + p
     side_third_stations.append(
         AStation(
             id=0x790 + p,
@@ -135,7 +141,7 @@ for p, pclass in enumerate(platform_classes):
             callbacks={
                 "select_tile_layout": 0,
                 "select_sprite_layout": grf.DualCallback(
-                    default=cb14[pclass].T.to_index(layouts), purchase=layouts.index(make_demo(cb14[pclass].T, 4, 1))
+                    default=cb14[pclass].T.to_index(layouts), purchase=layouts.index(demo_layout)
                 ),
                 **common_cb,
             },
