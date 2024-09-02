@@ -21,7 +21,7 @@ def make_demo(switch, w, h, preswitch=None):
                 for bpp in [32]
             ]
         )
-        layout = ALayout([], [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False, category=b"\xe8\x8a\x9cA")
+        layout = ALayout(None, [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False, category=b"\xe8\x8a\x9cA")
         layouts.append(layout)
         if i == 0:
             ret = layout

@@ -41,7 +41,7 @@ def quickload(name, symmetry):
     snow_sprite = symmetry.create_variants(snow.spritesheet())
     cs = AChildSprite(snow_sprite, (0, 0), flags={"dodraw": Registers.SNOW})
 
-    l = ALayout([building_ground], [ps + cs], False)
+    l = ALayout(building_ground, [ps + cs], False)
     var = symmetry.get_all_variants(l)
     ret = symmetry.create_variants(var)
     entries.extend(symmetry.get_all_entries(ret))

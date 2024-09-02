@@ -7,5 +7,5 @@ default_ground = ADefaultGroundSprite(3981, flags={"add": Registers.CLIMATE_OFFS
 building_ground = ADefaultGroundSprite(1420, flags={"add": Registers.ZERO})
 empty_ground = AGroundSprite(grf.EMPTY_SPRITE, flags={"add": Registers.ZERO})
 
-track = ALayout([track_ground], [], True)
-default = ALayout([default_ground], [], False)
+track = ALayout(track_ground, [], True)
+default = ALayout(default_ground, [], False)
