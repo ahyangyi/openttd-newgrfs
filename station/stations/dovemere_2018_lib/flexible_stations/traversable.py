@@ -93,6 +93,8 @@ for p, pclass in enumerate(platform_classes):
             demo_1 = lambda r, c, cb14=cb14[pclass][sclass], cb24=cb24: cb14.demo(r, c, cb24)
         demo_layout = make_demo(cb14[pclass][sclass], 4, 4, cb24)
         demo_layout.station_id = 0x300 + p * 0x10 + s
+        if p > 0 or s > 0:
+            demo_layout.notes.append("noshow")
         traversable_stations.append(
             AStation(
                 id=0x300 + p * 0x10 + s,
@@ -120,6 +122,8 @@ for p, pclass in enumerate(platform_classes):
             demo_2 = lambda r, c, cb14=cb14[pclass][sclass], cb24=cb24: cb14.demo(r, c, cb24)
         demo_layout = make_demo(cb14[pclass][sclass], 4, 4, cb24)
         demo_layout.station_id = 0x400 + p * 0x10 + s
+        if p > 0 or s > 0:
+            demo_layout.notes.append("noshow")
         traversable_stations.append(
             AStation(
                 id=0x400 + p * 0x10 + s,

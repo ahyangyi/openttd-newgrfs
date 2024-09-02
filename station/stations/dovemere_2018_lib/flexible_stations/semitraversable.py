@@ -31,6 +31,8 @@ for p, pclass in enumerate(platform_classes):
 
         demo_layout = make_demo(cb14, 4, 4, cb24)
         demo_layout.station_id = 0x100 + p * 0x10 + s
+        if p > 0 or s > 0:
+            demo_layout.notes.append("noshow")
         semitraversable_stations.append(
             AStation(
                 id=0x100 + p * 0x10 + s,
@@ -67,6 +69,8 @@ for p, pclass in enumerate(platform_classes):
 
         demo_layout = make_demo(cb14, 4, 4, cb24)
         demo_layout.station_id = 0x200 + p * 0x10 + s
+        if p > 0 or s > 0:
+            demo_layout.notes.append("noshow")
 
         semitraversable_stations.append(
             AStation(

@@ -42,6 +42,8 @@ for p, pclass in enumerate(platform_classes):
 
         demo_layout = make_demo(cb14[pclass][sclass], 4, 1)
         demo_layout.station_id = 0x500 + p * 0x10 + s
+        if p > 0 or s > 0:
+            demo_layout.notes.append("noshow")
 
         side_stations.append(
             AStation(
@@ -69,6 +71,8 @@ for p, pclass in enumerate(platform_classes):
 
         demo_layout = make_demo(cb14[pclass][sclass].T, 4, 1)
         demo_layout.station_id = 0x600 + p * 0x10 + s
+        if p > 0 or s > 0:
+            demo_layout.notes.append("noshow")
 
         side_stations.append(
             AStation(
