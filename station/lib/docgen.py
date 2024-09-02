@@ -57,7 +57,15 @@ nav_order: 1
                     if "station_id" in dir(layout):
                         idstr = f"{layout.station_id:04X}"
                     img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{idstr}.png"))
-                    print(f'![{idstr}](img/{metastation_label}/tiles/{idstr}.png){{: width="64"}}', file=f)
+                    print(
+                        f"""
+<figure style="display:inline-block">
+  <img src="img/{metastation_label}/tiles/{idstr}.png" alt="{idstr}" width="64"/>
+  <figcaption style="text-align:center">{idstr}</figcaption>
+</figure>
+""",
+                        file=f,
+                    )
 
         with open(os.path.join(prefix, f"{metastation_label}_layouts.md"), "w") as f:
             print(
