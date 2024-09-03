@@ -422,6 +422,40 @@ class ALayout:
         return unique_tuple(f for x in [self.ground_sprite] + self.parent_sprites for f in x.get_resource_files())
 
 
+class NightSprite(grf.Sprite):
+    def __init__(self, base_sprite, w, h, scale, bpp, **kwargs):
+        super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], **kwargs)
+        self.base_sprite = base_sprite
+        self.scale = scale
+        self.bpp = bpp
+
+    def get_fingerprint(self):
+        return {
+            "base_sprite": self.base_sprite.get_fingerprint(),
+            "w": self.w,
+            "h": self.h,
+            "bpp": self.bpp,
+            "xofs": self.xofs,
+            "yofs": self.yofs,
+        }
+
+    def get_resource_files(self):
+        return self.layout.get_resource_files()
+
+    def get_data_layers(self, context):
+        timer = context.start_timer()
+        ret = self.base_graphics.graphics(self.scale, self.bpp)
+        from agrf.graphics.cv.nightmask import make_night_mask
+
+        ret = make_night_mask(ret)
+        timer.count_composing()
+
+        self.xofs += ret.xofs
+        self.yofs += ret.yofs
+
+        return ret.w, ret.h, ret.rgb, ret.alpha, ret.mask
+
+
 class LayoutSprite(grf.Sprite):
     def __init__(self, layout, w, h, scale, bpp, **kwargs):
         super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], **kwargs)
