@@ -4,7 +4,6 @@ import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.magic import CachedFunctorMixin
 from agrf.utils import unique_tuple
-from station.lib.registers import Registers
 
 
 class ParentSpriteMixin:
@@ -129,6 +128,10 @@ class AGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin):
             **self.registers_to_grf_dict(),
         )
 
+    # FIXME: who handles childsprites?
+    def to_action2(self, sprite_list):
+        return {"sprite": grf.SpriteRef(sprite_list.index(self.sprite), is_global=False)}
+
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
             ret = LayeredImage.empty()
@@ -183,6 +186,14 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
             offset=self.offset,
             **self.registers_to_grf_dict(),
         )
+
+    # FIXME who handles childsprites?
+    def to_action2(self, sprite_list):
+        return {
+            "sprite": grf.SpriteRef(sprite_list.index(self.sprite), is_global=False),
+            "offset": self.offset,
+            "extent": self.extent,
+        }
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         ret = LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)).copy()
@@ -263,6 +274,9 @@ class AChildSprite(RegistersMixin, CachedFunctorMixin):
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
             return LayeredImage.empty()
+        # XXX better register handling...?
+        from station.lib.registers import Registers
+
         if self.flags.get("dodraw") == Registers.SNOW and subclimate != "snow":
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
@@ -349,6 +363,11 @@ class ALayout:
             [s for s in self.ground_sprite.to_grf(sprite_list)]
             + [s for sprite in self.sorted_parent_sprites for s in sprite.to_grf(sprite_list)]
         )
+
+    def to_action2(self, feature, sprite_list):
+        ground = self.ground_sprite.to_action2(sprite_list)
+        buildings = tuple([sprite.to_action2(sprite_list) for sprite in self.sorted_parent_sprites])
+        return grf.AdvancedSpriteLayout(ground=ground, feature=feature, buildings=buildings)
 
     def graphics(self, scale, bpp, remap=None, context=None, climate="temperate", subclimate="default"):
         context = context or grf.DummyWriteContext()

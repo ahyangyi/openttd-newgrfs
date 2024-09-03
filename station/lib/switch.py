@@ -1,6 +1,6 @@
 import functools
 from agrf.magic import Switch
-from .layout import ALayout
+from agrf.lib.building.layout import ALayout
 
 
 def lookup(thing, w, h, x, y, t):
