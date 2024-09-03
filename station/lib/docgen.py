@@ -31,13 +31,13 @@ has_children: True
             ) as f:
                 print(
                     f"""---
-    layout: default
-    title: Building Blocks
-    parent: {translation}
-    grand_parent: "CNS Addon: Wuhu"
-    nav_order: {2 if waypoint else 1}
-    ---
-    """,
+layout: default
+title: Building Blocks
+parent: {translation}
+grand_parent: "CNS Addon: Wuhu"
+nav_order: {2 if waypoint else 1}
+---
+""",
                     file=f,
                 )
 
@@ -65,11 +65,11 @@ has_children: True
                         img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{idstr}.png"))
                         print(
                             f"""
-    <figure style="display:inline-block">
-      <img src="img/{metastation_label}/tiles/{idstr}.png" alt="{idstr}" width="64"/>
-      <figcaption style="text-align:center">{idstr}</figcaption>
-    </figure>
-    """,
+<figure style="display:inline-block">
+  <img src="img/{metastation_label}/tiles/{idstr}.png" alt="{idstr}" width="64"/>
+  <figcaption style="text-align:center">{idstr}</figcaption>
+</figure>
+""",
                             file=f,
                         )
 
