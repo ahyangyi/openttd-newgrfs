@@ -71,6 +71,7 @@ class AStation(grf.SpriteGenerator):
                     g.strings[f"STR_STATION_CLASS_{self.class_label_plain}"]
                 ).get_persistent_id(),
             }
+            res.append(grf.If(is_static=True, variable=0xA1, condition=0x04, value=0x1F000000, skip=1, varsize=4))
             res.append(grf.Define(feature=grf.STATION, id=self.id, props=openttd_15_props))
 
         res.extend(self.callbacks.make_map_action(definition))
