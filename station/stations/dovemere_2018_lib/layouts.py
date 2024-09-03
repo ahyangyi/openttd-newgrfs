@@ -362,7 +362,6 @@ def load(
         ),
         (0, 0),
     )
-    f1 = f1 + f1nc
 
     for window_class in window_classes:
         window_postfix = "" if window_class == "none" else "_" + window_class
@@ -398,7 +397,7 @@ def load(
                 register(
                     ALayout(
                         corridor_ground,
-                        [cur_plat, cur_plat.T, f1 + f1_snow, f1b] + f2_component,
+                        [cur_plat, cur_plat.T, f1 + f1nc + f1_snow, f1b] + f2_component,
                         True,
                         notes=common_notes + ["third"],
                     ),
