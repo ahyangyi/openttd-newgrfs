@@ -5,10 +5,7 @@ from station.lib import (
     BuildingSpriteSheetSymmetricalX,
     BuildingSpriteSheetFull,
     Demo,
-    ADefaultGroundSprite,
     AParentSprite,
-    ALayout,
-    AttrDict,
 )
 from agrf.graphics.voxel import LazyVoxel
 from .ground import named_ps as ground_ps
@@ -125,9 +122,9 @@ pf = CNSPlatformFamily()
 register(pf)
 
 named_tiles.globalize()
-
-the_stations = AMetaStation(
-    [
+station_tiles = []
+for i, entry in enumerate(entries):
+    station_tiles.append(
         AStation(
             id=0xF000 + i,
             translation_name=(
@@ -141,8 +138,11 @@ the_stations = AMetaStation(
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0},
         )
-        for i, entry in enumerate(entries)
-    ],
+    )
+    entry.station_id = 0xF000 + i
+
+the_stations = AMetaStation(
+    station_tiles,
     b"\xe8\x8a\x9cP",
     None,
     entries,
