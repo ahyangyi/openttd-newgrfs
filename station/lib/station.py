@@ -32,10 +32,10 @@ class AStation(grf.SpriteGenerator):
         extra_props = {
             "station_name": g.strings.add(g.strings[f"STR_STATION_{self.translation_name}"]).get_persistent_id()
         }
-        # if not self.is_waypoint:
-        extra_props["station_class_name"] = g.strings.add(
-            g.strings[f"STR_STATION_CLASS_{self.class_label_plain}"]
-        ).get_persistent_id()
+        if not self.is_waypoint:
+            extra_props["station_class_name"] = g.strings.add(
+                g.strings[f"STR_STATION_CLASS_{self.class_label_plain}"]
+            ).get_persistent_id()
 
         graphics = grf.GenericSpriteLayout(ent1=[0], ent2=[0], feature=grf.STATION)
         self.callbacks.graphics = grf.Switch(ranges={0: graphics}, code=code, default=graphics)
@@ -55,9 +55,7 @@ class AStation(grf.SpriteGenerator):
                 feature=grf.STATION,
                 id=self.id,
                 props={
-                    "class_label": (
-                        (b"\xfF" + self._props["class_label"][1:]) if self.is_waypoint else self._props["class_label"]
-                    ),
+                    "class_label": (b"WAYP" if self.is_waypoint else self._props["class_label"]),
                     "advanced_layout": grf.SpriteLayoutList([l.to_grf(sprites) for l in self.layouts]),
                     **{k: v for k, v in self._props.items() if k != "class_label"},
                     **extra_props,
@@ -65,6 +63,15 @@ class AStation(grf.SpriteGenerator):
                 },
             )
         )
+
+        if self.is_waypoint:
+            openttd_15_props = {
+                "class_label": b"\xfF" + self._props["class_label"][1:],
+                "station_class_name": g.strings.add(
+                    g.strings[f"STR_STATION_CLASS_{self.class_label_plain}"]
+                ).get_persistent_id(),
+            }
+            res.append(grf.Define(feature=grf.STATION, id=self.id, props=openttd_15_props))
 
         res.extend(self.callbacks.make_map_action(definition))
 
