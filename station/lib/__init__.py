@@ -14,6 +14,7 @@ from agrf.lib.building.layout import (
     AChildSprite,
     ALayout,
     LayoutSprite,
+    NightSprite,
 )
 from .metastation import AMetaStation
 from .demo import Demo

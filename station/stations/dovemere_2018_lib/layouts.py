@@ -12,6 +12,7 @@ from station.lib import (
     ALayout,
     AttrDict,
     Registers,
+    NightSprite,
 )
 from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
@@ -349,6 +350,9 @@ def load(
     f1b = make_f1(v, "third_t", broken_f1_symmetry) if asym else f1.T
     plat_f1 = make_f1(v, "platform", broken_f1_symmetry)
     full_f1 = make_f1(v, "full", f1_symmetry)
+
+    f1nc = AChildSprite(NightSprite(f1), (0, 0))
+    f1 = f1 + f1nc
 
     for window_class in window_classes:
         window_postfix = "" if window_class == "none" else "_" + window_class
