@@ -250,7 +250,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
             f2_component = [f2 + f2_window_extender + f2_snow_window_extender]
             cur_sym = symmetry.break_x_symmetry()
         register(
-            ALayout(empty_ground, [cur_np, cur_np.T] + f2_component, True),
+            ALayout(empty_ground, [cur_np, cur_np.T] + f2_component, True, notes=["waypoint"]),
             cur_sym,
             internal_category,
             f2_name + "_empty",
