@@ -52,7 +52,7 @@ nav_order: 1
                         cat_name = cat_name.split("-")[-1].strip()
                     cat_name = remove_control_letters(cat_name)
                     print(f"## {cat_name}", file=f)
-                for layout in subsections[sub]:
+                for layout in sorted(subsections[sub], key=lambda x: x.station_id):
                     img = layout.graphics(4, 32, remap=get_1cc_remap(CompanyColour.BLUE)).crop().to_pil_image()
                     if "station_id" in dir(layout):
                         idstr = f"{layout.station_id:04X}"
