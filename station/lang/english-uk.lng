@@ -7,8 +7,24 @@ STR_PARAM_INTRODUCTION_YEAR_DESC        :Choose whether each station in this New
 STR_PARAM_INTRODUCTION_YEAR_DISABLED    :Always available
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :Only available after set year
 
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE           :Wuhu Station - Enable Templates
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE_DESC      :Whether or not to enable flexible templates for Wuhu Station (Modern)
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE_ENABLED   :Enabled
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE_DISABLED  :Disabled
+
+STR_PARAM_E88A9CA_ENABLE_MODULAR            :Wuhu Station - Enable Modular
+STR_PARAM_E88A9CA_ENABLE_MODULAR_DESC       :Whether or not to enable modular station buildings for Wuhu Station (Modern)
+STR_PARAM_E88A9CA_ENABLE_MODULAR_ENABLED    :Enabled
+STR_PARAM_E88A9CA_ENABLE_MODULAR_DISABLED   :Disabled
+
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR         :Wuhu Station - Available Year
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (Modern) becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
+
+STR_PARAM_E88A9C0_ENABLE_MODULAR            :Wuhu Station (1934) - Enable
+STR_PARAM_E88A9C0_ENABLE_MODULAR_DESC       :Whether or not to enable Wuhu Station (1934)
+STR_PARAM_E88A9C0_ENABLE_MODULAR_ENABLED    :Enabled
+STR_PARAM_E88A9C0_ENABLE_MODULAR_DISABLED   :Disabled
+
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR         :Wuhu Station (1934) - Available Year
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1934) becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
 

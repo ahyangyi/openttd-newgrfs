@@ -6,6 +6,9 @@ global_settings = [Parameter("INTRODUCTION_YEAR", 0, {0: "DISABLED", 1: "ENABLED
 station_meta = [("E88A9CA", 2005), ("E88A9C0", 1911)]
 station_settings = []
 for s, year in station_meta:
+    if s == "E88A9CA":
+        station_settings.append(Parameter(f"{s}_ENABLE_TEMPLATE", 0, {0: "ENABLED", 1: "DISABLED"}))
+    station_settings.append(Parameter(f"{s}_ENABLE_MODULAR", 0, {0: "ENABLED", 1: "DISABLED"}))
     station_settings.append(Parameter(f"{s}_INTRODUCTION_YEAR", year, limits=(0, 9999)))
 
 parameter_list = ParameterList(global_settings + station_settings)
