@@ -1,4 +1,5 @@
 import os
+import grf
 from station.lib import (
     BuildingSpriteSheetFull,
     BuildingSpriteSheetSymmetrical,
@@ -351,7 +352,16 @@ def load(
     plat_f1 = make_f1(v, "platform", broken_f1_symmetry)
     full_f1 = make_f1(v, "full", f1_symmetry)
 
-    f1nc = AChildSprite(NightSprite(f1), (0, 0))
+    f1nc = AChildSprite(
+        grf.AlternativeSprites(
+            *[
+                NightSprite(f1, 64 * scale, 64 * scale, xofs=0, yofs=0, scale=scale, bpp=bpp)
+                for scale in [1, 2, 4]
+                for bpp in [32]
+            ]
+        ),
+        (0, 0),
+    )
     f1 = f1 + f1nc
 
     for window_class in window_classes:
