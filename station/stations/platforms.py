@@ -64,7 +64,7 @@ class CNSPlatformFamily(PlatformFamily):
             tuple(sorted(tuple(platform_components - pkeeps) + tuple(shelter_components - skeeps))),
             f"subset_{platform_class}_{rail_facing}_{shelter_class}_{location}",
         )
-        if location in ["building", "building_thin"]:
+        if location in ["building", "building_narrow"]:
             symmetry = BuildingSpriteSheetFull
         else:
             symmetry = BuildingSpriteSheetSymmetricalX
