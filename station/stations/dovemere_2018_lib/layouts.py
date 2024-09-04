@@ -90,20 +90,22 @@ class HPos:
     has_shelter: bool
 
 
-def make_hpos(pillar_style, platform_style):
-    return HPos(
-        platform_ps["cns_np_pillar" + pillar_style],
-        lambda p="concrete", x="shelter_1": platform_ps[
-            "cns" + ("" if p == "concrete" else "_" + p) + platform_style.replace("shelter", x)
-        ],
-        lambda x="shelter_1": platform_ps["cns_cut" + platform_style.replace("shelter", x)],
-        "shelter" in platform_style,
-    )
+def make_hpos(pillar_style, platform_style, has_narrow=False):
+    platform = lambda p="concrete", x="shelter_1": platform_ps[
+        "cns" + ("" if p == "concrete" else "_" + p) + platform_style.replace("shelter", x)
+    ]
+    if has_narrow:
+        platform_back_cut = lambda x="shelter_1": platform_ps[
+            "cns_cut" + platform_style.replace("shelter", x) + "_narrow"
+        ]
+    else:
+        platform_back_cut = lambda x="shelter_1": platform_ps["cns_cut" + platform_style.replace("shelter", x)]
+    return HPos(platform_ps["cns_np_pillar" + pillar_style], platform, platform_back_cut, "shelter" in platform_style)
 
 
 Normal = make_hpos("", "_pillar")
 Side = make_hpos("_building", "_shelter_building")
-SideNarrow = make_hpos("_building", "_shelter_building_narrow")
+SideNarrow = make_hpos("_building", "_shelter_building", True)
 V = make_hpos("", "_shelter_building_v")
 TinyAsym = make_hpos("_central", "_pillar_central")
 
@@ -471,10 +473,10 @@ load("front_normal", BuildingSpriteSheetSymmetricalX, "F0", corridor=False, wind
 load("front_gate", BuildingSpriteSheetFull, "F0", corridor=False)
 load("front_gate_extender", BuildingSpriteSheetSymmetricalX, "F0", corridor=False)
 
-load("corner", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False, window=[])
-load("corner_gate", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False)
-load("corner_2", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False, window=[])
-load("corner_gate_2", BuildingSpriteSheetFull, "F1", h_pos=Side, corridor=False)
+load("corner", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False, window=[])
+load("corner_gate", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False)
+load("corner_2", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False, window=[])
+load("corner_gate_2", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False)
 
 load_central("central", BuildingSpriteSheetSymmetrical, "N", window=["windowed", "windowed_extender"], window_asym=True)
 
