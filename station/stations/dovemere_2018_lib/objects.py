@@ -2,6 +2,7 @@ import grf
 from station.lib import (
     BuildingSpriteSheetFull,
     BuildingSpriteSheetSymmetricalX,
+    BuildingSpriteSheetCardinal,
     AGroundSprite,
     AParentSprite,
     AChildSprite,
@@ -15,8 +16,11 @@ from .layouts import solid_ground
 
 objects = []
 
-img = grf.ImageFile("third_party/opengfx2/road1.png")
-sprite = grf.FileSprite(img, 1, 1, 256, 127, xofs=-124, yofs=0)
+img_1 = grf.ImageFile("third_party/opengfx2/road1.png")
+sprite_1 = grf.FileSprite(img_1, 1, 1, 256, 127, xofs=-124, yofs=0)
+img_2 = grf.ImageFile("third_party/opengfx2/road2.png")
+sprite_2 = grf.FileSprite(img_2, 1, 1, 256, 127, xofs=-124, yofs=0)
+sprite = BuildingSpriteSheetCardinal.create_variants([sprite_1, sprite_2])
 cs = AChildSprite(sprite, (0, 0))
 
 
