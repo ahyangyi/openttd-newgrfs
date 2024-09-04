@@ -17,9 +17,9 @@ from .layouts import solid_ground
 objects = []
 
 img_1 = grf.ImageFile("third_party/opengfx2/road1.png")
-sprite_1 = grf.FileSprite(img_1, 1, 1, 256, 127, xofs=-124, yofs=0)
+sprite_1 = grf.FileSprite(img_1, 0, 0, 256, 127, xofs=-124, yofs=0)
 img_2 = grf.ImageFile("third_party/opengfx2/road2.png")
-sprite_2 = grf.FileSprite(img_2, 1, 1, 256, 127, xofs=-124, yofs=0)
+sprite_2 = grf.FileSprite(img_2, 0, 0, 256, 127, xofs=-124, yofs=0)
 sprite = BuildingSpriteSheetCardinal.create_variants([sprite_1, sprite_2])
 cs = AChildSprite(sprite, (0, 0))
 
