@@ -248,7 +248,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                 cur_sym = symmetry
         elif window_class == "windowed_extender":
             f2_component = [f2 + f2_window_extender + f2_snow_window_extender]
-            cur_sym = symmetry.break_x_symmetry()
+            cur_sym = symmetry
         register(
             ALayout(empty_ground, [cur_np, cur_np.T] + f2_component, True, notes=["waypoint"]),
             cur_sym,
