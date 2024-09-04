@@ -188,28 +188,3 @@ class BuildingSpriteSheetDiagonal(BinaryVariantMixin):
     def add_y_symmetry(classobj):
         # FIXME more symmetrical than this?
         return BuildingSpriteSheetSymmetrical
-
-
-class BuildingSpriteSheetCardinal(BinaryVariantMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
-    @staticmethod
-    def render_indices():
-        return [0, 1]
-
-    _m_offset = 1
-    _r_offset = 1
-    _t_offset = 1
-
-    @classmethod
-    def break_x_symmetry(classobj):
-        raise NotImplementedError()
-
-    @classmethod
-    def break_y_symmetry(classobj):
-        raise NotImplementedError()
-
-    @classmethod
-    def add_y_symmetry(classobj):
-        raise NotImplementedError()

@@ -6,7 +6,6 @@ from .binary_variants import (
     BuildingSpriteSheetSymmetricalY,
     BuildingSpriteSheetRotational,
     BuildingSpriteSheetDiagonal,
-    BuildingSpriteSheetCardinal,
 )
 from agrf.lib.building.layout import (
     ADefaultGroundSprite,
