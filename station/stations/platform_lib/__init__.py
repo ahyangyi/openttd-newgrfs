@@ -56,7 +56,7 @@ def register(pf: PlatformFamily):
             elif shelter_class == "pillar":
                 locations = ["", "building", "central"]
             else:
-                locations = ["", "building", "building_thin", "building_v"]
+                locations = ["", "building", "building_narrow", "building_v"]
 
             for location in locations:
                 for rail_facing in rail_facings:
