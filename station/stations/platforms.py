@@ -51,17 +51,20 @@ class CNSPlatformFamily(PlatformFamily):
         if shelter_class == "":
             skeeps = set()
         else:
-            skeeps = {shelter_class + ("_" if location != "" else "") + location}
-            if platform_class != "" and shelter_class != "pillar" and location == "building":
-                skeeps.add("escalator")
-            if platform_class != "" and shelter_class != "pillar" and location == "building_v":
-                skeeps.add("escalator_v")
+            if location == "building_narrow":
+                skeeps = {shelter_class + "_building", "pillar_building"}
+            else:
+                skeeps = {shelter_class + ("_" if location != "" else "") + location}
+                if platform_class != "" and shelter_class != "pillar" and location == "building":
+                    skeeps.add("escalator")
+                if platform_class != "" and shelter_class != "pillar" and location == "building_v":
+                    skeeps.add("escalator_v")
 
         v2 = self.v.discard_layers(
             tuple(sorted(tuple(platform_components - pkeeps) + tuple(shelter_components - skeeps))),
             f"subset_{platform_class}_{rail_facing}_{shelter_class}_{location}",
         )
-        if location == "building":
+        if location in ["building", "building_thin"]:
             symmetry = BuildingSpriteSheetFull
         else:
             symmetry = BuildingSpriteSheetSymmetricalX
