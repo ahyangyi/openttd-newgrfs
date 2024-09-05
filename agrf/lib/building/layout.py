@@ -39,6 +39,7 @@ class RegistersMixin:
 class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin):
     def __init__(self, sprite, child_sprites=None, flags=None):
         super().__init__(child_sprites=child_sprites, flags=flags)
+        assert isinstance(sprite, int)
         self.sprite = sprite
 
     def parent_to_grf(self, sprite_list):
@@ -71,6 +72,10 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin
             ret.resize(64, 31)
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
+
+    # FIXME who handles childsprites?
+    def to_action2(self, sprite_list):
+        return {"sprite": grf.SpriteRef(self.sprite, is_global=True)}
 
     def __repr__(self):
         return f"<ADefaultGroundSprite:{self.sprite}>"

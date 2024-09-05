@@ -26,28 +26,31 @@ has_children: True
             )
 
         for waypoint in [False, True]:
+            if metastation.categories is None:
+                subsections = {None: [x for x in metastation.doc_layouts if ("waypoint" not in x.notes) ^ waypoint]}
+            else:
+                subsections = {k: [] for k in metastation.categories}
+                for layout in metastation.doc_layouts:
+                    if ("waypoint" not in layout.notes) ^ waypoint:
+                        subsections[layout.category].append(layout)
+
+            if all(len(v) == 0 for v in subsections.values()):
+                continue
+
             with open(
                 os.path.join(prefix, f"{metastation_label}_{'waypoints' if waypoint else 'building_blocks'}.md"), "w"
             ) as f:
                 print(
                     f"""---
-    layout: default
-    title: Building Blocks
-    parent: {translation}
-    grand_parent: "CNS Addon: Wuhu"
-    nav_order: {2 if waypoint else 1}
-    ---
-    """,
+layout: default
+title: {"Waypoints" if waypoint else "Building Blocks"}
+parent: {translation}
+grand_parent: "CNS Addon: Wuhu"
+nav_order: {2 if waypoint else 1}
+---
+""",
                     file=f,
                 )
-
-                if metastation.categories is None:
-                    subsections = {None: [x for x in metastation.doc_layouts if ("waypoint" not in x.notes) ^ waypoint]}
-                else:
-                    subsections = {k: [] for k in metastation.categories}
-                    for layout in metastation.doc_layouts:
-                        if ("waypoint" not in layout.notes) ^ waypoint:
-                            subsections[layout.category].append(layout)
 
                 for sub in subsections:
                     if sub is not None and len(subsections[sub]) > 0:
@@ -65,11 +68,11 @@ has_children: True
                         img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{idstr}.png"))
                         print(
                             f"""
-    <figure style="display:inline-block">
-      <img src="img/{metastation_label}/tiles/{idstr}.png" alt="{idstr}" width="64"/>
-      <figcaption style="text-align:center">{idstr}</figcaption>
-    </figure>
-    """,
+<figure style="display:inline-block">
+  <img src="img/{metastation_label}/tiles/{idstr}.png" alt="{idstr}" width="64"/>
+  <figcaption style="text-align:center">{idstr}</figcaption>
+</figure>
+""",
                             file=f,
                         )
 
