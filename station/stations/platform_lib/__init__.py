@@ -56,7 +56,7 @@ def register(pf: PlatformFamily):
             elif shelter_class == "pillar":
                 locations = ["", "building", "central"]
             else:
-                locations = ["", "building", "building_v"]
+                locations = ["", "building", "building_narrow", "building_v"]
 
             for location in locations:
                 for rail_facing in rail_facings:
@@ -69,7 +69,7 @@ def register(pf: PlatformFamily):
                             cur_symmetry = ps.sprite.symmetry.add_y_symmetry()
                         else:
                             cur_symmetry = ps.sprite.symmetry
-                        var = cur_symmetry.get_all_variants(ALayout([track_ground], l, True))
+                        var = cur_symmetry.get_all_variants(ALayout(track_ground, l, True))
                         l = cur_symmetry.create_variants(var)
                         if platform_class not in ["np", "cut"] and shelter_class != "pillar" and location == "":
                             entries.extend(cur_symmetry.get_all_entries(l))
@@ -87,7 +87,7 @@ def register(pf: PlatformFamily):
                             suffix2 = f"{us(platform_class)}{us(rail_facing_2)}{us(shelter_class_2)}"
                             cur_symmetry = BuildingSpriteSheetSymmetricalX
                             var = cur_symmetry.get_all_variants(
-                                ALayout([track_ground], [named_ps[name + suffix], named_ps[name + suffix2].T], True)
+                                ALayout(track_ground, [named_ps[name + suffix], named_ps[name + suffix2].T], True)
                             )
                             l = cur_symmetry.create_variants(var)
                             entries.extend(cur_symmetry.get_all_entries(l))
@@ -106,7 +106,7 @@ def register(pf: PlatformFamily):
             else:
                 symmetry = BuildingSpriteSheetSymmetricalX
 
-            var = symmetry.get_all_variants(ALayout([gray_ps], [ps], False, notes={"concourse"}))
+            var = symmetry.get_all_variants(ALayout(gray_ps, [ps], False, notes={"concourse"}))
             l = symmetry.create_variants(var)
             entries.extend(symmetry.get_all_entries(l))
             named_tiles[name + concourse_flavor] = l
@@ -125,7 +125,7 @@ def register(pf: PlatformFamily):
                                 continue
                         else:
                             cur_sym = BuildingSpriteSheetSymmetricalX
-                        var = cur_sym.get_all_variants(ALayout([gray_ps], l + [ps], False, notes={"concourse"}))
+                        var = cur_sym.get_all_variants(ALayout(gray_ps, l + [ps], False, notes={"concourse"}))
                         l = cur_sym.create_variants(var)
                         entries.extend(cur_sym.get_all_entries(l))
                         named_tiles[name + concourse_flavor + us(shelter_class) + extra_suffix] = l

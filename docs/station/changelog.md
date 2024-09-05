@@ -5,7 +5,9 @@ China Set: Stations & Platforms Addons: Wuhu Changelog
 ------------------------
 Add the 1934 Wuhu Station.
 
-Add snow on station building.
+Add snow and escalator graphics for station buildings.
+
+Designate station tiles without platforms as waypoints.
 
 0.2.2 (2024-06-14)
 --------------------

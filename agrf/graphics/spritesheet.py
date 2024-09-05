@@ -150,7 +150,13 @@ def spritesheet_template(
 
     def get_rels(direction, diff, scale):
         w, h, z_ydiff, z_height = map(lambda a: a * scale, guessed_dimens[direction])
-        xrel = -w / 2
+        if road_mode:
+            xrel = -((w - 1) // (scale * 2) * scale + 1)
+        else:
+            # XXX
+            # Actually, this is unverified legacy code
+            # Vehicle people have much disagreement with what's the right offset anyways...
+            xrel = -w / 2
         if road_mode:
             yrel = -z_height
         else:
