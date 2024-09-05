@@ -41,7 +41,7 @@ def quickload(name, symmetry):
     snow_sprite = symmetry.create_variants(snow.spritesheet())
     cs = AChildSprite(snow_sprite, (0, 0), flags={"dodraw": Registers.SNOW})
 
-    l = ALayout([building_ground], [ps + cs], False)
+    l = ALayout(building_ground, [ps + cs], False)
     var = symmetry.get_all_variants(l)
     ret = symmetry.create_variants(var)
     entries.extend(symmetry.get_all_entries(ret))
@@ -53,8 +53,9 @@ named_tiles = AttrDict()
 for name, symmetry in [("regular", BuildingSpriteSheetSymmetricalX)]:
     quickload(name, symmetry)
 
-the_stations = AMetaStation(
-    [
+station_tiles = []
+for i, entry in enumerate(entries):
+    station_tiles.append(
         AStation(
             id=0x2000 + i,
             translation_name="PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE",
@@ -63,8 +64,11 @@ the_stations = AMetaStation(
             cargo_threshold=40,
             callbacks={"select_tile_layout": 0, **station_cb["E88A9C0"]},
         )
-        for i, entry in enumerate(entries)
-    ],
+    )
+    entry.station_id = 0x2000 + i
+
+the_stations = AMetaStation(
+    station_tiles,
     b"\xe8\x8a\x9c0",
     None,
     entries,
