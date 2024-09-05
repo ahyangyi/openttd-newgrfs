@@ -20,11 +20,11 @@ objects = []
 
 img_1 = grf.ImageFile("third_party/opengfx2/road1.png")
 sprite_1 = grf.AlternativeSprites(
-    grf.FileSprite(img_1, 0, 0, 256, 127, xofs=-124, yofs=0, zoom=SCALE_TO_ZOOM[4], bpp=32)
+    grf.FileSprite(img_1, 0, 0, 256, 127, xofs=-124, yofs=0, zoom=SCALE_TO_ZOOM[4], bpp=32, crop=False)
 )
 img_2 = grf.ImageFile("third_party/opengfx2/road2.png")
 sprite_2 = grf.AlternativeSprites(
-    grf.FileSprite(img_2, 0, 0, 256, 127, xofs=-124, yofs=0, zoom=SCALE_TO_ZOOM[4], bpp=32)
+    grf.FileSprite(img_2, 0, 0, 256, 127, xofs=-124, yofs=0, zoom=SCALE_TO_ZOOM[4], bpp=32, crop=False)
 )
 sprite = BuildingSpriteSheetSymmetrical.create_variants([sprite_1, sprite_2])
 cs = AChildSprite(sprite, (0, 0))
