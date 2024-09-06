@@ -5,7 +5,16 @@ from .registers import code
 
 class AStation(grf.SpriteGenerator):
     def __init__(
-        self, *, id, translation_name, layouts, callbacks=None, non_traversable_tiles=0x0, is_waypoint=False, **props
+        self,
+        *,
+        id,
+        translation_name,
+        layouts,
+        callbacks=None,
+        non_traversable_tiles=0x0,
+        is_waypoint=False,
+        doc_layout=None,
+        **props,
     ):
         super().__init__()
         self.id = id
@@ -15,6 +24,7 @@ class AStation(grf.SpriteGenerator):
             callbacks = {}
         self.callbacks = grf.make_callback_manager(grf.STATION, callbacks)
         self.is_waypoint = is_waypoint
+        self.doc_layout = doc_layout
         self._props = {
             **props,
             "non_traversable_tiles": non_traversable_tiles,
