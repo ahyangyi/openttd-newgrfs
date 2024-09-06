@@ -9,8 +9,8 @@ from .dovemere_2018_lib.flexible_stations.side import side_stations
 from .dovemere_2018_lib.flexible_stations.side_third import side_third_stations
 
 objects = []
-stations = []
-for entry in sorted(entries, key=lambda x: x.category):
+modular_stations = []
+for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
     if entry.category[-1] in {ord(x) for x in [b"\xB0"]}:
         objects.append(
             AObject(
@@ -27,22 +27,23 @@ for entry in sorted(entries, key=lambda x: x.category):
                 flags=grf.Object.Flags.ONLY_IN_GAME,
             )
         )
-    stations.append(
+    modular_stations.append(
         AStation(
-            id=0x1000 + len(stations),
+            id=0x1000 + i,
             translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
             layouts=[entry, entry.M],
             class_label=entry.category,
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0, **common_cb},
-            is_waypoint=(entry.category[-1] in {ord(x) for x in [b"\x90", b"\xA0", b"\xA4", b"\xA8", b"\xAC"]}),
+            is_waypoint="waypoint" in entry.notes,
         )
     )
+    entry.station_id = 0x1000 + i
 
 
 the_stations = AMetaStation(
-    semitraversable_stations + traversable_stations + side_stations + side_third_stations + stations + objects,
+    semitraversable_stations + traversable_stations + side_stations + side_third_stations + modular_stations + objects,
     b"\xe8\x8a\x9cA",
     [
         b"\xe8\x8a\x9c" + x
@@ -54,7 +55,7 @@ the_stations = AMetaStation(
         + [x.to_bytes(1, "little") for x in range(0xC0, 0xC8)]
         + [b"\xF0"]
     ],
-    flexible_entries + entries,
+    [x for x in flexible_entries + entries if "noshow" not in x.notes],
     [
         demos.normal_demo,
         demos.big_demo,

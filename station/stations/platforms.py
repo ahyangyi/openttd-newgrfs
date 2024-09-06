@@ -51,17 +51,20 @@ class CNSPlatformFamily(PlatformFamily):
         if shelter_class == "":
             skeeps = set()
         else:
-            skeeps = {shelter_class + ("_" if location != "" else "") + location}
-            if platform_class != "" and shelter_class != "pillar" and location == "building":
-                skeeps.add("escalator")
-            if platform_class != "" and shelter_class != "pillar" and location == "building_v":
-                skeeps.add("escalator_v")
+            if location == "building_narrow":
+                skeeps = {shelter_class + "_building", "pillar_building"}
+            else:
+                skeeps = {shelter_class + ("_" if location != "" else "") + location}
+                if platform_class != "" and shelter_class != "pillar" and location == "building":
+                    skeeps.add("escalator")
+                if platform_class != "" and shelter_class != "pillar" and location == "building_v":
+                    skeeps.add("escalator_v")
 
         v2 = self.v.discard_layers(
             tuple(sorted(tuple(platform_components - pkeeps) + tuple(shelter_components - skeeps))),
             f"subset_{platform_class}_{rail_facing}_{shelter_class}_{location}",
         )
-        if location == "building":
+        if location in ["building", "building_narrow"]:
             symmetry = BuildingSpriteSheetFull
         else:
             symmetry = BuildingSpriteSheetSymmetricalX
@@ -122,9 +125,9 @@ pf = CNSPlatformFamily()
 register(pf)
 
 named_tiles.globalize()
-
-the_stations = AMetaStation(
-    [
+station_tiles = []
+for i, entry in enumerate(entries):
+    station_tiles.append(
         AStation(
             id=0xF000 + i,
             translation_name=(
@@ -138,8 +141,11 @@ the_stations = AMetaStation(
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0},
         )
-        for i, entry in enumerate(entries)
-    ],
+    )
+    entry.station_id = 0xF000 + i
+
+the_stations = AMetaStation(
+    station_tiles,
     b"\xe8\x8a\x9cP",
     None,
     entries,
