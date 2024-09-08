@@ -13,21 +13,10 @@ from agrf.graphics import SCALE_TO_ZOOM
 from datetime import date
 from roadstop.lib import ARoadStop
 from station.lib import ALayout
-from .layouts import solid_ground
+from ..misc import road_ground
 
 roadstop_doc_layouts = []
 roadstops = []
-
-img_1 = grf.ImageFile("third_party/opengfx2/road1.png")
-sprite_1 = grf.AlternativeSprites(
-    grf.FileSprite(img_1, 0, 0, 256, 127, xofs=-124, yofs=0, zoom=SCALE_TO_ZOOM[4], bpp=32, crop=False)
-)
-img_2 = grf.ImageFile("third_party/opengfx2/road2.png")
-sprite_2 = grf.AlternativeSprites(
-    grf.FileSprite(img_2, 0, 0, 256, 127, xofs=-124, yofs=0, zoom=SCALE_TO_ZOOM[4], bpp=32, crop=False)
-)
-sprite = BuildingSpriteSheetSymmetrical.create_variants([sprite_1, sprite_2])
-cs = AChildSprite(sprite, (0, 0))
 
 
 for name, sym in [("overpass", BuildingSpriteSheetSymmetricalX), ("west_stair", BuildingSpriteSheetFull)]:
@@ -40,7 +29,7 @@ for name, sym in [("overpass", BuildingSpriteSheetSymmetricalX), ("west_stair", 
     )
     sprite = sym.create_variants(v.spritesheet())
     ps = AParentSprite(sprite, (16, 16, 12), (0, 0, 0))
-    layout = ALayout(solid_ground + cs, [ps], True, category=b"\xe8\x8a\x9cR")
+    layout = ALayout(road_ground, [ps], True, category=b"\xe8\x8a\x9cR")
 
     for cur in [layout, layout.R] if (sym is BuildingSpriteSheetFull) else [layout]:
         cur_roadstop = ARoadStop(
