@@ -2,6 +2,7 @@ from station.lib import AStation, AMetaStation
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos, common_cb
 from .dovemere_2018_lib.objects import objects, object_doc_layouts
+from .dovemere_2018_lib.roadstops import roadstops, roadstop_doc_layouts
 from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_stations
 from .dovemere_2018_lib.flexible_stations.traversable import traversable_stations
 from .dovemere_2018_lib.flexible_stations.side import side_stations
@@ -24,7 +25,13 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
     entry.station_id = 0x1000 + i
 
 the_stations = AMetaStation(
-    semitraversable_stations + traversable_stations + side_stations + side_third_stations + modular_stations + objects,
+    semitraversable_stations
+    + traversable_stations
+    + side_stations
+    + side_third_stations
+    + modular_stations
+    + objects
+    + roadstops,
     b"\xe8\x8a\x9cA",
     [
         b"\xe8\x8a\x9c" + x
@@ -37,7 +44,7 @@ the_stations = AMetaStation(
         + [b"\xF0"]
         + [b"Z"]
     ],
-    [x for x in flexible_entries + entries if "noshow" not in x.notes] + object_doc_layouts,
+    [x for x in flexible_entries + entries if "noshow" not in x.notes] + object_doc_layouts + roadstop_doc_layouts,
     [
         demos.normal_demo,
         demos.big_demo,

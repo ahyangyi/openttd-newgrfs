@@ -43,8 +43,10 @@ class ARoadStop(grf.SpriteGenerator):
         self.callbacks.set_flag_props(self._props)
 
         res.append(
-            definition := grf.RoadStop(
-                id=self.id, **{"class_label": self._props["class_label"], **self._props, **extra_props}
+            definition := grf.Define(
+                feature=grf.ROAD_STOP,
+                id=self.id,
+                props={"class_label": self._props["class_label"], **self._props, **extra_props},
             )
         )
 
