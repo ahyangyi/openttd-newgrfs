@@ -198,8 +198,8 @@ def spritesheet_template(
                         0,
                         int(guessed_dimens[i][0] * scale),
                         int(guessed_dimens[i][1] * scale),
-                        xofs=childsprite[0] * scale if childsprite else get_rels(i, diff, scale)[0],
-                        yofs=childsprite[1] * scale if childsprite else get_rels(i, diff, scale)[1],
+                        xofs=int(childsprite[0] * scale) if childsprite else get_rels(i, diff, scale)[0],
+                        yofs=int(childsprite[1] * scale) if childsprite else get_rels(i, diff, scale)[1],
                         bpp=bpp,
                         zoom=SCALE_TO_ZOOM[scale],
                         **(
