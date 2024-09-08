@@ -40,14 +40,14 @@ for name, sym in [("overpass", BuildingSpriteSheetSymmetricalX), ("west_stair", 
     )
     sprite = sym.create_variants(v.spritesheet())
     ps = AParentSprite(sprite, (16, 16, 12), (0, 0, 0))
-    layout = ALayout(solid_ground + cs, [ps], True, category=b"\xe8\x8a\x9cZ")
+    layout = ALayout(solid_ground + cs, [ps], True, category=b"\xe8\x8a\x9cR")
 
     for cur in [layout, layout.R] if (sym is BuildingSpriteSheetFull) else [layout]:
         cur_roadstop = ARoadStop(
             id=len(roadstops),
             translation_name="STRAIGHT_STAIR",
             layouts=[cur, cur.R.M, cur.T.R, cur.T.M],
-            class_label=b"\xe8\x8a\x9cZ",
+            class_label=b"\xe8\x8a\x9cR",
         )
         # FIXME doesn't need thiz
         cur.station_id = 0xE000 + len(roadstops)
