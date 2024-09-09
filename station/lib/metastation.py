@@ -30,4 +30,4 @@ class AMetaStation(grf.SpriteGenerator):
 
     @property
     def sprites(self):
-        return [*dict.fromkeys([sub for s in self.stations for sub in s.sprites])]
+        return [*dict.fromkeys([sub for s in self.stations if isinstance(s, AStation) for sub in s.sprites])]
