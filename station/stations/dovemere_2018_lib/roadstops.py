@@ -19,7 +19,11 @@ roadstop_doc_layouts = []
 roadstops = []
 
 
-for name, sym in [("overpass", BuildingSpriteSheetSymmetricalX), ("west_stair", BuildingSpriteSheetFull)]:
+for name, sym in [
+    ("overpass", BuildingSpriteSheetSymmetricalX),
+    ("west_stair", BuildingSpriteSheetFull),
+    ("west_stair_extender", BuildingSpriteSheetSymmetricalX),
+]:
     v = LazyVoxel(
         name,
         prefix="station/voxels/render/dovemere_2018/plaza",
