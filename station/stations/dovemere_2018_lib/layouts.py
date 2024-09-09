@@ -154,7 +154,10 @@ def make_extra(v, sym, name, floor="f2"):
         v.config["overlap"] = 1.3
     else:
         v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
-    v.config["agrf_childsprite"] = (0, -10)
+    if floor == "f2":
+        v.config["agrf_childsprite"] = (0, -10)
+    else:
+        v.config["agrf_childsprite"] = (0, -40)
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet())
     if "snow" in name:
@@ -172,6 +175,7 @@ def make_f1(v, subset, sym):
         V = v.discard_layers(tuple(all_f1_layers_set - keep_layers), subset)
         V = V.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         V.in_place_subset(sym.render_indices())
+        V.config["agrf_manual_crop"] = (0, 40)
         s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan))
         f1_cache[(v, subset)] = AParentSprite(s, (16, xspan, base_height), (0, xdiff, platform_height)), sym
     ret, ret_sym = f1_cache[(v, subset)]
@@ -189,11 +193,11 @@ def register(l, symmetry, internal_category, name):
     named_tiles[name] = l
 
 
-solid_ground = [gray_ps]
-corridor_ground = [track_ground + third + third_T]
-one_side_ground = [track_ground + third]
-one_side_ground_t = [track_ground + third_T]
-empty_ground = [track_ground]
+solid_ground = gray_ps
+corridor_ground = track_ground + third + third_T
+one_side_ground = track_ground + third
+one_side_ground_t = track_ground + third_T
+empty_ground = track_ground
 
 voxel_cache = {}
 
@@ -484,7 +488,7 @@ load("v_end", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V, corridor=False)
 load("v_end_gate", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V, corridor=False)
 load_central("v_central", BuildingSpriteSheetSymmetrical, "N", h_pos=V)
 
-load("tiny", BuildingSpriteSheetSymmetrical, "H", h_pos=V, full=False, platform=False)
+load("tiny", BuildingSpriteSheetSymmetrical, "H", h_pos=V, full=False, platform=False, third=False)
 load_full("tiny_untraversable", BuildingSpriteSheetSymmetrical, "H")
 load("tiny_asym", BuildingSpriteSheetSymmetricalX, "H", h_pos=TinyAsym, corridor=False)
 

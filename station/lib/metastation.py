@@ -1,5 +1,6 @@
 import grf
 from .utils import class_label_printable
+from .station import AStation
 
 
 class AMetaStation(grf.SpriteGenerator):
@@ -20,7 +21,11 @@ class AMetaStation(grf.SpriteGenerator):
         return (
             [grf.Action1(feature=grf.STATION, set_count=1, sprite_count=len(sprites))]
             + self.sprites
-            + [s for station in self.stations for s in station.get_sprites(g, sprites)]
+            + [
+                s
+                for station in self.stations
+                for s in (station.get_sprites(g, sprites) if isinstance(station, AStation) else station.get_sprites(g))
+            ]
         )
 
     @property
