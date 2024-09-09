@@ -39,6 +39,6 @@ for name, sym in [("overpass", BuildingSpriteSheetSymmetricalX), ("west_stair", 
             class_label=b"\xe8\x8a\x9cR",
         )
         # FIXME doesn't need thiz
-        cur.station_id = 0xE000 + len(roadstops)
+        cur.station_id = 0xF000 + len(roadstops)
         roadstop_doc_layouts.append(cur)
         roadstops.append(cur_roadstop)

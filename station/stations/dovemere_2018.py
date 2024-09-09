@@ -42,7 +42,7 @@ the_stations = AMetaStation(
         + [x.to_bytes(1, "little") for x in range(0xB0, 0xB8)]
         + [x.to_bytes(1, "little") for x in range(0xC0, 0xC8)]
         + [b"\xF0"]
-        + [b"Z"]
+        + [b"R", b"Z"]
     ],
     [x for x in flexible_entries + entries if "noshow" not in x.notes] + object_doc_layouts + roadstop_doc_layouts,
     [
