@@ -97,7 +97,7 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin
         for climate in ["temperate", "arctic", "tropical", "toyland"]
         for k in [1011, 1012, 1037, 1038, 3981, 4550]
     }
-    climate_independent_tiles = {k: Image.open(f"third_party/opengfx2/{k}.png") for k in [1420]}
+    climate_independent_tiles = {k: Image.open(f"third_party/opengfx2/{k}.png") for k in [1313, 1314, 1420]}
 
     @property
     def sprites(self):
