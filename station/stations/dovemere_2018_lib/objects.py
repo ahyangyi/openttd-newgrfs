@@ -18,19 +18,7 @@ from .layouts import solid_ground
 object_doc_layouts = []
 objects = []
 
-img_1 = grf.ImageFile("third_party/opengfx2/road1.png")
-sprite_1 = grf.AlternativeSprites(
-    grf.FileSprite(img_1, 0, 0, 256, 127, xofs=-124, yofs=0, zoom=SCALE_TO_ZOOM[4], bpp=32, crop=False)
-)
-img_2 = grf.ImageFile("third_party/opengfx2/road2.png")
-sprite_2 = grf.AlternativeSprites(
-    grf.FileSprite(img_2, 0, 0, 256, 127, xofs=-124, yofs=0, zoom=SCALE_TO_ZOOM[4], bpp=32, crop=False)
-)
-sprite = BuildingSpriteSheetSymmetrical.create_variants([sprite_1, sprite_2])
-cs = AChildSprite(sprite, (0, 0))
-
-
-for name, sym in [("overpass", BuildingSpriteSheetSymmetricalX), ("west_stair", BuildingSpriteSheetFull)]:
+for name, sym in [("west_plaza_center", BuildingSpriteSheetSymmetrical)]:
     v = LazyVoxel(
         name,
         prefix="station/voxels/render/dovemere_2018/plaza",
@@ -39,8 +27,10 @@ for name, sym in [("overpass", BuildingSpriteSheetSymmetricalX), ("west_stair", 
         # config={"z_scale": 1.01},
     )
     sprite = sym.create_variants(v.spritesheet())
-    ps = AParentSprite(sprite, (16, 16, 12), (0, 0, 0))
-    layout = ALayout(solid_ground + cs, [ps], True, category=b"\xe8\x8a\x9cZ")
+    # ps = AParentSprite(sprite, (16, 16, 12), (0, 0, 0))
+    # layout = ALayout(solid_ground + cs, [ps], True, category=b"\xe8\x8a\x9cZ")
+    gs = AGroundSprite(sprite)
+    layout = ALayout(gs, [], True, category=b"\xe8\x8a\x9cZ")
 
     for cur in [layout, layout.R] if (sym is BuildingSpriteSheetFull) else [layout]:
         cur_object = AObject(
