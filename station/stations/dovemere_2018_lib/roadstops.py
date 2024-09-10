@@ -40,6 +40,7 @@ for name, sym in [
             id=len(roadstops),
             translation_name="STRAIGHT_STAIR",
             layouts=[cur, cur.R.M, cur.T.R, cur.T.M],
+            general_flags=0x8,
             class_label=b"\xe8\x8a\x9cR",
         )
         # FIXME doesn't need thiz
