@@ -26,7 +26,7 @@ for p, pclass in enumerate(platform_classes):
         cb14 = StationTileSwitch(
             "T", fill_odd({0: cb14_0, 2: cb14_2[pclass][sclass], 4: cb14_4[pclass][sclass], 6: cb14_6[pclass][sclass]})
         )
-        if pclass == "concrete" and sclass == "shelter_1":
+        if pclass == "concrete" and sclass == "shelter_2":
             demo_1 = lambda r, c, cb14=cb14, cb24=cb24: cb14.demo(r, c, cb24)
 
         demo_layout = make_demo(cb14, 4, 4, cb24)
@@ -64,7 +64,7 @@ for p, pclass in enumerate(platform_classes):
         cb14 = StationTileSwitch(
             "T", fill_odd({0: cb14_0, 2: cb14_2[pclass][sclass], 4: cb14_4[pclass][sclass], 6: cb14_6[pclass][sclass]})
         )
-        if pclass == "concrete" and sclass == "shelter_1":
+        if pclass == "concrete" and sclass == "shelter_2":
             demo_2 = lambda r, c, cb14=cb14, cb24=cb24: cb14.demo(r, c, cb24)
 
         demo_layout = make_demo(cb14, 4, 4, cb24)
