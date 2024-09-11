@@ -89,11 +89,11 @@ for p, pclass in enumerate(platform_classes):
     pclass_desc = "" if pclass == "concrete" else "_" + pclass
     front = make_front_row(pclass_desc + "_platform")
     for s, sclass in enumerate(shelter_classes):
-        if pclass == "concrete" and sclass == "shelter_1":
-            demo_1 = lambda r, c, cb14=cb14[pclass][sclass], cb24=cb24: cb14.demo(r, c, cb24)
         demo_layout = make_demo(cb14[pclass][sclass], 4, 4, cb24)
         demo_layout.station_id = 0x300 + p * 0x10 + s
-        if p > 0 or s > 0:
+        if pclass == "concrete" and sclass == "shelter_2":
+            demo_1 = lambda r, c, cb14=cb14[pclass][sclass], cb24=cb24: cb14.demo(r, c, cb24)
+        else:
             demo_layout.notes.append("noshow")
         traversable_stations.append(
             AStation(
@@ -118,11 +118,11 @@ for p, pclass in enumerate(platform_classes):
     pclass_desc = "" if pclass == "concrete" else "_" + pclass
     front = make_front_row(pclass_desc + "_platform")
     for s, sclass in enumerate(shelter_classes):
-        if pclass == "concrete" and sclass == "shelter_1":
-            demo_2 = lambda r, c, cb14=cb14[pclass][sclass], cb24=cb24: cb14.demo(r, c, cb24)
         demo_layout = make_demo(cb14[pclass][sclass], 4, 4, cb24)
         demo_layout.station_id = 0x400 + p * 0x10 + s
-        if p > 0 or s > 0:
+        if pclass == "concrete" and sclass == "shelter_2":
+            demo_2 = lambda r, c, cb14=cb14[pclass][sclass], cb24=cb24: cb14.demo(r, c, cb24)
+        else:
             demo_layout.notes.append("noshow")
         traversable_stations.append(
             AStation(
