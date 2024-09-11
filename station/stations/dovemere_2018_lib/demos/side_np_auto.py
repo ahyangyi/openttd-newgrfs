@@ -1,5 +1,6 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import platform_n, concourse_tile
+from station.stations.dovemere_2018_lib.layouts import concourse_tile
+from station.stations.platforms import cns_shelter_2
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import side
@@ -14,14 +15,14 @@ side_np_auto_demo = Demo(
     "Nontraversable automatic stations (no platform)",
     [
         [x.T for x in station_building],
-        [platform_n.T] * n,
-        [platform_n] * n,
+        [cns_shelter_2.T] * n,
+        [cns_shelter_2] * n,
         station_building,
         [concourse_tile] * n,
         [concourse_tile] * n,
         [x.T for x in station_building_2],
-        [platform_n.T] * n,
-        [platform_n] * n,
+        [cns_shelter_2.T] * n,
+        [cns_shelter_2] * n,
         station_building_2,
     ],
     remap=get_1cc_remap(CompanyColour.BLUE),

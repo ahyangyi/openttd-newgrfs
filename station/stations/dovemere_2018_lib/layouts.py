@@ -263,7 +263,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                 cur_plat = h_pos.platform(platform_class, shelter_class)
                 shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
                 platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
-                common_notes = ["noshow"] if shelter_postfix + platform_postfix != "" else []
+                common_notes = ["noshow"] if shelter_postfix + platform_postfix != "_shelter_2" else []
                 sname = f2_name + platform_postfix + shelter_postfix
                 register(
                     ALayout(
@@ -409,7 +409,7 @@ def load(
                 )
             for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
                 shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
-                common_notes = ["noshow"] if platform_postfix + shelter_postfix != "" else []
+                common_notes = ["noshow"] if platform_postfix + shelter_postfix != "_shelter_2" else []
                 sname = pname + shelter_postfix
                 if third:
                     register(
