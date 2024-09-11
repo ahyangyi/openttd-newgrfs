@@ -15,8 +15,9 @@ single = make_row(tiny_untraversable, h_end_gate_untraversable, h_end_untraversa
 semitraversable_stations = []
 for p, pclass in enumerate(platform_classes):
     pclass_desc = "" if pclass == "concrete" else "_" + pclass
-    front = make_front_row(pclass_desc + "_platform")
     for s, sclass in enumerate(shelter_classes):
+        sclass_desc = "" if sclass == "shelter_1" else "_" + sclass
+        front = make_front_row(pclass_desc + sclass_desc + "_platform", fallback_suffix=pclass_desc + "_platform")
         cb24 = make_vertical_switch(
             lambda t, d: 0 if t == 0 or d == 0 else {"n": 2, "f": 4, "d": 6}[determine_platform_odd(t, d)], cb24=True
         )
@@ -26,12 +27,11 @@ for p, pclass in enumerate(platform_classes):
         cb14 = StationTileSwitch(
             "T", fill_odd({0: cb14_0, 2: cb14_2[pclass][sclass], 4: cb14_4[pclass][sclass], 6: cb14_6[pclass][sclass]})
         )
-        if pclass == "concrete" and sclass == "shelter_1":
-            demo_1 = lambda r, c, cb14=cb14, cb24=cb24: cb14.demo(r, c, cb24)
-
         demo_layout = make_demo(cb14, 4, 4, cb24)
         demo_layout.station_id = 0x100 + p * 0x10 + s
-        if p > 0 or s > 0:
+        if pclass == "concrete" and sclass == "shelter_2":
+            demo_1 = lambda r, c, cb14=cb14, cb24=cb24: cb14.demo(r, c, cb24)
+        else:
             demo_layout.notes.append("noshow")
         semitraversable_stations.append(
             AStation(
@@ -64,12 +64,12 @@ for p, pclass in enumerate(platform_classes):
         cb14 = StationTileSwitch(
             "T", fill_odd({0: cb14_0, 2: cb14_2[pclass][sclass], 4: cb14_4[pclass][sclass], 6: cb14_6[pclass][sclass]})
         )
-        if pclass == "concrete" and sclass == "shelter_1":
-            demo_2 = lambda r, c, cb14=cb14, cb24=cb24: cb14.demo(r, c, cb24)
 
         demo_layout = make_demo(cb14, 4, 4, cb24)
         demo_layout.station_id = 0x200 + p * 0x10 + s
-        if p > 0 or s > 0:
+        if pclass == "concrete" and sclass == "shelter_2":
+            demo_2 = lambda r, c, cb14=cb14, cb24=cb24: cb14.demo(r, c, cb24)
+        else:
             demo_layout.notes.append("noshow")
 
         semitraversable_stations.append(
