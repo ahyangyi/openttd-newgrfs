@@ -18,9 +18,9 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0, **common_cb},
             is_waypoint="waypoint" in entry.notes,
+            doc_layout=entry,
         )
     )
-    entry.station_id = 0x1000 + i
 
 the_stations = AMetaStation(
     semitraversable_stations + traversable_stations + side_stations + side_third_stations + modular_stations,
@@ -35,7 +35,7 @@ the_stations = AMetaStation(
         + [x.to_bytes(1, "little") for x in range(0xC0, 0xC8)]
         + [b"\xF0"]
     ],
-    [x for x in flexible_entries + entries if "noshow" not in x.notes],
+    [x for x in modular_stations if "noshow" not in x.doc_layout.notes],
     [
         demos.normal_demo,
         demos.big_demo,
