@@ -131,6 +131,7 @@ pf = CNSPlatformFamily()
 register(pf)
 
 named_tiles.globalize()
+
 station_tiles = []
 for i, entry in enumerate(entries):
     station_tiles.append(

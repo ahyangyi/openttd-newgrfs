@@ -39,8 +39,6 @@ overpass_height = building_height - base_height
 
 gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
-plat = platform_ps.cns
-plat_nt = platform_ps.cns_side
 concourse = concourse_ps[""]
 third = AChildSprite(gray_third, (0, 0))
 third_T = AChildSprite(gray_third.T, (0, 0))

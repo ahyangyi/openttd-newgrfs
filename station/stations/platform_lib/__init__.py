@@ -5,7 +5,7 @@ from ..ground import named_ps as ground_ps
 
 gray_ps = ground_ps.gray
 
-named_ps = AttrDict()
+named_ps = AttrDict(schema=("name", "platform_clas", "rail_facing", "shelter_class", "location"))
 concourse_ps = AttrDict(schema=("platform_class", "side"))
 named_tiles = AttrDict()
 entries = []
@@ -68,7 +68,15 @@ def register(pf: PlatformFamily):
                 for rail_facing in rail_facings:
                     suffix = f"{us(platform_class)}{us(rail_facing)}{us(shelter_class)}{us(location)}"
                     ps = pf.get_sprite(location, rail_facing, platform_class, shelter_class)
-                    named_ps[name + suffix] = ps
+                    named_ps[
+                        (
+                            name,
+                            "" if platform_class == "concrete" else platform_class,
+                            rail_facing,
+                            shelter_class,
+                            location,
+                        )
+                    ] = ps
 
                     for l, make_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
                         if make_symmetrical:
