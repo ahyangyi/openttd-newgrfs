@@ -24,7 +24,7 @@ class AttrDict(dict):
 
     @staticmethod
     def __tuple_to_str(t):
-        return "_".join(a for a in t if a is not None)
+        return "_".join(a for a in t if a is not None and a != "")
 
     def __getitem__(self, key):
         try:
@@ -32,7 +32,7 @@ class AttrDict(dict):
         except KeyError as ke:
             if isinstance(key, str):
                 for k in self.keys():
-                    if instance(k, tuple) and self.__tuple_to_str(k) == key:
+                    if isinstance(k, tuple) and self.__tuple_to_str(k) == key:
                         return self[k]
             raise ke
 

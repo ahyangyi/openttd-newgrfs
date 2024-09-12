@@ -6,6 +6,7 @@ from ..ground import named_ps as ground_ps
 gray_ps = ground_ps.gray
 
 named_ps = AttrDict()
+concourse_ps = AttrDict(schema=("platform_class", "side"))
 named_tiles = AttrDict()
 entries = []
 
@@ -104,7 +105,7 @@ def register(pf: PlatformFamily):
         for side in ["", "d"] if platform_class != "" else [""]:
             concourse_flavor = us(platform_class) + ("_side" if platform_class != "" else "") + us(side)
             ps = pf.get_concourse_sprite(platform_class, side)
-            named_ps[name + concourse_flavor] = ps
+            concourse_ps[(platform_class, side)] = ps
 
             if platform_class == "" or side == "d":
                 symmetry = BuildingSpriteSheetSymmetrical
