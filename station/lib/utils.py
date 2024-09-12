@@ -28,7 +28,7 @@ class AttrDict(dict):
 
     def __getitem__(self, key):
         try:
-            return super().__getitem(key)
+            return super().__getitem__(key)
         except KeyError as ke:
             if isinstance(key, str):
                 for k in self.keys():
