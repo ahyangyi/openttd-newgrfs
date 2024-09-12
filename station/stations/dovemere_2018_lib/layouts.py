@@ -107,6 +107,7 @@ Normal = make_hpos("", "_pillar")
 Side = make_hpos("_building", "_shelter_building")
 SideNarrow = make_hpos("_building", "_shelter_building", True)
 V = make_hpos("", "_shelter_building_v")
+VNarrow = make_hpos("", "_shelter_building_v", True)
 TinyAsym = make_hpos("_central", "_pillar_central")
 
 
@@ -501,8 +502,8 @@ load("h_gate_1", BuildingSpriteSheetFull, "H", asym=True)
 load("h_gate_extender", BuildingSpriteSheetSymmetrical, "H", third=False, platform=False)
 load("h_gate_extender_1", BuildingSpriteSheetSymmetricalX, "H", asym=True)
 
-load("v_end", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V, corridor=False)
-load("v_end_gate", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V, corridor=False)
+load("v_end", BuildingSpriteSheetSymmetricalX, "F0", h_pos=VNarrow, corridor=False)
+load("v_end_gate", BuildingSpriteSheetSymmetricalX, "F0", h_pos=VNarrow, corridor=False)
 load_central("v_central", BuildingSpriteSheetSymmetrical, "N", h_pos=V)
 
 load("tiny", BuildingSpriteSheetSymmetrical, "H", h_pos=V, full=False, platform=False, third=False)

@@ -53,6 +53,8 @@ class CNSPlatformFamily(PlatformFamily):
         else:
             if location == "building_narrow":
                 skeeps = {shelter_class + "_building", "pillar_building"}
+            elif location == "building_v_narrow":
+                skeeps = {shelter_class + "_building_v"}
             else:
                 skeeps = {shelter_class + ("_" if location != "" else "") + location}
                 if platform_class != "" and shelter_class != "pillar" and location == "building":
