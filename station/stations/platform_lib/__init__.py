@@ -11,6 +11,11 @@ entries = []
 
 
 class PlatformFamily(ABC):
+    @property
+    @abstractmethod
+    def name(self):
+        pass
+
     @abstractmethod
     def get_platform_classes(self):
         pass
@@ -38,7 +43,7 @@ def us(s: str):
 def register(pf: PlatformFamily):
     platform_classes = pf.get_platform_classes()
     shelter_classes = pf.get_shelter_classes()
-    name = "cns"  # FIXME
+    name = pf.name
 
     for platform_class in ["np", "cut"] + platform_classes:
         for shelter_class in ["", "pillar"] + shelter_classes:

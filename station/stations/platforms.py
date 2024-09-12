@@ -37,6 +37,10 @@ class CNSPlatformFamily(PlatformFamily):
             load_from="station/files/cns-gorender.json",
         )
 
+    @property
+    def name(self):
+        return "cns"
+
     def get_platform_classes(self):
         return ["concrete", "brick"]
 
