@@ -34,6 +34,9 @@ class AttrDict(dict):
                 for k in self.keys():
                     if isinstance(k, tuple) and self.__tuple_to_str(k) == key:
                         return self[k]
+            elif isinstance(key, dict):
+                k = tuple(key.get(i) for i in self.schema)
+                return self[k]
             raise ke
 
     def globalize(self, **kwargs):

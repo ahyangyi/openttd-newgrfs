@@ -8,6 +8,17 @@ gray_ps = ground_ps.gray
 named_ps = AttrDict(schema=("name", "platform_clas", "rail_facing", "shelter_class", "location"))
 concourse_ps = AttrDict(schema=("platform_class", "side"))
 named_tiles = AttrDict()
+two_side_tiles = AttrDict(
+    schema=(
+        "name",
+        "platform_class",
+        "rail_facing",
+        "shelter_class",
+        "platform_class_2",
+        "rail_facing_2",
+        "shelter_class_2",
+    )
+)
 entries = []
 
 
