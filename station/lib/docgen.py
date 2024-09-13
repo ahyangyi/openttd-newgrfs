@@ -27,12 +27,14 @@ has_children: True
 
         for waypoint in [False, True]:
             if metastation.categories is None:
-                subsections = {None: [x for x in metastation.doc_layouts if ("waypoint" not in x.notes) ^ waypoint]}
+                subsections = {
+                    None: [x for x in metastation.doc_layouts if ("waypoint" not in x.doc_layout.notes) ^ waypoint]
+                }
             else:
                 subsections = {k: [] for k in metastation.categories}
                 for layout in metastation.doc_layouts:
-                    if ("waypoint" not in layout.notes) ^ waypoint:
-                        subsections[layout.category].append(layout)
+                    if ("waypoint" not in layout.doc_layout.notes) ^ waypoint:
+                        subsections[layout.doc_layout.category].append(layout)
 
             if all(len(v) == 0 for v in subsections.values()):
                 continue
@@ -61,10 +63,13 @@ nav_order: {2 if waypoint else 1}
                             cat_name = cat_name.split("-")[-1].strip()
                         cat_name = remove_control_letters(cat_name)
                         print(f"## {cat_name}", file=f)
-                    for layout in sorted(subsections[sub], key=lambda x: x.station_id):
-                        img = layout.graphics(4, 32, remap=get_1cc_remap(CompanyColour.BLUE)).crop().to_pil_image()
-                        if "station_id" in dir(layout):
-                            idstr = f"{layout.station_id:04X}"
+                    for layout in sorted(subsections[sub], key=lambda x: x.id):
+                        img = (
+                            layout.doc_layout.graphics(4, 32, remap=get_1cc_remap(CompanyColour.BLUE))
+                            .crop()
+                            .to_pil_image()
+                        )
+                        idstr = f"{layout.id:04X}"
                         img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{idstr}.png"))
                         print(
                             f"""

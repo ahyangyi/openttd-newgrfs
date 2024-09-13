@@ -28,7 +28,6 @@ for p, pclass in enumerate(platform_classes):
             "T", fill_odd({0: cb14_0, 2: cb14_2[pclass][sclass], 4: cb14_4[pclass][sclass], 6: cb14_6[pclass][sclass]})
         )
         demo_layout = make_demo(cb14, 4, 4, cb24)
-        demo_layout.station_id = 0x100 + p * 0x10 + s
         if pclass == "concrete" and sclass == "shelter_2":
             demo_1 = lambda r, c, cb14=cb14, cb24=cb24: cb14.demo(r, c, cb24)
         else:
@@ -49,6 +48,7 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                doc_layout=demo_layout,
             )
         )
 
@@ -66,7 +66,6 @@ for p, pclass in enumerate(platform_classes):
         )
 
         demo_layout = make_demo(cb14, 4, 4, cb24)
-        demo_layout.station_id = 0x200 + p * 0x10 + s
         if pclass == "concrete" and sclass == "shelter_2":
             demo_2 = lambda r, c, cb14=cb14, cb24=cb24: cb14.demo(r, c, cb24)
         else:
@@ -88,5 +87,6 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                doc_layout=demo_layout,
             )
         )

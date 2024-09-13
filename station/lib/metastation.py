@@ -4,12 +4,12 @@ from .station import AStation
 
 
 class AMetaStation(grf.SpriteGenerator):
-    def __init__(self, stations, class_label, categories, doc_layouts, demos):
+    def __init__(self, stations, class_label, categories, demos):
         super().__init__()
         self.stations = stations
         self.class_label = class_label
         self.categories = categories
-        self.doc_layouts = doc_layouts
+        self.doc_layouts = [x for x in stations if "noshow" not in x.doc_layout.notes]
         self.demos = demos
 
     @property

@@ -39,7 +39,6 @@ for p, pclass in enumerate(platform_classes):
         if pclass == "concrete" and sclass == "shelter_2":
             side_third_station_demo = lambda r, c, cb14=cb14[pclass][sclass]: cb14.demo(r, c)
         demo_layout = make_demo(cb14[pclass][sclass], 4, 1)
-        demo_layout.station_id = 0x800 + p * 0x10 + s
         if p > 0 or s > 0:
             demo_layout.notes.append("noshow")
         side_third_stations.append(
@@ -57,6 +56,7 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                doc_layout=demo_layout,
             )
         )
 
@@ -65,7 +65,6 @@ for p, pclass in enumerate(platform_classes):
         if pclass == "concrete" and sclass == "shelter_2":
             back_side_third_station_demo = lambda r, c, cb14=cb14[pclass][sclass]: cb14.T.demo(r, c)
         demo_layout = make_demo(cb14[pclass][sclass].T, 4, 1)
-        demo_layout.station_id = 0x900 + p * 0x10 + s
         if p > 0 or s > 0:
             demo_layout.notes.append("noshow")
         side_third_stations.append(
@@ -83,6 +82,7 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                doc_layout=demo_layout,
             )
         )
 
@@ -110,7 +110,6 @@ for p, pclass in enumerate(platform_classes):
     if pclass == "concrete":
         side_third_station_np_demo = lambda r, c, cb14=cb14[pclass]: cb14.demo(r, c)
     demo_layout = make_demo(cb14[pclass], 4, 1)
-    demo_layout.station_id = 0x780 + p
     if p > 0:
         demo_layout.notes.append("noshow")
 
@@ -129,6 +128,7 @@ for p, pclass in enumerate(platform_classes):
                 ),
                 **common_cb,
             },
+            doc_layout=demo_layout,
         )
     )
 
@@ -136,7 +136,6 @@ for p, pclass in enumerate(platform_classes):
     if pclass == "concrete":
         back_side_third_station_np_demo = lambda r, c, cb14=cb14[pclass]: cb14.demo(r, c)
     demo_layout = make_demo(cb14[pclass].T, 4, 1)
-    demo_layout.station_id = 0x790 + p
     if p > 0:
         demo_layout.notes.append("noshow")
 
@@ -155,5 +154,6 @@ for p, pclass in enumerate(platform_classes):
                 ),
                 **common_cb,
             },
+            doc_layout=demo_layout,
         )
     )
