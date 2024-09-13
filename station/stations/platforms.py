@@ -13,9 +13,10 @@ from .misc import track_ground
 from station.stations.platform_lib import (
     PlatformFamily,
     register,
-    named_ps,
+    platform_ps,
     concourse_ps,
     named_tiles,
+    two_side_tiles,
     concourse_tiles,
     entries,
 )
@@ -138,10 +139,12 @@ concourse_components = {f"{c}{postfix}" for c in platform_classes for postfix in
 pf = CNSPlatformFamily()
 register(pf)
 
-named_ps.populate()
+platform_ps.populate()
 concourse_ps.populate()
+two_side_tiles.populate()
 concourse_tiles.populate()
 named_tiles.globalize()
+two_side_tiles.globalize()
 concourse_tiles.globalize()
 
 station_tiles = []

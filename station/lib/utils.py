@@ -30,7 +30,9 @@ class AttrDict(dict):
     def populate(self):
         for k in list(self.keys()):
             if isinstance(k, tuple):
-                self[self.__tuple_to_str(k)] = self[k]
+                str_key = self.__tuple_to_str(k)
+                assert str_key not in self, f"populate() conflict! {str_key}"
+                self[str_key] = self[k]
 
     def globalize(self, **kwargs):
         # black magic supplied by ChatGPT, don't ask

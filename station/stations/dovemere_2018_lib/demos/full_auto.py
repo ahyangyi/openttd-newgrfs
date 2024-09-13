@@ -1,12 +1,12 @@
 from station.lib import Demo
 from station.stations.dovemere_2018_lib.layouts import platform_d, platform_n
-from station.stations.platforms import named_tiles as platform_tiles, concourse
+from station.stations.platforms import two_side_tiles, concourse
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import traversable
 from .utils import h_merge
 
-platform_asym = platform_tiles.cns_side_and_shelter_1
+platform_asym = two_side_tiles.cns_concrete_concrete_shelter_1
 
 row_2 = h_merge([traversable.demo_1(i, 2) for i in range(1, 5)], [[platform_asym.T], [platform_asym]])
 v_sep = [[concourse] * len(row_2[0])] * 2

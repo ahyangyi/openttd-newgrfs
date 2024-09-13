@@ -5,7 +5,7 @@ from ..ground import named_ps as ground_ps
 
 gray_ps = ground_ps.gray
 
-named_ps = AttrDict(schema=("name", "platform_clas", "rail_facing", "shelter_class", "location"))
+platform_ps = AttrDict(schema=("name", "platform_clas", "rail_facing", "shelter_class", "location"))
 concourse_ps = AttrDict(schema=("platform_class", "side"))
 named_tiles = AttrDict()
 two_side_tiles = AttrDict(
@@ -86,7 +86,7 @@ def register(pf: PlatformFamily):
                 for rail_facing in rail_facings:
                     suffix = f"{us(platform_class)}{us(rail_facing)}{us(shelter_class)}{us(location)}"
                     ps = pf.get_sprite(location, rail_facing, platform_class, shelter_class)
-                    named_ps[(name, dc(platform_class), rail_facing, shelter_class, location)] = ps
+                    platform_ps[(name, dc(platform_class), rail_facing, shelter_class, location)] = ps
 
                     for l, make_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
                         if make_symmetrical:
@@ -107,23 +107,23 @@ def register(pf: PlatformFamily):
                         if (shelter_class == "" or shelter_class_2 == "" or shelter_class == shelter_class_2) and (
                             (rail_facing, shelter_class) < (rail_facing_2, shelter_class_2)
                         ):
-                            suffix = f"{us(platform_class)}{us(rail_facing)}{us(shelter_class)}"
-                            suffix2 = f"{us(platform_class)}{us(rail_facing_2)}{us(shelter_class_2)}"
+                            suffix = (dc(platform_class), rail_facing, shelter_class)
+                            suffix2 = (dc(platform_class), rail_facing_2, shelter_class_2)
                             cur_symmetry = BuildingSpriteSheetSymmetricalX
                             var = cur_symmetry.get_all_variants(
                                 ALayout(
                                     track_ground,
-                                    [
-                                        named_ps[(name, dc(platform_class), rail_facing, shelter_class, "")],
-                                        named_ps[(name, dc(platform_class), rail_facing_2, shelter_class_2, "")].T,
-                                    ],
+                                    [platform_ps[(name, *suffix, "")], platform_ps[(name, *suffix2, "")].T],
                                     True,
                                 )
                             )
                             l = cur_symmetry.create_variants(var)
                             entries.extend(cur_symmetry.get_all_entries(l))
-                            named_tiles[name + suffix + "_and" + suffix2] = l
-                            named_tiles[name + suffix2 + "_and" + suffix] = l.T
+                            # FIXME merge after removing DC
+                            suffix = (platform_class, rail_facing, shelter_class)
+                            suffix2 = (platform_class, rail_facing_2, shelter_class_2)
+                            two_side_tiles[(name, *suffix, *suffix2)] = l
+                            two_side_tiles[(name, *suffix2, *suffix)] = l.T
 
     for platform_class in [""] + platform_classes:
         for side in ["", "d"] if platform_class != "" else [""]:
@@ -143,7 +143,7 @@ def register(pf: PlatformFamily):
 
             if platform_class != "":
                 for shelter_class in shelter_classes:
-                    shelter = named_ps[(name, "cut", "", shelter_class, "")]
+                    shelter = platform_ps[(name, "cut", "", shelter_class, "")]
                     for l, needs_symmetrical, shelter_side in [
                         ([shelter], False, ""),
                         ([shelter, shelter.T], True, "d"),
