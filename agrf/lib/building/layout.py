@@ -376,6 +376,15 @@ class ALayout:
             assert len(ret) == i + 1, f"{self.parent_sprites}, {i}, {ret}"
         return ret
 
+    def flatten(self):
+        return ALayout(
+            self.ground_sprite,
+            [s for s in self.sorted_parent_sprites],
+            self.traversable,
+            category=self.category,
+            notes=self.notes,
+        )
+
     def to_grf(self, sprite_list):
         return grf.SpriteLayout(
             [s for s in self.ground_sprite.to_grf(sprite_list)]
