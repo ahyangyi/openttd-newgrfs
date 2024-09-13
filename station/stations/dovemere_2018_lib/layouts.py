@@ -20,7 +20,6 @@ from station.stations.platforms import (
     cns_shelter_1_d as platform_d,
     cns_shelter_1 as platform_n,
     cns_side_shelter_1 as platform_s_nt,
-    concourse as concourse_tile,
     platform_height,
     shelter_height,
     platform_width,

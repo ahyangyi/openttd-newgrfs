@@ -10,7 +10,15 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 from .ground import named_ps as ground_ps
 from .misc import track_ground
-from station.stations.platform_lib import PlatformFamily, register, named_ps, concourse_ps, named_tiles, entries
+from station.stations.platform_lib import (
+    PlatformFamily,
+    register,
+    named_ps,
+    concourse_ps,
+    named_tiles,
+    concourse_tiles,
+    entries,
+)
 
 
 gray_ps = ground_ps.gray
@@ -130,7 +138,11 @@ concourse_components = {f"{c}{postfix}" for c in platform_classes for postfix in
 pf = CNSPlatformFamily()
 register(pf)
 
+named_ps.populate()
+concourse_ps.populate()
+concourse_tiles.populate()
 named_tiles.globalize()
+concourse_tiles.globalize()
 
 station_tiles = []
 for i, entry in enumerate(entries):
