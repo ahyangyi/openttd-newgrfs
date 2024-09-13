@@ -15,7 +15,7 @@ from station.stations.platform_lib import (
     register,
     platform_ps,
     concourse_ps,
-    named_tiles,
+    platform_tiles,
     two_side_tiles,
     concourse_tiles,
     entries,
@@ -141,9 +141,10 @@ register(pf)
 
 platform_ps.populate()
 concourse_ps.populate()
+platform_tiles.populate()
 two_side_tiles.populate()
 concourse_tiles.populate()
-named_tiles.globalize()
+platform_tiles.globalize()
 two_side_tiles.globalize()
 concourse_tiles.globalize()
 

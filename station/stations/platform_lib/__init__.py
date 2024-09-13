@@ -7,7 +7,7 @@ gray_ps = ground_ps.gray
 
 platform_ps = AttrDict(schema=("name", "platform_clas", "rail_facing", "shelter_class", "location"))
 concourse_ps = AttrDict(schema=("platform_class", "side"))
-named_tiles = AttrDict()
+platform_tiles = AttrDict(schema=("name", "platform_class", "rail_facing", "shelter_class", "location", "shelter_side"))
 two_side_tiles = AttrDict(
     schema=(
         "name",
@@ -52,13 +52,6 @@ def dc(s: str):
     return s
 
 
-def us(s: str):
-    # FIXME
-    if s == "concrete":
-        return ""
-    return "_" + s if s != "" else s
-
-
 def register(pf: PlatformFamily):
     platform_classes = pf.get_platform_classes()
     shelter_classes = pf.get_shelter_classes()
@@ -84,11 +77,10 @@ def register(pf: PlatformFamily):
 
             for location in locations:
                 for rail_facing in rail_facings:
-                    suffix = f"{us(platform_class)}{us(rail_facing)}{us(shelter_class)}{us(location)}"
                     ps = pf.get_sprite(location, rail_facing, platform_class, shelter_class)
                     platform_ps[(name, dc(platform_class), rail_facing, shelter_class, location)] = ps
 
-                    for l, make_symmetrical, extra_suffix in [([ps], False, ""), ([ps, ps.T], True, "_d")]:
+                    for l, make_symmetrical, shelter_side in [([ps], False, ""), ([ps, ps.T], True, "d")]:
                         if make_symmetrical:
                             cur_symmetry = ps.sprite.symmetry.add_y_symmetry()
                         else:
@@ -97,7 +89,9 @@ def register(pf: PlatformFamily):
                         l = cur_symmetry.create_variants(var)
                         if platform_class not in ["np", "cut"] and shelter_class != "pillar" and location == "":
                             entries.extend(cur_symmetry.get_all_entries(l))
-                        named_tiles[name + suffix + extra_suffix] = l
+                        platform_tiles[
+                            (name, dc(platform_class), rail_facing, shelter_class, location, shelter_side)
+                        ] = l
 
     for platform_class in platform_classes:
         for rail_facing in ["", "side"]:
@@ -127,7 +121,6 @@ def register(pf: PlatformFamily):
 
     for platform_class in [""] + platform_classes:
         for side in ["", "d"] if platform_class != "" else [""]:
-            concourse_flavor = us(platform_class) + ("_side" if platform_class != "" else "") + us(side)
             ps = pf.get_concourse_sprite(platform_class, side)
             concourse_ps[(platform_class, side)] = ps
 

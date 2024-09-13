@@ -1,5 +1,5 @@
 from station.lib import Demo
-from station.stations.platforms import named_tiles as platform_tiles, concourse_tiles, cns_shelter_2, concourse
+from station.stations.platforms import platform_tiles, concourse_tiles, cns_shelter_2, concourse
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import side
