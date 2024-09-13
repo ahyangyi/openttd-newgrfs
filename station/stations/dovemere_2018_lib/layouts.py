@@ -15,11 +15,8 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
-    named_ps as platform_ps,
+    platform_ps,
     concourse_ps,
-    cns_shelter_1_d as platform_d,
-    cns_shelter_1 as platform_n,
-    cns_side_shelter_1 as platform_s_nt,
     platform_height,
     shelter_height,
     platform_width,
