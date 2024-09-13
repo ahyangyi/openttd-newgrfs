@@ -119,7 +119,7 @@ class CustomCropMixin:
 class CustomCropFileSprite(CustomCropMixin, grf.FileSprite):
     def shrink(self):
         return CustomCropFileSprite(
-            file,
+            self.file,
             self.x,
             self.y,
             self.w,
@@ -136,7 +136,15 @@ class CustomCropFileSprite(CustomCropMixin, grf.FileSprite):
 
 
 class CustomCropWithMask(CustomCropMixin, grf.WithMask):
-    pass
+    def shrink(self):
+        return CustomCropWithMask(
+            self.sprite.shrink(),
+            self.mask,
+            name=self.name,
+            mode=self.mode,
+            fixed_crop=self.fixed_crop,
+            crop_amount=self.crop_amount,
+        )
 
 
 def spritesheet_template(
