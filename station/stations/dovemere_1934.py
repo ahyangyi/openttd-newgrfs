@@ -65,13 +65,12 @@ for i, entry in enumerate(entries):
             callbacks={"select_tile_layout": 0, **station_cb["E88A9C0"]},
         )
     )
-    entry.station_id = 0x2000 + i
 
 the_stations = AMetaStation(
     station_tiles,
     b"\xe8\x8a\x9c0",
     None,
-    entries,
+    station_tiles,
     [
         Demo("The building", [[named_tiles.regular]]),
         Demo(
