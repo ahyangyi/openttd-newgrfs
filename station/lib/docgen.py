@@ -27,7 +27,9 @@ has_children: True
 
         for waypoint in [False, True]:
             if metastation.categories is None:
-                subsections = {None: [x for x in metastation.doc_layouts if ("waypoint" not in x.notes) ^ waypoint]}
+                subsections = {
+                    None: [x for x in metastation.doc_layouts if ("waypoint" not in x.doc_layout.notes) ^ waypoint]
+                }
             else:
                 subsections = {k: [] for k in metastation.categories}
                 for layout in metastation.doc_layouts:

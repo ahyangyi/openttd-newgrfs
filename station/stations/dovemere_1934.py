@@ -63,6 +63,7 @@ for i, entry in enumerate(entries):
             class_label=b"\xe8\x8a\x9c0",
             cargo_threshold=40,
             callbacks={"select_tile_layout": 0, **station_cb["E88A9C0"]},
+            doc_layout=entry,
         )
     )
 
