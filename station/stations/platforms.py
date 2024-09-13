@@ -163,15 +163,14 @@ for i, entry in enumerate(entries):
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0},
+            doc_layout=entry,
         )
     )
-    entry.station_id = 0xF000 + i
 
 the_stations = AMetaStation(
     station_tiles,
     b"\xe8\x8a\x9cP",
     None,
-    entries,
     [
         Demo("Platform", [[cns], [cns_d], [cns.T]]),
         Demo("Platform with concrete grounds", [[cns_side], [cns_d], [cns_side.T]]),

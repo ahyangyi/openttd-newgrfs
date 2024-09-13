@@ -71,7 +71,6 @@ the_stations = AMetaStation(
     station_tiles,
     b"\xe8\x8a\x9c0",
     None,
-    station_tiles,
     [
         Demo("The building", [[named_tiles.regular]]),
         Demo(

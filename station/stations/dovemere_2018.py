@@ -35,7 +35,6 @@ the_stations = AMetaStation(
         + [x.to_bytes(1, "little") for x in range(0xC0, 0xC8)]
         + [b"\xF0"]
     ],
-    [x for x in modular_stations if "noshow" not in x.doc_layout.notes],
     [
         demos.normal_demo,
         demos.big_demo,
