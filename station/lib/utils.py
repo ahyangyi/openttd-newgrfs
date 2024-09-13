@@ -17,12 +17,32 @@ def class_label_printable(x):
 
 
 class AttrDict(dict):
-    def __init__(self, *args, **kwargs):
-        super(AttrDict, self).__init__(*args, **kwargs)
+    def __init__(self, *args, prefix=None, schema=None, **kwargs):
+        super().__init__(*args, **kwargs)
         self.__dict__ = self
+        self._prefix = prefix
+        self._schema = schema
 
-    def globalize(self):
+    @staticmethod
+    def __tuple_to_str(t):
+        return "_".join(a for a in t if a is not None and a != "")
+
+    def populate(self):
+        for k in list(self.keys()):
+            if isinstance(k, tuple):
+                self[self.__tuple_to_str(k)] = self[k]
+
+    def globalize(self, **kwargs):
         # black magic supplied by ChatGPT, don't ask
         caller_module = inspect.currentframe().f_back.f_globals
+
         for k, v in self.items():
-            caller_module[k] = v
+            if isinstance(k, str) and len(kwargs) == 0:
+                caller_module[k] = v
+            elif isinstance(k, tuple):
+                if all((kwargs.get(b) is None or a == kwargs.get(b)) for a, b in zip(k, self._schema)):
+                    caller_module[
+                        self.__tuple_to_str(
+                            [self._prefix] + [a for a, b in zip(k, self._schema) if kwargs.get(b) is None]
+                        )
+                    ] = v

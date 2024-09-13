@@ -1,17 +1,12 @@
 from station.lib import Demo
-from station.stations.platforms import (
-    cns_shelter_2_d,
-    cns_shelter_2,
-    concourse,
-    named_tiles as platform_shelter_2_tiles,
-)
+from station.stations.platforms import cns_shelter_2_d, cns_shelter_2, concourse, concourse_tiles
 from station.stations.dovemere_2018_lib.layouts import named_tiles
 from station.stations.misc import default
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 
 named_tiles.globalize()
-nt = platform_shelter_2_tiles.concourse_side_shelter_2
+nt = concourse_tiles.shelter_2
 
 special_demo_cp = Demo(
     "Irregular 7×7 station layout",

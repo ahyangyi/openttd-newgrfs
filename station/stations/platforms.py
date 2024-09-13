@@ -10,7 +10,15 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 from .ground import named_ps as ground_ps
 from .misc import track_ground
-from station.stations.platform_lib import PlatformFamily, register, named_ps, named_tiles, entries
+from station.stations.platform_lib import (
+    PlatformFamily,
+    register,
+    named_ps,
+    concourse_ps,
+    named_tiles,
+    concourse_tiles,
+    entries,
+)
 
 
 gray_ps = ground_ps.gray
@@ -36,6 +44,10 @@ class CNSPlatformFamily(PlatformFamily):
             voxel_getter=lambda path="station/voxels/cns/concourse.vox": path,
             load_from="station/files/cns-gorender.json",
         )
+
+    @property
+    def name(self):
+        return "cns"
 
     def get_platform_classes(self):
         return ["concrete", "brick"]
@@ -126,7 +138,12 @@ concourse_components = {f"{c}{postfix}" for c in platform_classes for postfix in
 pf = CNSPlatformFamily()
 register(pf)
 
+named_ps.populate()
+concourse_ps.populate()
+concourse_tiles.populate()
 named_tiles.globalize()
+concourse_tiles.globalize()
+
 station_tiles = []
 for i, entry in enumerate(entries):
     station_tiles.append(

@@ -16,10 +16,10 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
     named_ps as platform_ps,
+    concourse_ps,
     cns_shelter_1_d as platform_d,
     cns_shelter_1 as platform_n,
     cns_side_shelter_1 as platform_s_nt,
-    concourse as concourse_tile,
     platform_height,
     shelter_height,
     platform_width,
@@ -38,9 +38,7 @@ overpass_height = building_height - base_height
 
 gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
-plat = platform_ps.cns
-plat_nt = platform_ps.cns_side
-concourse = platform_ps.concourse
+concourse = concourse_ps[""]
 third = AChildSprite(gray_third, (0, 0))
 third_T = AChildSprite(gray_third.T, (0, 0))
 
@@ -431,7 +429,7 @@ def load(
                             [
                                 plat_f1 + f1_snow,
                                 h_pos.platform_back_cut(shelter_class).T,
-                                platform_ps[f"concourse{platform_postfix}_side"].T,
+                                concourse_ps[f"{platform_class}"].T,
                             ]
                             + f2_component,
                             False,
