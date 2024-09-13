@@ -19,6 +19,7 @@ two_side_tiles = AttrDict(
         "shelter_class_2",
     )
 )
+concourse_tiles = AttrDict(schema=("platform_class", "side", "shelter_class", "shelter_side"))
 entries = []
 
 
