@@ -215,6 +215,9 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
 
+    def flatten(self):
+        return AParentSprite(self.sprite, (16, 16, 16), (0, 0, 0), self.child_sprites, self.flags)
+
     @property
     def L(self):
         return self
@@ -339,7 +342,7 @@ def is_in_front(a, b):
 
 
 class ALayout:
-    def __init__(self, ground_sprite, parent_sprites, traversable, category=None, notes=None):
+    def __init__(self, ground_sprite, parent_sprites, traversable, category=None, notes=None, flattened=False):
         if ground_sprite is None:
             from station.stations.misc import empty_ground
 
@@ -349,6 +352,7 @@ class ALayout:
         self.traversable = traversable
         self.category = category
         self.notes = notes or []
+        self.flattened = flattened
 
     @property
     def sorted_parent_sprites(self):
@@ -379,16 +383,21 @@ class ALayout:
     def flatten(self):
         return ALayout(
             self.ground_sprite,
-            [s for s in self.sorted_parent_sprites],
+            [s.flatten() for s in self.sorted_parent_sprites],
             self.traversable,
             category=self.category,
             notes=self.notes,
+            flattened=True,
         )
 
     def to_grf(self, sprite_list):
+        if self.flattened:
+            parent_sprites = self.parent_sprites
+        else:
+            parent_sprites = self.sorted_parent_sprites
         return grf.SpriteLayout(
             [s for s in self.ground_sprite.to_grf(sprite_list)]
-            + [s for sprite in self.sorted_parent_sprites for s in sprite.to_grf(sprite_list)]
+            + [s for sprite in parent_sprites for s in sprite.to_grf(sprite_list)]
         )
 
     def to_action2(self, feature, sprite_list):
