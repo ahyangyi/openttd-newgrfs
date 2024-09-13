@@ -1,7 +1,7 @@
 import numpy as np
 import grf
 import math
-from .misc import SCALE_TO_ZOOM
+from .misc import SCALE_TO_ZOOM, ZOOM_TO_SCALE
 
 THIS_FILE = grf.PythonFile(__file__)
 
@@ -66,7 +66,9 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
         return f"LazyAlternativeSprites<{self.voxel.name}:{self.part}>"
 
     def shrink(self):
-        return LazyAlternativeSprites(self.voxel, self.part, [x.shrink() for x in self.sprites])
+        return LazyAlternativeSprites(
+            self.voxel, self.part, *[x.shrink() for x in self.sprites if ZOOM_TO_SCALE[x.zoom] < 4]
+        )
 
 
 class CustomCropMixin:
@@ -126,7 +128,7 @@ class CustomCropFileSprite(CustomCropMixin, grf.FileSprite):
             self.h,
             xofs=self.xofs,
             yofs=self.yofs,
-            zoom=self.zoom,
+            zoom=SCALE_TO_ZOOM[ZOOM_TO_SCALE[self.zoom] * 2],
             bpp=self.bpp,
             crop=self.crop,
             name=self.name,
