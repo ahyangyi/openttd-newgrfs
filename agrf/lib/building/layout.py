@@ -217,6 +217,15 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
 
     def pushdown(self):
         x, y, z = self.offset
+        for i in range(4):
+            if z > 0:
+                z -= 2
+            else:
+                if x < 16 and y < 16:
+                    x += 1
+                    y += 1
+                else:
+                    raise ValueError(f"Failed to push down in the {i}th step")
         return AParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
 
     @property
