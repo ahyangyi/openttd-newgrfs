@@ -10,7 +10,16 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 from .ground import named_ps as ground_ps
 from .misc import track_ground
-from station.stations.platform_lib import PlatformFamily, register, named_ps, named_tiles, entries
+from station.stations.platform_lib import (
+    PlatformFamily,
+    register,
+    platform_ps,
+    concourse_ps,
+    platform_tiles,
+    two_side_tiles,
+    concourse_tiles,
+    entries,
+)
 
 
 gray_ps = ground_ps.gray
@@ -37,6 +46,10 @@ class CNSPlatformFamily(PlatformFamily):
             load_from="station/files/cns-gorender.json",
         )
 
+    @property
+    def name(self):
+        return "cns"
+
     def get_platform_classes(self):
         return ["concrete", "brick"]
 
@@ -51,17 +64,22 @@ class CNSPlatformFamily(PlatformFamily):
         if shelter_class == "":
             skeeps = set()
         else:
-            skeeps = {shelter_class + ("_" if location != "" else "") + location}
-            if platform_class != "" and shelter_class != "pillar" and location == "building":
-                skeeps.add("escalator")
-            if platform_class != "" and shelter_class != "pillar" and location == "building_v":
-                skeeps.add("escalator_v")
+            if location == "building_narrow":
+                skeeps = {shelter_class + "_building", "pillar_building"}
+            elif location == "building_v_narrow":
+                skeeps = {shelter_class + "_building_v"}
+            else:
+                skeeps = {shelter_class + ("_" if location != "" else "") + location}
+                if platform_class != "" and shelter_class != "pillar" and location == "building":
+                    skeeps.add("escalator")
+                if platform_class != "" and shelter_class != "pillar" and location == "building_v":
+                    skeeps.add("escalator_v")
 
         v2 = self.v.discard_layers(
             tuple(sorted(tuple(platform_components - pkeeps) + tuple(shelter_components - skeeps))),
             f"subset_{platform_class}_{rail_facing}_{shelter_class}_{location}",
         )
-        if location == "building":
+        if location in ["building", "building_narrow"]:
             symmetry = BuildingSpriteSheetFull
         else:
             symmetry = BuildingSpriteSheetSymmetricalX
@@ -121,7 +139,15 @@ concourse_components = {f"{c}{postfix}" for c in platform_classes for postfix in
 pf = CNSPlatformFamily()
 register(pf)
 
-named_tiles.globalize()
+platform_ps.populate()
+concourse_ps.populate()
+platform_tiles.populate()
+two_side_tiles.populate()
+concourse_tiles.populate()
+platform_tiles.globalize()
+two_side_tiles.globalize()
+concourse_tiles.globalize()
+
 station_tiles = []
 for i, entry in enumerate(entries):
     station_tiles.append(
@@ -137,15 +163,14 @@ for i, entry in enumerate(entries):
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0},
+            doc_layout=entry,
         )
     )
-    entry.station_id = 0xF000 + i
 
 the_stations = AMetaStation(
     station_tiles,
     b"\xe8\x8a\x9cP",
     None,
-    entries,
     [
         Demo("Platform", [[cns], [cns_d], [cns.T]]),
         Demo("Platform with concrete grounds", [[cns_side], [cns_d], [cns_side.T]]),
