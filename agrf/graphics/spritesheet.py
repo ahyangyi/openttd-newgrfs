@@ -65,11 +65,6 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
     def __repr__(self):
         return f"LazyAlternativeSprites<{self.voxel.name}:{self.part}>"
 
-    def shrink(self):
-        return LazyAlternativeSprites(
-            self.voxel, self.part, *[x.shrink() for x in self.sprites if ZOOM_TO_SCALE[x.zoom] < 4]
-        )
-
 
 class CustomCropMixin:
     def __init__(self, *args, fixed_crop=False, crop_amount=(0, 0), **kw):
@@ -119,34 +114,11 @@ class CustomCropMixin:
 
 
 class CustomCropFileSprite(CustomCropMixin, grf.FileSprite):
-    def shrink(self):
-        return CustomCropFileSprite(
-            self.file,
-            self.x,
-            self.y,
-            self.w,
-            self.h,
-            xofs=self.xofs,
-            yofs=self.yofs,
-            zoom=SCALE_TO_ZOOM[ZOOM_TO_SCALE[self.zoom] * 2],
-            bpp=self.bpp,
-            crop=self.crop,
-            name=self.name,
-            fixed_crop=self.fixed_crop,
-            crop_amount=self.crop_amount,
-        )
+    pass
 
 
 class CustomCropWithMask(CustomCropMixin, grf.WithMask):
-    def shrink(self):
-        return CustomCropWithMask(
-            self.sprite.shrink(),
-            self.mask,
-            name=self.name,
-            mode=self.mode,
-            fixed_crop=self.fixed_crop,
-            crop_amount=self.crop_amount,
-        )
+    pass
 
 
 def spritesheet_template(

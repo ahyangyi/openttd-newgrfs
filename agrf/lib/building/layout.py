@@ -215,10 +215,9 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
 
-    def shrink(self):
-        return AParentSprite(
-            self.sprite.shrink(), (16, 16, 16), (0, 0, 0), [x.shrink() for x in self.child_sprites], self.flags
-        )
+    def pushdown(self):
+        x, y, z = self.offset
+        return AParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
 
     @property
     def L(self):
@@ -304,8 +303,8 @@ class AChildSprite(RegistersMixin, CachedFunctorMixin):
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 
-    def shrink(self):
-        return AChildSprite(self.sprite.shrink(), self.offset, flags=self.flags)
+    def pushdown(self):
+        return AChildSprite(self.sprite.pushdown(), self.offset, flags=self.flags)
 
     def fmap(self, f):
         return AChildSprite(f(self.sprite), self.offset, flags=self.flags)
@@ -385,10 +384,10 @@ class ALayout:
             assert len(ret) == i + 1, f"{self.parent_sprites}, {i}, {ret}"
         return ret
 
-    def shrink(self):
+    def pushdown(self):
         return ALayout(
             self.ground_sprite,
-            [s.shrink() for s in self.sorted_parent_sprites],
+            [s.pushdown() for s in self.sorted_parent_sprites],
             self.traversable,
             category=self.category,
             notes=self.notes,
