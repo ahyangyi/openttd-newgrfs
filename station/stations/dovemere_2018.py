@@ -1,8 +1,8 @@
 from station.lib import AStation, AMetaStation
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos, common_cb
-from .dovemere_2018_lib.objects import objects, object_doc_layouts
-from .dovemere_2018_lib.roadstops import roadstops, roadstop_doc_layouts
+from .dovemere_2018_lib.objects import objects
+from .dovemere_2018_lib.roadstops import roadstops
 from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_stations
 from .dovemere_2018_lib.flexible_stations.traversable import traversable_stations
 from .dovemere_2018_lib.flexible_stations.side import side_stations
@@ -20,9 +20,9 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0, **common_cb},
             is_waypoint="waypoint" in entry.notes,
+            doc_layout=entry,
         )
     )
-    entry.station_id = 0x1000 + i
 
 the_stations = AMetaStation(
     semitraversable_stations
@@ -44,7 +44,6 @@ the_stations = AMetaStation(
         + [b"\xF0"]
         + [b"R", b"Z"]
     ],
-    [x for x in flexible_entries + entries if "noshow" not in x.notes] + object_doc_layouts + roadstop_doc_layouts,
     [
         demos.normal_demo,
         demos.big_demo,

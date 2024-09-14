@@ -15,7 +15,6 @@ from roadstop.lib import ARoadStop
 from station.lib import ALayout
 from ..misc import road_ground
 
-roadstop_doc_layouts = []
 roadstops = []
 
 
@@ -42,8 +41,6 @@ for name, sym in [
             layouts=[cur, cur.R.M, cur.T.R, cur.T.M],
             general_flags=0x8,
             class_label=b"\xe8\x8a\x9cR",
+            doc_layout=cur,
         )
-        # FIXME doesn't need thiz
-        cur.station_id = 0xF000 + len(roadstops)
-        roadstop_doc_layouts.append(cur)
         roadstops.append(cur_roadstop)

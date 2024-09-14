@@ -1,12 +1,11 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import named_tiles, platform_d, platform_n
-from station.stations.platforms import cns_shelter_2, cns_shelter_2_d
-from station.stations.platforms import named_tiles as platform_tiles
+from station.stations.dovemere_2018_lib.layouts import named_tiles
+from station.stations.platforms import cns_shelter_2, cns_shelter_2_d, concourse_tiles
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 
 named_tiles.globalize()
-nt = platform_tiles.concourse_side_shelter_2
+nt = concourse_tiles.shelter_2
 
 rail_row = [nt.T.M, cns_shelter_2.M, cns_shelter_2.T.M, cns_shelter_2_d.M, cns_shelter_2.M, cns_shelter_2.T.M, nt.M]
 top_building = [

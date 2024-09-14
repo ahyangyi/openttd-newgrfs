@@ -15,7 +15,6 @@ from grfobject.lib import AObject
 from station.lib import ALayout
 from .layouts import solid_ground
 
-object_doc_layouts = []
 objects = []
 
 for name, sym in [("west_plaza_center", BuildingSpriteSheetSymmetrical)]:
@@ -45,8 +44,6 @@ for name, sym in [("west_plaza_center", BuildingSpriteSheetSymmetrical)]:
             end_of_life_date=0,
             height=1,
             flags=grf.Object.Flags.ONLY_IN_GAME,
+            doc_layout=cur,
         )
-        # FIXME doesn't need thiz
-        cur.station_id = 0xE000 + len(objects)
-        object_doc_layouts.append(cur)
         objects.append(cur_object)

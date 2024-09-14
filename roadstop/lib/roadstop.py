@@ -4,7 +4,7 @@ from agrf.magic import Switch
 
 
 class ARoadStop(grf.SpriteGenerator):
-    def __init__(self, *, id, translation_name, layouts, callbacks=None, **props):
+    def __init__(self, *, id, translation_name, layouts, callbacks=None, doc_layout=None, **props):
         super().__init__()
         self.id = id
         self.translation_name = translation_name
@@ -12,6 +12,7 @@ class ARoadStop(grf.SpriteGenerator):
         if callbacks is None:
             callbacks = {}
         self.callbacks = grf.make_callback_manager(grf.ROAD_STOP, callbacks)
+        self.doc_layout = doc_layout
         self._props = props
 
     @property
