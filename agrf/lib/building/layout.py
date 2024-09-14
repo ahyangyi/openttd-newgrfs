@@ -391,8 +391,10 @@ class ALayout:
         return ret
 
     def pushdown(self):
+        from station.stations.misc import empty_ground
+
         return ALayout(
-            self.ground_sprite,
+            empty_ground,
             [s.pushdown() for s in self.sorted_parent_sprites],
             self.traversable,
             category=self.category,
