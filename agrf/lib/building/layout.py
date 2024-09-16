@@ -41,7 +41,10 @@ class GroundSpriteMixin:
 
 
 class BoundingBoxMixin:
-    pass
+    def __init__(self, extent, offset, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extent = extent
+        self.offset = offset
 
 
 class DefaultSpriteMixin:
@@ -195,12 +198,9 @@ class AGroundSprite(ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixi
         return AGroundSprite(self.sprite, child_sprites=self.child_sprites + [child_sprite], flags=self.flags.copy())
 
 
-# XXX Rewrite with mixins
-class ADefaultParentSprite(DefaultSpriteMixin, ChildSpriteContainerMixin, RegistersMixin):
+class ADefaultParentSprite(DefaultSpriteMixin, BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin):
     def __init__(self, sprite, extent, offset, child_sprites=None, flags=None):
-        super().__init__(sprite, child_sprites=child_sprites, flags=flags)
-        self.extent = extent
-        self.offset = offset
+        super().__init__(sprite, extent, offset, child_sprites=child_sprites, flags=flags)
 
     def __repr__(self):
         return f"<ADefaultParentSprite:{self.sprite}:{self.extent}:{self.offset}>"
@@ -277,12 +277,10 @@ class ADefaultParentSprite(DefaultSpriteMixin, ChildSpriteContainerMixin, Regist
         )
 
 
-class AParentSprite(ChildSpriteContainerMixin, RegistersMixin):
+class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin):
     def __init__(self, sprite, extent, offset, child_sprites=None, flags=None):
-        super().__init__(child_sprites=child_sprites, flags=flags)
+        super().__init__(extent, offset, child_sprites=child_sprites, flags=flags)
         self.sprite = sprite
-        self.extent = extent
-        self.offset = offset
 
     def __repr__(self):
         return f"<AParentSprite:{self.sprite}:{self.extent}:{self.offset}>"
