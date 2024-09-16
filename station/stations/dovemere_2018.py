@@ -13,7 +13,7 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
         AStation(
             id=0x1000 + i,
             translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
-            layouts=[entry, entry.M, entry.pushdown(8), entry.M.pushdown(8)],
+            layouts=[entry, entry.M, entry.pushdown(9), entry.M.pushdown(9)],
             class_label=entry.category,
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
