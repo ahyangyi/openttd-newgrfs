@@ -21,6 +21,13 @@ class Switch(CachedFunctorMixin, grf.Switch):
 
     # FIXME: should probably be refactored into something more general
     # and not rely on everything else implementing `get_default_graphics`
-    # But that'll happen after LazyVoxel refactor
     def get_default_graphics(self):
         return self.default.get_default_graphics()
+
+
+class DualCallback(CachedFunctorMixin, grf.DualCallback):
+    def __init__(self, default, purchase=None):
+        super().__init__(default, purchase)
+
+    def fmap(self, f):
+        return DualCallback(f(self.default), f(self.purchase) if self.purchase is not None else None)

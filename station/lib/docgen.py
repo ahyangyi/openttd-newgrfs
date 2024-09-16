@@ -9,8 +9,8 @@ def gen_docs(string_manager, metastations):
     for i, metastation in enumerate(metastations):
         metastation_label = metastation.class_label_plain
         translation = get_translation(string_manager[f"STR_METASTATION_CLASS_{metastation_label}"], 0x7F)
-        os.makedirs(os.path.join(prefix, "img", metastation_label, "layouts"), exist_ok=True)
-        os.makedirs(os.path.join(prefix, "img", metastation_label, "tiles"), exist_ok=True)
+        for subdirectory in ["layouts", "stations", "waypoints"]:
+            os.makedirs(os.path.join(prefix, "img", metastation_label, subdirectory), exist_ok=True)
 
         with open(os.path.join(prefix, f"{metastation_label}.md"), "w") as f:
             print(
@@ -26,13 +26,16 @@ has_children: True
             )
 
         for waypoint in [False, True]:
+            subdirectory = "waypoints" if waypoint else "stations"
             if metastation.categories is None:
-                subsections = {None: [x for x in metastation.doc_layouts if ("waypoint" not in x.notes) ^ waypoint]}
+                subsections = {
+                    None: [x for x in metastation.doc_layouts if ("waypoint" not in x.doc_layout.notes) ^ waypoint]
+                }
             else:
                 subsections = {k: [] for k in metastation.categories}
                 for layout in metastation.doc_layouts:
-                    if ("waypoint" not in layout.notes) ^ waypoint:
-                        subsections[layout.category].append(layout)
+                    if ("waypoint" not in layout.doc_layout.notes) ^ waypoint:
+                        subsections[layout.doc_layout.category].append(layout)
 
             if all(len(v) == 0 for v in subsections.values()):
                 continue
@@ -61,15 +64,18 @@ nav_order: {2 if waypoint else 1}
                             cat_name = cat_name.split("-")[-1].strip()
                         cat_name = remove_control_letters(cat_name)
                         print(f"## {cat_name}", file=f)
-                    for layout in sorted(subsections[sub], key=lambda x: x.station_id):
-                        img = layout.graphics(4, 32, remap=get_1cc_remap(CompanyColour.BLUE)).crop().to_pil_image()
-                        if "station_id" in dir(layout):
-                            idstr = f"{layout.station_id:04X}"
-                        img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{idstr}.png"))
+                    for layout in sorted(subsections[sub], key=lambda x: x.id):
+                        img = (
+                            layout.doc_layout.graphics(4, 32, remap=get_1cc_remap(CompanyColour.BLUE))
+                            .crop()
+                            .to_pil_image()
+                        )
+                        idstr = f"{layout.id:04X}"
+                        img.save(os.path.join(prefix, "img", f"{metastation_label}/{subdirectory}/{idstr}.png"))
                         print(
                             f"""
 <figure style="display:inline-block">
-  <img src="img/{metastation_label}/tiles/{idstr}.png" alt="{idstr}" width="64"/>
+  <img src="img/{metastation_label}/{subdirectory}/{idstr}.png" alt="{idstr}" width="64"/>
   <figcaption style="text-align:center">{idstr}</figcaption>
 </figure>
 """,

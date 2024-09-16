@@ -1,6 +1,5 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import concourse_tile
-from station.stations.platforms import cns_shelter_2
+from station.stations.platforms import cns_shelter_2, concourse
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import side_third
@@ -18,8 +17,8 @@ side_third_np_auto_demo = Demo(
         [cns_shelter_2.T] * n,
         [cns_shelter_2] * n,
         station_building,
-        [concourse_tile] * n,
-        [concourse_tile] * n,
+        [concourse] * n,
+        [concourse] * n,
         [x.T for x in station_building_2],
         [cns_shelter_2.T] * n,
         [cns_shelter_2] * n,
