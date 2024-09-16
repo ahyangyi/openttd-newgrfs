@@ -220,9 +220,9 @@ class ADefaultParentSprite(DefaultSpriteMixin, ChildSpriteContainerMixin, Regist
             {"sprite": grf.SpriteRef(self.sprite, is_global=True), "offset": self.offset, "extent": self.extent}
         ] + [s for x in self.child_sprites for s in x.to_action2(sprite_list)]
 
-    def pushdown(self):
+    def pushdown(self, steps):
         x, y, z = self.offset
-        for i in range(8):
+        for i in range(steps):
             if z >= 2:
                 z -= 2
             else:
@@ -316,9 +316,9 @@ class AParentSprite(ChildSpriteContainerMixin, RegistersMixin):
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
 
-    def pushdown(self):
+    def pushdown(self, steps):
         x, y, z = self.offset
-        for i in range(8):
+        for i in range(steps):
             if z >= 2:
                 z -= 2
             else:
@@ -410,8 +410,8 @@ class AChildSprite(RegistersMixin, CachedFunctorMixin):
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 
-    def pushdown(self):
-        return AChildSprite(self.sprite.pushdown(), self.offset, flags=self.flags)
+    def pushdown(self, steps):
+        return AChildSprite(self.sprite.pushdown(steps), self.offset, flags=self.flags)
 
     def fmap(self, f):
         return AChildSprite(f(self.sprite), self.offset, flags=self.flags)
@@ -491,12 +491,12 @@ class ALayout:
             assert len(ret) == i + 1, f"{self.parent_sprites}, {i}, {ret}"
         return ret
 
-    def pushdown(self):
+    def pushdown(self, steps):
         from station.stations.misc import empty_ground
 
         return ALayout(
             empty_ground,
-            [s.pushdown() for s in [self.ground_sprite.to_parentsprite()] + self.sorted_parent_sprites],
+            [s.pushdown(steps) for s in [self.ground_sprite.to_parentsprite()] + self.sorted_parent_sprites],
             self.traversable,
             category=self.category,
             notes=self.notes,
