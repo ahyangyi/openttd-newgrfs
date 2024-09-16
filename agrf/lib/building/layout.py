@@ -6,7 +6,7 @@ from agrf.magic import CachedFunctorMixin
 from agrf.utils import unique_tuple
 
 
-class ParentSpriteMixin:
+class ChildSpriteContainerMixin:
     def __init__(self, *args, child_sprites=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.child_sprites = child_sprites or []
@@ -36,24 +36,26 @@ class RegistersMixin:
         }
 
 
-class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin):
-    def __init__(self, sprite, child_sprites=None, flags=None):
-        super().__init__(child_sprites=child_sprites, flags=flags)
+class GroundSpriteMixin:
+    pass
+
+
+class BoundingBoxMixin:
+    pass
+
+
+class DefaultSpriteMixin:
+    def __init__(self, sprite, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         assert isinstance(sprite, int)
         self.sprite = sprite
 
-    def parent_to_grf(self, sprite_list):
-        return grf.GroundSprite(
-            sprite=grf.SpriteRef(
-                id=self.sprite,
-                pal=0,
-                is_global=True,
-                use_recolour=False,
-                always_transparent=False,
-                no_transparent=False,
-            ),
-            **self.registers_to_grf_dict(),
-        )
+    climate_dependent_tiles = {
+        (climate, k): Image.open(f"third_party/opengfx2/{climate}/{k}.png")
+        for climate in ["temperate", "arctic", "tropical", "toyland"]
+        for k in [1011, 1012, 1037, 1038, 3981, 4550]
+    }
+    climate_independent_tiles = {k: Image.open(f"third_party/opengfx2/{k}.png") for k in [1313, 1314, 1420]}
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         # FIXME handle flags correctly
@@ -72,6 +74,27 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin
             ret.resize(64, 31)
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
+
+
+class ADefaultGroundSprite(DefaultSpriteMixin, ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixin):
+    def __init__(self, sprite, child_sprites=None, flags=None):
+        super().__init__(sprite, child_sprites=child_sprites, flags=flags)
+
+    def parent_to_grf(self, sprite_list):
+        return grf.GroundSprite(
+            sprite=grf.SpriteRef(
+                id=self.sprite,
+                pal=0,
+                is_global=True,
+                use_recolour=False,
+                always_transparent=False,
+                no_transparent=False,
+            ),
+            **self.registers_to_grf_dict(),
+        )
+
+    def to_parentsprite(self):
+        return ADefaultParentSprite(self.sprite, (16, 16, 1), (0, 0, 0))
 
     def to_action2(self, sprite_list):
         return [{"sprite": grf.SpriteRef(self.sprite, is_global=True)}] + [
@@ -92,13 +115,6 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin
             flags=self.flags,
         )
 
-    climate_dependent_tiles = {
-        (climate, k): Image.open(f"third_party/opengfx2/{climate}/{k}.png")
-        for climate in ["temperate", "arctic", "tropical", "toyland"]
-        for k in [1011, 1012, 1037, 1038, 3981, 4550]
-    }
-    climate_independent_tiles = {k: Image.open(f"third_party/opengfx2/{k}.png") for k in [1313, 1314, 1420]}
-
     @property
     def sprites(self):
         return self.sprites_from_child
@@ -117,7 +133,7 @@ class ADefaultGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin
         )
 
 
-class AGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin):
+class AGroundSprite(ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixin):
     def __init__(self, sprite, alternatives=None, child_sprites=None, flags=None):
         super().__init__(child_sprites=child_sprites, flags=flags)
         self.sprite = sprite
@@ -135,6 +151,9 @@ class AGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin):
             ),
             **self.registers_to_grf_dict(),
         )
+
+    def to_parentsprite(self):
+        return AParentSprite(self.sprite, (16, 16, 1), (0, 0, 0), flags=self.flags)
 
     def to_action2(self, sprite_list):
         return [{"sprite": grf.SpriteRef(sprite_list.index(self.sprite), is_global=False)}] + [
@@ -176,7 +195,89 @@ class AGroundSprite(ParentSpriteMixin, RegistersMixin, CachedFunctorMixin):
         return AGroundSprite(self.sprite, child_sprites=self.child_sprites + [child_sprite], flags=self.flags.copy())
 
 
-class AParentSprite(ParentSpriteMixin, RegistersMixin):
+# XXX Rewrite with mixins
+class ADefaultParentSprite(DefaultSpriteMixin, ChildSpriteContainerMixin, RegistersMixin):
+    def __init__(self, sprite, extent, offset, child_sprites=None, flags=None):
+        super().__init__(sprite, child_sprites=child_sprites, flags=flags)
+        self.extent = extent
+        self.offset = offset
+
+    def __repr__(self):
+        return f"<ADefaultParentSprite:{self.sprite}:{self.extent}:{self.offset}>"
+
+    def parent_to_grf(self, sprite_list):
+        return grf.ParentSprite(
+            sprite=grf.SpriteRef(
+                id=self.sprite, pal=0, is_global=True, use_recolour=True, always_transparent=False, no_transparent=False
+            ),
+            extent=self.extent,
+            offset=self.offset,
+            **self.registers_to_grf_dict(),
+        )
+
+    def to_action2(self, sprite_list):
+        return [
+            {"sprite": grf.SpriteRef(self.sprite, is_global=True), "offset": self.offset, "extent": self.extent}
+        ] + [s for x in self.child_sprites for s in x.to_action2(sprite_list)]
+
+    def pushdown(self, steps):
+        x, y, z = self.offset
+        for i in range(steps):
+            if z >= 2:
+                z -= 2
+            else:
+                x += 1
+                y += 1
+        return ADefaultParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
+
+    @property
+    def L(self):
+        return self
+
+    @property
+    def M(self):
+        mirror = lambda x: (x[1], x[0], x[2])
+        return ADefaultParentSprite(
+            self.sprite.M,
+            mirror(self.extent),
+            mirror(self.offset),
+            child_sprites=[c.M for c in self.child_sprites],
+            flags=self.flags,
+        )
+
+    @property
+    def R(self):
+        new_offset = (16 - self.offset[0] - self.extent[0], self.offset[1], self.offset[2])
+        return ADefaultParentSprite(
+            self.sprite.R, self.extent, new_offset, child_sprites=[c.R for c in self.child_sprites], flags=self.flags
+        )
+
+    @property
+    def T(self):
+        new_offset = (self.offset[0], 16 - self.offset[1] - self.extent[1], self.offset[2])
+        return ADefaultParentSprite(
+            self.sprite.T, self.extent, new_offset, child_sprites=[c.T for c in self.child_sprites], flags=self.flags
+        )
+
+    @property
+    def sprites(self):
+        return self.sprites_from_child
+
+    def get_fingerprint(self):
+        return {"parent_sprite": self.sprite, "extent": self.extent, "offset": self.offset}
+
+    def get_resource_files(self):
+        return []
+
+    def __add__(self, child_sprite):
+        if child_sprite is None:
+            return self
+        return ADefaultParentSprite(
+            self.sprite, self.extent, self.offset, child_sprites=self.child_sprites + [child_sprite], flags=self.flags
+        )
+
+
+class AParentSprite(ChildSpriteContainerMixin, RegistersMixin):
     def __init__(self, sprite, extent, offset, child_sprites=None, flags=None):
         super().__init__(child_sprites=child_sprites, flags=flags)
         self.sprite = sprite
@@ -214,6 +315,16 @@ class AParentSprite(ParentSpriteMixin, RegistersMixin):
         ret = LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)).copy()
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
+
+    def pushdown(self, steps):
+        x, y, z = self.offset
+        for i in range(steps):
+            if z >= 2:
+                z -= 2
+            else:
+                x += 1
+                y += 1
+        return AParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
 
     @property
     def L(self):
@@ -299,6 +410,9 @@ class AChildSprite(RegistersMixin, CachedFunctorMixin):
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 
+    def pushdown(self, steps):
+        return AChildSprite(self.sprite.pushdown(steps), self.offset, flags=self.flags)
+
     def fmap(self, f):
         return AChildSprite(f(self.sprite), self.offset, flags=self.flags)
 
@@ -339,7 +453,7 @@ def is_in_front(a, b):
 
 
 class ALayout:
-    def __init__(self, ground_sprite, parent_sprites, traversable, category=None, notes=None):
+    def __init__(self, ground_sprite, parent_sprites, traversable, category=None, notes=None, flattened=False):
         if ground_sprite is None:
             from station.stations.misc import empty_ground
 
@@ -349,6 +463,7 @@ class ALayout:
         self.traversable = traversable
         self.category = category
         self.notes = notes or []
+        self.flattened = flattened
 
     @property
     def sorted_parent_sprites(self):
@@ -376,10 +491,26 @@ class ALayout:
             assert len(ret) == i + 1, f"{self.parent_sprites}, {i}, {ret}"
         return ret
 
+    def pushdown(self, steps):
+        from station.stations.misc import empty_ground
+
+        return ALayout(
+            empty_ground,
+            [s.pushdown(steps) for s in [self.ground_sprite.to_parentsprite()] + self.sorted_parent_sprites],
+            self.traversable,
+            category=self.category,
+            notes=self.notes,
+            flattened=True,
+        )
+
     def to_grf(self, sprite_list):
+        if self.flattened:
+            parent_sprites = self.parent_sprites
+        else:
+            parent_sprites = self.sorted_parent_sprites
         return grf.SpriteLayout(
             [s for s in self.ground_sprite.to_grf(sprite_list)]
-            + [s for sprite in self.sorted_parent_sprites for s in sprite.to_grf(sprite_list)]
+            + [s for sprite in parent_sprites for s in sprite.to_grf(sprite_list)]
         )
 
     def to_action2(self, feature, sprite_list):
