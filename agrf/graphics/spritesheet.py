@@ -67,7 +67,7 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
 
     def shrink(self):
         return LazyAlternativeSprites(
-            self.voxel, self.part, *[x.shrink() for x in self.sprites if ZOOM_TO_SCALE[x.zoom] < 4]
+            self.voxel, self.part, *[x.shrink() for x in self.sprites if ZOOM_TO_SCALE[x.zoom] < 2]
         )
 
 
