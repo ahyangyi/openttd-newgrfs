@@ -36,10 +36,10 @@ side_third_stations = []
 
 for p, pclass in enumerate(platform_classes):
     for s, sclass in enumerate(shelter_classes):
+        demo_layout = make_demo(cb14[pclass][sclass], 4, 1)
         if pclass == "concrete" and sclass == "shelter_2":
             side_third_station_demo = lambda r, c, cb14=cb14[pclass][sclass]: cb14.demo(r, c)
-        demo_layout = make_demo(cb14[pclass][sclass], 4, 1)
-        if p > 0 or s > 0:
+        else:
             demo_layout.notes.append("noshow")
         side_third_stations.append(
             AStation(
@@ -62,10 +62,10 @@ for p, pclass in enumerate(platform_classes):
 
 for p, pclass in enumerate(platform_classes):
     for s, sclass in enumerate(shelter_classes):
+        demo_layout = make_demo(cb14[pclass][sclass].T, 4, 1)
         if pclass == "concrete" and sclass == "shelter_2":
             back_side_third_station_demo = lambda r, c, cb14=cb14[pclass][sclass]: cb14.T.demo(r, c)
-        demo_layout = make_demo(cb14[pclass][sclass].T, 4, 1)
-        if p > 0 or s > 0:
+        else:
             demo_layout.notes.append("noshow")
         side_third_stations.append(
             AStation(
