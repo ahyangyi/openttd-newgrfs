@@ -9,8 +9,8 @@ def gen_docs(string_manager, metastations):
     for i, metastation in enumerate(metastations):
         metastation_label = metastation.class_label_plain
         translation = get_translation(string_manager[f"STR_METASTATION_CLASS_{metastation_label}"], 0x7F)
-        for subdirectory in ["layouts", "stations", "waypoints"]:
-            os.makedirs(os.path.join(prefix, "img", metastation_label, subdirectory), exist_ok=True)
+        for kind in ["layouts", "stations", "waypoints", "road_stops", "objects"]:
+            os.makedirs(os.path.join(prefix, "img", metastation_label, kind), exist_ok=True)
 
         with open(os.path.join(prefix, f"{metastation_label}.md"), "w") as f:
             print(
@@ -25,31 +25,48 @@ has_children: True
                 file=f,
             )
 
-        for waypoint in [False, True]:
-            subdirectory = "waypoints" if waypoint else "stations"
+        for kind in ["waypoints", "stations", "road_stops", "objects"]:
+            if kind == "road_stops":
+                pool = metastation.road_stops
+            elif kind == "objects":
+                pool = metastation.objects
+            else:
+                pool = metastation.stations
+
             if metastation.categories is None:
                 subsections = {
-                    None: [x for x in metastation.doc_layouts if ("waypoint" not in x.doc_layout.notes) ^ waypoint]
+                    None: [
+                        x
+                        for x in pool
+                        if (("waypoint" not in x.doc_layout.notes) ^ (kind == "waypoints"))
+                        and "noshow" not in x.doc_layout.notes
+                    ]
                 }
             else:
                 subsections = {k: [] for k in metastation.categories}
-                for layout in metastation.doc_layouts:
-                    if ("waypoint" not in layout.doc_layout.notes) ^ waypoint:
+                for layout in pool:
+                    if (
+                        ("waypoint" not in layout.doc_layout.notes) ^ (kind == "waypoints")
+                    ) and "noshow" not in layout.doc_layout.notes:
                         subsections[layout.doc_layout.category].append(layout)
 
             if all(len(v) == 0 for v in subsections.values()):
                 continue
 
-            with open(
-                os.path.join(prefix, f"{metastation_label}_{'waypoints' if waypoint else 'building_blocks'}.md"), "w"
-            ) as f:
+            with open(os.path.join(prefix, f"{metastation_label}_{kind}.md"), "w") as f:
+                title, nav_order = {
+                    "stations": ("Building Blocks", 0),
+                    "waypoints": ("Waypoints", 1),
+                    "road_stops": ("Road Stops", 2),
+                    "objects": ("Objects", 4),
+                }[kind]
                 print(
                     f"""---
 layout: default
-title: {"Waypoints" if waypoint else "Building Blocks"}
+title: {title}
 parent: {translation}
 grand_parent: "CNS Addon: Wuhu"
-nav_order: {2 if waypoint else 1}
+nav_order: {nav_order}
 ---
 """,
                     file=f,
@@ -71,11 +88,11 @@ nav_order: {2 if waypoint else 1}
                             .to_pil_image()
                         )
                         idstr = f"{layout.id:04X}"
-                        img.save(os.path.join(prefix, "img", f"{metastation_label}/{subdirectory}/{idstr}.png"))
+                        img.save(os.path.join(prefix, "img", f"{metastation_label}/{kind}/{idstr}.png"))
                         print(
                             f"""
 <figure style="display:inline-block">
-  <img src="img/{metastation_label}/{subdirectory}/{idstr}.png" alt="{idstr}" width="64"/>
+  <img src="img/{metastation_label}/{kind}/{idstr}.png" alt="{idstr}" width="64"/>
   <figcaption style="text-align:center">{idstr}</figcaption>
 </figure>
 """,

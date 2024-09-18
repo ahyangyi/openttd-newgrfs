@@ -30,13 +30,7 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
     )
 
 the_stations = AMetaStation(
-    semitraversable_stations
-    + traversable_stations
-    + side_stations
-    + side_third_stations
-    + modular_stations
-    + objects
-    + roadstops,
+    semitraversable_stations + traversable_stations + side_stations + side_third_stations + modular_stations,
     b"\xe8\x8a\x9cA",
     [
         b"\xe8\x8a\x9c" + x
@@ -69,4 +63,6 @@ the_stations = AMetaStation(
         demos.special_demo_cp,
         demos.special_demo_aq,
     ],
+    road_stops=roadstops,
+    objects=objects,
 )
