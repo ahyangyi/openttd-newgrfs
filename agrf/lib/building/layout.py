@@ -315,8 +315,13 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
         return ret
 
     def shrink(self):
+        x, y, z = self.offset
         return AParentSprite(
-            self.sprite.shrink(), (16, 16, 16), (0, 0, 0), [x.shrink() for x in self.child_sprites], self.flags
+            self.sprite.shrink(),
+            (1, 1, 1),
+            (x // 2, y // 2, z // 2),
+            [x.shrink() for x in self.child_sprites],
+            self.flags,
         )
 
     def pushdown(self, steps):
