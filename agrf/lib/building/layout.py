@@ -319,7 +319,7 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
         return AParentSprite(
             self.sprite.shrink(),
             (1, 1, 1),
-            (x // 2, y // 2, z // 2),
+            (x // 2 + 4, y // 2 + 4, z // 2),
             [x.shrink() for x in self.child_sprites],
             self.flags,
         )
