@@ -1,3 +1,4 @@
+import grf
 from station.lib import AStation, AMetaStation
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos, common_cb
@@ -12,11 +13,15 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
         AStation(
             id=0x1000 + i,
             translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
-            layouts=[entry, entry.M],
+            layouts=[entry, entry.M, entry.pushdown(9), entry.M.pushdown(9)],
             class_label=entry.category,
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
-            callbacks={"select_tile_layout": 0, **common_cb},
+            callbacks={
+                "select_tile_layout": 0,
+                "select_sprite_layout": grf.DualCallback(default=0, purchase=2),
+                **common_cb,
+            },
             is_waypoint="waypoint" in entry.notes,
             doc_layout=entry,
         )
