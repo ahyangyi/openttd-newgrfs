@@ -10,6 +10,7 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from agrf.graphics import SCALE_TO_ZOOM
+from agrf.magic import Switch
 from datetime import date
 from roadstop.lib import ARoadStop
 from station.lib import ALayout
@@ -34,11 +35,11 @@ for name, sym in [
     ps = AParentSprite(sprite, (16, 16, 12), (0, 0, 0))
     layout = ALayout(road_ground, [ps], True, category=b"\xe8\x8a\x9cR")
 
-    for cur in [layout, layout.R] if (sym is BuildingSpriteSheetFull) else [layout]:
+    for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingSpriteSheetFull) else [layout, layout.T]:
         cur_roadstop = ARoadStop(
             id=len(roadstops),
             translation_name="STRAIGHT_STAIR",
-            layouts=[cur, cur.R.M, cur.T.R, cur.T.M],
+            graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
             general_flags=0x8,
             class_label=b"\xe8\x8a\x9cR",
             doc_layout=cur,
