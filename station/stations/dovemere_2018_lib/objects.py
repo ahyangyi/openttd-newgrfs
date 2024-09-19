@@ -25,6 +25,7 @@ for name, sym in [("west_plaza_center", BuildingSpriteSheetSymmetrical)]:
         load_from="station/files/cns-gorender.json",
         # config={"z_scale": 1.01},
     )
+    v.in_place_subset(sym.render_indices())
     sprite = sym.create_variants(v.spritesheet())
     # ps = AParentSprite(sprite, (16, 16, 12), (0, 0, 0))
     # layout = ALayout(solid_ground + cs, [ps], True, category=b"\xe8\x8a\x9cZ")

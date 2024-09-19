@@ -2,7 +2,6 @@ import grf
 from station.lib import (
     BuildingSpriteSheetFull,
     BuildingSpriteSheetSymmetricalX,
-    BuildingSpriteSheetSymmetrical,
     AGroundSprite,
     AParentSprite,
     AChildSprite,
@@ -31,6 +30,7 @@ for name, sym in [
         load_from="station/files/cns-gorender.json",
         # config={"z_scale": 1.01},
     )
+    v.in_place_subset(sym.render_indices())
     sprite = sym.create_variants(v.spritesheet())
     ps = AParentSprite(sprite, (16, 16, 12), (0, 0, 0))
     layout = ALayout(road_ground, [ps], True, category=b"\xe8\x8a\x9cR")
