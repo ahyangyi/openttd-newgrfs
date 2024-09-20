@@ -30,9 +30,10 @@ for name, sym in [
         load_from="station/files/cns-gorender.json",
         # config={"z_scale": 1.01},
     )
+    v = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_back_mask.vox", "back")
     v.in_place_subset(sym.render_indices())
     sprite = sym.create_variants(v.spritesheet())
-    ps = AParentSprite(sprite, (16, 16, 12), (0, 0, 0))
+    ps = AParentSprite(sprite, (16, 5, 12), (0, 0, 0))
     layout = ALayout(road_ground, [ps], True, category=b"\xe8\x8a\x9cR")
 
     for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingSpriteSheetFull) else [layout, layout.T]:
