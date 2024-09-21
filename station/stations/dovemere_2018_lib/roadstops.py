@@ -32,7 +32,7 @@ for name, sym in [
     )
     v = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_back_mask.vox", "back")
     v.in_place_subset(sym.render_indices())
-    sprite = sym.create_variants(v.spritesheet())
+    sprite = sym.create_variants(v.spritesheet(xspan=5))
     ps = AParentSprite(sprite, (16, 5, 12), (0, 0, 0))
     layout = ALayout(road_ground, [ps], True, category=b"\xe8\x8a\x9cR")
 
