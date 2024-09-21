@@ -18,7 +18,7 @@ top_half = [
         cns_shelter_2_d,
         cns_shelter_2_d,
     ],
-    [corner, inner_corner, central_d, side_a3_d.R, cns_shelter_2_d, cns_shelter_2_d, cns_shelter_2_d],
+    [corner, inner_corner, central_d, side_a3_shelter_2_d.R, cns_shelter_2_d, cns_shelter_2_d, cns_shelter_2_d],
     [concourse, corner, front_normal, double_corner.R, front_normal.T, corner.T.R, concourse],
 ]
 
