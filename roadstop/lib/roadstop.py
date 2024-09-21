@@ -45,6 +45,8 @@ class ARoadStop(grf.SpriteGenerator):
         else:
             class_label = self._props["class_label"]
 
+        if self.is_waypoint:
+            res.append(grf.If(is_static=True, variable=0xA1, condition=0x04, value=0x1F000000, skip=255, varsize=4))
         res.append(
             definition := grf.Define(
                 feature=grf.ROAD_STOP,
@@ -58,6 +60,8 @@ class ARoadStop(grf.SpriteGenerator):
         )
 
         res.extend(self.callbacks.make_map_action(definition))
+        if self.is_waypoint:
+            res.append(grf.Label(255, bytes()))
 
         return res
 
