@@ -22,10 +22,10 @@ OVERPASS_HEIGHT = 10
 OVERHANG_WIDTH = 1
 
 
-for name, sym, (far, overhang, overpass, near) in [
-    ("overpass", BuildingSpriteSheetSymmetricalX, (True, True, True, False)),
-    ("west_stair", BuildingSpriteSheetFull, (True, False, True, True)),
-    ("west_stair_extender", BuildingSpriteSheetSymmetricalX, (True, True, True, True)),
+for name, sym, (far, overhang, overpass, near), extended in [
+    ("overpass", BuildingSpriteSheetSymmetricalX, (True, True, True, False), False),
+    ("west_stair", BuildingSpriteSheetFull, (True, False, True, True), True),
+    ("west_stair_extender", BuildingSpriteSheetSymmetricalX, (True, True, True, True), False),
 ]:
     v = LazyVoxel(
         name,
@@ -34,12 +34,23 @@ for name, sym, (far, overhang, overpass, near) in [
         load_from="station/files/cns-gorender.json",
         # config={"z_scale": 1.01},
     )
-    farv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_back_mask.vox", "back")
+    if extended:
+        v.config["size"]["x"] = 384
+        v.config["size"]["y"] = 384
+        for sprite in v.config["sprites"]:
+            sprite["width"] = 96
+    if extended:
+        farv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_back_mask_extended.vox", "back")
+    else:
+        farv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_back_mask.vox", "back")
     farv.in_place_subset(sym.render_indices())
     farsprite = sym.create_variants(farv.spritesheet(xspan=WIDTH))
     farps = AParentSprite(farsprite, (16, WIDTH, 12), (0, 0, 0))
 
-    overpassv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_overpass_mask.vox", "overpass")
+    if extended:
+        overpassv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_overpass_mask_extended.vox", "overpass")
+    else:
+        overpassv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_overpass_mask.vox", "overpass")
     overpassv.in_place_subset(sym.render_indices())
     if overhang:
         overpasssprite = sym.create_variants(
@@ -56,7 +67,10 @@ for name, sym, (far, overhang, overpass, near) in [
             overpasssprite, (16, 16 - WIDTH * 2, 12 - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)
         )
 
-    nearv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_front_mask.vox", "front")
+    if extended:
+        nearv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_front_mask_extended.vox", "front")
+    else:
+        nearv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_front_mask.vox", "front")
     nearv.in_place_subset(sym.render_indices())
     nearsprite = sym.create_variants(nearv.spritesheet(xspan=WIDTH, xdiff=16 - WIDTH))
     nearps = AParentSprite(nearsprite, (16, WIDTH, 12), (0, 16 - WIDTH, 0))
