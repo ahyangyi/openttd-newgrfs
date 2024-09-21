@@ -68,7 +68,7 @@ class DefaultSpriteMixin:
             img = np.asarray(
                 self.climate_dependent_tiles[(climate, self.sprite + (26 if subclimate != "default" else 0))]
             )
-        ret = LayeredImage(-128, 0, 256, 127, img[:, :, :3], img[:, :, 3], None)
+        ret = LayeredImage(-124, 0, 256, 127, img[:, :, :3], img[:, :, 3], None)
         if scale == 4:
             ret = ret.copy()
         elif scale == 2:
