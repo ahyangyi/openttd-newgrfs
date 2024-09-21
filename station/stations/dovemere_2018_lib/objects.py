@@ -35,7 +35,7 @@ for name, sym in [("west_plaza_center", BuildingSpriteSheetSymmetrical)]:
     for cur in [layout, layout.R] if (sym is BuildingSpriteSheetFull) else [layout]:
         cur_object = AObject(
             id=len(objects),
-            translation_name="STRAIGHT_STAIR",
+            translation_name="WEST_PLAZA",
             layouts=[cur, cur.R.M, cur.T.R, cur.T.M],
             class_label=b"\xe8\x8a\x9cZ",
             climates_available=grf.ALL_CLIMATES,
