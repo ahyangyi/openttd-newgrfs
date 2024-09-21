@@ -16,12 +16,13 @@ from station.lib import ALayout
 from ..misc import road_ground
 
 roadstops = []
+ROAD_STOP_WIDTH = 3
 
 
-for name, sym in [
-    ("overpass", BuildingSpriteSheetSymmetricalX),
-    ("west_stair", BuildingSpriteSheetFull),
-    ("west_stair_extender", BuildingSpriteSheetSymmetricalX),
+for name, sym, (far, overpass, near) in [
+    ("overpass", BuildingSpriteSheetSymmetricalX, (True, False, False)),
+    ("west_stair", BuildingSpriteSheetFull, (True, True, True)),
+    ("west_stair_extender", BuildingSpriteSheetSymmetricalX, (True, True, True)),
 ]:
     v = LazyVoxel(
         name,
@@ -30,11 +31,17 @@ for name, sym in [
         load_from="station/files/cns-gorender.json",
         # config={"z_scale": 1.01},
     )
-    v = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_back_mask.vox", "back")
-    v.in_place_subset(sym.render_indices())
-    sprite = sym.create_variants(v.spritesheet(xspan=5))
-    ps = AParentSprite(sprite, (16, 5, 12), (0, 0, 0))
-    layout = ALayout(road_ground, [ps], True, category=b"\xe8\x8a\x9cR")
+    far = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_back_mask.vox", "back")
+    far.in_place_subset(sym.render_indices())
+    farsprite = sym.create_variants(far.spritesheet(xspan=ROAD_STOP_WIDTH))
+    farps = AParentSprite(farsprite, (16, ROAD_STOP_WIDTH, 12), (0, 0, 0))
+
+    near = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_front_mask.vox", "front")
+    near.in_place_subset(sym.render_indices())
+    nearsprite = sym.create_variants(near.spritesheet(xspan=ROAD_STOP_WIDTH, xdiff=16 - ROAD_STOP_WIDTH))
+    nearps = AParentSprite(nearsprite, (16, ROAD_STOP_WIDTH, 12), (0, 16 - ROAD_STOP_WIDTH, 0))
+
+    layout = ALayout(road_ground, [farps] + ([nearps] if near else []), True, category=b"\xe8\x8a\x9cR")
 
     for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingSpriteSheetFull) else [layout, layout.T]:
         cur_roadstop = ARoadStop(
