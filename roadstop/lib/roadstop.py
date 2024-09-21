@@ -4,7 +4,7 @@ from agrf.magic import Switch
 
 
 class ARoadStop(grf.SpriteGenerator):
-    def __init__(self, *, id, translation_name, graphics, callbacks=None, doc_layout=None, **props):
+    def __init__(self, *, id, translation_name, graphics, callbacks=None, doc_layout=None, is_waypoint=False, **props):
         super().__init__()
         self.id = id
         self.translation_name = translation_name
@@ -13,6 +13,7 @@ class ARoadStop(grf.SpriteGenerator):
             callbacks = {}
         self.callbacks = grf.make_callback_manager(grf.ROAD_STOP, callbacks)
         self.doc_layout = doc_layout
+        self.is_waypoint = is_waypoint
         self._props = props
 
     @property
@@ -39,11 +40,20 @@ class ARoadStop(grf.SpriteGenerator):
         self.callbacks.graphics = self.graphics.to_action2(feature=grf.ROAD_STOP, sprite_list=sprites)
         self.callbacks.set_flag_props(self._props)
 
+        if self.is_waypoint:
+            class_label = b"\xFF" + self._props["class_label"][1:]
+        else:
+            class_label = self._props["class_label"]
+
         res.append(
             definition := grf.Define(
                 feature=grf.ROAD_STOP,
                 id=self.id,
-                props={"class_label": self._props["class_label"], **self._props, **extra_props},
+                props={
+                    "class_label": class_label,
+                    **{k: v for k, v in self._props.items() if k != "class_label"},
+                    **extra_props,
+                },
             )
         )
 

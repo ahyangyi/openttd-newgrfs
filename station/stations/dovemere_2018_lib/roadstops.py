@@ -15,6 +15,7 @@ from roadstop.lib import ARoadStop
 from station.lib import ALayout
 from ..misc import road_ground
 
+cnt = 0
 roadstops = []
 WIDTH = 3
 OVERPASS_HEIGHT = 10
@@ -69,7 +70,7 @@ for name, sym, (far, overhang, overpass, near) in [
 
     for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingSpriteSheetFull) else [layout, layout.T]:
         cur_roadstop = ARoadStop(
-            id=len(roadstops),
+            id=cnt,
             translation_name="STRAIGHT_STAIR",
             graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
             general_flags=0x8,
@@ -77,3 +78,14 @@ for name, sym, (far, overhang, overpass, near) in [
             doc_layout=cur,
         )
         roadstops.append(cur_roadstop)
+        cur_roadstop = ARoadStop(
+            id=0x8000 + cnt,
+            translation_name="STRAIGHT_STAIR",
+            graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
+            general_flags=0x8,
+            class_label=b"\xe8\x8a\x9cR",
+            doc_layout=cur,
+            is_waypoint=True,
+        )
+        roadstops.append(cur_roadstop)
+        cnt += 1
