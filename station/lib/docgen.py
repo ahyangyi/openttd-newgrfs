@@ -27,7 +27,7 @@ has_children: True
 
         for kind in ["waypoints", "stations", "road_stops", "objects"]:
             if kind == "road_stops":
-                pool = metastation.road_stops
+                pool = [x for x in metastation.road_stops if not x.is_waypoint]
             elif kind == "objects":
                 pool = metastation.objects
             else:
