@@ -4,14 +4,16 @@ from agrf.magic import Switch
 
 
 class ARoadStop(grf.SpriteGenerator):
-    def __init__(self, *, id, translation_name, layouts, callbacks=None, **props):
+    def __init__(self, *, id, translation_name, graphics, callbacks=None, doc_layout=None, is_waypoint=False, **props):
         super().__init__()
         self.id = id
         self.translation_name = translation_name
-        self.layouts = layouts
+        self.graphics = graphics
         if callbacks is None:
             callbacks = {}
         self.callbacks = grf.make_callback_manager(grf.ROAD_STOP, callbacks)
+        self.doc_layout = doc_layout
+        self.is_waypoint = is_waypoint
         self._props = props
 
     @property
@@ -35,26 +37,35 @@ class ARoadStop(grf.SpriteGenerator):
             for s in self.sprites:
                 res.append(s)
 
-        layouts = []
-        for i, layout in enumerate(self.layouts):
-            layouts.append(layout.to_action2(feature=grf.ROAD_STOP, sprite_list=sprites))
-        self.callbacks.graphics = Switch(
-            ranges={i: layouts[i] for i in range(len(layouts))}, default=layouts[0], code="view"
-        )
+        self.callbacks.graphics = self.graphics.to_action2(feature=grf.ROAD_STOP, sprite_list=sprites)
         self.callbacks.set_flag_props(self._props)
 
+        if self.is_waypoint:
+            class_label = b"\xFF" + self._props["class_label"][1:]
+        else:
+            class_label = self._props["class_label"]
+
+        if self.is_waypoint:
+            res.append(grf.If(is_static=True, variable=0xA1, condition=0x04, value=0x1F000000, skip=255, varsize=4))
         res.append(
             definition := grf.Define(
                 feature=grf.ROAD_STOP,
                 id=self.id,
-                props={"class_label": self._props["class_label"], **self._props, **extra_props},
+                props={
+                    "class_label": class_label,
+                    **{k: v for k, v in self._props.items() if k != "class_label"},
+                    **extra_props,
+                },
             )
         )
 
         res.extend(self.callbacks.make_map_action(definition))
+        if self.is_waypoint:
+            res.append(grf.Label(255, bytes()))
 
         return res
 
     @property
     def sprites(self):
-        return [*dict.fromkeys([sub for l in self.layouts for sub in l.sprites])]
+        # FIXME recursive
+        return [*dict.fromkeys([sub for l in self.graphics._ranges for sub in l.ref.sprites])]
