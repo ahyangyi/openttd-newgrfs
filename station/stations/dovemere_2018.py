@@ -2,6 +2,8 @@ import grf
 from station.lib import AStation, AMetaStation
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos, common_cb
+from .dovemere_2018_lib.objects import objects
+from .dovemere_2018_lib.roadstops import roadstops
 from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_stations
 from .dovemere_2018_lib.flexible_stations.traversable import traversable_stations
 from .dovemere_2018_lib.flexible_stations.side import side_stations
@@ -39,6 +41,7 @@ the_stations = AMetaStation(
         + [x.to_bytes(1, "little") for x in range(0xB0, 0xB8)]
         + [x.to_bytes(1, "little") for x in range(0xC0, 0xC8)]
         + [b"\xF0"]
+        + [b"R", b"Z"]
     ],
     [
         demos.normal_demo,
@@ -60,4 +63,6 @@ the_stations = AMetaStation(
         demos.special_demo_cp,
         demos.special_demo_aq,
     ],
+    road_stops=roadstops,
+    objects=objects,
 )
