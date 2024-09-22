@@ -1,21 +1,38 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import named_tiles, platform_d, platform_n
+from station.stations.dovemere_2018_lib.layouts import named_tiles
+from station.stations.platforms import cns_brick_shelter_2_d, cns_brick_shelter_2
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 
 named_tiles.globalize()
 
-rail_near = [platform_n, v_central_n, platform_n, platform_n, platform_n, v_central_n, platform_n]
+rail_near = [
+    cns_brick_shelter_2,
+    v_central_brick_shelter_2_n,
+    cns_brick_shelter_2,
+    cns_brick_shelter_2,
+    cns_brick_shelter_2,
+    v_central_brick_shelter_2_n,
+    cns_brick_shelter_2,
+]
 rail_far = [x.T for x in rail_near]
-rail_both = [platform_d, v_central_d, platform_d, platform_d, platform_d, v_central_d, platform_d]
+rail_both = [
+    cns_brick_shelter_2_d,
+    v_central_brick_shelter_2_d,
+    cns_brick_shelter_2_d,
+    cns_brick_shelter_2_d,
+    cns_brick_shelter_2_d,
+    v_central_brick_shelter_2_d,
+    cns_brick_shelter_2_d,
+]
 station = [
-    h_end_asym_platform,
-    tee_platform,
-    h_gate_1_platform,
-    h_gate_extender_1_platform,
-    h_gate_1_platform.R,
-    tee_platform,
-    h_end_asym_platform.R,
+    h_end_asym_brick_shelter_2_platform,
+    tee_brick_platform,
+    h_gate_1_brick_platform,
+    h_gate_extender_1_brick_platform,
+    h_gate_1_brick_platform.R,
+    tee_brick_platform,
+    h_end_asym_brick_shelter_2_platform.R,
 ]
 
 special_demo_g = Demo(

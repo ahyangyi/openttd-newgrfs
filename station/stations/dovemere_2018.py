@@ -3,6 +3,8 @@ from station.lib import AStation, AMetaStation
 from grfobject.lib import AObject
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos, common_cb
+from .dovemere_2018_lib.objects import objects
+from .dovemere_2018_lib.roadstops import roadstops
 from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_stations
 from .dovemere_2018_lib.flexible_stations.traversable import traversable_stations
 from .dovemere_2018_lib.flexible_stations.side import side_stations
@@ -31,15 +33,19 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
         AStation(
             id=0x1000 + i,
             translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
-            layouts=[entry, entry.M],
+            layouts=[entry, entry.M, entry.pushdown(9), entry.M.pushdown(9)],
             class_label=entry.category,
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
-            callbacks={"select_tile_layout": 0, **common_cb},
+            callbacks={
+                "select_tile_layout": 0,
+                "select_sprite_layout": grf.DualCallback(default=0, purchase=2),
+                **common_cb,
+            },
             is_waypoint="waypoint" in entry.notes,
+            doc_layout=entry,
         )
     )
-    entry.station_id = 0x1000 + i
 
 
 the_stations = AMetaStation(
@@ -54,8 +60,8 @@ the_stations = AMetaStation(
         + [x.to_bytes(1, "little") for x in range(0xB0, 0xB8)]
         + [x.to_bytes(1, "little") for x in range(0xC0, 0xC8)]
         + [b"\xF0"]
+        + [b"R", b"Z"]
     ],
-    [x for x in flexible_entries + entries if "noshow" not in x.notes],
     [
         demos.normal_demo,
         demos.big_demo,
@@ -76,4 +82,6 @@ the_stations = AMetaStation(
         demos.special_demo_cp,
         demos.special_demo_aq,
     ],
+    road_stops=roadstops,
+    objects=objects,
 )

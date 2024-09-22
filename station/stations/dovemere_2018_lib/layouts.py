@@ -15,11 +15,8 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from station.stations.platforms import (
-    named_ps as platform_ps,
-    cns_shelter_1_d as platform_d,
-    cns_shelter_1 as platform_n,
-    cns_side_shelter_1 as platform_s_nt,
-    concourse as concourse_tile,
+    platform_ps,
+    concourse_ps,
     platform_height,
     shelter_height,
     platform_width,
@@ -38,9 +35,7 @@ overpass_height = building_height - base_height
 
 gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
-plat = platform_ps.cns
-plat_nt = platform_ps.cns_side
-concourse = platform_ps.concourse
+concourse = concourse_ps[""]
 third = AChildSprite(gray_third, (0, 0))
 third_T = AChildSprite(gray_third.T, (0, 0))
 
@@ -107,6 +102,7 @@ Normal = make_hpos("", "_pillar")
 Side = make_hpos("_building", "_shelter_building")
 SideNarrow = make_hpos("_building", "_shelter_building", True)
 V = make_hpos("", "_shelter_building_v")
+VNarrow = make_hpos("", "_shelter_building_v", True)
 TinyAsym = make_hpos("_central", "_pillar_central")
 
 
@@ -263,7 +259,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                 cur_plat = h_pos.platform(platform_class, shelter_class)
                 shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
                 platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
-                common_notes = ["noshow"] if shelter_postfix + platform_postfix != "" else []
+                common_notes = ["noshow"] if shelter_postfix + platform_postfix != "_shelter_2" else []
                 sname = f2_name + platform_postfix + shelter_postfix
                 register(
                     ALayout(
@@ -409,7 +405,7 @@ def load(
                 )
             for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
                 shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
-                common_notes = ["noshow"] if platform_postfix + shelter_postfix != "" else []
+                common_notes = ["noshow"] if platform_postfix + shelter_postfix != "_shelter_2" else []
                 sname = pname + shelter_postfix
                 if third:
                     register(
@@ -430,7 +426,7 @@ def load(
                             [
                                 plat_f1 + f1_snow,
                                 h_pos.platform_back_cut(shelter_class).T,
-                                platform_ps[f"concourse{platform_postfix}_side"].T,
+                                concourse_ps[f"{platform_class}"].T,
                             ]
                             + f2_component,
                             False,
@@ -501,8 +497,8 @@ load("h_gate_1", BuildingSpriteSheetFull, "H", asym=True)
 load("h_gate_extender", BuildingSpriteSheetSymmetrical, "H", third=False, platform=False)
 load("h_gate_extender_1", BuildingSpriteSheetSymmetricalX, "H", asym=True)
 
-load("v_end", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V, corridor=False)
-load("v_end_gate", BuildingSpriteSheetSymmetricalX, "F0", h_pos=V, corridor=False)
+load("v_end", BuildingSpriteSheetSymmetricalX, "F0", h_pos=VNarrow, corridor=False)
+load("v_end_gate", BuildingSpriteSheetSymmetricalX, "F0", h_pos=VNarrow, corridor=False)
 load_central("v_central", BuildingSpriteSheetSymmetrical, "N", h_pos=V)
 
 load("tiny", BuildingSpriteSheetSymmetrical, "H", h_pos=V, full=False, platform=False, third=False)
