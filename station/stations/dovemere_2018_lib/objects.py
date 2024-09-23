@@ -33,14 +33,17 @@ for name, sym in [("west_plaza_center", BuildingSpriteSheetSymmetrical)]:
     layout = ALayout(gs, [], True, category=b"\xe8\x8a\x9cZ")
 
     for cur in [layout, layout.R] if (sym is BuildingSpriteSheetFull) else [layout]:
+        if sym is BuildingSpriteSheetSymmetrical:
+            layouts = [cur, cur.M]
+            num_views = 2
         cur_object = AObject(
             id=len(objects),
             translation_name="WEST_PLAZA",
-            layouts=[cur, cur.R.M, cur.T.R, cur.T.M],
+            layouts=layouts,
             class_label=b"\xe8\x8a\x9cZ",
             climates_available=grf.ALL_CLIMATES,
             size=(1, 1),
-            num_views=4,
+            num_views=num_views,
             introduction_date=0,
             end_of_life_date=0,
             height=1,
