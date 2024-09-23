@@ -10,14 +10,14 @@ from .dovemere_2018_lib.flexible_stations.traversable import traversable_station
 from .dovemere_2018_lib.flexible_stations.side import side_stations
 from .dovemere_2018_lib.flexible_stations.side_third import side_third_stations
 
-objects = []
+station_objects = []
 modular_stations = []
 for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
     if entry.category[-1] in {ord(x) for x in [b"\xB0"]}:
-        objects.append(
+        station_objects.append(
             AObject(
                 id=len(objects),
-                translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
+                translation_name="STATION",
                 layouts=[entry, entry.M],
                 class_label=entry.category,
                 climates_available=grf.ALL_CLIMATES,
@@ -49,7 +49,7 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
 
 
 the_stations = AMetaStation(
-    semitraversable_stations + traversable_stations + side_stations + side_third_stations + modular_stations + objects,
+    semitraversable_stations + traversable_stations + side_stations + side_third_stations + modular_stations,
     b"\xe8\x8a\x9cA",
     [
         b"\xe8\x8a\x9c" + x
@@ -83,5 +83,5 @@ the_stations = AMetaStation(
         demos.special_demo_aq,
     ],
     road_stops=roadstops,
-    objects=objects,
+    objects=objects + station_objects,
 )
