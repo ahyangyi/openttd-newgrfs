@@ -106,7 +106,7 @@ layout: default
 title: Sample Layouts
 parent: {translation}
 grand_parent: "CNS Addon: Wuhu"
-nav_order: 3
+nav_order: 5
 ---
 """,
                 file=f,
