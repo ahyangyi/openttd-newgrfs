@@ -5,7 +5,10 @@ from station.stations.dovemere_2018_lib.flexible_stations import semitraversable
 from station.stations.dovemere_2018_lib.roadstops import roadstops
 from station.stations.dovemere_2018_lib.objects import objects
 
-roadstops = [[roadstops[0].doc_layout.lower_tile()] * 5]
+stop1 = roadstops[0].doc_layout.lower_tile()
+stop2 = roadstops[4].doc_layout.lower_tile()
+stop3 = roadstops[12].doc_layout.lower_tile()
+roadstops = [[stop1, stop2, stop3, stop2.R, stop1]]
 west_square = [[objects[0].doc_layout.lower_tile()] * 5]
 
 
