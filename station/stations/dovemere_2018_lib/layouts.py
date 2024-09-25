@@ -136,7 +136,7 @@ def make_f2(v, sym):
     v = v.discard_layers(all_f1_layers + all_f2_layers + snow_layers, "f2")
     v.in_place_subset(sym.render_indices())
     v.config["agrf_manual_crop"] = (0, 10)
-    s = sym.create_variants(v.spritesheet(zdiff=base_height * 2))
+    s = sym.create_variants(v.spritesheet(zdiff=base_height * 2 + 1))
     return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
 
@@ -175,7 +175,7 @@ def make_f1(v, subset, sym):
         V = V.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         V.in_place_subset(sym.render_indices())
         V.config["agrf_manual_crop"] = (0, 40)
-        s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan))
+        s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan, zdiff=1))
         f1_cache[(v, subset)] = AParentSprite(s, (16, xspan, base_height), (0, xdiff, platform_height)), sym
     ret, ret_sym = f1_cache[(v, subset)]
     assert sym is ret_sym
@@ -259,7 +259,10 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                 cur_plat = h_pos.platform(platform_class, shelter_class)
                 shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
                 platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
-                common_notes = ["noshow"] if shelter_postfix + platform_postfix != "_shelter_2" else []
+                if h_pos.has_shelter:
+                    common_notes = ["noshow"] if shelter_postfix + platform_postfix != "_shelter_2" else []
+                else:
+                    common_notes = ["noshow"] if shelter_postfix + platform_postfix != "" else []
                 sname = f2_name + platform_postfix + shelter_postfix
                 register(
                     ALayout(
@@ -405,7 +408,10 @@ def load(
                 )
             for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
                 shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
-                common_notes = ["noshow"] if platform_postfix + shelter_postfix != "_shelter_2" else []
+                if h_pos.has_shelter:
+                    common_notes = ["noshow"] if shelter_postfix + platform_postfix != "_shelter_2" else []
+                else:
+                    common_notes = ["noshow"] if shelter_postfix + platform_postfix != "" else []
                 sname = pname + shelter_postfix
                 if third:
                     register(
