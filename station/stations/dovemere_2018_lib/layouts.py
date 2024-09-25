@@ -252,7 +252,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
             ALayout(empty_ground, [cur_np, cur_np.T] + f2_component, True, notes=["waypoint"]),
             cur_sym,
             internal_category,
-            f2_name + "_empty",
+            (f2_name, None, None, "empty"),
         )
         for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
             for platform_class in platform_classes:
@@ -270,7 +270,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                     ),
                     cur_sym,
                     internal_category,
-                    sname + "_d",
+                    (f2_name, platform_class, shelter_class, "d"),
                 )
                 if symmetry.is_symmetrical_y():
                     broken_symmetry = cur_sym.break_y_symmetry()
@@ -280,9 +280,11 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                         ),
                         broken_symmetry,
                         internal_category,
-                        sname + "_n",
+                        (f2_name, platform_class, shelter_class, "n"),
                     )
-                    named_tiles[sname + "_f"] = named_tiles[sname + "_n"].T
+                    named_tiles[(f2_name, platform_class, shelter_class, "f")] = named_tiles[
+                        (f2_name, platform_class, shelter_class, "n")
+                    ].T
                 else:
                     register(
                         ALayout(
@@ -290,7 +292,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                         ),
                         cur_sym,
                         internal_category,
-                        sname + "_n",
+                        (f2_name, platform_class, shelter_class, "n"),
                     )
                     register(
                         ALayout(
@@ -298,7 +300,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                         ),
                         cur_sym,
                         internal_category,
-                        sname + "_f",
+                        (f2_name, platform_class, shelter_class, "f"),
                     )
 
 
@@ -392,7 +394,7 @@ def load(
                     ),
                     cur_sym,
                     internal_category,
-                    pname + "_corridor",
+                    (f2_name, platform_class, None, "corridor"),
                 )
             if third:
                 register(
@@ -404,7 +406,7 @@ def load(
                     ),
                     cur_bsym,
                     internal_category,
-                    pname + "_third",
+                    (f2_name, platform_class, None, "third"),
                 )
             for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
                 shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
@@ -423,7 +425,7 @@ def load(
                         ),
                         cur_bsym,
                         internal_category,
-                        sname + "_third_f",
+                        (f2_name, platform_class, shelter_class, "third_f"),
                     )
                 if platform:
                     register(
@@ -440,14 +442,14 @@ def load(
                         ),
                         cur_bsym,
                         internal_category,
-                        sname + "_platform",
+                        (f2_name, platform_class, shelter_class, "platform"),
                     )
         if full:
             register(
                 ALayout(solid_ground, [full_f1 + f1_snow, concourse] + f2_component, False),
                 cur_sym,
                 internal_category,
-                f2_name,
+                (f2_name, None, None, ""),
             )
 
 
@@ -469,7 +471,7 @@ def load_full(source, symmetry, internal_category, name=None, h_pos=Normal, borr
 layouts = []
 entries = []
 flexible_entries = []
-named_tiles = AttrDict()
+named_tiles = AttrDict(schema=("name", "platform_clas", "shelter_class", "f1_layout"))
 
 load("front_normal", BuildingSpriteSheetSymmetricalX, "F0", corridor=False, window=[])
 load("front_gate", BuildingSpriteSheetFull, "F0", corridor=False)
@@ -527,3 +529,5 @@ load_full("junction/front_gate_extender_corner", BuildingSpriteSheetDiagonal, "X
 load_full("junction/double_corner_2", BuildingSpriteSheetDiagonal, "X", window=[])
 load_full("junction/bicorner", BuildingSpriteSheetDiagonal, "X", window=[])
 load_full("junction/bicorner_2", BuildingSpriteSheetDiagonal, "X", window=[])
+
+named_tiles.populate()
