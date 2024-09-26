@@ -87,7 +87,7 @@ class HPos:
 
 def make_hpos(pillar_style, platform_style, has_narrow=False):
     platform = lambda p="concrete", x="shelter_1": platform_ps[
-        "cns" + ("" if p == "concrete" else "_" + p) + platform_style.replace("shelter", x)
+        "cns" + "_" + p + platform_style.replace("shelter", x)
     ]
     if has_narrow:
         platform_back_cut = lambda x="shelter_1": platform_ps[
@@ -258,7 +258,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
             for platform_class in platform_classes:
                 cur_plat = h_pos.platform(platform_class, shelter_class)
                 shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
-                platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
+                platform_postfix = "_" + platform_class
                 if h_pos.has_shelter:
                     common_notes = ["noshow"] if shelter_postfix + platform_postfix != "_shelter_2" else []
                 else:
@@ -377,7 +377,7 @@ def load(
             cur_sym = symmetry
             cur_bsym = broken_symmetry
         for platform_class in platform_classes:
-            platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
+            platform_postfix = "_" + platform_class
             common_notes = ["noshow"] if platform_postfix != "" else []
             cur_plat = platform_ps["cns" + platform_postfix]
             cur_plat_nt = platform_ps["cns" + platform_postfix + "_side"]
