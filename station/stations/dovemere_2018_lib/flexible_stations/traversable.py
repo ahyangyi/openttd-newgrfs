@@ -42,19 +42,11 @@ for pclass in platform_classes:
     )
     for sclass in shelter_classes:
         sclass_desc = "" if sclass == "shelter_1" else "_" + sclass
-        front[pclass][sclass] = make_front_row(
-            (pclass, sclass, "third_f"), fallback_suffix=(pclass, None, "third_f")
-        )
+        front[pclass][sclass] = make_front_row((pclass, sclass, "third_f"), fallback_suffix=(pclass, None, "third_f"))
 
-        h_n[pclass][sclass] = make_horizontal_switch(
-            lambda l, r: make_central_row(l, r, pclass_desc + sclass_desc + "_n", pclass_desc + "_n")
-        )
-        h_f[pclass][sclass] = make_horizontal_switch(
-            lambda l, r: make_central_row(l, r, pclass_desc + sclass_desc + "_f", pclass_desc + "_f")
-        )
-        h_d[pclass][sclass] = make_horizontal_switch(
-            lambda l, r: make_central_row(l, r, pclass_desc + sclass_desc + "_d", pclass_desc + "_d")
-        )
+        h_n[pclass][sclass] = make_horizontal_switch(lambda l, r: make_central_row(l, r, (pclass, sclass, "n")))
+        h_f[pclass][sclass] = make_horizontal_switch(lambda l, r: make_central_row(l, r, (pcass, sclass, "f")))
+        h_d[pclass][sclass] = make_horizontal_switch(lambda l, r: make_central_row(l, r, (pcass, sclass, "d")))
 
         cb14_2[pclass][sclass] = make_vertical_switch(
             lambda t, d: (

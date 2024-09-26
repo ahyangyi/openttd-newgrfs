@@ -86,9 +86,7 @@ class HPos:
 
 
 def make_hpos(pillar_style, platform_style, has_narrow=False):
-    platform = lambda p="concrete", x="shelter_1": platform_ps[
-        "cns" + "_" + p + platform_style.replace("shelter", x)
-    ]
+    platform = lambda p="concrete", x="shelter_1": platform_ps["cns" + "_" + p + platform_style.replace("shelter", x)]
     if has_narrow:
         platform_back_cut = lambda x="shelter_1": platform_ps[
             "cns_cut" + platform_style.replace("shelter", x) + "_narrow"

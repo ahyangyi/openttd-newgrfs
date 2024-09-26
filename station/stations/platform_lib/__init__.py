@@ -83,9 +83,7 @@ def register(pf: PlatformFamily):
                         l = cur_symmetry.create_variants(var)
                         if platform_class not in ["np", "cut"] and shelter_class != "pillar" and location == "":
                             entries.extend(cur_symmetry.get_all_entries(l))
-                        platform_tiles[
-                            (name, platform_class, rail_facing, shelter_class, location, shelter_side)
-                        ] = l
+                        platform_tiles[(name, platform_class, rail_facing, shelter_class, location, shelter_side)] = l
 
     for platform_class in platform_classes:
         for rail_facing in ["", "side"]:

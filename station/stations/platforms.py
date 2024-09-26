@@ -175,6 +175,8 @@ the_stations = AMetaStation(
     [
         Demo("Platform", [[cns_concrete], [cns_concrete_d], [cns_concrete.T]]),
         Demo("Platform with concrete grounds", [[cns_concrete_side], [cns_concrete_d], [cns_concrete_side.T]]),
-        Demo("Platform with shelter", [[cns_concrete_shelter_1], [cns_concrete_shelter_1_d], [cns_concrete_shelter_1.T]]),
+        Demo(
+            "Platform with shelter", [[cns_concrete_shelter_1], [cns_concrete_shelter_1_d], [cns_concrete_shelter_1.T]]
+        ),
     ],
 )
