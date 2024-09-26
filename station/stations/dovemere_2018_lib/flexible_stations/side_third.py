@@ -9,7 +9,7 @@ named_tiles.globalize()
 
 
 def get_side_index(l, r, pclass, sclass):
-    pclass_desc = "" if pclass == "concrete" else "_" + pclass
+    pclass_desc = "_" + pclass
     sclass_desc = "" if sclass == "shelter_1" else "_" + sclass
     suffix = pclass_desc + sclass_desc
     return horizontal_layout(
@@ -88,7 +88,7 @@ for p, pclass in enumerate(platform_classes):
 
 
 def get_side_index(l, r, pclass):
-    suffix = "" if pclass == "concrete" else "_" + pclass
+    suffix = "_" + pclass
     return horizontal_layout(
         l,
         r,

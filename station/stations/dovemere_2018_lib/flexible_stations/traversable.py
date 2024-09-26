@@ -30,7 +30,7 @@ cb14_4 = {pclass: {} for pclass in platform_classes}
 cb14_6 = {pclass: {} for pclass in platform_classes}
 cb14 = {pclass: {} for pclass in platform_classes}
 for pclass in platform_classes:
-    pclass_desc = "" if pclass == "concrete" else "_" + pclass
+    pclass_desc = "_" + pclass
     front2[pclass] = make_front_row(pclass_desc + "_third")
     single[pclass] = make_row(
         named_tiles["tiny" + pclass_desc + "_corridor"],
@@ -86,7 +86,7 @@ traversable_stations = []
 
 cb24 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_odd(t, d)], cb24=True)
 for p, pclass in enumerate(platform_classes):
-    pclass_desc = "" if pclass == "concrete" else "_" + pclass
+    pclass_desc = "_" + pclass
     front = make_front_row(pclass_desc + "_platform")
     for s, sclass in enumerate(shelter_classes):
         demo_layout = make_demo(cb14[pclass][sclass], 4, 4, cb24)
@@ -115,7 +115,7 @@ for p, pclass in enumerate(platform_classes):
 
 cb24 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_even(t, d)], cb24=True)
 for p, pclass in enumerate(platform_classes):
-    pclass_desc = "" if pclass == "concrete" else "_" + pclass
+    pclass_desc = "_" + pclass
     front = make_front_row(pclass_desc + "_platform")
     for s, sclass in enumerate(shelter_classes):
         demo_layout = make_demo(cb14[pclass][sclass], 4, 4, cb24)

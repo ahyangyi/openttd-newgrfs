@@ -14,7 +14,7 @@ single = make_row(tiny_untraversable, h_end_gate_untraversable, h_end_untraversa
 
 semitraversable_stations = []
 for p, pclass in enumerate(platform_classes):
-    pclass_desc = "" if pclass == "concrete" else "_" + pclass
+    pclass_desc = "_" + pclass
     for s, sclass in enumerate(shelter_classes):
         sclass_desc = "" if sclass == "shelter_1" else "_" + sclass
         front = make_front_row(pclass_desc + sclass_desc + "_platform", fallback_suffix=pclass_desc + "_platform")
