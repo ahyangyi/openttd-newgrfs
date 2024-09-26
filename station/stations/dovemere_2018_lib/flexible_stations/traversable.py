@@ -43,7 +43,7 @@ for pclass in platform_classes:
     for sclass in shelter_classes:
         sclass_desc = "" if sclass == "shelter_1" else "_" + sclass
         front[pclass][sclass] = make_front_row(
-            pclass_desc + sclass_desc + "_third_f", fallback_suffix=pclass_desc + "_third_f"
+            (pclass, sclass, "third_f"), fallback_suffix=(pclass, None, "third_f")
         )
 
         h_n[pclass][sclass] = make_horizontal_switch(
