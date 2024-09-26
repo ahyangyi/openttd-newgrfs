@@ -65,16 +65,14 @@ def make_front_row(suffix, fallback_suffix=None):
 
 
 def get_tile(name, desc, fallback_suffix=None):
-    key = f"{name}{desc}"
-    if key not in named_tiles:
-        key = f"{name}{fallback_suffix}"
-    return named_tiles[key]
+    # FIXME Remove fallback
+    return named_tiles[(name, *desc)]
 
 
 def reverse(x):
     if x is None:
         return None
-    return x[:-1] + {"f": "n", "n": "f", "d": "d"}[x[-1]]
+    return x[:-1] + ({"f": "n", "n": "f", "d": "d"}[x[-1]],)
 
 
 def get_left_index_suffix(t, d, suffix, fallback_suffix=None):

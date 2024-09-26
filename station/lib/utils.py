@@ -27,6 +27,26 @@ class AttrDict(dict):
     def __tuple_to_str(t):
         return "_".join(a for a in t if a is not None and a != "")
 
+    def __contains__(self, item):
+        if super().__contains__(item):
+            return True
+        if isinstance(item, tuple):
+            # XXX Slow
+            for k, v in self.items():
+                if all((a is None or b is None or a == b) for a, b in zip(k, item)):
+                    return True
+        return False
+
+    def __getitem__(self, item):
+        if super().__contains__(item):
+            return super().__getitem__(item)
+        if isinstance(item, tuple):
+            # XXX Slow
+            for k, v in self.items():
+                if all((a is None or b is None or a == b) for a, b in zip(k, item)):
+                    return v
+        raise KeyError(item)
+
     def populate(self):
         for k in list(self.keys()):
             if isinstance(k, tuple):

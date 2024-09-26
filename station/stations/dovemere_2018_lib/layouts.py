@@ -252,16 +252,16 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
             internal_category,
             (f2_name, None, None, "empty"),
         )
-        for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
+        for shelter_class in shelter_classes if h_pos.has_shelter else [None]:
             for platform_class in platform_classes:
                 cur_plat = h_pos.platform(platform_class, shelter_class)
-                shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
+                # FIXME remove postfix
+                shelter_postfix = "" if shelter_class == "shelter_1" else "_" + str(shelter_class)
                 platform_postfix = "_" + platform_class
                 if h_pos.has_shelter:
                     common_notes = ["noshow"] if shelter_postfix + platform_postfix != "_shelter_2" else []
                 else:
                     common_notes = ["noshow"] if shelter_postfix + platform_postfix != "" else []
-                sname = f2_name + platform_postfix + shelter_postfix
                 register(
                     ALayout(
                         corridor_ground, [cur_plat, cur_plat.T] + f2_component, True, notes=common_notes + ["both"]
@@ -381,7 +381,6 @@ def load(
             common_notes = ["noshow"] if platform_postfix != "" else []
             cur_plat = platform_ps["cns" + platform_postfix]
             cur_plat_nt = platform_ps["cns" + platform_postfix + "_side"]
-            pname = f2_name + platform_postfix
             if corridor:
                 register(
                     ALayout(
@@ -406,13 +405,13 @@ def load(
                     internal_category,
                     (f2_name, platform_class, None, "third"),
                 )
-            for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
-                shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
+            for shelter_class in shelter_classes if h_pos.has_shelter else [None]:
+                # FIXME remove postfix
+                shelter_postfix = "" if shelter_class == "shelter_1" else "_" + str(shelter_class)
                 if h_pos.has_shelter:
                     common_notes = ["noshow"] if shelter_postfix + platform_postfix != "_shelter_2" else []
                 else:
                     common_notes = ["noshow"] if shelter_postfix + platform_postfix != "" else []
-                sname = pname + shelter_postfix
                 if third:
                     register(
                         ALayout(
