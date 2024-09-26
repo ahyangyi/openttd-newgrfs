@@ -6,6 +6,8 @@ from station.lib import (
     BuildingSpriteSheetFull,
     Demo,
     AParentSprite,
+    AChildSprite,
+    Registers,
 )
 from agrf.graphics.voxel import LazyVoxel
 from .ground import named_ps as ground_ps
@@ -20,6 +22,7 @@ from station.stations.platform_lib import (
     concourse_tiles,
     entries,
 )
+from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 
 
 gray_ps = ground_ps.gray
@@ -45,6 +48,7 @@ class CNSPlatformFamily(PlatformFamily):
             voxel_getter=lambda path="station/voxels/cns/concourse.vox": path,
             load_from="station/files/cns-gorender.json",
         )
+        self.snow_sprites = {}
 
     @property
     def name(self):
@@ -55,6 +59,34 @@ class CNSPlatformFamily(PlatformFamily):
 
     def get_shelter_classes(self):
         return ["shelter_1", "shelter_2"]
+
+    def _get_snow_sprite(self, location, shelter_class):
+        key = location + "_" + shelter_class
+        if key in self.snow_sprites:
+            return self.snow_sprites[key]
+
+        if location in ["building"]:
+            symmetry = BuildingSpriteSheetFull
+        else:
+            symmetry = BuildingSpriteSheetSymmetricalX
+
+        s = shelter_class + ("_" if location != "" else "") + location
+        skeeps = {s, s + "_snow"}
+        v2 = self.v.discard_layers(
+            tuple(sorted(tuple(platform_components) + tuple(shelter_components - skeeps))), f"subset_{s}_snow_base"
+        )
+        v3 = self.v.discard_layers(
+            tuple(sorted(tuple(platform_components) + tuple(shelter_components - {s + "_snow"}))),
+            f"subset_{s}_snow_only",
+        )
+        v = v3.compose(v2, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
+        v.config["overlap"] = 1.3
+        v.config["agrf_childsprite"] = (0, -40)
+        v.in_place_subset(symmetry.render_indices())
+        s = symmetry.create_variants(v.spritesheet())
+        self.snow_sprites[key] = AChildSprite(s, (0, 0), flags={"dodraw": Registers.SNOW})
+
+        return self.snow_sprites[key]
 
     def get_sprite(self, location, rail_facing, platform_class, shelter_class):
         if platform_class == "":
@@ -90,8 +122,12 @@ class CNSPlatformFamily(PlatformFamily):
         )
 
         height = max((platform_height if platform_class != "" else 0), (shelter_height if shelter_class != "" else 0))
+        snow = self._get_snow_sprite(location, shelter_class.replace("_narrow", ""))
         return AParentSprite(
-            sprite, (16, platform_width, height - foundation_height), (0, 16 - platform_width, foundation_height)
+            sprite,
+            (16, platform_width, height - foundation_height),
+            (0, 16 - platform_width, foundation_height),
+            child_sprites=[snow],
         )
 
     def get_concourse_sprite(self, platform_class, side):
