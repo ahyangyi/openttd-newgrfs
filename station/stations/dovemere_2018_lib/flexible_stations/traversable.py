@@ -31,14 +31,14 @@ cb14_6 = {pclass: {} for pclass in platform_classes}
 cb14 = {pclass: {} for pclass in platform_classes}
 for pclass in platform_classes:
     pclass_desc = "" if pclass == "concrete" else "_" + pclass
-    front2[pclass] = make_front_row(pclass_desc + "_third")
+    front2[pclass] = make_front_row((pclass, None, "third"))
     single[pclass] = make_row(
-        named_tiles["tiny" + pclass_desc + "_corridor"],
-        named_tiles["h_end_gate" + pclass_desc + "_corridor"],
-        named_tiles["h_end" + pclass_desc + "_corridor"],
-        named_tiles["h_normal" + pclass_desc + "_corridor"],
-        named_tiles["h_gate" + pclass_desc + "_corridor"],
-        named_tiles["h_gate_extender" + pclass_desc + "_corridor"],
+        named_tiles[("tiny", pclass, None, "corridor")],
+        named_tiles[("h_end_gate", pclass, None, "corridor")],
+        named_tiles[("h_end", pclass, None, "corridor")],
+        named_tiles[("h_normal", pclass, None, "corridor")],
+        named_tiles[("h_gate", pclass, None, "corridor")],
+        named_tiles[("h_gate_extender", pclass, None, "corridor")],
     )
     for sclass in shelter_classes:
         sclass_desc = "" if sclass == "shelter_1" else "_" + sclass
