@@ -450,6 +450,12 @@ def is_in_front(a, b):
     return False
 
 
+class ATileComponent:
+    def __init__(self, ground_sprites, parent_sprites):
+        self.ground_sprites = ground_sprites
+        self.parent_sprites = parent_sprites
+
+
 class ALayout:
     def __init__(
         self, ground_sprite, parent_sprites, traversable, category=None, notes=None, flattened=False, altitude=0
