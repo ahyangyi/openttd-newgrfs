@@ -81,7 +81,7 @@ class CNSPlatformFamily(PlatformFamily):
         )
         v = v3.compose(v2, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
         v.config["overlap"] = 1.3
-        v.config["agrf_childsprite"] = (0, -40)
+        v.config["agrf_childsprite"] = (0, -10)
         v.in_place_subset(symmetry.render_indices())
         s = symmetry.create_variants(v.spritesheet())
         self.snow_sprites[key] = AChildSprite(s, (0, 0), flags={"dodraw": Registers.SNOW})
@@ -111,6 +111,7 @@ class CNSPlatformFamily(PlatformFamily):
             tuple(sorted(tuple(platform_components - pkeeps) + tuple(shelter_components - skeeps))),
             f"subset_{platform_class}_{rail_facing}_{shelter_class}_{location}",
         )
+        v2.config["agrf_manual_crop"] = (0, 10)
         if location in ["building", "building_narrow"]:
             symmetry = BuildingSpriteSheetFull
         else:
@@ -122,12 +123,15 @@ class CNSPlatformFamily(PlatformFamily):
         )
 
         height = max((platform_height if platform_class != "" else 0), (shelter_height if shelter_class != "" else 0))
-        snow = self._get_snow_sprite(location, shelter_class.replace("_narrow", ""))
+        if shelter_class in ["shelter_1", "shelter_2"]:
+            child_sprites = [self._get_snow_sprite(location.replace("_narrow", ""), shelter_class)]
+        else:
+            child_sprites = []
         return AParentSprite(
             sprite,
             (16, platform_width, height - foundation_height),
             (0, 16 - platform_width, foundation_height),
-            child_sprites=[snow],
+            child_sprites=child_sprites,
         )
 
     def get_concourse_sprite(self, platform_class, side):
