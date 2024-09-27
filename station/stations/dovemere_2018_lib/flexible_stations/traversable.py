@@ -79,7 +79,7 @@ traversable_stations = []
 cb24 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_odd(t, d)], cb24=True)
 for p, pclass in enumerate(platform_classes):
     pclass_desc = "_" + pclass
-    front = make_front_row(pclass_desc + "_platform")
+    front = make_front_row((pclass, None, "platform"))
     for s, sclass in enumerate(shelter_classes):
         demo_layout = make_demo(cb14[pclass][sclass], 4, 4, cb24)
         if pclass == "concrete" and sclass == "shelter_2":

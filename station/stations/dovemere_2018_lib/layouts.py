@@ -79,29 +79,34 @@ def get_category(internal_category, back, notes, tra):
 
 @dataclass
 class HPos:
-    non_platform: ALayout
-    platform: None
-    platform_back_cut: None
+    pillar_style: str
+    shelter_style: str
+    platform_style: str
     has_shelter: bool
+    has_narrow: bool = False
+
+    @property
+    def non_platform(self):
+        return platform_ps[("cns", "np", "", "pillar", self.pillar_style)]
+
+    def platform(self, p, x):
+        return platform_ps[("cns", p, "", x if self.has_shelter else self.shelter_style, self.platform_style)]
+
+    def platform_back_cut(self, x):
+        if self.has_narrow:
+            return platform_ps[
+                ("cns", "cut", "", x if self.has_shelter else self.shelter_style, self.platform_style + "_narrow")
+            ]
+        else:
+            return platform_ps[("cns", "cut", "", x if self.has_shelter else self.shelter_style, self.platform_style)]
 
 
-def make_hpos(pillar_style, platform_style, has_narrow=False):
-    platform = lambda p="concrete", x="shelter_1": platform_ps["cns" + "_" + p + platform_style.replace("shelter", x)]
-    if has_narrow:
-        platform_back_cut = lambda x="shelter_1": platform_ps[
-            "cns_cut" + platform_style.replace("shelter", x) + "_narrow"
-        ]
-    else:
-        platform_back_cut = lambda x="shelter_1": platform_ps["cns_cut" + platform_style.replace("shelter", x)]
-    return HPos(platform_ps["cns_np_pillar" + pillar_style], platform, platform_back_cut, "shelter" in platform_style)
-
-
-Normal = make_hpos("", "_pillar")
-Side = make_hpos("_building", "_shelter_building")
-SideNarrow = make_hpos("_building", "_shelter_building", True)
-V = make_hpos("", "_shelter_building_v")
-VNarrow = make_hpos("", "_shelter_building_v", True)
-TinyAsym = make_hpos("_central", "_pillar_central")
+Normal = HPos("", "pillar", "", False)
+Side = HPos("building", "", "building", True)
+SideNarrow = HPos("building", "", "building", True, True)
+V = HPos("", "", "building_v", True)
+VNarrow = HPos("", "", "building_v", True, True)
+TinyAsym = HPos("central", "pillar", "central", False)
 
 
 snow_layers = ("snow", "snow-window", "snow-window-extender")
