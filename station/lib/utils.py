@@ -62,7 +62,7 @@ class AttrDict(dict):
             if isinstance(k, str) and len(kwargs) == 0:
                 caller_module[k] = v
             elif isinstance(k, tuple):
-                if all((kwargs.get(b) is None or a == kwargs.get(b)) for a, b in zip(k, self._schema)):
+                if all((a is None or kwargs.get(b) is None or a == kwargs.get(b)) for a, b in zip(k, self._schema)):
                     caller_module[
                         self.__tuple_to_str(
                             [self._prefix] + [a for a, b in zip(k, self._schema) if kwargs.get(b) is None]
