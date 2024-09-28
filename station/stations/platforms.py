@@ -95,14 +95,14 @@ class CNSPlatformFamily(PlatformFamily):
         )
 
     def get_concourse_sprite(self, platform_class, side):
-        if platform_class == "":
+        if platform_class == "none":
             ckeeps = set()
         elif side == "d":
             ckeeps = {platform_class, platform_class + "_t"}
         else:
             ckeeps = {platform_class}
 
-        if platform_class == "" or side == "d":
+        if platform_class == "none" or side == "d":
             symmetry = BuildingSpriteSheetSymmetrical
         else:
             symmetry = BuildingSpriteSheetSymmetricalX
@@ -144,6 +144,7 @@ concourse_ps.populate()
 platform_tiles.populate()
 two_side_tiles.populate()
 concourse_tiles.populate()
+
 platform_tiles.globalize()
 two_side_tiles.globalize()
 concourse_tiles.globalize()
@@ -172,8 +173,10 @@ the_stations = AMetaStation(
     b"\xe8\x8a\x9cP",
     None,
     [
-        Demo("Platform", [[cns], [cns_d], [cns.T]]),
-        Demo("Platform with concrete grounds", [[cns_side], [cns_d], [cns_side.T]]),
-        Demo("Platform with shelter", [[cns_shelter_1], [cns_shelter_1_d], [cns_shelter_1.T]]),
+        Demo("Platform", [[cns_concrete], [cns_concrete_d], [cns_concrete.T]]),
+        Demo("Platform with concrete grounds", [[cns_concrete_side], [cns_concrete_d], [cns_concrete_side.T]]),
+        Demo(
+            "Platform with shelter", [[cns_concrete_shelter_1], [cns_concrete_shelter_1_d], [cns_concrete_shelter_1.T]]
+        ),
     ],
 )
