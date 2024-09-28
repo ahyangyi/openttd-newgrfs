@@ -14,6 +14,7 @@ two_side_tiles = AttrDict(
         "platform_class",
         "rail_facing",
         "shelter_class",
+        "separator",
         "platform_class_2",
         "rail_facing_2",
         "shelter_class_2",
@@ -105,18 +106,18 @@ def register(pf: PlatformFamily):
                             )
                             l = cur_symmetry.create_variants(var)
                             entries.extend(cur_symmetry.get_all_entries(l))
-                            # FIXME merge after removing dc()
+
                             suffix = (platform_class, rail_facing, shelter_class)
                             suffix2 = (platform_class, rail_facing_2, shelter_class_2)
-                            two_side_tiles[(name, *suffix, *suffix2)] = l
-                            two_side_tiles[(name, *suffix2, *suffix)] = l.T
+                            two_side_tiles[(name, *suffix, "and", *suffix2)] = l
+                            two_side_tiles[(name, *suffix2, "and", *suffix)] = l.T
 
-    for platform_class in [""] + platform_classes:
-        for side in ["", "d"] if platform_class != "" else [""]:
+    for platform_class in ["none"] + platform_classes:
+        for side in ["", "d"] if platform_class != "none" else [""]:
             ps = pf.get_concourse_sprite(platform_class, side)
             concourse_ps[(platform_class, side)] = ps
 
-            if platform_class == "" or side == "d":
+            if platform_class == "none" or side == "d":
                 symmetry = BuildingSpriteSheetSymmetrical
             else:
                 symmetry = BuildingSpriteSheetSymmetricalX
@@ -126,7 +127,7 @@ def register(pf: PlatformFamily):
             entries.extend(symmetry.get_all_entries(l))
             concourse_tiles[(platform_class, side, "", None)] = l
 
-            if platform_class != "":
+            if platform_class != "none":
                 for shelter_class in shelter_classes:
                     shelter = platform_ps[(name, "cut", "", shelter_class, "")]
                     for l, needs_symmetrical, shelter_side in [

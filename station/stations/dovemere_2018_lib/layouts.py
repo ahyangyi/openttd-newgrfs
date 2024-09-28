@@ -35,7 +35,7 @@ overpass_height = building_height - base_height
 
 gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
-concourse = concourse_ps[""]
+concourse = concourse_ps.none
 third = AChildSprite(gray_third, (0, 0))
 third_T = AChildSprite(gray_third.T, (0, 0))
 
@@ -536,14 +536,18 @@ named_tiles.populate()
 
 
 def globalize_all(platform_class=None, shelter_class=None):
+    import inspect
     from station.stations.platforms import platform_tiles, two_side_tiles, concourse_tiles
 
-    platform_tiles.globalize(platform_class=platform_class, shelter_class=shelter_class)
+    caller_globals = inspect.currentframe().f_back.f_globals
+
+    platform_tiles.globalize(globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)
     two_side_tiles.globalize(
+        globals=caller_globals,
         platform_class=platform_class,
         shelter_class=shelter_class,
         platform_class_2=platform_class,
         shelter_class_2=shelter_class,
     )
-    concourse_tiles.globalize(platform_class=platform_class, shelter_class=shelter_class)
-    named_tiles.globalize(platform_class=platform_class, shelter_class=shelter_class)
+    concourse_tiles.globalize(globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)
+    named_tiles.globalize(globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)
