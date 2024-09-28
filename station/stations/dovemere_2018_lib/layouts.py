@@ -533,3 +533,17 @@ load_full("junction/bicorner", BuildingSpriteSheetDiagonal, "X", window=[])
 load_full("junction/bicorner_2", BuildingSpriteSheetDiagonal, "X", window=[])
 
 named_tiles.populate()
+
+
+def globalize_all(platform_class=None, shelter_class=None):
+    from station.stations.platforms import platform_tiles, two_side_tiles, concourse_tiles
+
+    platform_tiles.globalize(platform_class=platform_class, shelter_class=shelter_class)
+    two_side_tiles.globalize(
+        platform_class=platform_class,
+        shelter_class=shelter_class,
+        platform_class_2=platform_class,
+        shelter_class_2=shelter_class,
+    )
+    concourse_tiles.globalize(platform_class=platform_class, shelter_class=shelter_class)
+    named_tiles.globalize(platform_class=platform_class, shelter_class=shelter_class)
