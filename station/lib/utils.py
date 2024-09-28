@@ -58,17 +58,17 @@ class AttrDict(dict):
                     self._index[k[0]] = {}
                 self._index[k[0]][k] = v
 
-    def globalize(self, globals=None, **kwargs):
-        if globals is None:
-            globals = inspect.currentframe().f_back.f_globals
+    def globalize(self, caller_globals=None, **kwargs):
+        if caller_globals is None:
+            caller_globals = inspect.currentframe().f_back.f_globals
 
         for k, v in self.items():
             if isinstance(k, str) and len(kwargs) == 0:
-                globals[k] = v
+                caller_globals[k] = v
             elif isinstance(k, tuple):
                 if all((a is None or kwargs.get(b) is None or a == kwargs.get(b)) for a, b in zip(k, self._schema)):
                     new_key = self.__tuple_to_str(
                         [self._prefix] + [a for a, b in zip(k, self._schema) if kwargs.get(b) is None]
                     )
-                    assert new_key not in globals, new_key
-                    globals[new_key] = v
+                    assert new_key not in caller_globals, new_key
+                    caller_globals[new_key] = v

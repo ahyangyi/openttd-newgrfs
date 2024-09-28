@@ -7,14 +7,13 @@ from station.stations.dovemere_2018_lib.flexible_stations import traversable
 from .utils import h_merge
 
 globalize_all(platform_class="concrete", shelter_class="shelter_2")
-platform_asym = two_side_tiles.cns_concrete_and_concrete
 
-row_2 = h_merge([traversable.demo_1(i, 2) for i in range(1, 5)], [[platform_asym.T], [platform_asym]])
+row_2 = h_merge([traversable.demo_1(i, 2) for i in range(1, 5)], [[cns_side_and.T], [cns_side_and]])
 v_sep = [[concourse] * len(row_2[0])] * 2
-row_3 = h_merge([traversable.demo_1(i, 3) for i in range(1, 5)], [[platform_asym.T], [cns_d], [platform_asym]])
-row_4 = h_merge([traversable.demo_1(i, 4) for i in range(1, 5)], [[platform_asym.T], [cns.T], [cns], [platform_asym]])
+row_3 = h_merge([traversable.demo_1(i, 3) for i in range(1, 5)], [[cns_side_and.T], [cns_d], [cns_side_and]])
+row_4 = h_merge([traversable.demo_1(i, 4) for i in range(1, 5)], [[cns_side_and.T], [cns.T], [cns], [cns_side_and]])
 row_5 = h_merge(
-    [traversable.demo_1(i, 5) for i in range(1, 5)], [[platform_asym.T], [cns_d], [cns_d], [cns_d], [platform_asym]]
+    [traversable.demo_1(i, 5) for i in range(1, 5)], [[cns_side_and.T], [cns_d], [cns_d], [cns_d], [cns_side_and]]
 )
 
 full_auto_demo = Demo(

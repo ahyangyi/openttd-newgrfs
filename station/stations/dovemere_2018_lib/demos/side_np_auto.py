@@ -1,9 +1,11 @@
 from station.lib import Demo
-from station.stations.platforms import cns_shelter_2, concourse
+from station.stations.dovemere_2018_lib.layouts import globalize_all
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import side
 from .utils import h_merge
+
+globalize_all(platform_class="concrete", shelter_class="shelter_2")
 
 station_building = h_merge([side.side_station_np_demo(i, 1) for i in range(1, 5)], [[concourse]])[0]
 n = len(station_building)
@@ -14,14 +16,14 @@ side_np_auto_demo = Demo(
     "Nontraversable automatic stations (no platform)",
     [
         [x.T for x in station_building],
-        [cns_shelter_2.T] * n,
-        [cns_shelter_2] * n,
+        [cns.T] * n,
+        [cns] * n,
         station_building,
         [concourse] * n,
         [concourse] * n,
         [x.T for x in station_building_2],
-        [cns_shelter_2.T] * n,
-        [cns_shelter_2] * n,
+        [cns.T] * n,
+        [cns] * n,
         station_building_2,
     ],
     remap=get_1cc_remap(CompanyColour.BLUE),

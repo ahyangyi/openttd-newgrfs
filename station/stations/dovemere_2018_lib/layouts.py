@@ -541,13 +541,13 @@ def globalize_all(platform_class=None, shelter_class=None):
 
     caller_globals = inspect.currentframe().f_back.f_globals
 
-    platform_tiles.globalize(globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)
+    platform_tiles.globalize(caller_globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)
     two_side_tiles.globalize(
-        globals=caller_globals,
+        caller_globals=caller_globals,
         platform_class=platform_class,
         shelter_class=shelter_class,
         platform_class_2=platform_class,
         shelter_class_2=shelter_class,
     )
-    concourse_tiles.globalize(globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)
-    named_tiles.globalize(globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)
+    concourse_tiles.globalize(caller_globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)
+    named_tiles.globalize(caller_globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)
