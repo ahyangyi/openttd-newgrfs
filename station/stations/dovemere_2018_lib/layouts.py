@@ -1,4 +1,5 @@
 import os
+import inspect
 from station.lib import (
     BuildingSpriteSheetFull,
     BuildingSpriteSheetSymmetrical,
@@ -22,6 +23,9 @@ from station.stations.platforms import (
     platform_width,
     platform_classes,
     shelter_classes,
+    platform_tiles,
+    two_side_tiles,
+    concourse_tiles,
 )
 from station.stations.ground import named_ps as ground_ps, named_tiles as ground_tiles, gray, gray_third
 from station.stations.misc import track_ground, track
@@ -536,8 +540,6 @@ named_tiles.populate()
 
 
 def globalize_all(platform_class=None, shelter_class=None):
-    import inspect
-    from station.stations.platforms import platform_tiles, two_side_tiles, concourse_tiles
 
     caller_globals = inspect.currentframe().f_back.f_globals
 

@@ -1,5 +1,5 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import globalize_all
+from station.stations.dovemere_2018_lib.layouts import globalize_all, concourse_tiles
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import side
@@ -19,8 +19,8 @@ side_auto_demo = Demo(
         [cns.T] * n,
         [cns] * n,
         station_building,
-        [concourse] * n,
-        [concourse] * n,
+        [concourse_tiles.none] * n,
+        [concourse_tiles.none] * n,
         [x.T for x in station_building_2],
         [cns.T] * n,
         [cns] * n,
