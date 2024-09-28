@@ -451,7 +451,9 @@ def is_in_front(a, b):
 
 
 class ALayout:
-    def __init__(self, ground_sprite, parent_sprites, traversable, category=None, notes=None, flattened=False):
+    def __init__(
+        self, ground_sprite, parent_sprites, traversable, category=None, notes=None, flattened=False, altitude=0
+    ):
         if ground_sprite is None:
             from station.stations.misc import empty_ground
 
@@ -462,6 +464,7 @@ class ALayout:
         self.category = category
         self.notes = notes or []
         self.flattened = flattened
+        self.altitude = altitude
 
     @property
     def sorted_parent_sprites(self):
@@ -499,7 +502,22 @@ class ALayout:
             category=self.category,
             notes=self.notes,
             flattened=True,
+            altitude=self.altitude,
         )
+
+    def raise_tile(self, delta=1):
+        return ALayout(
+            self.ground_sprite,
+            self.parent_sprites,
+            self.traversable,
+            category=self.category,
+            notes=self.notes,
+            flattened=True,
+            altitude=self.altitude + delta,
+        )
+
+    def lower_tile(self, delta=1):
+        return self.raise_tile(-delta)
 
     def to_grf(self, sprite_list):
         if self.flattened:
@@ -535,7 +553,8 @@ class ALayout:
                     (sprite.offset[0] + sprite.offset[1] - sprite.offset[2]) * scale,
                 )
             )
-        return img
+
+        return img.move(0, -self.altitude * 32)
 
     def to_index(self, layout_pool):
         return layout_pool.index(self)
@@ -547,13 +566,17 @@ class ALayout:
         call = lambda x: getattr(x, name)
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = [call(sprite) for sprite in self.parent_sprites]
-        return ALayout(new_ground_sprite, new_sprites, self.traversable, self.category, self.notes)
+        return ALayout(
+            new_ground_sprite, new_sprites, self.traversable, self.category, self.notes, altitude=self.altitude
+        )
 
     def __call__(self, *args, **kwargs):
         call = lambda x: x(*args, **kwargs)
         new_ground_sprite = call(self.ground_sprite)
         new_sprites = [call(sprite) for sprite in self.parent_sprites]
-        return ALayout(new_ground_sprite, new_sprites, self.traversable, self.category, self.notes)
+        return ALayout(
+            new_ground_sprite, new_sprites, self.traversable, self.category, self.notes, altitude=self.altitude
+        )
 
     @property
     def sprites(self):
