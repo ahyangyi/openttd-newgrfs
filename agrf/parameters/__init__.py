@@ -13,11 +13,14 @@ class ParameterReverseLookup:
 
 
 class Parameter(ParameterReverseLookup):
-    def __init__(self, name, default, enum=None, limits=None):
+    def __init__(self, name, default, enum=None, limits=None, parameter_id=None):
         super().__init__(enum)
         self.name = name
         self.default = default
         self._limits = limits
+
+        # FIXME not implemented
+        self.parameter_id = parameter_id
 
     def add(self, g, s):
         g.add_int_parameter(
