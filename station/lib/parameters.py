@@ -11,6 +11,8 @@ for s, year in station_meta:
     if s == "E88A9CA":
         station_settings.append(Parameter(f"{s}_ENABLE_TEMPLATE", 1, booldict))
     station_settings.append(Parameter(f"{s}_ENABLE_MODULAR", 1, booldict))
+    if s == "E88A9CA":
+        station_settings.append(Parameter(f"{s}_ENABLE_ROADSTOP", 1, booldict))
     station_settings.append(Parameter(f"{s}_INTRODUCTION_YEAR", year, limits=(0, 9999)))
 station_settings.append(Parameter("E88A9CP_ENABLE_MODULAR", 1, booldict))
 

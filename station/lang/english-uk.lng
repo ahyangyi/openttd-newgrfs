@@ -17,6 +17,11 @@ STR_PARAM_E88A9CA_ENABLE_MODULAR_DESC       :Whether or not to enable modular st
 STR_PARAM_E88A9CA_ENABLE_MODULAR_ENABLED    :Enabled
 STR_PARAM_E88A9CA_ENABLE_MODULAR_DISABLED   :Disabled
 
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP           :Wuhu Station - Enable Road Stops
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP_DESC      :Whether or not to enable road stops and waypoints to use with Wuhu Station (Modern){}{}Note: the waypoints need OpenTTD 15.0 or above.
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP_ENABLED   :Enabled
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP_DISABLED  :Disabled
+
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR         :Wuhu Station - Available Year
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (Modern) becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
 

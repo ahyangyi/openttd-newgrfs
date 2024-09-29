@@ -4,7 +4,18 @@ from agrf.magic import Switch
 
 
 class ARoadStop(grf.SpriteGenerator):
-    def __init__(self, *, id, translation_name, graphics, callbacks=None, doc_layout=None, is_waypoint=False, **props):
+    def __init__(
+        self,
+        *,
+        id,
+        translation_name,
+        graphics,
+        callbacks=None,
+        doc_layout=None,
+        is_waypoint=False,
+        enable_if=None,
+        **props,
+    ):
         super().__init__()
         self.id = id
         self.translation_name = translation_name
@@ -14,6 +25,7 @@ class ARoadStop(grf.SpriteGenerator):
         self.callbacks = grf.make_callback_manager(grf.ROAD_STOP, callbacks)
         self.doc_layout = doc_layout
         self.is_waypoint = is_waypoint
+        self.enable_if = enable_if
         self._props = props
 
     @property
@@ -47,6 +59,10 @@ class ARoadStop(grf.SpriteGenerator):
 
         if self.is_waypoint:
             res.append(grf.If(is_static=True, variable=0xA1, condition=0x04, value=0x1F000000, skip=255, varsize=4))
+        if self.enable_if:
+            for cond in self.enable_if:
+                res.append(grf.If(is_static=False, variable=cond, condition=0x02, value=0x0, skip=255, varsize=4))
+
         res.append(
             definition := grf.Define(
                 feature=grf.ROAD_STOP,
@@ -60,7 +76,7 @@ class ARoadStop(grf.SpriteGenerator):
         )
 
         res.extend(self.callbacks.make_map_action(definition))
-        if self.is_waypoint:
+        if self.is_waypoint or self.enable_if:
             res.append(grf.Label(255, bytes()))
 
         return res
