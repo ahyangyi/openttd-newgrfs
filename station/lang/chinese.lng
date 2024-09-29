@@ -28,28 +28,28 @@ STR_PARAM_E88A9C0_ENABLE_MODULAR_DISABLED   :禁用
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR         :芜湖站 (1934) - 可建造年份
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :选择芜湖站 (1934)从哪一年开始可以被建造。{}{}注意：本选项是否生效由“全局设置 - 限定可建造年份”所控制。
 
-STR_PARAM_E88A9CP_ENABLE_MODULAR            :站台 - 启用
-STR_PARAM_E88A9CP_ENABLE_MODULAR_DESC       :选择是否启用可建造的站台
+STR_PARAM_E88A9CP_ENABLE_MODULAR            :站台地块 - 启用
+STR_PARAM_E88A9CP_ENABLE_MODULAR_DESC       :选择是否启用可建造的站台地块
 STR_PARAM_E88A9CP_ENABLE_MODULAR_ENABLED    :启用
 STR_PARAM_E88A9CP_ENABLE_MODULAR_DISABLED   :禁用
 
 STR_PARAM_PLATFORM_CONCRETE                 :站台 - 混凝土
-STR_PARAM_PLATFORM_CONCRETE_DESC            :选择是否启用混凝土站台
+STR_PARAM_PLATFORM_CONCRETE_DESC            :选择是否启用混凝土站台{}{}警告：如果两种站台都禁用的话，会导致一些车站样式由于没有配套的站台而建造不出来。
 STR_PARAM_PLATFORM_CONCRETE_ENABLED         :启用
 STR_PARAM_PLATFORM_CONCRETE_DISABLED        :禁用
 
 STR_PARAM_PLATFORM_BRICK                    :站台 - 砖块
-STR_PARAM_PLATFORM_BRICK_DESC               :选择是否启用砖块站台
+STR_PARAM_PLATFORM_BRICK_DESC               :选择是否启用砖块站台}{}警告：如果两种站台都禁用的话，会导致一些车站样式由于没有配套的站台而建造不出来。
 STR_PARAM_PLATFORM_BRICK_ENABLED            :启用
 STR_PARAM_PLATFORM_BRICK_DISABLED           :禁用
 
 STR_PARAM_SHELTER_SHELTER_1                 :雨棚 - 雨棚风格1
-STR_PARAM_SHELTER_SHELTER_1_DESC            :选择是否启用雨棚风格1（弧顶）
+STR_PARAM_SHELTER_SHELTER_1_DESC            :选择是否启用雨棚风格1（弧顶）{}{}警告：如果两种雨棚都禁用的话，会导致一些车站样式由于没有配套的雨棚而建造不出来。
 STR_PARAM_SHELTER_SHELTER_1_ENABLED         :启用
 STR_PARAM_SHELTER_SHELTER_1_DISABLED        :禁用
 
 STR_PARAM_SHELTER_SHELTER_2                 :雨棚 - 雨棚风格2
-STR_PARAM_SHELTER_SHELTER_2_DESC            :选择是否启用雨棚风格2（平顶）
+STR_PARAM_SHELTER_SHELTER_2_DESC            :选择是否启用雨棚风格2（平顶）{}{}警告：如果两种雨棚都禁用的话，会导致一些车站样式由于没有配套的雨棚而建造不出来。
 STR_PARAM_SHELTER_SHELTER_2_ENABLED         :启用
 STR_PARAM_SHELTER_SHELTER_2_DISABLED        :禁用
 

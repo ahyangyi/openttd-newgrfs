@@ -55,16 +55,16 @@ class AStation(grf.SpriteGenerator):
 
         res = []
 
-        if self.enable_if:
-            for cond in self.enable_if:
-                res.append(grf.If(is_static=True, variable=cond, condition=0x02, value=0x1, skip=255, varsize=4))
-
         if sprites is None:
             sprites = self.sprites
             res.append(grf.Action1(feature=grf.STATION, set_count=1, sprite_count=len(self.sprites)))
 
             for s in self.sprites:
                 res.append(s)
+
+        if self.enable_if:
+            for cond in self.enable_if:
+                res.append(grf.If(is_static=False, variable=cond, condition=0x02, value=0x0, skip=255, varsize=4))
 
         res.append(
             definition := grf.Define(
@@ -80,6 +80,9 @@ class AStation(grf.SpriteGenerator):
             )
         )
 
+        if self.enable_if:
+            res.append(grf.Label(255, bytes()))
+
         if self.is_waypoint:
             openttd_15_props = {
                 "class_label": b"\xfF" + self._props["class_label"][1:],
@@ -91,9 +94,6 @@ class AStation(grf.SpriteGenerator):
             res.append(grf.Define(feature=grf.STATION, id=self.id, props=openttd_15_props))
 
         res.extend(self.callbacks.make_map_action(definition))
-
-        if self.enable_if:
-            res.append(grf.Label(255, bytes()))
 
         return res
 

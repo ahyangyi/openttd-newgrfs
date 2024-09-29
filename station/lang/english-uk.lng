@@ -28,28 +28,28 @@ STR_PARAM_E88A9C0_ENABLE_MODULAR_DISABLED   :Disabled
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR         :Wuhu Station (1934) - Available Year
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1934) becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
 
-STR_PARAM_E88A9CP_ENABLE_MODULAR            :Platforms - Enable
-STR_PARAM_E88A9CP_ENABLE_MODULAR_DESC       :Whether or not to enable buildable platforms
+STR_PARAM_E88A9CP_ENABLE_MODULAR            :Platform Tiles - Enable
+STR_PARAM_E88A9CP_ENABLE_MODULAR_DESC       :Whether or not to enable buildable platform tiles
 STR_PARAM_E88A9CP_ENABLE_MODULAR_ENABLED    :Enabled
 STR_PARAM_E88A9CP_ENABLE_MODULAR_DISABLED   :Disabled
 
 STR_PARAM_PLATFORM_CONCRETE                 :Platform - Concrete
-STR_PARAM_PLATFORM_CONCRETE_DESC            :Whether or not to enable concrete platforms
+STR_PARAM_PLATFORM_CONCRETE_DESC            :Whether or not to enable concrete platforms{}{}WARNING: if both platform styles are disabled, some stations would also be disabled due to the lack of available platform styles.
 STR_PARAM_PLATFORM_CONCRETE_ENABLED         :Enabled
 STR_PARAM_PLATFORM_CONCRETE_DISABLED        :Disabled
 
 STR_PARAM_PLATFORM_BRICK                    :Platform - Brick
-STR_PARAM_PLATFORM_BRICK_DESC               :Whether or not to enable brick platforms
+STR_PARAM_PLATFORM_BRICK_DESC               :Whether or not to enable brick platforms{}{}WARNING: if both platform styles are disabled, some stations would also be disabled due to the lack of available platform styles.
 STR_PARAM_PLATFORM_BRICK_ENABLED            :Enabled
 STR_PARAM_PLATFORM_BRICK_DISABLED           :Disabled
 
 STR_PARAM_SHELTER_SHELTER_1                 :Shelter - Shelter 1
-STR_PARAM_SHELTER_SHELTER_1_DESC            :Whether or not to enable shelter style 1 (curved)
+STR_PARAM_SHELTER_SHELTER_1_DESC            :Whether or not to enable shelter style 1 (curved){}{}WARNING: if both shelter styles are disabled, some stations would also be disabled due to the lack of available shelter styles.
 STR_PARAM_SHELTER_SHELTER_1_ENABLED         :Enabled
 STR_PARAM_SHELTER_SHELTER_1_DISABLED        :Disabled
 
 STR_PARAM_SHELTER_SHELTER_2                 :Shelter - Shelter 2
-STR_PARAM_SHELTER_SHELTER_2_DESC            :Whether or not to enable shelter style 2 (flat)
+STR_PARAM_SHELTER_SHELTER_2_DESC            :Whether or not to enable shelter style 2 (flat){}{}WARNING: if both shelter styles are disabled, some stations would also be disabled due to the lack of available shelter styles.
 STR_PARAM_SHELTER_SHELTER_2_ENABLED         :Enabled
 STR_PARAM_SHELTER_SHELTER_2_DISABLED        :Disabled
 
