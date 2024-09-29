@@ -1,5 +1,6 @@
 import grf
 from station.lib import AStation, AMetaStation
+from station.lib.parameters import parameter_list
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos, common_cb
 from .dovemere_2018_lib.objects import objects
@@ -25,6 +26,7 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
                 **common_cb,
             },
             is_waypoint="waypoint" in entry.notes,
+            enable_if=[parameter_list.index("E88A9CA_ENABLE_MODULAR")],
             doc_layout=entry,
         )
     )

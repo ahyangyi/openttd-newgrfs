@@ -14,6 +14,7 @@ class AStation(grf.SpriteGenerator):
         non_traversable_tiles=0x0,
         is_waypoint=False,
         doc_layout=None,
+        enable_if=None,
         **props,
     ):
         super().__init__()
@@ -25,6 +26,7 @@ class AStation(grf.SpriteGenerator):
         self.callbacks = grf.make_callback_manager(grf.STATION, callbacks)
         self.is_waypoint = is_waypoint
         self.doc_layout = doc_layout
+        self.enable_if = enable_if
         self._props = {
             **props,
             "non_traversable_tiles": non_traversable_tiles,
@@ -37,8 +39,6 @@ class AStation(grf.SpriteGenerator):
         return class_label_printable(self._props["class_label"])
 
     def get_sprites(self, g, sprites=None):
-        res = []
-
         extra_props = {
             "station_name": g.strings.add(g.strings[f"STR_STATION_{self.translation_name}"]).get_persistent_id()
         }
@@ -52,6 +52,12 @@ class AStation(grf.SpriteGenerator):
 
         cb_props = {}
         self.callbacks.set_flag_props(cb_props)
+
+        res = []
+
+        if self.enable_if:
+            for cond in self.enable_if:
+                res.append(grf.If(is_static=True, variable=cond, condition=0x02, value=0x1, skip=255, varsize=4))
 
         if sprites is None:
             sprites = self.sprites
@@ -85,6 +91,9 @@ class AStation(grf.SpriteGenerator):
             res.append(grf.Define(feature=grf.STATION, id=self.id, props=openttd_15_props))
 
         res.extend(self.callbacks.make_map_action(definition))
+
+        if self.enable_if:
+            res.append(grf.Label(255, bytes()))
 
         return res
 

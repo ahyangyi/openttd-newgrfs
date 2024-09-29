@@ -5,6 +5,7 @@ from ..layouts import named_tiles, layouts
 from .common import determine_platform_odd, determine_platform_even, make_front_row, make_demo, make_row
 from .traversable import cb14_2, cb14_4, cb14_6, fill_odd
 from station.stations.platforms import platform_classes, shelter_classes
+from station.lib.parameters import parameter_list
 
 
 named_tiles.globalize()
@@ -48,6 +49,7 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                enable_if=[parameter_list.index("E88A9CA_ENABLE_TEMPLATE")],
                 doc_layout=demo_layout,
             )
         )
@@ -87,6 +89,7 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                enable_if=[parameter_list.index("E88A9CA_ENABLE_TEMPLATE")],
                 doc_layout=demo_layout,
             )
         )
