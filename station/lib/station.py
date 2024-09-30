@@ -63,8 +63,8 @@ class AStation(grf.SpriteGenerator):
             for s in self.sprites:
                 res.append(s)
 
-        if self.id >= 0xFF and not is_managed_by_metastation:
-            res.append(grf.If(is_static=False, variable=0xA1, condition=0x04, value=0x1E000000, skip=255, varsize=4))
+        if self.id >= 0xFF:
+            res.append(grf.If(is_static=True, variable=0xA1, condition=0x04, value=0x1E000000, skip=255, varsize=4))
         if self.enable_if:
             for cond in self.enable_if:
                 res.append(grf.If(is_static=False, variable=cond, condition=0x02, value=0x0, skip=255, varsize=4))
@@ -81,11 +81,8 @@ class AStation(grf.SpriteGenerator):
                 },
             )
         )
-        if self.enable_if:
+        if self.id >= 0xFF or self.enable_if:
             res.append(grf.Label(255, bytes()))
-
-        res.append(grf.If(is_static=False, variable=0xA1, condition=0x04, value=0x1E000000, skip=255, varsize=4))
-        res.append(grf.Define(feature=grf.STATION, id=self.id, props=extra_props))
 
         if self.is_waypoint:
             openttd_15_props = {
@@ -98,9 +95,6 @@ class AStation(grf.SpriteGenerator):
             res.append(grf.Define(feature=grf.STATION, id=self.id, props=openttd_15_props))
 
         res.extend(self.callbacks.make_map_action(definition))
-
-        if self.id >= 0xFF and not is_managed_by_metastation:
-            res.append(grf.Label(255, bytes()))
 
         return res
 
