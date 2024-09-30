@@ -264,16 +264,12 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
         for shelter_class in shelter_classes if h_pos.has_shelter else [None]:
             for platform_class in platform_classes:
                 cur_plat = h_pos.platform(platform_class, shelter_class)
-                # FIXME remove postfix
-                shelter_postfix = "" if shelter_class == "shelter_1" else "_" + str(shelter_class)
-                platform_postfix = "_" + platform_class
                 if h_pos.has_shelter:
-                    common_notes = (["noshow"] if shelter_postfix + platform_postfix != "_shelter_2" else []) + [
-                        shelter_class,
-                        platform_class,
-                    ]
+                    common_notes = (
+                        ["noshow"] if shelter_class != "shelter_2" or platform_class != "concrete" else []
+                    ) + [shelter_class, platform_class]
                 else:
-                    common_notes = (["noshow"] if shelter_postfix + platform_postfix != "" else []) + [platform_class]
+                    common_notes = (["noshow"] if platform_class != "concrete" else []) + [platform_class]
                 register(
                     ALayout(
                         corridor_ground, [cur_plat, cur_plat.T] + f2_component, True, notes=common_notes + ["both"]
@@ -389,10 +385,9 @@ def load(
             cur_sym = symmetry
             cur_bsym = broken_symmetry
         for platform_class in platform_classes:
-            platform_postfix = "_" + platform_class
-            common_notes = (["noshow"] if platform_postfix != "" else []) + [platform_class]
-            cur_plat = platform_ps["cns" + platform_postfix]
-            cur_plat_nt = platform_ps["cns" + platform_postfix + "_side"]
+            common_notes = (["noshow"] if platform_class != "concrete" else []) + [platform_class]
+            cur_plat = platform_ps[("cns", platform_class, "", "", "")]
+            cur_plat_nt = platform_ps[("cns", platform_class, "side", "", "")]
             if corridor:
                 register(
                     ALayout(
@@ -418,15 +413,12 @@ def load(
                     (f2_name, platform_class, None, "third"),
                 )
             for shelter_class in shelter_classes if h_pos.has_shelter else [None]:
-                # FIXME remove postfix
-                shelter_postfix = "" if shelter_class == "shelter_1" else "_" + str(shelter_class)
                 if h_pos.has_shelter:
-                    common_notes = (["noshow"] if shelter_postfix + platform_postfix != "_shelter_2" else []) + [
-                        platform_class,
-                        shelter_class,
-                    ]
+                    common_notes = (
+                        ["noshow"] if shelter_class != "shelter_2" or platform_class != "concrete" else []
+                    ) + [platform_class, shelter_class]
                 else:
-                    common_notes = (["noshow"] if shelter_postfix + platform_postfix != "" else []) + [platform_class]
+                    common_notes = (["noshow"] if platform_class != "concrete" else []) + [platform_class]
                 if third:
                     register(
                         ALayout(
