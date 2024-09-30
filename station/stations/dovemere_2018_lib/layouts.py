@@ -1,4 +1,5 @@
 import os
+import inspect
 from station.lib import (
     BuildingSpriteSheetFull,
     BuildingSpriteSheetSymmetrical,
@@ -22,6 +23,9 @@ from station.stations.platforms import (
     platform_width,
     platform_classes,
     shelter_classes,
+    platform_tiles,
+    two_side_tiles,
+    concourse_tiles,
 )
 from station.stations.ground import named_ps as ground_ps, named_tiles as ground_tiles, gray, gray_third
 from station.stations.misc import track_ground, track
@@ -35,7 +39,7 @@ overpass_height = building_height - base_height
 
 gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
-concourse = concourse_ps[""]
+concourse = concourse_ps.none
 third = AChildSprite(gray_third, (0, 0))
 third_T = AChildSprite(gray_third.T, (0, 0))
 
@@ -79,31 +83,34 @@ def get_category(internal_category, back, notes, tra):
 
 @dataclass
 class HPos:
-    non_platform: ALayout
-    platform: None
-    platform_back_cut: None
+    pillar_style: str
+    shelter_style: str
+    platform_style: str
     has_shelter: bool
+    has_narrow: bool = False
+
+    @property
+    def non_platform(self):
+        return platform_ps[("cns", "np", "", "pillar", self.pillar_style)]
+
+    def platform(self, p, x):
+        return platform_ps[("cns", p, "", x if self.has_shelter else self.shelter_style, self.platform_style)]
+
+    def platform_back_cut(self, x):
+        if self.has_narrow:
+            return platform_ps[
+                ("cns", "cut", "", x if self.has_shelter else self.shelter_style, self.platform_style + "_narrow")
+            ]
+        else:
+            return platform_ps[("cns", "cut", "", x if self.has_shelter else self.shelter_style, self.platform_style)]
 
 
-def make_hpos(pillar_style, platform_style, has_narrow=False):
-    platform = lambda p="concrete", x="shelter_1": platform_ps[
-        "cns" + ("" if p == "concrete" else "_" + p) + platform_style.replace("shelter", x)
-    ]
-    if has_narrow:
-        platform_back_cut = lambda x="shelter_1": platform_ps[
-            "cns_cut" + platform_style.replace("shelter", x) + "_narrow"
-        ]
-    else:
-        platform_back_cut = lambda x="shelter_1": platform_ps["cns_cut" + platform_style.replace("shelter", x)]
-    return HPos(platform_ps["cns_np_pillar" + pillar_style], platform, platform_back_cut, "shelter" in platform_style)
-
-
-Normal = make_hpos("", "_pillar")
-Side = make_hpos("_building", "_shelter_building")
-SideNarrow = make_hpos("_building", "_shelter_building", True)
-V = make_hpos("", "_shelter_building_v")
-VNarrow = make_hpos("", "_shelter_building_v", True)
-TinyAsym = make_hpos("_central", "_pillar_central")
+Normal = HPos("", "pillar", "", False)
+Side = HPos("building", "", "building", True)
+SideNarrow = HPos("building", "", "building", True, True)
+V = HPos("", "", "building_v", True)
+VNarrow = HPos("", "", "building_v", True, True)
+TinyAsym = HPos("central", "pillar", "central", False)
 
 
 snow_layers = ("snow", "snow-window", "snow-window-extender")
@@ -252,25 +259,24 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
             ALayout(empty_ground, [cur_np, cur_np.T] + f2_component, True, notes=["waypoint"]),
             cur_sym,
             internal_category,
-            f2_name + "_empty",
+            (f2_name, None, None, "empty"),
         )
-        for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
+        for shelter_class in shelter_classes if h_pos.has_shelter else [None]:
             for platform_class in platform_classes:
                 cur_plat = h_pos.platform(platform_class, shelter_class)
-                shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
-                platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
                 if h_pos.has_shelter:
-                    common_notes = ["noshow"] if shelter_postfix + platform_postfix != "_shelter_2" else []
+                    common_notes = (
+                        ["noshow"] if shelter_class != "shelter_2" or platform_class != "concrete" else []
+                    ) + [shelter_class, platform_class]
                 else:
-                    common_notes = ["noshow"] if shelter_postfix + platform_postfix != "" else []
-                sname = f2_name + platform_postfix + shelter_postfix
+                    common_notes = (["noshow"] if platform_class != "concrete" else []) + [platform_class]
                 register(
                     ALayout(
                         corridor_ground, [cur_plat, cur_plat.T] + f2_component, True, notes=common_notes + ["both"]
                     ),
                     cur_sym,
                     internal_category,
-                    sname + "_d",
+                    (f2_name, platform_class, shelter_class, "d"),
                 )
                 if symmetry.is_symmetrical_y():
                     broken_symmetry = cur_sym.break_y_symmetry()
@@ -280,9 +286,11 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                         ),
                         broken_symmetry,
                         internal_category,
-                        sname + "_n",
+                        (f2_name, platform_class, shelter_class, "n"),
                     )
-                    named_tiles[sname + "_f"] = named_tiles[sname + "_n"].T
+                    named_tiles[(f2_name, platform_class, shelter_class, "f")] = named_tiles[
+                        (f2_name, platform_class, shelter_class, "n")
+                    ].T
                 else:
                     register(
                         ALayout(
@@ -290,7 +298,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                         ),
                         cur_sym,
                         internal_category,
-                        sname + "_n",
+                        (f2_name, platform_class, shelter_class, "n"),
                     )
                     register(
                         ALayout(
@@ -298,7 +306,7 @@ def load_central(source, symmetry, internal_category, name=None, h_pos=Normal, w
                         ),
                         cur_sym,
                         internal_category,
-                        sname + "_f",
+                        (f2_name, platform_class, shelter_class, "f"),
                     )
 
 
@@ -377,11 +385,9 @@ def load(
             cur_sym = symmetry
             cur_bsym = broken_symmetry
         for platform_class in platform_classes:
-            platform_postfix = "" if platform_class == "concrete" else "_" + platform_class
-            common_notes = ["noshow"] if platform_postfix != "" else []
-            cur_plat = platform_ps["cns" + platform_postfix]
-            cur_plat_nt = platform_ps["cns" + platform_postfix + "_side"]
-            pname = f2_name + platform_postfix
+            common_notes = (["noshow"] if platform_class != "concrete" else []) + [platform_class]
+            cur_plat = platform_ps[("cns", platform_class, "", "", "")]
+            cur_plat_nt = platform_ps[("cns", platform_class, "side", "", "")]
             if corridor:
                 register(
                     ALayout(
@@ -392,7 +398,7 @@ def load(
                     ),
                     cur_sym,
                     internal_category,
-                    pname + "_corridor",
+                    (f2_name, platform_class, None, "corridor"),
                 )
             if third:
                 register(
@@ -404,15 +410,15 @@ def load(
                     ),
                     cur_bsym,
                     internal_category,
-                    pname + "_third",
+                    (f2_name, platform_class, None, "third"),
                 )
-            for shelter_class in shelter_classes if h_pos.has_shelter else ["shelter_1"]:
-                shelter_postfix = "" if shelter_class == "shelter_1" else "_" + shelter_class
+            for shelter_class in shelter_classes if h_pos.has_shelter else [None]:
                 if h_pos.has_shelter:
-                    common_notes = ["noshow"] if shelter_postfix + platform_postfix != "_shelter_2" else []
+                    common_notes = (
+                        ["noshow"] if shelter_class != "shelter_2" or platform_class != "concrete" else []
+                    ) + [platform_class, shelter_class]
                 else:
-                    common_notes = ["noshow"] if shelter_postfix + platform_postfix != "" else []
-                sname = pname + shelter_postfix
+                    common_notes = (["noshow"] if platform_class != "concrete" else []) + [platform_class]
                 if third:
                     register(
                         ALayout(
@@ -423,7 +429,7 @@ def load(
                         ),
                         cur_bsym,
                         internal_category,
-                        sname + "_third_f",
+                        (f2_name, platform_class, shelter_class, "third_f"),
                     )
                 if platform:
                     register(
@@ -440,14 +446,14 @@ def load(
                         ),
                         cur_bsym,
                         internal_category,
-                        sname + "_platform",
+                        (f2_name, platform_class, shelter_class, "platform"),
                     )
         if full:
             register(
                 ALayout(solid_ground, [full_f1 + f1_snow, concourse] + f2_component, False),
                 cur_sym,
                 internal_category,
-                f2_name,
+                (f2_name, None, None, ""),
             )
 
 
@@ -469,7 +475,7 @@ def load_full(source, symmetry, internal_category, name=None, h_pos=Normal, borr
 layouts = []
 entries = []
 flexible_entries = []
-named_tiles = AttrDict()
+named_tiles = AttrDict(schema=("name", "platform_class", "shelter_class", "f1_layout"))
 
 load("front_normal", BuildingSpriteSheetSymmetricalX, "F0", corridor=False, window=[])
 load("front_gate", BuildingSpriteSheetFull, "F0", corridor=False)
@@ -527,3 +533,21 @@ load_full("junction/front_gate_extender_corner", BuildingSpriteSheetDiagonal, "X
 load_full("junction/double_corner_2", BuildingSpriteSheetDiagonal, "X", window=[])
 load_full("junction/bicorner", BuildingSpriteSheetDiagonal, "X", window=[])
 load_full("junction/bicorner_2", BuildingSpriteSheetDiagonal, "X", window=[])
+
+named_tiles.populate()
+
+
+def globalize_all(platform_class=None, shelter_class=None):
+
+    caller_globals = inspect.currentframe().f_back.f_globals
+
+    platform_tiles.globalize(caller_globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)
+    two_side_tiles.globalize(
+        caller_globals=caller_globals,
+        platform_class=platform_class,
+        shelter_class=shelter_class,
+        platform_class_2=platform_class,
+        shelter_class_2=shelter_class,
+    )
+    concourse_tiles.globalize(caller_globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)
+    named_tiles.globalize(caller_globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)

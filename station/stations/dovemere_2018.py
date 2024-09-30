@@ -1,5 +1,6 @@
 import grf
 from station.lib import AStation, AMetaStation
+from station.lib.parameters import parameter_list
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos, common_cb
 from .dovemere_2018_lib.objects import objects
@@ -11,6 +12,13 @@ from .dovemere_2018_lib.flexible_stations.side_third import side_third_stations
 
 modular_stations = []
 for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
+    enable_if = [parameter_list.index("E88A9CA_ENABLE_MODULAR")]
+    for platform_class in ["concrete", "brick"]:
+        if platform_class in entry.notes:
+            enable_if.append(parameter_list.index(f"PLATFORM_{platform_class.upper()}"))
+    for shelter_class in ["shelter_1", "shelter_2"]:
+        if shelter_class in entry.notes:
+            enable_if.append(parameter_list.index(f"SHELTER_{shelter_class.upper()}"))
     modular_stations.append(
         AStation(
             id=0x1000 + i,
@@ -25,6 +33,7 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
                 **common_cb,
             },
             is_waypoint="waypoint" in entry.notes,
+            enable_if=enable_if,
             doc_layout=entry,
         )
     )
@@ -64,5 +73,4 @@ the_stations = AMetaStation(
         demos.special_demo_aq,
     ],
     road_stops=roadstops,
-    objects=objects,
 )

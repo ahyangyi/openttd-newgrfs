@@ -9,7 +9,7 @@ Add snow and escalator graphics for station buildings.
 
 Designate station tiles without platforms as waypoints.
 
-Add bus stops, road waypoints and objects to use alongside the station.
+Add bus stops, road waypoints and objects (not included in 0.3.0 release) to use alongside the station.
 
 Bugfix: station templates with shelter type 2 sometimes included wrong shelter graphics.
 
