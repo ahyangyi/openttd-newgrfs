@@ -56,7 +56,7 @@ class AStation(grf.SpriteGenerator):
 
         res = []
 
-        if sprites is None:
+        if not is_managed_by_metastation:
             sprites = self.sprites
             res.append(grf.Action1(feature=grf.STATION, set_count=1, sprite_count=len(self.sprites)))
 
@@ -84,7 +84,7 @@ class AStation(grf.SpriteGenerator):
         if self.enable_if:
             res.append(grf.Label(255, bytes()))
 
-        res.append(grf.If(is_static=True, variable=0xA1, condition=0x04, value=0x1E000000, skip=255, varsize=4))
+        res.append(grf.If(is_static=False, variable=0xA1, condition=0x04, value=0x1E000000, skip=255, varsize=4))
         res.append(grf.Define(feature=grf.STATION, id=self.id, props=extra_props))
 
         if self.is_waypoint:
