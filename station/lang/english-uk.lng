@@ -7,10 +7,56 @@ STR_PARAM_INTRODUCTION_YEAR_DESC        :Choose whether each station in this New
 STR_PARAM_INTRODUCTION_YEAR_DISABLED    :Always available
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :Only available after set year
 
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE           :Wuhu Station - Enable Templates
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE_DESC      :Whether or not to enable flexible templates for Wuhu Station (Modern)
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE_ENABLED   :Enabled
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE_DISABLED  :Disabled
+
+STR_PARAM_E88A9CA_ENABLE_MODULAR            :Wuhu Station - Enable Modular
+STR_PARAM_E88A9CA_ENABLE_MODULAR_DESC       :Whether or not to enable modular station buildings for Wuhu Station (Modern)
+STR_PARAM_E88A9CA_ENABLE_MODULAR_ENABLED    :Enabled
+STR_PARAM_E88A9CA_ENABLE_MODULAR_DISABLED   :Disabled
+
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP           :Wuhu Station - Enable Road Stops
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP_DESC      :Whether or not to enable road stops and waypoints to use with Wuhu Station (Modern){}{}Note: the waypoints need OpenTTD 15.0 or above.
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP_ENABLED   :Enabled
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP_DISABLED  :Disabled
+
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR         :Wuhu Station - Available Year
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (Modern) becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
+
+STR_PARAM_E88A9C0_ENABLE_MODULAR            :Wuhu Station (1934) - Enable
+STR_PARAM_E88A9C0_ENABLE_MODULAR_DESC       :Whether or not to enable Wuhu Station (1934)
+STR_PARAM_E88A9C0_ENABLE_MODULAR_ENABLED    :Enabled
+STR_PARAM_E88A9C0_ENABLE_MODULAR_DISABLED   :Disabled
+
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR         :Wuhu Station (1934) - Available Year
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1934) becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
+
+STR_PARAM_E88A9CP_ENABLE_MODULAR            :Platform Tiles - Enable
+STR_PARAM_E88A9CP_ENABLE_MODULAR_DESC       :Whether or not to enable buildable platform tiles
+STR_PARAM_E88A9CP_ENABLE_MODULAR_ENABLED    :Enabled
+STR_PARAM_E88A9CP_ENABLE_MODULAR_DISABLED   :Disabled
+
+STR_PARAM_PLATFORM_CONCRETE                 :Platform - Concrete
+STR_PARAM_PLATFORM_CONCRETE_DESC            :Whether or not to enable concrete platforms{}{}WARNING: if both platform styles are disabled, some stations would also be disabled due to the lack of available platform styles.
+STR_PARAM_PLATFORM_CONCRETE_ENABLED         :Enabled
+STR_PARAM_PLATFORM_CONCRETE_DISABLED        :Disabled
+
+STR_PARAM_PLATFORM_BRICK                    :Platform - Brick
+STR_PARAM_PLATFORM_BRICK_DESC               :Whether or not to enable brick platforms{}{}WARNING: if both platform styles are disabled, some stations would also be disabled due to the lack of available platform styles.
+STR_PARAM_PLATFORM_BRICK_ENABLED            :Enabled
+STR_PARAM_PLATFORM_BRICK_DISABLED           :Disabled
+
+STR_PARAM_SHELTER_SHELTER_1                 :Shelter - Shelter 1
+STR_PARAM_SHELTER_SHELTER_1_DESC            :Whether or not to enable shelter style 1 (curved){}{}WARNING: if both shelter styles are disabled, some stations would also be disabled due to the lack of available shelter styles.
+STR_PARAM_SHELTER_SHELTER_1_ENABLED         :Enabled
+STR_PARAM_SHELTER_SHELTER_1_DISABLED        :Disabled
+
+STR_PARAM_SHELTER_SHELTER_2                 :Shelter - Shelter 2
+STR_PARAM_SHELTER_SHELTER_2_DESC            :Whether or not to enable shelter style 2 (flat){}{}WARNING: if both shelter styles are disabled, some stations would also be disabled due to the lack of available shelter styles.
+STR_PARAM_SHELTER_SHELTER_2_ENABLED         :Enabled
+STR_PARAM_SHELTER_SHELTER_2_DISABLED        :Disabled
 
 STR_STATION_DEFAULT                             :Station Building
 STR_STATION_UNTRAVERSABLE                       :Station Building (No Track)
@@ -86,6 +132,13 @@ STR_STATION_CLASS_E88A9CA4      :{PUSH_COLOUR}{WHITE}CNS: Wuhu{POP_COLOUR} Side 
 STR_STATION_CLASS_E88A9CA8      :{PUSH_COLOUR}{WHITE}CNS: Wuhu{POP_COLOUR} Side C
 STR_STATION_CLASS_E88A9CAC      :{PUSH_COLOUR}{WHITE}CNS: Wuhu{POP_COLOUR} Side D
 
+# doc only
+STR_STATION_CLASS_E88A9CZ       :{PUSH_COLOUR}{WHITE}CNS: Wuhu{POP_COLOUR} Objects
+STR_STATION_CLASS_E88A9CR       :{PUSH_COLOUR}{WHITE}CNS: Wuhu{POP_COLOUR} Road Stops
+
+STR_OBJECT_WEST_PLAZA           :West square
+STR_ROADSTOP_WEST_PLAZA_BUS     :West square bus stop
+
 STR_STATION_CLASS_E88A9Ca       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu (1992)
 
 STR_STATION_CLASS_E88A9C0       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu (1934)
@@ -103,6 +156,9 @@ STR_STATION_CLASS_E999B5A       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Nanling
 STR_STATION_CLASS_E7B981W       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Fanchang West
 
 STR_STATION_CLASS_E88A9CP       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu - Extra Platforms
+
+STR_OBJECT_CLASS_E88A9CZ        :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu - Plaza
+STR_ROADSTOP_CLASS_E88A9CR      :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu
 
 STR_METASTATION_CLASS_E88A9CA   :Wuhu Station (2015)
 STR_METASTATION_CLASS_E88A9Ca   :Wuhu Station (1992)

@@ -4,13 +4,14 @@ from ..layouts import named_tiles, layouts
 from .. import common_cb
 from .common import make_demo, horizontal_layout
 from station.stations.platforms import platform_classes, shelter_classes
+from station.lib.parameters import parameter_list
 
 named_tiles.globalize()
 
 
 def get_side_index(l, r, pclass, sclass):
-    pclass_desc = "" if pclass == "concrete" else "_" + pclass
-    sclass_desc = "" if sclass == "shelter_1" else "_" + sclass
+    pclass_desc = "_" + pclass
+    sclass_desc = "_" + sclass
     suffix = pclass_desc + sclass_desc
     return horizontal_layout(
         l,
@@ -60,6 +61,11 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                enable_if=[
+                    parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
+                    parameter_list.index(f"PLATFORM_{pclass.upper()}"),
+                    parameter_list.index(f"SHELTER_{sclass.upper()}"),
+                ],
                 doc_layout=demo_layout,
             )
         )
@@ -89,6 +95,11 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                enable_if=[
+                    parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
+                    parameter_list.index(f"PLATFORM_{pclass.upper()}"),
+                    parameter_list.index(f"SHELTER_{sclass.upper()}"),
+                ],
                 doc_layout=demo_layout,
             )
         )
@@ -118,6 +129,7 @@ side_stations.append(
             ),
             **common_cb,
         },
+        enable_if=[parameter_list.index("E88A9CA_ENABLE_TEMPLATE")],
         doc_layout=demo_layout,
     )
 )
@@ -139,6 +151,7 @@ side_stations.append(
             ),
             **common_cb,
         },
+        enable_if=[parameter_list.index("E88A9CA_ENABLE_TEMPLATE")],
         doc_layout=demo_layout,
     )
 )

@@ -4,7 +4,7 @@ from agrf.magic import Switch
 
 
 class AObject(grf.SpriteGenerator):
-    def __init__(self, *, id, translation_name, layouts, callbacks=None, **props):
+    def __init__(self, *, id, translation_name, layouts, callbacks=None, doc_layout=None, **props):
         super().__init__()
         self.id = id
         self.translation_name = translation_name
@@ -13,6 +13,7 @@ class AObject(grf.SpriteGenerator):
             callbacks = {}
         self.callbacks = grf.make_callback_manager(grf.OBJECT, callbacks)
         self._props = props
+        self.doc_layout = doc_layout
 
     @property
     def class_label_plain(self):
