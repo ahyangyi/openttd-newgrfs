@@ -502,7 +502,6 @@ load("h_end_asym", BuildingSpriteSheetFull, "H", h_pos=SideNarrow, corridor=Fals
 load("h_end_asym_gate", BuildingSpriteSheetFull, "H", h_pos=SideNarrow, corridor=False)
 load("h_end_gate", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False, third=False)
 load_full("h_end_gate_untraversable", BuildingSpriteSheetSymmetricalY, "H")
-load("h_end_gate_1", BuildingSpriteSheetFull, "H", asym=True, platform=False, full=False)
 load("h_normal", BuildingSpriteSheetSymmetrical, "H", window=[])
 load("h_gate", BuildingSpriteSheetSymmetricalY, "H", third=False, platform=False)
 load("h_gate_1", BuildingSpriteSheetFull, "H", asym=True)
