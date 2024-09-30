@@ -73,4 +73,5 @@ the_stations = AMetaStation(
         demos.special_demo_aq,
     ],
     road_stops=roadstops,
+    objects=objects,
 )
