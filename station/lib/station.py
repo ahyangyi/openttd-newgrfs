@@ -96,6 +96,12 @@ class AStation(grf.SpriteGenerator):
         if self.id >= 0xFF or self.enable_if:
             res.append(grf.Label(255, bytes()))
 
+        if self.id < 0xFF:
+            name = g.strings[f"STR_STATION_{self.translation_name}"]
+            class_name = g.strings[f"STR_STATION_CLASS_{self.class_label_plain}"]
+            res.extend(class_name.get_actions(grf.STATION, 0xC400 + self.id, is_generic_offset=True))
+            res.extend(name.get_actions(grf.STATION, 0xC500 + self.id, is_generic_offset=True))
+
         return res
 
     @property
