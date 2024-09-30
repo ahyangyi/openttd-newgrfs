@@ -7,7 +7,14 @@ from .binary_variants import (
     BuildingSpriteSheetRotational,
     BuildingSpriteSheetDiagonal,
 )
-from .layout import ADefaultGroundSprite, AGroundSprite, AParentSprite, AChildSprite, ALayout, LayoutSprite
+from agrf.lib.building.layout import (
+    ADefaultGroundSprite,
+    AGroundSprite,
+    AParentSprite,
+    AChildSprite,
+    ALayout,
+    LayoutSprite,
+)
 from .metastation import AMetaStation
 from .demo import Demo
 from .utils import AttrDict, get_1cc_remap

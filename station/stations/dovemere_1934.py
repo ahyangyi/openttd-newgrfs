@@ -13,6 +13,7 @@ from station.lib import (
     Registers,
     get_1cc_remap,
 )
+from station.lib.parameters import parameter_list
 from agrf.graphics.voxel import LazyVoxel
 from station.lib.parameters import station_cb
 from .misc import building_ground
@@ -41,7 +42,7 @@ def quickload(name, symmetry):
     snow_sprite = symmetry.create_variants(snow.spritesheet())
     cs = AChildSprite(snow_sprite, (0, 0), flags={"dodraw": Registers.SNOW})
 
-    l = ALayout([building_ground], [ps + cs], False)
+    l = ALayout(building_ground, [ps + cs], False)
     var = symmetry.get_all_variants(l)
     ret = symmetry.create_variants(var)
     entries.extend(symmetry.get_all_entries(ret))
@@ -53,8 +54,9 @@ named_tiles = AttrDict()
 for name, symmetry in [("regular", BuildingSpriteSheetSymmetricalX)]:
     quickload(name, symmetry)
 
-the_stations = AMetaStation(
-    [
+station_tiles = []
+for i, entry in enumerate(entries):
+    station_tiles.append(
         AStation(
             id=0x2000 + i,
             translation_name="PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE",
@@ -62,12 +64,15 @@ the_stations = AMetaStation(
             class_label=b"\xe8\x8a\x9c0",
             cargo_threshold=40,
             callbacks={"select_tile_layout": 0, **station_cb["E88A9C0"]},
+            enable_if=[parameter_list.index("E88A9C0_ENABLE_MODULAR")],
+            doc_layout=entry,
         )
-        for i, entry in enumerate(entries)
-    ],
+    )
+
+the_stations = AMetaStation(
+    station_tiles,
     b"\xe8\x8a\x9c0",
     None,
-    entries,
     [
         Demo("The building", [[named_tiles.regular]]),
         Demo(
