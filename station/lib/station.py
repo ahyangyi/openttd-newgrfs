@@ -5,7 +5,17 @@ from .registers import code
 
 class AStation(grf.SpriteGenerator):
     def __init__(
-        self, *, id, translation_name, layouts, callbacks=None, non_traversable_tiles=0x0, is_waypoint=False, **props
+        self,
+        *,
+        id,
+        translation_name,
+        layouts,
+        callbacks=None,
+        non_traversable_tiles=0x0,
+        is_waypoint=False,
+        doc_layout=None,
+        enable_if=None,
+        **props,
     ):
         super().__init__()
         self.id = id
@@ -15,6 +25,8 @@ class AStation(grf.SpriteGenerator):
             callbacks = {}
         self.callbacks = grf.make_callback_manager(grf.STATION, callbacks)
         self.is_waypoint = is_waypoint
+        self.doc_layout = doc_layout
+        self.enable_if = enable_if
         self._props = {
             **props,
             "non_traversable_tiles": non_traversable_tiles,
@@ -28,8 +40,6 @@ class AStation(grf.SpriteGenerator):
 
     def get_sprites(self, g, sprites=None):
         is_managed_by_metastation = sprites is not None
-        res = []
-
         extra_props = {
             "station_name": g.strings.add(g.strings[f"STR_STATION_{self.translation_name}"]).get_persistent_id()
         }
@@ -44,6 +54,8 @@ class AStation(grf.SpriteGenerator):
         cb_props = {}
         self.callbacks.set_flag_props(cb_props)
 
+        res = []
+
         if sprites is None:
             sprites = self.sprites
             res.append(grf.Action1(feature=grf.STATION, set_count=1, sprite_count=len(self.sprites)))
@@ -52,7 +64,11 @@ class AStation(grf.SpriteGenerator):
                 res.append(s)
 
         if self.id >= 0xFF and not is_managed_by_metastation:
-            res.append(grf.If(is_static=True, variable=0xA1, condition=0x04, value=0x1E000000, skip=1, varsize=4))
+            res.append(grf.If(is_static=False, variable=0xA1, condition=0x04, value=0x1E000000, skip=255, varsize=4))
+        if self.enable_if:
+            for cond in self.enable_if:
+                res.append(grf.If(is_static=False, variable=cond, condition=0x02, value=0x0, skip=255, varsize=4))
+
         res.append(
             definition := grf.Define(
                 feature=grf.STATION,
@@ -65,6 +81,9 @@ class AStation(grf.SpriteGenerator):
                 },
             )
         )
+        if self.enable_if:
+            res.append(grf.Label(255, bytes()))
+
         res.append(grf.If(is_static=True, variable=0xA1, condition=0x04, value=0x1E000000, skip=255, varsize=4))
         res.append(grf.Define(feature=grf.STATION, id=self.id, props=extra_props))
 

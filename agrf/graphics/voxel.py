@@ -187,7 +187,9 @@ class LazyVoxel(Config):
     @functools.cache
     def spritesheet(self, xdiff=0, zdiff=0, shift=0, xspan=16):
         real_xdiff = 0 if self.config.get("agrf_road_mode", False) else 0.5
-        real_ydiff = (self.config.get("agrf_zdiff", 0) + zdiff) * 0.5 * self.config.get("agrf_scale", 1)
+        real_ydiff = (
+            (self.config.get("agrf_zdiff", 0) + zdiff) * 0.5 + self.config.get("agrf_ydiff", 0)
+        ) * self.config.get("agrf_scale", 1)
         if "agrf_subset" in self.config:
             self.config = self.subset(self.config["agrf_subset"]).config
             del self.config["agrf_subset"]

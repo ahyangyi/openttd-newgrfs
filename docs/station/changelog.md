@@ -9,6 +9,10 @@ Add snow and escalator graphics for station buildings.
 
 Designate station tiles without platforms as waypoints.
 
+Add bus stops, road waypoints and objects to use alongside the station.
+
+Bugfix: station templates with shelter type 2 sometimes included wrong shelter graphics.
+
 0.2.2 (2024-06-14)
 --------------------
 Further fix for the climate-aware groundsprites: they didn't work with custom track NewGRFs.

@@ -11,6 +11,7 @@ from .common import (
     make_central_row,
 )
 from station.stations.platforms import platform_classes, shelter_classes
+from station.lib.parameters import parameter_list
 
 named_tiles.globalize()
 
@@ -30,31 +31,21 @@ cb14_4 = {pclass: {} for pclass in platform_classes}
 cb14_6 = {pclass: {} for pclass in platform_classes}
 cb14 = {pclass: {} for pclass in platform_classes}
 for pclass in platform_classes:
-    pclass_desc = "" if pclass == "concrete" else "_" + pclass
-    front2[pclass] = make_front_row(pclass_desc + "_third")
+    front2[pclass] = make_front_row((pclass, None, "third"))
     single[pclass] = make_row(
-        named_tiles["tiny" + pclass_desc + "_corridor"],
-        named_tiles["h_end_gate" + pclass_desc + "_corridor"],
-        named_tiles["h_end" + pclass_desc + "_corridor"],
-        named_tiles["h_normal" + pclass_desc + "_corridor"],
-        named_tiles["h_gate" + pclass_desc + "_corridor"],
-        named_tiles["h_gate_extender" + pclass_desc + "_corridor"],
+        named_tiles[("tiny", pclass, None, "corridor")],
+        named_tiles[("h_end_gate", pclass, None, "corridor")],
+        named_tiles[("h_end", pclass, None, "corridor")],
+        named_tiles[("h_normal", pclass, None, "corridor")],
+        named_tiles[("h_gate", pclass, None, "corridor")],
+        named_tiles[("h_gate_extender", pclass, None, "corridor")],
     )
     for sclass in shelter_classes:
-        sclass_desc = "" if sclass == "shelter_1" else "_" + sclass
-        front[pclass][sclass] = make_front_row(
-            pclass_desc + sclass_desc + "_third_f", fallback_suffix=pclass_desc + "_third_f"
-        )
+        front[pclass][sclass] = make_front_row((pclass, sclass, "third_f"), fallback_suffix=(pclass, None, "third_f"))
 
-        h_n[pclass][sclass] = make_horizontal_switch(
-            lambda l, r: make_central_row(l, r, pclass_desc + sclass_desc + "_n", pclass_desc + "_n")
-        )
-        h_f[pclass][sclass] = make_horizontal_switch(
-            lambda l, r: make_central_row(l, r, pclass_desc + sclass_desc + "_f", pclass_desc + "_f")
-        )
-        h_d[pclass][sclass] = make_horizontal_switch(
-            lambda l, r: make_central_row(l, r, pclass_desc + sclass_desc + "_d", pclass_desc + "_d")
-        )
+        h_n[pclass][sclass] = make_horizontal_switch(lambda l, r: make_central_row(l, r, (pclass, sclass, "n")))
+        h_f[pclass][sclass] = make_horizontal_switch(lambda l, r: make_central_row(l, r, (pclass, sclass, "f")))
+        h_d[pclass][sclass] = make_horizontal_switch(lambda l, r: make_central_row(l, r, (pclass, sclass, "d")))
 
         cb14_2[pclass][sclass] = make_vertical_switch(
             lambda t, d: (
@@ -86,14 +77,12 @@ traversable_stations = []
 
 cb24 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_odd(t, d)], cb24=True)
 for p, pclass in enumerate(platform_classes):
-    pclass_desc = "" if pclass == "concrete" else "_" + pclass
-    front = make_front_row(pclass_desc + "_platform")
+    front = make_front_row((pclass, None, "platform"))
     for s, sclass in enumerate(shelter_classes):
-        if pclass == "concrete" and sclass == "shelter_1":
-            demo_1 = lambda r, c, cb14=cb14[pclass][sclass], cb24=cb24: cb14.demo(r, c, cb24)
         demo_layout = make_demo(cb14[pclass][sclass], 4, 4, cb24)
-        demo_layout.station_id = 0x300 + p * 0x10 + s
-        if p > 0 or s > 0:
+        if pclass == "concrete" and sclass == "shelter_2":
+            demo_1 = lambda r, c, cb14=cb14[pclass][sclass], cb24=cb24: cb14.demo(r, c, cb24)
+        else:
             demo_layout.notes.append("noshow")
         traversable_stations.append(
             AStation(
@@ -110,19 +99,23 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                enable_if=[
+                    parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
+                    parameter_list.index(f"PLATFORM_{pclass.upper()}"),
+                    parameter_list.index(f"SHELTER_{sclass.upper()}"),
+                ],
+                doc_layout=demo_layout,
             )
         )
 
 cb24 = make_vertical_switch(lambda t, d: {"n": 2, "f": 4, "d": 6}[determine_platform_even(t, d)], cb24=True)
 for p, pclass in enumerate(platform_classes):
-    pclass_desc = "" if pclass == "concrete" else "_" + pclass
-    front = make_front_row(pclass_desc + "_platform")
+    front = make_front_row((pclass, None, "platform"))
     for s, sclass in enumerate(shelter_classes):
-        if pclass == "concrete" and sclass == "shelter_1":
-            demo_2 = lambda r, c, cb14=cb14[pclass][sclass], cb24=cb24: cb14.demo(r, c, cb24)
         demo_layout = make_demo(cb14[pclass][sclass], 4, 4, cb24)
-        demo_layout.station_id = 0x400 + p * 0x10 + s
-        if p > 0 or s > 0:
+        if pclass == "concrete" and sclass == "shelter_2":
+            demo_2 = lambda r, c, cb14=cb14[pclass][sclass], cb24=cb24: cb14.demo(r, c, cb24)
+        else:
             demo_layout.notes.append("noshow")
         traversable_stations.append(
             AStation(
@@ -139,5 +132,11 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                enable_if=[
+                    parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
+                    parameter_list.index(f"PLATFORM_{pclass.upper()}"),
+                    parameter_list.index(f"SHELTER_{sclass.upper()}"),
+                ],
+                doc_layout=demo_layout,
             )
         )
