@@ -1,6 +1,6 @@
 ##grflangid 0x01
-STR_GRF_NAME                    :China Set: Stations - Wuhu {WHITE}0.3.0-indev
-STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}China{RED} Set{POP_COLOUR}: Stations {PUSH_COLOUR}{SILVER}Wuhu {WHITE}0.3.0-indev{POP_COLOUR}{}{}An add-on to {PUSH_COLOUR}{GOLD}China{RED} Set{POP_COLOUR}: Stations (CNS), this NewGRF provides modular tiles templated stations modeled after railway stations in {PUSH_COLOUR}{SILVER}Wuhu, China{POP_COLOUR}.{}{}{PUSH_COLOUR}{WHITE}Contributors{POP_COLOUR}:{}Ahyangyi, WenSim.{}{}Distributed under {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR}.
+STR_GRF_NAME                    :China Set: Stations - Wuhu {WHITE}0.3.0
+STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}China{RED} Set{POP_COLOUR}: Stations {PUSH_COLOUR}{SILVER}Wuhu {WHITE}0.3.0-indev{POP_COLOUR}{}{}An add-on to {PUSH_COLOUR}{GOLD}China{RED} Set{POP_COLOUR}: Stations (CNS), this NewGRF provides modular tiles templated stations modeled after railway stations in {PUSH_COLOUR}{SILVER}Wuhu, China{POP_COLOUR}.{}{}OpenTTD 14.0 or above is recommended for most functionalities, though older versions are supported with a vastly reduced station selection.{}{}{PUSH_COLOUR}{WHITE}Contributors{POP_COLOUR}:{}Ahyangyi, WenSim.{}{}Distributed under {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR}.
 
 STR_PARAM_INTRODUCTION_YEAR             :Global - Station Availability
 STR_PARAM_INTRODUCTION_YEAR_DESC        :Choose whether each station in this NewGRF can only be built after a certain year
@@ -29,7 +29,7 @@ STR_PARAM_E88A9CA_ENABLE_ROADSTOP_ENABLED   :Enabled
 STR_PARAM_E88A9CA_ENABLE_ROADSTOP_DISABLED  :Disabled
 
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR         :Wuhu Station - Available Year
-STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (Modern) becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
+STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (Modern) becomes available.{}{}For a realistic experience, set this to somewhere near 2005.
 
 STR_PARAM_E88A9C0_ENABLE_MODULAR            :Wuhu Station (1934) - Enable
 STR_PARAM_E88A9C0_ENABLE_MODULAR_DESC       :Whether or not to enable Wuhu Station (1934)
@@ -37,7 +37,7 @@ STR_PARAM_E88A9C0_ENABLE_MODULAR_ENABLED    :Enabled
 STR_PARAM_E88A9C0_ENABLE_MODULAR_DISABLED   :Disabled
 
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR         :Wuhu Station (1934) - Available Year
-STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1934) becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
+STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1934) becomes available.{}{}For a realistic experience, set this to somewhere near 1910.
 
 STR_PARAM_E88A9CP_ENABLE_MODULAR            :Platform Tiles - Enable
 STR_PARAM_E88A9CP_ENABLE_MODULAR_DESC       :Whether or not to enable buildable platform tiles

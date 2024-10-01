@@ -3,20 +3,17 @@ from agrf.magic import Switch
 
 booldict = {0: "DISABLED", 1: "ENABLED"}
 
-global_settings = [
-    Parameter("INTRODUCTION_YEAR", 0, booldict),
-    Parameter("NIGHT_MODE", 0, {0: "AUTO_DETECT", 1: "ENABLED", 2: "DISABLED"}),
-]
+global_settings = [Parameter("NIGHT_MODE", 0, {0: "AUTO_DETECT", 1: "ENABLED", 2: "DISABLED"})]
 
-station_meta = [("E88A9CA", 2005), ("E88A9C0", 1911)]
+station_meta = ["E88A9CA", "E88A9C0"]
 station_settings = []
-for s, year in station_meta:
+for s in station_meta:
     if s == "E88A9CA":
         station_settings.append(Parameter(f"{s}_ENABLE_TEMPLATE", 1, booldict))
     station_settings.append(Parameter(f"{s}_ENABLE_MODULAR", 1, booldict))
     if s == "E88A9CA":
         station_settings.append(Parameter(f"{s}_ENABLE_ROADSTOP", 1, booldict))
-    station_settings.append(Parameter(f"{s}_INTRODUCTION_YEAR", year, limits=(0, 9999)))
+    station_settings.append(Parameter(f"{s}_INTRODUCTION_YEAR", 0, limits=(0, 9999)))
 station_settings.append(Parameter("E88A9CP_ENABLE_MODULAR", 1, booldict))
 
 platform_settings = []
@@ -30,13 +27,10 @@ for shelter, enabled in [("shelter_1", False), ("shelter_2", True)]:
 parameter_list = ParameterList(global_settings + station_settings + platform_settings + shelter_settings)
 
 station_cb = {}
-for s, _ in station_meta:
-    enabled = parameter_list.index("INTRODUCTION_YEAR")
+for s in station_meta:
     station_param = parameter_list.index(f"{s}_INTRODUCTION_YEAR")
     station_cb[s] = {
         "availability": Switch(
-            ranges={0: 0},
-            default=1,
-            code=f"current_year > (var(0x7F, param={enabled}, shift=0, and=0xffffffff) * var(0x7F, param={station_param}, shift=0, and=0xffffffff))",
+            ranges={0: 0}, default=1, code=f"current_year >= var(0x7F, param={station_param}, shift=0, and=0xffffffff)"
         )
     }
