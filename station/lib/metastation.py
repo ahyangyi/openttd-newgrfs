@@ -23,10 +23,16 @@ class AMetaStation(grf.SpriteGenerator):
             set(ids)
         ), f"ID 0x{[x for x in ids if ids.count(x) > 1][0]:x} occurs twice! {[hex(x) for x in ids]}"
 
+    def remap(self, station_idmap):
+        for station in self.stations:
+            if station.id in station_idmap:
+                station.id = station_idmap[station.id]
+
     def get_sprites(self, g):
         sprites = self.sprites
 
         ret = [grf.Action1(feature=grf.STATION, set_count=1, sprite_count=len(sprites))] + sprites
+
         for station in self.stations:
             ret.extend(station.get_sprites(g, sprites))
         for road_stop in self.road_stops:
