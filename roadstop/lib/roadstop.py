@@ -1,6 +1,5 @@
 import grf
 from station.lib.utils import class_label_printable
-from agrf.magic import Switch
 
 
 class ARoadStop(grf.SpriteGenerator):
