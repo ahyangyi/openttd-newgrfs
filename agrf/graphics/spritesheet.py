@@ -1,7 +1,7 @@
 import numpy as np
 import grf
 import math
-from .misc import SCALE_TO_ZOOM, ZOOM_TO_SCALE
+from .misc import SCALE_TO_ZOOM
 
 THIS_FILE = grf.PythonFile(__file__)
 

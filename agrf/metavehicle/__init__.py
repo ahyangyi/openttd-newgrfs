@@ -1,4 +1,5 @@
 from agrf.variant import AVariant
+from agrf.strings import get_translation
 
 
 def dimens_repr(dimensions):
