@@ -221,7 +221,7 @@ def make_voxel(source):
     return voxel_cache[source]
 
 
-def load_central(f2_id, source, symmetry, internal_category, name=None, h_pos=Normal, window=None, window_asym=False):
+def load_central(f2_ids, source, symmetry, internal_category, name=None, h_pos=Normal, window=None, window_asym=False):
     name = name or source.split("/")[-1]
     v = make_voxel(source)
     f2 = make_f2(v, symmetry)
@@ -236,7 +236,11 @@ def load_central(f2_id, source, symmetry, internal_category, name=None, h_pos=No
         window_classes = ["windowed"]
     else:
         window_classes = ["none"] + window
-    for window_class in window_classes:
+
+    if isinstance(f2_ids, int):
+        f2_ids = (f2_ids,)
+
+    for window_class, f2_id in zip(window_classes, f2_ids):
         window_postfix = "" if window_class == "none" else "_" + window_class
         if window is None:
             f2_name = name
@@ -258,7 +262,7 @@ def load_central(f2_id, source, symmetry, internal_category, name=None, h_pos=No
             f2_component = [f2 + f2_window_extender + f2_snow_window_extender]
             cur_sym = symmetry
         register(
-            0xFB00 + f2_id * 0x4,
+            0xFD00 + f2_id,
             1,
             ALayout(empty_ground, [cur_np, cur_np.T] + f2_component, True, notes=["waypoint"]),
             cur_sym,
@@ -472,7 +476,7 @@ def load(
                     )
         if full:
             register(
-                0xF700 + f2_id * 0x4,
+                0xFB00 + f2_id,
                 1,
                 ALayout(solid_ground, [full_f1 + f1_snow, concourse] + f2_component, False),
                 cur_sym,
@@ -513,36 +517,41 @@ load(0x12, "corner_2", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor
 load(0x16, "corner_gate_2", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False)
 
 load_central(
-    0x20, "central", BuildingSpriteSheetSymmetrical, "N", window=["windowed", "windowed_extender"], window_asym=True
+    (0x20, 0x21, 0x23),
+    "central",
+    BuildingSpriteSheetSymmetrical,
+    "N",
+    window=["windowed", "windowed_extender"],
+    window_asym=True,
 )
 
-load_central(0x23, "side_a", BuildingSpriteSheetFull, "A", h_pos=Side, window=["windowed"])
-load_central(0x2B, "side_a2", BuildingSpriteSheetSymmetricalY, "A", h_pos=Side, window=["windowed"])
-load_central(0x2F, "side_a3", BuildingSpriteSheetFull, "A", h_pos=Side, window=["windowed"])
-load_central(0x37, "side_b", BuildingSpriteSheetFull, "B", h_pos=Side, window=[])
-load_central(0x3B, "side_b2", BuildingSpriteSheetSymmetricalY, "B", h_pos=Side, window=[])
-load_central(0x3D, "side_c", BuildingSpriteSheetSymmetricalY, "C", h_pos=Side, window=[])
-load_central(0x3F, "side_d", BuildingSpriteSheetSymmetricalY, "D", h_pos=Side)
+load_central((0x24, 0x28), "side_a", BuildingSpriteSheetFull, "A", h_pos=Side, window=["windowed"])
+load_central((0x2C, 0x2E), "side_a2", BuildingSpriteSheetSymmetricalY, "A", h_pos=Side, window=["windowed"])
+load_central((0x30, 0x34), "side_a3", BuildingSpriteSheetFull, "A", h_pos=Side, window=["windowed"])
+load_central(0x38, "side_b", BuildingSpriteSheetFull, "B", h_pos=Side, window=[])
+load_central(0x3C, "side_b2", BuildingSpriteSheetSymmetricalY, "B", h_pos=Side, window=[])
+load_central(0x3E, "side_c", BuildingSpriteSheetSymmetricalY, "C", h_pos=Side, window=[])
+load_central(0x40, "side_d", BuildingSpriteSheetSymmetricalY, "D", h_pos=Side)
 
-load(0x41, "h_end", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False, window=[])
-load_full(0x43, "h_end_untraversable", BuildingSpriteSheetSymmetricalY, "H", window=[])
-load(0x45, "h_end_asym", BuildingSpriteSheetFull, "H", h_pos=SideNarrow, corridor=False, window=[])
-load(0x49, "h_end_asym_gate", BuildingSpriteSheetFull, "H", h_pos=SideNarrow, corridor=False)
-load(0x4D, "h_end_gate", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False, third=False)
-load_full(0x4F, "h_end_gate_untraversable", BuildingSpriteSheetSymmetricalY, "H")
-load(0x51, "h_normal", BuildingSpriteSheetSymmetrical, "H", window=[])
-load(0x52, "h_gate", BuildingSpriteSheetSymmetricalY, "H", third=False, platform=False)
-load(0x54, "h_gate_1", BuildingSpriteSheetFull, "H", asym=True)
-load(0x58, "h_gate_extender", BuildingSpriteSheetSymmetrical, "H", third=False, platform=False)
-load(0x59, "h_gate_extender_1", BuildingSpriteSheetSymmetricalX, "H", asym=True)
+load(0x42, "h_end", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False, window=[])
+load_full(0x44, "h_end_untraversable", BuildingSpriteSheetSymmetricalY, "H", window=[])
+load(0x46, "h_end_asym", BuildingSpriteSheetFull, "H", h_pos=SideNarrow, corridor=False, window=[])
+load(0x4A, "h_end_asym_gate", BuildingSpriteSheetFull, "H", h_pos=SideNarrow, corridor=False)
+load(0x4E, "h_end_gate", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False, third=False)
+load_full(0x50, "h_end_gate_untraversable", BuildingSpriteSheetSymmetricalY, "H")
+load(0x52, "h_normal", BuildingSpriteSheetSymmetrical, "H", window=[])
+load(0x53, "h_gate", BuildingSpriteSheetSymmetricalY, "H", third=False, platform=False)
+load(0x55, "h_gate_1", BuildingSpriteSheetFull, "H", asym=True)
+load(0x59, "h_gate_extender", BuildingSpriteSheetSymmetrical, "H", third=False, platform=False)
+load(0x5A, "h_gate_extender_1", BuildingSpriteSheetSymmetricalX, "H", asym=True)
 
-load(0x5B, "v_end", BuildingSpriteSheetSymmetricalX, "F0", h_pos=VNarrow, corridor=False)
-load(0x5D, "v_end_gate", BuildingSpriteSheetSymmetricalX, "F0", h_pos=VNarrow, corridor=False)
-load_central(0x5F, "v_central", BuildingSpriteSheetSymmetrical, "N", h_pos=V)
+load(0x5C, "v_end", BuildingSpriteSheetSymmetricalX, "F0", h_pos=VNarrow, corridor=False)
+load(0x5E, "v_end_gate", BuildingSpriteSheetSymmetricalX, "F0", h_pos=VNarrow, corridor=False)
+load_central(0x60, "v_central", BuildingSpriteSheetSymmetrical, "N", h_pos=V)
 
-load(0x60, "tiny", BuildingSpriteSheetSymmetrical, "H", h_pos=V, full=False, platform=False, third=False)
-load_full(0x61, "tiny_untraversable", BuildingSpriteSheetSymmetrical, "H")
-load(0x62, "tiny_asym", BuildingSpriteSheetSymmetricalX, "H", h_pos=TinyAsym, corridor=False)
+load(0x61, "tiny", BuildingSpriteSheetSymmetrical, "H", h_pos=V, full=False, platform=False, third=False)
+load_full(0x62, "tiny_untraversable", BuildingSpriteSheetSymmetrical, "H")
+load(0x63, "tiny_asym", BuildingSpriteSheetSymmetricalX, "H", h_pos=TinyAsym, corridor=False)
 
 load_full(0x80, "irregular/turn", BuildingSpriteSheetFull, "T")
 load_full(0x84, "irregular/turn_gate", BuildingSpriteSheetFull, "T")
