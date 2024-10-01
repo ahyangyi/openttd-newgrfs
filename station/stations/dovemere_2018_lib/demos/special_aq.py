@@ -1,13 +1,11 @@
 from station.lib import Demo
-from station.stations.dovemere_2018_lib.layouts import named_tiles, platform_d, platform_n
-from station.stations.platforms import named_tiles as platform_tiles
+from station.stations.dovemere_2018_lib.layouts import globalize_all
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 
-named_tiles.globalize()
-nt = platform_tiles.concourse_side_shelter_1
+globalize_all(platform_class="concrete", shelter_class="shelter_2")
 
-rail_row = [nt.T.M, platform_n.M, platform_n.T.M, platform_d.M, platform_n.M, platform_n.T.M, nt.M]
+rail_row = [concourse.T.M, cns.M, cns.T.M, cns_d.M, cns.M, cns.T.M, concourse.M]
 top_building = [
     corner_gate_platform.R.M,
     side_a3_windowed_f.R.M,

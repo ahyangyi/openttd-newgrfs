@@ -7,6 +7,7 @@ import station.stations.dovemere_2018
 import station.stations.dovemere_1934
 import station.stations.platforms
 from station.lib.parameters import parameter_list
+from station.lib.idmap import station_idmap
 
 metastations = [
     station.stations.dovemere_2018.the_stations,
@@ -40,6 +41,8 @@ def gen():
 
     parameter_list.add(g, s)
     for metastation in metastations:
+        metastation.check_id_uniqueness()
+        metastation.remap(station_idmap=station_idmap)
         g.add(metastation)
 
     g.write("station.grf")

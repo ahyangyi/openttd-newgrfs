@@ -4,7 +4,7 @@ from agrf.magic import Switch
 
 
 class AObject(grf.SpriteGenerator):
-    def __init__(self, *, id, translation_name, layouts, callbacks=None, **props):
+    def __init__(self, *, id, translation_name, layouts, callbacks=None, doc_layout=None, **props):
         super().__init__()
         self.id = id
         self.translation_name = translation_name
@@ -13,6 +13,7 @@ class AObject(grf.SpriteGenerator):
             callbacks = {}
         self.callbacks = grf.make_callback_manager(grf.OBJECT, callbacks)
         self._props = props
+        self.doc_layout = doc_layout
 
     @property
     def class_label_plain(self):
@@ -21,11 +22,10 @@ class AObject(grf.SpriteGenerator):
     def get_sprites(self, g, sprites=None):
         res = []
 
-        extra_props = {"name_id": 0x5801, "class_name_id": 0x5801}
-        # extra_props = {
-        #    "name_id": g.strings.add(g.strings[f"STR_OBJECT_{self.translation_name}"]).get_persistent_id(),
-        #    "class_name_id": g.strings.add(g.strings[f"STR_OBJECT_CLASS_{self.class_label_plain}"]).get_persistent_id(),
-        # }
+        extra_props = {
+            "name_id": g.strings.add(g.strings[f"STR_OBJECT_{self.translation_name}"]).get_persistent_id(),
+            "class_name_id": g.strings.add(g.strings[f"STR_OBJECT_CLASS_{self.class_label_plain}"]).get_persistent_id(),
+        }
 
         if sprites is None:
             sprites = self.sprites

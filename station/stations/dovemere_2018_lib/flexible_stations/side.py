@@ -4,13 +4,14 @@ from ..layouts import named_tiles, layouts
 from .. import common_cb
 from .common import make_demo, horizontal_layout
 from station.stations.platforms import platform_classes, shelter_classes
+from station.lib.parameters import parameter_list
 
 named_tiles.globalize()
 
 
 def get_side_index(l, r, pclass, sclass):
-    pclass_desc = "" if pclass == "concrete" else "_" + pclass
-    sclass_desc = "" if sclass == "shelter_1" else "_" + sclass
+    pclass_desc = "_" + pclass
+    sclass_desc = "_" + sclass
     suffix = pclass_desc + sclass_desc
     return horizontal_layout(
         l,
@@ -37,17 +38,16 @@ side_stations = []
 
 for p, pclass in enumerate(platform_classes):
     for s, sclass in enumerate(shelter_classes):
-        if pclass == "concrete" and sclass == "shelter_1":
+        if pclass == "concrete" and sclass == "shelter_2":
             side_station_demo = lambda r, c, cb14=cb14[pclass][sclass]: cb14.demo(r, c)
 
         demo_layout = make_demo(cb14[pclass][sclass], 4, 1)
-        demo_layout.station_id = 0x500 + p * 0x10 + s
         if p > 0 or s > 0:
             demo_layout.notes.append("noshow")
 
         side_stations.append(
             AStation(
-                id=0x500 + p * 0x10 + s,
+                id=0xFF40 + p * 0x4 + s,
                 translation_name="FLEXIBLE_FRONT_SIDE",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
@@ -61,22 +61,27 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                enable_if=[
+                    parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
+                    parameter_list.index(f"PLATFORM_{pclass.upper()}"),
+                    parameter_list.index(f"SHELTER_{sclass.upper()}"),
+                ],
+                doc_layout=demo_layout,
             )
         )
 
 for p, pclass in enumerate(platform_classes):
     for s, sclass in enumerate(shelter_classes):
-        if pclass == "concrete" and sclass == "shelter_1":
+        if pclass == "concrete" and sclass == "shelter_2":
             back_side_station_demo = lambda r, c, cb14=cb14[pclass][sclass]: cb14.T.demo(r, c)
 
         demo_layout = make_demo(cb14[pclass][sclass].T, 4, 1)
-        demo_layout.station_id = 0x600 + p * 0x10 + s
         if p > 0 or s > 0:
             demo_layout.notes.append("noshow")
 
         side_stations.append(
             AStation(
-                id=0x600 + p * 0x10 + s,
+                id=0xFF50 + p * 0x4 + s,
                 translation_name="FLEXIBLE_BACK_SIDE",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
@@ -90,6 +95,12 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                enable_if=[
+                    parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
+                    parameter_list.index(f"PLATFORM_{pclass.upper()}"),
+                    parameter_list.index(f"SHELTER_{sclass.upper()}"),
+                ],
+                doc_layout=demo_layout,
             )
         )
 
@@ -102,10 +113,9 @@ cb14 = make_horizontal_switch(get_side_index)
 
 side_station_np_demo = lambda r, c, cb14=cb14: cb14.demo(r, c)
 demo_layout = make_demo(cb14, 4, 1)
-demo_layout.station_id = 0x700
 side_stations.append(
     AStation(
-        id=0x700,
+        id=0xFF60,
         translation_name="FLEXIBLE_FRONT_SIDE_NP",
         layouts=layouts,
         class_label=b"\xe8\x8a\x9cA",
@@ -119,14 +129,15 @@ side_stations.append(
             ),
             **common_cb,
         },
+        enable_if=[parameter_list.index("E88A9CA_ENABLE_TEMPLATE")],
+        doc_layout=demo_layout,
     )
 )
 back_side_station_np_demo = lambda r, c, cb14=cb14: cb14.T.demo(r, c)
 demo_layout = make_demo(cb14.T, 4, 1)
-demo_layout.station_id = 0x701
 side_stations.append(
     AStation(
-        id=0x701,
+        id=0xFF70,
         translation_name="FLEXIBLE_BACK_SIDE_NP",
         layouts=layouts,
         class_label=b"\xe8\x8a\x9cA",
@@ -140,5 +151,7 @@ side_stations.append(
             ),
             **common_cb,
         },
+        enable_if=[parameter_list.index("E88A9CA_ENABLE_TEMPLATE")],
+        doc_layout=demo_layout,
     )
 )
