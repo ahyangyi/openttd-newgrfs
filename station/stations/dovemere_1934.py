@@ -13,6 +13,7 @@ from station.lib import (
     Registers,
     get_1cc_remap,
 )
+from station.lib.parameters import parameter_list
 from agrf.graphics.voxel import LazyVoxel
 from station.lib.parameters import station_cb
 from .misc import building_ground
@@ -57,12 +58,13 @@ station_tiles = []
 for i, entry in enumerate(entries):
     station_tiles.append(
         AStation(
-            id=0x2000 + i,
+            id=0x6000 + i,
             translation_name="PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE",
             layouts=[entry, entry.M],
             class_label=b"\xe8\x8a\x9c0",
             cargo_threshold=40,
             callbacks={"select_tile_layout": 0, **station_cb["E88A9C0"]},
+            enable_if=[parameter_list.index("E88A9C0_ENABLE_MODULAR")],
             doc_layout=entry,
         )
     )

@@ -1,5 +1,5 @@
 ##grflangid 0x01
-STR_GRF_NAME                    :China Set: Stations - Wuhu {WHITE}0.3.0-indev
+STR_GRF_NAME                    :China Set: Stations - Wuhu {WHITE}0.3.0
 STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}China{RED} Set{POP_COLOUR}: Stations {PUSH_COLOUR}{SILVER}Wuhu {WHITE}0.3.0-indev{POP_COLOUR}{}{}An add-on to {PUSH_COLOUR}{GOLD}China{RED} Set{POP_COLOUR}: Stations (CNS), this NewGRF provides modular tiles templated stations modeled after railway stations in {PUSH_COLOUR}{SILVER}Wuhu, China{POP_COLOUR}.{}{}{PUSH_COLOUR}{WHITE}Contributors{POP_COLOUR}:{}Ahyangyi, WenSim.{}{}Distributed under {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR}.
 
 STR_PARAM_INTRODUCTION_YEAR             :Global - Station Availability
@@ -7,10 +7,56 @@ STR_PARAM_INTRODUCTION_YEAR_DESC        :Choose whether each station in this New
 STR_PARAM_INTRODUCTION_YEAR_DISABLED    :Always available
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :Only available after set year
 
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE           :Wuhu Station - Enable Templates
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE_DESC      :Whether or not to enable flexible templates for Wuhu Station (Modern)
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE_ENABLED   :Enabled
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE_DISABLED  :Disabled
+
+STR_PARAM_E88A9CA_ENABLE_MODULAR            :Wuhu Station - Enable Modular
+STR_PARAM_E88A9CA_ENABLE_MODULAR_DESC       :Whether or not to enable modular station buildings for Wuhu Station (Modern)
+STR_PARAM_E88A9CA_ENABLE_MODULAR_ENABLED    :Enabled
+STR_PARAM_E88A9CA_ENABLE_MODULAR_DISABLED   :Disabled
+
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP           :Wuhu Station - Enable Road Stops
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP_DESC      :Whether or not to enable road stops and waypoints to use with Wuhu Station (Modern){}{}Note: the waypoints need OpenTTD 15.0 or above.
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP_ENABLED   :Enabled
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP_DISABLED  :Disabled
+
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR         :Wuhu Station - Available Year
-STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (Modern) becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
+STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (Modern) becomes available.{}{}For a realistic experience, set this to somewhere near 2005.
+
+STR_PARAM_E88A9C0_ENABLE_MODULAR            :Wuhu Station (1934) - Enable
+STR_PARAM_E88A9C0_ENABLE_MODULAR_DESC       :Whether or not to enable Wuhu Station (1934)
+STR_PARAM_E88A9C0_ENABLE_MODULAR_ENABLED    :Enabled
+STR_PARAM_E88A9C0_ENABLE_MODULAR_DISABLED   :Disabled
+
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR         :Wuhu Station (1934) - Available Year
-STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1934) becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
+STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1934) becomes available.{}{}For a realistic experience, set this to somewhere near 1910.
+
+STR_PARAM_E88A9CP_ENABLE_MODULAR            :Platform Tiles - Enable
+STR_PARAM_E88A9CP_ENABLE_MODULAR_DESC       :Whether or not to enable buildable platform tiles
+STR_PARAM_E88A9CP_ENABLE_MODULAR_ENABLED    :Enabled
+STR_PARAM_E88A9CP_ENABLE_MODULAR_DISABLED   :Disabled
+
+STR_PARAM_PLATFORM_CONCRETE                 :Platform - Concrete
+STR_PARAM_PLATFORM_CONCRETE_DESC            :Whether or not to enable concrete platforms{}{}WARNING: if both platform styles are disabled, some stations would also be disabled due to the lack of available platform styles.
+STR_PARAM_PLATFORM_CONCRETE_ENABLED         :Enabled
+STR_PARAM_PLATFORM_CONCRETE_DISABLED        :Disabled
+
+STR_PARAM_PLATFORM_BRICK                    :Platform - Brick
+STR_PARAM_PLATFORM_BRICK_DESC               :Whether or not to enable brick platforms{}{}WARNING: if both platform styles are disabled, some stations would also be disabled due to the lack of available platform styles.
+STR_PARAM_PLATFORM_BRICK_ENABLED            :Enabled
+STR_PARAM_PLATFORM_BRICK_DISABLED           :Disabled
+
+STR_PARAM_SHELTER_SHELTER_1                 :Shelter - Shelter 1
+STR_PARAM_SHELTER_SHELTER_1_DESC            :Whether or not to enable shelter style 1 (curved){}{}WARNING: if both shelter styles are disabled, some stations would also be disabled due to the lack of available shelter styles.
+STR_PARAM_SHELTER_SHELTER_1_ENABLED         :Enabled
+STR_PARAM_SHELTER_SHELTER_1_DISABLED        :Disabled
+
+STR_PARAM_SHELTER_SHELTER_2                 :Shelter - Shelter 2
+STR_PARAM_SHELTER_SHELTER_2_DESC            :Whether or not to enable shelter style 2 (flat){}{}WARNING: if both shelter styles are disabled, some stations would also be disabled due to the lack of available shelter styles.
+STR_PARAM_SHELTER_SHELTER_2_ENABLED         :Enabled
+STR_PARAM_SHELTER_SHELTER_2_DISABLED        :Disabled
 
 STR_STATION_DEFAULT                             :Station Building
 STR_STATION_UNTRAVERSABLE                       :Station Building (No Track)
