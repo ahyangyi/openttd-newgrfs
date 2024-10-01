@@ -189,14 +189,20 @@ def make_f1(v, subset, sym):
     return ret
 
 
-def register(base_id, step_id, l, symmetry, internal_category, name):
+def register(base_id, step_id, l, symmetry, internal_category, name, broken_near_hack=False):
     l = symmetry.get_all_variants(l)
+    cnt = len(l)
     for i, layout in enumerate(l):
-        layout.category = get_category(internal_category, i >= len(l) // 2, layout.notes, layout.traversable)
+        layout.category = get_category(internal_category, i >= cnt // 2, layout.notes, layout.traversable)
     layouts.extend(l)
     l = symmetry.create_variants(l)
-    for i, entry in enumerate(symmetry.get_all_entries(l)):
-        entry.id = base_id + step_id * i
+    cur_entries = symmetry.get_all_entries(l)
+    cnt = len(cur_entries)
+    for i, entry in enumerate(cur_entries):
+        if broken_near_hack:
+            entry.id = base_id + step_id * (i % (cnt // 2)) + (i // (cnt // 2))
+        else:
+            entry.id = base_id + step_id * i
         entries.append(entry)
     named_tiles[name] = l
 
@@ -299,6 +305,7 @@ def load_central(f2_ids, source, symmetry, internal_category, name=None, h_pos=N
                         broken_symmetry,
                         internal_category,
                         (f2_name, platform_class, shelter_class, "n"),
+                        broken_near_hack=True,
                     )
                     named_tiles[(f2_name, platform_class, shelter_class, "f")] = named_tiles[
                         (f2_name, platform_class, shelter_class, "n")
@@ -508,13 +515,13 @@ flexible_entries = []
 named_tiles = AttrDict(schema=("name", "platform_class", "shelter_class", "f1_layout"))
 
 load(0x00, "front_normal", BuildingSpriteSheetSymmetricalX, "F0", corridor=False, window=[])
-load(0x01, "front_gate", BuildingSpriteSheetFull, "F0", corridor=False)
-load(0x03, "front_gate_extender", BuildingSpriteSheetSymmetricalX, "F0", corridor=False)
+load(0x02, "front_gate", BuildingSpriteSheetFull, "F0", corridor=False)
+load(0x06, "front_gate_extender", BuildingSpriteSheetSymmetricalX, "F0", corridor=False)
 
-load(0x04, "corner", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False, window=[])
-load(0x08, "corner_gate", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False)
-load(0x12, "corner_2", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False, window=[])
-load(0x16, "corner_gate_2", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False)
+load(0x08, "corner", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False, window=[])
+load(0x0C, "corner_gate", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False)
+load(0x10, "corner_2", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False, window=[])
+load(0x14, "corner_gate_2", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False)
 
 load_central(
     (0x20, 0x21, 0x23),

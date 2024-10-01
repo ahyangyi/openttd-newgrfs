@@ -131,7 +131,7 @@ def register(pf: PlatformFamily):
 
             var = symmetry.get_all_variants(ALayout(gray_ps, [ps], False, notes={"concourse"}))
             l = symmetry.create_variants(var)
-            for i, entry in enumerate(cur_symmetry.get_all_entries(l)):
+            for i, entry in enumerate(symmetry.get_all_entries(l)):
                 entry.id = 0x7A00 + pid * 0x4 + ssid * 0x2 + i
                 entries.append(entry)
             concourse_tiles[(platform_class, side, "", None)] = l
@@ -151,7 +151,7 @@ def register(pf: PlatformFamily):
                             cur_sym = BuildingSpriteSheetSymmetricalX
                         var = cur_sym.get_all_variants(ALayout(gray_ps, l + [ps], False, notes={"concourse"}))
                         l = cur_sym.create_variants(var)
-                        for i, entry in enumerate(cur_symmetry.get_all_entries(l)):
+                        for i, entry in enumerate(cur_sym.get_all_entries(l)):
                             entry.id = 0x7B00 + pid * 0x20 + ssid * 0x10 + sid * 0x4 + lid * 0x2 + i
                             entries.append(entry)
                         concourse_tiles[(platform_class, side, shelter_class, shelter_side)] = l
