@@ -86,7 +86,7 @@ for p, pclass in enumerate(platform_classes):
             demo_layout.notes.append("noshow")
         traversable_stations.append(
             AStation(
-                id=0x300 + p * 0x10 + s,
+                id=0xFF20 + p * 0x4 + s,
                 translation_name="FLEXIBLE_SIDE",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
@@ -119,7 +119,7 @@ for p, pclass in enumerate(platform_classes):
             demo_layout.notes.append("noshow")
         traversable_stations.append(
             AStation(
-                id=0x400 + p * 0x10 + s,
+                id=0xFF30 + p * 0x4 + s,
                 translation_name="FLEXIBLE_NO_SIDE",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",

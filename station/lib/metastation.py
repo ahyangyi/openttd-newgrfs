@@ -17,6 +17,12 @@ class AMetaStation(grf.SpriteGenerator):
     def class_label_plain(self):
         return class_label_printable(self.class_label)
 
+    def check_id_uniqueness(self):
+        ids = [x.id for x in self.stations]
+        assert len(ids) == len(
+            set(ids)
+        ), f"ID 0x{[x for x in ids if ids.count(x) > 1][0]:x} occurs twice! {[hex(x) for x in ids]}"
+
     def get_sprites(self, g):
         sprites = self.sprites
 

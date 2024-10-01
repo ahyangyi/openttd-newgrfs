@@ -38,6 +38,7 @@ def gen():
 
     parameter_list.add(g, s)
     for metastation in metastations:
+        metastation.check_id_uniqueness()
         g.add(metastation)
 
     g.write("station.grf")
