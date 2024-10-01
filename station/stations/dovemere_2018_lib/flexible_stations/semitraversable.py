@@ -35,7 +35,7 @@ for p, pclass in enumerate(platform_classes):
             demo_layout.notes.append("noshow")
         semitraversable_stations.append(
             AStation(
-                id=0x100 + p * 0x10 + s,
+                id=0xFF00 + p * 0x4 + s,
                 translation_name="FLEXIBLE_UNTRAVERSABLE_SIDE",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
@@ -79,7 +79,7 @@ for p, pclass in enumerate(platform_classes):
 
         semitraversable_stations.append(
             AStation(
-                id=0x200 + p * 0x10 + s,
+                id=0xFF10 + p * 0x4 + s,
                 translation_name="FLEXIBLE_UNTRAVERSABLE_NO_SIDE",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
