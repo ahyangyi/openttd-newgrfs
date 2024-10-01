@@ -1,5 +1,5 @@
 ##grflangid 0x01
-STR_GRF_NAME                    :China Set: Stations - Wuhu {WHITE}0.3.0-indev
+STR_GRF_NAME                    :China Set: Stations - Wuhu {WHITE}0.3.0
 STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}China{RED} Set{POP_COLOUR}: Stations {PUSH_COLOUR}{SILVER}Wuhu {WHITE}0.3.0-indev{POP_COLOUR}{}{}An add-on to {PUSH_COLOUR}{GOLD}China{RED} Set{POP_COLOUR}: Stations (CNS), this NewGRF provides modular tiles templated stations modeled after railway stations in {PUSH_COLOUR}{SILVER}Wuhu, China{POP_COLOUR}.{}{}{PUSH_COLOUR}{WHITE}Contributors{POP_COLOUR}:{}Ahyangyi, WenSim.{}{}Distributed under {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR}.
 
 STR_PARAM_INTRODUCTION_YEAR             :Global - Station Availability
