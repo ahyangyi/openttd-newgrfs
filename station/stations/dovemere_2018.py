@@ -1,6 +1,7 @@
 import grf
 from station.lib import AStation, AMetaStation
 from grfobject.lib import AObject
+from station.lib.parameters import parameter_list
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos, common_cb
 from .dovemere_2018_lib.objects import objects
@@ -29,9 +30,16 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
                 flags=grf.Object.Flags.ONLY_IN_GAME,
             )
         )
+    enable_if = [parameter_list.index("E88A9CA_ENABLE_MODULAR")]
+    for platform_class in ["concrete", "brick"]:
+        if platform_class in entry.notes:
+            enable_if.append(parameter_list.index(f"PLATFORM_{platform_class.upper()}"))
+    for shelter_class in ["shelter_1", "shelter_2"]:
+        if shelter_class in entry.notes:
+            enable_if.append(parameter_list.index(f"SHELTER_{shelter_class.upper()}"))
     modular_stations.append(
         AStation(
-            id=0x1000 + i,
+            id=entry.id,
             translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
             layouts=[entry, entry.M, entry.pushdown(9), entry.M.pushdown(9)],
             class_label=entry.category,
@@ -43,6 +51,7 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
                 **common_cb,
             },
             is_waypoint="waypoint" in entry.notes,
+            enable_if=enable_if,
             doc_layout=entry,
         )
     )
@@ -83,5 +92,5 @@ the_stations = AMetaStation(
         demos.special_demo_aq,
     ],
     road_stops=roadstops,
-    objects=objects + station_objects,
+    objects=station_objects,
 )

@@ -15,6 +15,23 @@ class FakeReferencedAction(grf.Action, grf.ReferenceableAction):
         return f"ref {self.action.py(None)}"
 
 
+class FakeReferencingAction(grf.Action, grf.ReferencingAction):
+    def __init__(self, action, extra_refs):
+        super().__init__()
+        self.action = action
+        self.extra_refs = extra_refs
+
+    @property
+    def feature(self):
+        return self.action.feature
+
+    def get_data(self, context):
+        return self.action.get_data(context)
+
+    def get_refs(self):
+        yield from list(self.action.get_refs()) + self.extra_refs
+
+
 # FIXME weird dependency here
 from agrf.graphics.spritesheet import LazyAlternativeSprites
 

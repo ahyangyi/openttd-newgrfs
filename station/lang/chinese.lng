@@ -1,16 +1,62 @@
 ##grflangid 0x56
-STR_GRF_NAME                    :中国包：车站 - 芜湖 {WHITE}0.3.0-indev
-STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}中国{RED}包{POP_COLOUR}：车站 - {PUSH_COLOUR}{SILVER}芜湖 {WHITE}0.3.0-indev{POP_COLOUR}{}{}本 NewGRF 是 {PUSH_COLOUR}{GOLD}中国{RED}包{POP_COLOUR}：车站 (CNS) 的扩展包，提供基于{PUSH_COLOUR}{SILVER}芜湖{POP_COLOUR}的火车站的模块化地块和车站模版。{}{}{PUSH_COLOUR}{WHITE}贡献者{POP_COLOUR}:{}Ahyangyi, WenSim.{}{}在 {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR} 下分发。
+STR_GRF_NAME                    :中国包：车站 - 芜湖 {WHITE}0.3.0
+STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}中国{RED}包{POP_COLOUR}：车站 - {PUSH_COLOUR}{SILVER}芜湖 {WHITE}0.3.0-indev{POP_COLOUR}{}{}本 NewGRF 是 {PUSH_COLOUR}{GOLD}中国{RED}包{POP_COLOUR}：车站 (CNS) 的扩展包，提供基于{PUSH_COLOUR}{SILVER}芜湖{POP_COLOUR}的火车站的模块化地块和车站模版。{}{}推荐使用 OpenTTD 14.0 或更高版本，可使用本 NewGRF 里的全部主要功能。更低版本由于功能限制，仅能使用精选的部分站台。{}{}{PUSH_COLOUR}{WHITE}贡献者{POP_COLOUR}:{}Ahyangyi, WenSim.{}{}在 {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR} 下分发。
 
 STR_PARAM_INTRODUCTION_YEAR             :全局设置 - 车站可建造年份
-STR_PARAM_INTRODUCTION_YEAR_DESC        :决定本 NewGRF 内每个车站是否在特定年份后才可用
+STR_PARAM_INTRODUCTION_YEAR_DESC        :选择本 NewGRF 内每个车站是否在特定年份后才可用
 STR_PARAM_INTRODUCTION_YEAR_DISABLED    :任何年份都可以建造任何车站
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :指定年份后才可以建造车站
 
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE           :芜湖站 - 启用车站模板
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE_DESC      :选择是否启用现代芜湖站的车站模板
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE_ENABLED   :启用
+STR_PARAM_E88A9CA_ENABLE_TEMPLATE_DISABLED  :禁用
+
+STR_PARAM_E88A9CA_ENABLE_MODULAR            :芜湖站 - 启用模块化车站
+STR_PARAM_E88A9CA_ENABLE_MODULAR_DESC       :选择是否启用现代芜湖站的模块化车站功能
+STR_PARAM_E88A9CA_ENABLE_MODULAR_ENABLED    :启用
+STR_PARAM_E88A9CA_ENABLE_MODULAR_DISABLED   :禁用
+
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP           :芜湖站 - 启用配套的汽车站
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP_DESC      :选择是否启用现代芜湖站配套的公交车站和路点{}{}注意：路点功能需要 OpenTTD 15.0 或以上版本。
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP_ENABLED   :启用
+STR_PARAM_E88A9CA_ENABLE_ROADSTOP_DISABLED  :禁用
+
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR         :芜湖站 - 可建造年份
-STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :选择芜湖站从哪一年开始可以被建造。{}{}注意：本选项是否生效由“全局设置 - 限定可建造年份”所控制。
+STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :选择芜湖站从哪一年开始可以被建造。{}{}如果想要拟真的话，您可以把本选项设置为 2005 年附近的年份。
+
+STR_PARAM_E88A9C0_ENABLE_MODULAR            :芜湖站 (1934) - 启用
+STR_PARAM_E88A9C0_ENABLE_MODULAR_DESC       :选择是否启用芜湖站 (1934)
+STR_PARAM_E88A9C0_ENABLE_MODULAR_ENABLED    :启用
+STR_PARAM_E88A9C0_ENABLE_MODULAR_DISABLED   :禁用
+
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR         :芜湖站 (1934) - 可建造年份
-STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :选择芜湖站 (1934)从哪一年开始可以被建造。{}{}注意：本选项是否生效由“全局设置 - 限定可建造年份”所控制。
+STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :选择芜湖站 (1934)从哪一年开始可以被建造。{}{}如果想要拟真的话，您可以把本选项设置为 1910 年附近的年份。
+
+STR_PARAM_E88A9CP_ENABLE_MODULAR            :站台地块 - 启用
+STR_PARAM_E88A9CP_ENABLE_MODULAR_DESC       :选择是否启用可建造的站台地块
+STR_PARAM_E88A9CP_ENABLE_MODULAR_ENABLED    :启用
+STR_PARAM_E88A9CP_ENABLE_MODULAR_DISABLED   :禁用
+
+STR_PARAM_PLATFORM_CONCRETE                 :站台 - 混凝土
+STR_PARAM_PLATFORM_CONCRETE_DESC            :选择是否启用混凝土站台{}{}警告：如果两种站台都禁用的话，会导致一些车站样式由于没有配套的站台而建造不出来。
+STR_PARAM_PLATFORM_CONCRETE_ENABLED         :启用
+STR_PARAM_PLATFORM_CONCRETE_DISABLED        :禁用
+
+STR_PARAM_PLATFORM_BRICK                    :站台 - 砖块
+STR_PARAM_PLATFORM_BRICK_DESC               :选择是否启用砖块站台}{}警告：如果两种站台都禁用的话，会导致一些车站样式由于没有配套的站台而建造不出来。
+STR_PARAM_PLATFORM_BRICK_ENABLED            :启用
+STR_PARAM_PLATFORM_BRICK_DISABLED           :禁用
+
+STR_PARAM_SHELTER_SHELTER_1                 :雨棚 - 雨棚风格1
+STR_PARAM_SHELTER_SHELTER_1_DESC            :选择是否启用雨棚风格1（弧顶）{}{}警告：如果两种雨棚都禁用的话，会导致一些车站样式由于没有配套的雨棚而建造不出来。
+STR_PARAM_SHELTER_SHELTER_1_ENABLED         :启用
+STR_PARAM_SHELTER_SHELTER_1_DISABLED        :禁用
+
+STR_PARAM_SHELTER_SHELTER_2                 :雨棚 - 雨棚风格2
+STR_PARAM_SHELTER_SHELTER_2_DESC            :选择是否启用雨棚风格2（平顶）{}{}警告：如果两种雨棚都禁用的话，会导致一些车站样式由于没有配套的雨棚而建造不出来。
+STR_PARAM_SHELTER_SHELTER_2_ENABLED         :启用
+STR_PARAM_SHELTER_SHELTER_2_DISABLED        :禁用
 
 STR_STATION_DEFAULT                             :站房
 STR_STATION_UNTRAVERSABLE                       :站房（无轨道）

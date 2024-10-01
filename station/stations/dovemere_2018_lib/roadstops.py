@@ -7,6 +7,7 @@ from station.lib import (
     AChildSprite,
     ALayout,
 )
+from station.lib.parameters import parameter_list
 from agrf.graphics.voxel import LazyVoxel
 from agrf.graphics import SCALE_TO_ZOOM
 from agrf.magic import Switch
@@ -83,20 +84,22 @@ for name, sym, (far, overhang, overpass, near), extended in [
 
     for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingSpriteSheetFull) else [layout, layout.T]:
         cur_roadstop = ARoadStop(
-            id=cnt,
-            translation_name="WEST_PLAZA_BUS",
-            graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
-            general_flags=0x8,
-            class_label=b"\xe8\x8a\x9cR",
-            doc_layout=cur,
-        )
-        roadstops.append(cur_roadstop)
-        cur_roadstop = ARoadStop(
             id=0x8000 + cnt,
             translation_name="WEST_PLAZA_BUS",
             graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
             general_flags=0x8,
             class_label=b"\xe8\x8a\x9cR",
+            enable_if=[parameter_list.index("E88A9CA_ENABLE_ROADSTOP")],
+            doc_layout=cur,
+        )
+        roadstops.append(cur_roadstop)
+        cur_roadstop = ARoadStop(
+            id=0xC000 + cnt,
+            translation_name="WEST_PLAZA_BUS",
+            graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
+            general_flags=0x8,
+            class_label=b"\xe8\x8a\x9cR",
+            enable_if=[parameter_list.index("E88A9CA_ENABLE_ROADSTOP")],
             doc_layout=cur,
             is_waypoint=True,
         )

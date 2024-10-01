@@ -56,25 +56,23 @@ def make_row(onetile, twotile, lwall, general, window, window_extender, threetil
 
 def make_front_row(suffix, fallback_suffix=None):
     row = [
-        named_tiles[c + suffix] if c + suffix in named_tiles else named_tiles[c + fallback_suffix]
+        named_tiles[(c, *suffix)] if (c, *suffix) in named_tiles else named_tiles[(c, *fallback_suffix)]
         for c in ["v_end_gate", "corner_gate", "corner", "front_normal", "front_gate", "front_gate_extender"]
     ]
-    row[1] = make_vertical_switch(lambda t, d: named_tiles["corner_gate_2" + suffix] if t == 1 else row[1])
-    row[2] = make_vertical_switch(lambda t, d: named_tiles["corner_2" + suffix] if t == 1 else row[2])
+    row[1] = make_vertical_switch(lambda t, d: named_tiles[("corner_gate_2", *suffix)] if t == 1 else row[1])
+    row[2] = make_vertical_switch(lambda t, d: named_tiles[("corner_2", *suffix)] if t == 1 else row[2])
     return make_row(*row)
 
 
 def get_tile(name, desc, fallback_suffix=None):
-    key = f"{name}{desc}"
-    if key not in named_tiles:
-        key = f"{name}{fallback_suffix}"
-    return named_tiles[key]
+    # FIXME Remove fallback
+    return named_tiles[(name, *desc)]
 
 
 def reverse(x):
     if x is None:
         return None
-    return x[:-1] + {"f": "n", "n": "f", "d": "d"}[x[-1]]
+    return x[:-1] + ({"f": "n", "n": "f", "d": "d"}[x[-1]],)
 
 
 def get_left_index_suffix(t, d, suffix, fallback_suffix=None):
