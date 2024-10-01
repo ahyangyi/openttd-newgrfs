@@ -86,7 +86,7 @@ for name, sym, (far, overhang, overpass, near), extended in [
 
     for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingSpriteSheetFull) else [layout, layout.T]:
         cur_roadstop = ARoadStop(
-            id=cnt,
+            id=0x8000 + cnt,
             translation_name="WEST_PLAZA_BUS",
             graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
             general_flags=0x8,
@@ -96,7 +96,7 @@ for name, sym, (far, overhang, overpass, near), extended in [
         )
         roadstops.append(cur_roadstop)
         cur_roadstop = ARoadStop(
-            id=0x8000 + cnt,
+            id=0xC000 + cnt,
             translation_name="WEST_PLAZA_BUS",
             graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
             general_flags=0x8,

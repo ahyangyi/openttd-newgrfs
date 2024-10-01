@@ -1,5 +1,5 @@
 ##grflangid 0x56
-STR_GRF_NAME                    :中国包：车站 - 芜湖 {WHITE}0.3.0-indev
+STR_GRF_NAME                    :中国包：车站 - 芜湖 {WHITE}0.3.0
 STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}中国{RED}包{POP_COLOUR}：车站 - {PUSH_COLOUR}{SILVER}芜湖 {WHITE}0.3.0-indev{POP_COLOUR}{}{}本 NewGRF 是 {PUSH_COLOUR}{GOLD}中国{RED}包{POP_COLOUR}：车站 (CNS) 的扩展包，提供基于{PUSH_COLOUR}{SILVER}芜湖{POP_COLOUR}的火车站的模块化地块和车站模版。{}{}{PUSH_COLOUR}{WHITE}贡献者{POP_COLOUR}:{}Ahyangyi, WenSim.{}{}在 {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR} 下分发。
 
 STR_PARAM_INTRODUCTION_YEAR             :全局设置 - 车站可建造年份
@@ -23,7 +23,7 @@ STR_PARAM_E88A9CA_ENABLE_ROADSTOP_ENABLED   :启用
 STR_PARAM_E88A9CA_ENABLE_ROADSTOP_DISABLED  :禁用
 
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR         :芜湖站 - 可建造年份
-STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :选择芜湖站从哪一年开始可以被建造。{}{}注意：本选项是否生效由“全局设置 - 限定可建造年份”所控制。
+STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :选择芜湖站从哪一年开始可以被建造。{}{}如果想要拟真的话，您可以把本选项设置为 2005 年附近的年份。
 
 STR_PARAM_E88A9C0_ENABLE_MODULAR            :芜湖站 (1934) - 启用
 STR_PARAM_E88A9C0_ENABLE_MODULAR_DESC       :选择是否启用芜湖站 (1934)
@@ -31,7 +31,7 @@ STR_PARAM_E88A9C0_ENABLE_MODULAR_ENABLED    :启用
 STR_PARAM_E88A9C0_ENABLE_MODULAR_DISABLED   :禁用
 
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR         :芜湖站 (1934) - 可建造年份
-STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :选择芜湖站 (1934)从哪一年开始可以被建造。{}{}注意：本选项是否生效由“全局设置 - 限定可建造年份”所控制。
+STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :选择芜湖站 (1934)从哪一年开始可以被建造。{}{}如果想要拟真的话，您可以把本选项设置为 1910 年附近的年份。
 
 STR_PARAM_E88A9CP_ENABLE_MODULAR            :站台地块 - 启用
 STR_PARAM_E88A9CP_ENABLE_MODULAR_DESC       :选择是否启用可建造的站台地块

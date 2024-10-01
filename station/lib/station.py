@@ -1,4 +1,5 @@
 import grf
+from agrf.actions import FakeReferencingAction, FakeReferencedAction
 from .utils import class_label_printable
 from .registers import code
 
@@ -40,6 +41,7 @@ class AStation(grf.SpriteGenerator):
 
     def get_sprites(self, g, sprites=None):
         is_managed_by_metastation = sprites is not None
+
         extra_props = {
             "station_name": g.strings.add(g.strings[f"STR_STATION_{self.translation_name}"]).get_persistent_id()
         }
@@ -68,7 +70,6 @@ class AStation(grf.SpriteGenerator):
         if self.enable_if:
             for cond in self.enable_if:
                 res.append(grf.If(is_static=False, variable=cond, condition=0x02, value=0x0, skip=255, varsize=4))
-
         res.append(
             definition := grf.Define(
                 feature=grf.STATION,
@@ -78,9 +79,12 @@ class AStation(grf.SpriteGenerator):
                     "advanced_layout": grf.SpriteLayoutList([l.to_grf(sprites) for l in self.layouts]),
                     **{k: v for k, v in self._props.items() if k != "class_label"},
                     **cb_props,
+                    **(extra_props if self.id >= 0xFF else {}),
                 },
             )
         )
+        if self.id >= 0xFF or self.enable_if:
+            res.append(grf.Label(255, bytes()))
 
         if self.is_waypoint:
             openttd_15_props = {
@@ -92,9 +96,13 @@ class AStation(grf.SpriteGenerator):
             res.append(grf.If(is_static=False, variable=0xA1, condition=0x04, value=0x1F000000, skip=1, varsize=4))
             res.append(grf.Define(feature=grf.STATION, id=self.id, props=openttd_15_props))
 
-        res.extend(self.callbacks.make_map_action(definition))
-        if self.id >= 0xFF or self.enable_if:
-            res.append(grf.Label(255, bytes()))
+        [map_action] = self.callbacks.make_map_action(definition)
+        if self.id >= 0xFF:
+            if_action = FakeReferencedAction(
+                grf.If(is_static=False, variable=0xA1, condition=0x04, value=0x1E000000, skip=1, varsize=4), grf.STATION
+            )
+            map_action = FakeReferencingAction(map_action, [if_action])
+        res.append(map_action)
 
         if self.id < 0xFF:
             name = g.strings[f"STR_STATION_{self.translation_name}"]

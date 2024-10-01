@@ -21,7 +21,7 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
             enable_if.append(parameter_list.index(f"SHELTER_{shelter_class.upper()}"))
     modular_stations.append(
         AStation(
-            id=0x1000 + i,
+            id=entry.id,
             translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
             layouts=[entry, entry.M, entry.pushdown(9), entry.M.pushdown(9)],
             class_label=entry.category,
