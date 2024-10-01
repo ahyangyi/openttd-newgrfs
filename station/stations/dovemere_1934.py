@@ -58,7 +58,7 @@ station_tiles = []
 for i, entry in enumerate(entries):
     station_tiles.append(
         AStation(
-            id=0x2000 + i,
+            id=0x6000 + i,
             translation_name="PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE",
             layouts=[entry, entry.M],
             class_label=b"\xe8\x8a\x9c0",
