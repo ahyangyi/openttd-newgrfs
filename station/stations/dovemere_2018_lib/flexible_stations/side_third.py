@@ -44,7 +44,7 @@ for p, pclass in enumerate(platform_classes):
             demo_layout.notes.append("noshow")
         side_third_stations.append(
             AStation(
-                id=0x800 + p * 0x10 + s,
+                id=0xFF80 + p * 0x4 + s,
                 translation_name="FLEXIBLE_FRONT_SIDE_THIRD",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
@@ -75,7 +75,7 @@ for p, pclass in enumerate(platform_classes):
             demo_layout.notes.append("noshow")
         side_third_stations.append(
             AStation(
-                id=0x900 + p * 0x10 + s,
+                id=0xFF90 + p * 0x4 + s,
                 translation_name="FLEXIBLE_BACK_SIDE_THIRD",
                 layouts=layouts,
                 class_label=b"\xe8\x8a\x9cA",
@@ -126,7 +126,7 @@ for p, pclass in enumerate(platform_classes):
 
     side_third_stations.append(
         AStation(
-            id=0x780 + p,
+            id=0xFFA0 + p * 0x4,
             translation_name="FLEXIBLE_FRONT_SIDE_THIRD_NP",
             layouts=layouts,
             class_label=b"\xe8\x8a\x9cA",
@@ -156,7 +156,7 @@ for p, pclass in enumerate(platform_classes):
 
     side_third_stations.append(
         AStation(
-            id=0x790 + p,
+            id=0xFFB0 + p * 0x4,
             translation_name="FLEXIBLE_BACK_SIDE_THIRD_NP",
             layouts=layouts,
             class_label=b"\xe8\x8a\x9cA",
