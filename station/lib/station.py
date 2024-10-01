@@ -99,9 +99,8 @@ class AStation(grf.SpriteGenerator):
         [map_action] = self.callbacks.make_map_action(definition)
         if self.id >= 0xFF:
             if_action = FakeReferencedAction(
-                    grf.If(is_static=False, variable=0xA1, condition=0x04, value=0x1E000000, skip=1, varsize=4),
-                    grf.STATION
-                    )
+                grf.If(is_static=False, variable=0xA1, condition=0x04, value=0x1E000000, skip=1, varsize=4), grf.STATION
+            )
             map_action = FakeReferencingAction(map_action, [if_action])
         res.append(map_action)
 

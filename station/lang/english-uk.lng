@@ -23,7 +23,7 @@ STR_PARAM_E88A9CA_ENABLE_ROADSTOP_ENABLED   :Enabled
 STR_PARAM_E88A9CA_ENABLE_ROADSTOP_DISABLED  :Disabled
 
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR         :Wuhu Station - Available Year
-STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (Modern) becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
+STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (Modern) becomes available.{}{}For a realistic experience, set this to somewhere near 2005.
 
 STR_PARAM_E88A9C0_ENABLE_MODULAR            :Wuhu Station (1934) - Enable
 STR_PARAM_E88A9C0_ENABLE_MODULAR_DESC       :Whether or not to enable Wuhu Station (1934)
@@ -31,7 +31,7 @@ STR_PARAM_E88A9C0_ENABLE_MODULAR_ENABLED    :Enabled
 STR_PARAM_E88A9C0_ENABLE_MODULAR_DISABLED   :Disabled
 
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR         :Wuhu Station (1934) - Available Year
-STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1934) becomes available.{}{}Note: this setting is only effective if allowed by "Global - Station availability".
+STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1934) becomes available.{}{}For a realistic experience, set this to somewhere near 1910.
 
 STR_PARAM_E88A9CP_ENABLE_MODULAR            :Platform Tiles - Enable
 STR_PARAM_E88A9CP_ENABLE_MODULAR_DESC       :Whether or not to enable buildable platform tiles
