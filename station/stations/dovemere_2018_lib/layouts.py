@@ -189,13 +189,15 @@ def make_f1(v, subset, sym):
     return ret
 
 
-def register(l, symmetry, internal_category, name):
+def register(base_id, step_id, l, symmetry, internal_category, name):
     l = symmetry.get_all_variants(l)
     for i, layout in enumerate(l):
         layout.category = get_category(internal_category, i >= len(l) // 2, layout.notes, layout.traversable)
     layouts.extend(l)
     l = symmetry.create_variants(l)
-    entries.extend(symmetry.get_all_entries(l))
+    for i, entry in enumerate(symmetry.get_all_entries(l)):
+        entry.id = base_id + step_id * i
+        entries.append(entry)
     named_tiles[name] = l
 
 
@@ -256,13 +258,15 @@ def load_central(f2_id, source, symmetry, internal_category, name=None, h_pos=No
             f2_component = [f2 + f2_window_extender + f2_snow_window_extender]
             cur_sym = symmetry
         register(
+            0xFD00 + f2_id,
+            1,
             ALayout(empty_ground, [cur_np, cur_np.T] + f2_component, True, notes=["waypoint"]),
             cur_sym,
             internal_category,
             (f2_name, None, None, "empty"),
         )
-        for shelter_class in shelter_classes if h_pos.has_shelter else [None]:
-            for platform_class in platform_classes:
+        for sid, shelter_class in enumerate(shelter_classes if h_pos.has_shelter else [None]):
+            for pid, platform_class in enumerate(platform_classes):
                 cur_plat = h_pos.platform(platform_class, shelter_class)
                 if h_pos.has_shelter:
                     common_notes = (
@@ -271,6 +275,8 @@ def load_central(f2_id, source, symmetry, internal_category, name=None, h_pos=No
                 else:
                     common_notes = (["noshow"] if platform_class != "concrete" else []) + [platform_class]
                 register(
+                    0x8000 + f2_id * 0x80 + pid * 0x20 + sid * 0x08 + 0x03,
+                    0x80,
                     ALayout(
                         corridor_ground, [cur_plat, cur_plat.T] + f2_component, True, notes=common_notes + ["both"]
                     ),
@@ -281,6 +287,8 @@ def load_central(f2_id, source, symmetry, internal_category, name=None, h_pos=No
                 if symmetry.is_symmetrical_y():
                     broken_symmetry = cur_sym.break_y_symmetry()
                     register(
+                        0x8000 + f2_id * 0x80 + pid * 0x20 + sid * 0x08 + 0x01,
+                        0x80,
                         ALayout(
                             one_side_ground, [cur_plat, cur_np.T] + f2_component, True, notes=common_notes + ["near"]
                         ),
@@ -293,6 +301,8 @@ def load_central(f2_id, source, symmetry, internal_category, name=None, h_pos=No
                     ].T
                 else:
                     register(
+                        0x8000 + f2_id * 0x80 + pid * 0x20 + sid * 0x08 + 0x01,
+                        0x80,
                         ALayout(
                             one_side_ground, [cur_plat, cur_np.T] + f2_component, True, notes=common_notes + ["near"]
                         ),
@@ -301,6 +311,8 @@ def load_central(f2_id, source, symmetry, internal_category, name=None, h_pos=No
                         (f2_name, platform_class, shelter_class, "n"),
                     )
                     register(
+                        0x8000 + f2_id * 0x80 + pid * 0x20 + sid * 0x08 + 0x02,
+                        0x80,
                         ALayout(
                             one_side_ground_t, [cur_np, cur_plat.T] + f2_component, True, notes=common_notes + ["far"]
                         ),
@@ -308,6 +320,7 @@ def load_central(f2_id, source, symmetry, internal_category, name=None, h_pos=No
                         internal_category,
                         (f2_name, platform_class, shelter_class, "f"),
                     )
+        f2_id += 1
 
 
 def load(
@@ -385,12 +398,14 @@ def load(
             f2_component = [f2 + f2_window_extender + f2_snow_window_extender]
             cur_sym = symmetry
             cur_bsym = broken_symmetry
-        for platform_class in platform_classes:
+        for pid, platform_class in enumerate(platform_classes):
             common_notes = (["noshow"] if platform_class != "concrete" else []) + [platform_class]
             cur_plat = platform_ps[("cns", platform_class, "", "", "")]
             cur_plat_nt = platform_ps[("cns", platform_class, "side", "", "")]
             if corridor:
                 register(
+                    0x8000 + f2_id * 0x80 + pid * 0x20 + 0x07,
+                    0x80,
                     ALayout(
                         corridor_ground,
                         [cur_plat, cur_plat.T, f1 + f1_snow, f1b] + f2_component,
@@ -403,6 +418,8 @@ def load(
                 )
             if third:
                 register(
+                    0x8000 + f2_id * 0x80 + pid * 0x20 + 0x06,
+                    0x80,
                     ALayout(
                         one_side_ground,
                         [cur_plat, f1 + f1_snow, h_pos.non_platform.T] + f2_component,
@@ -413,7 +430,7 @@ def load(
                     internal_category,
                     (f2_name, platform_class, None, "third"),
                 )
-            for shelter_class in shelter_classes if h_pos.has_shelter else [None]:
+            for sid, shelter_class in enumerate(shelter_classes if h_pos.has_shelter else [None]):
                 if h_pos.has_shelter:
                     common_notes = (
                         ["noshow"] if shelter_class != "shelter_2" or platform_class != "concrete" else []
@@ -422,6 +439,8 @@ def load(
                     common_notes = (["noshow"] if platform_class != "concrete" else []) + [platform_class]
                 if third:
                     register(
+                        0x8000 + f2_id * 0x80 + pid * 0x20 + sid * 0x08 + 0x05,
+                        0x80,
                         ALayout(
                             corridor_ground,
                             [cur_plat_nt, f1 + f1_snow, h_pos.platform(platform_class, shelter_class).T] + f2_component,
@@ -434,6 +453,8 @@ def load(
                     )
                 if platform:
                     register(
+                        0x8000 + f2_id * 0x80 + pid * 0x20 + sid * 0x08 + 0x04,
+                        0x80,
                         ALayout(
                             solid_ground,
                             [
@@ -451,11 +472,14 @@ def load(
                     )
         if full:
             register(
+                0xFB00 + f2_id,
+                1,
                 ALayout(solid_ground, [full_f1 + f1_snow, concourse] + f2_component, False),
                 cur_sym,
                 internal_category,
                 (f2_name, None, None, ""),
             )
+        f2_id += 1
 
 
 def load_full(f2_id, source, symmetry, internal_category, name=None, h_pos=Normal, borrow_f1=None, window=None):
