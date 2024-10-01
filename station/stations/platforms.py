@@ -153,7 +153,7 @@ station_tiles = []
 for i, entry in enumerate(entries):
     station_tiles.append(
         AStation(
-            id=0xF000 + i,
+            id=entry.id,
             translation_name=(
                 "CONCOURSE"
                 if "concourse" in entry.notes

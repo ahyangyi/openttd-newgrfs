@@ -258,7 +258,7 @@ def load_central(f2_id, source, symmetry, internal_category, name=None, h_pos=No
             f2_component = [f2 + f2_window_extender + f2_snow_window_extender]
             cur_sym = symmetry
         register(
-            0xFD00 + f2_id,
+            0xFB00 + f2_id * 0x4,
             1,
             ALayout(empty_ground, [cur_np, cur_np.T] + f2_component, True, notes=["waypoint"]),
             cur_sym,
@@ -472,7 +472,7 @@ def load(
                     )
         if full:
             register(
-                0xFB00 + f2_id,
+                0xF700 + f2_id * 0x4,
                 1,
                 ALayout(solid_ground, [full_f1 + f1_snow, concourse] + f2_component, False),
                 cur_sym,

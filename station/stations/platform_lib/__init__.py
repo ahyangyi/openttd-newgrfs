@@ -52,8 +52,8 @@ def register(pf: PlatformFamily):
     shelter_classes = pf.get_shelter_classes()
     name = pf.name
 
-    for platform_class in ["np", "cut"] + platform_classes:
-        for shelter_class in ["", "pillar"] + shelter_classes:
+    for pid, platform_class in enumerate(["np", "cut"] + platform_classes):
+        for sid, shelter_class in enumerate(["", "pillar"] + shelter_classes):
             if (platform_class, shelter_class) == ("np", ""):
                 # Don't create the "nothing" tile
                 continue
@@ -70,12 +70,14 @@ def register(pf: PlatformFamily):
             else:
                 locations = ["", "building", "building_narrow", "building_v", "building_v_narrow"]
 
-            for location in locations:
-                for rail_facing in rail_facings:
+            for lid, location in enumerate(locations):
+                for rid, rail_facing in enumerate(rail_facings):
                     ps = pf.get_sprite(location, rail_facing, platform_class, shelter_class)
                     platform_ps[(name, platform_class, rail_facing, shelter_class, location)] = ps
 
-                    for l, make_symmetrical, shelter_side in [([ps], False, ""), ([ps, ps.T], True, "d")]:
+                    for ssid, (l, make_symmetrical, shelter_side) in enumerate(
+                        [([ps], False, ""), ([ps, ps.T], True, "d")]
+                    ):
                         if make_symmetrical:
                             cur_symmetry = ps.sprite.symmetry.add_y_symmetry()
                         else:
@@ -83,17 +85,19 @@ def register(pf: PlatformFamily):
                         var = cur_symmetry.get_all_variants(ALayout(track_ground, l, True))
                         l = cur_symmetry.create_variants(var)
                         if platform_class not in ["np", "cut"] and shelter_class != "pillar" and location == "":
-                            entries.extend(cur_symmetry.get_all_entries(l))
+                            for i, entry in enumerate(cur_symmetry.get_all_entries(l)):
+                                entry.id = (
+                                    0x7000 + (pid - 2) * 0x200 + sid * 0x40 + rid * 0x20 + ssid * 0x10 + lid * 0x2 + i
+                                )
+                                entries.append(entry)
                         platform_tiles[(name, platform_class, rail_facing, shelter_class, location, shelter_side)] = l
 
-    for platform_class in platform_classes:
-        for rail_facing in ["", "side"]:
-            for rail_facing_2 in ["", "side"]:
-                for shelter_class in [""] + shelter_classes:
-                    for shelter_class_2 in [""] + shelter_classes:
-                        if (shelter_class == "" or shelter_class_2 == "" or shelter_class == shelter_class_2) and (
-                            (rail_facing, shelter_class) < (rail_facing_2, shelter_class_2)
-                        ):
+    for pid, platform_class in enumerate(platform_classes):
+        for rid, rail_facing in enumerate(["", "side"]):
+            for rid2, rail_facing_2 in enumerate(["", "side"]):
+                for sid, shelter_class in enumerate([""] + shelter_classes):
+                    for sid2, shelter_class_2 in enumerate([""] if shelter_class == "" else ["", shelter_class]):
+                        if (rail_facing, shelter_class) < (rail_facing_2, shelter_class_2):
                             suffix = (platform_class, rail_facing, shelter_class)
                             suffix2 = (platform_class, rail_facing_2, shelter_class_2)
                             cur_symmetry = BuildingSpriteSheetSymmetricalX
@@ -105,15 +109,18 @@ def register(pf: PlatformFamily):
                                 )
                             )
                             l = cur_symmetry.create_variants(var)
-                            entries.extend(cur_symmetry.get_all_entries(l))
+
+                            for i, entry in enumerate(cur_symmetry.get_all_entries(l)):
+                                entry.id = 0x7800 + pid * 0x80 + rid * 0x40 + rid2 * 0x20 + sid * 0x4 + sid2 * 0x2 + i
+                                entries.append(entry)
 
                             suffix = (platform_class, rail_facing, shelter_class)
                             suffix2 = (platform_class, rail_facing_2, shelter_class_2)
                             two_side_tiles[(name, *suffix, "and", *suffix2)] = l
                             two_side_tiles[(name, *suffix2, "and", *suffix)] = l.T
 
-    for platform_class in ["none"] + platform_classes:
-        for side in ["", "d"] if platform_class != "none" else [""]:
+    for pid, platform_class in enumerate(["none"] + platform_classes):
+        for ssid, side in enumerate(["", "d"] if platform_class != "none" else [""]):
             ps = pf.get_concourse_sprite(platform_class, side)
             concourse_ps[(platform_class, side)] = ps
 
@@ -124,16 +131,17 @@ def register(pf: PlatformFamily):
 
             var = symmetry.get_all_variants(ALayout(gray_ps, [ps], False, notes={"concourse"}))
             l = symmetry.create_variants(var)
-            entries.extend(symmetry.get_all_entries(l))
+            for i, entry in enumerate(cur_symmetry.get_all_entries(l)):
+                entry.id = 0x7A00 + pid * 0x4 + ssid * 0x2 + i
+                entries.append(entry)
             concourse_tiles[(platform_class, side, "", None)] = l
 
             if platform_class != "none":
-                for shelter_class in shelter_classes:
+                for sid, shelter_class in enumerate(shelter_classes):
                     shelter = platform_ps[(name, "cut", "", shelter_class, "")]
-                    for l, needs_symmetrical, shelter_side in [
-                        ([shelter], False, ""),
-                        ([shelter, shelter.T], True, "d"),
-                    ]:
+                    for lid, (l, needs_symmetrical, shelter_side) in enumerate(
+                        [([shelter], False, ""), ([shelter, shelter.T], True, "d")]
+                    ):
                         if needs_symmetrical:
                             if side == "d":
                                 cur_sym = symmetry
@@ -143,5 +151,7 @@ def register(pf: PlatformFamily):
                             cur_sym = BuildingSpriteSheetSymmetricalX
                         var = cur_sym.get_all_variants(ALayout(gray_ps, l + [ps], False, notes={"concourse"}))
                         l = cur_sym.create_variants(var)
-                        entries.extend(cur_sym.get_all_entries(l))
+                        for i, entry in enumerate(cur_symmetry.get_all_entries(l)):
+                            entry.id = 0x7B00 + pid * 0x20 + ssid * 0x10 + sid * 0x4 + lid * 0x2 + i
+                            entries.append(entry)
                         concourse_tiles[(platform_class, side, shelter_class, shelter_side)] = l
