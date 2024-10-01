@@ -1,11 +1,21 @@
 China Set: Stations & Platforms Addons: Wuhu Changelog
 =========================
 
-0.3.0 (work-in-progress)
+0.3.0 (2024-06-02)
 ------------------------
 Add the 1934 Wuhu Station.
 
 Add snow and escalator graphics for station buildings.
+
+Designate station tiles without platforms as waypoints.
+
+Add bus stops, road waypoints and objects (not included in 0.3.0 release) to use alongside the station.
+
+Support older versions of OpenTTD.
+
+Add more parameters to control what's available, and also reduce the UI clutter.
+
+Bugfix: station templates with shelter type 2 sometimes included wrong shelter graphics.
 
 0.2.2 (2024-06-14)
 --------------------

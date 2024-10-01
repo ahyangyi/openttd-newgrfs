@@ -1,7 +1,7 @@
 import numpy as np
 import grf
 import math
-from .misc import SCALE_TO_ZOOM
+from .misc import SCALE_TO_ZOOM, ZOOM_TO_SCALE
 
 THIS_FILE = grf.PythonFile(__file__)
 
@@ -150,7 +150,13 @@ def spritesheet_template(
 
     def get_rels(direction, diff, scale):
         w, h, z_ydiff, z_height = map(lambda a: a * scale, guessed_dimens[direction])
-        xrel = -w / 2
+        if road_mode:
+            xrel = -((w - 1) // (scale * 2) * scale + 1)
+        else:
+            # XXX
+            # Actually, this is unverified legacy code
+            # Vehicle people have much disagreement with what's the right offset anyways...
+            xrel = -w / 2
         if road_mode:
             yrel = -z_height
         else:
