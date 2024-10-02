@@ -513,7 +513,7 @@ class ALayout:
     def squash(self):
         return ALayout(
             self.ground_sprite,
-            [s.squash for s in [self.sorted_parent_sprites]],
+            [s.squash for s in self.sorted_parent_sprites],
             self.traversable,
             category=self.category,
             notes=self.notes,
