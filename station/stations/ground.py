@@ -12,7 +12,7 @@ from station.lib.registers import Registers
 def quickload(name, type):
     v = LazyVoxel(
         name,
-        prefix="station/voxels/render/ground",
+        prefix=".cache/render/station/ground",
         voxel_getter=lambda path=f"station/voxels/ground/{name}.vox": path,
         load_from="station/files/gorender.json",
         subset=type.render_indices(),

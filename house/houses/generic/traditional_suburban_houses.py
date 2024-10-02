@@ -3,7 +3,7 @@ from agrf.graphics.voxel import LazyVoxel, LazySpriteSheet
 
 vox = LazyVoxel(
     "dovemere_gable",
-    prefix="house/voxels/render/dovemere_gable",
+    prefix=".cache/render/house/dovemere_gable",
     voxel_getter=lambda: "house/voxels/dovemere_gable.vox",
     load_from="house/files/gorender.json",
 )

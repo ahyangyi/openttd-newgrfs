@@ -7,7 +7,7 @@ def LazyVoxel(name, load_from=None, **kwargs):
         load_from = "road_vehicle/templates/manifest.json"
     return LazyVoxelBase(
         name,
-        prefix=f"road_vehicle/voxels/render/{name}",
+        prefix=f".cache/render/road_vehicle/{name}",
         voxel_getter=lambda: f"road_vehicle/voxels/{name}.vox",
         load_from=load_from,
         **kwargs,

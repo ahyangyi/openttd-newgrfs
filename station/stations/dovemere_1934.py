@@ -24,7 +24,7 @@ from agrf.graphics.palette import CompanyColour
 def quickload(name, symmetry):
     v = LazyVoxel(
         name,
-        prefix="station/voxels/render/dovemere_1934",
+        prefix=".cache/render/station/dovemere_1934",
         voxel_getter=lambda path=f"station/voxels/dovemere_1934/{name}.vox": path,
         load_from="station/files/gorender.json",
         config={"agrf_palette": "station/files/dovemere_1934_palette.json", "z_scale": 1.0},
