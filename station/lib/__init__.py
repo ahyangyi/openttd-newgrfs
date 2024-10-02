@@ -1,11 +1,11 @@
 from .station import AStation
-from .binary_variants import (
-    BuildingSpriteSheetFull,
-    BuildingSpriteSheetSymmetrical,
-    BuildingSpriteSheetSymmetricalX,
-    BuildingSpriteSheetSymmetricalY,
-    BuildingSpriteSheetRotational,
-    BuildingSpriteSheetDiagonal,
+from agrf.lib.building.symmetry import (
+    BuildingFull,
+    BuildingSymmetrical,
+    BuildingSymmetricalX,
+    BuildingSymmetricalY,
+    BuildingRotational,
+    BuildingDiagonal,
 )
 from agrf.lib.building.layout import (
     ADefaultGroundSprite,

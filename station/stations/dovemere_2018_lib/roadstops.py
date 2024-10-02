@@ -1,5 +1,5 @@
 import grf
-from station.lib import BuildingSpriteSheetFull, BuildingSpriteSheetSymmetricalX, AParentSprite, ALayout
+from station.lib import BuildingFull, BuildingSymmetricalX, AParentSprite, ALayout
 from station.lib.parameters import parameter_list
 from agrf.graphics.voxel import LazyVoxel
 from agrf.graphics import SCALE_TO_ZOOM
@@ -15,11 +15,11 @@ OVERHANG_WIDTH = 1
 
 
 for name, sym, (far, overhang, overpass, near), extended in [
-    ("overpass", BuildingSpriteSheetSymmetricalX, (True, True, True, False), False)
+    ("overpass", BuildingSymmetricalX, (True, True, True, False), False)
 ]:
     v = LazyVoxel(
         name,
-        prefix="station/voxels/render/dovemere_2018/plaza",
+        prefix=".cache/render/station/dovemere_2018/plaza",
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
         # config={"z_scale": 1.01},
@@ -29,7 +29,7 @@ for name, sym, (far, overhang, overpass, near), extended in [
         v.config["size"]["y"] = 384
         for sprite in v.config["sprites"]:
             sprite["width"] = 96
-        v.config["agrf_zdiff"] = -16
+        v.config["agrf_zdiff"] = -8
     if extended:
         farv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_back_mask_extended.vox", "back")
     else:
@@ -45,14 +45,14 @@ for name, sym, (far, overhang, overpass, near), extended in [
     overpassv.in_place_subset(sym.render_indices())
     if overhang:
         overpasssprite = sym.create_variants(
-            overpassv.spritesheet(xspan=OVERHANG_WIDTH, xdiff=WIDTH, zdiff=OVERPASS_HEIGHT * 2)
+            overpassv.spritesheet(xspan=OVERHANG_WIDTH, xdiff=WIDTH, zdiff=OVERPASS_HEIGHT)
         )
         overpassps = AParentSprite(
             overpasssprite, (16, OVERHANG_WIDTH, 12 - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)
         )
     else:
         overpasssprite = sym.create_variants(
-            overpassv.spritesheet(xspan=16 - WIDTH * 2, xdiff=WIDTH, zdiff=OVERPASS_HEIGHT * 2)
+            overpassv.spritesheet(xspan=16 - WIDTH * 2, xdiff=WIDTH, zdiff=OVERPASS_HEIGHT)
         )
         overpassps = AParentSprite(
             overpasssprite, (16, 16 - WIDTH * 2, 12 - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)
@@ -73,7 +73,7 @@ for name, sym, (far, overhang, overpass, near), extended in [
         category=b"\xe8\x8a\x9cR",
     )
 
-    for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingSpriteSheetFull) else [layout, layout.T]:
+    for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingFull) else [layout, layout.T]:
         cur_roadstop = ARoadStop(
             id=0x8000 + cnt,
             translation_name="WEST_PLAZA_BUS",
