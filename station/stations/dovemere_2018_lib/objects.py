@@ -1,8 +1,8 @@
 import grf
 from station.lib import (
-    BuildingSpriteSheetFull,
-    BuildingSpriteSheetSymmetricalX,
-    BuildingSpriteSheetSymmetrical,
+    BuildingFull,
+    BuildingSymmetricalX,
+    BuildingSymmetrical,
     AGroundSprite,
     AParentSprite,
     AChildSprite,
@@ -16,7 +16,7 @@ from .layouts import solid_ground
 
 objects = []
 
-for name, sym in [("west_plaza_center", BuildingSpriteSheetSymmetrical)]:
+for name, sym in [("west_plaza_center", BuildingSymmetrical)]:
     v = LazyVoxel(
         name,
         prefix=".cache/render/station/dovemere_2018/plaza",
@@ -31,7 +31,7 @@ for name, sym in [("west_plaza_center", BuildingSpriteSheetSymmetrical)]:
     gs = AGroundSprite(sprite)
     layout = ALayout(gs, [], True, category=b"\xe8\x8a\x9cZ")
 
-    for cur in [layout, layout.R] if (sym is BuildingSpriteSheetFull) else [layout]:
+    for cur in [layout, layout.R] if (sym is BuildingFull) else [layout]:
         cur_object = AObject(
             id=len(objects),
             translation_name="WEST_PLAZA",

@@ -1,10 +1,4 @@
-from station.lib import (
-    BuildingSpriteSheetSymmetrical,
-    BuildingSpriteSheetSymmetricalX,
-    AGroundSprite,
-    ALayout,
-    AttrDict,
-)
+from station.lib import BuildingSymmetrical, BuildingSymmetricalX, AGroundSprite, ALayout, AttrDict
 from agrf.graphics.voxel import LazyVoxel
 from station.lib.registers import Registers
 
@@ -29,6 +23,5 @@ def quickload(name, type):
 named_ps = AttrDict()
 named_tiles = AttrDict()
 gray, gray_third = [
-    quickload(name, type)
-    for name, type in [("gray", BuildingSpriteSheetSymmetrical), ("gray_third", BuildingSpriteSheetSymmetricalX)]
+    quickload(name, type) for name, type in [("gray", BuildingSymmetrical), ("gray_third", BuildingSymmetricalX)]
 ]

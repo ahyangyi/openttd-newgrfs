@@ -1,4 +1,4 @@
-from station.lib import AttrDict, ALayout, BuildingSpriteSheetSymmetricalX, BuildingSpriteSheetSymmetrical
+from station.lib import AttrDict, ALayout, BuildingSymmetricalX, BuildingSymmetrical
 from abc import ABC, abstractmethod
 from ..misc import track_ground
 from ..ground import named_ps as ground_ps
@@ -100,7 +100,7 @@ def register(pf: PlatformFamily):
                         if (rail_facing, shelter_class) < (rail_facing_2, shelter_class_2):
                             suffix = (platform_class, rail_facing, shelter_class)
                             suffix2 = (platform_class, rail_facing_2, shelter_class_2)
-                            cur_symmetry = BuildingSpriteSheetSymmetricalX
+                            cur_symmetry = BuildingSymmetricalX
                             var = cur_symmetry.get_all_variants(
                                 ALayout(
                                     track_ground,
@@ -125,9 +125,9 @@ def register(pf: PlatformFamily):
             concourse_ps[(platform_class, side)] = ps
 
             if platform_class == "none" or side == "d":
-                symmetry = BuildingSpriteSheetSymmetrical
+                symmetry = BuildingSymmetrical
             else:
-                symmetry = BuildingSpriteSheetSymmetricalX
+                symmetry = BuildingSymmetricalX
 
             var = symmetry.get_all_variants(ALayout(gray_ps, [ps], False, notes={"concourse"}))
             l = symmetry.create_variants(var)
@@ -148,7 +148,7 @@ def register(pf: PlatformFamily):
                             else:
                                 continue
                         else:
-                            cur_sym = BuildingSpriteSheetSymmetricalX
+                            cur_sym = BuildingSymmetricalX
                         var = cur_sym.get_all_variants(ALayout(gray_ps, l + [ps], False, notes={"concourse"}))
                         l = cur_sym.create_variants(var)
                         for i, entry in enumerate(cur_sym.get_all_entries(l)):

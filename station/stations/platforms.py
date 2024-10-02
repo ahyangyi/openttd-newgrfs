@@ -1,9 +1,9 @@
 from station.lib import (
     AStation,
     AMetaStation,
-    BuildingSpriteSheetSymmetrical,
-    BuildingSpriteSheetSymmetricalX,
-    BuildingSpriteSheetFull,
+    BuildingSymmetrical,
+    BuildingSymmetricalX,
+    BuildingFull,
     Demo,
     AParentSprite,
 )
@@ -80,9 +80,9 @@ class CNSPlatformFamily(PlatformFamily):
             f"subset_{platform_class}_{rail_facing}_{shelter_class}_{location}",
         )
         if location in ["building", "building_narrow"]:
-            symmetry = BuildingSpriteSheetFull
+            symmetry = BuildingFull
         else:
-            symmetry = BuildingSpriteSheetSymmetricalX
+            symmetry = BuildingSymmetricalX
         v2.in_place_subset(symmetry.render_indices())
         foundation_height = platform_height if platform_class == "cut" else 0
         sprite = symmetry.create_variants(
@@ -103,9 +103,9 @@ class CNSPlatformFamily(PlatformFamily):
             ckeeps = {platform_class}
 
         if platform_class == "none" or side == "d":
-            symmetry = BuildingSpriteSheetSymmetrical
+            symmetry = BuildingSymmetrical
         else:
-            symmetry = BuildingSpriteSheetSymmetricalX
+            symmetry = BuildingSymmetricalX
 
         v2 = self.concourse.discard_layers(
             tuple(sorted(tuple(concourse_components - ckeeps))), f"subset_{platform_class}_{side}"
