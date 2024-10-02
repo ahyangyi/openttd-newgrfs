@@ -324,6 +324,11 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
                 y += 1
         return AParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
 
+    def squash(self):
+        return AParentSprite(
+            self.sprite.squash(), self.extent, self.offset, [x.squash() for x in self.child_sprites], self.flags
+        )
+
     @property
     def L(self):
         return self
@@ -408,8 +413,8 @@ class AChildSprite(RegistersMixin, CachedFunctorMixin):
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 
-    def pushdown(self, steps):
-        return AChildSprite(self.sprite.pushdown(steps), self.offset, flags=self.flags)
+    def squash(self):
+        return AChildSprite(self.sprite.squash(), self.offset, self.flags)
 
     def fmap(self, f):
         return AChildSprite(f(self.sprite), self.offset, flags=self.flags)
@@ -498,6 +503,17 @@ class ALayout:
         return ALayout(
             empty_ground,
             [s.pushdown(steps) for s in [self.ground_sprite.to_parentsprite()] + self.sorted_parent_sprites],
+            self.traversable,
+            category=self.category,
+            notes=self.notes,
+            flattened=True,
+            altitude=self.altitude,
+        )
+
+    def squash(self):
+        return ALayout(
+            self.ground_sprite,
+            [s.squash for s in [self.sorted_parent_sprites]],
             self.traversable,
             category=self.category,
             notes=self.notes,
