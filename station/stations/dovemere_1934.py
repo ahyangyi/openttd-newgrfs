@@ -1,8 +1,8 @@
 from station.lib import (
     AStation,
     AMetaStation,
-    BuildingSpriteSheetSymmetricalX,
-    BuildingSpriteSheetSymmetrical,
+    BuildingSymmetricalX,
+    BuildingSymmetrical,
     Demo,
     ADefaultGroundSprite,
     AGroundSprite,
@@ -51,7 +51,7 @@ def quickload(name, symmetry):
 
 entries = []
 named_tiles = AttrDict()
-for name, symmetry in [("regular", BuildingSpriteSheetSymmetricalX)]:
+for name, symmetry in [("regular", BuildingSymmetricalX)]:
     quickload(name, symmetry)
 
 station_tiles = []
