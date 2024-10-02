@@ -35,6 +35,13 @@ class LazyVoxel(Config):
         self.config["agrf_subset"] = subset
 
     @functools.cache
+    def fork(self, suffix):
+        new_config = deepcopy(self.config)
+        return LazyVoxel(
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=self.voxel_getter, config=new_config
+        )
+
+    @functools.cache
     def rotate(self, delta, suffix):
         new_config = deepcopy(self.config)
         for x in new_config["sprites"]:
