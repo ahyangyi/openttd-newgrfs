@@ -35,13 +35,13 @@ class CNSPlatformFamily(PlatformFamily):
     def __init__(self):
         self.v = LazyVoxel(
             "cns",
-            prefix="station/voxels/render/cns",
+            prefix=".cache/render/station/cns",
             voxel_getter=lambda path="station/voxels/cns/cns.vox": path,
             load_from="station/files/cns-gorender.json",
         )
         self.concourse = LazyVoxel(
             "concourse",
-            prefix="station/voxels/render/cns",
+            prefix=".cache/render/station/cns",
             voxel_getter=lambda path="station/voxels/cns/concourse.vox": path,
             load_from="station/files/cns-gorender.json",
         )
@@ -86,7 +86,7 @@ class CNSPlatformFamily(PlatformFamily):
         v2.in_place_subset(symmetry.render_indices())
         foundation_height = platform_height if platform_class == "cut" else 0
         sprite = symmetry.create_variants(
-            v2.spritesheet(xdiff=16 - platform_width, xspan=platform_width, zdiff=foundation_height * 2)
+            v2.spritesheet(xdiff=16 - platform_width, xspan=platform_width, zdiff=foundation_height)
         )
 
         height = max((platform_height if platform_class != "" else 0), (shelter_height if shelter_class != "" else 0))
