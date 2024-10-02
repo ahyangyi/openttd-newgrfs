@@ -352,145 +352,147 @@ def load(
     window_asym=False,
 ):
     name = name or source.split("/")[-1]
-    v = make_voxel(source)
-    f2 = make_f2(v, symmetry)
-    f2_window = make_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
-    f2_window_extender = make_extra(v, symmetry, "window-extender")
-    f2_snow = make_extra(v, symmetry, "snow")
-    f2_snow_window = make_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "snow-window")
-    f2_snow_window_extender = make_extra(v, symmetry, "snow-window-extender")
 
-    if window is None:
-        window_classes = ["windowed"]
-    else:
-        window_classes = ["none"] + window
+    for variant in ["tall", "short"]:
+        v = make_voxel(source)
+        f2 = make_f2(v, symmetry)
+        f2_window = make_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "window")
+        f2_window_extender = make_extra(v, symmetry, "window-extender")
+        f2_snow = make_extra(v, symmetry, "snow")
+        f2_snow_window = make_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "snow-window")
+        f2_snow_window_extender = make_extra(v, symmetry, "snow-window-extender")
 
-    if "gate" in name or "tiny" in name:
         if window is None:
-            f1_snow = make_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "snow-window", floor="f1")
+            window_classes = ["windowed"]
         else:
-            f1_snow = make_extra(v, symmetry, "snow", floor="f1")
-    else:
-        f1_snow = None
+            window_classes = ["none"] + window
 
-    if borrow_f1 is not None:
-        v = make_voxel(borrow_f1)
-        f1_symmetry = borrow_f1_symmetry
-    else:
-        f1_symmetry = symmetry
-    broken_f1_symmetry = f1_symmetry.break_y_symmetry()
-    broken_symmetry = symmetry.break_y_symmetry()
-    f1 = make_f1(v, "third", broken_f1_symmetry)
-    f1b = make_f1(v, "third_t", broken_f1_symmetry) if asym else f1.T
-    plat_f1 = make_f1(v, "platform", broken_f1_symmetry)
-    full_f1 = make_f1(v, "full", f1_symmetry)
-
-    for window_class in window_classes:
-        window_postfix = "" if window_class == "none" else "_" + window_class
-        if window is None:
-            f2_name = name
-        elif window_postfix != "" and name.endswith("_normal"):
-            f2_name = name[:-7] + window_postfix
-        else:
-            f2_name = name + window_postfix
-        if window_class == "none":
-            f2_component = [f2 + f2_snow]
-            cur_sym = symmetry
-            cur_bsym = broken_symmetry
-        elif window_class == "windowed":
-            f2_component = [f2 + f2_window + f2_snow_window]
-            if window_asym:
-                cur_sym = symmetry.break_x_symmetry()
-                cur_bsym = broken_symmetry.break_x_symmetry()
+        if "gate" in name or "tiny" in name:
+            if window is None:
+                f1_snow = make_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "snow-window", floor="f1")
             else:
+                f1_snow = make_extra(v, symmetry, "snow", floor="f1")
+        else:
+            f1_snow = None
+
+        if borrow_f1 is not None:
+            v = make_voxel(borrow_f1)
+            f1_symmetry = borrow_f1_symmetry
+        else:
+            f1_symmetry = symmetry
+        broken_f1_symmetry = f1_symmetry.break_y_symmetry()
+        broken_symmetry = symmetry.break_y_symmetry()
+        f1 = make_f1(v, "third", broken_f1_symmetry)
+        f1b = make_f1(v, "third_t", broken_f1_symmetry) if asym else f1.T
+        plat_f1 = make_f1(v, "platform", broken_f1_symmetry)
+        full_f1 = make_f1(v, "full", f1_symmetry)
+
+        for window_class in window_classes:
+            window_postfix = "" if window_class == "none" else "_" + window_class
+            if window is None:
+                f2_name = name
+            elif window_postfix != "" and name.endswith("_normal"):
+                f2_name = name[:-7] + window_postfix
+            else:
+                f2_name = name + window_postfix
+            if window_class == "none":
+                f2_component = [f2 + f2_snow]
                 cur_sym = symmetry
                 cur_bsym = broken_symmetry
-        elif window_class == "windowed_extender":
-            f2_component = [f2 + f2_window_extender + f2_snow_window_extender]
-            cur_sym = symmetry
-            cur_bsym = broken_symmetry
-        for pid, platform_class in enumerate(platform_classes):
-            common_notes = (["noshow"] if platform_class != "concrete" else []) + [platform_class]
-            cur_plat = platform_ps[("cns", platform_class, "", "", "")]
-            cur_plat_nt = platform_ps[("cns", platform_class, "side", "", "")]
-            if corridor:
-                register(
-                    0x8000 + f2_id * 0x80 + pid * 0x20 + 0x07,
-                    0x80,
-                    ALayout(
-                        corridor_ground,
-                        [cur_plat, cur_plat.T, f1 + f1_snow, f1b] + f2_component,
-                        True,
-                        notes=common_notes + ["third"],
-                    ),
-                    cur_sym,
-                    internal_category,
-                    (f2_name, platform_class, None, "corridor"),
-                )
-            if third:
-                register(
-                    0x8000 + f2_id * 0x80 + pid * 0x20 + 0x06,
-                    0x80,
-                    ALayout(
-                        one_side_ground,
-                        [cur_plat, f1 + f1_snow, h_pos.non_platform.T] + f2_component,
-                        True,
-                        notes=common_notes + ["third"],
-                    ),
-                    cur_bsym,
-                    internal_category,
-                    (f2_name, platform_class, None, "third"),
-                )
-            for sid, shelter_class in enumerate(shelter_classes if h_pos.has_shelter else [None]):
-                if h_pos.has_shelter:
-                    common_notes = (
-                        ["noshow"] if shelter_class != "shelter_2" or platform_class != "concrete" else []
-                    ) + [platform_class, shelter_class]
+            elif window_class == "windowed":
+                f2_component = [f2 + f2_window + f2_snow_window]
+                if window_asym:
+                    cur_sym = symmetry.break_x_symmetry()
+                    cur_bsym = broken_symmetry.break_x_symmetry()
                 else:
-                    common_notes = (["noshow"] if platform_class != "concrete" else []) + [platform_class]
-                if third:
+                    cur_sym = symmetry
+                    cur_bsym = broken_symmetry
+            elif window_class == "windowed_extender":
+                f2_component = [f2 + f2_window_extender + f2_snow_window_extender]
+                cur_sym = symmetry
+                cur_bsym = broken_symmetry
+            for pid, platform_class in enumerate(platform_classes):
+                common_notes = (["noshow"] if platform_class != "concrete" else []) + [platform_class]
+                cur_plat = platform_ps[("cns", platform_class, "", "", "")]
+                cur_plat_nt = platform_ps[("cns", platform_class, "side", "", "")]
+                if corridor:
                     register(
-                        0x8000 + f2_id * 0x80 + pid * 0x20 + sid * 0x08 + 0x05,
+                        0x8000 + f2_id * 0x80 + pid * 0x20 + 0x07,
                         0x80,
                         ALayout(
                             corridor_ground,
-                            [cur_plat_nt, f1 + f1_snow, h_pos.platform(platform_class, shelter_class).T] + f2_component,
+                            [cur_plat, cur_plat.T, f1 + f1_snow, f1b] + f2_component,
                             True,
-                            notes=common_notes + ["third", "far"],
+                            notes=common_notes + ["third"],
                         ),
-                        cur_bsym,
+                        cur_sym,
                         internal_category,
-                        (f2_name, platform_class, shelter_class, "third_f"),
+                        (f2_name, platform_class, None, "corridor"),
                     )
-                if platform:
+                if third:
                     register(
-                        0x8000 + f2_id * 0x80 + pid * 0x20 + sid * 0x08 + 0x04,
+                        0x8000 + f2_id * 0x80 + pid * 0x20 + 0x06,
                         0x80,
                         ALayout(
-                            solid_ground,
-                            [
-                                plat_f1 + f1_snow,
-                                h_pos.platform_back_cut(shelter_class).T,
-                                concourse_ps[f"{platform_class}"].T,
-                            ]
-                            + f2_component,
-                            False,
-                            notes=common_notes + ["far"],
+                            one_side_ground,
+                            [cur_plat, f1 + f1_snow, h_pos.non_platform.T] + f2_component,
+                            True,
+                            notes=common_notes + ["third"],
                         ),
                         cur_bsym,
                         internal_category,
-                        (f2_name, platform_class, shelter_class, "platform"),
+                        (f2_name, platform_class, None, "third"),
                     )
-        if full:
-            register(
-                0xFB00 + f2_id,
-                1,
-                ALayout(solid_ground, [full_f1 + f1_snow, concourse] + f2_component, False),
-                cur_sym,
-                internal_category,
-                (f2_name, None, None, ""),
-            )
-        f2_id += 1
+                for sid, shelter_class in enumerate(shelter_classes if h_pos.has_shelter else [None]):
+                    if h_pos.has_shelter:
+                        common_notes = (
+                            ["noshow"] if shelter_class != "shelter_2" or platform_class != "concrete" else []
+                        ) + [platform_class, shelter_class]
+                    else:
+                        common_notes = (["noshow"] if platform_class != "concrete" else []) + [platform_class]
+                    if third:
+                        register(
+                            0x8000 + f2_id * 0x80 + pid * 0x20 + sid * 0x08 + 0x05,
+                            0x80,
+                            ALayout(
+                                corridor_ground,
+                                [cur_plat_nt, f1 + f1_snow, h_pos.platform(platform_class, shelter_class).T] + f2_component,
+                                True,
+                                notes=common_notes + ["third", "far"],
+                            ),
+                            cur_bsym,
+                            internal_category,
+                            (f2_name, platform_class, shelter_class, "third_f"),
+                        )
+                    if platform:
+                        register(
+                            0x8000 + f2_id * 0x80 + pid * 0x20 + sid * 0x08 + 0x04,
+                            0x80,
+                            ALayout(
+                                solid_ground,
+                                [
+                                    plat_f1 + f1_snow,
+                                    h_pos.platform_back_cut(shelter_class).T,
+                                    concourse_ps[f"{platform_class}"].T,
+                                ]
+                                + f2_component,
+                                False,
+                                notes=common_notes + ["far"],
+                            ),
+                            cur_bsym,
+                            internal_category,
+                            (f2_name, platform_class, shelter_class, "platform"),
+                        )
+            if full:
+                register(
+                    0xFB00 + f2_id,
+                    1,
+                    ALayout(solid_ground, [full_f1 + f1_snow, concourse] + f2_component, False),
+                    cur_sym,
+                    internal_category,
+                    (f2_name, None, None, ""),
+                )
+            f2_id += 1
 
 
 def load_full(f2_id, source, symmetry, internal_category, name=None, h_pos=Normal, borrow_f1=None, window=None):
