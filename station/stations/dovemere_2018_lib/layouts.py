@@ -32,6 +32,7 @@ from station.stations.platforms import (
 from station.stations.ground import named_ps as ground_ps, named_tiles as ground_tiles, gray, gray_third
 from station.stations.misc import track_ground, track
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
+from agrf.graphics.misc import SCALE_TO_ZOOM
 from dataclasses import dataclass
 
 
@@ -387,16 +388,26 @@ def load(
     plat_f1 = make_f1(v, "platform", broken_f1_symmetry)
     full_f1 = make_f1(v, "full", f1_symmetry)
 
-    f1nc = AChildSprite(
-        grf.AlternativeSprites(
+    nightf1 = f1.sprite.fmap(
+        lambda x: grf.AlternativeSprites(
             *[
-                NightSprite(f1, 64 * scale, 64 * scale, xofs=0, yofs=0, scale=scale, bpp=bpp)
+                NightSprite(
+                    x.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp),
+                    64 * scale,
+                    64 * scale,
+                    xofs=0,
+                    yofs=0,
+                    scale=scale,
+                    bpp=bpp,
+                )
                 for scale in [1, 2, 4]
                 for bpp in [32]
             ]
-        ),
-        (0, 0),
+        )
     )
+    import inspect
+
+    f1nc = AChildSprite(nightf1, (0, 0))
 
     for window_class in window_classes:
         window_postfix = "" if window_class == "none" else "_" + window_class

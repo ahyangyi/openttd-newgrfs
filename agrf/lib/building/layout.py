@@ -610,11 +610,11 @@ class NightSprite(grf.Sprite):
         }
 
     def get_resource_files(self):
-        return self.layout.get_resource_files()
+        return self.base_sprite.get_resource_files()
 
     def get_data_layers(self, context):
         timer = context.start_timer()
-        ret = self.base_graphics.graphics(self.scale, self.bpp)
+        ret = self.base_sprite.graphics(self.scale, self.bpp)
         from agrf.graphics.cv.nightmask import make_night_mask
 
         ret = make_night_mask(ret)

@@ -3,7 +3,7 @@ class BuildingSymmetryMixin:
     def create_variants(classobj, variants):
         for i, v in enumerate(variants):
             cls = v.__class__
-            v.__class__ = type(cls.__name__, (classobj, cls), {})
+            v.__class__ = type(cls.__name__ + "+" + classobj.__name__, (classobj, cls), {})
             if classobj._m_offset == 0:
                 v.M = variants[i ^ 3 if i in [1, 2] else i]
             else:
@@ -13,6 +13,7 @@ class BuildingSymmetryMixin:
             v.symmetry = classobj
         return variants[0]
 
+    # FIXME this is actually wrong for "weird" symmetries
     @classmethod
     def get_all_variants(cls, thing):
         ret = cls.get_all_entries(thing)
@@ -33,15 +34,17 @@ class BuildingSymmetryMixin:
     def all_variants(self):
         return self.get_all_variants(self)
 
+    def fmap(self, f):
+        mapped = list(map(f, self.all_variants))
+        cls = self.__class__.__bases__[0]
+        return cls.create_variants(mapped)
+
     @classmethod
     def is_symmetrical_y(classobj):
         return classobj._t_offset == 0
 
 
 class BuildingFull(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     @staticmethod
     def render_indices():
         return list(range(8))
@@ -64,9 +67,6 @@ class BuildingFull(BuildingSymmetryMixin):
 
 
 class BuildingSymmetricalX(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     @staticmethod
     def render_indices():
         return [0, 1, 4, 5]
@@ -89,9 +89,6 @@ class BuildingSymmetricalX(BuildingSymmetryMixin):
 
 
 class BuildingSymmetricalY(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     @staticmethod
     def render_indices():
         return [0, 1, 2, 3]
@@ -114,9 +111,6 @@ class BuildingSymmetricalY(BuildingSymmetryMixin):
 
 
 class BuildingSymmetrical(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     @staticmethod
     def render_indices():
         return [0, 1]
@@ -139,9 +133,6 @@ class BuildingSymmetrical(BuildingSymmetryMixin):
 
 
 class BuildingRotational(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     @staticmethod
     def render_indices():
         return [0, 1, 2, 3]
@@ -165,9 +156,6 @@ class BuildingRotational(BuildingSymmetryMixin):
 
 
 class BuildingDiagonal(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     @staticmethod
     def render_indices():
         return [0, 2, 4, 6]

@@ -44,6 +44,9 @@ def guess_dimens(width, height, angle, bbox, z_scale):
 class LazyAlternativeSprites(grf.AlternativeSprites):
     def __init__(self, voxel, part, *sprites):
         super().__init__(*sprites)
+        from .voxel import LazyVoxel
+
+        assert isinstance(voxel, LazyVoxel)
         self.voxel = voxel
         self.part = part
 
