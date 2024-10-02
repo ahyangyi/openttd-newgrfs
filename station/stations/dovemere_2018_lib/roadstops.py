@@ -1,19 +1,10 @@
 import grf
-from station.lib import (
-    BuildingSpriteSheetFull,
-    BuildingSpriteSheetSymmetricalX,
-    AGroundSprite,
-    AParentSprite,
-    AChildSprite,
-    ALayout,
-)
+from station.lib import BuildingSpriteSheetFull, BuildingSpriteSheetSymmetricalX, AParentSprite, ALayout
 from station.lib.parameters import parameter_list
 from agrf.graphics.voxel import LazyVoxel
 from agrf.graphics import SCALE_TO_ZOOM
 from agrf.magic import Switch
-from datetime import date
 from roadstop.lib import ARoadStop
-from station.lib import ALayout
 from ..misc import road_ground
 
 cnt = 0
@@ -28,7 +19,7 @@ for name, sym, (far, overhang, overpass, near), extended in [
 ]:
     v = LazyVoxel(
         name,
-        prefix="station/voxels/render/dovemere_2018/plaza",
+        prefix=".cache/render/station/dovemere_2018/plaza",
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
         # config={"z_scale": 1.01},
@@ -38,7 +29,7 @@ for name, sym, (far, overhang, overpass, near), extended in [
         v.config["size"]["y"] = 384
         for sprite in v.config["sprites"]:
             sprite["width"] = 96
-        v.config["agrf_ydiff"] = -8
+        v.config["agrf_zdiff"] = -8
     if extended:
         farv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_back_mask_extended.vox", "back")
     else:
@@ -54,14 +45,14 @@ for name, sym, (far, overhang, overpass, near), extended in [
     overpassv.in_place_subset(sym.render_indices())
     if overhang:
         overpasssprite = sym.create_variants(
-            overpassv.spritesheet(xspan=OVERHANG_WIDTH, xdiff=WIDTH, zdiff=OVERPASS_HEIGHT * 2)
+            overpassv.spritesheet(xspan=OVERHANG_WIDTH, xdiff=WIDTH, zdiff=OVERPASS_HEIGHT)
         )
         overpassps = AParentSprite(
             overpasssprite, (16, OVERHANG_WIDTH, 12 - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)
         )
     else:
         overpasssprite = sym.create_variants(
-            overpassv.spritesheet(xspan=16 - WIDTH * 2, xdiff=WIDTH, zdiff=OVERPASS_HEIGHT * 2)
+            overpassv.spritesheet(xspan=16 - WIDTH * 2, xdiff=WIDTH, zdiff=OVERPASS_HEIGHT)
         )
         overpassps = AParentSprite(
             overpasssprite, (16, 16 - WIDTH * 2, 12 - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)

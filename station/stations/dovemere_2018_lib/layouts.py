@@ -145,7 +145,7 @@ def make_f2(v, sym):
     v = v.discard_layers(all_f1_layers + all_f2_layers + snow_layers, "f2")
     v.in_place_subset(sym.render_indices())
     v.config["agrf_manual_crop"] = (0, 10)
-    s = sym.create_variants(v.spritesheet(zdiff=base_height * 2 + 1))
+    s = sym.create_variants(v.spritesheet(zdiff=base_height + 0.5))
     return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
 
@@ -184,7 +184,7 @@ def make_f1(v, subset, sym):
         V = V.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         V.in_place_subset(sym.render_indices())
         V.config["agrf_manual_crop"] = (0, 40)
-        s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan, zdiff=1))
+        s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan, zdiff=0.5))
         f1_cache[(v, subset)] = AParentSprite(s, (16, xspan, base_height), (0, xdiff, platform_height)), sym
     ret, ret_sym = f1_cache[(v, subset)]
     assert sym is ret_sym
@@ -222,7 +222,7 @@ def make_voxel(source):
     if source not in voxel_cache:
         voxel_cache[source] = LazyVoxel(
             os.path.basename(source),
-            prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(source)),
+            prefix=os.path.join(".cache/render/station/dovemere_2018", os.path.dirname(source)),
             voxel_getter=lambda path=f"station/voxels/dovemere_2018/{source}.vox": path,
             load_from="station/files/gorender.json",
         )

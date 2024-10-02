@@ -12,7 +12,6 @@ from agrf.graphics.voxel import LazyVoxel
 from agrf.graphics import SCALE_TO_ZOOM
 from datetime import date
 from grfobject.lib import AObject
-from station.lib import ALayout
 from .layouts import solid_ground
 
 objects = []
@@ -20,7 +19,7 @@ objects = []
 for name, sym in [("west_plaza_center", BuildingSpriteSheetSymmetrical)]:
     v = LazyVoxel(
         name,
-        prefix="station/voxels/render/dovemere_2018/plaza",
+        prefix=".cache/render/station/dovemere_2018/plaza",
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
         # config={"z_scale": 1.01},

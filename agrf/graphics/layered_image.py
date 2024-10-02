@@ -201,7 +201,7 @@ class LayeredImage:
             cols_bitset = self.mask.any(0)
             rows_bitset = self.mask.any(1)
         else:
-            raise context.failure(self, "All data layers are None")
+            raise Exception("All data layers are None")
 
         cols_used = np.arange(self.w)[cols_bitset]
         rows_used = np.arange(self.h)[rows_bitset]
