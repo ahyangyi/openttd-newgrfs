@@ -122,36 +122,11 @@ class CustomCropMixin:
 
 
 class CustomCropFileSprite(CustomCropMixin, grf.FileSprite):
-    def squash(self):
-        old_path = self.file.path
-        new_path = os.path.join(os.path.dirname(old_path), "squashed", os.path.basename(old_path))
-        return CustomCropFileSprite(
-            make_image_file(new_path),
-            self.x,
-            self.y,
-            self.w,
-            self.h,
-            xofs=self.xofs,
-            yofs=self.yofs,
-            zoom=self.zoom,
-            bpp=self.bpp,
-            crop=self.crop,
-            name=self.name,
-            fixed_crop=self.fixed_crop,
-            crop_amount=self.crop_amount,
-        )
+    pass
 
 
 class CustomCropWithMask(CustomCropMixin, grf.WithMask):
-    def squash(self):
-        return CustomCropWithMask(
-            self.sprite.squash(),
-            self.mask.squash(),
-            name=self.name,
-            mode=self.mode,
-            fixed_crop=self.fixed_crop,
-            crop_amount=self.crop_amount,
-        )
+    pass
 
 
 def spritesheet_template(
