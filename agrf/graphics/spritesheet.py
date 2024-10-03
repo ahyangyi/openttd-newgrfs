@@ -71,7 +71,7 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
     @functools.cache
     def squash(self):
         squashed_voxel = self.voxel.squash("squashed")
-        return squashed_voxel.spritesheet(**self.kwargs)
+        return squashed_voxel.spritesheet(**self.kwargs)[self.part]
 
 
 class CustomCropMixin:
