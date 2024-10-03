@@ -9,7 +9,7 @@ stop1 = roadstops[0].doc_layout.lower_tile()
 stop2 = roadstops[4].doc_layout.lower_tile()
 stop3 = roadstops[12].doc_layout.lower_tile()
 roadstops = [[stop1, stop2, stop3, stop2.R, stop1]]
-west_square = [[objects[0].doc_layout.lower_tile()] * 5]
+west_square = [[objects[0].doc_layout.lower_tile()] * 5, [objects[0].doc_layout.lower_tile()] * 5]
 
 
 normal_demo = Demo(
