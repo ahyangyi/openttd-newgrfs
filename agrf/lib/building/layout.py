@@ -327,9 +327,13 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
         return AParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
 
     @functools.cache
-    def squash(self):
+    def squash(self, ratio):
         return AParentSprite(
-            self.sprite.squash(), self.extent, self.offset, [x.squash() for x in self.child_sprites], self.flags
+            self.sprite.squash(ratio),
+            self.extent,
+            self.offset,
+            [x.squash(ratio) for x in self.child_sprites],
+            self.flags,
         )
 
     @property
@@ -417,8 +421,8 @@ class AChildSprite(RegistersMixin, CachedFunctorMixin):
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 
     @functools.cache
-    def squash(self):
-        return AChildSprite(self.sprite.squash(), self.offset, self.flags)
+    def squash(self, ratio):
+        return AChildSprite(self.sprite.squash(ratio), self.offset, self.flags)
 
     def fmap(self, f):
         return AChildSprite(f(self.sprite), self.offset, flags=self.flags)
@@ -521,10 +525,10 @@ class ALayout:
         )
 
     @functools.cache
-    def squash(self):
+    def squash(self, ratio):
         return ALayout(
             self.ground_sprite,
-            [s.squash() for s in self.sorted_parent_sprites],
+            [s.squash(ratio) for s in self.sorted_parent_sprites],
             self.traversable,
             category=self.category,
             notes=self.notes,

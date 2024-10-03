@@ -177,9 +177,9 @@ class LazyVoxel(Config):
         )
 
     @functools.cache
-    def squash(self, suffix):
+    def squash(self, ratio, suffix):
         new_config = deepcopy(self.config)
-        new_config["z_scale"] = new_config.get("z_scale", 1.0) * 0.8
+        new_config["z_scale"] = new_config.get("z_scale", 1.0) * ratio
         new_config["agrf_scales"] = [x for x in new_config["agrf_scales"] if x < 4]
         return LazyVoxel(
             self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=self.voxel_getter, config=new_config

@@ -69,8 +69,8 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
         return f"LazyAlternativeSprites<{self.voxel.name}:{self.part}>"
 
     @functools.cache
-    def squash(self):
-        squashed_voxel = self.voxel.squash("squashed")
+    def squash(self, ratio):
+        squashed_voxel = self.voxel.squash(ratio, "squashed")
         return squashed_voxel.spritesheet(**self.kwargs)[self.part]
 
 
