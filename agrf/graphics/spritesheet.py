@@ -1,7 +1,8 @@
+import os
 import numpy as np
 import grf
 import math
-from .misc import SCALE_TO_ZOOM
+from .misc import SCALE_TO_ZOOM, ZOOM_TO_SCALE
 
 THIS_FILE = grf.PythonFile(__file__)
 
@@ -67,7 +68,7 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
 
     def squash(self):
         squashed_voxel = self.voxel.fork("squashed")
-        squashed_voxel["z_scale"] = squashed_voxel.get("z_scale", 1.0) * 0.8
+        squashed_voxel.config["z_scale"] = squashed_voxel.config.get("z_scale", 1.0) * 0.8
         return LazyAlternativeSprites(
             squashed_voxel, self.part, *[x.squash() for x in self.sprites if ZOOM_TO_SCALE[x.zoom] < 2]
         )
@@ -122,8 +123,10 @@ class CustomCropMixin:
 
 class CustomCropFileSprite(CustomCropMixin, grf.FileSprite):
     def squash(self):
+        old_path = self.file.path
+        new_path = os.path.join(os.path.dirname(old_path), "squashed", os.path.basename(old_path))
         return CustomCropFileSprite(
-            os.path.join(os.path.dirname(self.file), "squashed", os.path.basename(self.file)),
+            make_image_file(new_path),
             self.x,
             self.y,
             self.w,

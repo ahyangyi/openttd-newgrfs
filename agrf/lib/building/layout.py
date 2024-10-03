@@ -463,7 +463,11 @@ class ALayout:
             from station.stations.misc import empty_ground
 
             ground_sprite = empty_ground
+        assert isinstance(ground_sprite, (ADefaultGroundSprite, AGroundSprite))
         self.ground_sprite = ground_sprite
+        assert all(isinstance(s, (ADefaultParentSprite, AParentSprite)) for s in parent_sprites), [
+            type(s) for s in parent_sprites
+        ]
         self.parent_sprites = parent_sprites
         self.traversable = traversable
         self.category = category
@@ -473,6 +477,8 @@ class ALayout:
 
     @property
     def sorted_parent_sprites(self):
+        if self.flattened:
+            return self.parent_sprites
         for i in self.parent_sprites:
             for j in self.parent_sprites:
                 if i != j:
@@ -513,7 +519,7 @@ class ALayout:
     def squash(self):
         return ALayout(
             self.ground_sprite,
-            [s.squash for s in self.sorted_parent_sprites],
+            [s.squash() for s in self.sorted_parent_sprites],
             self.traversable,
             category=self.category,
             notes=self.notes,
