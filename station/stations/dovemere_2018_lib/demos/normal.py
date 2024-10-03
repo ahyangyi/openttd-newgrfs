@@ -10,7 +10,7 @@ stop2 = roadstops[4].doc_layout.lower_tile()
 stop3 = roadstops[12].doc_layout.lower_tile()
 roadstops = [[stop1, stop2, stop3, stop2.R, stop1]]
 square_ground = objects[0].doc_layout.lower_tile()
-flower = objects[1].doc_layout.lower_tile()
+flower = objects[4].doc_layout.lower_tile()
 west_square = [[square_ground] * 5, [square_ground] * 2 + [flower] + [square_ground] * 2]
 
 
