@@ -10,6 +10,7 @@ roadstops = []
 WIDTH = 3
 OVERPASS_HEIGHT = 10
 OVERHANG_WIDTH = 1
+EXTENDED_WIDTH = 8
 
 
 for name, sym, (far, overhang, overpass, near), extended in [
@@ -64,7 +65,10 @@ for name, sym, (far, overhang, overpass, near), extended in [
         nearv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_front_mask.vox", "front")
     nearv.in_place_subset(sym.render_indices())
     nearsprite = sym.create_variants(nearv.spritesheet(xspan=WIDTH, xdiff=16 - WIDTH))
-    nearps = AParentSprite(nearsprite, (16, WIDTH, 12), (0, 16 - WIDTH, 0))
+    if extended:
+        nearps = AParentSprite(nearsprite, (16, EXTENDED_WIDTH, 12), (0, 16 - WIDTH, 0))
+    else:
+        nearps = AParentSprite(nearsprite, (16, WIDTH, 12), (0, 16 - WIDTH, 0))
 
     layout = ALayout(
         road_ground,

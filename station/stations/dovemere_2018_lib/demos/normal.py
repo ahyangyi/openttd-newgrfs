@@ -16,4 +16,5 @@ normal_demo = Demo(
     "5×7 station layout (roughly 1 tile = 40m)",
     semitraversable.demo_1(5, 7) + roadstops + west_square,
     remap=get_1cc_remap(CompanyColour.WHITE),
+    merge_bbox=True,
 )

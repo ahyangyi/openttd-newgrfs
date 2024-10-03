@@ -1,16 +1,25 @@
+from dataclasses import dataclass, replace
 from agrf.graphics import LayeredImage
 from agrf.utils import unique_tuple
+from agrf.lib.building.layout import ALayout
 
 
+@dataclass
 class Demo:
-    def __init__(self, title, tiles, remap=None, climate="temperate", subclimate="default"):
-        self.title = title
-        self.tiles = tiles
-        self.remap = remap
-        self.climate = climate
-        self.subclimate = subclimate
+    title: str
+    tiles: list
+    remap: object = None
+    climate: str = "temperate"
+    subclimate: str = "default"
+    merge_bbox: bool = False
 
     def graphics(self, scale, bpp, remap=None):
+        if self.merge_bbox:
+            sprites = []
+            for r, row in enumerate(self.tiles):
+                for c, sprite in enumerate(row[::-1]):
+                    sprites.extend(sprite.demo_translate(c, r).parent_sprites)
+            return ALayout(None, sprites, False).graphics(scale, bpp, remap)
         remap = remap or self.remap
         yofs = 32 * scale
         img = LayeredImage.canvas(
@@ -31,13 +40,11 @@ class Demo:
 
     @property
     def T(self):
-        return Demo(self.title, [[tile and tile.T for tile in row] for row in self.tiles[::-1]], self.remap)
+        return replace(self, tiles=[[tile and tile.T for tile in row] for row in self.tiles[::-1]])
 
     @property
     def M(self):
-        return Demo(
-            self.title, [[tile and tile.M for tile in row[::-1]] for row in list(zip(*self.tiles))[::-1]], self.remap
-        )
+        return replace(self, tiles=[[tile and tile.M for tile in row[::-1]] for row in list(zip(*self.tiles))[::-1]])
 
     def get_fingerprint(self):
         return {"tiles": [[x and x.get_fingerprint() for x in row] for row in self.tiles], "remap": "FIXME"}  # FIXME
