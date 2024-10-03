@@ -1,2 +1,2 @@
-grf @ git+https://github.com/ahyangyi/grf-py@29a4ba19
+grf @ git+https://github.com/ahyangyi/grf-py@36f4256
 tabulate
