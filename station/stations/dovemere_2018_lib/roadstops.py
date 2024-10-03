@@ -64,7 +64,8 @@ for name, sym, (far, overhang, overpass, near), extended in [
     else:
         nearv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_front_mask.vox", "front")
     nearv.in_place_subset(sym.render_indices())
-    nearsprite = sym.create_variants(nearv.spritesheet(xspan=WIDTH, xdiff=16 - WIDTH))
+    width = EXTENDED_WIDTH if extended else WIDTH
+    nearsprite = sym.create_variants(nearv.spritesheet(xspan=width, xdiff=16 - WIDTH))
     if extended:
         nearps = AParentSprite(nearsprite, (16, EXTENDED_WIDTH, 12), (0, 16 - WIDTH, 0))
     else:
