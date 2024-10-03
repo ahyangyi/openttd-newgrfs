@@ -281,6 +281,7 @@ class ADefaultParentSprite(DefaultSpriteMixin, BoundingBoxMixin, ChildSpriteCont
 class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin):
     def __init__(self, sprite, extent, offset, child_sprites=None, flags=None):
         super().__init__(extent, offset, child_sprites=child_sprites, flags=flags)
+        assert isinstance(sprite, grf.ResourceAction)
         self.sprite = sprite
 
     def __repr__(self):

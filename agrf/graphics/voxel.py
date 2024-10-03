@@ -221,6 +221,7 @@ class LazyVoxel(Config):
             shift=shift,
             manual_crop=self.config.get("agrf_manual_crop", None),
             childsprite=self.config.get("agrf_childsprite", False),
+            kwargs={"xdiff": xdiff, "zdiff": zdiff, "shift": shift, "xspan": xspan},
         )
 
     @functools.cache
