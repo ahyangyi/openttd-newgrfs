@@ -2,6 +2,7 @@ import os
 import numpy as np
 import grf
 import math
+import functools
 from .misc import SCALE_TO_ZOOM, ZOOM_TO_SCALE
 
 THIS_FILE = grf.PythonFile(__file__)
@@ -66,11 +67,11 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
     def __repr__(self):
         return f"LazyAlternativeSprites<{self.voxel.name}:{self.part}>"
 
+    @functools.cache
     def squash(self):
-        squashed_voxel = self.voxel.fork("squashed")
-        squashed_voxel.config["z_scale"] = squashed_voxel.config.get("z_scale", 1.0) * 0.8
+        squashed_voxel = self.voxel.squash("squashed")
         return LazyAlternativeSprites(
-            squashed_voxel, self.part, *[x.squash() for x in self.sprites if ZOOM_TO_SCALE[x.zoom] < 2]
+            squashed_voxel, self.part, *[x.squash() for x in self.sprites if ZOOM_TO_SCALE[x.zoom] < 4]
         )
 
 

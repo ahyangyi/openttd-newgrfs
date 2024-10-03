@@ -1,5 +1,6 @@
 import grf
 from PIL import Image
+import functools
 import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.magic import CachedFunctorMixin
@@ -324,6 +325,7 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
                 y += 1
         return AParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
 
+    @functools.cache
     def squash(self):
         return AParentSprite(
             self.sprite.squash(), self.extent, self.offset, [x.squash() for x in self.child_sprites], self.flags
@@ -413,6 +415,7 @@ class AChildSprite(RegistersMixin, CachedFunctorMixin):
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 
+    @functools.cache
     def squash(self):
         return AChildSprite(self.sprite.squash(), self.offset, self.flags)
 
@@ -516,6 +519,7 @@ class ALayout:
             altitude=self.altitude,
         )
 
+    @functools.cache
     def squash(self):
         return ALayout(
             self.ground_sprite,

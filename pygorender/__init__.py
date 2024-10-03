@@ -45,7 +45,8 @@ def render(config, vox_path, output_path=None):
     else:
         palette_clause = []
 
-    with tempfile.NamedTemporaryFile("w") as f:
+    # with tempfile.NamedTemporaryFile("w") as f:
+    with open("a.json", "w") as f:
         json.dump(config.config, f)
         f.flush()
         subprocess.run(
