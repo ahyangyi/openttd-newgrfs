@@ -1,5 +1,6 @@
 import grf
 from PIL import Image
+import functools
 import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.magic import CachedFunctorMixin
@@ -280,6 +281,7 @@ class ADefaultParentSprite(DefaultSpriteMixin, BoundingBoxMixin, ChildSpriteCont
 class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin):
     def __init__(self, sprite, extent, offset, child_sprites=None, flags=None):
         super().__init__(extent, offset, child_sprites=child_sprites, flags=flags)
+        assert isinstance(sprite, grf.ResourceAction)
         self.sprite = sprite
 
     def __repr__(self):
@@ -323,6 +325,16 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
                 x += 1
                 y += 1
         return AParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
+
+    @functools.cache
+    def squash(self, ratio):
+        return AParentSprite(
+            self.sprite.squash(ratio),
+            self.extent,
+            self.offset,
+            [x.squash(ratio) for x in self.child_sprites],
+            self.flags,
+        )
 
     @property
     def L(self):
@@ -408,8 +420,9 @@ class AChildSprite(RegistersMixin, CachedFunctorMixin):
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 
-    def pushdown(self, steps):
-        return AChildSprite(self.sprite.pushdown(steps), self.offset, flags=self.flags)
+    @functools.cache
+    def squash(self, ratio):
+        return AChildSprite(self.sprite.squash(ratio), self.offset, self.flags)
 
     def fmap(self, f):
         return AChildSprite(f(self.sprite), self.offset, flags=self.flags)
@@ -458,7 +471,11 @@ class ALayout:
             from station.stations.misc import empty_ground
 
             ground_sprite = empty_ground
+        assert isinstance(ground_sprite, (ADefaultGroundSprite, AGroundSprite))
         self.ground_sprite = ground_sprite
+        assert all(isinstance(s, (ADefaultParentSprite, AParentSprite)) for s in parent_sprites), [
+            type(s) for s in parent_sprites
+        ]
         self.parent_sprites = parent_sprites
         self.traversable = traversable
         self.category = category
@@ -468,6 +485,8 @@ class ALayout:
 
     @property
     def sorted_parent_sprites(self):
+        if self.flattened:
+            return self.parent_sprites
         for i in self.parent_sprites:
             for j in self.parent_sprites:
                 if i != j:
@@ -498,6 +517,18 @@ class ALayout:
         return ALayout(
             empty_ground,
             [s.pushdown(steps) for s in [self.ground_sprite.to_parentsprite()] + self.sorted_parent_sprites],
+            self.traversable,
+            category=self.category,
+            notes=self.notes,
+            flattened=True,
+            altitude=self.altitude,
+        )
+
+    @functools.cache
+    def squash(self, ratio):
+        return ALayout(
+            self.ground_sprite,
+            [s.squash(ratio) for s in self.sorted_parent_sprites],
             self.traversable,
             category=self.category,
             notes=self.notes,

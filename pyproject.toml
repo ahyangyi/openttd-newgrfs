@@ -1,6 +1,8 @@
 [tool.black]
 line-length = 120
 include = '\.pyi?$'
+extend_exclude = 'industry/industries/.*'
+skip_magic_trailing_comma = true
 
 [tool.pytest.ini_options]
 pythonpath = [

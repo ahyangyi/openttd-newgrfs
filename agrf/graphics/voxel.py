@@ -177,6 +177,15 @@ class LazyVoxel(Config):
         )
 
     @functools.cache
+    def squash(self, ratio, suffix):
+        new_config = deepcopy(self.config)
+        new_config["z_scale"] = new_config.get("z_scale", 1.0) * ratio
+        new_config["agrf_scales"] = [x for x in new_config["agrf_scales"] if x < 4]
+        return LazyVoxel(
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=self.voxel_getter, config=new_config
+        )
+
+    @functools.cache
     def render(self):
         if "agrf_subset" in self.config:
             self.config = self.subset(self.config["agrf_subset"]).config
@@ -212,6 +221,7 @@ class LazyVoxel(Config):
             shift=shift,
             manual_crop=self.config.get("agrf_manual_crop", None),
             childsprite=self.config.get("agrf_childsprite", False),
+            kwargs={"xdiff": xdiff, "zdiff": zdiff, "shift": shift, "xspan": xspan},
         )
 
     @functools.cache

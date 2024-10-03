@@ -1,12 +1,13 @@
 from station.lib import (
     AStation,
     AMetaStation,
-    BuildingSpriteSheetSymmetrical,
-    BuildingSpriteSheetSymmetricalX,
-    BuildingSpriteSheetFull,
+    BuildingSymmetrical,
+    BuildingSymmetricalX,
+    BuildingFull,
     Demo,
     AParentSprite,
 )
+from station.lib.parameters import parameter_list
 from agrf.graphics.voxel import LazyVoxel
 from .ground import named_ps as ground_ps
 from .misc import track_ground
@@ -80,9 +81,9 @@ class CNSPlatformFamily(PlatformFamily):
             f"subset_{platform_class}_{rail_facing}_{shelter_class}_{location}",
         )
         if location in ["building", "building_narrow"]:
-            symmetry = BuildingSpriteSheetFull
+            symmetry = BuildingFull
         else:
-            symmetry = BuildingSpriteSheetSymmetricalX
+            symmetry = BuildingSymmetricalX
         v2.in_place_subset(symmetry.render_indices())
         foundation_height = platform_height if platform_class == "cut" else 0
         sprite = symmetry.create_variants(
@@ -103,9 +104,9 @@ class CNSPlatformFamily(PlatformFamily):
             ckeeps = {platform_class}
 
         if platform_class == "none" or side == "d":
-            symmetry = BuildingSpriteSheetSymmetrical
+            symmetry = BuildingSymmetrical
         else:
-            symmetry = BuildingSpriteSheetSymmetricalX
+            symmetry = BuildingSymmetricalX
 
         v2 = self.concourse.discard_layers(
             tuple(sorted(tuple(concourse_components - ckeeps))), f"subset_{platform_class}_{side}"
@@ -151,6 +152,13 @@ concourse_tiles.globalize()
 
 station_tiles = []
 for i, entry in enumerate(entries):
+    enable_if = []
+    for platform_class in ["concrete", "brick"]:
+        if platform_class in entry.notes:
+            enable_if.append(parameter_list.index(f"PLATFORM_{platform_class.upper()}"))
+    for shelter_class in ["shelter_1", "shelter_2"]:
+        if shelter_class in entry.notes:
+            enable_if.append(parameter_list.index(f"SHELTER_{shelter_class.upper()}"))
     station_tiles.append(
         AStation(
             id=entry.id,
@@ -164,6 +172,7 @@ for i, entry in enumerate(entries):
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0},
+            enable_if=enable_if,
             doc_layout=entry,
         )
     )

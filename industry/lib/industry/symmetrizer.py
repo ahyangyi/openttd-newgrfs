@@ -1,5 +1,6 @@
 from agrf.utils import unique
 
+
 def flip(pattern):
     return tuple(str(x[::-1]) for x in pattern)
 

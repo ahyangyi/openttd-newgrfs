@@ -1,5 +1,5 @@
 import grf
-from station.lib import BuildingSpriteSheetFull, BuildingSpriteSheetSymmetricalX, AParentSprite, ALayout
+from station.lib import BuildingFull, BuildingSymmetricalX, AParentSprite, ALayout
 from station.lib.parameters import parameter_list
 from agrf.graphics.voxel import LazyVoxel
 from agrf.graphics import SCALE_TO_ZOOM
@@ -15,9 +15,9 @@ OVERHANG_WIDTH = 1
 
 
 for name, sym, (far, overhang, overpass, near), extended in [
-    ("overpass", BuildingSpriteSheetSymmetricalX, (True, True, True, False), False),
-    ("west_stair", BuildingSpriteSheetFull, (True, False, True, True), True),
-    ("west_stair_extender", BuildingSpriteSheetSymmetricalX, (True, True, True, True), False),
+    ("overpass", BuildingSymmetricalX, (True, True, True, False), False),
+    ("west_stair", BuildingFull, (True, False, True, True), True),
+    ("west_stair_extender", BuildingSymmetricalX, (True, True, True, True), False),
 ]:
     v = LazyVoxel(
         name,
@@ -75,7 +75,7 @@ for name, sym, (far, overhang, overpass, near), extended in [
         category=b"\xe8\x8a\x9cR",
     )
 
-    for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingSpriteSheetFull) else [layout, layout.T]:
+    for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingFull) else [layout, layout.T]:
         cur_roadstop = ARoadStop(
             id=0x8000 + cnt,
             translation_name="WEST_PLAZA_BUS",
