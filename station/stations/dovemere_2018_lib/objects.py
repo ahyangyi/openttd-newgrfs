@@ -7,10 +7,12 @@ from station.lib import (
     AParentSprite,
     AChildSprite,
     ALayout,
+    AttrDict,
 )
 from agrf.graphics.voxel import LazyVoxel
 from grfobject.lib import AObject
 
+named_grounds = AttrDict(schema=("name"))
 objects = []
 
 for name, sym in [("west_plaza_center", BuildingSymmetrical)]:
@@ -19,14 +21,26 @@ for name, sym in [("west_plaza_center", BuildingSymmetrical)]:
         prefix=".cache/render/station/dovemere_2018/plaza",
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
-        # config={"z_scale": 1.01},
     )
     v.in_place_subset(sym.render_indices())
     sprite = sym.create_variants(v.spritesheet())
-    # ps = AParentSprite(sprite, (16, 16, 12), (0, 0, 0))
-    # layout = ALayout(solid_ground + cs, [ps], True, category=b"\xe8\x8a\x9cZ")
     gs = AGroundSprite(sprite)
-    layout = ALayout(gs, [], True, category=b"\xe8\x8a\x9cZ")
+    named_grounds[(name,)] = gs
+
+for name, sym in [("west_plaza_center", BuildingSymmetrical), ("west_plaza_center_flower", BuildingSymmetrical)]:
+    if name == "west_plaza_center":
+        ps = []
+    else:
+        v = LazyVoxel(
+            name,
+            prefix=".cache/render/station/dovemere_2018/plaza",
+            voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
+            load_from="station/files/cns-gorender.json",
+        )
+        v.in_place_subset(sym.render_indices())
+        sprite = sym.create_variants(v.spritesheet())
+        ps = [AParentSprite(sprite, (16, 16, 12), (0, 0, 0))]
+    layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 
     for cur in [layout, layout.R] if (sym is BuildingFull) else [layout]:
         if sym is BuildingSymmetrical:
