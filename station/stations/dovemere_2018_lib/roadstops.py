@@ -1,8 +1,6 @@
-import grf
 from station.lib import BuildingFull, BuildingSymmetricalX, AParentSprite, ALayout
 from station.lib.parameters import parameter_list
 from agrf.graphics.voxel import LazyVoxel
-from agrf.graphics import SCALE_TO_ZOOM
 from agrf.magic import Switch
 from roadstop.lib import ARoadStop
 from ..misc import road_ground
