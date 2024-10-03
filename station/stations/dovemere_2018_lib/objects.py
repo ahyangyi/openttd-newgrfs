@@ -27,7 +27,13 @@ for name, sym in [("west_plaza_center", BuildingSymmetrical)]:
     gs = AGroundSprite(sprite)
     named_grounds[(name,)] = gs
 
-for name, sym in [("west_plaza_center", BuildingSymmetrical), ("west_plaza_center_flower", BuildingSymmetrical)]:
+for name, sym in [
+    ("west_plaza_center", BuildingSymmetrical),
+    ("west_plaza_center_flower_2021", BuildingSymmetrical),
+    ("west_plaza_center_flower_2022", BuildingSymmetrical),
+    ("west_plaza_center_flower_2023", BuildingSymmetrical),
+    ("west_plaza_center_flower_2024", BuildingSymmetrical),
+]:
     if name == "west_plaza_center":
         ps = []
     else:
