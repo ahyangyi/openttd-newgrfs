@@ -17,7 +17,7 @@ OVERHANG_WIDTH = 1
 for name, sym, (far, overhang, overpass, near), extended in [
     ("overpass", BuildingSymmetricalX, (True, True, True, False), False),
     ("west_stair", BuildingFull, (True, False, True, True), True),
-    ("west_stair_extender", BuildingSymmetricalX, (True, True, True, True), False),
+    ("west_stair_extender", BuildingSymmetricalX, (True, True, True, True), True),
 ]:
     v = LazyVoxel(
         name,
