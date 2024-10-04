@@ -47,7 +47,7 @@ for name, sym in [
         v.in_place_subset(sym.render_indices())
         sprite = sym.create_variants(v.spritesheet())
         ps = [AParentSprite(sprite, (16, 16, 12), (0, 0, 0))]
-    gs = named_gronds["west_plaza_center"]
+    gs = named_grounds[("west_plaza_center",)]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 
     for cur in [layout, layout.R] if (sym is BuildingFull) else [layout]:
