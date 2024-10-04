@@ -613,3 +613,4 @@ def globalize_all(platform_class=None, shelter_class=None):
     )
     concourse_tiles.globalize(caller_globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)
     named_tiles.globalize(caller_globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)
+    caller_globals["concourse_none"] = concourse_tiles.none

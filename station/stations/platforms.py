@@ -7,6 +7,7 @@ from station.lib import (
     Demo,
     AParentSprite,
 )
+from station.lib.parameters import parameter_list
 from agrf.graphics.voxel import LazyVoxel
 from .ground import named_ps as ground_ps
 from .misc import track_ground
@@ -151,6 +152,13 @@ concourse_tiles.globalize()
 
 station_tiles = []
 for i, entry in enumerate(entries):
+    enable_if = []
+    for platform_class in ["concrete", "brick"]:
+        if platform_class in entry.notes:
+            enable_if.append(parameter_list.index(f"PLATFORM_{platform_class.upper()}"))
+    for shelter_class in ["shelter_1", "shelter_2"]:
+        if shelter_class in entry.notes:
+            enable_if.append(parameter_list.index(f"SHELTER_{shelter_class.upper()}"))
     station_tiles.append(
         AStation(
             id=entry.id,
@@ -164,6 +172,7 @@ for i, entry in enumerate(entries):
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,
             callbacks={"select_tile_layout": 0},
+            enable_if=enable_if,
             doc_layout=entry,
         )
     )
