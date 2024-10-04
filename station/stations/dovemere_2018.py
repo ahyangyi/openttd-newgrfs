@@ -14,10 +14,10 @@ from .dovemere_2018_lib.flexible_stations.side_third import side_third_stations
 station_objects = []
 modular_stations = []
 for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
-    if entry.category[-1] in {ord(x) for x in [b"\xB0"]}:
+    if entry.category[-1] in {ord(x) for x in [b"\xB0"]} and entry.id == 0xFB62:
         station_objects.append(
             AObject(
-                id=len(objects),
+                id=entry.id,
                 translation_name="STATION",
                 layouts=[entry, entry.M],
                 class_label=entry.category,
