@@ -1,3 +1,4 @@
+from dataclasses import dataclass, replace
 import grf
 from PIL import Image
 import functools
@@ -11,6 +12,7 @@ class ChildSpriteContainerMixin:
     def __init__(self, *args, child_sprites=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.child_sprites = child_sprites or []
+        assert all(isinstance(c, AChildSprite) for c in self.child_sprites)
 
     def to_grf(self, sprite_list):
         return [self.parent_to_grf(sprite_list)] + [cs.to_grf(sprite_list) for cs in self.child_sprites]
@@ -97,7 +99,9 @@ class ADefaultGroundSprite(DefaultSpriteMixin, ChildSpriteContainerMixin, Regist
             **self.registers_to_grf_dict(),
         )
 
-    def to_parentsprite(self):
+    def to_parentsprite(self, low=False):
+        if low:
+            return ADefaultParentSprite(self.sprite, (16, 16, 0), (0, 0, 0))
         return ADefaultParentSprite(self.sprite, (16, 16, 1), (0, 0, 0))
 
     def to_action2(self, sprite_list):
@@ -156,7 +160,9 @@ class AGroundSprite(ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixi
             **self.registers_to_grf_dict(),
         )
 
-    def to_parentsprite(self):
+    def to_parentsprite(self, low=False):
+        if low:
+            return AParentSprite(self.sprite, (16, 16, 0), (0, 0, 0))
         return AParentSprite(self.sprite, (16, 16, 1), (0, 0, 0), flags=self.flags)
 
     def to_action2(self, sprite_list):
@@ -230,6 +236,15 @@ class ADefaultParentSprite(DefaultSpriteMixin, BoundingBoxMixin, ChildSpriteCont
                 x += 1
                 y += 1
         return ADefaultParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
+
+    def demo_translate(self, xofs, yofs, zofs):
+        return ADefaultParentSprite(
+            self.sprite,
+            self.extent,
+            (self.offset[0] + xofs * 16, self.offset[1] + yofs * 16, self.offset[2] + zofs * 8),
+            self.child_sprites,
+            self.flags,
+        )
 
     @property
     def L(self):
@@ -325,6 +340,15 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
                 x += 1
                 y += 1
         return AParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
+
+    def demo_translate(self, xofs, yofs, zofs):
+        return AParentSprite(
+            self.sprite,
+            self.extent,
+            (self.offset[0] + xofs * 16, self.offset[1] + yofs * 16, self.offset[2] + zofs * 8),
+            self.child_sprites,
+            self.flags,
+        )
 
     @functools.cache
     def squash(self, ratio):
@@ -463,25 +487,26 @@ def is_in_front(a, b):
     return False
 
 
+@dataclass(eq=False)
 class ALayout:
-    def __init__(
-        self, ground_sprite, parent_sprites, traversable, category=None, notes=None, flattened=False, altitude=0
-    ):
-        if ground_sprite is None:
+    ground_sprite: object
+    parent_sprites: list
+    traversable: bool
+    category: str = None
+    notes: list = None
+    flattened: bool = False
+    altitude: int = 0
+
+    def __post_init__(self):
+        if self.ground_sprite is None:
             from station.stations.misc import empty_ground
 
-            ground_sprite = empty_ground
-        assert isinstance(ground_sprite, (ADefaultGroundSprite, AGroundSprite))
-        self.ground_sprite = ground_sprite
-        assert all(isinstance(s, (ADefaultParentSprite, AParentSprite)) for s in parent_sprites), [
-            type(s) for s in parent_sprites
+            self.ground_sprite = empty_ground
+        assert isinstance(self.ground_sprite, (ADefaultGroundSprite, AGroundSprite))
+        assert all(isinstance(s, (ADefaultParentSprite, AParentSprite)) for s in self.parent_sprites), [
+            type(s) for s in self.parent_sprites
         ]
-        self.parent_sprites = parent_sprites
-        self.traversable = traversable
-        self.category = category
-        self.notes = notes or []
-        self.flattened = flattened
-        self.altitude = altitude
+        self.notes = self.notes or []
 
     @property
     def sorted_parent_sprites(self):
@@ -526,29 +551,29 @@ class ALayout:
 
     @functools.cache
     def squash(self, ratio):
-        return ALayout(
-            self.ground_sprite,
-            [s.squash(ratio) for s in self.sorted_parent_sprites],
-            self.traversable,
-            category=self.category,
-            notes=self.notes,
-            flattened=True,
-            altitude=self.altitude,
-        )
+        return replace(self, parent_sprites=[s.squash(ratio) for s in self.sorted_parent_sprites])
 
+    @functools.cache
     def raise_tile(self, delta=1):
-        return ALayout(
-            self.ground_sprite,
-            self.parent_sprites,
-            self.traversable,
-            category=self.category,
-            notes=self.notes,
-            flattened=True,
-            altitude=self.altitude + delta,
-        )
+        return replace(self, altitude=self.altitude + delta)
 
+    @functools.cache
     def lower_tile(self, delta=1):
         return self.raise_tile(-delta)
+
+    @functools.cache
+    def demo_translate(self, xofs, yofs):
+        from station.stations.misc import empty_ground
+
+        return replace(
+            self,
+            ground_sprite=empty_ground,
+            parent_sprites=[
+                s.demo_translate(xofs, yofs, self.altitude)
+                for s in [self.ground_sprite.to_parentsprite(low=True)] + self.sorted_parent_sprites
+            ],
+            altitude=0,
+        )
 
     def to_grf(self, sprite_list):
         if self.flattened:
@@ -585,7 +610,7 @@ class ALayout:
                 )
             )
 
-        return img.move(0, -self.altitude * 32)
+        return img.move(0, -self.altitude * 8 * scale)
 
     def to_index(self, layout_pool):
         return layout_pool.index(self)

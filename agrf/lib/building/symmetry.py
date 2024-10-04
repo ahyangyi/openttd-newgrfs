@@ -3,7 +3,7 @@ class BuildingSymmetryMixin:
     def create_variants(classobj, variants):
         for i, v in enumerate(variants):
             cls = v.__class__
-            v.__class__ = type(cls.__name__, (classobj, cls), {})
+            v.__class__ = type(cls.__name__, (cls, classobj), {})
             if classobj._m_offset == 0:
                 v.M = variants[i ^ 3 if i in [1, 2] else i]
             else:
