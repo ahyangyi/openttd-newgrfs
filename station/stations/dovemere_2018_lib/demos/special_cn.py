@@ -15,8 +15,8 @@ top_half = [
         h_normal_corridor,
         h_end_corridor.R,
     ],
-    [side_a2_d, central_windowed_d, central_windowed_d.R, side_a3_d.T.R, cns, cns, cns],
-    [corner, inner_corner, central_f, side_a3_f.R, cns.T, cns.T, cns.T],
+    [side_a2_n, central_windowed_n, central_windowed_n.R, side_a3_f.T.R, cns, cns, cns],
+    [corner_third_f, inner_corner, central_f, side_a3_f.R, cns.T, cns.T, cns.T],
     [concourse_none, corner, front_normal, double_corner.R, front_normal.T, corner.T.R, concourse],
 ]
 
