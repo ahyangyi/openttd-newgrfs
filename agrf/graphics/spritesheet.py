@@ -1,6 +1,8 @@
+import os
 import numpy as np
 import grf
 import math
+import functools
 from .misc import SCALE_TO_ZOOM, ZOOM_TO_SCALE
 
 THIS_FILE = grf.PythonFile(__file__)
@@ -42,10 +44,11 @@ def guess_dimens(width, height, angle, bbox, z_scale):
 
 
 class LazyAlternativeSprites(grf.AlternativeSprites):
-    def __init__(self, voxel, part, *sprites):
+    def __init__(self, voxel, part, kwargs=None, *sprites):
         super().__init__(*sprites)
         self.voxel = voxel
         self.part = part
+        self.kwargs = kwargs or {}
 
     def get_sprite(self, *, zoom=None, bpp=None):
         self.voxel.render()
@@ -64,6 +67,11 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
 
     def __repr__(self):
         return f"LazyAlternativeSprites<{self.voxel.name}:{self.part}>"
+
+    @functools.cache
+    def squash(self, ratio):
+        squashed_voxel = self.voxel.squash(ratio, "squashed")
+        return squashed_voxel.spritesheet(**self.kwargs)[self.part]
 
 
 class CustomCropMixin:
@@ -141,12 +149,15 @@ def spritesheet_template(
     road_mode=False,
     manual_crop=None,
     childsprite=False,
+    kwargs=None,
 ):
     guessed_dimens = []
     for i in range(len(dimens)):
         x, y = dimens[i]
         y, z_ydiff, z_height = guess_dimens(x, y, angles[i], bbox, z_scale)
         guessed_dimens.append((x, y, z_ydiff, z_height))
+
+    kwargs = kwargs or {}
 
     def get_rels(direction, diff, scale):
         w, h, z_ydiff, z_height = map(lambda a: a * scale, guessed_dimens[direction])
@@ -190,6 +201,7 @@ def spritesheet_template(
         LazyAlternativeSprites(
             voxel,
             idx,
+            kwargs,
             *(
                 with_optional_mask(
                     CustomCropFileSprite(
