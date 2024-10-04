@@ -26,11 +26,11 @@ for name, sym, (far, overhang, overpass, near), extended in [
         # config={"z_scale": 1.01},
     )
     if extended:
-        v.config["size"]["x"] = 384
-        v.config["size"]["y"] = 384
+        v.config["size"]["x"] = 448
+        v.config["size"]["y"] = 448
         for sprite in v.config["sprites"]:
-            sprite["width"] = 96
-        v.config["agrf_zdiff"] = -8
+            sprite["width"] = 112
+        v.config["agrf_zdiff"] = -12
     if extended:
         farv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_back_mask_extended.vox", "back")
     else:
