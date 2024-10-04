@@ -28,6 +28,7 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
                 end_of_life_date=0,
                 height=1,
                 flags=grf.Object.Flags.ONLY_IN_GAME,
+                doc_layout=entry,
             )
         )
     enable_if = [parameter_list.index("E88A9CA_ENABLE_MODULAR")]
