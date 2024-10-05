@@ -17,7 +17,7 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
     if entry.category[-1] in {ord(x) for x in [b"\xB0"]} and entry.id == 0xFB62:
         station_objects.append(
             AObject(
-                id=entry.id,
+                id=len(objects) + len(station_objects),
                 translation_name="STATION",
                 layouts=[entry, entry.M],
                 class_label=entry.category,
