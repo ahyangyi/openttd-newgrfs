@@ -246,6 +246,16 @@ class ADefaultParentSprite(DefaultSpriteMixin, BoundingBoxMixin, ChildSpriteCont
             self.flags,
         )
 
+    @functools.cache
+    def filter_register(self, reg):
+        return ADefaultParentSprite(
+            self.sprite,
+            self.extent,
+            self.offset,
+            [x for x in self.child_sprites if x.flags.get("dodraw") != reg],
+            self.flags,
+        )
+
     @property
     def L(self):
         return self
@@ -357,6 +367,16 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
             self.extent,
             self.offset,
             [x.squash(ratio) for x in self.child_sprites],
+            self.flags,
+        )
+
+    @functools.cache
+    def filter_register(self, reg):
+        return AParentSprite(
+            self.sprite,
+            self.extent,
+            self.offset,
+            [x for x in self.child_sprites if x.flags.get("dodraw") != reg],
             self.flags,
         )
 
@@ -560,6 +580,12 @@ class ALayout:
     @functools.cache
     def lower_tile(self, delta=1):
         return self.raise_tile(-delta)
+
+    @functools.cache
+    def filter_register(self, reg):
+        return replace(
+            self, parent_sprites=[s.filter_register(reg) for s in self.parent_sprites if s.flags.get("dodraw") != reg]
+        )
 
     @functools.cache
     def demo_translate(self, xofs, yofs):
