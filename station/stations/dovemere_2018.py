@@ -82,9 +82,9 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
             translation_name=translation_name,
             layouts=[
                 entry,
-                entry.M,
+                entry.R.M,
                 entry.squash(0.6).pushdown(3).filter_register(Registers.SNOW),
-                entry.M.squash(0.6).pushdown(3).filter_register(Registers.SNOW),
+                entry.R.M.squash(0.6).pushdown(3).filter_register(Registers.SNOW),
             ],
             class_label=entry.category,
             cargo_threshold=40,
