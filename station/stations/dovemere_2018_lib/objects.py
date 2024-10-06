@@ -44,6 +44,7 @@ for name, sym in [
             voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
             load_from="station/files/cns-gorender.json",
         )
+        v = v.discard_layers(("snow",), "nosnow")
         v.in_place_subset(sym.render_indices())
         sprite = sym.create_variants(v.spritesheet())
         ps = [AParentSprite(sprite, (16, 16, 12), (0, 0, 0))]
