@@ -62,6 +62,7 @@ for name, sym, xspan, yspan, height, osym in [
         sprite = osym.create_variants(v.spritesheet(xdiff=xofs, xspan=xspan, ydiff=yofs, yspan=yspan))
         ps = [AParentSprite(sprite, (yspan, xspan, height), (yofs, xofs, 0))]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+    named_layouts[(name,)] = layout
 
     for cur in [layout, layout.R] if (sym is BuildingFull) else [layout]:
         if sym is BuildingSymmetrical:
