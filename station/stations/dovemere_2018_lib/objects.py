@@ -3,6 +3,7 @@ from station.lib import (
     BuildingFull,
     BuildingSymmetricalX,
     BuildingSymmetrical,
+    BuildingCylindrical,
     AGroundSprite,
     AParentSprite,
     AChildSprite,
@@ -29,12 +30,12 @@ for name, sym in [("west_plaza_center", BuildingSymmetrical)]:
     named_grounds[(name,)] = gs
 
 
-for name, sym, xspan, yspan, height in [
-    ("west_plaza_center", BuildingSymmetrical, 0, 0, 0),
-    ("west_plaza_center_flower_2021", BuildingSymmetrical, 4, 8, 6),
-    ("west_plaza_center_flower_2022", BuildingSymmetrical, 4, 8, 6),
-    ("west_plaza_center_flower_2023", BuildingSymmetrical, 2, 10, 6),
-    ("west_plaza_center_flower_2024", BuildingSymmetrical, 2, 2, 6),
+for name, sym, xspan, yspan, height, osym in [
+    ("west_plaza_center", BuildingSymmetrical, 0, 0, 0, BuildingSymmetrical),
+    ("west_plaza_center_flower_2021", BuildingSymmetrical, 4, 8, 6, BuildingSymmetrical),
+    ("west_plaza_center_flower_2022", BuildingSymmetrical, 4, 8, 6, BuildingSymmetrical),
+    ("west_plaza_center_flower_2023", BuildingSymmetrical, 2, 10, 6, BuildingSymmetrical),
+    ("west_plaza_center_flower_2024", BuildingSymmetrical, 2, 2, 6, BuildingCylindrical),
 ]:
     gs = named_grounds[("west_plaza_center",)]
     if name == "west_plaza_center":
@@ -57,8 +58,8 @@ for name, sym, xspan, yspan, height in [
         yofs = (16 - yspan) // 2
 
         v = v.mask_clip_away("station/voxels/dovemere_2018/masks/object_mask.vox", "object")
-        v.in_place_subset(sym.render_indices())
-        sprite = sym.create_variants(v.spritesheet(xdiff=xofs, xspan=xspan, ydiff=yofs, yspan=yspan))
+        v.in_place_subset(osym.render_indices())
+        sprite = osym.create_variants(v.spritesheet(xdiff=xofs, xspan=xspan, ydiff=yofs, yspan=yspan))
         ps = [AParentSprite(sprite, (yspan, xspan, height), (yofs, xofs, 0))]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 

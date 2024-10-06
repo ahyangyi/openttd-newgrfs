@@ -188,3 +188,28 @@ class BuildingDiagonal(BuildingSymmetryMixin):
     def add_y_symmetry(classobj):
         # FIXME more symmetrical than this?
         return BuildingSymmetrical
+
+
+class BuildingCylindrical(BuildingSymmetryMixin):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    @staticmethod
+    def render_indices():
+        return [0]
+
+    _m_offset = 0
+    _r_offset = 0
+    _t_offset = 0
+
+    @classmethod
+    def break_x_symmetry(classobj):
+        raise NotImplemented()
+
+    @classmethod
+    def break_y_symmetry(classobj):
+        raise NotImplemented()
+
+    @classmethod
+    def add_y_symmetry(classobj):
+        raise NotImplemented()
