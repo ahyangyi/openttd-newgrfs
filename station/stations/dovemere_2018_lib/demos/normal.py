@@ -10,10 +10,7 @@ from .utils import h_merge
 globalize_all(platform_class="concrete", shelter_class="shelter_2")
 object_layouts.globalize()
 
-station = h_merge(
-    [[[]] * 7, semitraversable.demo_1(5, 7), [[]] * 7],
-    [[concourse], [cns.T], [cns], [cns_d], [cns.T], [cns], [concourse.T]],
-)
+station = h_merge([[[]] * 2, semitraversable.demo_1(5, 7)[5:], [[]] * 2], [[cns], [concourse.T]])
 
 # Road Stops
 stop1 = roadstops[0].doc_layout.lower_tile()
@@ -26,8 +23,8 @@ center_ground = west_plaza_center.lower_tile()
 offcenter_ground = west_plaza_offcenter.lower_tile()
 flower = west_plaza_center_flower_2024.lower_tile()
 west_square = [
-    [offcenter_ground] * 3 + [center_ground] + [offcenter_ground.M] * 3,
-    [offcenter_ground] * 3 + [flower] + [offcenter_ground.M] * 3,
+    [center_ground, center_ground, offcenter_ground, center_ground, offcenter_ground.R, center_ground, center_ground],
+    [center_ground, center_ground, offcenter_ground, flower, offcenter_ground.R, center_ground, center_ground],
 ]
 
 
