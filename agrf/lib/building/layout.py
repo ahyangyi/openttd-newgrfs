@@ -32,11 +32,12 @@ class RegistersMixin:
         super().__init__(*args, **kwargs)
         self.flags = flags or {}
 
+    @property
+    def flags_translated(self):
+        return {k: (v if k == "add" else v.get_index()) for k, v in self.flags.items() if v is not None}
+
     def registers_to_grf_dict(self):
-        return {
-            "flags": sum(grf.SPRITE_FLAGS[k][1] for k in self.flags.keys()),
-            "registers": {k: (v if k == "add" else v.get_index()) for k, v in self.flags.items() if v is not None},
-        }
+        return {"flags": sum(grf.SPRITE_FLAGS[k][1] for k in self.flags.keys()), "registers": self.flags_translated}
 
 
 class GroundSpriteMixin:
@@ -333,6 +334,7 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
                 "sprite": grf.SpriteRef(sprite_list.index(self.sprite), is_global=False),
                 "offset": self.offset,
                 "extent": self.extent,
+                **self.flags_translated,
             }
         ] + [s for x in self.child_sprites for s in x.to_action2(sprite_list)]
 
@@ -452,7 +454,13 @@ class AChildSprite(RegistersMixin, CachedFunctorMixin):
         )
 
     def to_action2(self, sprite_list):
-        return [{"sprite": grf.SpriteRef(sprite_list.index(self.sprite), is_global=False), "pixel_offset": self.offset}]
+        return [
+            {
+                "sprite": grf.SpriteRef(sprite_list.index(self.sprite), is_global=False),
+                "pixel_offset": self.offset,
+                **self.flags_translated,
+            }
+        ]
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
