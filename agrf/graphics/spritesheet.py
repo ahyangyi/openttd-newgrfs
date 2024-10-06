@@ -79,8 +79,6 @@ class CustomCropMixin:
         super().__init__(*args, **kw)
         self.fixed_crop = fixed_crop
         self.crop_amount = crop_amount
-        if crop_amount == (0, 11):
-            print("HERE!")
 
     def _do_crop(self, context, w, h, rgb, alpha, mask):
         crop_x = crop_y = 0
