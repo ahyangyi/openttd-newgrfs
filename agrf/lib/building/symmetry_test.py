@@ -53,3 +53,23 @@ def test_break_y_symmetry():
     assert BuildingRotational.break_y_symmetry() is BuildingFull
     assert BuildingDiagonal.break_y_symmetry() is BuildingFull
     assert BuildingCylindrical.break_y_symmetry() is BuildingSymmetricalX
+
+
+def test_add_x_symmetry():
+    assert BuildingFull.add_x_symmetry() is BuildingSymmetricalX
+    assert BuildingSymmetrical.add_x_symmetry() is BuildingSymmetrical
+    assert BuildingSymmetricalX.add_x_symmetry() is BuildingSymmetricalX
+    assert BuildingSymmetricalY.add_x_symmetry() is BuildingSymmetrical
+    assert BuildingRotational.add_x_symmetry() is BuildingSymmetrical
+    assert BuildingDiagonal.add_x_symmetry() is BuildingCylindrical
+    assert BuildingCylindrical.add_x_symmetry() is BuildingCylindrical
+
+
+def test_add_y_symmetry():
+    assert BuildingFull.add_y_symmetry() is BuildingSymmetricalY
+    assert BuildingSymmetrical.add_y_symmetry() is BuildingSymmetrical
+    assert BuildingSymmetricalX.add_y_symmetry() is BuildingSymmetrical
+    assert BuildingSymmetricalY.add_y_symmetry() is BuildingSymmetricalY
+    assert BuildingRotational.add_y_symmetry() is BuildingSymmetrical
+    assert BuildingDiagonal.add_y_symmetry() is BuildingCylindrical
+    assert BuildingCylindrical.add_y_symmetry() is BuildingCylindrical
