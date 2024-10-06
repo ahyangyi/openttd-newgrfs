@@ -18,6 +18,9 @@
 // xs_end
 
 int size = int(m_size);
+int xsize = m_grid_intensity == 0? size : m_grid == 1? max(size, m_grid_size * 2) : max(size, m_grid_size);
+int ysize = m_grid_intensity == 0? size : m_grid == 2? max(size, m_grid_size * 2) : max(size, m_grid_size);
+int zsize = m_grid_intensity == 0? size : max(size, m_grid_size);
 
 float hash(vec2 p, float seed) {
 	p += seed;
@@ -35,7 +38,7 @@ float get_colour(int x, int y, int z) {
     else if (m_symmetry == 1)
     // Symmetry mode 1: general tiling
     {
-        if (x < m_size || y < m_size || 255 - x < m_size || 255 - y < m_size)
+        if (x < xsize || y < ysize || 255 - x < xsize || 255 - y < ysize)
         {
             if (x >= 128)
             {
@@ -62,7 +65,7 @@ float get_colour(int x, int y, int z) {
     else
     // Symmetry mode 2: fixed-direction tiling
     {
-        if (x < m_size || y < m_size || 255 - x < m_size || 255 - y < m_size)
+        if (x < xsize || y < ysize || 255 - x < xsize || 255 - y < ysize)
         {
             float j = hash(vec2(x, y), m_seed);
             float k = hash(vec2(j, z), int(m_seed) ^ 0x1357);
@@ -92,17 +95,9 @@ float map(vec3 v) {
     float ss = pow(size, 2);
     int grid_parts = int(256 / m_grid_size);
 
-    int loopsize;
-    if (m_grid_intensity == 0)
-        loopsize = size;
-    else if (m_grid == 0)
-        loopsize = (size > m_grid_size? size : m_grid_size);
-    else
-        loopsize = (size > m_grid_size * 2? size : m_grid_size * 2);
-
-    for (int dx = -loopsize; dx <= loopsize; ++dx)
-        for (int dy = -loopsize; dy <= loopsize; ++dy)
-            for (int dz = -loopsize; dz <= loopsize; ++dz) {
+    for (int dx = -xsize; dx <= xsize; ++dx)
+        for (int dy = -ysize; dy <= ysize; ++dy)
+            for (int dz = -zsize; dz <= zsize; ++dz) {
                 float dd = dx * dx + dy * dy + dz * dz;
                 int new_x = (x + dx + 256) % 256;
                 int new_y = (y + dy + 256) % 256;

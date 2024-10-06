@@ -17,7 +17,7 @@ named_grounds = AttrDict(schema=("name"))
 named_layouts = AttrDict(schema=("name"))
 objects = []
 
-for name, sym in [("west_plaza_center", BuildingSymmetrical)]:
+for name, sym in [("west_plaza_center", BuildingSymmetrical), ("west_plaza_offcenter", BuildingFull)]:
     v = LazyVoxel(
         name,
         prefix=".cache/render/station/dovemere_2018/plaza",
