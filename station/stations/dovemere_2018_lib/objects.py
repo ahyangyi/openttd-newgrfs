@@ -39,7 +39,7 @@ def register(layout, sym):
             layouts = [cur, cur.R.M]
             num_views = 2
         else:
-            layouts = [cur, cur.T.R, cur.R.M, cur.T.M]
+            layouts = [cur, cur.R.M, cur.T.M, cur.T.R]
             num_views = 4
         cur_object = AObject(
             id=len(objects),
@@ -114,8 +114,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     groundsprite = sym.create_variants(ground.spritesheet())
 
     gscs = AChildSprite(groundsprite, (0, 0))
-    # ground_snowcs = AChildSprite(ground_snowsprite, (0, 0), flags={"dodraw": Registers.SNOW})
-    ground_snowcs = AChildSprite(ground_snowsprite, (0, 0))
+    ground_snowcs = AChildSprite(ground_snowsprite, (0, 0), flags={"dodraw": Registers.SNOW})
     gs2 = gs + gscs + ground_snowcs
 
     xofs = (16 - xspan) // 2
@@ -127,16 +126,24 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     v.config["agrf_manual_crop"] = (0, 11)
     v.in_place_subset(osym.render_indices())
     sprite = osym.create_variants(v.spritesheet(xdiff=xofs, xspan=xspan, ydiff=yofs, yspan=yspan))
-    snowcs = AChildSprite(snowsprite, (0, 0))
+    snowcs = AChildSprite(snowsprite, (0, 0), flags={"dodraw": Registers.SNOW})
 
-    ps = [AParentSprite(sprite, (yspan, xspan, height), (yofs, xofs, 0)) + snowcs]
-    layout = ALayout(gs2, ps, True, category=b"\xe8\x8a\x9cZ")
-    named_layouts[(name, "")] = layout
-    register(layout, sym)
+    # ps = [AParentSprite(sprite, (yspan, xspan, height), (yofs, xofs, 0)) + snowcs]
+    # layout = ALayout(gs2, ps, True, category=b"\xe8\x8a\x9cZ")
+    # named_layouts[(name, "grounded")] = layout
+    # register(layout, sym)
 
     groundsprite2 = sym.create_variants(ground.spritesheet(xdiff=Xofs, xspan=Xspan, ydiff=Yofs, yspan=Yspan))
     ps = [
-        AParentSprite(groundsprite2, (Yspan, Xspan, 0), (Yofs, Xofs - 8, 0)),
+        AParentSprite(groundsprite2, (Yspan, Xspan, 0), (Yofs, Xofs, 0)) + ground_snowcs,
+        AParentSprite(sprite, (yspan, xspan, height), (yofs, xofs, 0)) + snowcs,
+    ]
+    layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+    named_layouts[(name, "")] = layout
+    register(layout, sym)
+
+    ps = [
+        AParentSprite(groundsprite2, (Yspan, Xspan, 0), (Yofs, Xofs - 8, 0)) + ground_snowcs,
         AParentSprite(sprite, (yspan, xspan, height), (yofs, xofs - 8, 0)) + snowcs,
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
@@ -144,7 +151,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     register(layout, sym.break_y_symmetry())
 
     ps = [
-        AParentSprite(groundsprite2, (Yspan, Xspan, 0), (Yofs - 8, Xofs, 0)),
+        AParentSprite(groundsprite2, (Yspan, Xspan, 0), (Yofs - 8, Xofs, 0)) + ground_snowcs,
         AParentSprite(sprite, (yspan, xspan, height), (yofs - 8, xofs, 0)) + snowcs,
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
@@ -152,11 +159,11 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     register(layout, sym.break_x_symmetry())
 
     ps = [
-        AParentSprite(groundsprite2, (Yspan, Xspan, 0), (Yofs - 8, Xofs - 8, 0)),
+        AParentSprite(groundsprite2, (Yspan, Xspan, 0), (Yofs - 8, Xofs - 8, 0)) + ground_snowcs,
         AParentSprite(sprite, (yspan, xspan, height), (yofs - 8, xofs - 8, 0)) + snowcs,
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
-    named_layouts[(name, "horizontal")] = layout
+    named_layouts[(name, "corner")] = layout
     register(layout, sym.break_x_symmetry().break_y_symmetry())
 
 
