@@ -14,14 +14,17 @@ station = h_merge(
     [[[]] * 7, semitraversable.demo_1(5, 7), [[]] * 7],
     [[concourse], [cns.T], [cns], [cns_d], [cns.T], [cns], [concourse.T]],
 )
+
+# Road Stops
 stop1 = roadstops[0].doc_layout.lower_tile()
 stop2 = roadstops[4].doc_layout.lower_tile()
 stop3 = roadstops[12].doc_layout.lower_tile()
 roadstops = [[stop1, stop1, stop2, stop3, stop2.R, stop1, stop1]]
-west_square = [
-    [west_plaza_center] * 7,
-    [west_plaza_center] * 3 + [west_plaza_center_flower_2024] + [west_plaza_center] * 3,
-]
+
+# Objects
+square_ground = west_plaza_center.lower_tile()
+flower = west_plaza_center_flower_2024.lower_tile()
+west_square = [[square_ground] * 7, [square_ground] * 3 + [flower] + [square_ground] * 3]
 
 
 normal_demo = Demo(
