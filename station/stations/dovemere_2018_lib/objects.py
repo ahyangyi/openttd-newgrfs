@@ -28,13 +28,15 @@ for name, sym in [("west_plaza_center", BuildingSymmetrical)]:
     gs = AGroundSprite(sprite)
     named_grounds[(name,)] = gs
 
-for name, sym in [
-    ("west_plaza_center", BuildingSymmetrical),
-    ("west_plaza_center_flower_2021", BuildingSymmetrical),
-    ("west_plaza_center_flower_2022", BuildingSymmetrical),
-    ("west_plaza_center_flower_2023", BuildingSymmetrical),
-    ("west_plaza_center_flower_2024", BuildingSymmetrical),
+
+for name, sym, xspan, yspan in [
+    ("west_plaza_center", BuildingSymmetrical, 0, 0),
+    ("west_plaza_center_flower_2021", BuildingSymmetrical, 10, 6),
+    ("west_plaza_center_flower_2022", BuildingSymmetrical, 8, 6),
+    ("west_plaza_center_flower_2023", BuildingSymmetrical, 10, 4),
+    ("west_plaza_center_flower_2024", BuildingSymmetrical, 4, 4),
 ]:
+    gs = named_grounds[("west_plaza_center",)]
     if name == "west_plaza_center":
         ps = []
     else:
@@ -45,10 +47,19 @@ for name, sym in [
             load_from="station/files/cns-gorender.json",
         )
         v = v.discard_layers(("snow",), "nosnow")
+        ground = v.mask_clip_away("station/voxels/dovemere_2018/masks/object_ground_mask.vox", "ground")
+        ground.in_place_subset(sym.render_indices())
+        groundsprite = sym.create_variants(ground.spritesheet())
+        gscs = AChildSprite(groundsprite, (0, 0))
+        gs = gs + gscs
+
+        xofs = (16 - xspan) // 2
+        yofs = (16 - yspan) // 2
+
+        v = v.mask_clip_away("station/voxels/dovemere_2018/masks/object_mask.vox", "object")
         v.in_place_subset(sym.render_indices())
-        sprite = sym.create_variants(v.spritesheet())
-        ps = [AParentSprite(sprite, (16, 16, 12), (0, 0, 0))]
-    gs = named_grounds[("west_plaza_center",)]
+        sprite = sym.create_variants(v.spritesheet(xdiff=xofs, xspan=xspan, ydiff=yofs, yspan=yspan))
+        ps = [AParentSprite(sprite, (yspan, xspan, 12), (yofs, xofs, 0))]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 
     for cur in [layout, layout.R] if (sym is BuildingFull) else [layout]:

@@ -131,8 +131,6 @@ class CustomCropWithMask(CustomCropMixin, grf.WithMask):
 
 def spritesheet_template(
     voxel,
-    diff,
-    xspan,
     path,
     dimens,
     angles,
@@ -158,8 +156,12 @@ def spritesheet_template(
         guessed_dimens.append((x, y, z_ydiff, z_height))
 
     kwargs = kwargs or {}
+    oxdiff = kwargs["xdiff"]
+    oxspan = kwargs["xspan"]
+    oydiff = kwargs["ydiff"]
+    oyspan = kwargs["yspan"]
 
-    def get_rels(direction, diff, scale):
+    def get_rels(direction, scale):
         w, h, z_ydiff, z_height = map(lambda a: a * scale, guessed_dimens[direction])
         if road_mode:
             xrel = -((w - 1) // (scale * 2) * scale + 1)
@@ -177,13 +179,22 @@ def spritesheet_template(
         yrel += ydiff * scale
         yrel -= z_ydiff
 
-        if diff != 0:
-            xrel += deltas[direction][0] * diff * scale
-            yrel += deltas[direction][1] * diff * scale
+        if oxdiff != 0:
+            xrel += deltas[direction][0] * oxdiff * scale
+            yrel += deltas[direction][1] * oxdiff * scale
 
-        if road_mode and xspan != 16:
-            offset = 16 - xspan
+        if road_mode and oxspan != 16:
+            offset = 16 - oxspan
             xrel += offsets[direction][0] * offset * scale
+            yrel += offsets[direction][1] * offset * scale
+
+        if oydiff != 0:
+            xrel -= deltas[direction][0] * oydiff * scale
+            yrel += deltas[direction][1] * oydiff * scale
+
+        if road_mode and oyspan != 16:
+            offset = 16 - oyspan
+            xrel -= offsets[direction][0] * offset * scale
             yrel += offsets[direction][1] * offset * scale
 
         if bbox_joggle is not None:
@@ -210,8 +221,8 @@ def spritesheet_template(
                         0,
                         guessed_dimens[i][0] * scale,
                         guessed_dimens[i][1] * scale,
-                        xofs=childsprite[0] * scale if childsprite else get_rels(i, diff, scale)[0],
-                        yofs=childsprite[1] * scale if childsprite else get_rels(i, diff, scale)[1],
+                        xofs=childsprite[0] * scale if childsprite else get_rels(i, scale)[0],
+                        yofs=childsprite[1] * scale if childsprite else get_rels(i, scale)[1],
                         bpp=bpp,
                         zoom=SCALE_TO_ZOOM[scale],
                         **(
