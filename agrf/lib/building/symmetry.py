@@ -37,6 +37,30 @@ class BuildingSymmetryMixin:
     def is_symmetrical_y(classobj):
         return classobj._t_offset == 0
 
+    @staticmethod
+    def __canonicalize_descriptor(descriptor):
+        ret = []
+        assignment = {}
+        for x in descriptor:
+            if x not in assignment:
+                assignment[x] = len(assignment)
+            ret.append(assignment[x])
+        return tuple(ret)
+
+    @classmethod
+    def break_x_symmetry(classobj):
+        new_descriptor = tuple(x + d for x, d in zip(classobj._symmetry_descriptor, (0, 0, 8, 8, 0, 0, 8, 8)))
+        new_descriptor = BuildingSymmetryMixin.__canonicalize_descriptor(new_descriptor)
+        return BuildingSymmetryMixin._type_pool[new_descriptor]
+
+    @classmethod
+    def break_y_symmetry(classobj):
+        new_descriptor = tuple(x + d for x, d in zip(classobj._symmetry_descriptor, (0, 0, 0, 0, 8, 8, 8, 8)))
+        new_descriptor = BuildingSymmetryMixin.__canonicalize_descriptor(new_descriptor)
+        return BuildingSymmetryMixin._type_pool[new_descriptor]
+
+    _type_pool = {}
+
 
 class BuildingFull(BuildingSymmetryMixin):
     def __init__(self, obj):
@@ -51,14 +75,6 @@ class BuildingFull(BuildingSymmetryMixin):
     _m_offset = 1
     _r_offset = 2
     _t_offset = 4
-
-    @classmethod
-    def break_x_symmetry(classobj):
-        return classobj
-
-    @classmethod
-    def break_y_symmetry(classobj):
-        return classobj
 
     @classmethod
     def add_y_symmetry(classobj):
@@ -225,3 +241,6 @@ class BuildingCylindrical(BuildingSymmetryMixin):
     @classmethod
     def add_y_symmetry(classobj):
         raise NotImplemented()
+
+
+BuildingSymmetryMixin._type_pool[(0, 1, 2, 3, 4, 5, 6, 7)] = BuildingFull
