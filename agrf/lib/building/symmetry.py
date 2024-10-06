@@ -49,7 +49,6 @@ class BuildingSymmetryMixin:
 
     @staticmethod
     def __merge_descriptor(descriptor, merge_operations):
-        print(merge_operations)
         assignment = {}
         for a, b in merge_operations:
             while a in assignment:
@@ -62,8 +61,6 @@ class BuildingSymmetryMixin:
                 assignment[b] = a
             else:
                 assignment[a] = b
-
-        print(assignment)
 
         ret = []
         for x in descriptor:
