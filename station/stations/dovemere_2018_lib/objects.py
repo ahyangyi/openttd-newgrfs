@@ -69,7 +69,6 @@ make_ground_layout("west_plaza_center", BuildingSymmetrical)
 make_ground_layout("west_plaza_offcenter", BuildingFull)
 
 all_layers = (
-    "",
     "edge marker",
     "flowers 1",
     "flowers 2",
@@ -81,6 +80,7 @@ all_layers = (
     "xiangqi pieces",
     "basket",
     "flowers in basket",
+    "bushes",
 )
 
 
