@@ -50,7 +50,7 @@ class BuildingSymmetryMixin:
     @classmethod
     def break_x_symmetry(classobj):
         new_descriptor = tuple(
-            (classobj._symmetry_descriptor[i], classobj._symmetry_descriptor[i ^ 2], i & 2) for i in range(8)
+            (classobj._symmetry_descriptor[i], classobj._symmetry_descriptor[i ^ 2], i & 2, i & 1) for i in range(8)
         )
         new_descriptor = BuildingSymmetryMixin.__canonicalize_descriptor(new_descriptor)
         return BuildingSymmetryMixin._type_pool[new_descriptor]
@@ -58,7 +58,7 @@ class BuildingSymmetryMixin:
     @classmethod
     def break_y_symmetry(classobj):
         new_descriptor = tuple(
-            (classobj._symmetry_descriptor[i], classobj._symmetry_descriptor[i ^ 4], i & 4) for i in range(8)
+            (classobj._symmetry_descriptor[i], classobj._symmetry_descriptor[i ^ 4], i & 4, i & 1) for i in range(8)
         )
         new_descriptor = BuildingSymmetryMixin.__canonicalize_descriptor(new_descriptor)
         return BuildingSymmetryMixin._type_pool[new_descriptor]
