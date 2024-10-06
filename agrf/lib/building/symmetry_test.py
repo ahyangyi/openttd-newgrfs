@@ -33,3 +33,13 @@ def test_is_symmetrical_y():
     assert not BuildingRotational.is_symmetrical_y()
     assert not BuildingDiagonal.is_symmetrical_y()
     assert BuildingCylindrical.is_symmetrical_y()
+
+
+def test_break_x_symmetry():
+    assert BuildingFull.break_x_symmetry() is BuildingFull
+    assert BuildingSymmetrical.break_x_symmetry() is BuildingSymmetricalY
+    assert BuildingSymmetricalX.break_x_symmetry() is BuildingFull
+    assert BuildingSymmetricalY.break_x_symmetry() is BuildingSymmetricalY
+    # assert BuildingRotational.break_x_symmetry() is ??
+    # assert BuildingDiagonal.break_x_symmetry() is ??
+    # assert BuildingCylindrical.break_x_symmetry() is ??

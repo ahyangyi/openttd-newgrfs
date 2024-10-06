@@ -42,6 +42,8 @@ class BuildingFull(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
+    _symmetry_descriptor = (0, 1, 2, 3, 4, 5, 6, 7)
+
     @staticmethod
     def render_indices():
         return list(range(8))
@@ -67,6 +69,8 @@ class BuildingSymmetricalX(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
+    _symmetry_descriptor = (0, 1, 0, 1, 2, 3, 2, 3)
+
     @staticmethod
     def render_indices():
         return [0, 1, 4, 5]
@@ -91,6 +95,8 @@ class BuildingSymmetricalX(BuildingSymmetryMixin):
 class BuildingSymmetricalY(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
+
+    _symmetry_descriptor = (0, 1, 2, 3, 0, 1, 2, 3)
 
     @staticmethod
     def render_indices():
@@ -142,6 +148,8 @@ class BuildingRotational(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
+    _symmetry_descriptor = (0, 1, 2, 3, 2, 3, 0, 1)
+
     @staticmethod
     def render_indices():
         return [0, 1, 2, 3]
@@ -168,6 +176,8 @@ class BuildingDiagonal(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
+    _symmetry_descriptor = (0, 0, 1, 2, 2, 1, 3, 3)
+
     @staticmethod
     def render_indices():
         return [0, 2, 4, 6]
@@ -193,6 +203,8 @@ class BuildingDiagonal(BuildingSymmetryMixin):
 class BuildingCylindrical(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
+
+    _symmetry_descriptor = (0, 0, 0, 0, 0, 0, 0, 0)
 
     @staticmethod
     def render_indices():
