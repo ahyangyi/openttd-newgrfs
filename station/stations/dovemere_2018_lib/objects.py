@@ -32,15 +32,17 @@ for name, sym in [("west_plaza_center", BuildingSymmetrical), ("west_plaza_offce
 
 for name, sym, xspan, yspan, height, osym in [
     ("west_plaza_center", BuildingSymmetrical, 0, 0, 0, BuildingSymmetrical),
+    ("west_plaza_offcenter", BuildingFull, 0, 0, 0, BuildingFull),
     ("west_plaza_center_flower_2021", BuildingSymmetrical, 4, 8, 6, BuildingSymmetrical),
     ("west_plaza_center_flower_2022", BuildingSymmetrical, 4, 8, 6, BuildingSymmetrical),
     ("west_plaza_center_flower_2023", BuildingSymmetrical, 2, 10, 6, BuildingSymmetrical),
     ("west_plaza_center_flower_2024", BuildingSymmetrical, 2, 2, 6, BuildingCylindrical),
 ]:
-    gs = named_grounds[("west_plaza_center",)]
-    if name == "west_plaza_center":
+    if "flower" not in name:
+        gs = named_grounds[(name,)]
         ps = []
     else:
+        gs = named_grounds[("west_plaza_center",)]
         v = LazyVoxel(
             name,
             prefix=".cache/render/station/dovemere_2018/plaza",
@@ -61,13 +63,17 @@ for name, sym, xspan, yspan, height, osym in [
         v.in_place_subset(osym.render_indices())
         sprite = osym.create_variants(v.spritesheet(xdiff=xofs, xspan=xspan, ydiff=yofs, yspan=yspan))
         ps = [AParentSprite(sprite, (yspan, xspan, height), (yofs, xofs, 0))]
+
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name,)] = layout
 
     for cur in [layout, layout.R] if (sym is BuildingFull) else [layout]:
         if sym is BuildingSymmetrical:
-            layouts = [cur, cur.M]
+            layouts = [cur, cur.R.M]
             num_views = 2
+        else:
+            layouts = [cur, cur.T.M, cur.R.M, cur.T.R]
+            num_views = 4
         cur_object = AObject(
             id=len(objects),
             translation_name="WEST_PLAZA",
