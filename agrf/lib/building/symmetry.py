@@ -153,14 +153,6 @@ class BuildingRotational(BuildingSymmetryMixin):
     _t_offset = 2
 
     @classmethod
-    def break_x_symmetry(classobj):
-        return BuildingFull
-
-    @classmethod
-    def break_y_symmetry(classobj):
-        return BuildingFull
-
-    @classmethod
     def add_y_symmetry(classobj):
         # FIXME more symmetrical than this?
         return BuildingSymmetrical
@@ -179,14 +171,6 @@ class BuildingDiagonal(BuildingSymmetryMixin):
     _m_offset = 0
     _r_offset = 1
     _t_offset = 2
-
-    @classmethod
-    def break_x_symmetry(classobj):
-        return BuildingFull
-
-    @classmethod
-    def break_y_symmetry(classobj):
-        return BuildingFull
 
     @classmethod
     def add_y_symmetry(classobj):
