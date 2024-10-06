@@ -22,9 +22,13 @@ stop3 = roadstops[12].doc_layout.lower_tile()
 roadstops = [[stop1, stop1, stop2, stop3, stop2.R, stop1, stop1]]
 
 # Objects
-square_ground = west_plaza_center.lower_tile()
+center_ground = west_plaza_center.lower_tile()
+offcenter_ground = west_plaza_offcenter.lower_tile()
 flower = west_plaza_center_flower_2024.lower_tile()
-west_square = [[square_ground] * 7, [square_ground] * 3 + [flower] + [square_ground] * 3]
+west_square = [
+    [offcenter_ground] * 3 + [center_ground] + [offcenter_ground.M] * 3,
+    [offcenter_ground] * 3 + [flower] + [offcenter_ground.M] * 3,
+]
 
 
 normal_demo = Demo(
