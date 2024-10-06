@@ -31,9 +31,9 @@ for name, sym in [("west_plaza_center", BuildingSymmetrical)]:
 
 for name, sym, xspan, yspan in [
     ("west_plaza_center", BuildingSymmetrical, 0, 0),
-    ("west_plaza_center_flower_2021", BuildingSymmetrical, 10, 6),
-    ("west_plaza_center_flower_2022", BuildingSymmetrical, 8, 6),
-    ("west_plaza_center_flower_2023", BuildingSymmetrical, 10, 4),
+    ("west_plaza_center_flower_2021", BuildingSymmetrical, 6, 10),
+    ("west_plaza_center_flower_2022", BuildingSymmetrical, 6, 8),
+    ("west_plaza_center_flower_2023", BuildingSymmetrical, 4, 10),
     ("west_plaza_center_flower_2024", BuildingSymmetrical, 4, 4),
 ]:
     gs = named_grounds[("west_plaza_center",)]
