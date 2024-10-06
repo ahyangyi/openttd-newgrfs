@@ -96,14 +96,6 @@ class BuildingSymmetricalX(BuildingSymmetryMixin):
     _t_offset = 2
 
     @classmethod
-    def break_x_symmetry(classobj):
-        return BuildingFull
-
-    @classmethod
-    def break_y_symmetry(classobj):
-        return classobj
-
-    @classmethod
     def add_y_symmetry(classobj):
         return BuildingSymmetrical
 
@@ -123,14 +115,6 @@ class BuildingSymmetricalY(BuildingSymmetryMixin):
     _t_offset = 0
 
     @classmethod
-    def break_x_symmetry(classobj):
-        return BuildingSymmetricalY
-
-    @classmethod
-    def break_y_symmetry(classobj):
-        return BuildingFull
-
-    @classmethod
     def add_y_symmetry(classobj):
         return BuildingSymmetricalY
 
@@ -139,6 +123,8 @@ class BuildingSymmetrical(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
+    _symmetry_descriptor = (0, 1, 0, 1, 0, 1, 0, 1)
+
     @staticmethod
     def render_indices():
         return [0, 1]
@@ -146,14 +132,6 @@ class BuildingSymmetrical(BuildingSymmetryMixin):
     _m_offset = 1
     _r_offset = 0
     _t_offset = 0
-
-    @classmethod
-    def break_x_symmetry(classobj):
-        return BuildingSymmetricalY
-
-    @classmethod
-    def break_y_symmetry(classobj):
-        return BuildingSymmetricalX
 
     @classmethod
     def add_y_symmetry(classobj):
@@ -244,3 +222,6 @@ class BuildingCylindrical(BuildingSymmetryMixin):
 
 
 BuildingSymmetryMixin._type_pool[(0, 1, 2, 3, 4, 5, 6, 7)] = BuildingFull
+BuildingSymmetryMixin._type_pool[(0, 1, 0, 1, 2, 3, 2, 3)] = BuildingSymmetricalX
+BuildingSymmetryMixin._type_pool[(0, 1, 2, 3, 0, 1, 2, 3)] = BuildingSymmetricalY
+BuildingSymmetryMixin._type_pool[(0, 1, 0, 1, 0, 1, 0, 1)] = BuildingSymmetrical
