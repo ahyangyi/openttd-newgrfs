@@ -4,12 +4,11 @@ class BuildingSymmetryMixin:
         for i, v in enumerate(variants):
             cls = v.__class__
             v.__class__ = type(cls.__name__, (cls, classobj), {})
-            if classobj._m_offset == 0:
-                v.M = variants[i ^ 3 if i in [1, 2] else i]
-            else:
-                v.M = variants[i ^ classobj._m_offset]
-            v.R = variants[i ^ classobj._r_offset]
-            v.T = variants[i ^ classobj._t_offset]
+
+            idx = classobj.render_indices()[i]
+            v.M = variants[classobj._symmetry_descriptor[idx ^ 1]]
+            v.R = variants[classobj._symmetry_descriptor[idx ^ 2]]
+            v.T = variants[classobj._symmetry_descriptor[idx ^ 4]]
             v.symmetry = classobj
         return variants[0]
 
@@ -200,6 +199,21 @@ class BuildingDiagonal(BuildingSymmetryMixin):
     _m_offset = 0
     _r_offset = 1
     _t_offset = 2
+
+
+class BuildingDiamond(BuildingSymmetryMixin):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    _symmetry_descriptor = (0, 0, 1, 1, 1, 1, 0, 0)
+
+    @staticmethod
+    def render_indices():
+        return [0, 2]
+
+    _m_offset = 0
+    _r_offset = 1
+    _t_offset = 1
 
 
 class BuildingCylindrical(BuildingSymmetryMixin):

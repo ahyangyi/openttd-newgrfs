@@ -4,6 +4,7 @@ from station.lib import (
     BuildingSymmetricalX,
     BuildingSymmetrical,
     BuildingCylindrical,
+    BuildingDiamond,
     AGroundSprite,
     AParentSprite,
     AChildSprite,
@@ -19,7 +20,11 @@ named_grounds = AttrDict(schema=("name"))
 named_layouts = AttrDict(schema=("name", "offset"))
 objects = []
 
-for name, sym in [("west_plaza_center", BuildingSymmetrical), ("west_plaza_offcenter", BuildingFull)]:
+for name, sym in [
+    ("west_plaza_center", BuildingSymmetrical),
+    ("west_plaza_offcenter", BuildingFull),
+    ("west_plaza_diagonal", BuildingDiamond),
+]:
     v = LazyVoxel(
         name,
         prefix=".cache/render/station/dovemere_2018/plaza",
@@ -35,7 +40,7 @@ for name, sym in [("west_plaza_center", BuildingSymmetrical), ("west_plaza_offce
 
 def register(layout, sym):
     for cur in [layout, layout.R] if (sym is BuildingFull) else [layout]:
-        if sym is BuildingSymmetrical:
+        if sym is BuildingSymmetrical or sym is BuildingDiamond:
             layouts = [cur, cur.R.M]
             num_views = 2
         else:
@@ -67,6 +72,7 @@ def make_ground_layout(name, sym):
 
 make_ground_layout("west_plaza_center", BuildingSymmetrical)
 make_ground_layout("west_plaza_offcenter", BuildingFull)
+make_ground_layout("west_plaza_diagonal", BuildingDiamond)
 
 all_layers = (
     "edge marker",

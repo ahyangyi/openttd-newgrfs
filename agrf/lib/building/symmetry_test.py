@@ -5,6 +5,7 @@ from symmetry import (
     BuildingSymmetricalY,
     BuildingRotational,
     BuildingDiagonal,
+    BuildingDiamond,
     BuildingCylindrical,
 )
 
@@ -17,6 +18,7 @@ def test_identity():
         BuildingSymmetricalY,
         BuildingRotational,
         BuildingDiagonal,
+        BuildingDiamond,
         BuildingCylindrical,
     ]
 
@@ -32,6 +34,7 @@ def test_is_symmetrical_y():
     assert BuildingSymmetricalY.is_symmetrical_y()
     assert not BuildingRotational.is_symmetrical_y()
     assert not BuildingDiagonal.is_symmetrical_y()
+    assert not BuildingDiamond.is_symmetrical_y()
     assert BuildingCylindrical.is_symmetrical_y()
 
 
@@ -42,6 +45,7 @@ def test_break_x_symmetry():
     assert BuildingSymmetricalY.break_x_symmetry() is BuildingSymmetricalY
     assert BuildingRotational.break_x_symmetry() is BuildingFull
     assert BuildingDiagonal.break_x_symmetry() is BuildingFull
+    assert BuildingDiamond.break_x_symmetry() is BuildingFull
     assert BuildingCylindrical.break_x_symmetry() is BuildingSymmetricalY
 
 
@@ -52,6 +56,7 @@ def test_break_y_symmetry():
     assert BuildingSymmetricalY.break_y_symmetry() is BuildingFull
     assert BuildingRotational.break_y_symmetry() is BuildingFull
     assert BuildingDiagonal.break_y_symmetry() is BuildingFull
+    assert BuildingDiamond.break_y_symmetry() is BuildingFull
     assert BuildingCylindrical.break_y_symmetry() is BuildingSymmetricalX
 
 
@@ -62,6 +67,7 @@ def test_add_x_symmetry():
     assert BuildingSymmetricalY.add_x_symmetry() is BuildingSymmetrical
     assert BuildingRotational.add_x_symmetry() is BuildingSymmetrical
     assert BuildingDiagonal.add_x_symmetry() is BuildingCylindrical
+    assert BuildingDiamond.add_x_symmetry() is BuildingCylindrical
     assert BuildingCylindrical.add_x_symmetry() is BuildingCylindrical
 
 
@@ -72,4 +78,5 @@ def test_add_y_symmetry():
     assert BuildingSymmetricalY.add_y_symmetry() is BuildingSymmetricalY
     assert BuildingRotational.add_y_symmetry() is BuildingSymmetrical
     assert BuildingDiagonal.add_y_symmetry() is BuildingCylindrical
+    assert BuildingDiamond.add_y_symmetry() is BuildingCylindrical
     assert BuildingCylindrical.add_y_symmetry() is BuildingCylindrical
