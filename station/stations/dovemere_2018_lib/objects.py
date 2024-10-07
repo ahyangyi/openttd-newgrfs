@@ -85,6 +85,8 @@ all_layers = (
     "flowers 3",
     "flowers 4",
     "flowers 5",
+    "flowers 6",
+    "flowers 7",
     "houses",
     "arcs",
     "xiangqi pieces",
