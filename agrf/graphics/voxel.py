@@ -1,7 +1,16 @@
 import math
 import os
 import functools
-from pygorender import Config, render, hill_positor_1, stairstep, compose, self_compose, produce_empty, discard_layers
+from agrf.gorender import (
+    Config,
+    render,
+    hill_positor_1,
+    stairstep,
+    compose,
+    self_compose,
+    produce_empty,
+    discard_layers,
+)
 from agrf.graphics.rotator import unnatural_dimens
 from agrf.graphics.spritesheet import spritesheet_template
 from copy import deepcopy
