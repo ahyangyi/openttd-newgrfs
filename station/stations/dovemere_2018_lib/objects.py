@@ -24,6 +24,7 @@ for name, sym in [
     ("west_plaza_center", BuildingSymmetrical),
     ("west_plaza_offcenter", BuildingFull),
     ("west_plaza_diagonal", BuildingDiamond),
+    ("west_plaza_checkerboard", BuildingSymmetrical),
 ]:
     v = LazyVoxel(
         name,
@@ -73,6 +74,7 @@ def make_ground_layout(name, sym):
 make_ground_layout("west_plaza_center", BuildingSymmetrical)
 make_ground_layout("west_plaza_offcenter", BuildingFull)
 make_ground_layout("west_plaza_diagonal", BuildingDiamond)
+make_ground_layout("west_plaza_checkerboard", BuildingSymmetrical)
 
 all_layers = (
     "edge marker",
@@ -165,8 +167,8 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     register(layout, sym.break_x_symmetry())
 
     ps = [
-        AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs - 8, 0)) + ground_snowcs,
-        AParentSprite(sprite, (yspan, xspan, height - 1), (yofs - 8, xofs - 8, 1)) + snowcs,
+        AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs + 8, Xofs - 8, 0)) + ground_snowcs,
+        AParentSprite(sprite, (yspan, xspan, height - 1), (yofs + 8, xofs - 8, 1)) + snowcs,
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "corner")] = layout
