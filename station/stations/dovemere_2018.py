@@ -59,6 +59,7 @@ the_stations = AMetaStation(
     ],
     [
         demos.normal_demo,
+        demos.oneliner,
         demos.big_demo,
         demos.big_half_demo,
         demos.real_yard_demo,

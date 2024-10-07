@@ -155,6 +155,14 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     register(layout, sym)
 
     ps = [
+        AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs, Xofs - 4, 0)) + ground_snowcs,
+        AParentSprite(sprite, (yspan, xspan, height - 1), (yofs, xofs - 4, 1)) + snowcs,
+    ]
+    layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+    named_layouts[(name, "half")] = layout
+    register(layout, sym.break_y_symmetry())
+
+    ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs, Xofs - 8, 0)) + ground_snowcs,
         AParentSprite(sprite, (yspan, xspan, height - 1), (yofs, xofs - 8, 1)) + snowcs,
     ]
