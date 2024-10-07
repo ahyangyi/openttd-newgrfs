@@ -18,7 +18,8 @@ class Demo:
             sprites = []
             for r, row in enumerate(self.tiles):
                 for c, sprite in enumerate(row[::-1]):
-                    sprites.extend(sprite.demo_translate(c, r).parent_sprites)
+                    if sprite is not None:
+                        sprites.extend(sprite.demo_translate(c, r).parent_sprites)
             return ALayout(None, sprites, False).graphics(scale, bpp, remap)
         remap = remap or self.remap
         yofs = 32 * scale
