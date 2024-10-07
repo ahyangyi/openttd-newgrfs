@@ -22,7 +22,6 @@ objects = []
 
 for name, sym in [
     ("west_plaza_center", BuildingSymmetrical),
-    ("west_plaza_offcenter", BuildingFull),
     ("west_plaza_offcenter_A", BuildingFull),
     ("west_plaza_offcenter_B", BuildingFull),
     ("west_plaza_diagonal", BuildingDiamond),
@@ -74,7 +73,6 @@ def make_ground_layout(name, sym):
 
 
 make_ground_layout("west_plaza_center", BuildingSymmetrical)
-make_ground_layout("west_plaza_offcenter", BuildingFull)
 make_ground_layout("west_plaza_offcenter_A", BuildingFull)
 make_ground_layout("west_plaza_offcenter_B", BuildingFull)
 make_ground_layout("west_plaza_diagonal", BuildingDiamond)
