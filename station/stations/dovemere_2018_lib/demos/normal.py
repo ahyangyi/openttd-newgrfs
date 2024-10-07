@@ -20,11 +20,20 @@ roadstops = [[stop1, stop1, stop2, stop3, stop2.R, stop1, stop1]]
 
 # Objects
 center_ground = west_plaza_center.lower_tile()
-offcenter_ground = west_plaza_offcenter.lower_tile()
+offcenter_ground_A = west_plaza_offcenter_A.lower_tile()
+offcenter_ground_B = west_plaza_offcenter_B.lower_tile()
 flower = west_plaza_center_flower_2024.lower_tile()
 west_square = [
-    [center_ground, center_ground, offcenter_ground, center_ground, offcenter_ground.R, center_ground, center_ground],
-    [center_ground, center_ground, offcenter_ground, flower, offcenter_ground.R, center_ground, center_ground],
+    [
+        center_ground,
+        center_ground,
+        offcenter_ground_A,
+        center_ground,
+        offcenter_ground_A.R,
+        center_ground,
+        center_ground,
+    ],
+    [center_ground, center_ground, offcenter_ground_B, flower, offcenter_ground_B.R, center_ground, center_ground],
 ]
 
 
