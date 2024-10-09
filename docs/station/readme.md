@@ -24,17 +24,16 @@ This is an add-on to the China Set: Stations and Platforms set, providing additi
 ### 2.1 Requirements
 
 - OpenTTD 14.0 or higher
-    * this NewGRF relies on new-style station string properties
-    * Work is being done to support older versions of OpenTTD, stay tuned...
+    * There are also some features such as railway waypoint classes and road stop waypoints, that are only enabled for OpenTTD 15.0 or higher.
+    * A legacy mode has been implemented for older versions of OpenTTD. Tested with OpenTTD 12.0 and should work with anything above 10.0. The number of available stations is vastly reduced in this mode though.
 - Not compatible with TTDPatch
-
 
 ### 2.2 Installation
 
 OpenTTD:
 see https://wiki.openttd.org/NewGRF
   
-This NewGRF is available from the in-game Online Content.
+This NewGRF is available from the in-game Online Content. You can also download the releases from Github Releases at https://github.com/ahyangyi/openttd-newgrfs/releases/.
 
 ## 3 Credits
 
@@ -94,7 +93,7 @@ contact Ahyangyi via Private Message at www.tt-forums.net.
 
 China Set: Stations - Wuhu
 
-Copyright (C) 2024 China Set Team
+Copyright (C) 2024 Yi Yang and contributors
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
