@@ -23,6 +23,8 @@ jobs:
       - name: Pack documentation
         run: cp docs/station/changelog.md release/changelog.txt; cp docs/station/readme.md release/readme.txt
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@main
+        uses: actions/upload-artifact@v4
         with:
+          name: china-set-stations-wuhu
           path: release
+          retention-days: 7
