@@ -1,6 +1,5 @@
 import grf
 from .utils import class_label_printable
-from .station import AStation
 
 
 class AMetaStation(grf.SpriteGenerator):

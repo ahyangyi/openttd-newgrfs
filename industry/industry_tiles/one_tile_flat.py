@@ -3,7 +3,7 @@ from agrf.graphics.voxel import LazyVoxel, LazySpriteSheet
 
 vox = LazyVoxel(
     "one_tile_flat",
-    prefix="industry/voxels/render/one_tile_flat",
+    prefix=".cache/render/industry/one_tile_flat",
     voxel_getter=lambda: "industry/voxels/one_tile_flat.vox",
     load_from="industry/files/gorender.json",
 )

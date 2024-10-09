@@ -1,4 +1,5 @@
 import grf
+from agrf.graphics.spritesheet import LazyAlternativeSprites
 
 
 class FakeReferencedAction(grf.Action, grf.ReferenceableAction):
@@ -30,10 +31,6 @@ class FakeReferencingAction(grf.Action, grf.ReferencingAction):
 
     def get_refs(self):
         yield from list(self.action.get_refs()) + self.extra_refs
-
-
-# FIXME weird dependency here
-from agrf.graphics.spritesheet import LazyAlternativeSprites
 
 
 class FakeAlternativeSprites(LazyAlternativeSprites, grf.ReferenceableAction):

@@ -1,9 +1,9 @@
-class BinaryVariantMixin:
+class BuildingSymmetryMixin:
     @classmethod
     def create_variants(classobj, variants):
         for i, v in enumerate(variants):
             cls = v.__class__
-            v.__class__ = type(cls.__name__, (classobj, cls), {})
+            v.__class__ = type(cls.__name__, (cls, classobj), {})
             if classobj._m_offset == 0:
                 v.M = variants[i ^ 3 if i in [1, 2] else i]
             else:
@@ -38,7 +38,7 @@ class BinaryVariantMixin:
         return classobj._t_offset == 0
 
 
-class BuildingSpriteSheetFull(BinaryVariantMixin):
+class BuildingFull(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
@@ -60,10 +60,10 @@ class BuildingSpriteSheetFull(BinaryVariantMixin):
 
     @classmethod
     def add_y_symmetry(classobj):
-        return BuildingSpriteSheetSymmetricalY
+        return BuildingSymmetricalY
 
 
-class BuildingSpriteSheetSymmetricalX(BinaryVariantMixin):
+class BuildingSymmetricalX(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
@@ -77,7 +77,7 @@ class BuildingSpriteSheetSymmetricalX(BinaryVariantMixin):
 
     @classmethod
     def break_x_symmetry(classobj):
-        return BuildingSpriteSheetFull
+        return BuildingFull
 
     @classmethod
     def break_y_symmetry(classobj):
@@ -85,10 +85,10 @@ class BuildingSpriteSheetSymmetricalX(BinaryVariantMixin):
 
     @classmethod
     def add_y_symmetry(classobj):
-        return BuildingSpriteSheetSymmetrical
+        return BuildingSymmetrical
 
 
-class BuildingSpriteSheetSymmetricalY(BinaryVariantMixin):
+class BuildingSymmetricalY(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
@@ -102,18 +102,18 @@ class BuildingSpriteSheetSymmetricalY(BinaryVariantMixin):
 
     @classmethod
     def break_x_symmetry(classobj):
-        return BuildingSpriteSheetSymmetricalY
+        return BuildingSymmetricalY
 
     @classmethod
     def break_y_symmetry(classobj):
-        return BuildingSpriteSheetFull
+        return BuildingFull
 
     @classmethod
     def add_y_symmetry(classobj):
-        return BuildingSpriteSheetSymmetricalY
+        return BuildingSymmetricalY
 
 
-class BuildingSpriteSheetSymmetrical(BinaryVariantMixin):
+class BuildingSymmetrical(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
@@ -127,18 +127,18 @@ class BuildingSpriteSheetSymmetrical(BinaryVariantMixin):
 
     @classmethod
     def break_x_symmetry(classobj):
-        return BuildingSpriteSheetSymmetricalY
+        return BuildingSymmetricalY
 
     @classmethod
     def break_y_symmetry(classobj):
-        return BuildingSpriteSheetSymmetricalX
+        return BuildingSymmetricalX
 
     @classmethod
     def add_y_symmetry(classobj):
-        return BuildingSpriteSheetSymmetrical
+        return BuildingSymmetrical
 
 
-class BuildingSpriteSheetRotational(BinaryVariantMixin):
+class BuildingRotational(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
@@ -152,19 +152,19 @@ class BuildingSpriteSheetRotational(BinaryVariantMixin):
 
     @classmethod
     def break_x_symmetry(classobj):
-        return BuildingSpriteSheetFull
+        return BuildingFull
 
     @classmethod
     def break_y_symmetry(classobj):
-        return BuildingSpriteSheetFull
+        return BuildingFull
 
     @classmethod
     def add_y_symmetry(classobj):
         # FIXME more symmetrical than this?
-        return BuildingSpriteSheetSymmetrical
+        return BuildingSymmetrical
 
 
-class BuildingSpriteSheetDiagonal(BinaryVariantMixin):
+class BuildingDiagonal(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
@@ -178,13 +178,13 @@ class BuildingSpriteSheetDiagonal(BinaryVariantMixin):
 
     @classmethod
     def break_x_symmetry(classobj):
-        return BuildingSpriteSheetFull
+        return BuildingFull
 
     @classmethod
     def break_y_symmetry(classobj):
-        return BuildingSpriteSheetFull
+        return BuildingFull
 
     @classmethod
     def add_y_symmetry(classobj):
         # FIXME more symmetrical than this?
-        return BuildingSpriteSheetSymmetrical
+        return BuildingSymmetrical
