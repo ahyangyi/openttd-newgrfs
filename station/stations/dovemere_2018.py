@@ -2,7 +2,7 @@ import grf
 from station.lib import AStation, AMetaStation
 from station.lib.parameters import parameter_list
 from .dovemere_2018_lib.layouts import *
-from .dovemere_2018_lib import demos, common_cb
+from .dovemere_2018_lib import demos, common_cb, Registers
 from .dovemere_2018_lib.objects import objects
 from .dovemere_2018_lib.roadstops import roadstops
 from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_stations
@@ -23,7 +23,12 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
         AStation(
             id=entry.id,
             translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
-            layouts=[entry, entry.M, entry.squash(0.6).pushdown(3), entry.M.squash(0.6).pushdown(3)],
+            layouts=[
+                entry,
+                entry.M,
+                entry.squash(0.6).pushdown(3).filter_register(Registers.SNOW),
+                entry.M.squash(0.6).pushdown(3).filter_register(Registers.SNOW),
+            ],
             class_label=entry.category,
             cargo_threshold=40,
             non_traversable_tiles=0b00 if entry.traversable else 0b11,

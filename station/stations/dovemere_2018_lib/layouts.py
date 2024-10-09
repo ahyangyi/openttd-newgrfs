@@ -116,7 +116,7 @@ VNarrow = HPos("", "", "building_v", True, True)
 TinyAsym = HPos("central", "pillar", "central", False)
 
 
-snow_layers = ("snow", "snow-window", "snow-window-extender")
+snow_layers = tuple(y for x in ("snow", "snow-window", "snow-window-extender") for y in (x, x + "-boundary"))
 all_f2_layers = ("window", "window-extender")
 all_f2_layers_set = set(all_f2_layers + snow_layers)
 
@@ -152,7 +152,8 @@ def make_f2(v, sym):
 
 def make_extra(v, sym, name, floor="f2"):
     vd = v.discard_layers(
-        all_f1_layers + tuple(all_f2_layers_set - {name}) + ("overpass", "foundation", "circle"), name
+        all_f1_layers + tuple(all_f2_layers_set - {name, name + "-boundary"}) + ("overpass", "foundation", "circle"),
+        name,
     )
     if floor == "f2":
         vd = vd.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")

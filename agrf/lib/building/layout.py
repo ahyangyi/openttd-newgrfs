@@ -32,11 +32,12 @@ class RegistersMixin:
         super().__init__(*args, **kwargs)
         self.flags = flags or {}
 
+    @property
+    def flags_translated(self):
+        return {k: (v if k == "add" else v.get_index()) for k, v in self.flags.items() if v is not None}
+
     def registers_to_grf_dict(self):
-        return {
-            "flags": sum(grf.SPRITE_FLAGS[k][1] for k in self.flags.keys()),
-            "registers": {k: (v if k == "add" else v.get_index()) for k, v in self.flags.items() if v is not None},
-        }
+        return {"flags": sum(grf.SPRITE_FLAGS[k][1] for k in self.flags.keys()), "registers": self.flags_translated}
 
 
 class GroundSpriteMixin:
@@ -101,8 +102,10 @@ class ADefaultGroundSprite(DefaultSpriteMixin, ChildSpriteContainerMixin, Regist
 
     def to_parentsprite(self, low=False):
         if low:
-            return ADefaultParentSprite(self.sprite, (16, 16, 0), (0, 0, 0))
-        return ADefaultParentSprite(self.sprite, (16, 16, 1), (0, 0, 0))
+            return ADefaultParentSprite(self.sprite, (16, 16, 0), (0, 0, 0), child_sprites=self.child_sprites)
+        return ADefaultParentSprite(
+            self.sprite, (16, 16, 1), (0, 0, 0), child_sprites=self.child_sprites, flags=self.flags
+        )
 
     def to_action2(self, sprite_list):
         return [{"sprite": grf.SpriteRef(self.sprite, is_global=True)}] + [
@@ -162,8 +165,8 @@ class AGroundSprite(ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixi
 
     def to_parentsprite(self, low=False):
         if low:
-            return AParentSprite(self.sprite, (16, 16, 0), (0, 0, 0))
-        return AParentSprite(self.sprite, (16, 16, 1), (0, 0, 0), flags=self.flags)
+            return AParentSprite(self.sprite, (16, 16, 0), (0, 0, 0), child_sprites=self.child_sprites)
+        return AParentSprite(self.sprite, (16, 16, 1), (0, 0, 0), child_sprites=self.child_sprites, flags=self.flags)
 
     def to_action2(self, sprite_list):
         return [{"sprite": grf.SpriteRef(sprite_list.index(self.sprite), is_global=False)}] + [
@@ -246,6 +249,16 @@ class ADefaultParentSprite(DefaultSpriteMixin, BoundingBoxMixin, ChildSpriteCont
             self.flags,
         )
 
+    @functools.cache
+    def filter_register(self, reg):
+        return ADefaultParentSprite(
+            self.sprite,
+            self.extent,
+            self.offset,
+            [x for x in self.child_sprites if x.flags.get("dodraw") != reg],
+            self.flags,
+        )
+
     @property
     def L(self):
         return self
@@ -323,6 +336,7 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
                 "sprite": grf.SpriteRef(sprite_list.index(self.sprite), is_global=False),
                 "offset": self.offset,
                 "extent": self.extent,
+                **self.flags_translated,
             }
         ] + [s for x in self.child_sprites for s in x.to_action2(sprite_list)]
 
@@ -357,6 +371,16 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
             self.extent,
             self.offset,
             [x.squash(ratio) for x in self.child_sprites],
+            self.flags,
+        )
+
+    @functools.cache
+    def filter_register(self, reg):
+        return AParentSprite(
+            self.sprite,
+            self.extent,
+            self.offset,
+            [x for x in self.child_sprites if x.flags.get("dodraw") != reg],
             self.flags,
         )
 
@@ -432,7 +456,13 @@ class AChildSprite(RegistersMixin, CachedFunctorMixin):
         )
 
     def to_action2(self, sprite_list):
-        return [{"sprite": grf.SpriteRef(sprite_list.index(self.sprite), is_global=False), "pixel_offset": self.offset}]
+        return [
+            {
+                "sprite": grf.SpriteRef(sprite_list.index(self.sprite), is_global=False),
+                "pixel_offset": self.offset,
+                **self.flags_translated,
+            }
+        ]
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
@@ -560,6 +590,12 @@ class ALayout:
     @functools.cache
     def lower_tile(self, delta=1):
         return self.raise_tile(-delta)
+
+    @functools.cache
+    def filter_register(self, reg):
+        return replace(
+            self, parent_sprites=[s.filter_register(reg) for s in self.parent_sprites if s.flags.get("dodraw") != reg]
+        )
 
     @functools.cache
     def demo_translate(self, xofs, yofs):
