@@ -1,4 +1,4 @@
-from station.lib import AttrDict, ALayout, BuildingSpriteSheetSymmetricalX, BuildingSpriteSheetSymmetrical
+from station.lib import AttrDict, ALayout, BuildingSymmetricalX, BuildingSymmetrical
 from abc import ABC, abstractmethod
 from ..misc import track_ground
 from ..ground import named_ps as ground_ps
@@ -52,6 +52,16 @@ def register(pf: PlatformFamily):
     shelter_classes = pf.get_shelter_classes()
     name = pf.name
 
+    def make_notes(platform_class, shelter_class="", shelter_class_2=""):
+        notes = []
+        if platform_class in platform_classes:
+            notes.append(platform_class)
+        if shelter_class in shelter_classes:
+            notes.append(shelter_class)
+        if shelter_class_2 in shelter_classes:
+            notes.append(shelter_class_2)
+        return notes
+
     for pid, platform_class in enumerate(["np", "cut"] + platform_classes):
         for sid, shelter_class in enumerate(["", "pillar"] + shelter_classes):
             if (platform_class, shelter_class) == ("np", ""):
@@ -82,7 +92,10 @@ def register(pf: PlatformFamily):
                             cur_symmetry = ps.sprite.symmetry.add_y_symmetry()
                         else:
                             cur_symmetry = ps.sprite.symmetry
-                        var = cur_symmetry.get_all_variants(ALayout(track_ground, l, True))
+
+                        var = cur_symmetry.get_all_variants(
+                            ALayout(track_ground, l, True, notes=make_notes(platform_class, shelter_class))
+                        )
                         l = cur_symmetry.create_variants(var)
                         if platform_class not in ["np", "cut"] and shelter_class != "pillar" and location == "":
                             for i, entry in enumerate(cur_symmetry.get_all_entries(l)):
@@ -100,12 +113,14 @@ def register(pf: PlatformFamily):
                         if (rail_facing, shelter_class) < (rail_facing_2, shelter_class_2):
                             suffix = (platform_class, rail_facing, shelter_class)
                             suffix2 = (platform_class, rail_facing_2, shelter_class_2)
-                            cur_symmetry = BuildingSpriteSheetSymmetricalX
+                            cur_symmetry = BuildingSymmetricalX
+
                             var = cur_symmetry.get_all_variants(
                                 ALayout(
                                     track_ground,
                                     [platform_ps[(name, *suffix, "")], platform_ps[(name, *suffix2, "")].T],
                                     True,
+                                    notes=make_notes(platform_class, shelter_class, shelter_class_2),
                                 )
                             )
                             l = cur_symmetry.create_variants(var)
@@ -125,11 +140,13 @@ def register(pf: PlatformFamily):
             concourse_ps[(platform_class, side)] = ps
 
             if platform_class == "none" or side == "d":
-                symmetry = BuildingSpriteSheetSymmetrical
+                symmetry = BuildingSymmetrical
             else:
-                symmetry = BuildingSpriteSheetSymmetricalX
+                symmetry = BuildingSymmetricalX
 
-            var = symmetry.get_all_variants(ALayout(gray_ps, [ps], False, notes={"concourse"}))
+            var = symmetry.get_all_variants(
+                ALayout(gray_ps, [ps], False, notes=["concourse"] + make_notes(platform_class))
+            )
             l = symmetry.create_variants(var)
             for i, entry in enumerate(symmetry.get_all_entries(l)):
                 entry.id = 0x7A00 + pid * 0x4 + ssid * 0x2 + i
@@ -148,8 +165,16 @@ def register(pf: PlatformFamily):
                             else:
                                 continue
                         else:
-                            cur_sym = BuildingSpriteSheetSymmetricalX
-                        var = cur_sym.get_all_variants(ALayout(gray_ps, l + [ps], False, notes={"concourse"}))
+                            cur_sym = BuildingSymmetricalX
+
+                        var = cur_sym.get_all_variants(
+                            ALayout(
+                                gray_ps,
+                                l + [ps],
+                                False,
+                                notes=["concourse"] + make_notes(platform_class, shelter_class),
+                            )
+                        )
                         l = cur_sym.create_variants(var)
                         for i, entry in enumerate(cur_sym.get_all_entries(l)):
                             entry.id = 0x7B00 + pid * 0x20 + ssid * 0x10 + sid * 0x4 + lid * 0x2 + i

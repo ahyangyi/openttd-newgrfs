@@ -37,9 +37,17 @@ class AObject(grf.SpriteGenerator):
         layouts = []
         for i, layout in enumerate(self.layouts):
             layouts.append(layout.to_action2(feature=grf.OBJECT, sprite_list=sprites))
-        self.callbacks.graphics = Switch(
-            ranges={i: layouts[i] for i in range(len(layouts))}, default=layouts[0], code="view"
+
+        default_graphics = Switch(
+            ranges={i: layouts[i] for i in range(len(layouts))},
+            default=layouts[0],
+            code="""
+TEMP[0x03] = (terrain_type & 0x4) == 0x4
+view
+""",
         )
+        purchase_graphics = Switch(ranges={i: layouts[i] for i in range(len(layouts))}, default=layouts[0], code="view")
+        self.callbacks.graphics = grf.GraphicsCallback(default=default_graphics, purchase=purchase_graphics)
         self.callbacks.set_flag_props(self._props)
 
         res.append(

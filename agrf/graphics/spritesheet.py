@@ -1,6 +1,8 @@
+import os
 import numpy as np
 import grf
 import math
+import functools
 from .misc import SCALE_TO_ZOOM, ZOOM_TO_SCALE
 
 THIS_FILE = grf.PythonFile(__file__)
@@ -42,10 +44,11 @@ def guess_dimens(width, height, angle, bbox, z_scale):
 
 
 class LazyAlternativeSprites(grf.AlternativeSprites):
-    def __init__(self, voxel, part, *sprites):
+    def __init__(self, voxel, part, kwargs=None, *sprites):
         super().__init__(*sprites)
         self.voxel = voxel
         self.part = part
+        self.kwargs = kwargs or {}
 
     def get_sprite(self, *, zoom=None, bpp=None):
         self.voxel.render()
@@ -64,6 +67,11 @@ class LazyAlternativeSprites(grf.AlternativeSprites):
 
     def __repr__(self):
         return f"LazyAlternativeSprites<{self.voxel.name}:{self.part}>"
+
+    @functools.cache
+    def squash(self, ratio):
+        squashed_voxel = self.voxel.squash(ratio, "squashed")
+        return squashed_voxel.spritesheet(**self.kwargs)[self.part]
 
 
 class CustomCropMixin:
@@ -123,8 +131,6 @@ class CustomCropWithMask(CustomCropMixin, grf.WithMask):
 
 def spritesheet_template(
     voxel,
-    diff,
-    xspan,
     path,
     dimens,
     angles,
@@ -141,6 +147,7 @@ def spritesheet_template(
     road_mode=False,
     manual_crop=None,
     childsprite=False,
+    kwargs=None,
 ):
     guessed_dimens = []
     for i in range(len(dimens)):
@@ -148,7 +155,13 @@ def spritesheet_template(
         y, z_ydiff, z_height = guess_dimens(x, y, angles[i], bbox, z_scale)
         guessed_dimens.append((x, y, z_ydiff, z_height))
 
-    def get_rels(direction, diff, scale):
+    kwargs = kwargs or {}
+    oxdiff = kwargs["xdiff"]
+    oxspan = kwargs["xspan"]
+    oydiff = kwargs["ydiff"]
+    oyspan = kwargs["yspan"]
+
+    def get_rels(direction, scale):
         w, h, z_ydiff, z_height = map(lambda a: a * scale, guessed_dimens[direction])
         if road_mode:
             xrel = -((w - 1) // (scale * 2) * scale + 1)
@@ -166,13 +179,22 @@ def spritesheet_template(
         yrel += ydiff * scale
         yrel -= z_ydiff
 
-        if diff != 0:
-            xrel += deltas[direction][0] * diff * scale
-            yrel += deltas[direction][1] * diff * scale
+        if oxdiff != 0:
+            xrel += deltas[direction][0] * oxdiff * scale
+            yrel += deltas[direction][1] * oxdiff * scale
 
-        if road_mode and xspan != 16:
-            offset = 16 - xspan
+        if road_mode and oxspan != 16:
+            offset = 16 - oxspan
             xrel += offsets[direction][0] * offset * scale
+            yrel += offsets[direction][1] * offset * scale
+
+        if oydiff != 0:
+            xrel -= deltas[direction][0] * oydiff * scale
+            yrel += deltas[direction][1] * oydiff * scale
+
+        if road_mode and oyspan != 16:
+            offset = 16 - oyspan
+            xrel -= offsets[direction][0] * offset * scale
             yrel += offsets[direction][1] * offset * scale
 
         if bbox_joggle is not None:
@@ -190,6 +212,7 @@ def spritesheet_template(
         LazyAlternativeSprites(
             voxel,
             idx,
+            kwargs,
             *(
                 with_optional_mask(
                     CustomCropFileSprite(
@@ -198,8 +221,8 @@ def spritesheet_template(
                         0,
                         guessed_dimens[i][0] * scale,
                         guessed_dimens[i][1] * scale,
-                        xofs=childsprite[0] * scale if childsprite else get_rels(i, diff, scale)[0],
-                        yofs=childsprite[1] * scale if childsprite else get_rels(i, diff, scale)[1],
+                        xofs=childsprite[0] * scale if childsprite else get_rels(i, scale)[0],
+                        yofs=childsprite[1] * scale if childsprite else get_rels(i, scale)[1],
                         bpp=bpp,
                         zoom=SCALE_TO_ZOOM[scale],
                         **(

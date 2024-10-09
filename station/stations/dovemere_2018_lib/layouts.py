@@ -1,12 +1,12 @@
 import os
 import inspect
 from station.lib import (
-    BuildingSpriteSheetFull,
-    BuildingSpriteSheetSymmetrical,
-    BuildingSpriteSheetSymmetricalX,
-    BuildingSpriteSheetSymmetricalY,
-    BuildingSpriteSheetRotational,
-    BuildingSpriteSheetDiagonal,
+    BuildingFull,
+    BuildingSymmetrical,
+    BuildingSymmetricalX,
+    BuildingSymmetricalY,
+    BuildingRotational,
+    BuildingDiagonal,
     AGroundSprite,
     AParentSprite,
     AChildSprite,
@@ -113,7 +113,7 @@ VNarrow = HPos("", "", "building_v", True, True)
 TinyAsym = HPos("central", "pillar", "central", False)
 
 
-snow_layers = ("snow", "snow-window", "snow-window-extender")
+snow_layers = tuple(y for x in ("snow", "snow-window", "snow-window-extender") for y in (x, x + "-boundary"))
 all_f2_layers = ("window", "window-extender")
 all_f2_layers_set = set(all_f2_layers + snow_layers)
 
@@ -143,13 +143,14 @@ def make_f2(v, sym):
     v = v.discard_layers(all_f1_layers + all_f2_layers + snow_layers, "f2")
     v.in_place_subset(sym.render_indices())
     v.config["agrf_manual_crop"] = (0, 10)
-    s = sym.create_variants(v.spritesheet(zdiff=base_height * 2 + 1))
+    s = sym.create_variants(v.spritesheet(zdiff=base_height + 0.5))
     return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height))
 
 
 def make_extra(v, sym, name, floor="f2"):
     vd = v.discard_layers(
-        all_f1_layers + tuple(all_f2_layers_set - {name}) + ("overpass", "foundation", "circle"), name
+        all_f1_layers + tuple(all_f2_layers_set - {name, name + "-boundary"}) + ("overpass", "foundation", "circle"),
+        name,
     )
     if floor == "f2":
         vd = vd.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
@@ -182,7 +183,7 @@ def make_f1(v, subset, sym):
         V = V.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         V.in_place_subset(sym.render_indices())
         V.config["agrf_manual_crop"] = (0, 40)
-        s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan, zdiff=1))
+        s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan, zdiff=0.5))
         f1_cache[(v, subset)] = AParentSprite(s, (16, xspan, base_height), (0, xdiff, platform_height)), sym
     ret, ret_sym = f1_cache[(v, subset)]
     assert sym is ret_sym
@@ -220,7 +221,7 @@ def make_voxel(source):
     if source not in voxel_cache:
         voxel_cache[source] = LazyVoxel(
             os.path.basename(source),
-            prefix=os.path.join("station/voxels/render/dovemere_2018", os.path.dirname(source)),
+            prefix=os.path.join(".cache/render/station/dovemere_2018", os.path.dirname(source)),
             voxel_getter=lambda path=f"station/voxels/dovemere_2018/{source}.vox": path,
             load_from="station/files/gorender.json",
         )
@@ -347,7 +348,7 @@ def load(
     full=True,
     asym=False,
     borrow_f1=None,
-    borrow_f1_symmetry=BuildingSpriteSheetSymmetrical,
+    borrow_f1_symmetry=BuildingSymmetrical,
     window=None,
     window_asym=False,
 ):
@@ -514,68 +515,63 @@ entries = []
 flexible_entries = []
 named_tiles = AttrDict(schema=("name", "platform_class", "shelter_class", "f1_layout"))
 
-load(0x00, "front_normal", BuildingSpriteSheetSymmetricalX, "F0", corridor=False, window=[])
-load(0x02, "front_gate", BuildingSpriteSheetFull, "F0", corridor=False)
-load(0x06, "front_gate_extender", BuildingSpriteSheetSymmetricalX, "F0", corridor=False)
+load(0x00, "front_normal", BuildingSymmetricalX, "F0", corridor=False, window=[])
+load(0x02, "front_gate", BuildingFull, "F0", corridor=False)
+load(0x06, "front_gate_extender", BuildingSymmetricalX, "F0", corridor=False)
 
-load(0x08, "corner", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False, window=[])
-load(0x0C, "corner_gate", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False)
-load(0x10, "corner_2", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False, window=[])
-load(0x14, "corner_gate_2", BuildingSpriteSheetFull, "F1", h_pos=SideNarrow, corridor=False)
+load(0x08, "corner", BuildingFull, "F1", h_pos=SideNarrow, corridor=False, window=[])
+load(0x0C, "corner_gate", BuildingFull, "F1", h_pos=SideNarrow, corridor=False)
+load(0x10, "corner_2", BuildingFull, "F1", h_pos=SideNarrow, corridor=False, window=[])
+load(0x14, "corner_gate_2", BuildingFull, "F1", h_pos=SideNarrow, corridor=False)
 
 load_central(
-    (0x20, 0x21, 0x23),
-    "central",
-    BuildingSpriteSheetSymmetrical,
-    "N",
-    window=["windowed", "windowed_extender"],
-    window_asym=True,
+    (0x20, 0x21, 0x23), "central", BuildingSymmetrical, "N", window=["windowed", "windowed_extender"], window_asym=True
 )
 
-load_central((0x24, 0x28), "side_a", BuildingSpriteSheetFull, "A", h_pos=Side, window=["windowed"])
-load_central((0x2C, 0x2E), "side_a2", BuildingSpriteSheetSymmetricalY, "A", h_pos=Side, window=["windowed"])
-load_central((0x30, 0x34), "side_a3", BuildingSpriteSheetFull, "A", h_pos=Side, window=["windowed"])
-load_central(0x38, "side_b", BuildingSpriteSheetFull, "B", h_pos=Side, window=[])
-load_central(0x3C, "side_b2", BuildingSpriteSheetSymmetricalY, "B", h_pos=Side, window=[])
-load_central(0x3E, "side_c", BuildingSpriteSheetSymmetricalY, "C", h_pos=Side, window=[])
-load_central(0x40, "side_d", BuildingSpriteSheetSymmetricalY, "D", h_pos=Side)
+load_central((0x24, 0x28), "side_a", BuildingFull, "A", h_pos=Side, window=["windowed"])
+load_central((0x2C, 0x2E), "side_a2", BuildingSymmetricalY, "A", h_pos=Side, window=["windowed"])
+load_central((0x30, 0x34), "side_a3", BuildingFull, "A", h_pos=Side, window=["windowed"])
+load_central(0x38, "side_b", BuildingFull, "B", h_pos=Side, window=[])
+load_central(0x3C, "side_b2", BuildingSymmetricalY, "B", h_pos=Side, window=[])
+load_central(0x3E, "side_c", BuildingSymmetricalY, "C", h_pos=Side, window=[])
+load_central(0x40, "side_d", BuildingSymmetricalY, "D", h_pos=Side)
 
-load(0x42, "h_end", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False, window=[])
-load_full(0x44, "h_end_untraversable", BuildingSpriteSheetSymmetricalY, "H", window=[])
-load(0x46, "h_end_asym", BuildingSpriteSheetFull, "H", h_pos=SideNarrow, corridor=False, window=[])
-load(0x4A, "h_end_asym_gate", BuildingSpriteSheetFull, "H", h_pos=SideNarrow, corridor=False)
-load(0x4E, "h_end_gate", BuildingSpriteSheetSymmetricalY, "H", full=False, platform=False, third=False)
-load_full(0x50, "h_end_gate_untraversable", BuildingSpriteSheetSymmetricalY, "H")
-load(0x52, "h_normal", BuildingSpriteSheetSymmetrical, "H", window=[])
-load(0x53, "h_gate", BuildingSpriteSheetSymmetricalY, "H", third=False, platform=False)
-load(0x55, "h_gate_1", BuildingSpriteSheetFull, "H", asym=True)
-load(0x59, "h_gate_extender", BuildingSpriteSheetSymmetrical, "H", third=False, platform=False)
-load(0x5A, "h_gate_extender_1", BuildingSpriteSheetSymmetricalX, "H", asym=True)
+load(0x42, "h_end", BuildingSymmetricalY, "H", full=False, platform=False, window=[])
+load_full(0x44, "h_end_untraversable", BuildingSymmetricalY, "H", window=[])
+load(0x46, "h_end_asym", BuildingFull, "H", h_pos=SideNarrow, corridor=False, window=[])
+load(0x4A, "h_end_asym_gate", BuildingFull, "H", h_pos=SideNarrow, corridor=False)
+load(0x4E, "h_end_gate", BuildingSymmetricalY, "H", full=False, platform=False, third=False)
+load_full(0x50, "h_end_gate_untraversable", BuildingSymmetricalY, "H")
+load(0x52, "h_normal", BuildingSymmetrical, "H", window=[])
+load(0x53, "h_gate", BuildingSymmetricalY, "H", third=False, platform=False)
+load(0x55, "h_gate_1", BuildingFull, "H", asym=True)
+load(0x59, "h_gate_extender", BuildingSymmetrical, "H", third=False, platform=False)
+load(0x5A, "h_gate_extender_1", BuildingSymmetricalX, "H", asym=True)
 
-load(0x5C, "v_end", BuildingSpriteSheetSymmetricalX, "F0", h_pos=VNarrow, corridor=False)
-load(0x5E, "v_end_gate", BuildingSpriteSheetSymmetricalX, "F0", h_pos=VNarrow, corridor=False)
-load_central(0x60, "v_central", BuildingSpriteSheetSymmetrical, "N", h_pos=V)
+load(0x5C, "v_end", BuildingSymmetricalX, "F0", h_pos=VNarrow, corridor=False)
+load(0x5E, "v_end_gate", BuildingSymmetricalX, "F0", h_pos=VNarrow, corridor=False)
+load_central(0x60, "v_central", BuildingSymmetrical, "N", h_pos=V)
 
-load(0x61, "tiny", BuildingSpriteSheetSymmetrical, "H", h_pos=V, full=False, platform=False, third=False)
-load_full(0x62, "tiny_untraversable", BuildingSpriteSheetSymmetrical, "H")
-load(0x63, "tiny_asym", BuildingSpriteSheetSymmetricalX, "H", h_pos=TinyAsym, corridor=False)
+load(0x61, "tiny", BuildingSymmetrical, "H", h_pos=V, full=False, platform=False, third=False)
+load_full(0x62, "tiny_untraversable", BuildingSymmetrical, "H")
+load(0x63, "tiny_asym", BuildingSymmetricalX, "H", h_pos=TinyAsym, corridor=False)
 
-load_full(0x80, "irregular/turn", BuildingSpriteSheetFull, "T")
-load_full(0x84, "irregular/turn_gate", BuildingSpriteSheetFull, "T")
-load(0x88, "irregular/tee", BuildingSpriteSheetSymmetricalX, "T", corridor=False, borrow_f1="h_normal")
-load(0x8A, "irregular/cross", BuildingSpriteSheetSymmetrical, "T", platform=False, full=False, borrow_f1="h_normal")
-load_full(0x8B, "irregular/double_corner", BuildingSpriteSheetRotational, "T", borrow_f1="h_normal", window=[])
-load(0x8F, "irregular/funnel", BuildingSpriteSheetFull, "T", corridor=False, borrow_f1="h_normal", window=[])
-load_full(0x93, "irregular/inner_corner", BuildingSpriteSheetFull, "T", window=[])
-load_full(0x97, "irregular/double_inner_corner", BuildingSpriteSheetSymmetricalY, "T", borrow_f1="h_normal")
-load_full(0x99, "irregular/v_funnel", BuildingSpriteSheetFull, "T")
-load_full(0x9D, "irregular/v_funnel_2", BuildingSpriteSheetFull, "T")
+load_full(0x80, "irregular/turn", BuildingFull, "T")
+load_full(0x84, "irregular/turn_gate", BuildingFull, "T")
+load(0x88, "irregular/tee", BuildingSymmetricalX, "T", corridor=False, borrow_f1="h_normal")
+load(0x8A, "irregular/cross", BuildingSymmetrical, "T", platform=False, full=False, borrow_f1="h_normal")
+load_full(0x8B, "irregular/double_corner", BuildingRotational, "T", borrow_f1="h_normal", window=[])
+load(0x8F, "irregular/funnel", BuildingFull, "T", corridor=False, borrow_f1="h_normal", window=[])
+load_full(0x93, "irregular/inner_corner", BuildingFull, "T", window=[])
+load_full(0x97, "irregular/double_inner_corner", BuildingSymmetricalY, "T", borrow_f1="h_normal")
+load_full(0x99, "irregular/v_funnel", BuildingFull, "T")
+load_full(0x9D, "irregular/v_funnel_2", BuildingFull, "T")
 
-load_full(0xC0, "junction/front_corner", BuildingSpriteSheetDiagonal, "X", window=[])
-load_full(0xC4, "junction/front_gate_extender_corner", BuildingSpriteSheetDiagonal, "X")
-load_full(0xC8, "junction/double_corner_2", BuildingSpriteSheetDiagonal, "X", window=[])
-load_full(0xCC, "junction/bicorner", BuildingSpriteSheetDiagonal, "X", window=[])
-load_full(0xD0, "junction/bicorner_2", BuildingSpriteSheetDiagonal, "X", window=[])
+load_full(0xC0, "junction/front_corner", BuildingDiagonal, "X", window=[])
+load_full(0xC4, "junction/front_gate_extender_corner", BuildingDiagonal, "X")
+load_full(0xC8, "junction/double_corner_2", BuildingDiagonal, "X", window=[])
+load_full(0xCC, "junction/bicorner", BuildingDiagonal, "X", window=[])
+load_full(0xD0, "junction/bicorner_2", BuildingDiagonal, "X", window=[])
 
 named_tiles.populate()
 
@@ -594,3 +590,4 @@ def globalize_all(platform_class=None, shelter_class=None):
     )
     concourse_tiles.globalize(caller_globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)
     named_tiles.globalize(caller_globals=caller_globals, platform_class=platform_class, shelter_class=shelter_class)
+    caller_globals["concourse_none"] = concourse_tiles.none
