@@ -67,9 +67,9 @@ class CNSPlatformFamily(PlatformFamily):
             return self.snow_sprites[key]
 
         if location in ["building"]:
-            symmetry = BuildingSpriteSheetFull
+            symmetry = BuildingFull
         else:
-            symmetry = BuildingSpriteSheetSymmetricalX
+            symmetry = BuildingSymmetricalX
 
         s = shelter_class + ("_" if location != "" else "") + location
         skeeps = {s, s + "_snow"}
@@ -126,6 +126,9 @@ class CNSPlatformFamily(PlatformFamily):
         height = max((platform_height if platform_class != "" else 0), (shelter_height if shelter_class != "" else 0))
         if shelter_class in ["shelter_1", "shelter_2"]:
             child_sprites = [self._get_snow_sprite(location.replace("_narrow", ""), shelter_class)]
+
+            # XXX Temporarily disable snow sprites until WenSim adds them in CNS
+            child_sprites = []
         else:
             child_sprites = []
         return AParentSprite(
