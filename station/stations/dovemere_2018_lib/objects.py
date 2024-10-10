@@ -91,7 +91,7 @@ all_layers = (
     "arcs",
     "xiangqi pieces",
     "basket",
-    "flowers in basket",
+    "bouquet",
     "bushes",
 )
 
