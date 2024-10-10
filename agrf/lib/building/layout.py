@@ -102,8 +102,10 @@ class ADefaultGroundSprite(DefaultSpriteMixin, ChildSpriteContainerMixin, Regist
 
     def to_parentsprite(self, low=False):
         if low:
-            return ADefaultParentSprite(self.sprite, (16, 16, 0), (0, 0, 0))
-        return ADefaultParentSprite(self.sprite, (16, 16, 1), (0, 0, 0))
+            return ADefaultParentSprite(self.sprite, (16, 16, 0), (0, 0, 0), child_sprites=self.child_sprites)
+        return ADefaultParentSprite(
+            self.sprite, (16, 16, 1), (0, 0, 0), child_sprites=self.child_sprites, flags=self.flags
+        )
 
     def to_action2(self, sprite_list):
         return [{"sprite": grf.SpriteRef(self.sprite, is_global=True)}] + [
@@ -163,8 +165,8 @@ class AGroundSprite(ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixi
 
     def to_parentsprite(self, low=False):
         if low:
-            return AParentSprite(self.sprite, (16, 16, 0), (0, 0, 0))
-        return AParentSprite(self.sprite, (16, 16, 1), (0, 0, 0), flags=self.flags)
+            return AParentSprite(self.sprite, (16, 16, 0), (0, 0, 0), child_sprites=self.child_sprites)
+        return AParentSprite(self.sprite, (16, 16, 1), (0, 0, 0), child_sprites=self.child_sprites, flags=self.flags)
 
     def to_action2(self, sprite_list):
         return [{"sprite": grf.SpriteRef(sprite_list.index(self.sprite), is_global=False)}] + [
