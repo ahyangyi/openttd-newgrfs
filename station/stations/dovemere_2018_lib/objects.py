@@ -93,6 +93,7 @@ all_layers = (
     "basket",
     "bouquet",
     "bushes",
+    "ruyi",
 )
 
 
