@@ -1,8 +1,6 @@
-import grf
 from station.lib import BuildingFull, BuildingSymmetricalX, AParentSprite, ALayout
 from station.lib.parameters import parameter_list
 from agrf.graphics.voxel import LazyVoxel
-from agrf.graphics import SCALE_TO_ZOOM
 from agrf.magic import Switch
 from roadstop.lib import ARoadStop
 from ..misc import road_ground
@@ -12,10 +10,13 @@ roadstops = []
 WIDTH = 3
 OVERPASS_HEIGHT = 10
 OVERHANG_WIDTH = 1
+EXTENDED_WIDTH = 8
 
 
 for name, sym, (far, overhang, overpass, near), extended in [
-    ("overpass", BuildingSymmetricalX, (True, True, True, False), False)
+    ("overpass", BuildingSymmetricalX, (True, True, True, False), False),
+    ("west_stair", BuildingFull, (True, False, True, True), True),
+    ("west_stair_extender", BuildingSymmetricalX, (True, False, True, True), True),
 ]:
     v = LazyVoxel(
         name,
@@ -25,11 +26,11 @@ for name, sym, (far, overhang, overpass, near), extended in [
         # config={"z_scale": 1.01},
     )
     if extended:
-        v.config["size"]["x"] = 384
-        v.config["size"]["y"] = 384
+        v.config["size"]["x"] = 448
+        v.config["size"]["y"] = 448
         for sprite in v.config["sprites"]:
-            sprite["width"] = 96
-        v.config["agrf_zdiff"] = -8
+            sprite["width"] = 112
+        v.config["agrf_zdiff"] = -12
     if extended:
         farv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_back_mask_extended.vox", "back")
     else:
@@ -63,8 +64,12 @@ for name, sym, (far, overhang, overpass, near), extended in [
     else:
         nearv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_front_mask.vox", "front")
     nearv.in_place_subset(sym.render_indices())
-    nearsprite = sym.create_variants(nearv.spritesheet(xspan=WIDTH, xdiff=16 - WIDTH))
-    nearps = AParentSprite(nearsprite, (16, WIDTH, 12), (0, 16 - WIDTH, 0))
+    width = EXTENDED_WIDTH if extended else WIDTH
+    nearsprite = sym.create_variants(nearv.spritesheet(xspan=width, xdiff=16 - WIDTH))
+    if extended:
+        nearps = AParentSprite(nearsprite, (16, EXTENDED_WIDTH, 12), (0, 16 - WIDTH, 0))
+    else:
+        nearps = AParentSprite(nearsprite, (16, WIDTH, 12), (0, 16 - WIDTH, 0))
 
     layout = ALayout(
         road_ground,

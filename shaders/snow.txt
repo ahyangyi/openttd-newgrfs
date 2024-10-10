@@ -154,5 +154,5 @@ float map(vec3 v) {
     if (total >= m_colors) {
         total = m_colors - 1;
     }
-    return m_color + total;
+    return int(m_color + total) % 256;
 }
