@@ -8,7 +8,7 @@ from ..misc import road_ground
 cnt = 0
 roadstops = []
 WIDTH = 3
-TOTAL_HEIGHT = 13
+TOTAL_HEIGHT = 12
 OVERPASS_HEIGHT = 10
 OVERHANG_WIDTH = 1
 EXTENDED_WIDTH = 9
