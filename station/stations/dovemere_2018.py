@@ -9,6 +9,7 @@ from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable
 from .dovemere_2018_lib.flexible_stations.traversable import traversable_stations
 from .dovemere_2018_lib.flexible_stations.side import side_stations
 from .dovemere_2018_lib.flexible_stations.side_third import side_third_stations
+from agrf.strings import String
 
 modular_stations = []
 for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
@@ -19,10 +20,20 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
     for shelter_class in ["shelter_1", "shelter_2"]:
         if shelter_class in entry.notes:
             enable_if.append(parameter_list.index(f"SHELTER_{shelter_class.upper()}"))
+
+    has_track = entry.traversable
+    far_platform = False
+    near_platform = False
+    translation_name = String("STR_STATION_TEMPLATE")(
+        f"STR_PART_TRACK_{str(has_track).upper()}",
+        f"STR_PART_NPLAT_{str(far_platform).upper()}",
+        f"STR_PART_SPLAT_{str(near_platform).upper()}",
+    )
+
     modular_stations.append(
         AStation(
             id=entry.id,
-            translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
+            translation_name=translation_name,
             layouts=[
                 entry,
                 entry.M,
@@ -42,6 +53,7 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
             doc_layout=entry,
         )
     )
+
 
 the_stations = AMetaStation(
     semitraversable_stations + traversable_stations + side_stations + side_third_stations + modular_stations,
