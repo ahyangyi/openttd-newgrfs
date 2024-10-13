@@ -3,7 +3,7 @@ from agrf.magic import Switch
 
 booldict = {0: "DISABLED", 1: "ENABLED"}
 
-global_settings = []
+global_settings = [Parameter("NIGHT_MODE", 0, {0: "AUTO_DETECT", 1: "ENABLED", 2: "DISABLED"})]
 
 station_meta = ["E88A9CA", "E88A9C0"]
 station_settings = []
