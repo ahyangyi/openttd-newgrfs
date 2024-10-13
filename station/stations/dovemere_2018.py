@@ -22,8 +22,54 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
             enable_if.append(parameter_list.index(f"SHELTER_{shelter_class.upper()}"))
 
     has_track = entry.traversable
-    far_platform = False
-    near_platform = False
+    far_platform = entry.category[-1] in {
+        0x89,
+        0x8B,
+        0x8D,
+        0x8F,
+        0x92,
+        0x93,
+        0xA2,
+        0xA3,
+        0xA6,
+        0xA7,
+        0xAA,
+        0xAB,
+        0xAE,
+        0xAF,
+        0xB2,
+        0xB3,
+        0xB6,
+        0xB7,
+        0xC2,
+        0xC3,
+        0xC6,
+        0xC7,
+    }
+    near_platform = entry.category[-1] in {
+        0x81,
+        0x83,
+        0x85,
+        0x87,
+        0x91,
+        0x93,
+        0xA1,
+        0xA3,
+        0xA5,
+        0xA7,
+        0xA9,
+        0xAB,
+        0xAD,
+        0xAF,
+        0xB1,
+        0xB3,
+        0xB5,
+        0xB7,
+        0xC1,
+        0xC3,
+        0xC5,
+        0xC7,
+    }
     translation_name = String("STR_STATION_TEMPLATE")(
         f"STR_PART_TRACK_{str(has_track).upper()}",
         f"STR_PART_NPLAT_{str(far_platform).upper()}",

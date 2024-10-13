@@ -45,7 +45,6 @@ class AStation(grf.SpriteGenerator):
             translated_name = g.strings[f"STR_STATION_{self.translation_name}"]
         else:
             translated_name = self.translation_name(g.strings)
-            print(translated_name)
 
         extra_props = {"station_name": g.strings.add(translated_name).get_persistent_id()}
         if not self.is_waypoint:
