@@ -239,7 +239,7 @@ class ADefaultParentSprite(DefaultSpriteMixin, BoundingBoxMixin, ChildSpriteCont
             else:
                 x += 1
                 y += 1
-        return ADefaultParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
+        return ADefaultParentSprite(self.sprite, self.extent, (x, y, z), self.child_sprites, self.flags)
 
     def demo_translate(self, xofs, yofs, zofs):
         return ADefaultParentSprite(
@@ -354,7 +354,7 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
             else:
                 x += 1
                 y += 1
-        return AParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
+        return AParentSprite(self.sprite, self.extent, (x, y, z), self.child_sprites, self.flags)
 
     def demo_translate(self, xofs, yofs, zofs):
         return AParentSprite(
