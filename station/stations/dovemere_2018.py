@@ -23,10 +23,10 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
 
     has_track = entry.traversable
     far_platform = entry.category[-1] in {
-        0x89,
-        0x8B,
-        0x8D,
-        0x8F,
+        0x81,
+        0x83,
+        0x85,
+        0x87,
         0x92,
         0x93,
         0xA2,
@@ -47,10 +47,10 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
         0xC7,
     }
     near_platform = entry.category[-1] in {
-        0x81,
-        0x83,
-        0x85,
-        0x87,
+        0x89,
+        0x8B,
+        0x8D,
+        0x8F,
         0x91,
         0x93,
         0xA1,
