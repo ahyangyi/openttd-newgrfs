@@ -16,7 +16,8 @@ station = h_merge([[[]] * 2, semitraversable.demo_1(5, 7)[5:], [[]] * 2], [[cns]
 stop1 = roadstops[0].doc_layout.lower_tile()
 stop2 = roadstops[4].doc_layout.lower_tile()
 stop3 = roadstops[12].doc_layout.lower_tile()
-roadstops = [[stop1, stop1, stop2, stop3, stop2.R, stop1, stop1]]
+stop4 = roadstops[16].doc_layout.lower_tile()
+roadstops = [[stop4, stop1, stop2, stop3, stop2.R, stop1, stop4.R]]
 
 # Objects
 center_ground = west_plaza_center.lower_tile()

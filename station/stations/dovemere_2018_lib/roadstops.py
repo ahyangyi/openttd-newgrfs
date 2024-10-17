@@ -18,6 +18,7 @@ for name, sym, (far, overhang, overpass, near), extended, floating in [
     ("overpass", BuildingSymmetricalX, (True, True, True, False), False, 0),
     ("west_stair", BuildingFull, (True, False, True, True), True, 16),
     ("west_stair_extender", BuildingSymmetricalX, (True, False, True, True), True, 0),
+    ("west_stair_end", BuildingFull, (True, False, True, True), True, 16),
 ]:
     v = LazyVoxel(
         name,
