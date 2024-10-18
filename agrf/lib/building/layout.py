@@ -6,6 +6,7 @@ import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.magic import CachedFunctorMixin
 from agrf.utils import unique_tuple
+from agrf.pkg import load_third_party_image
 
 
 class ChildSpriteContainerMixin:
@@ -58,11 +59,11 @@ class DefaultSpriteMixin:
         self.sprite = sprite
 
     climate_dependent_tiles = {
-        (climate, k): Image.open(f"third_party/opengfx2/{climate}/{k}.png")
+        (climate, k): load_third_party_image(f"third_party/opengfx2/{climate}/{k}.png")
         for climate in ["temperate", "arctic", "tropical", "toyland"]
         for k in [1011, 1012, 1037, 1038, 3981, 4550]
     }
-    climate_independent_tiles = {k: Image.open(f"third_party/opengfx2/{k}.png") for k in [1313, 1314, 1420]}
+    climate_independent_tiles = {k: load_third_party_image(f"third_party/opengfx2/{k}.png") for k in [1313, 1314, 1420]}
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         # FIXME handle flags correctly
@@ -238,7 +239,7 @@ class ADefaultParentSprite(DefaultSpriteMixin, BoundingBoxMixin, ChildSpriteCont
             else:
                 x += 1
                 y += 1
-        return ADefaultParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
+        return ADefaultParentSprite(self.sprite, self.extent, (x, y, z), self.child_sprites, self.flags)
 
     def demo_translate(self, xofs, yofs, zofs):
         return ADefaultParentSprite(
@@ -353,7 +354,7 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
             else:
                 x += 1
                 y += 1
-        return AParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
+        return AParentSprite(self.sprite, self.extent, (x, y, z), self.child_sprites, self.flags)
 
     def demo_translate(self, xofs, yofs, zofs):
         return AParentSprite(

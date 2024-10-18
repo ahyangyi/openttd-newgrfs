@@ -43,8 +43,6 @@ overpass_height = building_height - base_height
 gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
 concourse = concourse_ps.none
-third = AChildSprite(gray_third, (0, 0))
-third_T = AChildSprite(gray_third.T, (0, 0))
 
 
 def get_category(internal_category, back, notes, tra):
@@ -212,9 +210,10 @@ def register(base_id, step_id, l, symmetry, internal_category, name, broken_near
 
 
 solid_ground = gray_ps
-corridor_ground = track_ground + third + third_T
-one_side_ground = track_ground + third
-one_side_ground_t = track_ground + third_T
+# FIME merge these since the groundchildsprite is no longer used here
+corridor_ground = track_ground
+one_side_ground = track_ground
+one_side_ground_t = track_ground
 empty_ground = track_ground
 
 voxel_cache = {}
