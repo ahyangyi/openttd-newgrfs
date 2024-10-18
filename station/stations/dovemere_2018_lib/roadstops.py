@@ -14,12 +14,7 @@ OVERHANG_WIDTH = 1
 EXTENDED_WIDTH = 9
 
 
-for name, sym, (far, overhang, overpass, near), extended, floating in [
-    ("overpass", BuildingSymmetricalX, (True, True, True, False), False, 0),
-    ("west_stair", BuildingFull, (True, False, True, True), True, 16),
-    ("west_stair_extender", BuildingSymmetricalX, (True, False, True, True), True, 0),
-    ("west_stair_end", BuildingFull, (True, False, True, True), True, 16),
-]:
+def make_road_stop(name, sym, far, overpass, near, extended, floating):
     v = LazyVoxel(
         name,
         prefix=".cache/render/station/dovemere_2018/plaza",
@@ -33,54 +28,28 @@ for name, sym, (far, overhang, overpass, near), extended, floating in [
         for sprite in v.config["sprites"]:
             sprite["width"] = 112
         v.config["agrf_zdiff"] = -12
-    v.config["agrf_zdiff"] = v.config.get("agrf_zdiff", 0) + floating
-    if extended:
-        farv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_back_mask_extended.vox", "back")
-    else:
-        farv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_back_mask.vox", "back")
-    farv.in_place_subset(sym.render_indices())
-    farsprite = sym.create_variants(farv.spritesheet(xspan=WIDTH))
-    farps = AParentSprite(farsprite, (16, WIDTH, TOTAL_HEIGHT), (0, 0, 0))
+    extended_suffix = "_extended" if extended else ""
 
-    if extended:
-        overpassv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_overpass_mask_extended.vox", "overpass")
-    else:
-        overpassv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_overpass_mask.vox", "overpass")
-    overpassv.in_place_subset(sym.render_indices())
-    if overhang:
-        overpasssprite = sym.create_variants(
-            overpassv.spritesheet(xspan=OVERHANG_WIDTH, xdiff=WIDTH, zdiff=OVERPASS_HEIGHT)
+    ps = []
+    for part, partname in ((far, "far"), (overpass, "overpass"), (near, "near")):
+        if part is None:
+            continue
+        span, offset = part
+        partv = v.mask_clip_away(
+            f"station/voxels/dovemere_2018/masks/road_{partname}_mask{extended_suffix}.vox", partname
         )
-        overpassps = AParentSprite(
-            overpasssprite, (16, OVERHANG_WIDTH, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)
+        partv.in_place_subset(sym.render_indices())
+        partsprite = sym.create_variants(
+            partv.spritesheet(
+                xspan=span[1], yspan=span[0], xdiff=offset[1], ydiff=offset[0], zdiff=offset[2] + floating
+            )
         )
-    else:
-        overpasssprite = sym.create_variants(
-            overpassv.spritesheet(xspan=16 - WIDTH * 2, xdiff=WIDTH, zdiff=OVERPASS_HEIGHT)
-        )
-        overpassps = AParentSprite(
-            overpasssprite, (16, 16 - WIDTH * 2, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)
-        )
+        partps = AParentSprite(partsprite, span, offset)
+        ps.append(partps)
 
-    if extended:
-        nearv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_front_mask_extended.vox", "front")
-    else:
-        nearv = v.mask_clip_away("station/voxels/dovemere_2018/masks/road_front_mask.vox", "front")
-    nearv.in_place_subset(sym.render_indices())
-    width = EXTENDED_WIDTH if extended else WIDTH
-    nearsprite = sym.create_variants(nearv.spritesheet(xspan=width, xdiff=16 - WIDTH))
-    if extended:
-        nearps = AParentSprite(nearsprite, (16, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0))
-    else:
-        nearps = AParentSprite(nearsprite, (16, WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0))
+    layout = ALayout(road_ground, ps, True, category=b"\xe8\x8a\x9cR")
 
-    layout = ALayout(
-        road_ground,
-        [farps] + ([overpassps] if overpass else []) + ([nearps] if near else []),
-        True,
-        category=b"\xe8\x8a\x9cR",
-    )
-
+    global cnt
     for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingFull) else [layout, layout.T]:
         cur_roadstop = ARoadStop(
             id=0x8000 + cnt,
@@ -104,3 +73,41 @@ for name, sym, (far, overhang, overpass, near), extended, floating in [
         )
         roadstops.append(cur_roadstop)
         cnt += 1
+
+
+make_road_stop(
+    "overpass",
+    BuildingSymmetricalX,
+    ((16, WIDTH, TOTAL_HEIGHT), (0, 0, 0)),
+    ((16, OVERHANG_WIDTH, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
+    None,
+    False,
+    0,
+)
+make_road_stop(
+    "west_stair",
+    BuildingFull,
+    ((16, WIDTH, TOTAL_HEIGHT), (0, 0, 0)),
+    ((16, 16 - WIDTH * 2, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
+    ((16, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
+    True,
+    16,
+)
+make_road_stop(
+    "west_stair_extender",
+    BuildingSymmetricalX,
+    ((16, WIDTH, TOTAL_HEIGHT), (0, 0, 0)),
+    ((16, 16 - WIDTH * 2, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
+    ((16, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
+    True,
+    0,
+)
+make_road_stop(
+    "west_stair_end",
+    BuildingFull,
+    ((16, WIDTH, TOTAL_HEIGHT), (0, 0, 0)),
+    ((16, 16 - WIDTH * 2, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
+    ((16, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
+    True,
+    16,
+)
