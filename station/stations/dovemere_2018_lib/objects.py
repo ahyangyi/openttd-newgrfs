@@ -194,7 +194,7 @@ make_object_layout("west_plaza_center_flower_2023", BuildingSymmetrical, 6, 16, 
 make_object_layout("west_plaza_center_flower_2024", BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
 
 
-def object_part(name, sym, span, offset):
+def object_part(name, sym, span, offset, translate=(0, 0)):
     v = LazyVoxel(
         name,
         prefix=".cache/render/station/dovemere_2018/plaza",
@@ -206,13 +206,14 @@ def object_part(name, sym, span, offset):
     sprite = sym.create_variants(
         v.spritesheet(xspan=span[1], yspan=span[0], xdiff=offset[1], ydiff=offset[0], zdiff=offset[2])
     )
-    gs = AParentSprite(sprite, span, offset)
+    gs = AParentSprite(sprite, span, (offset[0] + translate[0], offset[1] + translate[1], offset[2]))
     return gs
 
 
-flowerbed_1 = object_part("west_plaza_triangular_flowerbed", BuildingFull, (4, 4, 2), (2, 10, 0))
+flowerbed_1 = object_part("west_plaza_flowerbed_1", BuildingFull, (4, 4, 2), (2, 10, 0), translate=(-4, 0))
+flowerbed_2 = object_part("west_plaza_flowerbed_2", BuildingFull, (4, 4, 2), (6, 10, 0))
 gs = named_grounds[("west_plaza_offcenter_B",)]
-ps = [flowerbed_1]
+ps = [flowerbed_1, flowerbed_2]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("flowerbed", "")] = layout
 register(layout, BuildingFull)
