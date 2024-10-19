@@ -194,7 +194,7 @@ make_object_layout("west_plaza_center_flower_2023", BuildingSymmetrical, 6, 16, 
 make_object_layout("west_plaza_center_flower_2024", BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
 
 
-def object_part(name, sym, span, offset, translate=(0, 0)):
+def object_part(name, sym, span, offset):
     v = LazyVoxel(
         name,
         prefix=".cache/render/station/dovemere_2018/plaza",
@@ -206,14 +206,27 @@ def object_part(name, sym, span, offset, translate=(0, 0)):
     sprite = sym.create_variants(
         v.spritesheet(xspan=span[1], yspan=span[0], xdiff=offset[1], ydiff=offset[0], zdiff=offset[2])
     )
-    gs = AParentSprite(sprite, span, (offset[0] + translate[0], offset[1] + translate[1], offset[2]))
+    gs = AParentSprite(sprite, span, offset)
     return gs
 
 
-flowerbed_1 = object_part("west_plaza_flowerbed_1", BuildingFull, (4, 4, 2), (2, 10, 0), translate=(-4, 0))
+flowerbed_1 = object_part("west_plaza_flowerbed_1", BuildingFull, (4, 4, 2), (2, 10, 0)).move(-4, 0)
 flowerbed_2 = object_part("west_plaza_flowerbed_2", BuildingFull, (7, 4, 2), (2, 10, 0))
+pole = object_part("west_plaza_pole", BuildingSymmetrical, (2, 2, 24), (7, 7, 0))
 gs = named_grounds[("west_plaza_offcenter_B",)]
-ps = [flowerbed_1, flowerbed_2]
+ps = [flowerbed_1, flowerbed_2, pole.move(-2, 0), pole.move(2, 0), pole.move(-2, -4), pole.move(2, -4)]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
-named_layouts[("flowerbed", "")] = layout
+named_layouts[("west_plaza_offcenter_B", "decorated")] = layout
+register(layout, BuildingFull)
+
+gs = named_grounds[("west_plaza_offcenter_A",)]
+ps = [pole.move(-2, 4), pole.move(2, 4), pole.move(-2, 8), pole.move(2, 8)]
+layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+named_layouts[("west_plaza_offcenter_A", "decorated")] = layout
+register(layout, BuildingFull)
+
+gs = named_grounds[("west_plaza_offcenter_A",)]
+ps = [pole.move(-2, 0), pole.move(2, 0), pole.move(-2, 4), pole.move(2, 4)]
+layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+named_layouts[("west_plaza_offcenter_B", "oneliner")] = layout
 register(layout, BuildingFull)
