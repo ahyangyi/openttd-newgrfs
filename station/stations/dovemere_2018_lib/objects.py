@@ -240,7 +240,7 @@ named_layouts[("west_plaza_offcenter_A", "decorated")] = layout
 register(layout, BuildingFull)
 
 gs = named_grounds[("west_plaza_offcenter_A",)]
-ps = [pole.move(-2, 0), pole.move(2, 0), pole.move(-2, 4), pole.move(2, 4), underground_entrance.move(0, 6)]
+ps = [pole.move(-2, 0), pole.move(2, 0), pole.move(-2, 4), pole.move(2, 4), underground_entrance.move(0, 8)]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_offcenter_B", "oneliner")] = layout
 register(layout, BuildingFull)
