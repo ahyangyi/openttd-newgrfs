@@ -193,7 +193,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
 
 make_object_layout("west_plaza_center_flower_2021", BuildingSymmetrical, 8, 10, 4, 8, 6)
 make_object_layout("west_plaza_center_flower_2022", BuildingSymmetrical, 8, 10, 4, 8, 6)
-make_object_layout("west_plaza_center_flower_2023", BuildingSymmetrical, 6, 16, 2, 10, 6)
+make_object_layout("west_plaza_center_flower_2023", BuildingSymmetrical, 6, 16, 2, 10, 10)
 make_object_layout("west_plaza_center_flower_2024", BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
 
 
@@ -214,10 +214,10 @@ def object_part(name, sym, span, offset):
     return gs
 
 
-flowerbed_1 = object_part("west_plaza_flowerbed_1", BuildingFull, (4, 4, 2), (2, 10, 0)).move(-4, 0)
-flowerbed_2 = object_part("west_plaza_flowerbed_2", BuildingFull, (7, 4, 2), (2, 10, 0))
-pole = object_part("west_plaza_pole", BuildingSymmetrical, (2, 2, 18), (7, 7, 0))
-underground_entrance = object_part("west_plaza_underground_entrance", BuildingFull, (4, 4, 18), (6, 6, 0)).move(6, -6)
+flowerbed_1 = object_part("west_plaza_flowerbed_1", BuildingFull, (4, 4, 1), (2, 10, 0)).move(-4, 0)
+flowerbed_2 = object_part("west_plaza_flowerbed_2", BuildingFull, (7, 4, 1), (2, 10, 0))
+pole = object_part("west_plaza_pole", BuildingSymmetrical, (2, 2, 8), (7, 7, 0))
+underground_entrance = object_part("west_plaza_underground_entrance", BuildingFull, (4, 4, 8), (6, 6, 0)).move(6, -6)
 
 gs = named_grounds[("west_plaza_offcenter_B",)]
 ps = [
