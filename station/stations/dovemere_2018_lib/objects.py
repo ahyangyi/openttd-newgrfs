@@ -212,7 +212,7 @@ def object_part(name, sym, span, offset):
 
 flowerbed_1 = object_part("west_plaza_flowerbed_1", BuildingFull, (4, 4, 2), (2, 10, 0)).move(-4, 0)
 flowerbed_2 = object_part("west_plaza_flowerbed_2", BuildingFull, (7, 4, 2), (2, 10, 0))
-pole = object_part("west_plaza_pole", BuildingSymmetrical, (2, 2, 24), (7, 7, 0))
+pole = object_part("west_plaza_pole", BuildingSymmetrical, (2, 2, 18), (7, 7, 0))
 gs = named_grounds[("west_plaza_offcenter_B",)]
 ps = [flowerbed_1, flowerbed_2, pole.move(-2, 0), pole.move(2, 0), pole.move(-2, -4), pole.move(2, -4)]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
