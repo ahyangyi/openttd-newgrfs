@@ -192,3 +192,27 @@ make_object_layout("west_plaza_center_flower_2021", BuildingSymmetrical, 8, 10, 
 make_object_layout("west_plaza_center_flower_2022", BuildingSymmetrical, 8, 10, 4, 8, 6)
 make_object_layout("west_plaza_center_flower_2023", BuildingSymmetrical, 6, 16, 2, 10, 6)
 make_object_layout("west_plaza_center_flower_2024", BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
+
+
+def object_part(name, sym, span, offset):
+    v = LazyVoxel(
+        name,
+        prefix=".cache/render/station/dovemere_2018/plaza",
+        voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
+        load_from="station/files/cns-gorender.json",
+    )
+    v.config["agrf_manual_crop"] = (0, 10)
+    v.in_place_subset(sym.render_indices())
+    sprite = sym.create_variants(
+        v.spritesheet(xspan=span[1], yspan=span[0], xdiff=offset[1], ydiff=offset[0], zdiff=offset[2])
+    )
+    gs = AParentSprite(sprite, span, offset)
+    return gs
+
+
+flowerbed_1 = object_part("west_plaza_triangular_flowerbed", BuildingFull, (4, 4, 2), (10, 10, 0))
+gs = named_grounds[("west_plaza_offcenter_B",)]
+ps = [flowerbed_1]
+layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+named_layouts[("flowerbed", "")] = layout
+register(layout, BuildingFull)
