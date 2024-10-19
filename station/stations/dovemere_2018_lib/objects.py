@@ -205,6 +205,7 @@ def object_part(name, sym, span, offset):
         load_from="station/files/cns-gorender.json",
     )
     v.config["agrf_manual_crop"] = (0, 10)
+    v.config["agrf_palette"] = "station/files/cns-palette-hard.json"
     v.in_place_subset(sym.render_indices())
     sprite = sym.create_variants(
         v.spritesheet(xspan=span[1], yspan=span[0], xdiff=offset[1], ydiff=offset[0], zdiff=offset[2])
@@ -216,8 +217,18 @@ def object_part(name, sym, span, offset):
 flowerbed_1 = object_part("west_plaza_flowerbed_1", BuildingFull, (4, 4, 2), (2, 10, 0)).move(-4, 0)
 flowerbed_2 = object_part("west_plaza_flowerbed_2", BuildingFull, (7, 4, 2), (2, 10, 0))
 pole = object_part("west_plaza_pole", BuildingSymmetrical, (2, 2, 18), (7, 7, 0))
+underground_entrance = object_part("west_plaza_underground_entrance", BuildingFull, (4, 4, 18), (6, 6, 0)).move(6, -6)
+
 gs = named_grounds[("west_plaza_offcenter_B",)]
-ps = [flowerbed_1, flowerbed_2, pole.move(-2, 0), pole.move(2, 0), pole.move(-2, -4), pole.move(2, -4)]
+ps = [
+    flowerbed_1,
+    flowerbed_2,
+    pole.move(-2, 0),
+    pole.move(2, 0),
+    pole.move(-2, -4),
+    pole.move(2, -4),
+    underground_entrance,
+]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_offcenter_B", "decorated")] = layout
 register(layout, BuildingFull)
