@@ -2,23 +2,24 @@ from station.lib import Demo
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.flexible_stations import semitraversable
-from station.stations.dovemere_2018_lib.roadstops import roadstops
+from station.stations.dovemere_2018_lib.roadstops import named_layouts as roadstop_layouts
 from station.stations.dovemere_2018_lib.objects import named_layouts as object_layouts
 from station.stations.dovemere_2018_lib.layouts import globalize_all
 from station.stations.misc import default
 from .utils import h_merge
 
 globalize_all(platform_class="concrete", shelter_class="shelter_2")
+roadstop_layouts.globalize()
 object_layouts.globalize()
 
 station = h_merge([[[]] * 2, semitraversable.demo_1(5, 7)[5:], [[]] * 2], [[cns], [default]])
 
 # Road Stops
-stop1 = roadstops[0].doc_layout.lower_tile()
-stop2 = roadstops[4].doc_layout.lower_tile()
-stop3 = roadstops[12].doc_layout.lower_tile()
-stop4 = roadstops[16].doc_layout.lower_tile()
-roadstops = [[stop4, stop1, stop2, stop3, stop2.R, stop1, stop4.R]]
+west_stair_end = west_stair_end.lower_tile()
+overpass = overpass.lower_tile()
+west_stair = west_stair.lower_tile()
+west_stair_extender = west_stair_extender.lower_tile()
+roadstops = [[west_stair_end, overpass, west_stair, west_stair_extender, west_stair.R, overpass, west_stair_end.R]]
 
 # Objects
 center_ground = west_plaza_center.lower_tile()

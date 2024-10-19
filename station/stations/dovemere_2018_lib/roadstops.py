@@ -1,9 +1,11 @@
-from station.lib import BuildingFull, BuildingSymmetricalX, AParentSprite, ALayout
+from station.lib import BuildingFull, BuildingSymmetricalX, AParentSprite, ALayout, AttrDict
 from station.lib.parameters import parameter_list
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
 from roadstop.lib import ARoadStop
 from ..misc import road_ground
+
+named_layouts = AttrDict(schema=("name",))
 
 cnt = 0
 roadstops = []
@@ -48,6 +50,7 @@ def make_road_stop(name, sym, far, overpass, near, extended, floating):
         ps.append(partps)
 
     layout = ALayout(road_ground, ps, True, category=b"\xe8\x8a\x9cR")
+    named_layouts[(name,)] = layout
 
     global cnt
     for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingFull) else [layout, layout.T]:
