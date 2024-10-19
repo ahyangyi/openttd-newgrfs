@@ -210,7 +210,7 @@ def object_part(name, sym, span, offset):
     return gs
 
 
-flowerbed_1 = object_part("west_plaza_triangular_flowerbed", BuildingFull, (4, 4, 2), (10, 10, 0))
+flowerbed_1 = object_part("west_plaza_triangular_flowerbed", BuildingFull, (4, 4, 2), (2, 10, 0))
 gs = named_grounds[("west_plaza_offcenter_B",)]
 ps = [flowerbed_1]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
