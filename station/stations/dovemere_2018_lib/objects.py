@@ -25,7 +25,7 @@ for name, sym in [
     ("west_plaza_offcenter_A", BuildingFull),
     ("west_plaza_offcenter_B", BuildingFull),
     ("west_plaza_diagonal", BuildingDiamond),
-    ("west_plaza_checkerboard", BuildingSymmetrical),
+    ("west_plaza_checkerboard", BuildingCylindrical),
 ]:
     v = LazyVoxel(
         name,
@@ -42,7 +42,10 @@ for name, sym in [
 
 def register(layout, sym):
     for cur in [layout, layout.R] if (sym is BuildingFull) else [layout]:
-        if sym is BuildingSymmetrical or sym is BuildingDiamond:
+        if sym is BuildingCylindrical:
+            layouts = [cur]
+            num_views = 1
+        elif sym is BuildingSymmetrical or sym is BuildingDiamond:
             layouts = [cur, cur.R.M]
             num_views = 2
         else:
@@ -76,7 +79,7 @@ make_ground_layout("west_plaza_center", BuildingSymmetrical)
 make_ground_layout("west_plaza_offcenter_A", BuildingFull)
 make_ground_layout("west_plaza_offcenter_B", BuildingFull)
 make_ground_layout("west_plaza_diagonal", BuildingDiamond)
-make_ground_layout("west_plaza_checkerboard", BuildingSymmetrical)
+make_ground_layout("west_plaza_checkerboard", BuildingCylindrical)
 
 all_layers = (
     "edge marker",
