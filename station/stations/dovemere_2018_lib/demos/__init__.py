@@ -1,5 +1,4 @@
 from .normal import normal_demo
-from .oneliner import oneliner
 from .big import big_demo, big_half_demo
 from .real_yard import real_yard_demo
 from .full_auto import full_auto_demo
@@ -16,3 +15,5 @@ from .special_cn import special_demo_cn
 from .special_sa import special_demo_sa
 from .special_cp import special_demo_cp
 from .special_aq import special_demo_aq
+from .west_plaza import west_plaza
+from .west_plaza_oneliner import west_plaza_oneliner

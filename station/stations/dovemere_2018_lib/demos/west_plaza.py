@@ -23,16 +23,15 @@ roadstops = [[west_stair_end, overpass, west_stair, west_stair_extender, west_st
 
 # Objects
 center_ground = west_plaza_center.lower_tile()
-offcenter_ground_B = west_plaza_offcenter_B_oneliner.lower_tile()
-flower = west_plaza_center_flower_2024_half.T.lower_tile()
+offcenter_A = west_plaza_offcenter_A_decorated.lower_tile()
+flower = west_plaza_center_flower_2024_half.lower_tile()
+offcenter_B = west_plaza_offcenter_B_decorated.lower_tile()
 west_square = [
-    [center_ground, center_ground, offcenter_ground_B, flower, offcenter_ground_B.R, center_ground, center_ground]
+    [center_ground, center_ground, offcenter_A, center_ground, offcenter_A.R, center_ground, center_ground],
+    [center_ground, center_ground, offcenter_B, flower, offcenter_B.R, center_ground, center_ground],
 ]
 
 
-oneliner = Demo(
-    "5×7 station layout (roughly 1 tile = 40m)",
-    station + roadstops + west_square,
-    remap=get_1cc_remap(CompanyColour.WHITE),
-    merge_bbox=True,
+west_plaza = Demo(
+    "West plaza", station + roadstops + west_square, remap=get_1cc_remap(CompanyColour.WHITE), merge_bbox=True
 )
