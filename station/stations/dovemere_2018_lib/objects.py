@@ -16,7 +16,7 @@ from agrf.graphics.voxel import LazyVoxel
 from grfobject.lib import AObject
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 
-named_grounds = AttrDict(schema=("name"))
+named_grounds = AttrDict(schema=("name", "slope"))
 named_layouts = AttrDict(schema=("name", "offset"))
 objects = []
 
@@ -34,10 +34,21 @@ for name, sym in [
         load_from="station/files/cns-gorender.json",
     )
     v.config["agrf_manual_crop"] = (0, 10)
+
+    # FIXME: have to fork before render
+    v2 = v.stairstep(32 * 2**0.5 / 8, "xhill")
+
     v.in_place_subset(sym.render_indices())
     sprite = sym.create_variants(v.spritesheet())
-    gs = AGroundSprite(sprite)
-    named_grounds[(name,)] = gs
+    named_grounds[(name, "")] = AGroundSprite(sprite)
+
+    sym2 = sym.break_y_symmetry()
+    v2.in_place_subset(sym2.render_indices())
+    sprite2 = sym2.create_variants(v2.spritesheet())
+    named_grounds[(name, "x")] = AGroundSprite(sprite)
+
+    # XXX debug only
+    v2.render()
 
 
 def register(layout, sym):
@@ -69,7 +80,7 @@ def register(layout, sym):
 
 
 def make_ground_layout(name, sym):
-    gs = named_grounds[(name,)]
+    gs = named_grounds[(name, "")]
     layout = ALayout(gs, [], True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "")] = layout
     register(layout, sym)
@@ -104,7 +115,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     if osym is None:
         osym = sym
 
-    gs = named_grounds[("west_plaza_center",)]
+    gs = named_grounds[("west_plaza_center", "")]
     v = LazyVoxel(
         name,
         prefix=".cache/render/station/dovemere_2018/plaza",
@@ -219,7 +230,7 @@ flowerbed_2 = object_part("west_plaza_flowerbed_2", BuildingFull, (7, 4, 1), (2,
 pole = object_part("west_plaza_pole", BuildingSymmetrical, (2, 2, 8), (7, 7, 0))
 underground_entrance = object_part("west_plaza_underground_entrance", BuildingFull, (4, 4, 8), (6, 6, 0)).move(6, -6)
 
-gs = named_grounds[("west_plaza_offcenter_B",)]
+gs = named_grounds[("west_plaza_offcenter_B", "")]
 ps = [
     flowerbed_1,
     flowerbed_2,
@@ -233,13 +244,13 @@ layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_offcenter_B", "decorated")] = layout
 register(layout, BuildingFull)
 
-gs = named_grounds[("west_plaza_offcenter_A",)]
+gs = named_grounds[("west_plaza_offcenter_A", "")]
 ps = [pole.move(-2, 4), pole.move(2, 4), pole.move(-2, 8), pole.move(2, 8)]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_offcenter_A", "decorated")] = layout
 register(layout, BuildingFull)
 
-gs = named_grounds[("west_plaza_offcenter_A",)]
+gs = named_grounds[("west_plaza_offcenter_A", "")]
 ps = [pole.move(-2, 0), pole.move(2, 0), pole.move(-2, 4), pole.move(2, 4), underground_entrance.move(0, 8)]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_offcenter_B", "oneliner")] = layout
