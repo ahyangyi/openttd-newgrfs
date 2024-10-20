@@ -414,6 +414,15 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
             self.sprite.T, self.extent, new_offset, child_sprites=[c.T for c in self.child_sprites], flags=self.flags
         )
 
+    def move(self, xofs, yofs):
+        return AParentSprite(
+            self.sprite,
+            self.extent,
+            (self.offset[0] + xofs, self.offset[1] + yofs, self.offset[2]),
+            self.child_sprites,
+            self.flags,
+        )
+
     @property
     def sprites(self):
         return unique_tuple((self.sprite,) + self.sprites_from_child)
