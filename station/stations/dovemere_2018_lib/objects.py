@@ -42,8 +42,12 @@ for name, sym in [
     sprite = sym.create_variants(v.spritesheet())
     named_grounds[(name, "")] = AGroundSprite(sprite)
 
-    sym2 = sym.break_y_symmetry()
+    sym2 = sym.break_x_symmetry()
     v2.in_place_subset(sym2.render_indices())
+    v2.config["agrf_palette"] = "station/files/cns-palette-soft.json"
+    v2 = v2.compose(
+        "station/voxels/dovemere_2018/masks/xhill.vox", "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR
+    )
     sprite2 = sym2.create_variants(v2.spritesheet())
     named_grounds[(name, "x")] = AGroundSprite(sprite)
 
