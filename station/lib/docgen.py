@@ -99,19 +99,21 @@ nav_order: {nav_order}
                             file=f,
                         )
 
-        with open(os.path.join(prefix, f"{metastation_label}_layouts.md"), "w") as f:
-            print(
-                f"""---
+        for demoi, (demok, demov) in enumerate(metastation.demos.items()):
+            os.makedirs(os.path.join(prefix, "img", metastation_label, "layouts", demok), exist_ok=True)
+            with open(os.path.join(prefix, f"{metastation_label}_{demok}.md"), "w") as f:
+                print(
+                    f"""---
 layout: default
-title: Sample Layouts
+title: {demok}
 parent: {translation}
 grand_parent: "CNS Addon: Wuhu"
-nav_order: 5
+nav_order: {5+demoi}
 ---
 """,
-                file=f,
-            )
-            for i, demo in enumerate(metastation.demos):
-                img = demo.graphics(4, 32).crop().resize(1920, 1080).to_pil_image()
-                img.save(os.path.join(prefix, "img", f"{metastation_label}/layouts/{i}.png"))
-                print(f"## {demo.title}\n\n![](img/{metastation_label}/layouts/{i}.png)", file=f)
+                    file=f,
+                )
+                for i, demo in enumerate(demov):
+                    img = demo.graphics(4, 32).crop().resize(1920, 1080).to_pil_image()
+                    img.save(os.path.join(prefix, "img", f"{metastation_label}/layouts/{demok}/{i}.png"))
+                    print(f"## {demo.title}\n\n![](img/{metastation_label}/layouts/{demok}/{i}.png)", file=f)
