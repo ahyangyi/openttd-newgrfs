@@ -41,10 +41,12 @@ class AStation(grf.SpriteGenerator):
 
     def get_sprites(self, g, sprites=None):
         is_managed_by_metastation = sprites is not None
+        if isinstance(self.translation_name, str):
+            translated_name = g.strings[f"STR_STATION_{self.translation_name}"]
+        else:
+            translated_name = self.translation_name(g.strings)
 
-        extra_props = {
-            "station_name": g.strings.add(g.strings[f"STR_STATION_{self.translation_name}"]).get_persistent_id()
-        }
+        extra_props = {"station_name": g.strings.add(translated_name).get_persistent_id()}
         if not self.is_waypoint:
             extra_props["station_class_name"] = g.strings.add(
                 g.strings[f"STR_STATION_CLASS_{self.class_label_plain}"]
@@ -105,10 +107,9 @@ class AStation(grf.SpriteGenerator):
         res.append(map_action)
 
         if self.id < 0xFF:
-            name = g.strings[f"STR_STATION_{self.translation_name}"]
             class_name = g.strings[f"STR_STATION_CLASS_{self.class_label_plain}"]
             res.extend(class_name.get_actions(grf.STATION, 0xC400 + self.id, is_generic_offset=True))
-            res.extend(name.get_actions(grf.STATION, 0xC500 + self.id, is_generic_offset=True))
+            res.extend(translated_name.get_actions(grf.STATION, 0xC500 + self.id, is_generic_offset=True))
 
         return res
 
