@@ -38,6 +38,8 @@ class AObject(grf.SpriteGenerator):
         for i, layout in enumerate(self.layouts):
             layouts.append(layout.to_action2(feature=grf.OBJECT, sprite_list=sprites))
 
+        if isinstance(self.layouts[0], Switch):
+            print(self.layouts)
         default_graphics = Switch(
             ranges={i: layouts[i] for i in range(len(layouts))},
             default=layouts[0],

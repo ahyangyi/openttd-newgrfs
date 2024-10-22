@@ -13,7 +13,7 @@ from station.lib import (
     Registers,
 )
 from agrf.graphics.voxel import LazyVoxel
-from grfobject.lib import AObject
+from grfobject.lib import AObject, GraphicalSwitch
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 
 named_grounds = AttrDict(schema=("name", "slope"))
@@ -49,13 +49,13 @@ for name, sym in [
         "station/voxels/dovemere_2018/masks/xhill.vox", "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR
     )
     sprite2 = sym2.create_variants(v2.spritesheet())
-    named_grounds[(name, "x")] = AGroundSprite(sprite)
+    named_grounds[(name, "x")] = AGroundSprite(sprite2)
 
     # XXX debug only
     v2.render()
 
 
-def register(layout, sym):
+def register(layout, sym, flags=grf.Object.Flags.ONLY_IN_GAME):
     for cur in [layout, layout.R] if (sym is BuildingFull) else [layout]:
         if sym is BuildingCylindrical:
             layouts = [cur]
@@ -77,7 +77,7 @@ def register(layout, sym):
             introduction_date=0,
             end_of_life_date=0,
             height=1,
-            flags=grf.Object.Flags.ONLY_IN_GAME,
+            flags=flags,
             doc_layout=cur,
         )
         objects.append(cur_object)
@@ -86,8 +86,12 @@ def register(layout, sym):
 def make_ground_layout(name, sym):
     gs = named_grounds[(name, "")]
     layout = ALayout(gs, [], True, category=b"\xe8\x8a\x9cZ")
+    gs2 = named_grounds[(name, "x")]
+    layout2 = ALayout(gs2, [], True)
+
+    s = GraphicalSwitch(ranges={12: layout2}, default=layout, code="tile_slope")
     named_layouts[(name, "")] = layout
-    register(layout, sym)
+    register(s, sym, flags=grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.HAS_NO_FOUNDATION)
 
 
 make_ground_layout("west_plaza_center", BuildingSymmetrical)
