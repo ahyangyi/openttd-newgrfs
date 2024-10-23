@@ -50,19 +50,26 @@ for name, sym in [
 
 def register(layout, sym, flags=grf.Object.Flags.ONLY_IN_GAME):
     for cur in [layout, layout.R] if (sym is BuildingFull) else [layout]:
+        purchase = cur
+        while isinstance(purchase, GraphicalSwitch):
+            purchase = purchase.default
         if sym is BuildingCylindrical:
             layouts = [cur]
+            purchase_layouts = [purchase]
             num_views = 1
         elif sym is BuildingSymmetrical or sym is BuildingDiamond:
             layouts = [cur, cur.R.M]
+            purchase_layouts = [purchase, purchase.R.M]
             num_views = 2
         else:
             layouts = [cur, cur.R.M, cur.T.M, cur.T.R]
+            purchase_layouts = [purchase, purchase.R.M, purchase.T.R, purchase.T.R]
             num_views = 4
         cur_object = AObject(
             id=len(objects),
             translation_name="WEST_PLAZA",
             layouts=layouts,
+            purchase_layouts=purchase_layouts,
             class_label=b"\xe8\x8a\x9cZ",
             climates_available=grf.ALL_CLIMATES,
             size=(1, 1),
