@@ -188,21 +188,23 @@ def make_f1(v, subset, sym):
     return ret
 
 
-def register(base_id, step_id, l, symmetry, internal_category, name, broken_near_hack=False):
+def register(base_id, step_id, l, symmetry, internal_category, name, broken_near_hack=False, buildable=True):
     l = symmetry.get_all_variants(l)
     cnt = len(l)
     for i, layout in enumerate(l):
         layout.category = get_category(internal_category, i >= cnt // 2, layout.notes, layout.traversable)
     layouts.extend(l)
+
     l = symmetry.create_variants(l)
-    cur_entries = symmetry.get_all_entries(l)
-    cnt = len(cur_entries)
-    for i, entry in enumerate(cur_entries):
-        if broken_near_hack:
-            entry.id = base_id + step_id * (i % (cnt // 2)) + (i // (cnt // 2))
-        else:
-            entry.id = base_id + step_id * i
-        entries.append(entry)
+    if buildable:
+        cur_entries = symmetry.get_all_entries(l)
+        cnt = len(cur_entries)
+        for i, entry in enumerate(cur_entries):
+            if broken_near_hack:
+                entry.id = base_id + step_id * (i % (cnt // 2)) + (i // (cnt // 2))
+            else:
+                entry.id = base_id + step_id * i
+            entries.append(entry)
     named_tiles[name] = l
 
 
@@ -480,6 +482,7 @@ def load(
                         cur_bsym,
                         internal_category,
                         (f2_name, platform_class, shelter_class, "platform"),
+                        buildable=False,
                     )
         if full:
             register(
