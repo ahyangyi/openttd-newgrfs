@@ -79,6 +79,7 @@ def register(layout, sym, flags=grf.Object.Flags.ONLY_IN_GAME):
             height=1,
             flags=flags,
             doc_layout=cur,
+            callbacks={"tile_check": 0x400},
         )
         objects.append(cur_object)
 
