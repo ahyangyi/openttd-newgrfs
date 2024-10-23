@@ -36,23 +36,16 @@ for name, sym in [
     v.config["agrf_manual_crop"] = (0, 10)
 
     # FIXME: have to fork before render
-    v2 = v.stairstep(32 * 2**0.5 / 8, "xhill")
+    for slope_type in [1, 2, 4, 8, 5, 10, 3, 6, 9, 12, 7, 11, 13, 14, 23, 27, 29, 30]:
+        v2 = v.update_config({"slope": 8 / (32 * 2**0.5), "slope_type": slope_type}, str(slope_type))
+        sym2 = sym.break_x_symmetry()
+        v2.in_place_subset(sym2.render_indices())
+        sprite2 = sym2.create_variants(v2.spritesheet())
+        named_grounds[(name, str(slope_type))] = AGroundSprite(sprite2)
 
     v.in_place_subset(sym.render_indices())
     sprite = sym.create_variants(v.spritesheet())
     named_grounds[(name, "")] = AGroundSprite(sprite)
-
-    sym2 = sym.break_x_symmetry()
-    v2.in_place_subset(sym2.render_indices())
-    v2.config["agrf_palette"] = "station/files/cns-palette-soft.json"
-    v2 = v2.compose(
-        "station/voxels/dovemere_2018/masks/xhill.vox", "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR
-    )
-    sprite2 = sym2.create_variants(v2.spritesheet())
-    named_grounds[(name, "x")] = AGroundSprite(sprite2)
-
-    # XXX debug only
-    v2.render()
 
 
 def register(layout, sym, flags=grf.Object.Flags.ONLY_IN_GAME):
@@ -86,10 +79,14 @@ def register(layout, sym, flags=grf.Object.Flags.ONLY_IN_GAME):
 def make_ground_layout(name, sym):
     gs = named_grounds[(name, "")]
     layout = ALayout(gs, [], True, category=b"\xe8\x8a\x9cZ")
-    gs2 = named_grounds[(name, "x")]
-    layout2 = ALayout(gs2, [], True)
 
-    s = GraphicalSwitch(ranges={12: layout2}, default=layout, code="tile_slope")
+    ranges = {}
+    for slope_type in [1, 2, 4, 8, 5, 10, 3, 6, 9, 12, 7, 11, 13, 14, 23, 27, 29, 30]:
+        gs2 = named_grounds[(name, str(slope_type))]
+        layout2 = ALayout(gs2, [], True)
+        ranges[slope_type] = layout2
+
+    s = GraphicalSwitch(ranges=ranges, default=layout, code="tile_slope")
     named_layouts[(name, "")] = layout
     register(s, sym, flags=grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.HAS_NO_FOUNDATION)
 
