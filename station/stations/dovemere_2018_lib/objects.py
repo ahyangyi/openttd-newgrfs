@@ -33,12 +33,11 @@ for name, sym in [
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
     )
-    v.config["agrf_manual_crop"] = (0, 10)
+    v.config["agrf_palette"] = "station/files/cns-palette-ground.json"
 
     # FIXME: have to fork before render
     for slope_type in [1, 2, 4, 8, 5, 10, 3, 6, 9, 12, 7, 11, 13, 14, 23, 27, 29, 30]:
         v2 = v.update_config({"slope": 8 / (32 * 2**0.5), "slope_type": slope_type}, str(slope_type))
-        v2.config["size"]["z"] = 192
         sym2 = sym.break_x_symmetry()
         v2.in_place_subset(sym2.render_indices())
         sprite2 = sym2.create_variants(v2.spritesheet())
@@ -79,7 +78,7 @@ def register(layout, sym, flags=grf.Object.Flags.ONLY_IN_GAME):
             end_of_life_date=0,
             height=1,
             flags=flags,
-            doc_layout=cur,
+            doc_layout=purchase,
             callbacks={"tile_check": 0x400},
         )
         objects.append(cur_object)
