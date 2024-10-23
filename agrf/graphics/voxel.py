@@ -92,7 +92,7 @@ class LazyVoxel(Config):
             self.name,
             prefix=os.path.join(self.prefix, suffix),
             voxel_getter=self.voxel_getter,
-            config={**self.config, **new_config},
+            config={**deepcopy(self.config), **new_config},
         )
 
     @functools.cache
