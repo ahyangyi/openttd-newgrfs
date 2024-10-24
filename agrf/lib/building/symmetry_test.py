@@ -80,3 +80,11 @@ def test_add_y_symmetry():
     assert BuildingDiagonal.add_y_symmetry() is BuildingCylindrical
     assert BuildingDiamond.add_y_symmetry() is BuildingCylindrical
     assert BuildingCylindrical.add_y_symmetry() is BuildingCylindrical
+
+
+def test_join():
+    assert BuildingSymmetricalX.join(BuildingSymmetricalX) is BuildingSymmetricalX
+    assert BuildingSymmetricalX.join(BuildingSymmetricalY) is BuildingFull
+    assert BuildingRotational.join(BuildingDiamond) is BuildingRotational
+    assert BuildingDiamond.join(BuildingDiagonal) is BuildingDiagonal
+    assert BuildingDiamond.join(BuildingSymmetricalX) is BuildingFull

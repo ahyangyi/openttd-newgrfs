@@ -80,20 +80,18 @@ class BuildingSymmetryMixin:
         return ret
 
     @classmethod
-    def break_x_symmetry(classobj):
-        new_descriptor = tuple(
-            (classobj._symmetry_descriptor[i], classobj._symmetry_descriptor[i ^ 2], i & 2, i & 1) for i in range(8)
-        )
+    def join(classobj1, classobj2):
+        new_descriptor = tuple((classobj1._symmetry_descriptor[i], classobj2._symmetry_descriptor[i]) for i in range(8))
         new_descriptor = BuildingSymmetryMixin.__canonicalize_descriptor(new_descriptor)
         return BuildingSymmetryMixin._type_pool[new_descriptor]
 
     @classmethod
+    def break_x_symmetry(classobj):
+        return classobj.join(BuildingSymmetricalY)
+
+    @classmethod
     def break_y_symmetry(classobj):
-        new_descriptor = tuple(
-            (classobj._symmetry_descriptor[i], classobj._symmetry_descriptor[i ^ 4], i & 4, i & 1) for i in range(8)
-        )
-        new_descriptor = BuildingSymmetryMixin.__canonicalize_descriptor(new_descriptor)
-        return BuildingSymmetryMixin._type_pool[new_descriptor]
+        return classobj.join(BuildingSymmetricalX)
 
     @classmethod
     def add_x_symmetry(classobj):
@@ -214,4 +212,6 @@ BuildingSymmetryMixin._type_pool[(0, 1, 2, 3, 4, 5, 6, 7)] = BuildingFull
 BuildingSymmetryMixin._type_pool[(0, 1, 0, 1, 2, 3, 2, 3)] = BuildingSymmetricalX
 BuildingSymmetryMixin._type_pool[(0, 1, 2, 3, 0, 1, 2, 3)] = BuildingSymmetricalY
 BuildingSymmetryMixin._type_pool[(0, 1, 0, 1, 0, 1, 0, 1)] = BuildingSymmetrical
+BuildingSymmetryMixin._type_pool[(0, 0, 1, 2, 2, 1, 3, 3)] = BuildingDiagonal
+BuildingSymmetryMixin._type_pool[(0, 1, 2, 3, 2, 3, 0, 1)] = BuildingRotational
 BuildingSymmetryMixin._type_pool[(0, 0, 0, 0, 0, 0, 0, 0)] = BuildingCylindrical
