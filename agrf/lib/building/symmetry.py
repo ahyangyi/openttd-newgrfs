@@ -69,6 +69,17 @@ class BuildingSymmetryMixin:
         return tuple(ret)
 
     @classmethod
+    def render_indices(classobj):
+        ret = []
+        seen = set()
+        for i in range(8):
+            if classobj._symmetry_descriptor[i] not in seen:
+                seen.add(classobj._symmetry_descriptor[i])
+                ret.append(i)
+
+        return ret
+
+    @classmethod
     def break_x_symmetry(classobj):
         new_descriptor = tuple(
             (classobj._symmetry_descriptor[i], classobj._symmetry_descriptor[i ^ 2], i & 2, i & 1) for i in range(8)
@@ -117,10 +128,6 @@ class BuildingFull(BuildingSymmetryMixin):
 
     _symmetry_descriptor = (0, 1, 2, 3, 4, 5, 6, 7)
 
-    @staticmethod
-    def render_indices():
-        return list(range(8))
-
     _m_offset = 1
     _r_offset = 2
     _t_offset = 4
@@ -131,10 +138,6 @@ class BuildingSymmetricalX(BuildingSymmetryMixin):
         super().__init__(obj)
 
     _symmetry_descriptor = (0, 1, 0, 1, 2, 3, 2, 3)
-
-    @staticmethod
-    def render_indices():
-        return [0, 1, 4, 5]
 
     _m_offset = 1
     _r_offset = 0
@@ -147,10 +150,6 @@ class BuildingSymmetricalY(BuildingSymmetryMixin):
 
     _symmetry_descriptor = (0, 1, 2, 3, 0, 1, 2, 3)
 
-    @staticmethod
-    def render_indices():
-        return [0, 1, 2, 3]
-
     _m_offset = 1
     _r_offset = 2
     _t_offset = 0
@@ -161,10 +160,6 @@ class BuildingSymmetrical(BuildingSymmetryMixin):
         super().__init__(obj)
 
     _symmetry_descriptor = (0, 1, 0, 1, 0, 1, 0, 1)
-
-    @staticmethod
-    def render_indices():
-        return [0, 1]
 
     _m_offset = 1
     _r_offset = 0
@@ -177,10 +172,6 @@ class BuildingRotational(BuildingSymmetryMixin):
 
     _symmetry_descriptor = (0, 1, 2, 3, 2, 3, 0, 1)
 
-    @staticmethod
-    def render_indices():
-        return [0, 1, 2, 3]
-
     _m_offset = 1
     _r_offset = 2
     _t_offset = 2
@@ -191,10 +182,6 @@ class BuildingDiagonal(BuildingSymmetryMixin):
         super().__init__(obj)
 
     _symmetry_descriptor = (0, 0, 1, 2, 2, 1, 3, 3)
-
-    @staticmethod
-    def render_indices():
-        return [0, 2, 4, 6]
 
     _m_offset = 0
     _r_offset = 1
@@ -207,10 +194,6 @@ class BuildingDiamond(BuildingSymmetryMixin):
 
     _symmetry_descriptor = (0, 0, 1, 1, 1, 1, 0, 0)
 
-    @staticmethod
-    def render_indices():
-        return [0, 2]
-
     _m_offset = 0
     _r_offset = 1
     _t_offset = 1
@@ -221,10 +204,6 @@ class BuildingCylindrical(BuildingSymmetryMixin):
         super().__init__(obj)
 
     _symmetry_descriptor = (0, 0, 0, 0, 0, 0, 0, 0)
-
-    @staticmethod
-    def render_indices():
-        return [0]
 
     _m_offset = 0
     _r_offset = 0
