@@ -92,7 +92,7 @@ class LazyVoxel(Config):
             self.name,
             prefix=os.path.join(self.prefix, suffix),
             voxel_getter=self.voxel_getter,
-            config={**self.config, **new_config},
+            config={**deepcopy(self.config), **new_config},
         )
 
     @functools.cache
@@ -217,7 +217,9 @@ class LazyVoxel(Config):
             [x["angle"] for x in self.config["sprites"]],
             bbox=self.config["size"],
             deltas=self.config.get("agrf_deltas", None),
+            ydeltas=self.config.get("agrf_ydeltas", None),
             offsets=self.config.get("agrf_offsets", None),
+            yoffsets=self.config.get("agrf_yoffsets", None),
             z_scale=self.config.get("z_scale", 1.0),
             bbox_joggle=self.config.get("agrf_bbox_joggle", None),
             xdiff=real_xdiff,
