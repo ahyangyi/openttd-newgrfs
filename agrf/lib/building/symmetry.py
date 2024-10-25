@@ -86,6 +86,30 @@ class BuildingSymmetryMixin:
         return BuildingSymmetryMixin._type_pool[new_descriptor]
 
     @classmethod
+    def meet(classobj1, classobj2):
+        ret = []
+        prev1 = {}
+        prev2 = {}
+        for i in range(8):
+            cur = i
+            a, b = classobj1._symmetry_descriptor[i], classobj2._symmetry_descriptor[i]
+            if a in prev1:
+                ai = prev1[a]
+                cur = ret[ai]
+            prev1[a] = i
+            if b in prev2:
+                bi = prev2[b]
+                if cur != i:
+                    for j in range(i):
+                        if ret[j] == cur:
+                            ret[j] = ret[bi]
+                cur = ret[bi]
+            prev2[b] = i
+            ret.append(cur)
+        new_descriptor = BuildingSymmetryMixin.__canonicalize_descriptor(ret)
+        return BuildingSymmetryMixin._type_pool[new_descriptor]
+
+    @classmethod
     def break_x_symmetry(classobj):
         return classobj.join(BuildingSymmetricalY)
 
@@ -95,27 +119,11 @@ class BuildingSymmetryMixin:
 
     @classmethod
     def add_x_symmetry(classobj):
-        new_descriptor = BuildingSymmetryMixin.__merge_descriptor(
-            classobj._symmetry_descriptor,
-            [
-                (classobj._symmetry_descriptor[a], classobj._symmetry_descriptor[b])
-                for a, b in [(0, 2), (1, 3), (4, 6), (5, 7)]
-            ],
-        )
-        new_descriptor = BuildingSymmetryMixin.__canonicalize_descriptor(new_descriptor)
-        return BuildingSymmetryMixin._type_pool[new_descriptor]
+        return classobj.meet(BuildingSymmetricalX)
 
     @classmethod
     def add_y_symmetry(classobj):
-        new_descriptor = BuildingSymmetryMixin.__merge_descriptor(
-            classobj._symmetry_descriptor,
-            [
-                (classobj._symmetry_descriptor[a], classobj._symmetry_descriptor[b])
-                for a, b in [(0, 4), (1, 5), (2, 6), (3, 7)]
-            ],
-        )
-        new_descriptor = BuildingSymmetryMixin.__canonicalize_descriptor(new_descriptor)
-        return BuildingSymmetryMixin._type_pool[new_descriptor]
+        return classobj.meet(BuildingSymmetricalY)
 
     _type_pool = {}
 
