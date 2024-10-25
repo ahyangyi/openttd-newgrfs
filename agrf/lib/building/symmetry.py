@@ -183,6 +183,17 @@ class BuildingRotational(BuildingSymmetryMixin):
     _t_offset = 2
 
 
+class BuildingRotational4(BuildingSymmetryMixin):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    _symmetry_descriptor = (0, 1, 1, 0, 1, 0, 0, 1)
+
+    _m_offset = 1
+    _r_offset = 1
+    _t_offset = 1
+
+
 class BuildingDiagonal(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
@@ -190,6 +201,17 @@ class BuildingDiagonal(BuildingSymmetryMixin):
     _symmetry_descriptor = (0, 0, 1, 2, 2, 1, 3, 3)
 
     _m_offset = 0
+    _r_offset = 1
+    _t_offset = 2
+
+
+class BuildingDiagonalAlt(BuildingSymmetryMixin):
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    _symmetry_descriptor = (0, 1, 2, 2, 3, 3, 1, 0)
+
+    _m_offset = 1
     _r_offset = 1
     _t_offset = 2
 
