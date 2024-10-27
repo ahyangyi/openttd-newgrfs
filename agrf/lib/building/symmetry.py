@@ -18,10 +18,7 @@ class BuildingSymmetryMixin:
 
     @classmethod
     def get_all_variants(cls, thing):
-        ret = cls.get_all_entries(thing)
-        if cls._m_offset > 0:
-            ret = [y for x in ret for y in [x, x.M]]
-        return ret
+        return [cls.symmetry_index(thing, i) for i in cls.render_indices()]
 
     @classmethod
     def get_all_entries(cls, thing):
