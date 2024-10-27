@@ -171,6 +171,14 @@ class BuildingSymmetryMixin:
             return self.T.R
         return self.T.R.M
 
+    @classmethod
+    def canonical_index(classobj, i):
+        for j in range(8):
+            if classobj._symmetry_descriptor[j] == classobj._symmetry_descriptor[i]:
+                return j
+        # Unreachable
+        return i
+
     _type_pool = {}
 
 

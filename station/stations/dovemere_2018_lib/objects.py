@@ -76,15 +76,20 @@ def register(layout, sym, flags=grf.Object.Flags.ONLY_IN_GAME):
 
 
 def register_slopes(slopes, sym, flags=grf.Object.Flags.ONLY_IN_GAME):
-    for cur_ind in sym.chirality_indices():
-        for slope_type in slope_types:
-            cur = slopes[cur_ind]
-            purchase = cur
-            while isinstance(purchase, GraphicalSwitch):
-                purchase = purchase.default
-        layouts = sym.rotational_views(cur)
-        purchase_layouts = sym.rotational_views(purchase)
-        num_views = len(layouts)
+    for chi_ind in sym.chirality_indices():
+        layouts = []
+        purchase_layouts = []
+        for view_ind in sym.rotational_view_indices():
+            ranges = {}
+            for slope_type in slope_types:
+                cur = slopes[sym.canonical_index(chi_ind ^ view_ind)][slope_type]
+                ranges[slope_type] = cur
+            default = ranges.pop(0)
+            switch = GraphicalSwitch(ranges=ranges, default=default, code="tile_slope")
+
+            layouts.append(switch)
+            purchase_layouts.append(default)
+
         cur_object = AObject(
             id=len(objects),
             translation_name="WEST_PLAZA",
@@ -93,12 +98,12 @@ def register_slopes(slopes, sym, flags=grf.Object.Flags.ONLY_IN_GAME):
             class_label=b"\xe8\x8a\x9cZ",
             climates_available=grf.ALL_CLIMATES,
             size=(1, 1),
-            num_views=num_views,
+            num_views=len(layouts),
             introduction_date=0,
             end_of_life_date=0,
             height=1,
             flags=flags,
-            doc_layout=purchase,
+            doc_layout=purchase_layouts[0],
             callbacks={"tile_check": 0x400},
         )
         objects.append(cur_object)
@@ -108,7 +113,7 @@ def make_ground_layout(name, sym):
     gs = named_grounds[(name, "")]
     layout = ALayout(gs, [], True, category=b"\xe8\x8a\x9cZ")
 
-    slopes = make_slope(
+    slopes = make_slopes(
         {
             i: ALayout(named_grounds[(name, str(i) if i > 0 else "")], [], True, category=b"\xe8\x8a\x9cZ")
             for i in slope_types
