@@ -36,5 +36,9 @@ def test_full():
         assert ret[0][i] is sprites[i]
         for j in range(1, 8):
             assert i in ret[j]
+    assert ret[1][1] is sprites[4].M
     assert ret[2][3] is sprites[12].R
     assert ret[1][3] is sprites[6].M
+    assert ret[1][7] is sprites[7].M
+    assert ret[2][7] is sprites[14].R
+    assert ret[3][7] is sprites[14].R.M
