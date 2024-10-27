@@ -179,6 +179,12 @@ class BuildingSymmetryMixin:
         # Unreachable
         return i
 
+    @staticmethod
+    def compose_symmetry_indices(a, b):
+        if a % 2 == 1:
+            return a ^ (2 if (b & 4) else 0) ^ (4 if (b & 2) else 0) ^ (b & 1)
+        return a ^ b
+
     _type_pool = {}
 
 
