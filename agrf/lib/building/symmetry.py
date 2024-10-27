@@ -23,9 +23,10 @@ class BuildingSymmetryMixin:
     @classmethod
     def get_all_entries(cls, thing):
         ret = [thing]
-        if cls._r_offset > 0:
+
+        if classobj._symmetry_descriptor[2] != classobj._symmetry_descriptor[0]:
             ret = ret + [x.R for x in ret]
-        if cls._t_offset > cls._r_offset:
+        if classobj._symmetry_descriptor[4] != classobj._symmetry_descriptor[0]:
             ret = ret + [x.T for x in ret]
         return ret
 
@@ -35,7 +36,7 @@ class BuildingSymmetryMixin:
 
     @classmethod
     def is_symmetrical_y(classobj):
-        return classobj._t_offset == 0
+        return classobj._symmetry_descriptor[:4] == classobj._symmetry_descriptor[4:]
 
     @staticmethod
     def __canonicalize_descriptor(descriptor):
@@ -171,20 +172,12 @@ class BuildingFull(BuildingSymmetryMixin):
 
     _symmetry_descriptor = (0, 1, 2, 3, 4, 5, 6, 7)
 
-    _m_offset = 1
-    _r_offset = 2
-    _t_offset = 4
-
 
 class BuildingSymmetricalX(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
     _symmetry_descriptor = (0, 1, 0, 1, 2, 3, 2, 3)
-
-    _m_offset = 1
-    _r_offset = 0
-    _t_offset = 2
 
 
 class BuildingSymmetricalY(BuildingSymmetryMixin):
@@ -193,20 +186,12 @@ class BuildingSymmetricalY(BuildingSymmetryMixin):
 
     _symmetry_descriptor = (0, 1, 2, 3, 0, 1, 2, 3)
 
-    _m_offset = 1
-    _r_offset = 2
-    _t_offset = 0
-
 
 class BuildingSymmetrical(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
     _symmetry_descriptor = (0, 1, 0, 1, 0, 1, 0, 1)
-
-    _m_offset = 1
-    _r_offset = 0
-    _t_offset = 0
 
 
 class BuildingRotational(BuildingSymmetryMixin):
@@ -215,20 +200,12 @@ class BuildingRotational(BuildingSymmetryMixin):
 
     _symmetry_descriptor = (0, 1, 2, 3, 2, 3, 0, 1)
 
-    _m_offset = 1
-    _r_offset = 2
-    _t_offset = 2
-
 
 class BuildingRotational4(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
     _symmetry_descriptor = (0, 1, 1, 0, 1, 0, 0, 1)
-
-    _m_offset = 1
-    _r_offset = 1
-    _t_offset = 1
 
 
 class BuildingDiagonal(BuildingSymmetryMixin):
@@ -237,20 +214,12 @@ class BuildingDiagonal(BuildingSymmetryMixin):
 
     _symmetry_descriptor = (0, 0, 1, 2, 2, 1, 3, 3)
 
-    _m_offset = 0
-    _r_offset = 1
-    _t_offset = 2
-
 
 class BuildingDiagonalAlt(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
     _symmetry_descriptor = (0, 1, 2, 2, 3, 3, 1, 0)
-
-    _m_offset = 1
-    _r_offset = 1
-    _t_offset = 2
 
 
 class BuildingDiamond(BuildingSymmetryMixin):
@@ -259,20 +228,12 @@ class BuildingDiamond(BuildingSymmetryMixin):
 
     _symmetry_descriptor = (0, 0, 1, 1, 1, 1, 0, 0)
 
-    _m_offset = 0
-    _r_offset = 1
-    _t_offset = 1
-
 
 class BuildingCylindrical(BuildingSymmetryMixin):
     def __init__(self, obj):
         super().__init__(obj)
 
     _symmetry_descriptor = (0, 0, 0, 0, 0, 0, 0, 0)
-
-    _m_offset = 0
-    _r_offset = 0
-    _t_offset = 0
 
 
 BuildingSymmetryMixin._type_pool[(0, 1, 2, 3, 4, 5, 6, 7)] = BuildingFull
