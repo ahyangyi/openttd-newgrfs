@@ -38,9 +38,8 @@ for name, sym in [
     # FIXME: have to fork before render
     for slope_type in [1, 2, 4, 8, 5, 10, 3, 6, 9, 12, 7, 11, 13, 14, 23, 27, 29, 30]:
         v2 = v.update_config({"slope": 8 / (32 * 2**0.5), "slope_type": slope_type}, str(slope_type))
-        sym2 = sym.break_x_symmetry()
-        v2.in_place_subset(sym2.render_indices())
-        sprite2 = sym2.create_variants(v2.spritesheet())
+        v2.in_place_subset(sym.render_indices())
+        sprite2 = sym.create_variants(v2.spritesheet())
         named_grounds[(name, str(slope_type))] = AGroundSprite(sprite2)
 
     v.in_place_subset(sym.render_indices())

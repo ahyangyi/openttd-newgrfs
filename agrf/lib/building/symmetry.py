@@ -24,9 +24,9 @@ class BuildingSymmetryMixin:
     def get_all_entries(cls, thing):
         ret = [thing]
 
-        if classobj._symmetry_descriptor[2] != classobj._symmetry_descriptor[0]:
+        if cls._symmetry_descriptor[2] != cls._symmetry_descriptor[0]:
             ret = ret + [x.R for x in ret]
-        if classobj._symmetry_descriptor[4] != classobj._symmetry_descriptor[0]:
+        if set(cls._symmetry_descriptor[i] for i in [4, 6]) != set(cls._symmetry_descriptor[i] for i in [0, 2]):
             ret = ret + [x.T for x in ret]
         return ret
 

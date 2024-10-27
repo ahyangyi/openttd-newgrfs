@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from symmetry import BuildingCylindrical
 from agrf.lib.building.slope import make_slopes
 
-indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 20, 23, 27, 29]
+indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 23, 27, 29, 30]
 
 
 @dataclass

@@ -16,7 +16,7 @@ steep = BuildingDiagonal.create_variants([SlopeType(23), SlopeType(30), SlopeTyp
 
 
 def make_slopes(sprites, sym):
-    ret = [{} for view in sym.render_indices()]
+    ret = {view: {} for view in sym.render_indices()}
 
     for slopeGroup in [flat, ortho, para, mono, tri, steep]:
         for slopeType in slopeGroup.all_variants:
