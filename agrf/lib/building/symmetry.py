@@ -7,8 +7,12 @@ class BuildingSymmetryMixin:
 
             idx = classobj.render_indices()[i]
             v.M = variants[classobj._symmetry_descriptor[idx ^ 1]]
-            v.R = variants[classobj._symmetry_descriptor[idx ^ 2]]
-            v.T = variants[classobj._symmetry_descriptor[idx ^ 4]]
+            if idx % 2 == 0:
+                v.R = variants[classobj._symmetry_descriptor[idx ^ 2]]
+                v.T = variants[classobj._symmetry_descriptor[idx ^ 4]]
+            else:
+                v.R = variants[classobj._symmetry_descriptor[idx ^ 4]]
+                v.T = variants[classobj._symmetry_descriptor[idx ^ 2]]
             v.symmetry = classobj
         return variants[0]
 
@@ -143,6 +147,23 @@ class BuildingSymmetryMixin:
             return [cur]
         else:
             return [cur, cur.R]
+
+    def symmetry_index(self, i):
+        if i == 0:
+            return self
+        if i == 1:
+            return self.M
+        if i == 2:
+            return self.R
+        if i == 3:
+            return self.R.M
+        if i == 4:
+            return self.T
+        if i == 5:
+            return self.T.M
+        if i == 6:
+            return self.T.R
+        return self.T.R.M
 
     _type_pool = {}
 
