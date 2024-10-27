@@ -1,4 +1,5 @@
 from dataclasses import dataclass, replace
+from typing import List
 import grf
 from PIL import Image
 import functools
@@ -7,6 +8,27 @@ from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.magic import CachedFunctorMixin
 from agrf.utils import unique_tuple
 from agrf.pkg import load_third_party_image
+
+
+class SingleSprite:
+    pass
+
+
+@dataclass
+class DefaultGraphics(SingleSprite):
+    sprite_id: int
+
+
+class Position:
+    pass
+
+
+@dataclass
+class NewParentSprite:
+    sprite: SingleSprite
+    position: Position
+    child_sprites: List[NewParentSprite]
+    flags: dict
 
 
 class ChildSpriteContainerMixin:
