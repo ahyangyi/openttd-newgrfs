@@ -128,23 +128,31 @@ class BuildingSymmetryMixin:
         return classobj.meet(BuildingSymmetricalY)
 
     @classmethod
-    def rotational_views(classobj, cur):
-        if classobj._symmetry_descriptor[0] != classobj._symmetry_descriptor[3]:
-            if len(set(classobj._symmetry_descriptor[i] for i in [0, 3, 5, 6])) == 4:
-                return [cur, cur.R.M, cur.T.R, cur.T.M]
-            else:
-                return [cur, cur.R.M]
-        else:
-            return [cur]
-
-    @classmethod
-    def chiralities(classobj, cur):
+    def chirality_indices(classobj):
         if set(classobj._symmetry_descriptor[i] for i in [0, 3, 5, 6]) == set(
             classobj._symmetry_descriptor[i] for i in [1, 2, 4, 7]
         ):
-            return [cur]
+            return [0]
         else:
-            return [cur, cur.R]
+            return [0, 2]
+
+    @classmethod
+    def rotational_view_indices(classobj):
+        if classobj._symmetry_descriptor[0] != classobj._symmetry_descriptor[3]:
+            if len(set(classobj._symmetry_descriptor[i] for i in [0, 3, 5, 6])) == 4:
+                return [0, 3, 6, 5]
+            else:
+                return [0, 3]
+        else:
+            return [0]
+
+    @classmethod
+    def rotational_views(classobj, cur):
+        return [classobj.symmetry_index(cur, i) for i in classobj.rotational_view_indices()]
+
+    @classmethod
+    def chiralities(classobj, cur):
+        return [classobj.symmetry_index(cur, i) for i in classobj.chirality_indices()]
 
     def symmetry_index(self, i):
         if i == 0:

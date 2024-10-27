@@ -88,3 +88,7 @@ def test_join():
     assert BuildingRotational.join(BuildingDiamond) is BuildingRotational
     assert BuildingDiamond.join(BuildingDiagonal) is BuildingDiagonal
     assert BuildingDiamond.join(BuildingSymmetricalX) is BuildingFull
+
+
+def test_chirality():
+    assert BuildingDiagonal.chirality_indices() == [0]
