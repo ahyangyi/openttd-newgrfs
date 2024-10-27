@@ -125,6 +125,25 @@ class BuildingSymmetryMixin:
     def add_y_symmetry(classobj):
         return classobj.meet(BuildingSymmetricalY)
 
+    @classmethod
+    def rotational_views(classobj, cur):
+        if classobj._symmetry_descriptor[0] != classobj._symmetry_descriptor[3]:
+            if len(set(classobj._symmetry_descriptor[i] for i in [0, 3, 5, 6])) == 4:
+                return [cur, cur.R.M, cur.T.R, cur.T.M]
+            else:
+                return [cur, cur.R.M]
+        else:
+            return [cur]
+
+    @classmethod
+    def chiralities(classobj, cur):
+        if set(classobj._symmetry_descriptor[i] for i in [0, 3, 5, 6]) == set(
+            classobj._symmetry_descriptor[i] for i in [1, 2, 4, 7]
+        ):
+            return [cur]
+        else:
+            return [cur, cur.R]
+
     _type_pool = {}
 
 
