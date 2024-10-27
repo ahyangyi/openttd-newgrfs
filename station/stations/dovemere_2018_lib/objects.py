@@ -15,6 +15,7 @@ from station.lib import (
 from agrf.graphics.voxel import LazyVoxel
 from grfobject.lib import AObject, GraphicalSwitch
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
+from agrf.lib.building.slope import make_slopes, slope_types
 
 named_grounds = AttrDict(schema=("name", "slope"))
 named_layouts = AttrDict(schema=("name", "offset"))
@@ -74,19 +75,49 @@ def register(layout, sym, flags=grf.Object.Flags.ONLY_IN_GAME):
         objects.append(cur_object)
 
 
+def register_slopes(slopes, sym, flags=grf.Object.Flags.ONLY_IN_GAME):
+    for cur_ind in sym.chirality_indices():
+        for slope_type in slope_types:
+            cur = slopes[cur_ind]
+            purchase = cur
+            while isinstance(purchase, GraphicalSwitch):
+                purchase = purchase.default
+        layouts = sym.rotational_views(cur)
+        purchase_layouts = sym.rotational_views(purchase)
+        num_views = len(layouts)
+        cur_object = AObject(
+            id=len(objects),
+            translation_name="WEST_PLAZA",
+            layouts=layouts,
+            purchase_layouts=purchase_layouts,
+            class_label=b"\xe8\x8a\x9cZ",
+            climates_available=grf.ALL_CLIMATES,
+            size=(1, 1),
+            num_views=num_views,
+            introduction_date=0,
+            end_of_life_date=0,
+            height=1,
+            flags=flags,
+            doc_layout=purchase,
+            callbacks={"tile_check": 0x400},
+        )
+        objects.append(cur_object)
+
+
 def make_ground_layout(name, sym):
     gs = named_grounds[(name, "")]
     layout = ALayout(gs, [], True, category=b"\xe8\x8a\x9cZ")
 
-    ranges = {}
-    for slope_type in [1, 2, 4, 8, 5, 10, 3, 6, 9, 12, 7, 11, 13, 14, 23, 27, 29, 30]:
-        gs2 = named_grounds[(name, str(slope_type))]
-        layout2 = ALayout(gs2, [], True)
-        ranges[slope_type] = layout2
+    slopes = make_slope(
+        {
+            i: ALayout(named_grounds[(name, str(i) if i > 0 else "")], [], True, category=b"\xe8\x8a\x9cZ")
+            for i in slope_types
+        },
+        sym,
+    )
 
-    s = GraphicalSwitch(ranges=ranges, default=layout, code="tile_slope")
     named_layouts[(name, "")] = layout
-    register(s, sym, flags=grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.HAS_NO_FOUNDATION)
+    register_slopes(slopes, sym, flags=grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.HAS_NO_FOUNDATION)
 
 
 make_ground_layout("west_plaza_center", BuildingSymmetrical)

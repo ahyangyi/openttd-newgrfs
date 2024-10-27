@@ -1,8 +1,6 @@
 from dataclasses import dataclass
-from symmetry import BuildingCylindrical
-from agrf.lib.building.slope import make_slopes
-
-indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 23, 27, 29, 30]
+from symmetry import BuildingCylindrical, BuildingSymmetricalX, BuildingFull
+from agrf.lib.building.slope import make_slopes, slope_types
 
 
 @dataclass
@@ -11,8 +9,24 @@ class MockObject:
 
 
 def test_cylindrical():
-    sprites = {i: BuildingCylindrical.create_variants([MockObject(i)]) for i in indices}
+    sprites = {i: BuildingCylindrical.create_variants([MockObject(i)]) for i in slope_types}
     ret = make_slopes(sprites, BuildingCylindrical)
 
-    for i in indices:
+    for i in slope_types:
+        assert ret[0][i] is sprites[i]
+
+
+def test_x():
+    sprites = {i: BuildingSymmetricalX.create_variants([MockObject(i * 4 + j) for j in range(4)]) for i in slope_types}
+    ret = make_slopes(sprites, BuildingSymmetricalX)
+
+    for i in slope_types:
+        assert ret[0][i] is sprites[i]
+
+
+def test_full():
+    sprites = {i: BuildingFull.create_variants([MockObject(i * 8 + j) for j in range(8)]) for i in slope_types}
+    ret = make_slopes(sprites, BuildingFull)
+
+    for i in slope_types:
         assert ret[0][i] is sprites[i]

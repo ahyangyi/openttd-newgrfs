@@ -7,6 +7,8 @@ class SlopeType:
     value: int
 
 
+slope_types = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 23, 27, 29, 30]
+
 flat = BuildingCylindrical.create_variants([SlopeType(0)])
 ortho = BuildingSymmetricalX.create_variants([SlopeType(3), SlopeType(9), SlopeType(12), SlopeType(6)])
 para = BuildingDiamond.create_variants([SlopeType(5), SlopeType(10)])
