@@ -17,3 +17,4 @@ from .special_cp import special_demo_cp
 from .special_aq import special_demo_aq
 from .west_plaza import west_plaza
 from .west_plaza_oneliner import west_plaza_oneliner
+from .west_plaza_oversized import west_plaza_oversized

@@ -135,7 +135,7 @@ the_stations = AMetaStation(
             demos.special_demo_cp,
             demos.special_demo_aq,
         ],
-        "Station Square": [demos.west_plaza, demos.west_plaza_oneliner],
+        "Station Square": [demos.west_plaza, demos.west_plaza_oneliner, demos.west_plaza_oversized],
     },
     road_stops=roadstops,
     objects=objects,
