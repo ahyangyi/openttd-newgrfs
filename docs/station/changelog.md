@@ -10,7 +10,7 @@ Platform and shelter parameters now also control the availability of platform ti
 
 Make the modern Wuhu Station preview images shorter, so they fit in the preview window.
 
-0.3.0 (2024-09-02)
+0.3.0 (2024-10-02)
 ------------------------
 Add the 1934 Wuhu Station.
 
