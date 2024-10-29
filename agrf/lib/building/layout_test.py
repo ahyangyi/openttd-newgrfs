@@ -1,1 +1,1 @@
-from agrf.lib.building.layout import NewParentSprite
+from agrf.lib.building.layout import NewGeneralSprite

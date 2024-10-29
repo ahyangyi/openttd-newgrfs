@@ -1,4 +1,4 @@
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, replace, field
 from typing import List, Tuple
 import grf
 from PIL import Image
@@ -10,12 +10,8 @@ from agrf.utils import unique_tuple
 from agrf.pkg import load_third_party_image
 
 
-class SingleSprite:
-    pass
-
-
 @dataclass
-class DefaultGraphics(SingleSprite):
+class DefaultGraphics:
     sprite_id: int
 
     climate_dependent_tiles = {
@@ -27,11 +23,11 @@ class DefaultGraphics(SingleSprite):
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         # FIXME handle flags correctly
-        if self.sprite in self.climate_independent_tiles:
-            img = np.asarray(self.climate_independent_tiles[self.sprite])
+        if self.sprite_id in self.climate_independent_tiles:
+            img = np.asarray(self.climate_independent_tiles[self.sprite_id])
         else:
             img = np.asarray(
-                self.climate_dependent_tiles[(climate, self.sprite + (26 if subclimate != "default" else 0))]
+                self.climate_dependent_tiles[(climate, self.sprite_id + (26 if subclimate != "default" else 0))]
             )
         ret = LayeredImage(-124, 0, 256, 127, img[:, :, :3], img[:, :, 3], None)
         if scale == 4:
@@ -43,28 +39,53 @@ class DefaultGraphics(SingleSprite):
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
 
+    @property
+    def M(self):
+        if self.sprite in [1011, 1012, 1037, 1038, 1313, 1314]:
+            return replace(self, sprite_id=self.sprite_id - 1 if self.sprite_id % 2 == 0 else self.sprite_id + 1)
+        return self
 
-class Position:
+
+@dataclass
+class NewGraphics:
+    sprite: grf.ResourceAction
+
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
+        if self.sprite is grf.EMPTY_SPRITE:
+            return LayeredImage.empty()
+        else:
+            return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)).copy()
+
+
+@dataclass
+class GroundPosition:
     pass
 
 
 @dataclass
-class GroundPosition(Position):
-    pass
-
-
-@dataclass
-class BBoxPosition(Position):
+class BBoxPosition:
     extent: Tuple[int, int, int]
     offset: Tuple[int, int, int]
 
 
 @dataclass
-class NewParentSprite:
-    sprite: SingleSprite
-    position: Position
-    child_sprites: list
-    flags: dict
+class OffsetPosition:
+    offset: Tuple[int, int]
+
+
+@dataclass
+class NewGeneralSprite:
+    sprite: DefaultGraphics | NewGraphics
+    position: GroundPosition | BBoxPosition | OffsetPosition
+    child_sprites: list = field(default_factory=list)
+    flags: dict = field(default_factory=dict)
+
+    def __post_init__(self):
+        if self.is_childsprite():
+            assert len(self.child_spites) == 0
+
+    def is_childsprite(self):
+        return isinstance(self.position, OffsetPosition)
 
 
 class ChildSpriteContainerMixin:
