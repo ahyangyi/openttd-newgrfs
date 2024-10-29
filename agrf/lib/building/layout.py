@@ -1,5 +1,5 @@
 from dataclasses import dataclass, replace
-from typing import List
+from typing import List, Tuple
 import grf
 from PIL import Image
 import functools
@@ -18,16 +18,52 @@ class SingleSprite:
 class DefaultGraphics(SingleSprite):
     sprite_id: int
 
+    climate_dependent_tiles = {
+        (climate, k): load_third_party_image(f"third_party/opengfx2/{climate}/{k}.png")
+        for climate in ["temperate", "arctic", "tropical", "toyland"]
+        for k in [1011, 1012, 1037, 1038, 3981, 4550]
+    }
+    climate_independent_tiles = {k: load_third_party_image(f"third_party/opengfx2/{k}.png") for k in [1313, 1314, 1420]}
+
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
+        # FIXME handle flags correctly
+        if self.sprite in self.climate_independent_tiles:
+            img = np.asarray(self.climate_independent_tiles[self.sprite])
+        else:
+            img = np.asarray(
+                self.climate_dependent_tiles[(climate, self.sprite + (26 if subclimate != "default" else 0))]
+            )
+        ret = LayeredImage(-124, 0, 256, 127, img[:, :, :3], img[:, :, 3], None)
+        if scale == 4:
+            ret = ret.copy()
+        elif scale == 2:
+            ret.resize(128, 63)
+        elif scale == 1:
+            ret.resize(64, 31)
+        self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
+        return ret
+
 
 class Position:
     pass
 
 
 @dataclass
+class GroundPosition(Position):
+    pass
+
+
+@dataclass
+class BBoxPosition(Position):
+    extent: Tuple[int, int, int]
+    offset: Tuple[int, int, int]
+
+
+@dataclass
 class NewParentSprite:
     sprite: SingleSprite
     position: Position
-    child_sprites: List[NewParentSprite]
+    child_sprites: list
     flags: dict
 
 
