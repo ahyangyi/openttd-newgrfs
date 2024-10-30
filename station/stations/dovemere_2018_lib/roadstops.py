@@ -1,4 +1,4 @@
-from station.lib import BuildingFull, BuildingSymmetricalX, AParentSprite, ALayout, AChildSprite, AttrDict
+from station.lib import BuildingFull, BuildingSymmetricalX, AParentSprite, ALayout, AChildSprite, AttrDict, Registers
 from station.lib.parameters import parameter_list
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
@@ -78,8 +78,8 @@ def make_road_stop(name, sym, far, overpass, near, extended, floating):
         partps = AParentSprite(make_part(nosnow), span, offset)
         partsnow = make_part(snow)
         partsnow.voxel.render()
-        snowcs = AChildSprite(partsnow, (0, 0))
-        ps.append(partps)
+        snowcs = AChildSprite(partsnow, (0, 0), flags={"dodraw": Registers.SNOW})
+        ps.append(partps + snowcs)
 
     layout = ALayout(road_ground, ps, True, category=b"\xe8\x8a\x9cR")
     named_layouts[(name,)] = layout
