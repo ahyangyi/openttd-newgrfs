@@ -35,6 +35,7 @@ for name, sym in [
         load_from="station/files/cns-gorender.json",
     )
     v.config["agrf_palette"] = "station/files/cns-palette-ground.json"
+    v.config["agrf_bpps"] = [8]
 
     # FIXME: have to fork before render
     for slope_type in [1, 2, 4, 8, 5, 10, 3, 6, 9, 12, 7, 11, 13, 14, 23, 27, 29, 30]:
