@@ -50,10 +50,10 @@ def make_road_stop(name, sym, far, overpass, near, extended, floating):
 
     snow = v.discard_layers(all_layers, "snow")
     snow = snow.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
-    snow.config["agrf_childsprite"] = (0, -9)
+    snow.config["agrf_childsprite"] = (0, -3)
 
     nosnow = v.discard_layers(("snow",), "nosnow")
-    nosnow.config["agrf_manual_crop"] = (0, 9)
+    nosnow.config["agrf_manual_crop"] = (0, 3)
 
     extended_suffix = "_extended" if extended else ""
 
