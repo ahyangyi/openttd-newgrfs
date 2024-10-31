@@ -265,15 +265,15 @@ def object_part(name, sym, span, offset):
     return gs
 
 
-flowerbed_1 = object_part("west_plaza_flowerbed_1", BuildingFull, (4, 4, 1), (2, 10, 0)).move(-4, 0)
-flowerbed_2 = object_part("west_plaza_flowerbed_2", BuildingFull, (7, 4, 1), (2, 10, 0))
+planter_1 = object_part("west_plaza_planter_1", BuildingFull, (4, 4, 1), (2, 10, 0)).move(-4, 0)
+planter_2 = object_part("west_plaza_planter_2", BuildingFull, (7, 4, 1), (2, 10, 0))
 pole = object_part("west_plaza_pole", BuildingSymmetrical, (2, 2, 8), (7, 7, 0))
 underground_entrance = object_part("west_plaza_underground_entrance", BuildingFull, (4, 4, 8), (6, 6, 0)).move(6, -6)
 
 gs = named_grounds[("west_plaza_offcenter_B", "")]
 ps = [
-    flowerbed_1,
-    flowerbed_2,
+    planter_1,
+    planter_2,
     pole.move(-2, 0),
     pole.move(2, 0),
     pole.move(-2, -4),

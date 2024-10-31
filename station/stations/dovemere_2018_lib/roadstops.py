@@ -41,6 +41,8 @@ def make_road_stop(name, sym, far, overpass, near, extended, floating):
         load_from="station/files/cns-gorender.json",
         # config={"z_scale": 1.01},
     )
+    # For better handling of pillars/bollards
+    v.config["tiling_mode"] = "reflect"
     if extended:
         v.config["size"]["x"] = 448
         v.config["size"]["y"] = 448

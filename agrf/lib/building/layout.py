@@ -178,7 +178,16 @@ class AGroundSprite(ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixi
         if self.sprite is grf.EMPTY_SPRITE:
             ret = LayeredImage.empty()
         else:
-            ret = LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)).copy()
+            ret = None
+            sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
+            if sprite is not None:
+                ret = LayeredImage.from_sprite(sprite).copy()
+
+            if bpp == 32:
+                # Fall back to bpp=8
+                sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
+                ret = LayeredImage.from_sprite(sprite).copy()
+            assert ret is not None
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
 
