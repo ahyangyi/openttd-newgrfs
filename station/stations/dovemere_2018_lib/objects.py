@@ -21,7 +21,13 @@ named_grounds = AttrDict(schema=("name", "slope"))
 named_layouts = AttrDict(schema=("name", "offset"))
 objects = []
 
-for name, sym in [("west_plaza_center", BuildingSymmetrical)]:
+for name, sym in [
+    ("west_plaza_center", BuildingSymmetrical),
+    ("west_plaza_offcenter_A", BuildingFull),
+    ("west_plaza_offcenter_B", BuildingFull),
+    ("west_plaza_diagonal", BuildingDiamond),
+    ("west_plaza_checkerboard", BuildingCylindrical),
+]:
     v = LazyVoxel(
         name,
         prefix=".cache/render/station/dovemere_2018/plaza",
@@ -121,6 +127,10 @@ def make_ground_layout(name, sym):
 
 
 make_ground_layout("west_plaza_center", BuildingSymmetrical)
+make_ground_layout("west_plaza_offcenter_A", BuildingFull)
+make_ground_layout("west_plaza_offcenter_B", BuildingFull)
+make_ground_layout("west_plaza_diagonal", BuildingDiamond)
+make_ground_layout("west_plaza_checkerboard", BuildingCylindrical)
 
 all_layers = (
     "edge marker",
@@ -232,6 +242,12 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     register(layout, sym.break_x_symmetry().break_y_symmetry())
 
 
+make_object_layout("west_plaza_center_flower_2021", BuildingSymmetrical, 8, 10, 4, 8, 6)
+make_object_layout("west_plaza_center_flower_2022", BuildingSymmetrical, 8, 10, 4, 8, 6)
+make_object_layout("west_plaza_center_flower_2023", BuildingSymmetrical, 6, 16, 2, 10, 10)
+make_object_layout("west_plaza_center_flower_2024", BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
+
+
 def object_part(name, sym, span, offset):
     v = LazyVoxel(
         name,
@@ -247,3 +263,35 @@ def object_part(name, sym, span, offset):
     )
     gs = AParentSprite(sprite, span, offset)
     return gs
+
+
+planter_1 = object_part("west_plaza_planter_1", BuildingFull, (4, 4, 1), (2, 10, 0)).move(-4, 0)
+planter_2 = object_part("west_plaza_planter_2", BuildingFull, (7, 4, 1), (2, 10, 0))
+pole = object_part("west_plaza_pole", BuildingSymmetrical, (2, 2, 8), (7, 7, 0))
+underground_entrance = object_part("west_plaza_underground_entrance", BuildingFull, (4, 4, 8), (6, 6, 0)).move(6, -6)
+
+gs = named_grounds[("west_plaza_offcenter_B", "")]
+ps = [
+    planter_1,
+    planter_2,
+    pole.move(-2, 0),
+    pole.move(2, 0),
+    pole.move(-2, -4),
+    pole.move(2, -4),
+    underground_entrance,
+]
+layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+named_layouts[("west_plaza_offcenter_B", "decorated")] = layout
+register(layout, BuildingFull)
+
+gs = named_grounds[("west_plaza_offcenter_A", "")]
+ps = [pole.move(-2, 4), pole.move(2, 4), pole.move(-2, 8), pole.move(2, 8)]
+layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+named_layouts[("west_plaza_offcenter_A", "decorated")] = layout
+register(layout, BuildingFull)
+
+gs = named_grounds[("west_plaza_offcenter_A", "")]
+ps = [pole.move(-2, 0), pole.move(2, 0), pole.move(-2, 4), pole.move(2, 4), underground_entrance.move(0, 8)]
+layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+named_layouts[("west_plaza_offcenter_B", "oneliner")] = layout
+register(layout, BuildingFull)
