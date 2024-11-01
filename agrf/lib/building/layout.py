@@ -53,19 +53,51 @@ class NewGraphics:
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
             return LayeredImage.empty()
-        else:
-            return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)).copy()
+        ret = None
+        sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
+        if sprite is not None:
+            ret = LayeredImage.from_sprite(sprite).copy()
+
+        if ret is None and bpp == 32:
+            # Fall back to bpp=8
+            sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
+            ret = LayeredImage.from_sprite(sprite).copy().to_rgb()
+        assert ret is not None
+
+        return ret
 
 
 @dataclass
 class GroundPosition:
-    pass
+    @property
+    def T(self):
+        return self
+
+    R = M = T
 
 
 @dataclass
 class BBoxPosition:
     extent: Tuple[int, int, int]
     offset: Tuple[int, int, int]
+
+    @property
+    def T(self):
+        new_offset = (self.offset[0], 16 - self.offset[1] - self.extent[1], self.offset[2])
+        return BBoxPosition(extent, new_offset)
+
+    @property
+    def R(self):
+        new_offset = (16 - self.offset[0] - self.extent[0], self.offset[1], self.offset[2])
+        return BBoxPosition(extent, new_offset)
+
+    @staticmethod
+    def _mirror(triplet):
+        return triplet[1], triplet[0], triplet[2]
+
+    @property
+    def M(self):
+        return BBoxPosition(BBoxPosition._mirror(extent), BBoxPosition._mirror(new_offset))
 
 
 @dataclass
@@ -86,6 +118,9 @@ class NewGeneralSprite:
 
     def is_childsprite(self):
         return isinstance(self.position, OffsetPosition)
+
+    def __repr__(self):
+        return f"<GeneralSprite:{self.sprite}:{self.position}:{self.child_sprites}:{self.flags}>"
 
 
 class ChildSpriteContainerMixin:
