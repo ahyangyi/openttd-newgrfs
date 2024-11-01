@@ -183,10 +183,10 @@ class AGroundSprite(ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixi
             if sprite is not None:
                 ret = LayeredImage.from_sprite(sprite).copy()
 
-            if bpp == 32:
+            if ret is None and bpp == 32:
                 # Fall back to bpp=8
                 sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
-                ret = LayeredImage.from_sprite(sprite).copy()
+                ret = LayeredImage.from_sprite(sprite).copy().to_rgb()
             assert ret is not None
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
@@ -351,7 +351,17 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
         ] + [s for x in self.child_sprites for s in x.to_action2(sprite_list)]
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
-        ret = LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)).copy()
+        ret = None
+        sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
+        if sprite is not None:
+            ret = LayeredImage.from_sprite(sprite).copy()
+
+        if ret is None and bpp == 32:
+            # Fall back to bpp=8
+            sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
+            ret = LayeredImage.from_sprite(sprite).copy().to_rgb()
+
+        assert ret is not None
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
 
