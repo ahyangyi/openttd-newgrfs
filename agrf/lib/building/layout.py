@@ -257,7 +257,16 @@ class AGroundSprite(ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixi
         if self.sprite is grf.EMPTY_SPRITE:
             ret = LayeredImage.empty()
         else:
-            ret = LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)).copy()
+            ret = None
+            sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
+            if sprite is not None:
+                ret = LayeredImage.from_sprite(sprite).copy()
+
+            if ret is None and bpp == 32:
+                # Fall back to bpp=8
+                sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
+                ret = LayeredImage.from_sprite(sprite).copy().to_rgb()
+            assert ret is not None
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
 
@@ -421,7 +430,17 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
         ] + [s for x in self.child_sprites for s in x.to_action2(sprite_list)]
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
-        ret = LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)).copy()
+        ret = None
+        sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
+        if sprite is not None:
+            ret = LayeredImage.from_sprite(sprite).copy()
+
+        if ret is None and bpp == 32:
+            # Fall back to bpp=8
+            sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
+            ret = LayeredImage.from_sprite(sprite).copy().to_rgb()
+
+        assert ret is not None
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
 
@@ -491,6 +510,15 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
         new_offset = (self.offset[0], 16 - self.offset[1] - self.extent[1], self.offset[2])
         return AParentSprite(
             self.sprite.T, self.extent, new_offset, child_sprites=[c.T for c in self.child_sprites], flags=self.flags
+        )
+
+    def move(self, xofs, yofs):
+        return AParentSprite(
+            self.sprite,
+            self.extent,
+            (self.offset[0] + xofs, self.offset[1] + yofs, self.offset[2]),
+            self.child_sprites,
+            self.flags,
         )
 
     @property
