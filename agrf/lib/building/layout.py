@@ -45,6 +45,10 @@ class DefaultGraphics:
             return replace(self, sprite_id=self.sprite_id - 1 if self.sprite_id % 2 == 0 else self.sprite_id + 1)
         return self
 
+    @property
+    def sprites(self):
+        return ()
+
 
 @dataclass
 class NewGraphics:
@@ -65,6 +69,10 @@ class NewGraphics:
         assert ret is not None
 
         return ret
+
+    @property
+    def sprites(self):
+        return (self.sprite,)
 
 
 @dataclass
@@ -121,6 +129,10 @@ class NewGeneralSprite:
 
     def __repr__(self):
         return f"<GeneralSprite:{self.sprite}:{self.position}:{self.child_sprites}:{self.flags}>"
+
+    @property
+    def sprites(self):
+        return unique_tuple(self.sprite.sprites + tuple(s for c in self.child_sprites for s in c.sprites))
 
 
 class ChildSpriteContainerMixin:
