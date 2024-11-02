@@ -254,3 +254,12 @@ class LayeredImage:
                 self.yofs = (self.yofs * new_h + old_h // 2) // old_h
                 metadata_updated = True
         return self
+
+    def to_rgb(self):
+        if self.rgb is not None:
+            return self
+        self.rgb = NUMPY_PALETTE[self.mask]
+        self.alpha = (self.mask != 0).astype(np.uint8) * 255
+        self.mask = None
+
+        return self
