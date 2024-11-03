@@ -21,11 +21,11 @@ west_stair = west_stair.lower_tile()
 west_stair_extender = west_stair_extender.lower_tile()
 roadstops = [
     [west_stair_end]
-    + [overpass] * 5
+    + [overpass] * 4
     + [west_stair]
-    + [west_stair_extender] * 2
+    + [west_stair_extender] * 4
     + [west_stair.R]
-    + [overpass] * 5
+    + [overpass] * 4
     + [west_stair_end.R]
 ]
 
@@ -35,10 +35,18 @@ offcenter_A = west_plaza_offcenter_A_decorated.lower_tile()
 flower = west_plaza_center_flower_2024_corner.lower_tile()
 offcenter_B = west_plaza_offcenter_B_decorated.lower_tile()
 west_square = [
-    [center_ground] * 6 + [offcenter_A, center_ground, center_ground, offcenter_A.R] + [center_ground] * 6,
-    [center_ground] * 6 + [offcenter_A, center_ground, center_ground, offcenter_A.R] + [center_ground] * 6,
-    [center_ground] * 6 + [offcenter_B, center_ground, flower, offcenter_B.R] + [center_ground] * 6,
-    [center_ground] * 6 + [offcenter_B, center_ground, center_ground, offcenter_B.R] + [center_ground] * 6,
+    [center_ground] * 5
+    + [offcenter_A, center_ground, center_ground, center_ground, center_ground, offcenter_A.R]
+    + [center_ground] * 5,
+    [center_ground] * 5
+    + [offcenter_A, center_ground, center_ground, center_ground, center_ground, offcenter_A.R]
+    + [center_ground] * 5,
+    [center_ground] * 5
+    + [offcenter_B, center_ground, center_ground, flower, center_ground, offcenter_B.R]
+    + [center_ground] * 5,
+    [center_ground] * 5
+    + [offcenter_B, center_ground, center_ground, center_ground, center_ground, offcenter_B.R]
+    + [center_ground] * 5,
 ]
 
 
