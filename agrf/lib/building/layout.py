@@ -114,7 +114,7 @@ class OffsetPosition:
 
 
 @dataclass
-class NewGeneralSprite:
+class NewGeneralSprite(CachedFunctorMixin):
     sprite: DefaultGraphics | NewGraphics
     position: GroundPosition | BBoxPosition | OffsetPosition
     child_sprites: list = field(default_factory=list)
@@ -133,6 +133,13 @@ class NewGeneralSprite:
     @property
     def sprites(self):
         return unique_tuple(self.sprite.sprites + tuple(s for c in self.child_sprites for s in c.sprites))
+
+    def fmap(self, f):
+        return replace(
+            self,
+            sprite=self.sprite if self.sprite is grf.EMPTY_SPRITE else f(self.sprite),
+            child_sprites=[f(c) for c in self.child_sprites],
+        )
 
 
 class ChildSpriteContainerMixin:
@@ -242,9 +249,6 @@ class ADefaultGroundSprite(DefaultSpriteMixin, ChildSpriteContainerMixin, Regist
     def __repr__(self):
         return f"<ADefaultGroundSprite:{self.sprite}>"
 
-    def fmap(self, f):
-        return ADefaultGroundSprite(self.sprite, child_sprites=[f(c) for c in self.child_sprites], flags=self.flags)
-
     @property
     def M(self):
         return ADefaultGroundSprite(
@@ -319,14 +323,6 @@ class AGroundSprite(ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixi
 
     def __repr__(self):
         return f"<AGroundSprite:{self.sprite}>"
-
-    def fmap(self, f):
-        return AGroundSprite(
-            self.sprite if self.sprite is grf.EMPTY_SPRITE else f(self.sprite),
-            alternatives=tuple(f(s) for s in self.alternatives),
-            child_sprites=[f(c) for c in self.child_sprites],
-            flags=self.flags,
-        )
 
     @property
     def sprites(self):
@@ -632,9 +628,6 @@ class AChildSprite(RegistersMixin, CachedFunctorMixin):
     @functools.cache
     def squash(self, ratio):
         return AChildSprite(self.sprite.squash(ratio), self.offset, self.flags)
-
-    def fmap(self, f):
-        return AChildSprite(f(self.sprite), self.offset, flags=self.flags)
 
     @property
     def sprites(self):
