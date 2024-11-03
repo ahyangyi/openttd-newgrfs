@@ -12,7 +12,7 @@ cnt = 0
 roadstops = []
 WIDTH = 3
 TOTAL_HEIGHT = 12
-OVERPASS_HEIGHT = 10
+OVERPASS_HEIGHT = 11
 OVERHANG_WIDTH = 1
 EXTENDED_WIDTH = 9
 
@@ -135,7 +135,7 @@ make_road_stop(
     BuildingFull,
     ((16, WIDTH, TOTAL_HEIGHT), (0, 0, 0)),
     ((16, 16 - WIDTH * 2, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
-    ((16, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
+    ((7, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
     True,
     16,
 )
