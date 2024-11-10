@@ -33,16 +33,16 @@ all_layers = (
 )
 
 
-def make_road_stop(name, sym, far, overpass, near, extended, floating):
+def make_road_stop(name, sym, far, overpass, near, extended, floating, joggle=0):
     v = LazyVoxel(
         name,
         prefix=".cache/render/station/dovemere_2018/plaza",
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
-        # config={"z_scale": 1.01},
     )
     # For better handling of pillars/bollards
     v.config["tiling_mode"] = "reflect"
+    v.config["joggle"] = joggle
     if extended:
         v.config["size"]["x"] = 448
         v.config["size"]["y"] = 448
@@ -120,6 +120,7 @@ make_road_stop(
     None,
     False,
     0,
+    joggle=-0.25,
 )
 make_road_stop(
     "west_stair",
@@ -129,6 +130,7 @@ make_road_stop(
     ((16, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
     True,
     16,
+    joggle=-0.5,
 )
 make_road_stop(
     "west_stair_narrow",
@@ -138,6 +140,7 @@ make_road_stop(
     ((7, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
     True,
     16,
+    joggle=-0.5,
 )
 make_road_stop(
     "west_stair_extender",
@@ -146,7 +149,8 @@ make_road_stop(
     ((16, 16 - WIDTH * 2, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
     ((16, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
     True,
-    0,
+    16,
+    joggle=-0.5,
 )
 make_road_stop(
     "west_stair_end",
@@ -156,4 +160,5 @@ make_road_stop(
     ((16, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
     True,
     16,
+    joggle=-0.5,
 )
