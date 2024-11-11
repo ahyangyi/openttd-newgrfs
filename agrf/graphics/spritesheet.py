@@ -136,7 +136,9 @@ def spritesheet_template(
     angles,
     bbox,
     deltas,
+    ydeltas,
     offsets,
+    yoffsets,
     z_scale,
     bbox_joggle=None,
     bpps=(8, 32),
@@ -189,13 +191,13 @@ def spritesheet_template(
             yrel += offsets[direction][1] * offset * scale
 
         if oydiff != 0:
-            xrel -= deltas[direction][0] * oydiff * scale
-            yrel += deltas[direction][1] * oydiff * scale
+            xrel += ydeltas[direction][0] * oydiff * scale
+            yrel += ydeltas[direction][1] * oydiff * scale
 
         if road_mode and oyspan != 16:
             offset = 16 - oyspan
-            xrel -= offsets[direction][0] * offset * scale
-            yrel += offsets[direction][1] * offset * scale
+            xrel += yoffsets[direction][0] * offset * scale
+            yrel += yoffsets[direction][1] * offset * scale
 
         if bbox_joggle is not None:
             xrel += bbox_joggle[direction][0] * scale

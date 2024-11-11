@@ -6,6 +6,8 @@ from agrf.lib.building.symmetry import (
     BuildingSymmetricalY,
     BuildingRotational,
     BuildingDiagonal,
+    BuildingDiamond,
+    BuildingCylindrical,
 )
 from agrf.lib.building.layout import (
     ADefaultGroundSprite,

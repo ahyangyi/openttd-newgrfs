@@ -9,7 +9,7 @@ class Switch(CachedFunctorMixin, grf.Switch):
         )
 
     def fmap(self, f):
-        return Switch(
+        return type(self)(
             self.code,
             {(r.low, r.high): f(r.ref) for r in self._ranges},
             f(self.default),

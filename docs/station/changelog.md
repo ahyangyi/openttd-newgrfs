@@ -1,11 +1,16 @@
 China Set: Stations & Platforms Addons: Wuhu Changelog
 =========================
 
-0.3.1 (Work in progress)
+0.3.2 (work-in-progress)
+------------------------
+
+0.3.1 (2024-10-13)
 ------------------------
 Platform and shelter parameters now also control the availability of platform tiles.
 
-0.3.0 (2024-06-02)
+Make the modern Wuhu Station preview images shorter, so they fit in the preview window.
+
+0.3.0 (2024-10-02)
 ------------------------
 Add the 1934 Wuhu Station.
 

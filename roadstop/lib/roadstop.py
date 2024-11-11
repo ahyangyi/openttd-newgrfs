@@ -1,5 +1,6 @@
 import grf
 from station.lib.utils import class_label_printable
+from agrf.magic import Switch
 
 
 class ARoadStop(grf.SpriteGenerator):
@@ -48,7 +49,14 @@ class ARoadStop(grf.SpriteGenerator):
             for s in self.sprites:
                 res.append(s)
 
-        self.callbacks.graphics = self.graphics.to_action2(feature=grf.ROAD_STOP, sprite_list=sprites)
+        graphics = self.graphics.to_action2(feature=grf.ROAD_STOP, sprite_list=sprites)
+        self.callbacks.graphics = Switch(
+            ranges={0: graphics},
+            default=graphics,
+            code="""
+TEMP[0x03] = (terrain_type & 0x4) == 0x4
+""",
+        )
         self.callbacks.set_flag_props(self._props)
 
         if self.is_waypoint:

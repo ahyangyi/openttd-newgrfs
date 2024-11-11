@@ -40,8 +40,6 @@ overpass_height = building_height - base_height
 gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
 concourse = concourse_ps.none
-third = AChildSprite(gray_third, (0, 0))
-third_T = AChildSprite(gray_third.T, (0, 0))
 
 
 def get_category(internal_category, back, notes, tra):
@@ -113,7 +111,7 @@ VNarrow = HPos("", "", "building_v", True, True)
 TinyAsym = HPos("central", "pillar", "central", False)
 
 
-snow_layers = ("snow", "snow-window", "snow-window-extender")
+snow_layers = tuple(y for x in ("snow", "snow-window", "snow-window-extender") for y in (x, x + "-boundary"))
 all_f2_layers = ("window", "window-extender")
 all_f2_layers_set = set(all_f2_layers + snow_layers)
 
@@ -149,7 +147,8 @@ def make_f2(v, sym):
 
 def make_extra(v, sym, name, floor="f2"):
     vd = v.discard_layers(
-        all_f1_layers + tuple(all_f2_layers_set - {name}) + ("overpass", "foundation", "circle"), name
+        all_f1_layers + tuple(all_f2_layers_set - {name, name + "-boundary"}) + ("overpass", "foundation", "circle"),
+        name,
     )
     if floor == "f2":
         vd = vd.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
@@ -208,9 +207,10 @@ def register(base_id, step_id, l, symmetry, internal_category, name, broken_near
 
 
 solid_ground = gray_ps
-corridor_ground = track_ground + third + third_T
-one_side_ground = track_ground + third
-one_side_ground_t = track_ground + third_T
+# FIME merge these since the groundchildsprite is no longer used here
+corridor_ground = track_ground
+one_side_ground = track_ground
+one_side_ground_t = track_ground
 empty_ground = track_ground
 
 voxel_cache = {}
