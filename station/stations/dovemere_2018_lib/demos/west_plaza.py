@@ -18,7 +18,7 @@ station = h_merge([[[]] * 2, semitraversable.demo_1(5, 7)[5:], [[]] * 2], [[cns]
 west_stair_end = west_stair_end.lower_tile()
 overpass = overpass.lower_tile()
 west_stair = west_stair_narrow.lower_tile()
-west_stair_extender = west_stair_extender.lower_tile()
+west_stair_extender = west_stair_extender_narrow.lower_tile()
 roadstops = [[west_stair_end, overpass, west_stair, west_stair_extender, west_stair.R, overpass, west_stair_end.R]]
 
 # Objects
