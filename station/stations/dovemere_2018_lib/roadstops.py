@@ -127,7 +127,17 @@ make_road_stop(
     BuildingFull,
     ((16, WIDTH, TOTAL_HEIGHT), (0, 0, 0)),
     ((16, 16 - WIDTH * 2, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
-    ((16, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
+    ((11, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
+    True,
+    16,
+    joggle=-0.5,
+)
+make_road_stop(
+    "west_stair_wide",
+    BuildingFull,
+    ((16, WIDTH, TOTAL_HEIGHT), (0, 0, 0)),
+    ((16, 16 - WIDTH * 2, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
+    ((15, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
     True,
     16,
     joggle=-0.5,
