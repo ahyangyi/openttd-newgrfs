@@ -48,11 +48,12 @@ def vast(x):
 
 
 ground = vast(26).lower_tile()
-pattern = vast(47).lower_tile()
+symbol = vast(47).lower_tile()
 grassy = vast(70).lower_tile()
 west_square = [
-    [ground, grass, ground, ground, ground, grassy, ground],
-    [ground, grassy, ground, pattern, ground, grassy, ground],
+    [ground, grassy, ground, ground, ground, grassy, ground],
+    [grassy, grassy, grassy, symbol, grassy, grassy, grassy],
+    [ground, grassy, ground, ground, ground, grassy, ground],
 ]
 
 
