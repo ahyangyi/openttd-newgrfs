@@ -142,6 +142,7 @@ the_stations = AMetaStation(
             demos.west_plaza_oneliner,
             demos.west_plaza_oversized,
             demos.west_plaza_one_tile,
+            demos.west_plaza_vast,
         ],
     },
     road_stops=roadstops,
