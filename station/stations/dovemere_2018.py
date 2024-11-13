@@ -138,6 +138,7 @@ the_stations = AMetaStation(
         "Station Square": [
             demos.west_plaza,
             demos.west_plaza_4,
+            demos.west_plaza_3,
             demos.west_plaza_oneliner,
             demos.west_plaza_oversized,
             demos.west_plaza_one_tile,
