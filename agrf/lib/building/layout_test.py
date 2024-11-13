@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-from agrf.lib.building.layout import NewGeneralSprite
-=======
-from agrf.lib.building.layout import ADefaultGroundSprite
+from agrf.lib.building.layout import NewGeneralSprite, ADefaultGroundSprite
 
 
 def test_default_groundsprite():
@@ -10,4 +7,3 @@ def test_default_groundsprite():
     graphics = gs1012.graphics(4, 32).to_image()
     assert graphics.shape == (127, 256, 4)
     assert graphics[64, 128, 1] == 67
->>>>>>> main
