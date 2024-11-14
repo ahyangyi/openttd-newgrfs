@@ -5,6 +5,7 @@ from station.lib import (
     BuildingSymmetrical,
     BuildingCylindrical,
     BuildingDiamond,
+    BuildingDiagonalAlt,
     AGroundSprite,
     AParentSprite,
     AChildSprite,
@@ -269,6 +270,8 @@ planter_1 = object_part("west_plaza_planter_1", BuildingFull, (4, 4, 1), (2, 10,
 planter_2 = object_part("west_plaza_planter_2", BuildingFull, (7, 4, 1), (2, 10, 0))
 pole = object_part("west_plaza_pole", BuildingSymmetrical, (2, 2, 8), (7, 7, 0))
 underground_entrance = object_part("west_plaza_underground_entrance", BuildingFull, (4, 4, 8), (6, 6, 0)).move(6, -6)
+corner_lawn = object_part("corner_lawn", BuildingDiagonalAlt, (6, 6, 1), (10, 0, 0))
+edge_lawn = object_part("edge_lawn", BuildingSymmetricalX, (16, 6, 1), (0, 0, 0))
 
 gs = named_grounds[("west_plaza_offcenter_B", "")]
 ps = [
@@ -291,7 +294,19 @@ named_layouts[("west_plaza_offcenter_A", "decorated")] = layout
 register(layout, BuildingFull, b"L")
 
 gs = named_grounds[("west_plaza_offcenter_A", "")]
+ps = [pole.move(-2, 4), pole.move(2, 4), pole.move(-2, 8), pole.move(2, 8), corner_lawn]
+layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+named_layouts[("west_plaza_offcenter_A", "decorated_lawn")] = layout
+register(layout, BuildingFull, b"L")
+
+gs = named_grounds[("west_plaza_offcenter_A", "")]
 ps = [pole.move(-2, 0), pole.move(2, 0), pole.move(-2, 4), pole.move(2, 4), underground_entrance.move(0, 8)]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_offcenter_B", "oneliner")] = layout
 register(layout, BuildingFull, b"L")
+
+gs = named_grounds[("west_plaza_center", "")]
+ps = [edge_lawn]
+layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+named_layouts[("west_plaza_center", "lawn")] = layout
+register(layout, BuildingSymmetricalX, b"L")

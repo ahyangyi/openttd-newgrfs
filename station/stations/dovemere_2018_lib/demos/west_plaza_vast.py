@@ -52,8 +52,8 @@ symbol = vast(47).lower_tile()
 grassy = vast(70).lower_tile()
 west_square = [
     [ground, grassy, ground, ground, ground, grassy, ground],
-    [grassy, grassy, grassy, symbol, grassy, grassy, grassy],
-    [ground, grassy, ground, ground, ground, grassy, ground],
+    [grassy, grassy, ground, symbol, ground, grassy, grassy],
+    [grassy, ground, ground, ground, ground, ground, grassy],
 ]
 
 
