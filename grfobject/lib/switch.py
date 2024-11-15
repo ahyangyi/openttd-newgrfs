@@ -1,3 +1,4 @@
+import grf
 from agrf.magic import Switch
 from agrf.utils import unique_tuple
 
@@ -11,3 +12,13 @@ class GraphicalSwitch(Switch):
     @property
     def sprites(self):
         return unique_tuple([s for sw in [self.default] + [r.ref for r in self._ranges] for s in sw.sprites])
+
+
+class PositionSwitch(GraphicalSwitch):
+    def __init__(self, layouts):
+        super().__init__(
+            "relative_pos",
+            ranges={i * 16 + j: l for i, row in enumerate(layouts) for j, l in enumerate(row)},
+            default=layouts[0][0],
+            feature=grf.OBJECT,
+        )

@@ -50,7 +50,7 @@ for name, sym in [
     named_grounds[(name, "")] = AGroundSprite(sprite)
 
 
-def register(layout, sym, label, flags=grf.Object.Flags.ONLY_IN_GAME):
+def register(layout, sym, label, flags=grf.Object.Flags.ONLY_IN_GAME, size=(1, 1)):
     for cur in sym.chiralities(layout):
         purchase = cur
         while isinstance(purchase, GraphicalSwitch):
@@ -65,7 +65,7 @@ def register(layout, sym, label, flags=grf.Object.Flags.ONLY_IN_GAME):
             purchase_layouts=purchase_layouts,
             class_label=b"\xe8\x8a\x9c" + label,
             climates_available=grf.ALL_CLIMATES,
-            size=(1, 1),
+            size=size,
             num_views=num_views,
             introduction_date=0,
             end_of_life_date=0,
@@ -224,7 +224,12 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "vertical")] = layout
-    register(layout, sym.break_y_symmetry(), b"F")
+    register(
+        GraphicalSwitch(ranges={0: layout, 1: layout}, default=layout, code="relative_pos"),
+        sym.break_y_symmetry(),
+        b"F",
+        size=(1, 2),
+    )
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs, 0)) + ground_snowcs,
