@@ -3,18 +3,30 @@ class BuildingSymmetryMixin:
     def create_variants(classobj, variants):
         for i, v in enumerate(variants):
             cls = v.__class__
-            v.__class__ = type(cls.__name__, (cls, classobj), {})
+            v.__class__ = type(cls.__name__, (classobj, cls), {})
 
             idx = classobj.render_indices()[i]
-            v.M = variants[classobj._symmetry_descriptor[idx ^ 1]]
+            v._M = variants[classobj._symmetry_descriptor[idx ^ 1]]
             if idx % 2 == 0:
-                v.R = variants[classobj._symmetry_descriptor[idx ^ 2]]
-                v.T = variants[classobj._symmetry_descriptor[idx ^ 4]]
+                v._R = variants[classobj._symmetry_descriptor[idx ^ 2]]
+                v._T = variants[classobj._symmetry_descriptor[idx ^ 4]]
             else:
-                v.R = variants[classobj._symmetry_descriptor[idx ^ 4]]
-                v.T = variants[classobj._symmetry_descriptor[idx ^ 2]]
+                v._R = variants[classobj._symmetry_descriptor[idx ^ 4]]
+                v._T = variants[classobj._symmetry_descriptor[idx ^ 2]]
             v.symmetry = classobj
         return variants[0]
+
+    @property
+    def M(self):
+        return self._M
+
+    @property
+    def R(self):
+        return self._R
+
+    @property
+    def T(self):
+        return self._T
 
     @classmethod
     def get_all_variants(cls, thing):
@@ -189,72 +201,42 @@ class BuildingSymmetryMixin:
 
 
 class BuildingFull(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     _symmetry_descriptor = (0, 1, 2, 3, 4, 5, 6, 7)
 
 
 class BuildingSymmetricalX(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     _symmetry_descriptor = (0, 1, 0, 1, 2, 3, 2, 3)
 
 
 class BuildingSymmetricalY(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     _symmetry_descriptor = (0, 1, 2, 3, 0, 1, 2, 3)
 
 
 class BuildingSymmetrical(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     _symmetry_descriptor = (0, 1, 0, 1, 0, 1, 0, 1)
 
 
 class BuildingRotational(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     _symmetry_descriptor = (0, 1, 2, 3, 2, 3, 0, 1)
 
 
 class BuildingRotational4(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     _symmetry_descriptor = (0, 1, 1, 0, 1, 0, 0, 1)
 
 
 class BuildingDiagonal(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     _symmetry_descriptor = (0, 0, 1, 2, 2, 1, 3, 3)
 
 
 class BuildingDiagonalAlt(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     _symmetry_descriptor = (0, 1, 2, 2, 3, 3, 1, 0)
 
 
 class BuildingDiamond(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     _symmetry_descriptor = (0, 0, 1, 1, 1, 1, 0, 0)
 
 
 class BuildingCylindrical(BuildingSymmetryMixin):
-    def __init__(self, obj):
-        super().__init__(obj)
-
     _symmetry_descriptor = (0, 0, 0, 0, 0, 0, 0, 0)
 
 
