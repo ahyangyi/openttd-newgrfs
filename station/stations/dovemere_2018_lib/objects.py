@@ -225,7 +225,9 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "vertical")] = layout
     register(
-        GraphicalSwitch(ranges={0: layout, 1: layout}, default=layout, code="relative_pos"),
+        GraphicalSwitch(
+            ranges={0: named_layouts[("west_plaza_center", "")], 1: layout}, default=layout, code="relative_pos"
+        ),
         sym.break_y_symmetry(),
         b"F",
         size=(1, 2),
