@@ -15,10 +15,91 @@ class GraphicalSwitch(Switch):
 
 
 class PositionSwitch(GraphicalSwitch):
-    def __init__(self, layouts):
+    def __init__(
+        self,
+        code,
+        ranges,
+        default,
+        *,
+        feature=None,
+        ref_id=None,
+        related_scope=False,
+        subroutines=None,
+        rows=1,
+        columns=1
+    ):
         super().__init__(
-            "relative_pos",
-            ranges={i * 16 + j: l for i, row in enumerate(layouts) for j, l in enumerate(row)},
-            default=layouts[0][0],
-            feature=grf.OBJECT,
+            code, ranges, default, feature=feature, ref_id=ref_id, related_scope=related_scope, subroutines=subroutines
+        )
+        self.rows = rows
+        self.columns = columns
+
+    def fmap(self, f):
+        return type(self)(
+            self.code,
+            {(r.low, r.high): f(r.ref) for r in self._ranges},
+            f(self.default),
+            feature=self.feature,
+            ref_id=self.ref_id,
+            related_scope=self.related_scope,
+            subroutines=self.subroutines,
+            rows=self.rows,
+            columns=self.columns,
+        )
+
+    @staticmethod
+    def __index_M(p):
+        x, y = p // 16, p % 16
+        return y * 16 + x
+
+    @property
+    def M(self):
+        return type(self)(
+            self.code,
+            {self.__index_M(p): r.ref.M for r in self._ranges for p in range(r.low, r.high + 1)},
+            self.default.M,
+            feature=self.feature,
+            ref_id=self.ref_id,
+            related_scope=self.related_scope,
+            subroutines=self.subroutines,
+            rows=self.columns,
+            columns=self.rows,
+        )
+
+    @staticmethod
+    def __index_R(p, c):
+        x, y = p // 16, p % 16
+        return x * 16 + (c - 1 - y)
+
+    @property
+    def R(self):
+        return type(self)(
+            self.code,
+            {self.__index_R(p, self.columns): r.ref.R for r in self._ranges for p in range(r.low, r.high + 1)},
+            self.default.R,
+            feature=self.feature,
+            ref_id=self.ref_id,
+            related_scope=self.related_scope,
+            subroutines=self.subroutines,
+            rows=self.rows,
+            columns=self.columns,
+        )
+
+    @staticmethod
+    def __index_T(p, r):
+        x, y = p // 16, p % 16
+        return (r - x - 1) * 16 + y
+
+    @property
+    def T(self):
+        return type(self)(
+            self.code,
+            {self.__index_T(p, self.rows): r.ref.T for r in self._ranges for p in range(r.low, r.high + 1)},
+            self.default.T,
+            feature=self.feature,
+            ref_id=self.ref_id,
+            related_scope=self.related_scope,
+            subroutines=self.subroutines,
+            rows=self.rows,
+            columns=self.columns,
         )
