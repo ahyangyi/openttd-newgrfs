@@ -50,7 +50,9 @@ for name, sym in [
     named_grounds[(name, "")] = AGroundSprite(sprite)
 
 
-def register(layout, sym, label, flags=grf.Object.Flags.ONLY_IN_GAME, size=(1, 1)):
+def register(
+    layout, sym, label, flags=grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.ALLOW_UNDER_BRIDGE, size=(1, 1)
+):
     for cur in sym.chiralities(layout):
         purchase = cur
         while isinstance(purchase, GraphicalSwitch) and not isinstance(purchase, PositionSwitch):
@@ -77,7 +79,11 @@ def register(layout, sym, label, flags=grf.Object.Flags.ONLY_IN_GAME, size=(1, 1
         objects.append(cur_object)
 
 
-def register_slopes(slopes, sym, flags=grf.Object.Flags.ONLY_IN_GAME):
+def register_slopes(
+    slopes,
+    sym,
+    flags=grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.ALLOW_UNDER_BRIDGE | grf.Object.Flags.HAS_NO_FOUNDATION,
+):
     for chi_ind in sym.chirality_indices():
         layouts = []
         purchase_layouts = []
@@ -124,7 +130,7 @@ def make_ground_layout(name, sym):
     )
 
     named_layouts[(name, "")] = layout
-    register_slopes(slopes, sym, flags=grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.HAS_NO_FOUNDATION)
+    register_slopes(slopes, sym)
 
 
 make_ground_layout("west_plaza_center", BuildingSymmetrical)
