@@ -18,6 +18,9 @@ from grfobject.lib import AObject, GraphicalSwitch, PositionSwitch
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 from agrf.lib.building.slope import make_slopes, slope_types
 
+DEFAULT_FLAGS = grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.ALLOW_UNDER_BRIDGE
+DEFAULT_SLOPE_FLAGS = DEFAULT_FLAGS | grf.Object.Flags.AUTOREMOVE | grf.Object.Flags.HAS_NO_FOUNDATION
+
 named_grounds = AttrDict(schema=("name", "slope"))
 named_layouts = AttrDict(schema=("name", "offset"))
 objects = []
@@ -50,9 +53,7 @@ for name, sym in [
     named_grounds[(name, "")] = AGroundSprite(sprite)
 
 
-def register(
-    layout, sym, label, flags=grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.ALLOW_UNDER_BRIDGE, size=(1, 1)
-):
+def register(layout, sym, label, flags=DEFAULT_FLAGS, size=(1, 1)):
     for cur in sym.chiralities(layout):
         purchase = cur
         while isinstance(purchase, GraphicalSwitch) and not isinstance(purchase, PositionSwitch):
@@ -79,11 +80,7 @@ def register(
         objects.append(cur_object)
 
 
-def register_slopes(
-    slopes,
-    sym,
-    flags=grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.ALLOW_UNDER_BRIDGE | grf.Object.Flags.HAS_NO_FOUNDATION,
-):
+def register_slopes(slopes, sym, flags=DEFAULT_SLOPE_FLAGS):
     for chi_ind in sym.chirality_indices():
         layouts = []
         purchase_layouts = []
