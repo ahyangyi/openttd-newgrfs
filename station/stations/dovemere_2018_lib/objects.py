@@ -253,6 +253,21 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     )
 
     ps = [
+        AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs - 4, 0)) + ground_snowcs,
+        AParentSprite(sprite, (yspan, xspan, height - 1), (yofs - 8, xofs - 4, 1)) + snowcs,
+    ]
+    layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+    named_layouts[(name, "half_horizontal")] = layout
+    register(
+        PositionSwitch(
+            ranges={1: layout}, default=named_layouts[("west_plaza_center", "")], code="relative_pos", rows=1, columns=2
+        ),
+        sym.break_y_symmetry(),
+        b"F",
+        size=(2, 1),
+    )
+
+    ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs - 8, 0)) + ground_snowcs,
         AParentSprite(sprite, (yspan, xspan, height - 1), (yofs - 8, xofs - 8, 1)) + snowcs,
     ]
