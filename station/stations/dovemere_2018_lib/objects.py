@@ -53,7 +53,7 @@ for name, sym in [
 def register(layout, sym, label, flags=grf.Object.Flags.ONLY_IN_GAME, size=(1, 1)):
     for cur in sym.chiralities(layout):
         purchase = cur
-        while isinstance(purchase, GraphicalSwitch):
+        while isinstance(purchase, GraphicalSwitch) and not isinstance(purchase, PositionSwitch):
             purchase = purchase.default
         layouts = sym.rotational_views(cur)
         purchase_layouts = sym.rotational_views(purchase)
