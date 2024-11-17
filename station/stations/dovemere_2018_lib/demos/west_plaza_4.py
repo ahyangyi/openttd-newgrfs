@@ -27,7 +27,7 @@ flower = west_plaza_center_flower_2024_corner.lower_tile()
 offcenter_B = west_plaza_offcenter_B.lower_tile()
 west_square = [
     [center_ground, offcenter_A, center_ground, center_ground, offcenter_A.R, center_ground],
-    [center_ground, offcenter_B, center_ground, flower, offcenter_B.R, center_ground],
+    [center_ground, offcenter_B, flower, center_ground, offcenter_B.R, center_ground],
 ]
 
 

@@ -14,7 +14,7 @@ from station.lib import (
     Registers,
 )
 from agrf.graphics.voxel import LazyVoxel
-from grfobject.lib import AObject, GraphicalSwitch
+from grfobject.lib import AObject, GraphicalSwitch, PositionSwitch
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 from agrf.lib.building.slope import make_slopes, slope_types
 
@@ -225,10 +225,14 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "vertical")] = layout
     register(
-        GraphicalSwitch(
-            ranges={0: named_layouts[("west_plaza_center", "")], 1: layout}, default=layout, code="relative_pos"
+        PositionSwitch(
+            ranges={256: layout},
+            default=named_layouts[("west_plaza_center", "")],
+            code="relative_pos",
+            rows=2,
+            columns=1,
         ),
-        sym.break_y_symmetry(),
+        sym,
         b"F",
         size=(1, 2),
     )
@@ -239,15 +243,33 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "horizontal")] = layout
-    register(layout, sym.break_x_symmetry(), b"F")
+    register(
+        PositionSwitch(
+            ranges={1: layout}, default=named_layouts[("west_plaza_center", "")], code="relative_pos", rows=1, columns=2
+        ),
+        sym,
+        b"F",
+        size=(2, 1),
+    )
 
     ps = [
-        AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs + 8, Xofs - 8, 0)) + ground_snowcs,
-        AParentSprite(sprite, (yspan, xspan, height - 1), (yofs + 8, xofs - 8, 1)) + snowcs,
+        AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs - 8, 0)) + ground_snowcs,
+        AParentSprite(sprite, (yspan, xspan, height - 1), (yofs - 8, xofs - 8, 1)) + snowcs,
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "corner")] = layout
-    register(layout, sym.break_x_symmetry().break_y_symmetry(), b"F")
+    register(
+        PositionSwitch(
+            ranges={257: layout},
+            default=named_layouts[("west_plaza_center", "")],
+            code="relative_pos",
+            rows=2,
+            columns=2,
+        ),
+        sym,
+        b"F",
+        size=(2, 2),
+    )
 
 
 make_object_layout("west_plaza_center_flower_2021", BuildingSymmetrical, 8, 10, 4, 8, 6)

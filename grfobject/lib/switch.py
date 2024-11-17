@@ -49,8 +49,8 @@ class PositionSwitch(GraphicalSwitch):
 
     @staticmethod
     def __index_M(p):
-        x, y = p // 16, p % 16
-        return y * 16 + x
+        x, y = p // 256, p % 256
+        return y * 256 + x
 
     @property
     def M(self):
@@ -68,8 +68,8 @@ class PositionSwitch(GraphicalSwitch):
 
     @staticmethod
     def __index_R(p, c):
-        x, y = p // 16, p % 16
-        return x * 16 + (c - 1 - y)
+        x, y = p // 256, p % 256
+        return x * 256 + (c - 1 - y)
 
     @property
     def R(self):
@@ -87,8 +87,8 @@ class PositionSwitch(GraphicalSwitch):
 
     @staticmethod
     def __index_T(p, r):
-        x, y = p // 16, p % 16
-        return (r - x - 1) * 16 + y
+        x, y = p // 256, p % 256
+        return (r - x - 1) * 256 + y
 
     @property
     def T(self):

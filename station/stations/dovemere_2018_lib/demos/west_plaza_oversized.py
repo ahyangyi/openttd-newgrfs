@@ -42,7 +42,7 @@ west_square = [
     + [offcenter_A, center_ground, center_ground, center_ground, center_ground, offcenter_A.R]
     + [center_ground] * 5,
     [center_ground] * 5
-    + [offcenter_B, center_ground, center_ground, flower, center_ground, offcenter_B.R]
+    + [offcenter_B, center_ground, flower, center_ground, center_ground, offcenter_B.R]
     + [center_ground] * 5,
     [center_ground] * 5
     + [offcenter_B, center_ground, center_ground, center_ground, center_ground, offcenter_B.R]
