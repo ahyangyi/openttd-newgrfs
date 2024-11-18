@@ -12,6 +12,7 @@ from station.lib import (
     ALayout,
     AttrDict,
     Registers,
+    Demo,
 )
 from agrf.graphics.voxel import LazyVoxel
 from grfobject.lib import AObject, GraphicalSwitch, PositionSwitch
@@ -26,28 +27,36 @@ named_layouts = AttrDict(schema=("name", "offset"))
 objects = []
 
 
-def register(layout, sym, label, flags=DEFAULT_FLAGS, size=(1, 1)):
+def register(layouts, sym, label, flags=DEFAULT_FLAGS):
+    rows = len(layouts)
+    columns = len(layouts[0])
+    layout = PositionSwitch(
+        ranges={r * 256 + c: layouts[r][c] for r in range(rows) for c in range(columns)},
+        default=layouts[0][0],
+        code="relative_pos",
+        rows=rows,
+        columns=columns,
+    )
     for cur in sym.chiralities(layout):
-        purchase = cur
-        while isinstance(purchase, GraphicalSwitch) and not isinstance(purchase, PositionSwitch):
-            purchase = purchase.default
+        demo = Demo("", cur.to_lists())
+        doc_layout = demo.to_layout()
+        doc_layout.category = b"\xe8\x8a\x9cZ"  # FIXME doc category?
         layouts = sym.rotational_views(cur)
-        purchase_layouts = sym.rotational_views(purchase)
         num_views = len(layouts)
         cur_object = AObject(
             id=len(objects),
             translation_name="WEST_PLAZA",
             layouts=layouts,
-            purchase_layouts=purchase_layouts,
+            purchase_layouts=layouts,
             class_label=b"\xe8\x8a\x9c" + label,
             climates_available=grf.ALL_CLIMATES,
-            size=size,
+            size=(columns, rows),
             num_views=num_views,
             introduction_date=0,
             end_of_life_date=0,
             height=1,
             flags=flags,
-            doc_layout=purchase,
+            doc_layout=doc_layout,
             callbacks={"tile_check": 0x400},
         )
         objects.append(cur_object)
@@ -177,6 +186,8 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     # named_layouts[(name, "grounded")] = layout
     # register(layout, sym, b'F')
 
+    gl = named_layouts[("west_plaza_center", "")]
+
     groundsprite2 = sym.create_variants(ground.spritesheet(xdiff=Xofs, xspan=Xspan, ydiff=Yofs, yspan=Yspan))
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs, Xofs, 0)) + ground_snowcs,
@@ -184,7 +195,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "")] = layout
-    register(layout, sym, b"F")
+    register([[layout]], sym, b"F")
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs, Xofs - 4, 0)) + ground_snowcs,
@@ -192,7 +203,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "half")] = layout
-    register(layout, sym.break_y_symmetry(), b"F")
+    register([[layout]], sym.break_y_symmetry(), b"F")
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs, Xofs - 8, 0)) + ground_snowcs,
@@ -200,18 +211,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "vertical")] = layout
-    register(
-        PositionSwitch(
-            ranges={256: layout},
-            default=named_layouts[("west_plaza_center", "")],
-            code="relative_pos",
-            rows=2,
-            columns=1,
-        ),
-        sym,
-        b"F",
-        size=(1, 2),
-    )
+    register([[gl], [layout]], sym, b"F")
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs, 0)) + ground_snowcs,
@@ -219,14 +219,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "horizontal")] = layout
-    register(
-        PositionSwitch(
-            ranges={1: layout}, default=named_layouts[("west_plaza_center", "")], code="relative_pos", rows=1, columns=2
-        ),
-        sym,
-        b"F",
-        size=(2, 1),
-    )
+    register([[gl, layout]], sym, b"F")
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs - 4, 0)) + ground_snowcs,
@@ -234,14 +227,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "half_horizontal")] = layout
-    register(
-        PositionSwitch(
-            ranges={1: layout}, default=named_layouts[("west_plaza_center", "")], code="relative_pos", rows=1, columns=2
-        ),
-        sym.break_y_symmetry(),
-        b"F",
-        size=(2, 1),
-    )
+    register([[gl, layout]], sym.break_y_symmetry(), b"F")
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs - 8, 0)) + ground_snowcs,
@@ -249,18 +235,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "corner")] = layout
-    register(
-        PositionSwitch(
-            ranges={257: layout},
-            default=named_layouts[("west_plaza_center", "")],
-            code="relative_pos",
-            rows=2,
-            columns=2,
-        ),
-        sym,
-        b"F",
-        size=(2, 2),
-    )
+    register([[gl, gl], [gl, layout]], sym, b"F")
 
 
 make_object_layout("west_plaza_center_flower_2021", BuildingSymmetrical, 8, 10, 4, 8, 6)
@@ -306,34 +281,34 @@ ps = [
 ]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_offcenter_B", "decorated")] = layout
-register(layout, BuildingFull, b"L")
+register([[layout]], BuildingFull, b"L")
 
 gs = named_grounds[("west_plaza_offcenter_A", "")]
 ps = [pole.move(-2, 4), pole.move(2, 4), pole.move(-2, 8), pole.move(2, 8)]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_offcenter_A", "decorated")] = layout
-register(layout, BuildingFull, b"L")
+register([[layout]], BuildingFull, b"L")
 
 gs = named_grounds[("west_plaza_offcenter_A", "")]
 ps = [pole.move(-2, 4), pole.move(2, 4), pole.move(-2, 8), pole.move(2, 8), corner_lawn]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_offcenter_A", "decorated_lawn")] = layout
-register(layout, BuildingFull, b"L")
+register([[layout]], BuildingFull, b"L")
 
 gs = named_grounds[("west_plaza_offcenter_A", "")]
 ps = [pole.move(-2, 0), pole.move(2, 0), pole.move(-2, 4), pole.move(2, 4), underground_entrance.move(0, 8)]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_offcenter_B", "oneliner")] = layout
-register(layout, BuildingFull, b"L")
+register([[layout]], BuildingFull, b"L")
 
 gs = named_grounds[("west_plaza_center", "")]
 ps = [edge_lawn]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_center", "lawn")] = layout
-register(layout, BuildingSymmetricalX, b"L")
+register([[layout]], BuildingSymmetricalX, b"L")
 
 gs = named_grounds[("west_plaza_center", "")]
 ps = [split_lawn]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_center", "split_lawn")] = layout
-register(layout, BuildingSymmetricalX, b"L")
+register([[layout]], BuildingSymmetricalX, b"L")

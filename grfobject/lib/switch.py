@@ -47,6 +47,9 @@ class PositionSwitch(GraphicalSwitch):
             columns=self.columns,
         )
 
+    def to_lists(self):
+        return [[self.lookup(r * 256 + self.columns - 1 - c) for c in range(self.columns)] for r in range(self.rows)]
+
     @staticmethod
     def __index_M(p):
         x, y = p // 256, p % 256
