@@ -24,13 +24,12 @@ for name, sym in [
     v.config["agrf_palette"] = "station/files/cns-palette-ground.json"
     v.config["agrf_bpps"] = [8]
 
-    # FIXME: have to fork before render
+    v.in_place_subset(sym.render_indices())
+    sprite = sym.create_variants(v.spritesheet())
+    named_grounds[(name, "")] = AGroundSprite(sprite)
+
     for slope_type in [1, 2, 4, 8, 5, 10, 3, 6, 9, 12, 7, 11, 13, 14, 23, 27, 29, 30]:
         v2 = v.update_config({"slope": 8 / (32 * 2**0.5), "slope_type": slope_type}, str(slope_type))
         v2.in_place_subset(sym.render_indices())
         sprite2 = sym.create_variants(v2.spritesheet())
         named_grounds[(name, str(slope_type))] = AGroundSprite(sprite2)
-
-    v.in_place_subset(sym.render_indices())
-    sprite = sym.create_variants(v.spritesheet())
-    named_grounds[(name, "")] = AGroundSprite(sprite)
