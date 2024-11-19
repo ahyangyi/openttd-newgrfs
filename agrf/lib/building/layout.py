@@ -254,7 +254,7 @@ class ADefaultParentSprite(DefaultSpriteMixin, BoundingBoxMixin, ChildSpriteCont
         return ADefaultParentSprite(
             self.sprite,
             self.extent,
-            (self.offset[0] + xofs * 16, self.offset[1] + yofs * 16, self.offset[2] + zofs * 8),
+            (self.offset[0] + xofs, self.offset[1] + yofs, self.offset[2] + zofs * 8),
             self.child_sprites,
             self.flags,
         )
@@ -379,7 +379,7 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
         return AParentSprite(
             self.sprite,
             self.extent,
-            (self.offset[0] + xofs * 16, self.offset[1] + yofs * 16, self.offset[2] + zofs * 8),
+            (self.offset[0] + xofs, self.offset[1] + yofs, self.offset[2] + zofs * 8),
             self.child_sprites,
             self.flags,
         )

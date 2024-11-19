@@ -15,10 +15,14 @@ class Demo:
 
     def to_layout(self):
         sprites = []
+        rows = len(self.tiles)
+        columns = len(self.tiles[0])
         for r, row in enumerate(self.tiles):
             for c, sprite in enumerate(row[::-1]):
                 if sprite is not None:
-                    sprites.extend(sprite.demo_translate(c, r).parent_sprites)
+                    sprites.extend(
+                        sprite.demo_translate(c * 16 - (columns - 1) * 8, r * 16 - (rows - 1) * 8).parent_sprites
+                    )
         return ALayout(None, sprites, False)
 
     def graphics(self, scale, bpp, remap=None):
