@@ -6,6 +6,7 @@ from station.lib import (
     BuildingCylindrical,
     BuildingDiamond,
     BuildingDiagonalAlt,
+    BuildingRotational4,
     AGroundSprite,
     AParentSprite,
     AChildSprite,
@@ -268,8 +269,8 @@ underground_entrance = object_part("west_plaza_underground_entrance", BuildingFu
 corner_lawn = object_part("corner_lawn", BuildingDiagonalAlt, (6, 6, 1), (10, 0, 0))
 edge_lawn = object_part("edge_lawn", BuildingSymmetricalX, (16, 6, 1), (0, 0, 0))
 split_lawn = object_part("split_lawn", BuildingFull, (16, 6, 1), (0, 10, 0))
-tree_bench = object_part("west_plaza_tree_bench", BuildingCylindrical, (2, 2, 8), (7, 7, 0))
-tree_bush = object_part("west_plaza_tree_bush", BuildingCylindrical, (2, 2, 8), (7, 7, 0))
+tree_bench = object_part("west_plaza_tree_bench", BuildingRotational4, (2, 2, 8), (7, 7, 0))
+tree_bush = object_part("west_plaza_tree_bush", BuildingRotational4, (2, 2, 8), (7, 7, 0))
 
 gs = named_grounds[("west_plaza_offcenter_B", "")]
 ps = [
@@ -298,7 +299,7 @@ named_layouts[("west_plaza_offcenter_A", "decorated_lawn")] = layout
 register([[layout]], BuildingFull, b"L")
 
 gs = named_grounds[("west_plaza_offcenter_A", "")]
-ps = [pole.move(-2, 0), pole.move(2, 0), pole.move(-2, 4), pole.move(2, 4), underground_entrance.move(0, 8)]
+ps = [pole.move(-2, 0), pole.move(2, 0), pole.move(-2, 4), pole.move(2, 4), underground_entrance.move(6, 2)]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_offcenter_B", "oneliner")] = layout
 register([[layout]], BuildingFull, b"L")
@@ -306,12 +307,12 @@ register([[layout]], BuildingFull, b"L")
 gs = named_grounds[("west_plaza_center", "")]
 ps = [
     edge_lawn,
-    tree_bush.move(-3, 5),
-    tree_bench.move(0, 5),
-    tree_bush.move(3, 5),
-    tree_bench.move(-3, 7),
+    tree_bush.R.M.move(-3, 5),
+    tree_bench.M.move(0, 5),
+    tree_bush.T.R.move(3, 5),
+    tree_bench.R.move(-3, 7),
     tree_bush.move(0, 7),
-    tree_bench.move(3, 7),
+    tree_bench.T.R.M.move(3, 7),
 ]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_center", "lawn")] = layout
@@ -326,12 +327,12 @@ register([[layout]], BuildingSymmetricalX, b"L")
 gs = named_grounds[("west_plaza_center", "")]
 ps = [
     split_lawn,
-    tree_bench.move(-3, -5),
-    tree_bush.move(0, -5),
-    tree_bench.move(3, -5),
-    tree_bush.move(-3, -7),
+    tree_bench.R.M.move(-3, -5),
+    tree_bush.M.move(0, -5),
+    tree_bench.T.R.move(3, -5),
+    tree_bush.R.move(-3, -7),
     tree_bench.move(0, -7),
-    tree_bush.move(3, -7),
+    tree_bush.T.R.M.move(3, -7),
 ]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_center", "split_lawn")] = layout
