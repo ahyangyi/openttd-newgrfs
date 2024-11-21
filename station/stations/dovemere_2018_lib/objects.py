@@ -269,6 +269,7 @@ corner_lawn = object_part("corner_lawn", BuildingDiagonalAlt, (6, 6, 1), (10, 0,
 edge_lawn = object_part("edge_lawn", BuildingSymmetricalX, (16, 6, 1), (0, 0, 0))
 split_lawn = object_part("split_lawn", BuildingFull, (16, 6, 1), (0, 10, 0))
 tree_bench = object_part("west_plaza_tree_bench", BuildingCylindrical, (2, 2, 8), (7, 7, 0))
+tree_bush = object_part("west_plaza_tree_bush", BuildingCylindrical, (2, 2, 8), (7, 7, 0))
 
 gs = named_grounds[("west_plaza_offcenter_B", "")]
 ps = [
@@ -305,11 +306,11 @@ register([[layout]], BuildingFull, b"L")
 gs = named_grounds[("west_plaza_center", "")]
 ps = [
     edge_lawn,
-    tree_bench.move(-3, 5),
+    tree_bush.move(-3, 5),
     tree_bench.move(0, 5),
-    tree_bench.move(3, 5),
+    tree_bush.move(3, 5),
     tree_bench.move(-3, 7),
-    tree_bench.move(0, 7),
+    tree_bush.move(0, 7),
     tree_bench.move(3, 7),
 ]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
@@ -326,11 +327,11 @@ gs = named_grounds[("west_plaza_center", "")]
 ps = [
     split_lawn,
     tree_bench.move(-3, -5),
-    tree_bench.move(0, -5),
+    tree_bush.move(0, -5),
     tree_bench.move(3, -5),
-    tree_bench.move(-3, -7),
+    tree_bush.move(-3, -7),
     tree_bench.move(0, -7),
-    tree_bench.move(3, -7),
+    tree_bush.move(3, -7),
 ]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_center", "split_lawn")] = layout
