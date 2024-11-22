@@ -271,6 +271,7 @@ edge_lawn = object_part("edge_lawn", BuildingSymmetricalX, (16, 6, 1), (0, 0, 0)
 split_lawn = object_part("split_lawn", BuildingFull, (16, 6, 1), (0, 10, 0))
 tree_bench = object_part("west_plaza_tree_bench", BuildingRotational4, (2, 2, 8), (7, 7, 0))
 tree_bush = object_part("west_plaza_tree_bush", BuildingRotational4, (2, 2, 8), (7, 7, 0))
+glass_pyramid = object_part("west_plaza_glass_pyramid", BuildingSymmetrical, (2, 2, 8), (7, 7, 0))
 
 gs = named_grounds[("west_plaza_offcenter_B", "")]
 ps = [
@@ -313,6 +314,7 @@ ps = [
     tree_bench.R.move(-3, 7),
     tree_bush.move(0, 7),
     tree_bench.T.R.M.move(3, 7),
+    glass_pyramid.move(-5, 6),
 ]
 layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
 named_layouts[("west_plaza_center", "lawn")] = layout
