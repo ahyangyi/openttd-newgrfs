@@ -74,10 +74,10 @@ the_stations = AMetaStation(
     b"\xe8\x8a\x9c0",
     None,
     [
-        Demo("The building", [[named_tiles.regular]]),
+        Demo([[named_tiles.regular]], "The building"),
         Demo(
-            "With snow",
             [[named_tiles.regular]],
+            "With snow",
             remap=get_1cc_remap(CompanyColour.PINK),
             climate="arctic",
             subclimate="snow",

@@ -24,5 +24,5 @@ west_square = [[center_ground] * 7, [center_ground] * 7]
 
 
 west_plaza = Demo(
-    "West plaza", station + roadstops + west_square, remap=get_1cc_remap(CompanyColour.WHITE), merge_bbox=True
+    station + roadstops + west_square, "West plaza", remap=get_1cc_remap(CompanyColour.WHITE), merge_bbox=True
 )
