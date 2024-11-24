@@ -38,7 +38,7 @@ station = [
         overpass.T.M,
         None,
     ],
-    [west_stair_end, overpass, west_stair, west_stair_extender, west_stair.R, overpass, west_stair_end.R],
+    [None, None, west_stair, west_stair_extender, west_stair.R, None, None],
     [center_ground, edge, offcenter_A, center_ground, offcenter_A.R, edge, center_ground],
     [edge_2.T, split_lawn, offcenter_B, flower, offcenter_B.R, split_lawn.R, edge_2.T.R],
 ]
