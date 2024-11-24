@@ -31,8 +31,8 @@ west_square = [
 
 
 west_plaza_oneliner = Demo(
-    "West Plaza (one-row version)",
     station + roadstops + west_square,
+    "West Plaza (one-row version)",
     remap=get_1cc_remap(CompanyColour.WHITE),
     merge_bbox=True,
 )

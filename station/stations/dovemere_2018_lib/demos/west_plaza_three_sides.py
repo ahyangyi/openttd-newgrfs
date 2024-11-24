@@ -29,14 +29,21 @@ split_lawn = west_plaza_center_split_lawn.lower_tile()
 
 station = [
     [None, overpass.M, front_gate_extender.M, None, front_gate_extender.T.M, overpass.T.M, None],
-    [None, overpass.M, front_gate_extender_corner, front_gate_extender, front_gate_extender_corner.R, overpass.T.M, None],
+    [
+        None,
+        overpass.M,
+        front_gate_extender_corner,
+        front_gate_extender,
+        front_gate_extender_corner.R,
+        overpass.T.M,
+        None,
+    ],
     [west_stair_end, overpass, west_stair, west_stair_extender, west_stair.R, overpass, west_stair_end.R],
     [center_ground, edge, offcenter_A, center_ground, offcenter_A.R, edge, center_ground],
     [edge_2.T, split_lawn, offcenter_B, flower, offcenter_B.R, split_lawn.R, edge_2.T.R],
-    ]
-
+]
 
 
 west_plaza_three_sides = Demo(
-    "West plaza (three sides)", station, remap=get_1cc_remap(CompanyColour.WHITE), merge_bbox=True
+    station, "West plaza (three sides)", remap=get_1cc_remap(CompanyColour.WHITE), merge_bbox=True
 )

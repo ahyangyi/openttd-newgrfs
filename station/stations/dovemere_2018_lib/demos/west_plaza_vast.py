@@ -58,8 +58,8 @@ west_square = [
 
 
 west_plaza_vast = Demo(
-    "West plaza (with VAST square tiles)",
     station + roadstops + west_square,
+    "West plaza (with VAST square tiles)",
     remap=get_1cc_remap(CompanyColour.WHITE),
     merge_bbox=True,
 )

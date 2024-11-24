@@ -39,7 +39,7 @@ def register(layouts, sym, label, flags=DEFAULT_FLAGS):
         columns=columns,
     )
     for cur in sym.chiralities(layout):
-        demo = Demo("", cur.to_lists())
+        demo = Demo(cur.to_lists())
         doc_layout = demo.to_layout()
         doc_layout.category = b"\xe8\x8a\x9cZ"  # FIXME doc category?
         layouts = sym.rotational_views(cur)
