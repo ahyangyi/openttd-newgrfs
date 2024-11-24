@@ -26,9 +26,9 @@ class Demo:
         return ALayout(None, sprites, False)
 
     def graphics(self, scale, bpp, remap=None):
+        remap = remap or self.remap
         if self.merge_bbox:
             return self.to_layout().graphics(scale, bpp, remap)
-        remap = remap or self.remap
         yofs = 32 * scale
         img = LayeredImage.canvas(
             -16 * scale * (len(self.tiles) + len(self.tiles[0])),
