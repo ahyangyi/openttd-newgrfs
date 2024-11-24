@@ -19,6 +19,7 @@ west_stair = west_stair_narrow.lower_tile()
 west_stair_extender = west_stair_extender_narrow.lower_tile()
 
 # Objects
+diagonal = west_plaza_diagonal.lower_tile()
 center_ground = west_plaza_center.lower_tile()
 offcenter_A = west_plaza_offcenter_A_decorated_lawn.lower_tile()
 flower = west_plaza_center_flower_2024_half.lower_tile()
@@ -52,7 +53,7 @@ station = [
     ],
     [center_ground.M, edge.M, None, west_stair, west_stair_extender, west_stair.R, None, edge.T.M, center_ground.T.M],
     [
-        center_ground.M,
+        diagonal.M,
         offcenter_A.R.M,
         edge,
         offcenter_A,
@@ -60,9 +61,9 @@ station = [
         offcenter_A.R,
         edge,
         offcenter_A.T.R.M,
-        center_ground.T.M,
+        diagonal.T.M,
     ],
-    [None, edge_2.T, split_lawn, offcenter_B, flower, offcenter_B.R, split_lawn.R, edge_2.T.R, None],
+    [diagonal.M, diagonal.M, split_lawn, offcenter_B, flower, offcenter_B.R, split_lawn.R, diagonal.T.M, diagonal.T.M],
 ]
 
 
