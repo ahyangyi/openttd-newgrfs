@@ -6,8 +6,8 @@ from agrf.lib.building.layout import ALayout
 
 @dataclass
 class Demo:
-    title: str
     tiles: list
+    title: str = ""
     remap: object = None
     climate: str = "temperate"
     subclimate: str = "default"
