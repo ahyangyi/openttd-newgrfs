@@ -18,7 +18,7 @@ row_6 = h_merge(
 )
 
 semi_auto_demo = Demo(
-    "Semitraversable automatic stations",
     row_3 + v_sep + row_4 + v_sep + row_5 + v_sep + row_6,
+    "Semitraversable automatic stations",
     remap=get_1cc_remap(CompanyColour.BLUE),
 )
