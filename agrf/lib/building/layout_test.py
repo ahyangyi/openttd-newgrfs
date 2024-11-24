@@ -1,5 +1,8 @@
-from agrf.lib.building.layout import NewGeneralSprite, ADefaultGroundSprite, ALayout
+from agrf.lib.building.layout import NewGeneralSprite, ADefaultGroundSprite, ALayout, ANewDefaultGroundSprite
 from agrf.lib.building.symmetry import BuildingSymmetrical
+
+
+ADefaultGroundSprite = ANewDefaultGroundSprite
 
 
 def test_default_groundsprite():
