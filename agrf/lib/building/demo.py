@@ -14,6 +14,7 @@ class Demo:
     merge_bbox: bool = False
 
     def graphics(self, scale, bpp, remap=None):
+        remap = remap or self.remap
         if self.merge_bbox:
             sprites = []
             for r, row in enumerate(self.tiles):
@@ -21,7 +22,6 @@ class Demo:
                     if sprite is not None:
                         sprites.extend(sprite.demo_translate(c, r).parent_sprites)
             return ALayout(None, sprites, False).graphics(scale, bpp, remap)
-        remap = remap or self.remap
         yofs = 32 * scale
         img = LayeredImage.canvas(
             -16 * scale * (len(self.tiles) + len(self.tiles[0])),
