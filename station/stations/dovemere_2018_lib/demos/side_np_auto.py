@@ -13,7 +13,6 @@ station_building_2 = h_merge([side.side_station_np_demo(i, 1) for i in [5, 7]], 
 assert n == len(station_building_2)
 
 side_np_auto_demo = Demo(
-    "Nontraversable automatic stations (no platform)",
     [
         [x.T for x in station_building],
         [cns.T] * n,
@@ -26,5 +25,6 @@ side_np_auto_demo = Demo(
         [cns] * n,
         station_building_2,
     ],
+    "Nontraversable automatic stations (no platform)",
     remap=get_1cc_remap(CompanyColour.BLUE),
 )
