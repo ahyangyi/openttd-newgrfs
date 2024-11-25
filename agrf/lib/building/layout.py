@@ -142,21 +142,7 @@ class NewGeneralSprite(CachedFunctorMixin):
         )
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
-        if self.sprite is grf.EMPTY_SPRITE:
-            ret = LayeredImage.empty()
-        else:
-            ret = None
-            sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
-            if sprite is not None:
-                ret = LayeredImage.from_sprite(sprite).copy()
-
-            if ret is None and bpp == 32:
-                # Fall back to bpp=8
-                sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
-                ret = LayeredImage.from_sprite(sprite).copy().to_rgb()
-            assert ret is not None
-        self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
-        return ret
+        return self.sprite.graphics(scale, bpp, climate=climate, subclimate=subclimate)
 
 
 def ANewDefaultGroundSprite(x, flags=None):
