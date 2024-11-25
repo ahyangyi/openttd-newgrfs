@@ -70,9 +70,12 @@ class DefaultSpriteMixin:
         if self.sprite in self.climate_independent_tiles:
             img = np.asarray(self.climate_independent_tiles[self.sprite])
         else:
-            img = np.asarray(
-                self.climate_dependent_tiles[(climate, self.sprite + (26 if subclimate != "default" else 0))]
-            )
+            if self.sprite == 3981:
+                img = np.asarray(self.climate_dependent_tiles[(climate, 4550 if subclimate != "default" else 3981)])
+            else:
+                img = np.asarray(
+                    self.climate_dependent_tiles[(climate, self.sprite + (26 if subclimate != "default" else 0))]
+                )
         ret = LayeredImage(-124, 0, 256, 127, img[:, :, :3], img[:, :, 3], None)
         if scale == 4:
             ret = ret.copy()
