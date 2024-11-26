@@ -36,7 +36,6 @@ class DefaultGraphics:
             ret.resize(128, 63)
         elif scale == 1:
             ret.resize(64, 31)
-        self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
 
     @property
