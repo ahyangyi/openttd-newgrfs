@@ -145,6 +145,7 @@ the_stations = AMetaStation(
             demos.west_plaza_vast,
             demos.west_plaza_three_sides,
             demos.west_plaza_snow,
+            demos.west_plaza_toyland,
         ],
     },
     road_stops=roadstops,
