@@ -119,24 +119,6 @@ make_ground_layout("west_plaza_offcenter_B", BuildingFull)
 make_ground_layout("west_plaza_diagonal", BuildingDiamond)
 make_ground_layout("west_plaza_checkerboard", BuildingCylindrical)
 
-all_layers = (
-    "edge marker",
-    "flowers 1",
-    "flowers 2",
-    "flowers 3",
-    "flowers 4",
-    "flowers 5",
-    "flowers 6",
-    "flowers 7",
-    "houses",
-    "arcs",
-    "xiangqi pieces",
-    "basket",
-    "bouquet",
-    "bushes",
-    "ruyi",
-)
-
 
 def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None):
     if osym is None:
@@ -149,13 +131,13 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
     )
-    snow = v.discard_layers(("ground snow",) + all_layers, "snow")
+    snow = v.keep_layers(("snow",), "snow")
     snow = snow.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
     snow.config["agrf_childsprite"] = (0, -11)
     snow.in_place_subset(osym.render_indices())
     snowsprite = osym.create_variants(snow.spritesheet())
 
-    ground_snow = v.discard_layers(("snow",) + all_layers, "ground_snow")
+    ground_snow = v.keep_layers(("ground snow",), "ground_snow")
     ground_snow = ground_snow.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
     ground_snow.config["agrf_childsprite"] = (0, -10)
     ground_snow.in_place_subset(sym.render_indices())
@@ -252,13 +234,20 @@ def object_part(name, sym, span, offset):
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
     )
-    v.config["agrf_manual_crop"] = (0, 10)
-    v.config["agrf_palette"] = "station/files/cns-palette-hard.json"
+    snow = v.keep_layers(("snow",), "snow")
+    snow = snow.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
+    snow.config["agrf_childsprite"] = (0, -11)
+    snow.in_place_subset(sym.render_indices())
+    snowsprite = sym.create_variants(snow.spritesheet())
+    snowcs = AChildSprite(snowsprite, (0, 0), flags={"dodraw": Registers.SNOW})
+
+    v = v.discard_layers(("snow",), "nosnow")
+    v.config["agrf_manual_crop"] = (0, 11)
     v.in_place_subset(sym.render_indices())
     sprite = sym.create_variants(
         v.spritesheet(xspan=span[1], yspan=span[0], xdiff=offset[1], ydiff=offset[0], zdiff=offset[2])
     )
-    gs = AParentSprite(sprite, span, offset)
+    gs = AParentSprite(sprite, span, offset) + snowcs
     return gs
 
 
