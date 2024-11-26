@@ -24,3 +24,4 @@ from .west_plaza_one_tile import west_plaza_one_tile
 from .west_plaza_vast import west_plaza_vast
 from .west_plaza_three_sides import west_plaza_three_sides
 from .west_plaza_snow import west_plaza_snow
+from .west_plaza_toyland import west_plaza_toyland
