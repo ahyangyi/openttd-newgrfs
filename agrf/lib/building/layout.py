@@ -40,8 +40,16 @@ class DefaultGraphics:
 
     @property
     def M(self):
-        if self.sprite in [1011, 1012, 1037, 1038, 1313, 1314]:
+        if self.sprite_id in [1011, 1012, 1037, 1038, 1313, 1314]:
             return replace(self, sprite_id=self.sprite_id - 1 if self.sprite_id % 2 == 0 else self.sprite_id + 1)
+        return self
+
+    @property
+    def R(self):
+        return self
+
+    @property
+    def T(self):
         return self
 
     @property
@@ -120,6 +128,7 @@ class NewGeneralSprite(CachedFunctorMixin):
     flags: dict = field(default_factory=dict)
 
     def __post_init__(self):
+        super().__init__()
         if self.is_childsprite():
             assert len(self.child_spites) == 0
 
