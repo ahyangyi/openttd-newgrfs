@@ -258,8 +258,8 @@ underground_entrance = object_part("west_plaza_underground_entrance", BuildingFu
 corner_lawn = object_part("corner_lawn", BuildingDiagonalAlt, (6, 6, 1), (10, 0, 0))
 edge_lawn = object_part("edge_lawn", BuildingSymmetricalX, (16, 6, 1), (0, 0, 0))
 split_lawn = object_part("split_lawn", BuildingFull, (16, 6, 1), (0, 10, 0))
-tree_bench = object_part("west_plaza_tree_bench", BuildingRotational4, (2, 2, 8), (7, 7, 0))
-tree_bush = object_part("west_plaza_tree_bush", BuildingRotational4, (2, 2, 8), (7, 7, 0))
+tree_bench = object_part("west_plaza_tree_bench", BuildingFull, (2, 2, 8), (7, 7, 0))
+tree_bush = object_part("west_plaza_tree_bush", BuildingFull, (2, 2, 8), (7, 7, 0))
 glass_pyramid = object_part("west_plaza_glass_pyramid", BuildingSymmetrical, (2, 2, 8), (7, 7, 0))
 
 gs = named_grounds[("west_plaza_offcenter_B", "")]
