@@ -21,7 +21,7 @@ roadstops = [[west_stair_end, overpass, west_stair_end.R]]
 
 # Objects
 center_ground = west_plaza_center.lower_tile()
-flower = west_plaza_center_flower_2024_half.lower_tile()
+flower = west_plaza_center_flower_2024a_half.lower_tile()
 west_square = [[center_ground, center_ground, center_ground], [center_ground, flower, center_ground]]
 
 
