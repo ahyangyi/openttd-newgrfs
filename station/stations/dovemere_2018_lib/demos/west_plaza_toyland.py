@@ -29,10 +29,7 @@ offcenter_B = west_plaza_offcenter_B_decorated.lower_tile()
 edge = west_plaza_center_lawn.lower_tile()
 edge_2 = west_plaza_center_toilet_lawn.lower_tile()
 split_lawn = west_plaza_center_split_lawn.lower_tile()
-west_square = [
-    [center_ground, edge, offcenter_A, center_ground, offcenter_A.R, edge, center_ground],
-    [edge_2.T, split_lawn, offcenter_B, flower, offcenter_B.R, split_lawn.R, edge_2.T.R],
-]
+west_square = [[center_ground] * 7, [center_ground] * 7]
 
 
 west_plaza_toyland = Demo(
