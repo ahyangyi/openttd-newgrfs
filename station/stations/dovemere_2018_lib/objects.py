@@ -226,7 +226,6 @@ make_object_layout("west_plaza_center_flower_2022", BuildingSymmetrical, 8, 10, 
 make_object_layout("west_plaza_center_flower_2023", BuildingSymmetrical, 6, 16, 2, 10, 10)
 make_object_layout("west_plaza_center_flower_2024a", BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
 make_object_layout("west_plaza_center_flower_2024b", BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
-make_object_layout("west_plaza_center_flower_2024c", BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
 
 
 def object_part(name, sym, span, offset):
