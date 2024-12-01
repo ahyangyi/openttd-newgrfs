@@ -22,7 +22,7 @@ west_stair_extender = west_stair_extender_narrow.lower_tile()
 roadstops = [[west_stair_end, overpass, west_stair, west_stair_extender, west_stair.R, overpass, west_stair_end.R]]
 
 # Objects
-default = default.lower_tile()
+building_ground_layout = building_ground_layout.lower_tile()
 west_square = [[building_ground_layout] * 7, [building_ground_layout] * 7]
 
 
