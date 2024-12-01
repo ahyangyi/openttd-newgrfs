@@ -12,5 +12,6 @@ empty_ground = AGroundSprite(grf.EMPTY_SPRITE, flags={"add": Registers.ZERO})
 
 track = ALayout(track_ground, [], True)
 default = ALayout(default_ground, [], False)
+build_ground_layout = ALayout(building_ground, [], False)
 road_ground_w_layout = ALayout(road_ground_w, [], False)
 road_ground_n_layout = ALayout(road_ground_n, [], False)
