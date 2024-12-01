@@ -29,6 +29,6 @@ west_square = [[building_ground_layout] * 7, [building_ground_layout] * 7]
 west_plaza_default = Demo(
     station + roadstops + west_square,
     "West plaza (vanilla ground)",
-    remap=get_1cc_remap(CompanyColour.WHITE),
+    remap=get_1cc_remap(CompanyColour.YELLOW),
     merge_bbox=True,
 )

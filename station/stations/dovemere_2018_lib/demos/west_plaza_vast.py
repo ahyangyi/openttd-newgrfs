@@ -60,6 +60,6 @@ west_square = [
 west_plaza_vast = Demo(
     station + roadstops + west_square,
     "West plaza (with VAST square tiles)",
-    remap=get_1cc_remap(CompanyColour.WHITE),
+    remap=get_1cc_remap(CompanyColour.MAUVE),
     merge_bbox=True,
 )
