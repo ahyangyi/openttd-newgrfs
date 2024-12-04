@@ -228,27 +228,39 @@ make_object_layout("west_plaza_center_flower_2024a", BuildingSymmetrical, 8, 12,
 make_object_layout("west_plaza_center_flower_2024b", BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
 
 
-def object_part(name, sym, span, offset):
+def object_part(name, sym, span, offset, has_nosnow=False):
     v = LazyVoxel(
         name,
         prefix=".cache/render/station/dovemere_2018/plaza",
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
     )
+
+    bare = v.discard_layers(("snow", "nosnow"), "bare")
+    bare.config["agrf_manual_crop"] = (0, 11)
+    bare.in_place_subset(sym.render_indices())
+    sprite = sym.create_variants(
+        bare.spritesheet(xspan=span[1], yspan=span[0], xdiff=offset[1], ydiff=offset[0], zdiff=offset[2])
+    )
+
     snow = v.keep_layers(("snow",), "snow")
-    snow = snow.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
+    snow = snow.compose(bare, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
     snow.config["agrf_childsprite"] = (0, -11)
     snow.in_place_subset(sym.render_indices())
     snowsprite = sym.create_variants(snow.spritesheet())
     snowcs = AChildSprite(snowsprite, (0, 0), flags={"dodraw": Registers.SNOW})
 
-    v = v.discard_layers(("snow",), "nosnow")
-    v.config["agrf_manual_crop"] = (0, 11)
-    v.in_place_subset(sym.render_indices())
-    sprite = sym.create_variants(
-        v.spritesheet(xspan=span[1], yspan=span[0], xdiff=offset[1], ydiff=offset[0], zdiff=offset[2])
-    )
     gs = AParentSprite(sprite, span, offset) + snowcs
+
+    if has_nosnow:
+        nosnow = v.keep_layers(("nosnow",), "no_snow")
+        nosnow = nosnow.compose(bare, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
+        nosnow.config["agrf_childsprite"] = (0, -11)
+        nosnow.in_place_subset(sym.render_indices())
+        nosnowsprite = sym.create_variants(nosnow.spritesheet())
+        nosnowcs = AChildSprite(nosnowsprite, (0, 0), flags={"dodraw": Registers.NOSNOW})
+        gs = gs + nosnowcs
+
     return gs
 
 
@@ -259,8 +271,8 @@ underground_entrance = object_part("west_plaza_underground_entrance", BuildingFu
 corner_lawn = object_part("corner_lawn", BuildingDiagonalAlt, (6, 6, 1), (10, 0, 0))
 edge_lawn = object_part("edge_lawn", BuildingSymmetricalX, (16, 6, 1), (0, 0, 0))
 split_lawn = object_part("split_lawn", BuildingFull, (16, 6, 1), (0, 10, 0))
-tree_bench = object_part("west_plaza_tree_bench", BuildingFull, (2, 2, 8), (7, 7, 0))
-tree_bush = object_part("west_plaza_tree_bush", BuildingFull, (2, 2, 8), (7, 7, 0))
+tree_bench = object_part("west_plaza_tree_bench", BuildingFull, (2, 2, 8), (7, 7, 0), has_nosnow=True)
+tree_bush = object_part("west_plaza_tree_bush", BuildingFull, (2, 2, 8), (7, 7, 0), has_nosnow=True)
 glass_pyramid = object_part("west_plaza_glass_pyramid", BuildingSymmetrical, (2, 2, 8), (7, 7, 0))
 
 gs = named_grounds[("west_plaza_offcenter_B", "")]

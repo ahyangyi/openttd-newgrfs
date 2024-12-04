@@ -506,6 +506,8 @@ class AChildSprite(RegistersMixin, CachedFunctorMixin):
 
         if self.flags.get("dodraw") == Registers.SNOW and subclimate != "snow":
             return LayeredImage.empty()
+        if self.flags.get("dodraw") == Registers.NOSNOW and subclimate == "snow":
+            return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 
     @functools.cache
