@@ -32,7 +32,7 @@ class Config:
 
         if "agrf_subset" in new_config:
             indices = new_config["agrf_subset"]
-            for k in ["sprites", "agrf_deltas", "agrf_offsets"]:
+            for k in ["sprites", "agrf_deltas", "agrf_offsets", "agrf_ydeltas", "agrf_yoffsets"]:
                 if k in new_config:
                     new_config[k] = [new_config[k][i] for i in indices]
             del new_config["agrf_subset"]
