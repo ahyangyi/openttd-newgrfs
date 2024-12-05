@@ -1,4 +1,5 @@
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, replace, field
+from typing import List, Tuple
 import grf
 from PIL import Image
 import functools
@@ -7,6 +8,153 @@ from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.magic import CachedFunctorMixin
 from agrf.utils import unique_tuple
 from agrf.pkg import load_third_party_image
+
+
+@dataclass
+class DefaultGraphics:
+    sprite_id: int
+
+    climate_dependent_tiles = {
+        (climate, k): load_third_party_image(f"third_party/opengfx2/{climate}/{k}.png")
+        for climate in ["temperate", "arctic", "tropical", "toyland"]
+        for k in [1011, 1012, 1037, 1038, 3981, 4550]
+    }
+    climate_independent_tiles = {k: load_third_party_image(f"third_party/opengfx2/{k}.png") for k in [1313, 1314, 1420]}
+
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
+        # FIXME handle flags correctly
+        if self.sprite_id in self.climate_independent_tiles:
+            img = np.asarray(self.climate_independent_tiles[self.sprite_id])
+        else:
+            img = np.asarray(
+                self.climate_dependent_tiles[(climate, self.sprite_id + (26 if subclimate != "default" else 0))]
+            )
+        ret = LayeredImage(-124, 0, 256, 127, img[:, :, :3], img[:, :, 3], None)
+        if scale == 4:
+            ret = ret.copy()
+        elif scale == 2:
+            ret.resize(128, 63)
+        elif scale == 1:
+            ret.resize(64, 31)
+        return ret
+
+    @property
+    def M(self):
+        if self.sprite_id in [1011, 1012, 1037, 1038, 1313, 1314]:
+            return replace(self, sprite_id=self.sprite_id - 1 if self.sprite_id % 2 == 0 else self.sprite_id + 1)
+        return self
+
+    @property
+    def R(self):
+        return self
+
+    @property
+    def T(self):
+        return self
+
+    @property
+    def sprites(self):
+        return ()
+
+
+@dataclass
+class NewGraphics:
+    sprite: grf.ResourceAction
+
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
+        if self.sprite is grf.EMPTY_SPRITE:
+            return LayeredImage.empty()
+        ret = None
+        sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
+        if sprite is not None:
+            ret = LayeredImage.from_sprite(sprite).copy()
+
+        if ret is None and bpp == 32:
+            # Fall back to bpp=8
+            sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
+            ret = LayeredImage.from_sprite(sprite).copy().to_rgb()
+        assert ret is not None
+
+        return ret
+
+    @property
+    def sprites(self):
+        return (self.sprite,)
+
+
+@dataclass
+class GroundPosition:
+    @property
+    def T(self):
+        return self
+
+    R = M = T
+
+
+@dataclass
+class BBoxPosition:
+    extent: Tuple[int, int, int]
+    offset: Tuple[int, int, int]
+
+    @property
+    def T(self):
+        new_offset = (self.offset[0], 16 - self.offset[1] - self.extent[1], self.offset[2])
+        return BBoxPosition(extent, new_offset)
+
+    @property
+    def R(self):
+        new_offset = (16 - self.offset[0] - self.extent[0], self.offset[1], self.offset[2])
+        return BBoxPosition(extent, new_offset)
+
+    @staticmethod
+    def _mirror(triplet):
+        return triplet[1], triplet[0], triplet[2]
+
+    @property
+    def M(self):
+        return BBoxPosition(BBoxPosition._mirror(extent), BBoxPosition._mirror(new_offset))
+
+
+@dataclass
+class OffsetPosition:
+    offset: Tuple[int, int]
+
+
+@dataclass
+class NewGeneralSprite(CachedFunctorMixin):
+    sprite: DefaultGraphics | NewGraphics
+    position: GroundPosition | BBoxPosition | OffsetPosition
+    child_sprites: list = field(default_factory=list)
+    flags: dict = field(default_factory=dict)
+
+    def __post_init__(self):
+        super().__init__()
+        if self.is_childsprite():
+            assert len(self.child_spites) == 0
+
+    def is_childsprite(self):
+        return isinstance(self.position, OffsetPosition)
+
+    def __repr__(self):
+        return f"<GeneralSprite:{self.sprite}:{self.position}:{self.child_sprites}:{self.flags}>"
+
+    @property
+    def sprites(self):
+        return unique_tuple(self.sprite.sprites + tuple(s for c in self.child_sprites for s in c.sprites))
+
+    def fmap(self, f):
+        return replace(
+            self,
+            sprite=self.sprite if self.sprite is grf.EMPTY_SPRITE else f(self.sprite),
+            child_sprites=[f(c) for c in self.child_sprites],
+        )
+
+    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
+        return self.sprite.graphics(scale, bpp, climate=climate, subclimate=subclimate)
+
+
+def ANewDefaultGroundSprite(x, flags=None):
+    return NewGeneralSprite(sprite=DefaultGraphics(x), position=GroundPosition(), child_sprites=[], flags=flags)
 
 
 class ChildSpriteContainerMixin:
@@ -561,7 +709,7 @@ class ALayout:
             from station.stations.misc import empty_ground
 
             self.ground_sprite = empty_ground
-        assert isinstance(self.ground_sprite, (ADefaultGroundSprite, AGroundSprite))
+        assert isinstance(self.ground_sprite, (ADefaultGroundSprite, AGroundSprite, NewGeneralSprite))
         assert all(isinstance(s, (ADefaultParentSprite, AParentSprite)) for s in self.parent_sprites), [
             type(s) for s in self.parent_sprites
         ]
