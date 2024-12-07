@@ -23,7 +23,7 @@ roadstops = [[west_stair_end, west_stair, west_stair_extender, west_stair.R, wes
 # Objects
 center_ground = west_plaza_center.lower_tile()
 offcenter_A = west_plaza_offcenter_A_decorated.lower_tile()
-flower = west_plaza_center_flower_2024a_half.lower_tile()
+flower = west_plaza_topiary_2024a_half.lower_tile()
 offcenter_B = west_plaza_offcenter_B.lower_tile()
 west_square = [
     [center_ground, offcenter_A, center_ground, offcenter_A.R, center_ground],
