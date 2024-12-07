@@ -1,4 +1,4 @@
-import grf
+from agrf.graphics.voxel import LazyVoxel
 from station.lib import (
     BuildingFull,
     BuildingSymmetricalX,
@@ -15,48 +15,9 @@ from station.lib import (
     Registers,
     Demo,
 )
-from agrf.graphics.voxel import LazyVoxel
-from grfobject.lib import AObject, GraphicalSwitch, PositionSwitch
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
-from agrf.lib.building.slope import make_slopes, slope_types
 from .west_plaza.grounds import named_grounds, make_ground_layouts
-from .objects_utils import objects, register_slopes, DEFAULT_FLAGS, named_layouts
-
-
-def register(layouts, sym, label, flags=DEFAULT_FLAGS):
-    rows = len(layouts)
-    columns = len(layouts[0])
-    layout = PositionSwitch(
-        ranges={r * 256 + c: layouts[r][c] for r in range(rows) for c in range(columns)},
-        default=layouts[0][0],
-        code="relative_pos",
-        rows=rows,
-        columns=columns,
-    )
-    for cur in sym.chiralities(layout):
-        demo = Demo(cur.to_lists())
-        doc_layout = demo.to_layout()
-        doc_layout.category = b"\xe8\x8a\x9cZ"  # FIXME doc category?
-        layouts = sym.rotational_views(cur)
-        num_views = len(layouts)
-        cur_object = AObject(
-            id=len(objects),
-            translation_name="WEST_PLAZA",
-            layouts=layouts,
-            purchase_layouts=sym.rotational_views(doc_layout),
-            class_label=b"\xe8\x8a\x9c" + label,
-            climates_available=grf.ALL_CLIMATES,
-            size=(columns, rows),
-            num_views=num_views,
-            introduction_date=0,
-            end_of_life_date=0,
-            height=1,
-            flags=flags,
-            doc_layout=doc_layout,
-            callbacks={"tile_check": 0x400},
-        )
-        objects.append(cur_object)
-
+from .objects_utils import objects, register_slopes, DEFAULT_FLAGS, named_layouts, register
 
 make_ground_layouts()
 

@@ -1,3 +1,23 @@
+import grf
+from station.lib import (
+    BuildingFull,
+    BuildingSymmetricalX,
+    BuildingSymmetrical,
+    BuildingCylindrical,
+    BuildingDiamond,
+    BuildingDiagonalAlt,
+    BuildingRotational4,
+    AGroundSprite,
+    AParentSprite,
+    AChildSprite,
+    ALayout,
+    AttrDict,
+    Registers,
+    Demo,
+)
+from grfobject.lib import AObject, GraphicalSwitch, PositionSwitch
+from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
+from agrf.lib.building.slope import make_slopes, slope_types
 from grfobject.lib import AObject, GraphicalSwitch
 from station.lib import AttrDict
 import grf
@@ -39,6 +59,41 @@ def register_slopes(slopes, sym, flags=DEFAULT_SLOPE_FLAGS):
             height=1,
             flags=flags,
             doc_layout=purchase_layouts[0],
+            callbacks={"tile_check": 0x400},
+        )
+        objects.append(cur_object)
+
+
+def register(layouts, sym, label, flags=DEFAULT_FLAGS):
+    rows = len(layouts)
+    columns = len(layouts[0])
+    layout = PositionSwitch(
+        ranges={r * 256 + c: layouts[r][c] for r in range(rows) for c in range(columns)},
+        default=layouts[0][0],
+        code="relative_pos",
+        rows=rows,
+        columns=columns,
+    )
+    for cur in sym.chiralities(layout):
+        demo = Demo(cur.to_lists())
+        doc_layout = demo.to_layout()
+        doc_layout.category = b"\xe8\x8a\x9cZ"  # FIXME doc category?
+        layouts = sym.rotational_views(cur)
+        num_views = len(layouts)
+        cur_object = AObject(
+            id=len(objects),
+            translation_name="WEST_PLAZA",
+            layouts=layouts,
+            purchase_layouts=sym.rotational_views(doc_layout),
+            class_label=b"\xe8\x8a\x9c" + label,
+            climates_available=grf.ALL_CLIMATES,
+            size=(columns, rows),
+            num_views=num_views,
+            introduction_date=0,
+            end_of_life_date=0,
+            height=1,
+            flags=flags,
+            doc_layout=doc_layout,
             callbacks={"tile_check": 0x400},
         )
         objects.append(cur_object)
