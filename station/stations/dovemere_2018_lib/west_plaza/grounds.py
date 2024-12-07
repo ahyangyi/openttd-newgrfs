@@ -1,7 +1,16 @@
 import grf
-from station.lib import BuildingFull, BuildingSymmetrical, BuildingCylindrical, BuildingDiamond, AttrDict, AGroundSprite
+from station.lib import (
+    BuildingFull,
+    BuildingSymmetrical,
+    BuildingCylindrical,
+    BuildingDiamond,
+    AttrDict,
+    AGroundSprite,
+    ALayout,
+)
 from agrf.graphics.voxel import LazyVoxel
 from agrf.lib.building.slope import make_slopes, slope_types
+from ..objects_utils import register_slopes, named_layouts
 
 DEFAULT_FLAGS = grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.ALLOW_UNDER_BRIDGE
 DEFAULT_SLOPE_FLAGS = DEFAULT_FLAGS | grf.Object.Flags.AUTOREMOVE | grf.Object.Flags.HAS_NO_FOUNDATION
@@ -33,3 +42,27 @@ for name, sym in [
         v2.in_place_subset(sym.render_indices())
         sprite2 = sym.create_variants(v2.spritesheet())
         named_grounds[(name, str(slope_type))] = AGroundSprite(sprite2)
+
+
+def make_ground_layout(name, sym):
+    gs = named_grounds[(name, "")]
+    layout = ALayout(gs, [], True, category=b"\xe8\x8a\x9cZ")
+
+    slopes = make_slopes(
+        {
+            i: ALayout(named_grounds[(name, str(i) if i > 0 else "")], [], True, category=b"\xe8\x8a\x9cZ")
+            for i in slope_types
+        },
+        sym,
+    )
+
+    named_layouts[(name, "")] = layout
+    register_slopes(slopes, sym)
+
+
+def make_ground_layouts():
+    make_ground_layout("west_plaza_center", BuildingSymmetrical)
+    make_ground_layout("west_plaza_offcenter_A", BuildingFull)
+    make_ground_layout("west_plaza_offcenter_B", BuildingFull)
+    make_ground_layout("west_plaza_diagonal", BuildingDiamond)
+    make_ground_layout("west_plaza_checkerboard", BuildingCylindrical)

@@ -1,10 +1,12 @@
 from grfobject.lib import AObject, GraphicalSwitch
+from station.lib import AttrDict
 import grf
 from agrf.lib.building.slope import slope_types
 
 DEFAULT_FLAGS = grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.ALLOW_UNDER_BRIDGE
 DEFAULT_SLOPE_FLAGS = DEFAULT_FLAGS | grf.Object.Flags.AUTOREMOVE | grf.Object.Flags.HAS_NO_FOUNDATION
 
+named_layouts = AttrDict(schema=("name", "offset"))
 objects = []
 
 

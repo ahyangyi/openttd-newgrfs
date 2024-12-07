@@ -19,10 +19,8 @@ from agrf.graphics.voxel import LazyVoxel
 from grfobject.lib import AObject, GraphicalSwitch, PositionSwitch
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 from agrf.lib.building.slope import make_slopes, slope_types
-from .west_plaza.grounds import named_grounds
-from .objects_utils import objects, register_slopes, DEFAULT_FLAGS
-
-named_layouts = AttrDict(schema=("name", "offset"))
+from .west_plaza.grounds import named_grounds, make_ground_layouts
+from .objects_utils import objects, register_slopes, DEFAULT_FLAGS, named_layouts
 
 
 def register(layouts, sym, label, flags=DEFAULT_FLAGS):
@@ -60,27 +58,7 @@ def register(layouts, sym, label, flags=DEFAULT_FLAGS):
         objects.append(cur_object)
 
 
-def make_ground_layout(name, sym):
-    gs = named_grounds[(name, "")]
-    layout = ALayout(gs, [], True, category=b"\xe8\x8a\x9cZ")
-
-    slopes = make_slopes(
-        {
-            i: ALayout(named_grounds[(name, str(i) if i > 0 else "")], [], True, category=b"\xe8\x8a\x9cZ")
-            for i in slope_types
-        },
-        sym,
-    )
-
-    named_layouts[(name, "")] = layout
-    register_slopes(slopes, sym)
-
-
-make_ground_layout("west_plaza_center", BuildingSymmetrical)
-make_ground_layout("west_plaza_offcenter_A", BuildingFull)
-make_ground_layout("west_plaza_offcenter_B", BuildingFull)
-make_ground_layout("west_plaza_diagonal", BuildingDiamond)
-make_ground_layout("west_plaza_checkerboard", BuildingCylindrical)
+make_ground_layouts()
 
 
 def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None):
