@@ -69,7 +69,7 @@ def make_objects():
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_center", "lawn")] = layout
-    register([[layout]], BuildingSymmetricalX, b"l")
+    register([[layout]], BuildingFull, b"l")
 
     gs = named_grounds[("west_plaza_center", "")]
     ps = [edge_lawn, underground_entrance.move(0, 6)]
@@ -89,4 +89,4 @@ def make_objects():
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_center", "split_lawn")] = layout
-    register([[layout]], BuildingSymmetricalX, b"l")
+    register([[layout]], BuildingFull, b"l")
