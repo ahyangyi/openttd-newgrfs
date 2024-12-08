@@ -61,8 +61,8 @@ def make_component(name, sym, span, offset, has_nosnow=False):
 
 
 def make_components():
-    make_component("west_plaza_planter_1", BuildingFull, (4, 4, 1), (2, 10, 0))
-    make_component("west_plaza_planter_2", BuildingFull, (7, 4, 1), (2, 10, 0))
+    make_component("west_plaza_planter_1", BuildingFull, (4, 3, 1), (2, 11, 0))
+    make_component("west_plaza_planter_2", BuildingFull, (7, 3, 1), (2, 11, 0))
     make_component("west_plaza_pole", BuildingCylindrical, (2, 2, 8), (7, 7, 0))
     make_component("west_plaza_underground_entrance", BuildingFull, (4, 4, 8), (6, 6, 0))
     make_component("corner_lawn", BuildingDiagonalAlt, (6, 6, 1), (10, 0, 0))
