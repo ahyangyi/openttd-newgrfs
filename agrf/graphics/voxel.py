@@ -10,6 +10,7 @@ from agrf.gorender import (
     self_compose,
     produce_empty,
     discard_layers,
+    keep_layers,
 )
 from agrf.graphics.rotator import unnatural_dimens
 from agrf.graphics.spritesheet import spritesheet_template
@@ -179,6 +180,18 @@ class LazyVoxel(Config):
             old_path = self.voxel_getter()
             new_path = os.path.join(self.prefix, suffix, f"{self.name}.vox")
             discard_layers(discards, old_path, new_path)
+            return new_path
+
+        return LazyVoxel(
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=deepcopy(self.config)
+        )
+
+    @functools.cache
+    def keep_layers(self, keeps, suffix):
+        def voxel_getter():
+            old_path = self.voxel_getter()
+            new_path = os.path.join(self.prefix, suffix, f"{self.name}.vox")
+            keep_layers(keeps, old_path, new_path)
             return new_path
 
         return LazyVoxel(
