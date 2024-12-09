@@ -70,4 +70,4 @@ def make_components():
     make_component("split_lawn", BuildingFull, (16, 6, 1), (0, 10, 0))
     make_component("west_plaza_tree_bench", BuildingFull, (2, 2, 8), (7, 7, 0), has_nosnow=True)
     make_component("west_plaza_tree_bush", BuildingFull, (2, 2, 8), (7, 7, 0), has_nosnow=True)
-    make_component("west_plaza_glass_pyramid", BuildingSymmetrical, (2, 2, 8), (7, 7, 0))
+    make_component("west_plaza_glass_pyramid", BuildingCylindrical, (2, 2, 8), (7, 7, 0))
