@@ -22,8 +22,15 @@ from .components import make_components, components
 from ..objects_utils import objects, register_slopes, DEFAULT_FLAGS, named_layouts, register
 
 
-def make_objects():
-    components.globalize()
+def make_lightposts():
+    gs = named_grounds[("west_plaza_offcenter_A", "")]
+    ps = [pole.move(-2, 4), pole.move(2, 4), pole.move(-2, 8), pole.move(2, 8)]
+    layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+    named_layouts[("west_plaza_offcenter_A", "decorated")] = layout
+    register([[layout]], BuildingFull, b"L")
+
+
+def make_mixed_objects():
     gs = named_grounds[("west_plaza_offcenter_B", "")]
     ps = [
         planter_1.move(-4, 0),
@@ -36,25 +43,19 @@ def make_objects():
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_offcenter_B", "decorated")] = layout
-    register([[layout]], BuildingFull, b"L")
-
-    gs = named_grounds[("west_plaza_offcenter_A", "")]
-    ps = [pole.move(-2, 4), pole.move(2, 4), pole.move(-2, 8), pole.move(2, 8)]
-    layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
-    named_layouts[("west_plaza_offcenter_A", "decorated")] = layout
-    register([[layout]], BuildingFull, b"L")
+    register([[layout]], BuildingFull, b"M")
 
     gs = named_grounds[("west_plaza_offcenter_A", "")]
     ps = [pole.move(-2, 4), pole.move(2, 4), pole.move(-2, 8), pole.move(2, 8), corner_lawn]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_offcenter_A", "decorated_lawn")] = layout
-    register([[layout]], BuildingFull, b"L")
+    register([[layout]], BuildingFull, b"M")
 
     gs = named_grounds[("west_plaza_offcenter_A", "")]
     ps = [pole.move(-2, 0), pole.move(2, 0), pole.move(-2, 4), pole.move(2, 4), underground_entrance.move(6, 2)]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_offcenter_B", "oneliner")] = layout
-    register([[layout]], BuildingFull, b"L")
+    register([[layout]], BuildingFull, b"M")
 
     gs = named_grounds[("west_plaza_center", "")]
     ps = [
@@ -69,13 +70,13 @@ def make_objects():
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_center", "lawn")] = layout
-    register([[layout]], BuildingFull, b"l")
+    register([[layout]], BuildingFull, b"M")
 
     gs = named_grounds[("west_plaza_center", "")]
     ps = [edge_lawn, underground_entrance.move(0, 6)]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_center", "toilet_lawn")] = layout
-    register([[layout]], BuildingSymmetricalX, b"l")
+    register([[layout]], BuildingSymmetricalX, b"M")
 
     gs = named_grounds[("west_plaza_center", "")]
     ps = [
@@ -89,4 +90,10 @@ def make_objects():
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_center", "split_lawn")] = layout
-    register([[layout]], BuildingFull, b"l")
+    register([[layout]], BuildingFull, b"M")
+
+
+def make_objects():
+    components.globalize()
+    make_lightposts()
+    make_mixed_objects()
