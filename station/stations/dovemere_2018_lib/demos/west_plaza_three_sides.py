@@ -69,7 +69,7 @@ station = [
         offcenter_A,
         center_ground,
         offcenter_A.R,
-        edge,
+        edge.R,
         offcenter_A.T.R.M,
         diagonal.T.M,
     ],
