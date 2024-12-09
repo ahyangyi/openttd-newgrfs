@@ -16,3 +16,13 @@ from .special_sa import special_demo_sa
 from .special_cp import special_demo_cp
 from .special_aq import special_demo_aq
 from .west_plaza import west_plaza
+from .west_plaza_4 import west_plaza_4
+from .west_plaza_3 import west_plaza_3
+from .west_plaza_oneliner import west_plaza_oneliner
+from .west_plaza_oversized import west_plaza_oversized
+from .west_plaza_one_tile import west_plaza_one_tile
+from .west_plaza_vast import west_plaza_vast
+from .west_plaza_default import west_plaza_default
+from .west_plaza_three_sides import west_plaza_three_sides
+from .west_plaza_snow import west_plaza_snow
+from .west_plaza_toyland import west_plaza_toyland

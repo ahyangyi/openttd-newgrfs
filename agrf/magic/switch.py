@@ -19,6 +19,12 @@ class Switch(CachedFunctorMixin, grf.Switch):
             subroutines=self.subroutines,
         )
 
+    def lookup(self, x):
+        for r in self._ranges:
+            if r.low <= x <= r.high:
+                return r.ref
+        return self.default
+
     # FIXME: should probably be refactored into something more general
     # and not rely on everything else implementing `get_default_graphics`
     def get_default_graphics(self):

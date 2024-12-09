@@ -148,3 +148,17 @@ def discard_layers(discards, vox_path, new_path):
         + [x for discard in discards for x in ["--discard", discard]],
         check=True,
     )
+
+
+def keep_layers(keeps, vox_path, new_path):
+    try:
+        if os.path.getmtime(vox_path) < os.path.getmtime(new_path):
+            return
+    except:
+        pass
+    os.makedirs(os.path.dirname(new_path), exist_ok=True)
+    subprocess.run(
+        ["layer-filter", "--source", vox_path, "--destination", new_path]
+        + [x for keep in keeps for x in ["--keep", keep]],
+        check=True,
+    )
