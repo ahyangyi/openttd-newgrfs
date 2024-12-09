@@ -15,16 +15,29 @@ class Config:
         if config is not None:
             self.config.update(config)
 
+        self._final_config = None
+
+    @property
+    def final_config(self):
+        if self._final_config is not None:
+            return self._final_config
+        self._final_config = self.subset()
+        return self._final_config
+
     def copy(self):
         return Config(config=deepcopy(self.config))
 
-    def subset(self, indices):
+    def subset(self):
         new_config = deepcopy(self.config)
-        for k in ["sprites", "agrf_deltas", "agrf_offsets"]:
-            if k in new_config:
-                new_config[k] = [new_config[k][i] for i in indices]
 
-        return Config(config=new_config)
+        if "agrf_subset" in new_config:
+            indices = new_config["agrf_subset"]
+            for k in ["sprites", "agrf_deltas", "agrf_offsets", "agrf_ydeltas", "agrf_yoffsets"]:
+                if k in new_config:
+                    new_config[k] = [new_config[k][i] for i in indices]
+            del new_config["agrf_subset"]
+
+        return new_config
 
 
 def render(config, vox_path, output_path=None):
@@ -46,7 +59,7 @@ def render(config, vox_path, output_path=None):
         palette_clause = []
 
     with tempfile.NamedTemporaryFile("w") as f:
-        json.dump(config.config, f)
+        json.dump(config.final_config, f)
         f.flush()
         subprocess.run(
             ["gorender", "-s", scales, "-m", f.name, "-p"] + palette_clause + output_clause + [vox_path], check=True
