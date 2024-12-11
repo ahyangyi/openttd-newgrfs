@@ -16,21 +16,7 @@ OVERPASS_HEIGHT = 11
 OVERHANG_WIDTH = 1
 EXTENDED_WIDTH = 9
 
-all_layers = (
-    "left spacer",
-    "right wall",
-    "right mask",
-    "edge marker",
-    "underground",
-    "escalator",
-    "staircase",
-    "pillars",
-    "platform",
-    "concourse",
-    "grass",
-    "rocks",
-    "trees",
-)
+JOGGLE_AMOUNT = 45 - 32 * 2**0.5
 
 
 def make_road_stop(name, sym, far, overpass, near, extended, floating, joggle=0):
@@ -50,7 +36,7 @@ def make_road_stop(name, sym, far, overpass, near, extended, floating, joggle=0)
             sprite["width"] = 112
         v.config["agrf_zdiff"] = -12
 
-    snow = v.discard_layers(all_layers, "snow")
+    snow = v.keep_layers(("snow",), "snow")
     snow = snow.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
     snow.config["agrf_childsprite"] = (0, -3)
 
@@ -120,7 +106,7 @@ make_road_stop(
     None,
     False,
     0,
-    joggle=-0.25,
+    joggle=JOGGLE_AMOUNT,
 )
 make_road_stop(
     "west_stair",
@@ -130,7 +116,7 @@ make_road_stop(
     ((11, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
     True,
     16,
-    joggle=-0.5,
+    joggle=JOGGLE_AMOUNT * 2,
 )
 make_road_stop(
     "west_stair_wide",
@@ -140,7 +126,7 @@ make_road_stop(
     ((15, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
     True,
     16,
-    joggle=-0.5,
+    joggle=JOGGLE_AMOUNT * 2,
 )
 make_road_stop(
     "west_stair_narrow",
@@ -150,7 +136,7 @@ make_road_stop(
     ((7, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
     True,
     16,
-    joggle=-0.5,
+    joggle=JOGGLE_AMOUNT * 2,
 )
 make_road_stop(
     "west_stair_extender",
@@ -160,7 +146,7 @@ make_road_stop(
     ((16, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
     True,
     16,
-    joggle=-0.5,
+    joggle=JOGGLE_AMOUNT * 2,
 )
 make_road_stop(
     "west_stair_extender_narrow",
@@ -170,7 +156,7 @@ make_road_stop(
     ((16, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
     True,
     16,
-    joggle=-0.5,
+    joggle=JOGGLE_AMOUNT * 2,
 )
 make_road_stop(
     "west_stair_end",
@@ -180,5 +166,5 @@ make_road_stop(
     ((16, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
     True,
     16,
-    joggle=-0.5,
+    joggle=JOGGLE_AMOUNT * 2,
 )
