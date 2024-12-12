@@ -20,6 +20,33 @@ EXTENDED_WIDTH = 9
 JOGGLE_AMOUNT = 45 - 32 * 2**0.5
 
 
+def register_road_stop(layout, sym):
+    global cnt
+    for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingFull) else [layout, layout.T]:
+        cur_roadstop = ARoadStop(
+            id=0x8000 + cnt,
+            translation_name="WEST_PLAZA_BUS",
+            graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
+            general_flags=0x8,
+            class_label=b"\xe8\x8a\x9cR",
+            enable_if=[parameter_list.index("E88A9CA_ENABLE_ROADSTOP")],
+            doc_layout=cur,
+        )
+        roadstops.append(cur_roadstop)
+        cur_roadstop = ARoadStop(
+            id=0xC000 + cnt,
+            translation_name="WEST_PLAZA_BUS",
+            graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
+            general_flags=0x8,
+            class_label=b"\xe8\x8a\x9cR",
+            enable_if=[parameter_list.index("E88A9CA_ENABLE_ROADSTOP")],
+            doc_layout=cur,
+            is_waypoint=True,
+        )
+        roadstops.append(cur_roadstop)
+        cnt += 1
+
+
 def make_road_stop(name, sym, far, overpass, near, extended, floating, joggle=0):
     v = LazyVoxel(
         name,
@@ -75,30 +102,7 @@ def make_road_stop(name, sym, far, overpass, near, extended, floating, joggle=0)
     layout = ALayout(road_ground, ps, True, category=b"\xe8\x8a\x9cR")
     named_layouts[(name,)] = layout
 
-    global cnt
-    for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingFull) else [layout, layout.T]:
-        cur_roadstop = ARoadStop(
-            id=0x8000 + cnt,
-            translation_name="WEST_PLAZA_BUS",
-            graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
-            general_flags=0x8,
-            class_label=b"\xe8\x8a\x9cR",
-            enable_if=[parameter_list.index("E88A9CA_ENABLE_ROADSTOP")],
-            doc_layout=cur,
-        )
-        roadstops.append(cur_roadstop)
-        cur_roadstop = ARoadStop(
-            id=0xC000 + cnt,
-            translation_name="WEST_PLAZA_BUS",
-            graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
-            general_flags=0x8,
-            class_label=b"\xe8\x8a\x9cR",
-            enable_if=[parameter_list.index("E88A9CA_ENABLE_ROADSTOP")],
-            doc_layout=cur,
-            is_waypoint=True,
-        )
-        roadstops.append(cur_roadstop)
-        cnt += 1
+    register_road_stop(layout, sym)
 
 
 make_road_stop(
