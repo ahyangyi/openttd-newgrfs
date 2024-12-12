@@ -6,6 +6,7 @@ from roadstop.lib import ARoadStop
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 from ..misc import road_ground
 
+named_parts = AttrDict(schema=("name", "part"))
 named_layouts = AttrDict(schema=("name",))
 
 cnt = 0
@@ -67,7 +68,9 @@ def make_road_stop(name, sym, far, overpass, near, extended, floating, joggle=0)
         partsnow = make_part(snow)
         partsnow.voxel.render()
         snowcs = AChildSprite(partsnow, (0, 0), flags={"dodraw": Registers.SNOW})
-        ps.append(partps + snowcs)
+        partps = partps + snowcs
+        named_parts[(name, partname)] = partps
+        ps.append(partps)
 
     layout = ALayout(road_ground, ps, True, category=b"\xe8\x8a\x9cR")
     named_layouts[(name,)] = layout
