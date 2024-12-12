@@ -127,7 +127,10 @@ make_road_stop(
 
 
 overpass_far = named_parts[("overpass", "far")]
-layout = ALayout(road_ground, [overpass_far, overpass_far.T], True, category=b"\xe8\x8a\x9cR")
+overpass_overpass = named_parts[("overpass", "overpass")]
+layout = ALayout(
+    road_ground, [overpass_far, overpass_overpass, overpass_far.T, overpass_overpass.T], True, category=b"\xe8\x8a\x9cR"
+)
 named_layouts[("double_overpass",)] = layout
 register_road_stop(layout, BuildingSymmetrical)
 
