@@ -31,7 +31,7 @@ JOGGLE_AMOUNT = 45 - 32 * 2**0.5
 
 def register_road_stop(layout, sym):
     global cnt
-    for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingFull) else [layout, layout.T]:
+    for cur in sym.get_all_variants(layout)[::2]:
         cur_roadstop = ARoadStop(
             id=0x8000 + cnt,
             translation_name="WEST_PLAZA_BUS",
