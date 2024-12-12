@@ -1,4 +1,13 @@
-from station.lib import BuildingFull, BuildingSymmetricalX, AParentSprite, ALayout, AChildSprite, AttrDict, Registers
+from station.lib import (
+    BuildingFull,
+    BuildingSymmetricalX,
+    BuildingSymmetrical,
+    AParentSprite,
+    ALayout,
+    AChildSprite,
+    AttrDict,
+    Registers,
+)
 from station.lib.parameters import parameter_list
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
@@ -115,6 +124,13 @@ make_road_stop(
     0,
     joggle=JOGGLE_AMOUNT,
 )
+
+
+overpass_far = named_parts[("overpass", "far")]
+layout = ALayout(road_ground, [overpass_far, overpass_far.T], True, category=b"\xe8\x8a\x9cR")
+named_layouts[("double_overpass",)] = layout
+register_road_stop(layout, BuildingSymmetrical)
+
 make_road_stop(
     "west_stair",
     BuildingFull,
