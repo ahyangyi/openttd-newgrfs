@@ -70,12 +70,14 @@
     {
       "_comment": "forest greens",
       "start": 88,
-      "end": 95
+      "end": 95,
+      "smoothness": -2
     },
     {
       "_comment": "mint greens",
       "start": 96,
-      "end": 103
+      "end": 103,
+      "smoothness": -2
     },
     {
       "_comment": "forest browns",
