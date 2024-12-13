@@ -31,7 +31,7 @@ def quickload(name, type, traversable):
     parent = AParentSprite(sprite, (16, 16 - platform_width, 48), (0, platform_width, 0))
     plat = platform_ps.cns_concrete_side_shelter_2.up(8)
 
-    candidates = [ALayout([ground], [plat.T, parent], False)]
+    candidates = [ALayout(ground, [plat.T, parent], False)]
 
     ret = []
     for l in candidates:
