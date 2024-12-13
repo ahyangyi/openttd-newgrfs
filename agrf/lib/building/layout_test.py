@@ -7,7 +7,7 @@ from agrf.lib.building.layout import (
     ANewDefaultGroundSprite,
 )
 from agrf.lib.building.symmetry import BuildingSymmetrical
-from agrf.pkg import load_third_party_image
+from agrf.lib.building.image_sprite import image_sprite
 from agrf.graphics.misc import SCALE_TO_ZOOM
 
 
@@ -35,22 +35,7 @@ def test_default_groundsprite():
 
 
 def test_groundsprite():
-    gs1012 = AGroundSprite(
-        grf.AlternativeSprites(
-            grf.FileSprite(
-                grf.ImageFile("agrf/third_party/opengfx2/temperate/1012.png"),
-                0,
-                0,
-                256,
-                127,
-                xofs=124,
-                yofs=0,
-                bpp=32,
-                zoom=SCALE_TO_ZOOM[4],
-            )
-        )
-    )
-
+    gs1012 = AGroundSprite(image_sprite("agrf/third_party/opengfx2/temperate/1012.png"))
     graphics = gs1012.graphics(4, 32).to_image()
     assert graphics.shape == (127, 256, 4)
     assert graphics[64, 128, 1] == 67

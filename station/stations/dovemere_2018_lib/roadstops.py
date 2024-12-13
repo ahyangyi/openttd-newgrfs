@@ -1,4 +1,13 @@
-from station.lib import BuildingFull, BuildingSymmetricalX, AParentSprite, ALayout, AChildSprite, AttrDict, Registers
+from station.lib import (
+    BuildingFull,
+    BuildingSymmetricalX,
+    BuildingSymmetrical,
+    AParentSprite,
+    ALayout,
+    AChildSprite,
+    AttrDict,
+    Registers,
+)
 from station.lib.parameters import parameter_list
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
@@ -6,43 +15,57 @@ from roadstop.lib import ARoadStop
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 from ..misc import road_ground
 
+named_parts = AttrDict(schema=("name", "part"))
 named_layouts = AttrDict(schema=("name",))
 
 cnt = 0
 roadstops = []
 WIDTH = 3
 TOTAL_HEIGHT = 12
-OVERPASS_HEIGHT = 10
+OVERPASS_HEIGHT = 11
 OVERHANG_WIDTH = 1
 EXTENDED_WIDTH = 9
 
-all_layers = (
-    "left spacer",
-    "right wall",
-    "right mask",
-    "edge marker",
-    "underground",
-    "escalator",
-    "staircase",
-    "pillars",
-    "platform",
-    "concourse",
-    "grass",
-    "rocks",
-    "trees",
-)
+JOGGLE_AMOUNT = 45 - 32 * 2**0.5
 
 
-def make_road_stop(name, sym, far, overpass, near, extended, floating):
+def register_road_stop(layout, sym):
+    global cnt
+    for cur in sym.get_all_variants(layout)[::2]:
+        cur_roadstop = ARoadStop(
+            id=0x8000 + cnt,
+            translation_name="WEST_PLAZA_BUS",
+            graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
+            general_flags=0x8,
+            class_label=b"\xe8\x8a\x9cR",
+            enable_if=[parameter_list.index("E88A9CA_ENABLE_ROADSTOP")],
+            doc_layout=cur,
+        )
+        roadstops.append(cur_roadstop)
+        cur_roadstop = ARoadStop(
+            id=0xC000 + cnt,
+            translation_name="WEST_PLAZA_BUS",
+            graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
+            general_flags=0x8,
+            class_label=b"\xe8\x8a\x9cR",
+            enable_if=[parameter_list.index("E88A9CA_ENABLE_ROADSTOP")],
+            doc_layout=cur,
+            is_waypoint=True,
+        )
+        roadstops.append(cur_roadstop)
+        cnt += 1
+
+
+def make_road_stop(name, sym, far, overpass, near, extended, floating, joggle=0):
     v = LazyVoxel(
         name,
         prefix=".cache/render/station/dovemere_2018/plaza",
         voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
-        # config={"z_scale": 1.01},
     )
     # For better handling of pillars/bollards
     v.config["tiling_mode"] = "reflect"
+    v.config["joggle"] = joggle
     if extended:
         v.config["size"]["x"] = 448
         v.config["size"]["y"] = 448
@@ -50,7 +73,7 @@ def make_road_stop(name, sym, far, overpass, near, extended, floating):
             sprite["width"] = 112
         v.config["agrf_zdiff"] = -12
 
-    snow = v.discard_layers(all_layers, "snow")
+    snow = v.keep_layers(("snow",), "snow")
     snow = snow.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
     snow.config["agrf_childsprite"] = (0, -3)
 
@@ -81,35 +104,14 @@ def make_road_stop(name, sym, far, overpass, near, extended, floating):
         partsnow = make_part(snow)
         partsnow.voxel.render()
         snowcs = AChildSprite(partsnow, (0, 0), flags={"dodraw": Registers.SNOW})
-        ps.append(partps + snowcs)
+        partps = partps + snowcs
+        named_parts[(name, partname)] = partps
+        ps.append(partps)
 
     layout = ALayout(road_ground, ps, True, category=b"\xe8\x8a\x9cR")
     named_layouts[(name,)] = layout
 
-    global cnt
-    for cur in [layout, layout.R, layout.T, layout.T.R] if (sym is BuildingFull) else [layout, layout.T]:
-        cur_roadstop = ARoadStop(
-            id=0x8000 + cnt,
-            translation_name="WEST_PLAZA_BUS",
-            graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
-            general_flags=0x8,
-            class_label=b"\xe8\x8a\x9cR",
-            enable_if=[parameter_list.index("E88A9CA_ENABLE_ROADSTOP")],
-            doc_layout=cur,
-        )
-        roadstops.append(cur_roadstop)
-        cur_roadstop = ARoadStop(
-            id=0xC000 + cnt,
-            translation_name="WEST_PLAZA_BUS",
-            graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
-            general_flags=0x8,
-            class_label=b"\xe8\x8a\x9cR",
-            enable_if=[parameter_list.index("E88A9CA_ENABLE_ROADSTOP")],
-            doc_layout=cur,
-            is_waypoint=True,
-        )
-        roadstops.append(cur_roadstop)
-        cnt += 1
+    register_road_stop(layout, sym)
 
 
 make_road_stop(
@@ -120,4 +122,14 @@ make_road_stop(
     None,
     False,
     0,
+    joggle=JOGGLE_AMOUNT,
 )
+
+
+overpass_far = named_parts[("overpass", "far")]
+overpass_overpass = named_parts[("overpass", "overpass")]
+layout = ALayout(
+    road_ground, [overpass_far, overpass_overpass, overpass_far.T, overpass_overpass.T], True, category=b"\xe8\x8a\x9cR"
+)
+named_layouts[("double_overpass",)] = layout
+register_road_stop(layout, BuildingSymmetrical)
