@@ -2,10 +2,10 @@ import grf
 from station.lib import (
     AStation,
     AMetaStation,
-    BuildingSpriteSheetFull,
-    BuildingSpriteSheetSymmetrical,
-    BuildingSpriteSheetSymmetricalX,
-    BuildingSpriteSheetSymmetricalY,
+    BuildingFull,
+    BuildingSymmetrical,
+    BuildingSymmetricalX,
+    BuildingSymmetricalY,
     Demo,
     ADefaultGroundSprite,
     AParentSprite,
@@ -13,7 +13,7 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from agrf.magic import Switch
-from .platforms import named_ps as platform_ps, platform_width
+from .platforms import platform_ps, platform_width
 
 
 def quickload(name, type, traversable):
@@ -29,7 +29,8 @@ def quickload(name, type, traversable):
 
     ground = ADefaultGroundSprite(1420)
     parent = AParentSprite(sprite, (16, 16 - platform_width, 48), (0, platform_width, 0))
-    plat = platform_ps.cns_side_shelter_2.up(8)
+    plat = platform_ps.cns_concrete_side_shelter_2.up(8)
+
     candidates = [ALayout([ground], [plat.T, parent], False)]
 
     ret = []
@@ -45,8 +46,7 @@ def quickload(name, type, traversable):
 
 layouts = []
 (front_normal,) = [
-    quickload(name, type, traversable)
-    for name, type, traversable in [("front_normal", BuildingSpriteSheetSymmetricalX, False)]
+    quickload(name, type, traversable) for name, type, traversable in [("front_normal", BuildingSymmetricalX, False)]
 ]
 
 
