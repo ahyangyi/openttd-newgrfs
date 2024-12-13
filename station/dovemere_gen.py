@@ -2,6 +2,7 @@
 import grf
 import argparse
 from station.lib.docgen import gen_docs
+import station.stations.dovemere_1992
 import station.stations.dovemere_2018
 import station.stations.dovemere_1934
 import station.stations.platforms
@@ -10,6 +11,7 @@ from station.lib.idmap import station_idmap
 
 metastations = [
     station.stations.dovemere_2018.the_stations,
+    station.stations.dovemere_1992.the_stations,
     station.stations.dovemere_1934.the_stations,
     station.stations.platforms.the_stations,
 ]
