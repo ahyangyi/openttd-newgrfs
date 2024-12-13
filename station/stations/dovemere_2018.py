@@ -9,6 +9,7 @@ from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable
 from .dovemere_2018_lib.flexible_stations.traversable import traversable_stations
 from .dovemere_2018_lib.flexible_stations.side import side_stations
 from .dovemere_2018_lib.flexible_stations.side_third import side_third_stations
+from agrf.strings import String
 
 modular_stations = []
 for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
@@ -19,10 +20,66 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
     for shelter_class in ["shelter_1", "shelter_2"]:
         if shelter_class in entry.notes:
             enable_if.append(parameter_list.index(f"SHELTER_{shelter_class.upper()}"))
+
+    has_track = entry.traversable
+    far_platform = entry.category[-1] in {
+        0x81,
+        0x83,
+        0x85,
+        0x87,
+        0x92,
+        0x93,
+        0xA2,
+        0xA3,
+        0xA6,
+        0xA7,
+        0xAA,
+        0xAB,
+        0xAE,
+        0xAF,
+        0xB2,
+        0xB3,
+        0xB6,
+        0xB7,
+        0xC2,
+        0xC3,
+        0xC6,
+        0xC7,
+    }
+    near_platform = entry.category[-1] in {
+        0x89,
+        0x8B,
+        0x8D,
+        0x8F,
+        0x91,
+        0x93,
+        0xA1,
+        0xA3,
+        0xA5,
+        0xA7,
+        0xA9,
+        0xAB,
+        0xAD,
+        0xAF,
+        0xB1,
+        0xB3,
+        0xB5,
+        0xB7,
+        0xC1,
+        0xC3,
+        0xC5,
+        0xC7,
+    }
+    translation_name = String("STR_STATION_TEMPLATE")(
+        f"STR_PART_TRACK_{str(has_track).upper()}",
+        f"STR_PART_NPLAT_{str(far_platform).upper()}",
+        f"STR_PART_SPLAT_{str(near_platform).upper()}",
+    )
+
     modular_stations.append(
         AStation(
             id=entry.id,
-            translation_name="DEFAULT" if entry.traversable else "UNTRAVERSABLE",
+            translation_name=translation_name,
             layouts=[
                 entry,
                 entry.M,
@@ -43,6 +100,7 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
         )
     )
 
+
 the_stations = AMetaStation(
     semitraversable_stations + traversable_stations + side_stations + side_third_stations + modular_stations,
     b"\xe8\x8a\x9cA",
@@ -57,25 +115,27 @@ the_stations = AMetaStation(
         + [b"\xF0"]
         + [b"R", b"Z"]
     ],
-    [
-        demos.normal_demo,
-        demos.big_demo,
-        demos.big_half_demo,
-        demos.real_yard_demo,
-        demos.semi_auto_demo,
-        demos.semi_np_auto_demo,
-        demos.full_auto_demo,
-        demos.full_np_auto_demo,
-        demos.side_auto_demo,
-        demos.side_np_auto_demo,
-        demos.side_third_auto_demo,
-        demos.side_third_np_auto_demo,
-        demos.special_demo_g,
-        demos.special_demo_p,
-        demos.special_demo_cn,
-        demos.special_demo_sa,
-        demos.special_demo_cp,
-        demos.special_demo_aq,
-    ],
+    {
+        "Realistic Layouts": [demos.normal_demo, demos.big_demo, demos.big_half_demo, demos.real_yard_demo],
+        "Template Showcases": [
+            demos.semi_auto_demo,
+            demos.semi_np_auto_demo,
+            demos.full_auto_demo,
+            demos.full_np_auto_demo,
+            demos.side_auto_demo,
+            demos.side_np_auto_demo,
+            demos.side_third_auto_demo,
+            demos.side_third_np_auto_demo,
+        ],
+        "Diverse Designs": [
+            demos.special_demo_g,
+            demos.special_demo_p,
+            demos.special_demo_cn,
+            demos.special_demo_sa,
+            demos.special_demo_cp,
+            demos.special_demo_aq,
+        ],
+        "Station Square": [demos.west_plaza],
+    },
     road_stops=roadstops,
 )

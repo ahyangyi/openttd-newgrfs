@@ -1,6 +1,6 @@
 ##grflangid 0x56
-STR_GRF_NAME                    :中国包：车站 - 芜湖 {WHITE}0.3.1
-STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}中国{RED}包{POP_COLOUR}：车站 - {PUSH_COLOUR}{SILVER}芜湖 {WHITE}0.3.1{POP_COLOUR}{}{}本 NewGRF 是 {PUSH_COLOUR}{GOLD}中国{RED}包{POP_COLOUR}：车站 (CNS) 的扩展包，提供基于{PUSH_COLOUR}{SILVER}芜湖{POP_COLOUR}的火车站的模块化地块和车站模版。{}{}推荐使用 OpenTTD 14.0 或更高版本，可使用本 NewGRF 里的全部主要功能。更低版本由于功能限制，仅能使用精选的部分站台。{}{}{PUSH_COLOUR}{WHITE}贡献者{POP_COLOUR}:{}Ahyangyi, WenSim.{}{}在 {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR} 下分发。
+STR_GRF_NAME                    :中国包：车站 - 芜湖 {WHITE}0.3.2-INDEV
+STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}中国{RED}包{POP_COLOUR}：车站 - {PUSH_COLOUR}{SILVER}芜湖 {WHITE}0.3.2-INDEV{POP_COLOUR}{}{}本 NewGRF 是 {PUSH_COLOUR}{GOLD}中国{RED}包{POP_COLOUR}：车站 (CNS) 的扩展包，提供基于{PUSH_COLOUR}{SILVER}芜湖{POP_COLOUR}的火车站的模块化地块和车站模版。{}{}推荐使用 OpenTTD 14.0 或更高版本，可使用本 NewGRF 里的全部主要功能。更低版本由于功能限制，仅能使用精选的部分站台。{}{}{PUSH_COLOUR}{WHITE}贡献者{POP_COLOUR}:{}Ahyangyi, WenSim.{}{}在 {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR} 下分发。
 
 STR_PARAM_INTRODUCTION_YEAR             :全局设置 - 车站可建造年份
 STR_PARAM_INTRODUCTION_YEAR_DESC        :选择本 NewGRF 内每个车站是否在特定年份后才可用
@@ -58,8 +58,15 @@ STR_PARAM_SHELTER_SHELTER_2_DESC            :选择是否启用雨棚风格2（�
 STR_PARAM_SHELTER_SHELTER_2_ENABLED         :启用
 STR_PARAM_SHELTER_SHELTER_2_DISABLED        :禁用
 
-STR_STATION_DEFAULT                             :站房
-STR_STATION_UNTRAVERSABLE                       :站房（无轨道）
+STR_PART_TRACK_TRUE                         :{PUSH_COLOUR}{GREEN}轨{POP_COLOUR}
+STR_PART_TRACK_FALSE                        :{PUSH_COLOUR}{RED}轨{POP_COLOUR}
+STR_PART_NPLAT_TRUE                         :{PUSH_COLOUR}{GREEN}北{POP_COLOUR}
+STR_PART_NPLAT_FALSE                        :{PUSH_COLOUR}{RED}北{POP_COLOUR}
+STR_PART_SPLAT_TRUE                         :{PUSH_COLOUR}{GREEN}南{POP_COLOUR}
+STR_PART_SPLAT_FALSE                        :{PUSH_COLOUR}{RED}南{POP_COLOUR}
+
+STR_STATION_TEMPLATE                        :站房（{0:STRING}{1:STRING}{2:STRING}）
+
 STR_STATION_PLATFORM                            :站台
 STR_STATION_PLATFORM_UNTRAVERSABLE              :站台（无轨道）
 STR_STATION_CONCOURSE                           :车站广场
@@ -157,8 +164,12 @@ STR_STATION_CLASS_E7B981W       :{PUSH_COLOUR}{WHITE}CNS：{POP_COLOUR}繁昌西
 
 STR_STATION_CLASS_E88A9CP       :{PUSH_COLOUR}{WHITE}CNS：{POP_COLOUR}芜湖包 - 站台
 
-STR_OBJECT_CLASS_E88A9CZ        :{PUSH_COLOUR}{WHITE}CNS：{POP_COLOUR}芜湖站 - 广场
-STR_ROADSTOP_CLASS_E88A9CR      :{PUSH_COLOUR}{WHITE}CNS：{POP_COLOUR}芜湖站
+STR_OBJECT_CLASS_E88A9CG        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} 芜湖站 - 西广场 - 地面
+STR_OBJECT_CLASS_E88A9CF        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} 芜湖站 - 西广场 - 绿雕
+STR_OBJECT_CLASS_E88A9Cl        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} 芜湖站 - 西广场 - 草坪
+STR_OBJECT_CLASS_E88A9CL        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} 芜湖站 - 西广场 - 路灯
+STR_OBJECT_CLASS_E88A9CM        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} 芜湖站 - 西广场 - 综合
+STR_ROADSTOP_CLASS_E88A9CR      :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} 芜湖站
 
 STR_METASTATION_CLASS_E88A9CA   :芜湖站 (2015)
 STR_METASTATION_CLASS_E88A9Ca   :芜湖站 (1992)

@@ -6,6 +6,7 @@ import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.magic import CachedFunctorMixin
 from agrf.utils import unique_tuple
+from agrf.pkg import load_third_party_image
 
 
 class ChildSpriteContainerMixin:
@@ -58,20 +59,25 @@ class DefaultSpriteMixin:
         self.sprite = sprite
 
     climate_dependent_tiles = {
-        (climate, k): Image.open(f"third_party/opengfx2/{climate}/{k}.png")
+        (climate, k): load_third_party_image(f"third_party/opengfx2/{climate}/{k}.png")
         for climate in ["temperate", "arctic", "tropical", "toyland"]
         for k in [1011, 1012, 1037, 1038, 3981, 4550]
     }
-    climate_independent_tiles = {k: Image.open(f"third_party/opengfx2/{k}.png") for k in [1313, 1314, 1420]}
+    climate_independent_tiles = {
+        k: load_third_party_image(f"third_party/opengfx2/{k}.png") for k in [1313, 1314, 1320, 1321, 1420]
+    }
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         # FIXME handle flags correctly
         if self.sprite in self.climate_independent_tiles:
             img = np.asarray(self.climate_independent_tiles[self.sprite])
         else:
-            img = np.asarray(
-                self.climate_dependent_tiles[(climate, self.sprite + (26 if subclimate != "default" else 0))]
-            )
+            if self.sprite == 3981:
+                img = np.asarray(self.climate_dependent_tiles[(climate, 4550 if subclimate != "default" else 3981)])
+            else:
+                img = np.asarray(
+                    self.climate_dependent_tiles[(climate, self.sprite + (26 if subclimate != "default" else 0))]
+                )
         ret = LayeredImage(-124, 0, 256, 127, img[:, :, :3], img[:, :, 3], None)
         if scale == 4:
             ret = ret.copy()
@@ -177,7 +183,16 @@ class AGroundSprite(ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixi
         if self.sprite is grf.EMPTY_SPRITE:
             ret = LayeredImage.empty()
         else:
-            ret = LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)).copy()
+            ret = None
+            sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
+            if sprite is not None:
+                ret = LayeredImage.from_sprite(sprite).copy()
+
+            if ret is None and bpp == 32:
+                # Fall back to bpp=8
+                sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
+                ret = LayeredImage.from_sprite(sprite).copy().to_rgb()
+            assert ret is not None
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
 
@@ -238,13 +253,13 @@ class ADefaultParentSprite(DefaultSpriteMixin, BoundingBoxMixin, ChildSpriteCont
             else:
                 x += 1
                 y += 1
-        return ADefaultParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
+        return ADefaultParentSprite(self.sprite, self.extent, (x, y, z), self.child_sprites, self.flags)
 
     def demo_translate(self, xofs, yofs, zofs):
         return ADefaultParentSprite(
             self.sprite,
             self.extent,
-            (self.offset[0] + xofs * 16, self.offset[1] + yofs * 16, self.offset[2] + zofs * 8),
+            (self.offset[0] + xofs, self.offset[1] + yofs, self.offset[2] + zofs * 8),
             self.child_sprites,
             self.flags,
         )
@@ -341,7 +356,17 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
         ] + [s for x in self.child_sprites for s in x.to_action2(sprite_list)]
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
-        ret = LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)).copy()
+        ret = None
+        sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
+        if sprite is not None:
+            ret = LayeredImage.from_sprite(sprite).copy()
+
+        if ret is None and bpp == 32:
+            # Fall back to bpp=8
+            sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
+            ret = LayeredImage.from_sprite(sprite).copy().to_rgb()
+
+        assert ret is not None
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
 
@@ -353,13 +378,13 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
             else:
                 x += 1
                 y += 1
-        return AParentSprite(self.sprite, (1, 1, 1), (x, y, z), self.child_sprites, self.flags)
+        return AParentSprite(self.sprite, self.extent, (x, y, z), self.child_sprites, self.flags)
 
     def demo_translate(self, xofs, yofs, zofs):
         return AParentSprite(
             self.sprite,
             self.extent,
-            (self.offset[0] + xofs * 16, self.offset[1] + yofs * 16, self.offset[2] + zofs * 8),
+            (self.offset[0] + xofs, self.offset[1] + yofs, self.offset[2] + zofs * 8),
             self.child_sprites,
             self.flags,
         )
@@ -411,6 +436,15 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
         new_offset = (self.offset[0], 16 - self.offset[1] - self.extent[1], self.offset[2])
         return AParentSprite(
             self.sprite.T, self.extent, new_offset, child_sprites=[c.T for c in self.child_sprites], flags=self.flags
+        )
+
+    def move(self, xofs, yofs):
+        return AParentSprite(
+            self.sprite,
+            self.extent,
+            (self.offset[0] + xofs, self.offset[1] + yofs, self.offset[2]),
+            self.child_sprites,
+            self.flags,
         )
 
     @property
@@ -475,6 +509,8 @@ class AChildSprite(RegistersMixin, CachedFunctorMixin):
         from station.lib.registers import Registers
 
         if self.flags.get("dodraw") == Registers.SNOW and subclimate != "snow":
+            return LayeredImage.empty()
+        if self.flags.get("dodraw") == Registers.NOSNOW and subclimate == "snow":
             return LayeredImage.empty()
         return LayeredImage.from_sprite(self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp))
 
