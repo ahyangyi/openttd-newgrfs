@@ -54,7 +54,7 @@ the_stations = AMetaStation(
     [
         AStation(
             id=0x3000 + i,
-            translation_name="UNTRAVERSABLE",
+            translation_name="BUILDING",
             layouts=layouts,
             class_label=b"\xe9\xb8\xa0A",
             cargo_threshold=40,
@@ -66,6 +66,5 @@ the_stations = AMetaStation(
     ],
     b"\xe9\xb8\xa0A",
     [None],
-    layouts,
     [Demo("Test", [[front_normal, front_normal]])],
 )
