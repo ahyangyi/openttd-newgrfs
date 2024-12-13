@@ -15,25 +15,12 @@ object_layouts.globalize()
 station = h_merge([[[]] * 2, semitraversable.demo_1(5, 7)[5:], [[]] * 2], [[cns], [default]])
 
 # Road Stops
-west_stair_end = west_stair_end.lower_tile()
 overpass = overpass.lower_tile()
-west_stair = west_stair_narrow.lower_tile()
-west_stair_extender = west_stair_extender_narrow.lower_tile()
-roadstops = [[west_stair_end, overpass, west_stair, west_stair_extender, west_stair.R, overpass, west_stair_end.R]]
+roadstops = [[None] + [overpass] * 5 + [None]]
 
 # Objects
 center_ground = west_plaza_center.lower_tile()
-offcenter_A = west_plaza_offcenter_A_decorated_lawn.lower_tile()
-flower = west_plaza_topiary_2024a_half.lower_tile()
-offcenter_B = west_plaza_offcenter_B_decorated.lower_tile()
-edge = west_plaza_center_lawn.lower_tile()
-edge_2 = west_plaza_center_toilet_lawn.lower_tile()
-split_lawn = west_plaza_center_split_lawn.lower_tile()
-west_square = [
-    [center_ground, edge, offcenter_A, center_ground, offcenter_A.R, edge.R, center_ground],
-    [edge_2.T, split_lawn, offcenter_B, flower, offcenter_B.R, split_lawn.R, edge_2.T.R],
-]
-
+west_square = [[center_ground] * 7] * 2
 
 west_plaza = Demo(
     station + roadstops + west_square, "West plaza", remap=get_1cc_remap(CompanyColour.WHITE), merge_bbox=True

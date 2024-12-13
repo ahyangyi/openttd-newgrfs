@@ -62,7 +62,3 @@ def make_ground_layout(name, sym):
 
 def make_ground_layouts():
     make_ground_layout("west_plaza_center", BuildingSymmetrical)
-    make_ground_layout("west_plaza_offcenter_A", BuildingFull)
-    make_ground_layout("west_plaza_offcenter_B", BuildingFull)
-    make_ground_layout("west_plaza_diagonal", BuildingDiamond)
-    make_ground_layout("west_plaza_checkerboard", BuildingCylindrical)

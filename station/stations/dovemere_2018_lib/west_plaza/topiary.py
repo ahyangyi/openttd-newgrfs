@@ -122,8 +122,4 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
 
 
 def make_topiaries():
-    make_object_layout("west_plaza_topiary_2021", BuildingSymmetrical, 8, 10, 4, 8, 6)
-    make_object_layout("west_plaza_topiary_2022", BuildingSymmetrical, 8, 10, 4, 8, 6)
-    make_object_layout("west_plaza_topiary_2023", BuildingSymmetrical, 6, 16, 2, 10, 10)
-    make_object_layout("west_plaza_topiary_2024a", BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
-    make_object_layout("west_plaza_topiary_2024b", BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
+    pass
