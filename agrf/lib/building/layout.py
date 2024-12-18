@@ -457,6 +457,10 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
     def get_resource_files(self):
         return self.sprite.get_resource_files()
 
+    def up(self, zdiff):
+        new_offset = (self.offset[0], self.offset[1], self.offset[2] + zdiff)
+        return AParentSprite(self.sprite, self.extent, new_offset)
+
     def __add__(self, child_sprite):
         if child_sprite is None:
             return self
