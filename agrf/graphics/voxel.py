@@ -203,6 +203,16 @@ class LazyVoxel(Config):
         new_config = deepcopy(self.config)
         new_config["z_scale"] = new_config.get("z_scale", 1.0) * ratio
         new_config["agrf_scales"] = [x for x in new_config["agrf_scales"] if x < 4]
+        if "agrf_manual_crop" in new_config:
+            new_config["agrf_manual_crop"] = (
+                new_config["agrf_manual_crop"][0],
+                int(new_config["agrf_manual_crop"][1] * ratio),
+            )
+        if "agrf_childsprite" in new_config:
+            new_config["agrf_childsprite"] = (
+                new_config["agrf_childsprite"][0],
+                int(new_config["agrf_childsprite"][1] * ratio),
+            )
         return LazyVoxel(
             self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=self.voxel_getter, config=new_config
         )

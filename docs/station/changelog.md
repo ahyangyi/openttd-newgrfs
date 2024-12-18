@@ -1,8 +1,9 @@
 China Set: Stations & Platforms Addons: Wuhu Changelog
 =========================
 
-0.3.2 (work-in-progress)
+0.3.2 (2024-12-18)
 ------------------------
+Fix a cropping issue for station platform shelters.
 
 0.3.1 (2024-10-13)
 ------------------------
