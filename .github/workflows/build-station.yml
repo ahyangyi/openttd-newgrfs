@@ -18,6 +18,8 @@ jobs:
         run: sudo apt update && sudo apt install python3-ply python3-pil
       - name: Upgrade pip
         run: python -m ensurepip --upgrade
+      - name: Get setuptools
+        run: pip install --upgrade setuptools
       - name: Install python deps
         run: pip install -r requirements.txt
       - name: Generate station
