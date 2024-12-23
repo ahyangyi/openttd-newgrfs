@@ -4,7 +4,7 @@ from ..layouts import named_tiles, layouts, flexible_entries
 
 
 def make_demo(switch, w, h, preswitch=None):
-    demo = Demo("", switch.demo(w, h, preswitch))
+    demo = Demo(switch.demo(w, h, preswitch))
     for i, var in enumerate([demo, demo.M]):
         sprite = grf.AlternativeSprites(
             *[

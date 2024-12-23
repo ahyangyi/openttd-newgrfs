@@ -10,6 +10,7 @@ from agrf.gorender import (
     self_compose,
     produce_empty,
     discard_layers,
+    keep_layers,
 )
 from agrf.graphics.rotator import unnatural_dimens
 from agrf.graphics.spritesheet import spritesheet_template
@@ -92,7 +93,7 @@ class LazyVoxel(Config):
             self.name,
             prefix=os.path.join(self.prefix, suffix),
             voxel_getter=self.voxel_getter,
-            config={**self.config, **new_config},
+            config={**deepcopy(self.config), **new_config},
         )
 
     @functools.cache
@@ -186,19 +187,38 @@ class LazyVoxel(Config):
         )
 
     @functools.cache
+    def keep_layers(self, keeps, suffix):
+        def voxel_getter():
+            old_path = self.voxel_getter()
+            new_path = os.path.join(self.prefix, suffix, f"{self.name}.vox")
+            keep_layers(keeps, old_path, new_path)
+            return new_path
+
+        return LazyVoxel(
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=deepcopy(self.config)
+        )
+
+    @functools.cache
     def squash(self, ratio, suffix):
         new_config = deepcopy(self.config)
         new_config["z_scale"] = new_config.get("z_scale", 1.0) * ratio
         new_config["agrf_scales"] = [x for x in new_config["agrf_scales"] if x < 4]
+        if "agrf_manual_crop" in new_config:
+            new_config["agrf_manual_crop"] = (
+                new_config["agrf_manual_crop"][0],
+                int(new_config["agrf_manual_crop"][1] * ratio),
+            )
+        if "agrf_childsprite" in new_config:
+            new_config["agrf_childsprite"] = (
+                new_config["agrf_childsprite"][0],
+                int(new_config["agrf_childsprite"][1] * ratio),
+            )
         return LazyVoxel(
             self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=self.voxel_getter, config=new_config
         )
 
     @functools.cache
     def render(self):
-        if "agrf_subset" in self.config:
-            self.config = self.subset(self.config["agrf_subset"]).config
-            del self.config["agrf_subset"]
         voxel_path = self.voxel_getter()
         render(self, voxel_path, os.path.join(self.prefix, self.name))
 
@@ -206,18 +226,17 @@ class LazyVoxel(Config):
     def spritesheet(self, xdiff=0, ydiff=0, zdiff=0, shift=0, xspan=16, yspan=16):
         real_xdiff = 0 if self.config.get("agrf_road_mode", False) else 0.5
         real_ydiff = (self.config.get("agrf_zdiff", 0) + zdiff) * self.config.get("agrf_scale", 1)
-        if "agrf_subset" in self.config:
-            self.config = self.subset(self.config["agrf_subset"]).config
-            del self.config["agrf_subset"]
 
         return spritesheet_template(
             self,
             os.path.join(self.prefix, self.name),
-            [(x["width"], x.get("height", 0)) for x in self.config["sprites"]],
-            [x["angle"] for x in self.config["sprites"]],
+            [(x["width"], x.get("height", 0)) for x in self.final_config["sprites"]],
+            [x["angle"] for x in self.final_config["sprites"]],
             bbox=self.config["size"],
-            deltas=self.config.get("agrf_deltas", None),
-            offsets=self.config.get("agrf_offsets", None),
+            deltas=self.final_config.get("agrf_deltas", None),
+            ydeltas=self.final_config.get("agrf_ydeltas", None),
+            offsets=self.final_config.get("agrf_offsets", None),
+            yoffsets=self.final_config.get("agrf_yoffsets", None),
             z_scale=self.config.get("z_scale", 1.0),
             bbox_joggle=self.config.get("agrf_bbox_joggle", None),
             xdiff=real_xdiff,

@@ -8,6 +8,8 @@ class AMetaStation(grf.SpriteGenerator):
         self.stations = stations
         self.class_label = class_label
         self.categories = categories
+        if isinstance(demos, list):
+            demos = {"Sample Layouts": demos}
         self.demos = demos
         self.road_stops = road_stops or []
         self.objects = objects or []
