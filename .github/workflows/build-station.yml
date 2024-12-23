@@ -16,6 +16,8 @@ jobs:
         run: ./install-go-dependencies.sh
       - name: Install system python deps
         run: sudo apt update && sudo apt install python3-ply python3-pil
+      - name: Upgrade pip
+        run: python -m ensurepip --upgrade
       - name: Install python deps
         run: pip install -r requirements.txt
       - name: Generate station
