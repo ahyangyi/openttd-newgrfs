@@ -1,2 +1,3 @@
 grf @ git+https://github.com/citymania-org/grf-py@9d5eb2ad
 tabulate
+numpy~=1.26.4
