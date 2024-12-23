@@ -32,7 +32,7 @@ class Config:
 
         if "agrf_subset" in new_config:
             indices = new_config["agrf_subset"]
-            for k in ["sprites", "agrf_deltas", "agrf_offsets"]:
+            for k in ["sprites", "agrf_deltas", "agrf_offsets", "agrf_ydeltas", "agrf_yoffsets"]:
                 if k in new_config:
                     new_config[k] = [new_config[k][i] for i in indices]
             del new_config["agrf_subset"]
@@ -146,5 +146,19 @@ def discard_layers(discards, vox_path, new_path):
     subprocess.run(
         ["layer-filter", "--source", vox_path, "--destination", new_path]
         + [x for discard in discards for x in ["--discard", discard]],
+        check=True,
+    )
+
+
+def keep_layers(keeps, vox_path, new_path):
+    try:
+        if os.path.getmtime(vox_path) < os.path.getmtime(new_path):
+            return
+    except:
+        pass
+    os.makedirs(os.path.dirname(new_path), exist_ok=True)
+    subprocess.run(
+        ["layer-filter", "--source", vox_path, "--destination", new_path]
+        + [x for keep in keeps for x in ["--keep", keep]],
         check=True,
     )

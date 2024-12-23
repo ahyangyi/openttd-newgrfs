@@ -1,5 +1,8 @@
-from agrf.lib.building.layout import ADefaultGroundSprite, ALayout
+import grf
+from agrf.lib.building.layout import AGroundSprite, ADefaultGroundSprite, ALayout
 from agrf.lib.building.symmetry import BuildingSymmetrical
+from agrf.lib.building.image_sprite import image_sprite
+from agrf.graphics.misc import SCALE_TO_ZOOM
 
 
 def test_default_groundsprite():
@@ -20,6 +23,13 @@ def test_default_groundsprite():
     t_graphics = gs1012.T.graphics(4, 32).to_image()
     assert t_graphics.shape == (127, 256, 4)
     assert t_graphics[64, 128, 1] == 67
+
+
+def test_groundsprite():
+    gs1012 = AGroundSprite(image_sprite("agrf/third_party/opengfx2/temperate/1012.png"))
+    graphics = gs1012.graphics(4, 32).to_image()
+    assert graphics.shape == (127, 256, 4)
+    assert graphics[64, 128, 1] == 67
 
 
 def test_layout():

@@ -53,6 +53,7 @@ class AObject(grf.SpriteGenerator):
             default=layouts[0],
             code="""
 TEMP[0x03] = (terrain_type & 0x4) == 0x4
+TEMP[0x04] = (terrain_type & 0x4) != 0x4
 view
 """,
         )

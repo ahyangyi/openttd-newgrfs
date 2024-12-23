@@ -33,6 +33,7 @@ platform_height = 4
 platform_width = 5
 shelter_height = 17
 pillar_height = 18
+YOFFSET = 0
 
 
 class CNSPlatformFamily(PlatformFamily):
@@ -82,7 +83,7 @@ class CNSPlatformFamily(PlatformFamily):
         )
         v = v3.compose(v2, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
         v.config["overlap"] = 1.3
-        v.config["agrf_childsprite"] = (0, -10)
+        v.config["agrf_childsprite"] = (0, -YOFFSET)
         v.in_place_subset(symmetry.render_indices())
         s = symmetry.create_variants(v.spritesheet())
         self.snow_sprites[key] = AChildSprite(s, (0, 0), flags={"dodraw": Registers.SNOW})
@@ -112,7 +113,7 @@ class CNSPlatformFamily(PlatformFamily):
             tuple(sorted(tuple(platform_components - pkeeps) + tuple(shelter_components - skeeps))),
             f"subset_{platform_class}_{rail_facing}_{shelter_class}_{location}",
         )
-        v2.config["agrf_manual_crop"] = (0, 10)
+        v2.config["agrf_manual_crop"] = (0, YOFFSET)
         if location in ["building", "building_narrow"]:
             symmetry = BuildingFull
         else:

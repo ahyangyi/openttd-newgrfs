@@ -10,6 +10,7 @@ from agrf.gorender import (
     self_compose,
     produce_empty,
     discard_layers,
+    keep_layers,
 )
 from agrf.graphics.rotator import unnatural_dimens
 from agrf.graphics.spritesheet import spritesheet_template
@@ -186,10 +187,32 @@ class LazyVoxel(Config):
         )
 
     @functools.cache
+    def keep_layers(self, keeps, suffix):
+        def voxel_getter():
+            old_path = self.voxel_getter()
+            new_path = os.path.join(self.prefix, suffix, f"{self.name}.vox")
+            keep_layers(keeps, old_path, new_path)
+            return new_path
+
+        return LazyVoxel(
+            self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=voxel_getter, config=deepcopy(self.config)
+        )
+
+    @functools.cache
     def squash(self, ratio, suffix):
         new_config = deepcopy(self.config)
         new_config["z_scale"] = new_config.get("z_scale", 1.0) * ratio
         new_config["agrf_scales"] = [x for x in new_config["agrf_scales"] if x < 4]
+        if "agrf_manual_crop" in new_config:
+            new_config["agrf_manual_crop"] = (
+                new_config["agrf_manual_crop"][0],
+                int(new_config["agrf_manual_crop"][1] * ratio),
+            )
+        if "agrf_childsprite" in new_config:
+            new_config["agrf_childsprite"] = (
+                new_config["agrf_childsprite"][0],
+                int(new_config["agrf_childsprite"][1] * ratio),
+            )
         return LazyVoxel(
             self.name, prefix=os.path.join(self.prefix, suffix), voxel_getter=self.voxel_getter, config=new_config
         )
