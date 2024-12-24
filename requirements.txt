@@ -1,3 +1,2 @@
-grf @ git+https://github.com/ahyangyi/grf-py@d64399f
+grf @ git+https://github.com/ahyangyi/grf-py@bd33736
 tabulate
-numpy~=1.26.4
