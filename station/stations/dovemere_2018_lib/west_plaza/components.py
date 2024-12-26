@@ -66,6 +66,7 @@ def make_components():
     make_component("west_plaza_pole", BuildingCylindrical, (2, 2, 8), (7, 7, 0))
     make_component("west_plaza_underground_entrance", BuildingFull, (4, 4, 8), (6, 6, 0))
     make_component("corner_lawn", BuildingFull, (6, 6, 1), (10, 0, 0))
+    make_component("corner_lawn_2", BuildingDiagonalAlt, (6, 6, 1), (10, 0, 0))
     make_component("edge_lawn", BuildingSymmetricalX, (16, 6, 1), (0, 0, 0))
     make_component("split_lawn", BuildingFull, (16, 6, 1), (0, 10, 0))
     make_component("west_plaza_tree_bench", BuildingFull, (2, 2, 16), (7, 7, 0), has_nosnow=True)
