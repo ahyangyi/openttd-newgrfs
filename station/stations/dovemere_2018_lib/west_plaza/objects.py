@@ -30,6 +30,20 @@ def make_lightposts():
     register([[layout]], BuildingFull, b"L")
 
 
+def make_lawns():
+    gs = named_grounds[("west_plaza_offcenter_A", "")]
+    ps = [corner_lawn]
+    layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+    named_layouts[("west_plaza_offcenter_A", "corner_lawn")] = layout
+    register([[layout]], BuildingFull, b"l")
+
+    gs = named_grounds[("west_plaza_offcenter_A", "")]
+    ps = [corner_lawn_2]
+    layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+    named_layouts[("west_plaza_offcenter_A", "corner_lawn_2")] = layout
+    register([[layout]], BuildingFull, b"l")
+
+
 def make_mixed_objects():
     gs = named_grounds[("west_plaza_offcenter_B", "")]
     ps = [
@@ -96,4 +110,5 @@ def make_mixed_objects():
 def make_objects():
     components.globalize()
     make_lightposts()
+    make_lawns()
     make_mixed_objects()
