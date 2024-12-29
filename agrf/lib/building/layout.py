@@ -157,6 +157,10 @@ def ANewDefaultGroundSprite(x, flags=None):
     return NewGeneralSprite(sprite=DefaultGraphics(x), position=GroundPosition(), child_sprites=[], flags=flags)
 
 
+def ANewGroundSprite(x, flags=None):
+    return NewGeneralSprite(sprite=NewGraphics(x), position=GroundPosition(), child_sprites=[], flags=flags)
+
+
 class ChildSpriteContainerMixin:
     def __init__(self, *args, child_sprites=None, **kwargs):
         super().__init__(*args, **kwargs)
