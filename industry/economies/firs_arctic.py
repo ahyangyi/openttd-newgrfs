@@ -63,7 +63,6 @@ class TheEconomy(MetaEconomy):
     def get_economy(self, parameters):
         ret = Economy(
             {
-                ammonia_plant: PrimaryIndustry(ammonia),
                 clay_pit: PrimaryIndustry(china_clay),
                 peatlands: PrimaryIndustry(peat),
                 phosphate_mine: PrimaryIndustry(phosphate),
@@ -72,12 +71,13 @@ class TheEconomy(MetaEconomy):
                 fishing_grounds: PrimaryIndustry(fish),
                 forest: PrimaryIndustry(wood),
                 herding_coop: PrimaryIndustry(food),
+                ammonia_plant: SecondaryIndustry(peat, ammonia),
                 ashery: SecondaryIndustry(wood, potash),
-                pyrite_smelter: SecondaryIndustry(pyrite_ore, (sulphur, zinc)),
-                sawmill: SecondaryIndustry(wood, timber),
                 chemical_plant: SecondaryIndustry((phosphate, sulphur, ammonia, potash), (explosives, fertiliser)),
                 fishing_harbor: SecondaryIndustry(fish, food),
                 paper_mill: SecondaryIndustry((wood, sulphur, china_clay), paper),
+                pyrite_smelter: SecondaryIndustry(pyrite_ore, (sulphur, zinc)),
+                sawmill: SecondaryIndustry(wood, timber),
                 power_station: TertiaryIndustry(peat),
                 general_store: TertiaryIndustry((explosives, fertiliser, zinc, timber)),
                 towns: Town(passengers, mail, food, paper),
@@ -97,8 +97,6 @@ class TheEconomy(MetaEconomy):
             del ret.graph[clay_pit]
 
         if parameters["PRIMARY_INDUSTRY_GROWTH"] == "UNIVERSAL_SUPPLIES":
-            if ammonia_plant in ret.graph:
-                ret.graph[ammonia_plant].boosters = engineering_supplies
             if clay_pit in ret.graph:
                 ret.graph[clay_pit].boosters = engineering_supplies
             ret.graph[peatlands].boosters = engineering_supplies
@@ -116,8 +114,6 @@ class TheEconomy(MetaEconomy):
                 ret.graph[paper_mill].produces += (engineering_supplies,)
 
         elif parameters["PRIMARY_INDUSTRY_GROWTH"] == "GENERIC_SUPPLIES":
-            if ammonia_plant in ret.graph:
-                ret.graph[ammonia_plant].boosters = engineering_supplies
             if clay_pit in ret.graph:
                 ret.graph[clay_pit].boosters = engineering_supplies
             ret.graph[peatlands].boosters = engineering_supplies
@@ -139,8 +135,8 @@ class TheEconomy(MetaEconomy):
             ret,
             (paper, zinc),
             (fishing_grounds,),
-            (ammonia_plant, clay_pit, peatlands, phosphate_mine, pyrite_mine, fish_farm, forest, herding_coop),
-            (ashery, chemical_plant, fishing_harbor, paper_mill, pyrite_smelter, sawmill),
+            (clay_pit, peatlands, phosphate_mine, pyrite_mine, fish_farm, forest, herding_coop),
+            (ammonia_plant, ashery, chemical_plant, fishing_harbor, paper_mill, pyrite_smelter, sawmill),
         )
 
         if port in ret.graph:
