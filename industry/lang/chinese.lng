@@ -173,6 +173,7 @@ STR_CARGO_NAME_WOOD                  :木材
 STR_CARGO_NAME_WRKR                  :工人
 STR_CARGO_NAME_ZINC                  :锌
 
+STR_INDUSTRY_NAME_ASHERY            :堆灰场
 STR_INDUSTRY_NAME_AMMONIA_PLANT     :制氨厂
 STR_INDUSTRY_NAME_BANK              :银行
 STR_INDUSTRY_NAME_CHEMICAL_PLANT    :化工厂
