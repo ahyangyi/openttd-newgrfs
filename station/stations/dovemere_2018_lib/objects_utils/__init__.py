@@ -64,7 +64,10 @@ def register_slopes(slopes, sym, flags=DEFAULT_SLOPE_FLAGS):
         objects.append(cur_object)
 
 
-def register(layouts, sym, label, flags=DEFAULT_FLAGS):
+def register(layouts, sym, label, flags=DEFAULT_FLAGS, starting_id=None):
+    if starting_id is None:
+        # FIXME disable this after a transition period
+        starting_id = len(objects)
     rows = len(layouts)
     columns = len(layouts[0])
     layout = PositionSwitch(
@@ -81,7 +84,7 @@ def register(layouts, sym, label, flags=DEFAULT_FLAGS):
         layouts = sym.rotational_views(cur)
         num_views = len(layouts)
         cur_object = AObject(
-            id=len(objects),
+            id=starting_id,
             translation_name="WEST_PLAZA",
             layouts=layouts,
             purchase_layouts=sym.rotational_views(doc_layout),
@@ -96,4 +99,5 @@ def register(layouts, sym, label, flags=DEFAULT_FLAGS):
             doc_layout=doc_layout,
             callbacks={"tile_check": 0x400},
         )
+        starting_id += 1
         objects.append(cur_object)
