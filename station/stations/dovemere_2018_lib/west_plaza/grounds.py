@@ -44,7 +44,7 @@ for name, sym in [
         named_grounds[(name, str(slope_type))] = AGroundSprite(sprite2)
 
 
-def make_ground_layout(name, sym):
+def make_ground_layout(name, sym, starting_id):
     gs = named_grounds[(name, "")]
     layout = ALayout(gs, [], True, category=b"\xe8\x8a\x9cZ")
 
@@ -57,12 +57,12 @@ def make_ground_layout(name, sym):
     )
 
     named_layouts[(name, "")] = layout
-    register_slopes(slopes, sym)
+    register_slopes(slopes, sym, starting_id)
 
 
 def make_ground_layouts():
-    make_ground_layout("west_plaza_center", BuildingSymmetrical)
-    make_ground_layout("west_plaza_offcenter_A", BuildingFull)
-    make_ground_layout("west_plaza_offcenter_B", BuildingFull)
-    make_ground_layout("west_plaza_diagonal", BuildingDiamond)
-    make_ground_layout("west_plaza_checkerboard", BuildingCylindrical)
+    make_ground_layout("west_plaza_center", BuildingSymmetrical, 0x0)
+    make_ground_layout("west_plaza_offcenter_A", BuildingFull, 0x2)
+    make_ground_layout("west_plaza_offcenter_B", BuildingFull, 0x4)
+    make_ground_layout("west_plaza_diagonal", BuildingDiamond, 0x6)
+    make_ground_layout("west_plaza_checkerboard", BuildingCylindrical, 0x8)

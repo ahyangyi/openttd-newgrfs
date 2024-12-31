@@ -30,7 +30,7 @@ named_layouts = AttrDict(schema=("name", "offset"))
 objects = []
 
 
-def register_slopes(slopes, sym, flags=DEFAULT_SLOPE_FLAGS):
+def register_slopes(slopes, sym, starting_id, flags=DEFAULT_SLOPE_FLAGS):
     for chi_ind in sym.chirality_indices():
         layouts = []
         purchase_layouts = []
@@ -46,7 +46,7 @@ def register_slopes(slopes, sym, flags=DEFAULT_SLOPE_FLAGS):
             purchase_layouts.append(default)
 
         cur_object = AObject(
-            id=len(objects),
+            id=starting_id,
             translation_name="WEST_PLAZA",
             layouts=layouts,
             purchase_layouts=purchase_layouts,
@@ -61,13 +61,11 @@ def register_slopes(slopes, sym, flags=DEFAULT_SLOPE_FLAGS):
             doc_layout=purchase_layouts[0],
             callbacks={"tile_check": 0x400},
         )
+        starting_id += 1
         objects.append(cur_object)
 
 
-def register(layouts, sym, label, flags=DEFAULT_FLAGS, starting_id=None):
-    if starting_id is None:
-        # FIXME disable this after a transition period
-        starting_id = len(objects)
+def register(layouts, sym, label, starting_id, flags=DEFAULT_FLAGS):
     rows = len(layouts)
     columns = len(layouts[0])
     layout = PositionSwitch(
