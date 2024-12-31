@@ -20,7 +20,7 @@ from .grounds import named_grounds, make_ground_layouts
 from ..objects_utils import objects, register_slopes, DEFAULT_FLAGS, named_layouts, register
 
 
-def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None):
+def make_object_layout(name, starting_id, sym, Xspan, Yspan, xspan, yspan, height, osym=None):
     if osym is None:
         osym = sym
 
@@ -78,7 +78,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "")] = layout
-    register([[layout]], sym, b"F")
+    register([[layout]], sym, b"F", starting_id=starting_id)
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs, Xofs - 4, 0)) + ground_snowcs,
@@ -86,7 +86,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "half")] = layout
-    register([[layout]], sym.break_y_symmetry(), b"F")
+    register([[layout]], sym.break_y_symmetry(), b"F", starting_id=starting_id + 2)
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs, Xofs - 8, 0)) + ground_snowcs,
@@ -94,7 +94,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "vertical")] = layout
-    register([[gl], [layout]], sym, b"F")
+    register([[gl], [layout]], sym, b"F", starting_id=starting_id + 4)
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs, 0)) + ground_snowcs,
@@ -102,7 +102,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "horizontal")] = layout
-    register([[gl, layout]], sym, b"F")
+    register([[gl, layout]], sym, b"F", starting_id=starting_id + 6)
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs - 4, 0)) + ground_snowcs,
@@ -110,7 +110,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "half_horizontal")] = layout
-    register([[gl, layout]], sym.break_y_symmetry(), b"F")
+    register([[gl, layout]], sym.break_y_symmetry(), b"F", starting_id=starting_id + 8)
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs - 8, 0)) + ground_snowcs,
@@ -118,12 +118,12 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "corner")] = layout
-    register([[gl, gl], [gl, layout]], sym, b"F")
+    register([[gl, gl], [gl, layout]], sym, b"F", starting_id=starting_id + 10)
 
 
 def make_topiaries():
-    make_object_layout("west_plaza_topiary_2021", BuildingSymmetrical, 8, 10, 4, 8, 6)
-    make_object_layout("west_plaza_topiary_2022", BuildingSymmetrical, 8, 10, 4, 8, 6)
-    make_object_layout("west_plaza_topiary_2023", BuildingSymmetrical, 6, 16, 2, 10, 10)
-    make_object_layout("west_plaza_topiary_2024a", BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
-    make_object_layout("west_plaza_topiary_2024b", BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
+    make_object_layout("west_plaza_topiary_2021", 0x1000, BuildingSymmetrical, 8, 10, 4, 8, 6)
+    make_object_layout("west_plaza_topiary_2022", 0x1010, BuildingSymmetrical, 8, 10, 4, 8, 6)
+    make_object_layout("west_plaza_topiary_2023", 0x1020, BuildingSymmetrical, 6, 16, 2, 10, 10)
+    make_object_layout("west_plaza_topiary_2024a", 0x1030, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
+    make_object_layout("west_plaza_topiary_2024b", 0x1040, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
