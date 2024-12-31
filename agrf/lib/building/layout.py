@@ -58,8 +58,12 @@ class DefaultGraphics:
 
 
 @dataclass
-class NewGraphics:
+class NewGraphics(CachedFunctorMixin):
     sprite: grf.ResourceAction
+
+    def __post_init__(self):
+        super().__init__()
+        assert isinstance(self.sprite, grf.ResourceAction)
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
@@ -80,6 +84,9 @@ class NewGraphics:
     @property
     def sprites(self):
         return (self.sprite,)
+
+    def fmap(self, f):
+        return replace(self, sprite=self.sprite if self.sprite is grf.EMPTY_SPRITE else f(self.sprite))
 
 
 @dataclass
@@ -143,11 +150,7 @@ class NewGeneralSprite(CachedFunctorMixin):
         return unique_tuple(self.sprite.sprites + tuple(s for c in self.child_sprites for s in c.sprites))
 
     def fmap(self, f):
-        return replace(
-            self,
-            sprite=self.sprite if self.sprite is grf.EMPTY_SPRITE else f(self.sprite),
-            child_sprites=[f(c) for c in self.child_sprites],
-        )
+        return replace(self, sprite=f(self.sprite), child_sprites=[f(c) for c in self.child_sprites])
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         return self.sprite.graphics(scale, bpp, climate=climate, subclimate=subclimate)
