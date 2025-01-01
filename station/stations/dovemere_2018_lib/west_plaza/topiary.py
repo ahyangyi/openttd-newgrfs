@@ -122,8 +122,8 @@ def make_object_layout(name, starting_id, sym, Xspan, Yspan, xspan, yspan, heigh
 
 
 def make_topiaries():
-    make_object_layout("west_plaza_topiary_2021", 0x1000, BuildingSymmetrical, 8, 10, 4, 8, 6)
-    make_object_layout("west_plaza_topiary_2022", 0x1010, BuildingSymmetrical, 8, 10, 4, 8, 6)
-    make_object_layout("west_plaza_topiary_2023", 0x1020, BuildingSymmetrical, 6, 16, 2, 10, 10)
-    make_object_layout("west_plaza_topiary_2024a", 0x1030, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
-    make_object_layout("west_plaza_topiary_2024b", 0x1040, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
+    make_object_layout("west_plaza_topiary_2021", 0x0100, BuildingSymmetrical, 8, 10, 4, 8, 6)
+    make_object_layout("west_plaza_topiary_2022", 0x0110, BuildingSymmetrical, 8, 10, 4, 8, 6)
+    make_object_layout("west_plaza_topiary_2023", 0x0120, BuildingSymmetrical, 6, 16, 2, 10, 10)
+    make_object_layout("west_plaza_topiary_2024a", 0x0130, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
+    make_object_layout("west_plaza_topiary_2024b", 0x0140, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
