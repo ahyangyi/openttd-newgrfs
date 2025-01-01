@@ -232,6 +232,7 @@ STR_CARGO_UNIT_WOOL                  :{COMMA}{NBSP}item{P "" s} of wool
 STR_CARGO_UNIT_WRKR                  :{SIGNED_WORD} worker{P 0 "" s}
 STR_CARGO_UNIT_ZINC                  :{WEIGHT} of zinc
 
+STR_INDUSTRY_NAME_ASHERY            :Ashery
 STR_INDUSTRY_NAME_AMMONIA_PLANT     :Ammonia Plant
 STR_INDUSTRY_NAME_ARABLE_FARM       :Arable Farm
 STR_INDUSTRY_NAME_BANK              :Bank
