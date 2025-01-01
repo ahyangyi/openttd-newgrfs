@@ -62,6 +62,16 @@ def test_layout_T():
     assert (temperate_1012 == l1012.T.graphics(4, 32).to_image()).all()
 
 
+def test_default_ground_sprite_to_parentsprite():
+    # For now, just make sure this can run
+    dgs1012.to_parentsprite()
+
+
+def test_ground_sprite_to_parentsprite():
+    # For now, just make sure this can run
+    gs1012.to_parentsprite()
+
+
 def test_symmetry():
     gs1012 = ADefaultGroundSprite(1012)
     gs1011 = ADefaultGroundSprite(1011)
