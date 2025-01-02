@@ -155,6 +155,11 @@ class NewGeneralSprite(CachedFunctorMixin):
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         return self.sprite.graphics(scale, bpp, climate=climate, subclimate=subclimate)
 
+    def to_parentsprite(self, low=False):
+        height = 0 if low else 1
+        assert isinstance(self.position, GroundPosition)
+        return replace(self, position=BBoxPosition(extent=(16, 16, height), offset=(0, 0, 0)))
+
 
 def ANewDefaultGroundSprite(x, flags=None):
     return NewGeneralSprite(sprite=DefaultGraphics(x), position=GroundPosition(), child_sprites=[], flags=flags)

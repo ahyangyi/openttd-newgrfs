@@ -1,5 +1,6 @@
 from collections.abc import Collection, Mapping, Hashable
 
+
 def deep_freeze(thing):
     if thing is None or isinstance(thing, str):
         return thing
