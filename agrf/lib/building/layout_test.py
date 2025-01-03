@@ -1,13 +1,25 @@
 import grf
 import numpy as np
 from PIL import Image
-from agrf.lib.building.layout import AGroundSprite, ADefaultGroundSprite, AParentSprite, ALayout
+from agrf.lib.building.layout import (
+    NewGeneralSprite,
+    AGroundSprite,
+    ADefaultGroundSprite,
+    AParentSprite,
+    ALayout,
+    ANewDefaultGroundSprite,
+    ANewGroundSprite,
+)
 from agrf.lib.building.symmetry import BuildingSymmetrical
 from agrf.lib.building.image_sprite import image_sprite
 from agrf.graphics.misc import SCALE_TO_ZOOM
 
 temperate_1011 = np.array(Image.open("agrf/third_party/opengfx2/temperate/1011.png"))
 temperate_1012 = np.array(Image.open("agrf/third_party/opengfx2/temperate/1012.png"))
+
+
+ADefaultGroundSprite = ANewDefaultGroundSprite
+AGroundSprite = ANewGroundSprite
 
 
 dgs1012 = ADefaultGroundSprite(1012)

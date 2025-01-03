@@ -1,4 +1,3 @@
-from abc import ABC, abstractmethod
 from collections.abc import Collection, Mapping, Hashable
 
 
@@ -15,15 +14,14 @@ def deep_freeze(thing):
         return thing
 
 
-class CachedFunctorMixin(ABC):
+class CachedFunctorMixin:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.attr_cache = {}
         self.call_cache = {}
 
-    @abstractmethod
     def fmap(self, f):
-        pass
+        raise NotImplementedError()
 
     def __getattr__(self, name):
         if name in self.attr_cache:
