@@ -5,6 +5,7 @@ from agrf.lib.building.layout import (
     NewGeneralSprite,
     AGroundSprite,
     ADefaultGroundSprite,
+    AParentSprite,
     ALayout,
     ANewDefaultGroundSprite,
     ANewGroundSprite,
@@ -23,6 +24,7 @@ AGroundSprite = ANewGroundSprite
 
 dgs1012 = ADefaultGroundSprite(1012)
 gs1012 = AGroundSprite(image_sprite("agrf/third_party/opengfx2/temperate/1012.png"))
+ps1012 = AParentSprite(image_sprite("agrf/third_party/opengfx2/temperate/1012.png"), (16, 16, 1), (0, 0, 0))
 l1012 = ALayout(dgs1012, [], True)
 
 
@@ -44,6 +46,10 @@ def test_default_groundsprite_T():
 
 def test_groundsprite():
     assert (temperate_1012 == gs1012.graphics(4, 32).to_image()).all()
+
+
+def test_parentsprite():
+    assert (temperate_1012 == ps1012.graphics(4, 32).to_image()).all()
 
 
 def test_layout():
@@ -70,6 +76,11 @@ def test_default_ground_sprite_to_parentsprite():
 def test_ground_sprite_to_parentsprite():
     # For now, just make sure this can run
     gs1012.to_parentsprite()
+
+
+def test_pushdown():
+    # FIXME also examine the offsets
+    assert (temperate_1012 == ps1012.pushdown(1).graphics(4, 32).to_image()).all()
 
 
 def test_symmetry():
