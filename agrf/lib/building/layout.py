@@ -97,6 +97,13 @@ class GroundPosition:
 
     R = M = T
 
+    def to_parentsprite(self, low=False):
+        height = 0 if low else 1
+        return BBoxPosition(extent=(16, 16, height), offset=(0, 0, 0))
+
+    def pushdown(self, steps):
+        return self.to_parentsprite().pushdown(steps)
+
 
 @dataclass
 class BBoxPosition:
@@ -120,6 +127,16 @@ class BBoxPosition:
     @property
     def M(self):
         return BBoxPosition(BBoxPosition._mirror(extent), BBoxPosition._mirror(new_offset))
+
+    def pushdown(self, steps):
+        x, y, z = self.offset
+        for i in range(steps):
+            if z >= 2:
+                z -= 2
+            else:
+                x += 1
+                y += 1
+        return BBoxPosition(self.extent, (x, y, z))
 
 
 @dataclass
@@ -159,6 +176,9 @@ class NewGeneralSprite(CachedFunctorMixin):
         height = 0 if low else 1
         assert isinstance(self.position, GroundPosition)
         return replace(self, position=BBoxPosition(extent=(16, 16, height), offset=(0, 0, 0)))
+
+    def pushdown(self, steps):
+        return replace(self, position=self.position.pushdown(steps))
 
 
 def ANewDefaultGroundSprite(sprite, flags=None):
