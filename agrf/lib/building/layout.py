@@ -161,12 +161,21 @@ class NewGeneralSprite(CachedFunctorMixin):
         return replace(self, position=BBoxPosition(extent=(16, 16, height), offset=(0, 0, 0)))
 
 
-def ANewDefaultGroundSprite(x, flags=None):
-    return NewGeneralSprite(sprite=DefaultGraphics(x), position=GroundPosition(), child_sprites=[], flags=flags)
+def ANewDefaultGroundSprite(sprite, flags=None):
+    return NewGeneralSprite(sprite=DefaultGraphics(sprite), position=GroundPosition(), child_sprites=[], flags=flags)
 
 
-def ANewGroundSprite(x, flags=None):
-    return NewGeneralSprite(sprite=NewGraphics(x), position=GroundPosition(), child_sprites=[], flags=flags)
+def ANewGroundSprite(sprite, flags=None):
+    return NewGeneralSprite(sprite=NewGraphics(sprite), position=GroundPosition(), child_sprites=[], flags=flags)
+
+
+def ANewParentSprite(sprite, extent, offset, child_sprites=None, flags=None):
+    return NewGeneralSprite(
+        sprite=NewGraphics(sprite),
+        position=BBoxPosition(extent=extent, offset=offset),
+        child_sprites=child_sprites,
+        flags=flags,
+    )
 
 
 class ChildSpriteContainerMixin:

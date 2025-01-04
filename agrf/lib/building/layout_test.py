@@ -9,6 +9,7 @@ from agrf.lib.building.layout import (
     ALayout,
     ANewDefaultGroundSprite,
     ANewGroundSprite,
+    ANewParentSprite,
 )
 from agrf.lib.building.symmetry import BuildingSymmetrical
 from agrf.lib.building.image_sprite import image_sprite
@@ -20,6 +21,7 @@ temperate_1012 = np.array(Image.open("agrf/third_party/opengfx2/temperate/1012.p
 
 ADefaultGroundSprite = ANewDefaultGroundSprite
 AGroundSprite = ANewGroundSprite
+AParentSprite = ANewParentSprite
 
 
 dgs1012 = ADefaultGroundSprite(1012)
