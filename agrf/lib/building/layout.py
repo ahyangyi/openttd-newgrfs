@@ -758,9 +758,9 @@ class ALayout:
 
             self.ground_sprite = empty_ground
         assert isinstance(self.ground_sprite, (ADefaultGroundSprite, AGroundSprite, NewGeneralSprite))
-        assert all(isinstance(s, (ADefaultParentSprite, AParentSprite)) for s in self.parent_sprites), [
-            type(s) for s in self.parent_sprites
-        ]
+        assert all(
+            isinstance(s, (ADefaultParentSprite, AParentSprite, NewGeneralSprite)) for s in self.parent_sprites
+        ), [type(s) for s in self.parent_sprites]
         self.notes = self.notes or []
 
     @property
