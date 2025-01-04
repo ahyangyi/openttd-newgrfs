@@ -1,6 +1,7 @@
 import grf
 import numpy as np
 from PIL import Image
+from station.lib import Registers
 from agrf.lib.building.layout import (
     NewGeneralSprite,
     AGroundSprite,
