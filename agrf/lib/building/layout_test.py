@@ -17,6 +17,9 @@ from agrf.graphics.misc import SCALE_TO_ZOOM
 
 temperate_1011 = np.array(Image.open("agrf/third_party/opengfx2/temperate/1011.png"))
 temperate_1012 = np.array(Image.open("agrf/third_party/opengfx2/temperate/1012.png"))
+temperate_1011_over_1012 = np.array(
+    Image.alpha_composite(Image.fromarray(temperate_1012), Image.fromarray(temperate_1011))
+)
 
 
 ADefaultGroundSprite = ANewDefaultGroundSprite
@@ -27,7 +30,11 @@ AParentSprite = ANewParentSprite
 dgs1012 = ADefaultGroundSprite(1012)
 gs1012 = AGroundSprite(image_sprite("agrf/third_party/opengfx2/temperate/1012.png"))
 ps1012 = AParentSprite(image_sprite("agrf/third_party/opengfx2/temperate/1012.png"), (16, 16, 1), (0, 0, 0))
+ch1011snow = AChildSprite(
+    image_sprite("agrf/third_party/opengfx2/temperate/1011.png"), (0, 0), flags={"dodraw": Registers.SNOW}
+)
 l1012 = ALayout(dgs1012, [], True)
+l1012snow = ALayout(gs1012 + ch1011snow, [], True)
 
 
 def test_default_groundsprite():
@@ -73,6 +80,14 @@ def test_layout_T():
 def test_default_ground_sprite_to_parentsprite():
     # For now, just make sure this can run
     dgs1012.to_parentsprite()
+
+
+def test_layout_snow():
+    assert (temperate_1012 == l1012snow.graphics(4, 32).to_image()).all()
+
+
+def test_layout_snow_arctic():
+    assert (temperate_1011_over_1012 == l1012snow.graphics(4, 32, climate="arctic", subclimate="snow").to_image()).all()
 
 
 def test_ground_sprite_to_parentsprite():
