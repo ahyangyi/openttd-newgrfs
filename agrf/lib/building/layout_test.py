@@ -6,6 +6,7 @@ from agrf.lib.building.layout import (
     AGroundSprite,
     ADefaultGroundSprite,
     AParentSprite,
+    AChildSprite,
     ALayout,
     ANewDefaultGroundSprite,
     ANewGroundSprite,
