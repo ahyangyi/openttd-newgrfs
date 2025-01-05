@@ -153,6 +153,8 @@ class NewGeneralSprite(CachedFunctorMixin):
 
     def __post_init__(self):
         super().__init__()
+        if self.child_sprites is None:
+            self.child_sprites = []
         if self.is_childsprite():
             assert len(self.child_spites) == 0
 
@@ -170,7 +172,13 @@ class NewGeneralSprite(CachedFunctorMixin):
         return replace(self, sprite=f(self.sprite), child_sprites=[f(c) for c in self.child_sprites])
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
-        return self.sprite.graphics(scale, bpp, climate=climate, subclimate=subclimate)
+        ret = self.sprite.graphics(scale, bpp, climate=climate, subclimate=subclimate)
+
+        for c in self.child_sprites:
+            masked_sprite = c.graphics(scale, bpp, climate=climate, subclimate=subclimate)
+            ret.blend_over(masked_sprite, childsprite=isinstance(self, AParentSprite))
+
+        return ret
 
     def to_parentsprite(self, low=False):
         height = 0 if low else 1
@@ -179,6 +187,11 @@ class NewGeneralSprite(CachedFunctorMixin):
 
     def pushdown(self, steps):
         return replace(self, position=self.position.pushdown(steps))
+
+    def __add__(self, child_sprite):
+        if child_sprite is None:
+            return self
+        return replace(self, child_sprites=self.child_sprites + [child_sprite])
 
 
 def ANewDefaultGroundSprite(sprite, flags=None):
