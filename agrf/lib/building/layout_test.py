@@ -22,6 +22,8 @@ ch1011snow = AChildSprite(
 )
 l1012 = ALayout(dgs1012, [], True)
 l1012snow = ALayout(gs1012 + ch1011snow, [], True)
+pl1012 = ALayout(None, [ps1012], True)
+pl1012snow = ALayout(None, [ps1012 + ch1011snow], [], True)
 
 
 def test_default_groundsprite():
@@ -75,6 +77,30 @@ def test_layout_snow():
 
 def test_layout_snow_arctic():
     assert (temperate_1011_over_1012 == l1012snow.graphics(4, 32, climate="arctic", subclimate="snow").to_image()).all()
+
+
+def test_layout_snow_arctic_filter():
+    assert (
+        temperate_1012
+        == l1012snow.filter_register(Registers.SNOW).graphics(4, 32, climate="arctic", subclimate="snow").to_image()
+    ).all()
+
+
+def test_playout_snow():
+    assert (temperate_1012 == pl1012snow.graphics(4, 32).to_image()).all()
+
+
+def test_playout_snow_arctic():
+    assert (
+        temperate_1011_over_1012 == pl1012snow.graphics(4, 32, climate="arctic", subclimate="snow").to_image()
+    ).all()
+
+
+def test_playout_snow_arctic_filter():
+    assert (
+        temperate_1012
+        == pl1012snow.filter_register(Registers.SNOW).graphics(4, 32, climate="arctic", subclimate="snow").to_image()
+    ).all()
 
 
 def test_ground_sprite_to_parentsprite():
