@@ -196,6 +196,15 @@ class AGroundSprite(ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixi
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
 
+    @functools.cache
+    def filter_register(self, reg):
+        return AGroundSprite(
+            self.sprite,
+            alternatives=tuple(f(s) for s in self.alternatives),
+            child_sprites=[x for x in self.child_sprites if x.flags.get("dodraw") != reg],
+            flags=self.flags,
+        )
+
     def __repr__(self):
         return f"<AGroundSprite:{self.sprite}>"
 
@@ -630,7 +639,9 @@ class ALayout:
     @functools.cache
     def filter_register(self, reg):
         return replace(
-            self, parent_sprites=[s.filter_register(reg) for s in self.parent_sprites if s.flags.get("dodraw") != reg]
+            self,
+            ground_sprite=self.ground_sprite.filter_register(reg),
+            parent_sprites=[s.filter_register(reg) for s in self.parent_sprites if s.flags.get("dodraw") != reg],
         )
 
     @functools.cache
