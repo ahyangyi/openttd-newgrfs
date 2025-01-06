@@ -198,6 +198,16 @@ class NewGeneralSprite(CachedFunctorMixin):
     def filter_register(self, reg):
         return replace(self, child_sprites=[x for x in self.child_sprites if x.flags.get("dodraw") != reg])
 
+    @property
+    def offset(self):
+        assert isinstance(self.position, BBoxPosition)
+        return self.position.offset
+
+    @property
+    def extent(self):
+        assert isinstance(self.position, BBoxPosition)
+        return self.position.extent
+
 
 def ANewDefaultGroundSprite(sprite, flags=None):
     return NewGeneralSprite(sprite=DefaultGraphics(sprite), position=GroundPosition(), child_sprites=[], flags=flags)
