@@ -155,6 +155,8 @@ class NewGeneralSprite(CachedFunctorMixin):
         super().__init__()
         if self.child_sprites is None:
             self.child_sprites = []
+        if self.flags is None:
+            self.flags = {}
         if self.is_childsprite():
             assert len(self.child_spites) == 0
 
@@ -192,6 +194,9 @@ class NewGeneralSprite(CachedFunctorMixin):
         if child_sprite is None:
             return self
         return replace(self, child_sprites=self.child_sprites + [child_sprite])
+
+    def filter_register(self, reg):
+        return replace(self, child_sprites=[x for x in self.child_sprites if x.flags.get("dodraw") != reg])
 
 
 def ANewDefaultGroundSprite(sprite, flags=None):
