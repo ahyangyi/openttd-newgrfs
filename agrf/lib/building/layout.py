@@ -246,9 +246,15 @@ class NewGeneralSprite(CachedFunctorMixin):
                 )
             ]
         if isinstance(self.position, GroundPosition):
-            return [grf.GroundSprite(sprite=self.sprite.to_spriteref(sprite_list), **self.registers_to_grf_dict())] + [
-                grfobj for child_sprite in self.child_sprites for grfobj in child_sprite.to_grf(sprite_list)
-            ]
+            ps = grf.GroundSprite(sprite=self.sprite.to_spriteref(sprite_list), **self.registers_to_grf_dict())
+        else:
+            ps = grf.ParentSprite(
+                sprite=self.sprite.to_spriteref(sprite_list),
+                extent=self.extent,
+                offset=self.offset,
+                **self.registers_to_grf_dict(),
+            )
+        return [ps] + [grfobj for child_sprite in self.child_sprites for grfobj in child_sprite.to_grf(sprite_list)]
 
 
 def ANewDefaultGroundSprite(sprite, flags=None):
