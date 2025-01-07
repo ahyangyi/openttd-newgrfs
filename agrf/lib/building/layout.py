@@ -38,6 +38,16 @@ class DefaultGraphics:
             ret.resize(64, 31)
         return ret
 
+    def to_spriteref(self, sprite_list):
+        return grf.SpriteRef(
+            id=0x42D + sprite_list.index(self.sprite),
+            pal=0,
+            is_global=False,
+            use_recolour=False,
+            always_transparent=False,
+            no_transparent=False,
+        )
+
     @property
     def M(self):
         if self.sprite_id in [1011, 1012, 1037, 1038, 1313, 1314]:
@@ -80,6 +90,16 @@ class NewGraphics(CachedFunctorMixin):
         assert ret is not None
 
         return ret
+
+    def to_spriteref(self, sprite_list):
+        return grf.SpriteRef(
+            id=sprite_list.index(self.sprite),
+            pal=0,
+            is_global=True,
+            use_recolour=False,
+            always_transparent=False,
+            no_transparent=False,
+        )
 
     @property
     def sprites(self):
@@ -207,6 +227,24 @@ class NewGeneralSprite(CachedFunctorMixin):
     def extent(self):
         assert isinstance(self.position, BBoxPosition)
         return self.position.extent
+
+    def registers_to_grf_dict(self):
+        return {"flags": sum(grf.SPRITE_FLAGS[k][1] for k in self.flags.keys()), "registers": self.flags_translated}
+
+    def to_grf(self, sprite_list):
+        if isinstance(self.position, OffsetPosition):
+            return [
+                grf.ChildSprite(
+                    sprite=self.sprite.to_spriteref(sprite_list),
+                    xofs=self.offset[0],
+                    yofs=self.offset[1],
+                    **self.registers_to_grf_dict(),
+                )
+            ]
+        if isinstance(self.position, GroundPosition):
+            return [grf.GroundSprite(sprite=self.sprite.to_spriteref(sprite_list), **self.registers_to_grf_dict())] + [
+                grfobj for child_sprite in self.child_sprites for grfobj in child_sprite.to_grf(sprite_list)
+            ]
 
 
 def ANewDefaultGroundSprite(sprite, flags=None):
