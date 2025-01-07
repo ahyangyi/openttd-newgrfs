@@ -228,6 +228,10 @@ class NewGeneralSprite(CachedFunctorMixin):
         assert isinstance(self.position, BBoxPosition)
         return self.position.extent
 
+    @property
+    def flags_translated(self):
+        return {k: (v if k == "add" else v.get_index()) for k, v in self.flags.items() if v is not None}
+
     def registers_to_grf_dict(self):
         return {"flags": sum(grf.SPRITE_FLAGS[k][1] for k in self.flags.keys()), "registers": self.flags_translated}
 
