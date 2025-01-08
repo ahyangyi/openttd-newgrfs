@@ -40,12 +40,7 @@ class DefaultGraphics:
 
     def to_spriteref(self, sprite_list):
         return grf.SpriteRef(
-            id=0x42D + sprite_list.index(self.sprite),
-            pal=0,
-            is_global=False,
-            use_recolour=False,
-            always_transparent=False,
-            no_transparent=False,
+            id=self.sprite_id, pal=0, is_global=True, use_recolour=False, always_transparent=False, no_transparent=False
         )
 
     @property
@@ -93,9 +88,9 @@ class NewGraphics(CachedFunctorMixin):
 
     def to_spriteref(self, sprite_list):
         return grf.SpriteRef(
-            id=sprite_list.index(self.sprite),
+            id=0x42D + sprite_list.index(self.sprite),
             pal=0,
-            is_global=True,
+            is_global=False,
             use_recolour=False,
             always_transparent=False,
             no_transparent=False,
