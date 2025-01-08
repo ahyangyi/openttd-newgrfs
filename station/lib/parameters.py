@@ -2,7 +2,9 @@ from agrf.parameters import Parameter, ParameterList
 from agrf.magic import Switch
 
 booldict = {0: "DISABLED", 1: "ENABLED"}
-
+company_colour = {0: "PRIMARY", 17: "SECONDARY", 1: "DARK_BLUE", 2: "PALE_GREEN"}
+# , 3: "PINK", 4: "YELLOW", 5: "RED", 6: "LIGHT_BLUE", 7: "GREEN", 8: "DARK_GREEN", 9: "BLUE", 10: "CREAM", 11: "MAUVE", 12: "PURPLE",
+#                  13: "ORANGE", 14: "BROWN", 15: "GREY", 16: "WHITE"
 global_settings = []
 
 station_meta = ["E88A9CA", "E88A9C0"]
@@ -14,6 +16,7 @@ for s in station_meta:
     if s == "E88A9CA":
         station_settings.append(Parameter(f"{s}_ENABLE_ROADSTOP", 1, booldict))
     station_settings.append(Parameter(f"{s}_INTRODUCTION_YEAR", 0, limits=(0, 9999)))
+    station_settings.append(Parameter(f"{s}_COLOUR", 0, company_colour))
 station_settings.append(Parameter("E88A9CP_ENABLE_MODULAR", 1, booldict))
 
 platform_settings = []
