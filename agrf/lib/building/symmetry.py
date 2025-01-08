@@ -3,14 +3,7 @@ class BuildingSymmetryMixin:
     def create_variants(classobj, variants):
         for i, v in enumerate(variants):
             cls = v.__class__
-            d = {}
-            if "__slots__" in dir(v):
-                d["__slots__"] = v.__slots__
-                print(d, cls, v.__slots__)
-                from itertools import chain
-
-                slots = tuple(chain.from_iterable(getattr(c, "__slots__", []) for c in cls.__mro__))
-            v.__class__ = type(f"{cls.__name__}+{classobj.__name__}", (classobj, cls), d)
+            v.__class__ = type(f"{cls.__name__}+{classobj.__name__}", (classobj, cls), {})
 
             idx = classobj.render_indices()[i]
             v._M = variants[classobj._symmetry_descriptor[idx ^ 1]]
