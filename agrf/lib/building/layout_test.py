@@ -74,6 +74,10 @@ def test_groundsprite_fingerprint():
     json.dumps(gs1012.get_fingerprint())
 
 
+def test_groundsprite_get_resource_files():
+    assert all(isinstance(file, grf.ResourceFile) for file in gs1012.get_resource_files())
+
+
 def test_parentsprite():
     assert (temperate_1012 == ps1012.graphics(4, 32).to_image()).all()
 
@@ -88,6 +92,10 @@ def test_parentsprite_to_action2():
 
 def test_parentsprite_fingerprint():
     json.dumps(ps1012.get_fingerprint())
+
+
+def test_parentsprite_get_resource_files():
+    assert all(isinstance(file, grf.ResourceFile) for file in ps1012.get_resource_files())
 
 
 def test_layout():
