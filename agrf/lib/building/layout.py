@@ -5,6 +5,7 @@ from PIL import Image
 import functools
 import numpy as np
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
+from agrf.graphics.spritesheet import LazyAlternativeSprites
 from agrf.magic import CachedFunctorMixin
 from agrf.utils import unique_tuple
 from agrf.pkg import load_third_party_image
@@ -490,7 +491,11 @@ class AGroundSprite(ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixi
         return unique_tuple((self.sprite,) + self.alternatives + self.sprites_from_child)
 
     def get_fingerprint(self):
-        return {"ground_sprite": self.sprite.get_fingerprint()}
+        if isinstance(self.sprite, LazyAlternativeSprites):
+            fingerprint = self.sprite.get_fingerprint()
+        else:
+            fingerprint = id(self.sprite)
+        return {"ground_sprite": fingerprint}
 
     def get_resource_files(self):
         return self.sprite.get_resource_files()
@@ -730,7 +735,11 @@ class AParentSprite(BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin)
         return unique_tuple((self.sprite,) + self.sprites_from_child)
 
     def get_fingerprint(self):
-        return {"parent_sprite": self.sprite.get_fingerprint(), "extent": self.extent, "offset": self.offset}
+        if isinstance(self.sprite, LazyAlternativeSprites):
+            fingerprint = self.sprite.get_fingerprint()
+        else:
+            fingerprint = id(self.sprite)
+        return {"parent_sprite": fingerprint, "extent": self.extent, "offset": self.offset}
 
     def get_resource_files(self):
         return self.sprite.get_resource_files()

@@ -1,5 +1,6 @@
 import grf
 import numpy as np
+import json
 from PIL import Image
 from station.lib import Registers
 from agrf.lib.building.layout import (
@@ -69,6 +70,10 @@ def test_groundsprite_to_action2():
     assert isinstance(gs1012.to_action2(gs1012.sprites)[0]["sprite"], grf.SpriteRef)
 
 
+def test_groundsprite_fingerprint():
+    json.dumps(gs1012.get_fingerprint())
+
+
 def test_parentsprite():
     assert (temperate_1012 == ps1012.graphics(4, 32).to_image()).all()
 
@@ -79,6 +84,10 @@ def test_parentsprite_to_grf():
 
 def test_parentsprite_to_action2():
     assert isinstance(ps1012.to_action2(ps1012.sprites)[0]["sprite"], grf.SpriteRef)
+
+
+def test_parentsprite_fingerprint():
+    json.dumps(ps1012.get_fingerprint())
 
 
 def test_layout():
