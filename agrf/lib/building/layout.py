@@ -65,6 +65,9 @@ class DefaultGraphics:
     def sprites(self):
         return ()
 
+    def get_fingerprint(self):
+        return {"sprite_id": self.sprite_id}
+
 
 @dataclass
 class NewGraphics(CachedFunctorMixin):
@@ -110,6 +113,13 @@ class NewGraphics(CachedFunctorMixin):
     def fmap(self, f):
         return replace(self, sprite=self.sprite if self.sprite is grf.EMPTY_SPRITE else f(self.sprite))
 
+    def get_fingerprint(self):
+        if isinstance(self.sprite, LazyAlternativeSprites):
+            fingerprint = self.sprite.get_fingerprint()
+        else:
+            fingerprint = id(self.sprite)
+        return {"sprite": fingerprint}
+
 
 @dataclass
 class GroundPosition:
@@ -125,6 +135,9 @@ class GroundPosition:
 
     def pushdown(self, steps):
         return self.to_parentsprite().pushdown(steps)
+
+    def get_fingerprint(self):
+        return {"position": "ground"}
 
 
 @dataclass
@@ -160,10 +173,16 @@ class BBoxPosition:
                 y += 1
         return BBoxPosition(self.extent, (x, y, z))
 
+    def get_fingerprint(self):
+        return {"extent": self.extent, "offset": self.offset}
+
 
 @dataclass
 class OffsetPosition:
     offset: Tuple[int, int]
+
+    def get_fingerprint(self):
+        return {"xy_extent": self.extent}
 
 
 @dataclass
@@ -260,6 +279,13 @@ class NewGeneralSprite(CachedFunctorMixin):
 
     def to_action2(self, sprite_list):
         return self.sprite.to_action2(sprite_list) + [s for x in self.child_sprites for s in x.to_action2(sprite_list)]
+
+    def get_fingerprint(self):
+        return {
+            "sprite": self.sprite.get_fingerprint(),
+            "position": self.position.get_fingerprint(),
+            "child_sprites": [c.get_fingerprint() for c in self.child_sprites],
+        }
 
 
 def ANewDefaultGroundSprite(sprite, flags=None):
