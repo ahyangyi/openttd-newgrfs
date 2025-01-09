@@ -44,7 +44,7 @@ class DefaultGraphics:
         )
 
     def to_action2(self, sprite_list):
-        return [{"sprite": grf.SpriteRef(self.sprite, is_global=True)}]
+        return [{"sprite": grf.SpriteRef(self.sprite_id, is_global=True)}]
 
     @property
     def M(self):
