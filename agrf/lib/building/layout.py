@@ -314,6 +314,9 @@ def ANewParentSprite(sprite, extent, offset, child_sprites=None, flags=None):
     )
 
 
+ADefaultGroundSprite = ANewDefaultGroundSprite
+
+
 class ChildSpriteContainerMixin:
     def __init__(self, *args, child_sprites=None, **kwargs):
         super().__init__(*args, **kwargs)
@@ -392,67 +395,6 @@ class DefaultSpriteMixin:
             ret.resize(64, 31)
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
-
-
-class ADefaultGroundSprite(DefaultSpriteMixin, ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixin):
-    def __init__(self, sprite, child_sprites=None, flags=None):
-        super().__init__(sprite, child_sprites=child_sprites, flags=flags)
-
-    def parent_to_grf(self, sprite_list):
-        return grf.GroundSprite(
-            sprite=grf.SpriteRef(
-                id=self.sprite,
-                pal=0,
-                is_global=True,
-                use_recolour=False,
-                always_transparent=False,
-                no_transparent=False,
-            ),
-            **self.registers_to_grf_dict(),
-        )
-
-    def to_parentsprite(self, low=False):
-        if low:
-            return ADefaultParentSprite(self.sprite, (16, 16, 0), (0, 0, 0), child_sprites=self.child_sprites)
-        return ADefaultParentSprite(
-            self.sprite, (16, 16, 1), (0, 0, 0), child_sprites=self.child_sprites, flags=self.flags
-        )
-
-    def to_action2(self, sprite_list):
-        return [{"sprite": grf.SpriteRef(self.sprite, is_global=True)}] + [
-            s for x in self.child_sprites for s in x.to_action2(sprite_list)
-        ]
-
-    def __repr__(self):
-        return f"<ADefaultGroundSprite:{self.sprite}>"
-
-    def fmap(self, f):
-        return ADefaultGroundSprite(self.sprite, child_sprites=[f(c) for c in self.child_sprites], flags=self.flags)
-
-    @property
-    def M(self):
-        return ADefaultGroundSprite(
-            self.sprite - 1 if self.sprite % 2 == 0 else self.sprite + 1,
-            child_sprites=[c.M for c in self.child_sprites],
-            flags=self.flags,
-        )
-
-    @property
-    def sprites(self):
-        return self.sprites_from_child
-
-    def get_fingerprint(self):
-        return {"default_ground_sprite": self.sprite}
-
-    def get_resource_files(self):
-        return ()
-
-    def __add__(self, child_sprite):
-        if child_sprite is None:
-            return self
-        return ADefaultGroundSprite(
-            self.sprite, child_sprites=self.child_sprites + [child_sprite], flags=self.flags.copy()
-        )
 
 
 class AGroundSprite(ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixin):
@@ -890,7 +832,7 @@ class ALayout:
             from station.stations.misc import empty_ground
 
             self.ground_sprite = empty_ground
-        assert isinstance(self.ground_sprite, (ADefaultGroundSprite, AGroundSprite, NewGeneralSprite))
+        assert isinstance(self.ground_sprite, (AGroundSprite, NewGeneralSprite))
         assert all(
             isinstance(s, (ADefaultParentSprite, AParentSprite, NewGeneralSprite)) for s in self.parent_sprites
         ), [type(s) for s in self.parent_sprites]
