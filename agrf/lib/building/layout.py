@@ -68,6 +68,9 @@ class DefaultGraphics:
     def get_fingerprint(self):
         return {"sprite_id": self.sprite_id}
 
+    def get_resource_files(self):
+        return ()
+
 
 @dataclass
 class NewGraphics(CachedFunctorMixin):
@@ -119,6 +122,9 @@ class NewGraphics(CachedFunctorMixin):
         else:
             fingerprint = id(self.sprite)
         return {"sprite": fingerprint}
+
+    def get_resource_files(self):
+        return ()
 
 
 @dataclass
@@ -286,6 +292,9 @@ class NewGeneralSprite(CachedFunctorMixin):
             "position": self.position.get_fingerprint(),
             "child_sprites": [c.get_fingerprint() for c in self.child_sprites],
         }
+
+    def get_resource_files(self):
+        return unique_tuple(f for x in [self.sprite] + self.child_sprites for f in x.get_resource_files())
 
 
 def ANewDefaultGroundSprite(sprite, flags=None):
