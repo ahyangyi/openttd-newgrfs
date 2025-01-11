@@ -78,7 +78,7 @@ class NewGraphics(CachedFunctorMixin):
 
     def __post_init__(self):
         super().__init__()
-        assert isinstance(self.sprite, grf.ResourceAction)
+        assert self.sprite is grf.EMPTY_SPRITE or callable(self.sprite) or isinstance(self.sprite, grf.ResourceAction)
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
@@ -315,6 +315,7 @@ def ANewParentSprite(sprite, extent, offset, child_sprites=None, flags=None):
 
 
 ADefaultGroundSprite = ANewDefaultGroundSprite
+AGroundSprite = ANewGroundSprite
 
 
 class ChildSpriteContainerMixin:
@@ -395,92 +396,6 @@ class DefaultSpriteMixin:
             ret.resize(64, 31)
         self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
         return ret
-
-
-class AGroundSprite(ChildSpriteContainerMixin, RegistersMixin, CachedFunctorMixin):
-    def __init__(self, sprite, alternatives=None, child_sprites=None, flags=None):
-        super().__init__(child_sprites=child_sprites, flags=flags)
-        self.sprite = sprite
-        self.alternatives = alternatives or tuple()
-
-    def parent_to_grf(self, sprite_list):
-        return grf.GroundSprite(
-            sprite=grf.SpriteRef(
-                id=0x42D + sprite_list.index(self.sprite),
-                pal=0,
-                is_global=False,
-                use_recolour=False,
-                always_transparent=False,
-                no_transparent=False,
-            ),
-            **self.registers_to_grf_dict(),
-        )
-
-    def to_parentsprite(self, low=False):
-        if low:
-            return AParentSprite(self.sprite, (16, 16, 0), (0, 0, 0), child_sprites=self.child_sprites)
-        return AParentSprite(self.sprite, (16, 16, 1), (0, 0, 0), child_sprites=self.child_sprites, flags=self.flags)
-
-    def to_action2(self, sprite_list):
-        return [{"sprite": grf.SpriteRef(sprite_list.index(self.sprite), is_global=False)}] + [
-            s for x in self.child_sprites for s in x.to_action2(sprite_list)
-        ]
-
-    def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
-        if self.sprite is grf.EMPTY_SPRITE:
-            ret = LayeredImage.empty()
-        else:
-            ret = None
-            sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
-            if sprite is not None:
-                ret = LayeredImage.from_sprite(sprite).copy()
-
-            if ret is None and bpp == 32:
-                # Fall back to bpp=8
-                sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
-                ret = LayeredImage.from_sprite(sprite).copy().to_rgb()
-            assert ret is not None
-        self.blend_graphics(ret, scale, bpp, climate=climate, subclimate=subclimate)
-        return ret
-
-    @functools.cache
-    def filter_register(self, reg):
-        return AGroundSprite(
-            self.sprite,
-            alternatives=tuple(f(s) for s in self.alternatives),
-            child_sprites=[x for x in self.child_sprites if x.flags.get("dodraw") != reg],
-            flags=self.flags,
-        )
-
-    def __repr__(self):
-        return f"<AGroundSprite:{self.sprite}>"
-
-    def fmap(self, f):
-        return AGroundSprite(
-            self.sprite if self.sprite is grf.EMPTY_SPRITE else f(self.sprite),
-            alternatives=tuple(f(s) for s in self.alternatives),
-            child_sprites=[f(c) for c in self.child_sprites],
-            flags=self.flags,
-        )
-
-    @property
-    def sprites(self):
-        return unique_tuple((self.sprite,) + self.alternatives + self.sprites_from_child)
-
-    def get_fingerprint(self):
-        if isinstance(self.sprite, LazyAlternativeSprites):
-            fingerprint = self.sprite.get_fingerprint()
-        else:
-            fingerprint = id(self.sprite)
-        return {"ground_sprite": fingerprint}
-
-    def get_resource_files(self):
-        return self.sprite.get_resource_files()
-
-    def __add__(self, child_sprite):
-        if child_sprite is None:
-            return self
-        return AGroundSprite(self.sprite, child_sprites=self.child_sprites + [child_sprite], flags=self.flags.copy())
 
 
 class ADefaultParentSprite(DefaultSpriteMixin, BoundingBoxMixin, ChildSpriteContainerMixin, RegistersMixin):
@@ -832,7 +747,7 @@ class ALayout:
             from station.stations.misc import empty_ground
 
             self.ground_sprite = empty_ground
-        assert isinstance(self.ground_sprite, (AGroundSprite, NewGeneralSprite))
+        assert isinstance(self.ground_sprite, NewGeneralSprite)
         assert all(
             isinstance(s, (ADefaultParentSprite, AParentSprite, NewGeneralSprite)) for s in self.parent_sprites
         ), [type(s) for s in self.parent_sprites]
