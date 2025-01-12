@@ -235,6 +235,15 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
         return replace(self, sprite=f(self.sprite), child_sprites=[f(c) for c in self.child_sprites])
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
+        # Register handling
+        # FIXME: generalize this process
+        from station.lib.registers import Registers
+
+        if self.flags.get("dodraw") == Registers.SNOW and subclimate != "snow":
+            return LayeredImage.empty()
+        if self.flags.get("dodraw") == Registers.NOSNOW and subclimate == "snow":
+            return LayeredImage.empty()
+
         ret = self.sprite.graphics(scale, bpp, climate=climate, subclimate=subclimate)
 
         for c in self.child_sprites:
