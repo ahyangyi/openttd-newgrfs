@@ -1,2 +1,2 @@
 from .switch import Switch, DualCallback
-from .functor import CachedFunctorMixin
+from .functor import CachedFunctorMixin, TaggedCachedFunctorMixin
