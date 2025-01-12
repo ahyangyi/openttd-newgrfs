@@ -3,14 +3,7 @@ import numpy as np
 import json
 from PIL import Image
 from station.lib import Registers
-from agrf.lib.building.layout import (
-    NewGeneralSprite,
-    AGroundSprite,
-    ADefaultGroundSprite,
-    AParentSprite,
-    AChildSprite,
-    ALayout,
-)
+from agrf.lib.building.layout import AGroundSprite, ADefaultGroundSprite, AParentSprite, AChildSprite, ALayout
 from agrf.lib.building.symmetry import BuildingSymmetrical
 from agrf.lib.building.image_sprite import image_sprite
 from agrf.graphics.misc import SCALE_TO_ZOOM
