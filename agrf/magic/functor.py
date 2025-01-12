@@ -37,3 +37,29 @@ class CachedFunctorMixin:
         ret = self.fmap(lambda x: x(*args, **kwargs))
         self.call_cache[key] = ret
         return ret
+
+
+class TaggedCachedFunctorMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.attr_cache = {}
+        self.call_cache = {}
+
+    def fmap(self, f, method_name):
+        raise NotImplementedError()
+
+    def __getattr__(self, name):
+        if name in self.attr_cache:
+            return self.attr_cache[name]
+        ret = self.fmap(lambda x: getattr(x, name), name)
+        ret.__last_getattr = name
+        self.attr_cache[name] = ret
+        return ret
+
+    def __call__(self, *args, **kwargs):
+        key = deep_freeze((args, kwargs))
+        if key in self.call_cache:
+            return self.call_cache[key]
+        ret = self.fmap(lambda x: x(*args, **kwargs), self.__last_getattr)
+        self.call_cache[key] = ret
+        return ret
