@@ -311,15 +311,15 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
         return unique_tuple(f for x in [self.sprite] + self.child_sprites for f in x.get_resource_files())
 
 
-def ANewDefaultGroundSprite(sprite, flags=None):
+def ADefaultGroundSprite(sprite, flags=None):
     return NewGeneralSprite(sprite=DefaultGraphics(sprite), position=GroundPosition(), child_sprites=[], flags=flags)
 
 
-def ANewGroundSprite(sprite, flags=None):
+def AGroundSprite(sprite, flags=None):
     return NewGeneralSprite(sprite=NewGraphics(sprite), position=GroundPosition(), child_sprites=[], flags=flags)
 
 
-def ANewDefaultParentSprite(sprite, extent, offset, child_sprites=None, flags=None):
+def ADefaultParentSprite(sprite, extent, offset, child_sprites=None, flags=None):
     return NewGeneralSprite(
         sprite=DefaultGraphics(sprite),
         position=BBoxPosition(extent=extent, offset=offset),
@@ -328,7 +328,7 @@ def ANewDefaultParentSprite(sprite, extent, offset, child_sprites=None, flags=No
     )
 
 
-def ANewParentSprite(sprite, extent, offset, child_sprites=None, flags=None):
+def AParentSprite(sprite, extent, offset, child_sprites=None, flags=None):
     return NewGeneralSprite(
         sprite=NewGraphics(sprite),
         position=BBoxPosition(extent=extent, offset=offset),
@@ -337,15 +337,8 @@ def ANewParentSprite(sprite, extent, offset, child_sprites=None, flags=None):
     )
 
 
-def ANewChildSprite(sprite, offset, flags=None):
+def AChildSprite(sprite, offset, flags=None):
     return NewGeneralSprite(sprite=NewGraphics(sprite), position=OffsetPosition(offset=offset), flags=flags)
-
-
-ADefaultGroundSprite = ANewDefaultGroundSprite
-AGroundSprite = ANewGroundSprite
-ADefaultParentSprite = ANewDefaultParentSprite
-AParentSprite = ANewParentSprite
-AChildSprite = ANewChildSprite
 
 
 def overlaps(a0, a1, b0, b1):
