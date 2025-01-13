@@ -22,7 +22,7 @@ class DefaultGraphics:
         for k in [1011, 1012, 1037, 1038, 3981, 4550]
     }
     climate_independent_tiles = {
-        k: load_third_party_image(f"third_party/opengfx2/{k}.png") for k in [1313, 1314, 1320, 1321, 1420]
+        k: load_third_party_image(f"third_party/opengfx2/{k}.png") for k in [1313, 1314, 1320, 1321, 1322, 1323, 1420]
     }
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
@@ -64,7 +64,7 @@ class DefaultGraphics:
 DEFAULT_GRAPHICS = {}
 for x in [1420, 3872, 3981, 4550]:
     DEFAULT_GRAPHICS[x] = BuildingCylindrical.create_variants([DefaultGraphics(x)])
-for x in [1011, 1037, 1313]:
+for x in [1011, 1313]:
     DEFAULT_GRAPHICS[x] = BuildingSymmetrical.create_variants([DefaultGraphics(x), DefaultGraphics(x + 1)])
     DEFAULT_GRAPHICS[x + 1] = DEFAULT_GRAPHICS[x].M
 for x in [1320]:
