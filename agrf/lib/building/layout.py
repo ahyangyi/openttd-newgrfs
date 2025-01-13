@@ -44,8 +44,8 @@ class DefaultGraphics:
             id=self.sprite_id, pal=0, is_global=True, use_recolour=False, always_transparent=False, no_transparent=False
         )
 
-    def to_action2(self, sprite_list):
-        return [{"sprite": grf.SpriteRef(self.sprite_id, is_global=True)}]
+    def to_action2_semidict(self, sprite_list):
+        return {"sprite": grf.SpriteRef(self.sprite_id, is_global=True)}
 
     @property
     def M(self):
@@ -106,8 +106,8 @@ class NewGraphics(CachedFunctorMixin):
             no_transparent=False,
         )
 
-    def to_action2(self, sprite_list):
-        return [{"sprite": grf.SpriteRef(sprite_list.index(self.sprite), is_global=False)}]
+    def to_action2_semidict(self, sprite_list):
+        return {"sprite": grf.SpriteRef(sprite_list.index(self.sprite), is_global=False)}
 
     @property
     def sprites(self):
@@ -149,6 +149,9 @@ class GroundPosition:
     def get_fingerprint(self):
         return {"position": "ground"}
 
+    def to_action2_semidict(self, sprite_list):
+        return {}
+
 
 @dataclass
 class BBoxPosition:
@@ -186,6 +189,9 @@ class BBoxPosition:
     def get_fingerprint(self):
         return {"extent": self.extent, "offset": self.offset}
 
+    def to_action2_semidict(self, sprite_list):
+        return {"extent": self.extent, "offset": self.offset}
+
     def demo_translate(self, xofs, yofs, zofs):
         return replace(self, offset=(self.offset[0] + xofs, self.offset[1] + yofs, self.offset[2] + zofs * 8))
 
@@ -201,7 +207,10 @@ class OffsetPosition:
     R = M = T
 
     def get_fingerprint(self):
-        return {"xy_offset": self.offset}
+        return {"pixel_offset": self.offset}
+
+    def to_action2_semidict(self, sprite_list):
+        return {"pixel_offset": self.offset}
 
 
 @dataclass
@@ -312,7 +321,9 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
         return [ps] + [grfobj for child_sprite in self.child_sprites for grfobj in child_sprite.to_grf(sprite_list)]
 
     def to_action2(self, sprite_list):
-        return self.sprite.to_action2(sprite_list) + [s for x in self.child_sprites for s in x.to_action2(sprite_list)]
+        return [{**self.sprite.to_action2_semidict(sprite_list), **self.position.to_action2_semidict(sprite_list)}] + [
+            s for x in self.child_sprites for s in x.to_action2(sprite_list)
+        ]
 
     def get_fingerprint(self):
         return {
