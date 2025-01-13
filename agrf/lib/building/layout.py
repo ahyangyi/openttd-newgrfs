@@ -29,6 +29,8 @@ class DefaultGraphics:
         # FIXME handle flags correctly
         if self.sprite_id in self.climate_independent_tiles:
             img = np.asarray(self.climate_independent_tiles[self.sprite_id])
+        elif self.sprite == 3981:
+            img = np.asarray(self.climate_dependent_tiles[(climate, 4550 if subclimate != "default" else 3981)])
         else:
             img = np.asarray(
                 self.climate_dependent_tiles[(climate, self.sprite_id + (26 if subclimate != "default" else 0))]
@@ -62,9 +64,9 @@ class DefaultGraphics:
 
 
 DEFAULT_GRAPHICS = {}
-for x in [1420, 3872, 3981, 4550]:
+for x in [1420, 3872, 3981]:
     DEFAULT_GRAPHICS[x] = BuildingCylindrical.create_variants([DefaultGraphics(x)])
-for x in [1011, 1037, 1313]:
+for x in [1011, 1313]:
     DEFAULT_GRAPHICS[x] = BuildingSymmetrical.create_variants([DefaultGraphics(x), DefaultGraphics(x + 1)])
     DEFAULT_GRAPHICS[x + 1] = DEFAULT_GRAPHICS[x].M
 for x in [1320]:
