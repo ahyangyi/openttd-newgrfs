@@ -22,7 +22,7 @@ class DefaultGraphics:
         for k in [1011, 1012, 1037, 1038, 3981, 4550]
     }
     climate_independent_tiles = {
-        k: load_third_party_image(f"third_party/opengfx2/{k}.png") for k in [1313, 1314, 1320, 1321, 1420]
+        k: load_third_party_image(f"third_party/opengfx2/{k}.png") for k in [1313, 1314, 1320, 1321, 1322, 1323, 1420]
     }
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
