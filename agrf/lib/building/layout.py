@@ -186,6 +186,9 @@ class BBoxPosition:
                 y += 1
         return BBoxPosition(self.extent, (x, y, z))
 
+    def move(self, xofs, yofs):
+        return replace(self, offset=(self.offset[0] + xofs, self.offset[1] + yofs, self.offset[2]))
+
     def get_fingerprint(self):
         return {"extent": self.extent, "offset": self.offset}
 
@@ -244,7 +247,7 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
             return replace(
                 self, sprite=f(self.sprite), position=f(self.position), child_sprites=[f(c) for c in self.child_sprites]
             )
-        if method_name == "demo_translate":
+        if method_name in ["move", "demo_translate"]:
             return replace(self, position=f(self.position))
         return replace(self, sprite=f(self.sprite), child_sprites=[f(c) for c in self.child_sprites])
 
