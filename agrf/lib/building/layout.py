@@ -4,6 +4,7 @@ import grf
 from PIL import Image
 import functools
 import numpy as np
+from agrf.lib.building.symmetry import BuildingCylindrical, BuildingSymmetrical, BuildingRotational
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.graphics.spritesheet import LazyAlternativeSprites
 from agrf.magic import CachedFunctorMixin, TaggedCachedFunctorMixin
@@ -20,7 +21,9 @@ class DefaultGraphics:
         for climate in ["temperate", "arctic", "tropical", "toyland"]
         for k in [1011, 1012, 1037, 1038, 3981, 4550]
     }
-    climate_independent_tiles = {k: load_third_party_image(f"third_party/opengfx2/{k}.png") for k in [1313, 1314, 1420]}
+    climate_independent_tiles = {
+        k: load_third_party_image(f"third_party/opengfx2/{k}.png") for k in [1313, 1314, 1320, 1321, 1420]
+    }
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         # FIXME handle flags correctly
@@ -48,20 +51,6 @@ class DefaultGraphics:
         return {"sprite": grf.SpriteRef(self.sprite_id, is_global=True)}
 
     @property
-    def M(self):
-        if self.sprite_id in [1011, 1012, 1037, 1038, 1313, 1314]:
-            return replace(self, sprite_id=self.sprite_id - 1 if self.sprite_id % 2 == 0 else self.sprite_id + 1)
-        return self
-
-    @property
-    def R(self):
-        return self
-
-    @property
-    def T(self):
-        return self
-
-    @property
     def sprites(self):
         return ()
 
@@ -70,6 +59,21 @@ class DefaultGraphics:
 
     def get_resource_files(self):
         return ()
+
+
+DEFAULT_GRAPHICS = {}
+for x in [1420, 3872, 3981, 4550]:
+    DEFAULT_GRAPHICS[x] = BuildingCylindrical.create_variants([DefaultGraphics(x)])
+for x in [1011, 1037, 1313]:
+    DEFAULT_GRAPHICS[x] = BuildingSymmetrical.create_variants([DefaultGraphics(x), DefaultGraphics(x + 1)])
+    DEFAULT_GRAPHICS[x + 1] = DEFAULT_GRAPHICS[x].M
+for x in [1320]:
+    DEFAULT_GRAPHICS[x + 1] = BuildingRotational.create_variants(
+        [DefaultGraphics(x + 1), DefaultGraphics(x), DefaultGraphics(x + 2), DefaultGraphics(x + 3)]
+    )
+    DEFAULT_GRAPHICS[x] = DEFAULT_GRAPHICS[x + 1].R
+    DEFAULT_GRAPHICS[x + 2] = DEFAULT_GRAPHICS[x + 1].T
+    DEFAULT_GRAPHICS[x + 3] = DEFAULT_GRAPHICS[x + 1].T.R
 
 
 @dataclass
@@ -340,7 +344,7 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
 
 
 def ADefaultGroundSprite(sprite, flags=None):
-    return NewGeneralSprite(sprite=DefaultGraphics(sprite), position=GroundPosition(), child_sprites=[], flags=flags)
+    return NewGeneralSprite(sprite=DEFAULT_GRAPHICS[sprite], position=GroundPosition(), child_sprites=[], flags=flags)
 
 
 def AGroundSprite(sprite, flags=None):
@@ -349,7 +353,7 @@ def AGroundSprite(sprite, flags=None):
 
 def ADefaultParentSprite(sprite, extent, offset, child_sprites=None, flags=None):
     return NewGeneralSprite(
-        sprite=DefaultGraphics(sprite),
+        sprite=DEFAULT_GRAPHICS[sprite],
         position=BBoxPosition(extent=extent, offset=offset),
         child_sprites=child_sprites,
         flags=flags,
