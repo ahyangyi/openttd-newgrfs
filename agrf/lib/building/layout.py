@@ -29,7 +29,7 @@ class DefaultGraphics:
         # FIXME handle flags correctly
         if self.sprite_id in self.climate_independent_tiles:
             img = np.asarray(self.climate_independent_tiles[self.sprite_id])
-        elif self.sprite == 3981:
+        elif self.sprite_id == 3981:
             img = np.asarray(self.climate_dependent_tiles[(climate, 4550 if subclimate != "default" else 3981)])
         else:
             img = np.asarray(
