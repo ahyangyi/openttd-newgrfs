@@ -2,9 +2,26 @@ from agrf.parameters import Parameter, ParameterList
 from agrf.magic import Switch
 
 booldict = {0: "DISABLED", 1: "ENABLED"}
-company_colour = {0: "PRIMARY", 17: "SECONDARY", 1: "DARK_BLUE", 2: "PALE_GREEN"}
-# , 3: "PINK", 4: "YELLOW", 5: "RED", 6: "LIGHT_BLUE", 7: "GREEN", 8: "DARK_GREEN", 9: "BLUE", 10: "CREAM", 11: "MAUVE", 12: "PURPLE",
-#                  13: "ORANGE", 14: "BROWN", 15: "GREY", 16: "WHITE"
+company_colour = {
+    0: "PRIMARY",
+    17: "SECONDARY",
+    1: "DARK_BLUE",
+    2: "PALE_GREEN",
+    3: "PINK",
+    4: "YELLOW",
+    5: "RED",
+    6: "LIGHT_BLUE",
+    7: "GREEN",
+    8: "DARK_GREEN",
+    9: "BLUE",
+    10: "CREAM",
+    11: "MAUVE",
+    12: "PURPLE",
+    13: "ORANGE",
+    14: "BROWN",
+    15: "GREY",
+    16: "WHITE",
+}
 global_settings = []
 
 station_meta = ["E88A9CA", "E88A9C0"]
