@@ -17,11 +17,21 @@ def test_determine_platform_odd():
     check_platform_function(determine_platform_odd, 10, "nfnfnfnfnf")
 
 
+def test_determine_platform_odd_huge():
+    check_platform_function(determine_platform_odd, 32, "nf" * 16)
+    check_platform_function(determine_platform_odd, 33, "nf" * 7 + "ndddf" + "nf" * 7)
+
+
 def test_determine_platform_even():
     check_platform_function(determine_platform_even, 7, "fndddfn")
     check_platform_function(determine_platform_even, 8, "fnfnfnfn")
     check_platform_function(determine_platform_even, 9, "fnfndfnfn")
     check_platform_function(determine_platform_even, 10, "fnfnfnfnfn")
+
+
+def test_determine_platform_even_huge():
+    check_platform_function(determine_platform_even, 32, "fn" * 16)
+    check_platform_function(determine_platform_even, 33, "fn" * 8 + "d" + "fn" * 8)
 
 
 def test_get_left_index_suffix():
