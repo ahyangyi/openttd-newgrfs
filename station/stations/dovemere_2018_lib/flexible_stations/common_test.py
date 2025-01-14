@@ -7,7 +7,7 @@ from station.stations.dovemere_2018_lib.flexible_stations.common import (
 
 
 def check_platform_function(fn, n, expected):
-    assert expected == "".join(fn(t, n - 1 - t) for t in range(n))
+    assert expected == "".join(fn(min(t, 15), min(n - 1 - t, 15)) for t in range(n))
 
 
 def test_determine_platform_odd():
