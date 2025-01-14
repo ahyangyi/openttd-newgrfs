@@ -119,12 +119,8 @@ def make_central_row(l, r, suffix, fallback_suffix=None):
 def determine_platform_odd(t, d):
     if d > t:
         return {"f": "n", "n": "f", "d": "d"}[determine_platform_odd(d, t)]
-    if (t, d) == (15, 15):
+    if t == 15 and 13 <= d <= 15:
         return "d"
-    if (t, d) == (15, 14):
-        return "f"
-    if (t, d) == (15, 13):
-        return "n"
     if (t + d) % 2 == 1:
         return "fn"[d % 2]
     if (t + d) % 4 == 0:
@@ -139,12 +135,8 @@ def determine_platform_odd(t, d):
 def determine_platform_even(t, d):
     if d > t:
         return {"f": "n", "n": "f", "d": "d"}[determine_platform_even(d, t)]
-    if (t, d) == (15, 15):
+    if t == 15 and 14 <= d <= 15:
         return "d"
-    if (t, d) == (15, 14):
-        return "d"
-    if (t, d) == (15, 13):
-        return "f"
     if (t + d) % 2 == 1:
         return "nf"[d % 2]
     if (t + d) % 4 == 0:
