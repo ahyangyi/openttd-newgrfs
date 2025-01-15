@@ -7,6 +7,7 @@ class Registers:
     CLIMATE_OFFSET = grf.Temp(2)
     SNOW = grf.Temp(3)
     NOSNOW = grf.Temp(4)
+    RECOLOUR_OFFSET = grf.Temp(5)
 
 
 code = """

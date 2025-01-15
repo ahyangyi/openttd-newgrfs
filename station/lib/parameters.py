@@ -4,7 +4,6 @@ from agrf.magic import Switch
 booldict = {0: "DISABLED", 1: "ENABLED"}
 company_colour = {
     0: "PRIMARY",
-    17: "SECONDARY",
     1: "DARK_BLUE",
     2: "PALE_GREEN",
     3: "PINK",

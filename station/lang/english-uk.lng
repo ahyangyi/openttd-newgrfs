@@ -27,8 +27,7 @@ STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (Moder
 
 STR_PARAM_E88A9CA_COLOUR                    :Wuhu Station - Decoration Colour
 STR_PARAM_E88A9CA_COLOUR_DESC               :Choose what colour to use for the decorations in Wuhu Station. The real world counterpart is white during daytime, and displays ever-changing colours with LED lights during night.
-STR_PARAM_E88A9CA_COLOUR_PRIMARY            :Use Company Primary Colour
-STR_PARAM_E88A9CA_COLOUR_SECONDARY          :Use Company Secondary Colour
+STR_PARAM_E88A9CA_COLOUR_PRIMARY            :Use Company Colour
 STR_PARAM_E88A9CA_COLOUR_DARK_BLUE          :Dark Blue
 STR_PARAM_E88A9CA_COLOUR_PALE_GREEN         :Pale Green
 STR_PARAM_E88A9CA_COLOUR_PINK               :Pink
@@ -56,8 +55,7 @@ STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1934)
 
 STR_PARAM_E88A9C0_COLOUR                    :Wuhu Station (1934) - Decoration Colour
 STR_PARAM_E88A9C0_COLOUR_DESC               :Choose what colour to use for the windows and door of Wuhu Station (1934).
-STR_PARAM_E88A9C0_COLOUR_PRIMARY            :Use Company Primary Colour
-STR_PARAM_E88A9C0_COLOUR_SECONDARY          :Use Company Secondary Colour
+STR_PARAM_E88A9C0_COLOUR_PRIMARY            :Use Company Colour
 STR_PARAM_E88A9C0_COLOUR_DARK_BLUE          :Dark Blue
 STR_PARAM_E88A9C0_COLOUR_PALE_GREEN         :Pale Green
 STR_PARAM_E88A9C0_COLOUR_PINK               :Pink
