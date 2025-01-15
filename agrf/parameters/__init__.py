@@ -13,7 +13,7 @@ class ParameterReverseLookup:
 
 
 class Parameter(ParameterReverseLookup):
-    def __init__(self, name, default, enum=None, limits=None, parameter_id=None):
+    def __init__(self, name, default, enum=None, limits=None, parameter_id=None, option_name=None):
         super().__init__(enum)
         self.name = name
         self.default = default
@@ -21,6 +21,7 @@ class Parameter(ParameterReverseLookup):
 
         # FIXME not implemented
         self.parameter_id = parameter_id
+        self.option_name = option_name or name
 
     def add(self, g, s):
         g.add_int_parameter(
@@ -28,7 +29,7 @@ class Parameter(ParameterReverseLookup):
             description=s[f"STR_PARAM_{self.name}_DESC"],
             default=self.default,
             limits=self.limits,
-            enum=self.enum and {k: s[f"STR_PARAM_{self.name}_{v}"] for k, v in self.enum.items()},
+            enum=self.enum and {k: s[f"STR_PARAM_{self.option_name}_{v}"] for k, v in self.enum.items()},
         )
 
     @property
