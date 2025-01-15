@@ -1,9 +1,10 @@
 class BuildingSymmetryMixin:
     @classmethod
     def create_variants(classobj, variants):
+        assert len(variants) == len(classobj.render_indices())
         for i, v in enumerate(variants):
             cls = v.__class__
-            v.__class__ = type(cls.__name__, (classobj, cls), {})
+            v.__class__ = type(f"{cls.__name__}+{classobj.__name__}", (classobj, cls), {})
 
             idx = classobj.render_indices()[i]
             v._M = variants[classobj._symmetry_descriptor[idx ^ 1]]
