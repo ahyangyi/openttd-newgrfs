@@ -46,10 +46,18 @@ for shelter, enabled in [("shelter_1", False), ("shelter_2", True)]:
 parameter_list = ParameterList(global_settings + station_settings + platform_settings + shelter_settings)
 
 station_cb = {}
+station_code = {}
 for s in station_meta:
-    station_param = parameter_list.index(f"{s}_INTRODUCTION_YEAR")
+    year = parameter_list.index(f"{s}_INTRODUCTION_YEAR")
     station_cb[s] = {
         "availability": Switch(
-            ranges={0: 0}, default=1, code=f"current_year >= var(0x7F, param={station_param}, shift=0, and=0xffffffff)"
+            ranges={0: 0}, default=1, code=f"current_year >= var(0x7F, param={year}, shift=0, and=0xffffffff)"
         )
     }
+
+    colour = parameter_list.index(f"{s}_COLOUR")
+    station_code[
+        s
+    ] = """
+TEMP[0x04] = var(0x7F, param={colour}, shift=0, and=0xffffffff)
+"""
