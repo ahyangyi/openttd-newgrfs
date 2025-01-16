@@ -107,7 +107,7 @@ class NewGraphics(CachedFunctorMixin):
             id=0x42D + sprite_list.index(self.sprite),
             pal=0,
             is_global=False,
-            use_recolour=False,
+            use_recolour=True,
             always_transparent=False,
             no_transparent=False,
         )
