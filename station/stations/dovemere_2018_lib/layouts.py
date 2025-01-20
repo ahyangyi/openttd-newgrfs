@@ -142,7 +142,13 @@ def make_f2(v, sym):
     v.in_place_subset(sym.render_indices())
     v.config["agrf_manual_crop"] = (0, 10)
     s = sym.create_variants(v.spritesheet(zdiff=base_height + 0.5))
-    return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height), palette=0x309)
+    return AParentSprite(
+        s,
+        (16, 16, overpass_height),
+        (0, 0, base_height + platform_height),
+        palette=0,
+        flags={"add_palette": Registers.RECOLOUR_OFFSET},
+    )
 
 
 def make_extra(v, sym, name, floor="f2"):

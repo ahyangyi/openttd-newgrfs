@@ -2,7 +2,7 @@ import grf
 from station.lib import AStation, AMetaStation
 from station.lib.parameters import parameter_list
 from .dovemere_2018_lib.layouts import *
-from .dovemere_2018_lib import demos, common_cb, Registers
+from .dovemere_2018_lib import demos, common_cb, common_code, Registers
 from .dovemere_2018_lib.objects import objects
 from .dovemere_2018_lib.roadstops import roadstops
 from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_stations
@@ -97,6 +97,7 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
             is_waypoint="waypoint" in entry.notes,
             enable_if=enable_if,
             doc_layout=entry,
+            extra_code=common_code,
         )
     )
 

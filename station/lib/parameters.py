@@ -58,6 +58,6 @@ for s in station_meta:
     colour = parameter_list.index(f"{s}_COLOUR")
     station_code[
         s
-    ] = """
-TEMP[0x04] = var(0x7F, param={colour}, shift=0, and=0xffffffff)
+    ] = f"""
+TEMP[0x05] = var(0x7F, param={colour}, shift=0, and=0xffffffff) + 0x306
 """
