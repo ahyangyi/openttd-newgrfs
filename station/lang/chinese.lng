@@ -51,7 +51,10 @@ STR_PARAM_E88A9C0_ENABLE_MODULAR_ENABLED    :启用
 STR_PARAM_E88A9C0_ENABLE_MODULAR_DISABLED   :禁用
 
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR         :芜湖站 (1934) - 可建造年份
-STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :选择芜湖站 (1934)从哪一年开始可以被建造。{}{}如果想要拟真的话，您可以把本选项设置为 1910 年附近的年份。
+STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :选择芜湖站 (1934) 从哪一年开始可以被建造。{}{}如果想要拟真的话，您可以把本选项设置为 1910 年附近的年份。
+
+STR_PARAM_E88A9C0_COLOUR                    :芜湖站 (1934) - 装饰颜色
+STR_PARAM_E88A9C0_COLOUR_DESC               :选择芜湖站 (1934) 的窗户和门的颜色。
 
 STR_PARAM_E88A9CP_ENABLE_MODULAR            :站台地块 - 启用
 STR_PARAM_E88A9CP_ENABLE_MODULAR_DESC       :选择是否启用可建造的站台地块
