@@ -59,5 +59,5 @@ for s in station_meta:
     station_code[
         s
     ] = f"""
-TEMP[0x05] = (var(0x7F, param={colour}, shift=0, and=0xffffffff) > 0) * (var(0x7F, param={colour}, shift=0, and=0xffffffff) + 0x306) + (var(0x7F, param={colour}, shift=0, and=0xffffffff) == 0) * 0x309
+TEMP[0x05] = (var(0x7F, param={colour}, shift=0, and=0xffffffff) > 0) * (var(0x7F, param={colour}, shift=0, and=0xffffffff) + 0x306) + (var(0x7F, param={colour}, shift=0, and=0xffffffff) == 0) * (0x307 + company_colour1)
 """
