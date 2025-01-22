@@ -1,5 +1,6 @@
 from agrf.parameters import Parameter, ParameterList
 from agrf.magic import Switch
+from grf import ParameterMapping
 
 booldict = {0: "DISABLED", 1: "ENABLED"}
 company_colour = {
@@ -25,14 +26,22 @@ global_settings = []
 
 station_meta = ["E88A9CA", "E88A9C0"]
 station_settings = []
-for s in station_meta:
+for i, s in enumerate(station_meta):
     if s == "E88A9CA":
         station_settings.append(Parameter(f"{s}_ENABLE_TEMPLATE", 1, booldict))
     station_settings.append(Parameter(f"{s}_ENABLE_MODULAR", 1, booldict))
     if s == "E88A9CA":
         station_settings.append(Parameter(f"{s}_ENABLE_ROADSTOP", 1, booldict))
     station_settings.append(Parameter(f"{s}_INTRODUCTION_YEAR", 0, limits=(0, 9999)))
-    station_settings.append(Parameter(f"{s}_COLOUR", 0, company_colour, option_name="STATION_COLOUR"))
+    station_settings.append(
+        Parameter(
+            f"{s}_COLOUR",
+            0,
+            company_colour,
+            option_name="STATION_COLOUR",
+            mapping=ParameterMapping(grf_parameter=16 + i, first_bit=0, num_bit=5),
+        )
+    )
 station_settings.append(Parameter("E88A9CP_ENABLE_MODULAR", 1, booldict))
 
 platform_settings = []
