@@ -1,7 +1,7 @@
 import grf
 from station.lib import AStation, make_horizontal_switch
 from ..layouts import named_tiles, layouts
-from .. import common_cb
+from .. import common_cb, common_code
 from .common import make_demo, horizontal_layout
 from station.stations.platforms import platform_classes, shelter_classes
 from station.lib.parameters import parameter_list
@@ -61,6 +61,7 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                extra_code=common_code,
                 enable_if=[
                     parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
                     parameter_list.index(f"PLATFORM_{pclass.upper()}"),
@@ -95,6 +96,7 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                extra_code=common_code,
                 enable_if=[
                     parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
                     parameter_list.index(f"PLATFORM_{pclass.upper()}"),
@@ -129,6 +131,7 @@ side_stations.append(
             ),
             **common_cb,
         },
+        extra_code=common_code,
         enable_if=[parameter_list.index("E88A9CA_ENABLE_TEMPLATE")],
         doc_layout=demo_layout,
     )
@@ -151,6 +154,7 @@ side_stations.append(
             ),
             **common_cb,
         },
+        extra_code=common_code,
         enable_if=[parameter_list.index("E88A9CA_ENABLE_TEMPLATE")],
         doc_layout=demo_layout,
     )
