@@ -56,7 +56,7 @@ parameter_list = ParameterList(global_settings + station_settings + platform_set
 
 station_cb = {}
 station_code = {}
-for s in station_meta:
+for i, s in enumerate(station_meta):
     year = parameter_list.index(f"{s}_INTRODUCTION_YEAR")
     station_cb[s] = {
         "availability": Switch(
@@ -64,9 +64,9 @@ for s in station_meta:
         )
     }
 
-    colour = parameter_list.index(f"{s}_COLOUR")
+    colour = f"var(0x7F, param={i+16}, shift=0, and=0x1f)"
     station_code[
         s
     ] = f"""
-TEMP[0x05] = (var(0x7F, param={colour}, shift=0, and=0xffffffff) > 0) * (var(0x7F, param={colour}, shift=0, and=0xffffffff) + 0x306) + (var(0x7F, param={colour}, shift=0, and=0xffffffff) == 0) * (0x307 + company_colour1)
+TEMP[0x05] = ({colour} > 0) * ({colour} + 0x306) + ({colour} == 0) * (0x307 + company_colour1)
 """
