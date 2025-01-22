@@ -37,7 +37,7 @@ def quickload(name, symmetry):
     snow.config["agrf_childsprite"] = (0, -10)
 
     sprite = symmetry.create_variants(building.spritesheet(xdiff=1, xspan=8))
-    ps = AParentSprite(sprite, (16, 8, 16), (0, 0, 0))
+    ps = AParentSprite(sprite, (16, 8, 16), (0, 0, 0), flags={"add_palette": Registers.RECOLOUR_OFFSET})
     snow_sprite = symmetry.create_variants(snow.spritesheet())
     cs = AChildSprite(snow_sprite, (0, 0), flags={"dodraw": Registers.SNOW})
 
