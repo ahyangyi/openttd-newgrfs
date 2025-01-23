@@ -7,6 +7,7 @@ from station.lib import (
     BuildingSymmetricalY,
     BuildingRotational,
     BuildingDiagonal,
+    BuildingCylindrical,
     AGroundSprite,
     AParentSprite,
     AChildSprite,
@@ -15,6 +16,7 @@ from station.lib import (
     Registers,
 )
 from agrf.graphics.voxel import LazyVoxel
+from agrf.sprites import empty_alternatives
 from station.stations.platforms import (
     platform_ps,
     concourse_ps,
@@ -252,6 +254,10 @@ def load_central(f2_ids, source, symmetry, internal_category, name=None, h_pos=N
     if isinstance(f2_ids, int):
         f2_ids = (f2_ids,)
 
+    empty = BuildingCylindrical.create_variants(
+        [AParentSprite(empty_alternatives(64, 64), (16, 16, overpass_height), (0, 0, base_height + platform_height))]
+    )
+
     for window_class, f2_id in zip(window_classes, f2_ids):
         window_postfix = "" if window_class == "none" else "_" + window_class
         if window is None:
@@ -261,7 +267,7 @@ def load_central(f2_ids, source, symmetry, internal_category, name=None, h_pos=N
         else:
             f2_name = name + window_postfix
         if window_class == "none":
-            f2_component = [f2 + f2_snow]
+            f2_component = [f2 + f2_snow, empty]
             cur_sym = symmetry
         elif window_class == "windowed":
             f2_component = [f2 + f2_window + f2_snow_window]
