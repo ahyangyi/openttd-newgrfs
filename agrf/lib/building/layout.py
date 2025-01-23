@@ -81,6 +81,8 @@ for x in [1320]:
 @dataclass
 class NewGraphics(CachedFunctorMixin):
     sprite: grf.ResourceAction
+    recolour: bool = True
+    palette: int = 0
 
     def __post_init__(self):
         super().__init__()
@@ -105,9 +107,9 @@ class NewGraphics(CachedFunctorMixin):
     def to_spriteref(self, sprite_list):
         return grf.SpriteRef(
             id=0x42D + sprite_list.index(self.sprite),
-            pal=0,
+            pal=self.palette,
             is_global=False,
-            use_recolour=True,
+            use_recolour=self.recolour,
             always_transparent=False,
             no_transparent=False,
         )
@@ -359,9 +361,9 @@ def ADefaultParentSprite(sprite, extent, offset, child_sprites=None, flags=None)
     )
 
 
-def AParentSprite(sprite, extent, offset, child_sprites=None, flags=None):
+def AParentSprite(sprite, extent, offset, child_sprites=None, flags=None, recolour=True, palette=0):
     return NewGeneralSprite(
-        sprite=NewGraphics(sprite),
+        sprite=NewGraphics(sprite, recolour=recolour, palette=palette),
         position=BBoxPosition(extent=extent, offset=offset),
         child_sprites=child_sprites,
         flags=flags,

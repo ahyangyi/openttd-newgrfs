@@ -1,6 +1,6 @@
 import grf
 from station.lib import AStation, StationTileSwitch, make_vertical_switch
-from .. import common_cb
+from .. import common_cb, common_code
 from ..layouts import named_tiles, layouts
 from .common import determine_platform_odd, determine_platform_even, make_front_row, make_demo, make_row
 from .traversable import cb14_2, cb14_4, cb14_6, fill_odd
@@ -49,6 +49,7 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                extra_code=common_code,
                 enable_if=[
                     parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
                     parameter_list.index(f"PLATFORM_{pclass.upper()}"),
@@ -93,6 +94,7 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                extra_code=common_code,
                 enable_if=[
                     parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
                     parameter_list.index(f"PLATFORM_{pclass.upper()}"),

@@ -31,6 +31,26 @@ STR_PARAM_E88A9CA_ENABLE_ROADSTOP_DISABLED  :Disabled
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR         :Wuhu Station - Available Year
 STR_PARAM_E88A9CA_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (Modern) becomes available.{}{}For a realistic experience, set this to somewhere near 2005.
 
+STR_PARAM_E88A9CA_COLOUR                    :Wuhu Station - Decoration Colour
+STR_PARAM_E88A9CA_COLOUR_DESC               :Choose what colour to use for the decorations in Wuhu Station. The real world counterpart is white during daytime, and displays ever-changing colours with LED lights during night.
+STR_PARAM_STATION_COLOUR_PRIMARY            :Use Company Colour
+STR_PARAM_STATION_COLOUR_DARK_BLUE          :Dark Blue
+STR_PARAM_STATION_COLOUR_PALE_GREEN         :Pale Green
+STR_PARAM_STATION_COLOUR_PINK               :Pink
+STR_PARAM_STATION_COLOUR_YELLOW             :Yellow
+STR_PARAM_STATION_COLOUR_RED                :Red
+STR_PARAM_STATION_COLOUR_LIGHT_BLUE         :Light Blue
+STR_PARAM_STATION_COLOUR_GREEN              :Green
+STR_PARAM_STATION_COLOUR_DARK_GREEN         :Dark Green
+STR_PARAM_STATION_COLOUR_BLUE               :Blue
+STR_PARAM_STATION_COLOUR_CREAM              :Cream
+STR_PARAM_STATION_COLOUR_MAUVE              :Mauve
+STR_PARAM_STATION_COLOUR_PURPLE             :Purple
+STR_PARAM_STATION_COLOUR_ORANGE             :Orange
+STR_PARAM_STATION_COLOUR_BROWN              :Brown
+STR_PARAM_STATION_COLOUR_GREY               :Grey
+STR_PARAM_STATION_COLOUR_WHITE              :White
+
 STR_PARAM_E88A9C0_ENABLE_MODULAR            :Wuhu Station (1934) - Enable
 STR_PARAM_E88A9C0_ENABLE_MODULAR_DESC       :Whether or not to enable Wuhu Station (1934)
 STR_PARAM_E88A9C0_ENABLE_MODULAR_ENABLED    :Enabled
@@ -38,6 +58,9 @@ STR_PARAM_E88A9C0_ENABLE_MODULAR_DISABLED   :Disabled
 
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR         :Wuhu Station (1934) - Available Year
 STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1934) becomes available.{}{}For a realistic experience, set this to somewhere near 1910.
+
+STR_PARAM_E88A9C0_COLOUR                    :Wuhu Station (1934) - Decoration Colour
+STR_PARAM_E88A9C0_COLOUR_DESC               :Choose what colour to use for the windows and door of Wuhu Station (1934).
 
 STR_PARAM_E88A9CP_ENABLE_MODULAR            :Platform Tiles - Enable
 STR_PARAM_E88A9CP_ENABLE_MODULAR_DESC       :Whether or not to enable buildable platform tiles
