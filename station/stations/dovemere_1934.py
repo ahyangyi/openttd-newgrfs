@@ -13,9 +13,8 @@ from station.lib import (
     Registers,
     get_1cc_remap,
 )
-from station.lib.parameters import parameter_list
+from station.lib.parameters import parameter_list, station_cb, station_code
 from agrf.graphics.voxel import LazyVoxel
-from station.lib.parameters import station_cb
 from .misc import building_ground
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 from agrf.graphics.palette import CompanyColour
@@ -38,7 +37,7 @@ def quickload(name, symmetry):
     snow.config["agrf_childsprite"] = (0, -10)
 
     sprite = symmetry.create_variants(building.spritesheet(xdiff=1, xspan=8))
-    ps = AParentSprite(sprite, (16, 8, 16), (0, 0, 0))
+    ps = AParentSprite(sprite, (16, 8, 16), (0, 0, 0), flags={"add_palette": Registers.RECOLOUR_OFFSET})
     snow_sprite = symmetry.create_variants(snow.spritesheet())
     cs = AChildSprite(snow_sprite, (0, 0), flags={"dodraw": Registers.SNOW})
 
@@ -64,6 +63,7 @@ for i, entry in enumerate(entries):
             class_label=b"\xe8\x8a\x9c0",
             cargo_threshold=40,
             callbacks={"select_tile_layout": 0, **station_cb["E88A9C0"]},
+            extra_code=station_code["E88A9C0"],
             enable_if=[parameter_list.index("E88A9C0_ENABLE_MODULAR")],
             doc_layout=entry,
         )

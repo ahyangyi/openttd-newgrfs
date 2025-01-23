@@ -1,5 +1,13 @@
 import grf
-from station.lib import make_horizontal_switch, make_vertical_switch, ALayout, AParentSprite, LayoutSprite, Demo
+from station.lib import (
+    make_horizontal_switch,
+    make_vertical_switch,
+    ALayout,
+    AParentSprite,
+    LayoutSprite,
+    Demo,
+    Registers,
+)
 from ..layouts import named_tiles, layouts, flexible_entries
 
 
@@ -21,7 +29,12 @@ def make_demo(switch, w, h, preswitch=None):
                 for bpp in [32]
             ]
         )
-        layout = ALayout(None, [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False, category=b"\xe8\x8a\x9cA")
+        layout = ALayout(
+            None,
+            [AParentSprite(sprite, (16, 16, 48), (0, 0, 0), flags={"add_palette": Registers.RECOLOUR_OFFSET})],
+            False,
+            category=b"\xe8\x8a\x9cA",
+        )
         layouts.append(layout)
         if i == 0:
             ret = layout

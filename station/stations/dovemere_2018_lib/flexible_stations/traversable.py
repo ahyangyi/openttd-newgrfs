@@ -1,7 +1,7 @@
 import grf
 from station.lib import AStation, StationTileSwitch, make_vertical_switch, make_horizontal_switch
 from ..layouts import named_tiles, layouts
-from .. import common_cb
+from .. import common_cb, common_code
 from .common import (
     determine_platform_odd,
     determine_platform_even,
@@ -99,6 +99,7 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                extra_code=common_code,
                 enable_if=[
                     parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
                     parameter_list.index(f"PLATFORM_{pclass.upper()}"),
@@ -132,6 +133,7 @@ for p, pclass in enumerate(platform_classes):
                     ),
                     **common_cb,
                 },
+                extra_code=common_code,
                 enable_if=[
                     parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
                     parameter_list.index(f"PLATFORM_{pclass.upper()}"),
