@@ -1,5 +1,6 @@
 import os
 import inspect
+import types
 from station.lib import (
     BuildingFull,
     BuildingSymmetrical,
@@ -42,6 +43,10 @@ overpass_height = building_height - base_height
 gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
 concourse = concourse_ps.none
+
+empty_image = empty_alternatives(64, 64, -32, -32)
+empty_image.squash = types.MethodType(lambda self, *args: self, empty_image)
+empty_sprite = BuildingCylindrical.create_variants([empty_image])
 
 
 def get_category(internal_category, back, notes, tra):
@@ -142,15 +147,12 @@ f1_subsets = {
 def make_f2(v, sym):
     v = v.discard_layers(all_f1_layers + all_f2_layers + snow_layers, "f2")
     v.in_place_subset(sym.render_indices())
-    v.config["agrf_manual_crop"] = (0, 10)
     s = sym.create_variants(v.spritesheet(zdiff=base_height + 0.5))
-    return AParentSprite(
-        s,
-        (16, 16, overpass_height),
-        (0, 0, base_height + platform_height),
-        palette=0,
-        flags={"add_palette": Registers.RECOLOUR_OFFSET},
-    )
+
+    empty_parent = AParentSprite(empty_sprite, (16, 16, overpass_height), (0, 0, base_height + platform_height))
+    f2_child = AChildSprite(s, (0, 0), palette=0, flags={"add_palette": Registers.RECOLOUR_OFFSET})
+
+    return empty_parent + f2_child
 
 
 def make_extra(v, sym, name, floor="f2"):
@@ -254,10 +256,6 @@ def load_central(f2_ids, source, symmetry, internal_category, name=None, h_pos=N
     if isinstance(f2_ids, int):
         f2_ids = (f2_ids,)
 
-    empty = BuildingCylindrical.create_variants(
-        [AParentSprite(empty_alternatives(64, 64), (16, 16, overpass_height), (0, 0, base_height + platform_height))]
-    )
-
     for window_class, f2_id in zip(window_classes, f2_ids):
         window_postfix = "" if window_class == "none" else "_" + window_class
         if window is None:
@@ -267,7 +265,7 @@ def load_central(f2_ids, source, symmetry, internal_category, name=None, h_pos=N
         else:
             f2_name = name + window_postfix
         if window_class == "none":
-            f2_component = [f2 + f2_snow, empty]
+            f2_component = [f2 + f2_snow]
             cur_sym = symmetry
         elif window_class == "windowed":
             f2_component = [f2 + f2_window + f2_snow_window]

@@ -1,18 +1,25 @@
 import grf
 import numpy as np
+from agrf.graphics import SCALE_TO_ZOOM
 
 THIS_FILE = grf.PythonFile(__file__)
 
 
 class EmptySprite(grf.Sprite):
-    def __init__(self, w, h, zoom):
+    def __init__(self, w, h, xofs, yofs, zoom):
         self.w = w
         self.h = h
+        self.xofs = xofs
+        self.yofs = yofs
         self.zoom = zoom
 
     @property
     def bpp(self):
         return 8
+
+    @property
+    def crop(self):
+        return False
 
     @property
     def default_name(self):
@@ -22,17 +29,17 @@ class EmptySprite(grf.Sprite):
         pass
 
     def get_data_layers(self, context):
-        return self.w, self.h, None, np.zeros(self.w, self.h, dtype=np.uint8)
+        return self.w, self.h, None, None, np.zeros((self.w, self.h), dtype=np.uint8)
 
     def get_image_files(self):
         return None
 
     def get_fingerprint(self):
-        return grf.combine_fingerprint(w=self.w, h=self.h)
+        return {"w": self.w, "h": self.h}
 
     def get_resource_files(self):
         return (THIS_FILE,)
 
 
-def empty_alternatives(w, h):
-    return grf.AlternativeSprites(EmptySprite(w, h, grf.ZOOM_OUT_8X))
+def empty_alternatives(w, h, xofs, yofs):
+    return grf.AlternativeSprites(*[EmptySprite(w * k, h * k, xofs * k, yofs * k, v) for k, v in SCALE_TO_ZOOM.items()])
