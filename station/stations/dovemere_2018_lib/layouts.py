@@ -193,9 +193,11 @@ def make_f1(v, subset, sym):
         V = v.discard_layers(tuple(all_f1_layers_set - keep_layers), subset)
         V = V.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         V.in_place_subset(sym.render_indices())
-        V.config["agrf_manual_crop"] = (0, 40)
+        v.config["agrf_relative_childsprite"] = (-32, -32)
         s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan, zdiff=0.5))
-        f1_cache[(v, subset)] = AParentSprite(s, (16, xspan, base_height), (0, xdiff, platform_height)), sym
+        empty_parent = AParentSprite(empty_sprite, (16, xspan, base_height), (0, xdiff, platform_height))
+        f1_child = AChildSprite(s, (0, 0))
+        f1_cache[(v, subset)] = empty_parent + f1_child, sym
     ret, ret_sym = f1_cache[(v, subset)]
     assert sym is ret_sym
     return ret
