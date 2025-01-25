@@ -203,7 +203,7 @@ class BBoxPosition:
         return {"extent": self.extent, "offset": self.offset}
 
     def demo_translate(self, xofs, yofs, zofs):
-        return replace(self, offset=(self.offset[0] + xofs, self.offset[1] + yofs, self.offset[2] + zofs * 7))
+        return replace(self, offset=(self.offset[0] + xofs, self.offset[1] + yofs, self.offset[2] + zofs * 8))
 
 
 @dataclass
