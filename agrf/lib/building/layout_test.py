@@ -83,6 +83,10 @@ def test_parentsprite_get_resource_files():
     assert all(isinstance(file, grf.ResourceFile) for file in ps1012.get_resource_files())
 
 
+def test_parentsprite_add_none():
+    assert (ps1012 + None) is ps1012
+
+
 def test_layout():
     assert (temperate_1012 == l1012.graphics(4, 32).to_image()).all()
 
