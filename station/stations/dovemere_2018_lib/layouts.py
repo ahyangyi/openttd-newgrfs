@@ -44,7 +44,7 @@ gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
 concourse = concourse_ps.none
 
-empty_image = empty_alternatives(64, 64, -32, -32)
+empty_image = empty_alternatives(64, 96, -32, -64)
 empty_image.squash = types.MethodType(lambda self, *args: self, empty_image)
 empty_sprite = BuildingCylindrical.create_variants([empty_image])
 
@@ -147,6 +147,7 @@ f1_subsets = {
 def make_f2(v, sym):
     v = v.discard_layers(all_f1_layers + all_f2_layers + snow_layers, "f2")
     v.in_place_subset(sym.render_indices())
+    v.config["agrf_relative_childsprite"] = (-32, -64)
     s = sym.create_variants(v.spritesheet(zdiff=base_height + 0.5))
 
     empty_parent = AParentSprite(empty_sprite, (16, 16, overpass_height), (0, 0, base_height + platform_height))
@@ -170,11 +171,13 @@ def make_extra(v, sym, name, floor="f2"):
     else:
         v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
     if floor == "f2":
-        v.config["agrf_childsprite"] = (0, -10)
+        v.config["agrf_relative_childsprite"] = (-32, -64)
+        zdiff = base_height + 0.5
     else:
         v.config["agrf_childsprite"] = (0, -40)
+        zdiff = 0
     v.in_place_subset(sym.render_indices())
-    s = sym.create_variants(v.spritesheet())
+    s = sym.create_variants(v.spritesheet(zdiff=zdiff))
     if "snow" in name:
         return AChildSprite(s, (0, 0), flags={"dodraw": Registers.SNOW})
     else:

@@ -29,7 +29,7 @@ class EmptySprite(grf.Sprite):
         pass
 
     def get_data_layers(self, context):
-        return self.w, self.h, None, None, np.zeros((self.w, self.h), dtype=np.uint8)
+        return self.w, self.h, None, None, np.zeros((self.h, self.w), dtype=np.uint8)
 
     def get_image_files(self):
         return None
