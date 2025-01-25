@@ -170,12 +170,11 @@ def make_extra(v, sym, name, floor="f2"):
         v.config["overlap"] = 1.3
     else:
         v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
+    v.config["agrf_relative_childsprite"] = (-32, -32)
     if floor == "f2":
-        v.config["agrf_relative_childsprite"] = (-32, -32)
         zdiff = base_height + 0.5
     else:
-        v.config["agrf_childsprite"] = (0, -40)
-        zdiff = 0
+        zdiff = 0.5
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet(zdiff=zdiff))
     if "snow" in name:
