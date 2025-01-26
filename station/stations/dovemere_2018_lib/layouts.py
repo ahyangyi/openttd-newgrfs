@@ -44,9 +44,14 @@ gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
 concourse = concourse_ps.none
 
-empty_image = empty_alternatives(64, 64, -32, -32)
-empty_image.squash = types.MethodType(lambda self, *args: self, empty_image)
-empty_sprite = BuildingCylindrical.create_variants([empty_image])
+f1_empty_offset = (-32, -14)
+f1_empty_image = empty_alternatives(64, 48, *f1_empty_offset)
+f1_empty_image.squash = types.MethodType(lambda self, *args: self, f1_empty_image)
+f1_empty_sprite = BuildingCylindrical.create_variants([f1_empty_image])
+f2_empty_offset = (-32, -38)
+f2_empty_image = empty_alternatives(64, 72, *f2_empty_offset)
+f2_empty_image.squash = types.MethodType(lambda self, *args: self, f2_empty_image)
+f2_empty_sprite = BuildingCylindrical.create_variants([f2_empty_image])
 
 
 def get_category(internal_category, back, notes, tra):
@@ -147,10 +152,10 @@ f1_subsets = {
 def make_f2(v, sym):
     v = v.discard_layers(all_f1_layers + all_f2_layers + snow_layers, "f2")
     v.in_place_subset(sym.render_indices())
-    v.config["agrf_relative_childsprite"] = (-32, -32)
+    v.config["agrf_relative_childsprite"] = f2_empty_offset
     s = sym.create_variants(v.spritesheet(zdiff=base_height + 0.5))
 
-    empty_parent = AParentSprite(empty_sprite, (16, 16, overpass_height), (0, 0, base_height + platform_height))
+    empty_parent = AParentSprite(f2_empty_sprite, (16, 16, overpass_height), (0, 0, base_height + platform_height))
     f2_child = AChildSprite(s, (0, 0), palette=0, flags={"add_palette": Registers.RECOLOUR_OFFSET})
 
     return empty_parent + f2_child
@@ -170,10 +175,11 @@ def make_extra(v, sym, name, floor="f2"):
         v.config["overlap"] = 1.3
     else:
         v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
-    v.config["agrf_relative_childsprite"] = (-32, -32)
     if floor == "f2":
+        v.config["agrf_relative_childsprite"] = f2_empty_offset
         zdiff = base_height + 0.5
     else:
+        v.config["agrf_relative_childsprite"] = f1_empty_offset
         zdiff = 0.5
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet(zdiff=zdiff))
@@ -192,9 +198,9 @@ def make_f1(v, subset, sym):
         V = v.discard_layers(tuple(all_f1_layers_set - keep_layers), subset)
         V = V.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         V.in_place_subset(sym.render_indices())
-        V.config["agrf_relative_childsprite"] = (-32, -32)
+        V.config["agrf_relative_childsprite"] = f1_empty_offset
         s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan, zdiff=0.5))
-        empty_parent = AParentSprite(empty_sprite, (16, xspan, base_height), (0, xdiff, platform_height))
+        empty_parent = AParentSprite(f1_empty_sprite, (16, xspan, base_height), (0, xdiff, platform_height))
         f1_child = AChildSprite(s, (0, 0))
         f1_cache[(v, subset)] = empty_parent + f1_child, sym
     ret, ret_sym = f1_cache[(v, subset)]
