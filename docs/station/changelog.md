@@ -1,7 +1,7 @@
 China Set: Stations & Platforms Addons: Wuhu Changelog
 =========================
 
-0.3.3 (Work-in-progress)
+0.3.3 (2025-01-27)
 ------------------------
 Fix the layout for big (>= 30 rows) stations. They are still imperfect due to technical limitations, but should be slightly more pleasing than before.
 
