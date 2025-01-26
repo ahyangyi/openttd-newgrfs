@@ -51,12 +51,6 @@ def make_empty_variant(w, h, x, y):
     return BuildingCylindrical.create_variants([empty_image])
 
 
-f1_empty_offset = (-31, -14)
-f1_empty_sprite = make_empty_variant(64, 48, *f1_empty_offset)
-f2_empty_offset = (-31, -34)
-f2_empty_sprite = make_empty_variant(64, 68, *f2_empty_offset)
-
-
 def get_category(internal_category, back, notes, tra):
     if internal_category in ["F0", "F1"]:
         ret = 0x80
@@ -151,6 +145,14 @@ f1_subsets = {
     "full": ({"ground level", "entrance", "pillar", "entrance - t", "pillar - t"}, 0, 16),
 }
 
+f1_empty_offset = {}
+f1_empty_sprite = {}
+for k, (_, offset, _) in f1_subsets.items():
+    f1_empty_offset[k] = (-31 - offset * 2, -14 - offset)
+    f1_empty_sprite[k] = make_empty_variant(64, 48, *f1_empty_offset[k])
+f2_empty_offset = (-31, -34)
+f2_empty_sprite = make_empty_variant(64, 68, *f2_empty_offset)
+
 
 def make_f2(v, sym):
     v = v.discard_layers(all_f1_layers + all_f2_layers + snow_layers, "f2")
@@ -182,7 +184,7 @@ def make_extra(v, sym, name, floor="f2"):
         v.config["agrf_relative_childsprite"] = f2_empty_offset
         zdiff = base_height + 0.5
     else:
-        v.config["agrf_relative_childsprite"] = f1_empty_offset
+        v.config["agrf_relative_childsprite"] = f1_empty_offset["full"]
         zdiff = 0.5
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet(zdiff=zdiff))
@@ -201,9 +203,9 @@ def make_f1(v, subset, sym):
         V = v.discard_layers(tuple(all_f1_layers_set - keep_layers), subset)
         V = V.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         V.in_place_subset(sym.render_indices())
-        V.config["agrf_relative_childsprite"] = f1_empty_offset
+        V.config["agrf_relative_childsprite"] = f1_empty_offset[subset]
         s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan, zdiff=0.5))
-        empty_parent = AParentSprite(f1_empty_sprite, (16, xspan, base_height), (0, xdiff, platform_height))
+        empty_parent = AParentSprite(f1_empty_sprite[subset], (16, xspan, base_height), (0, xdiff, platform_height))
         f1_child = AChildSprite(s, (0, 0))
         f1_cache[(v, subset)] = empty_parent + f1_child, sym
     ret, ret_sym = f1_cache[(v, subset)]
