@@ -1,5 +1,13 @@
 import grf
-from station.lib import make_horizontal_switch, make_vertical_switch, ALayout, AParentSprite, LayoutSprite, Demo
+from station.lib import (
+    make_horizontal_switch,
+    make_vertical_switch,
+    ALayout,
+    AParentSprite,
+    LayoutSprite,
+    Demo,
+    Registers,
+)
 from ..layouts import named_tiles, layouts, flexible_entries
 
 
@@ -21,7 +29,12 @@ def make_demo(switch, w, h, preswitch=None):
                 for bpp in [32]
             ]
         )
-        layout = ALayout(None, [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False, category=b"\xe8\x8a\x9cA")
+        layout = ALayout(
+            None,
+            [AParentSprite(sprite, (16, 16, 48), (0, 0, 0), flags={"add_palette": Registers.RECOLOUR_OFFSET})],
+            False,
+            category=b"\xe8\x8a\x9cA",
+        )
         layouts.append(layout)
         if i == 0:
             ret = layout
@@ -119,6 +132,8 @@ def make_central_row(l, r, suffix, fallback_suffix=None):
 def determine_platform_odd(t, d):
     if d > t:
         return {"f": "n", "n": "f", "d": "d"}[determine_platform_odd(d, t)]
+    if t == 15 and 13 <= d <= 15:
+        return "d"
     if (t + d) % 2 == 1:
         return "fn"[d % 2]
     if (t + d) % 4 == 0:
@@ -133,6 +148,8 @@ def determine_platform_odd(t, d):
 def determine_platform_even(t, d):
     if d > t:
         return {"f": "n", "n": "f", "d": "d"}[determine_platform_even(d, t)]
+    if t == 15 and 14 <= d <= 15:
+        return "d"
     if (t + d) % 2 == 1:
         return "nf"[d % 2]
     if (t + d) % 4 == 0:
