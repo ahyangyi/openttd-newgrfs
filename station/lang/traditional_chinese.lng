@@ -1,6 +1,6 @@
 ##grflangid 0x0C
-STR_GRF_NAME                    :中國包：車站 - 蕪湖 {WHITE}0.3.3-INDEV
-STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}中國{RED}包{POP_COLOUR}：車站 - {PUSH_COLOUR}{SILVER}蕪湖 {WHITE}0.3.3-INDEV{POP_COLOUR}{}{}本 NewGRF 是 {PUSH_COLOUR}{GOLD}中國{RED}包{POP_COLOUR}：車站 (CNS) 的擴展包，提供基於{PUSH_COLOUR}{SILVER}蕪湖{POP_COLOUR}的火車站的模塊化地塊和車站模版。{}{}推薦使用 OpenTTD 14.0 或更高版本，可使用本 NewGRF 裏的全部主要功能。更低版本由於功能限制，僅能使用精選的部分月台。{}{}{PUSH_COLOUR}{WHITE}貢獻者{POP_COLOUR}:{}Ahyangyi, WenSim.{}{}在 {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR} 下分發。
+STR_GRF_NAME                    :中國包：車站 - 蕪湖 {WHITE}0.3.3
+STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}中國{RED}包{POP_COLOUR}：車站 - {PUSH_COLOUR}{SILVER}蕪湖 {WHITE}0.3.3{POP_COLOUR}{}{}本 NewGRF 是 {PUSH_COLOUR}{GOLD}中國{RED}包{POP_COLOUR}：車站 (CNS) 的擴展包，提供基於{PUSH_COLOUR}{SILVER}蕪湖{POP_COLOUR}的火車站的模塊化地塊和車站模版。{}{}推薦使用 OpenTTD 14.0 或更高版本，可使用本 NewGRF 裏的全部主要功能。更低版本由於功能限制，僅能使用精選的部分月台。{}{}{PUSH_COLOUR}{WHITE}貢獻者{POP_COLOUR}:{}Ahyangyi, WenSim.{}{}在 {PUSH_COLOUR}{SILVER}GPL v2{POP_COLOUR} 下分發。
 
 STR_PARAM_INTRODUCTION_YEAR             :全局設置 - 車站可建造年份
 STR_PARAM_INTRODUCTION_YEAR_DESC        :選擇本 NewGRF 內每個車站是否在特定年份後纔可用
