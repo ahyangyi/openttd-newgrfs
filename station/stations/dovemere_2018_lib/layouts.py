@@ -44,14 +44,17 @@ gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
 concourse = concourse_ps.none
 
-f1_empty_offset = (-32, -14)
-f1_empty_image = empty_alternatives(64, 48, *f1_empty_offset)
-f1_empty_image.squash = types.MethodType(lambda self, *args: self, f1_empty_image)
-f1_empty_sprite = BuildingCylindrical.create_variants([f1_empty_image])
-f2_empty_offset = (-32, -38)
-f2_empty_image = empty_alternatives(64, 72, *f2_empty_offset)
-f2_empty_image.squash = types.MethodType(lambda self, *args: self, f2_empty_image)
-f2_empty_sprite = BuildingCylindrical.create_variants([f2_empty_image])
+
+def make_empty_variant(w, h, x, y):
+    empty_image = empty_alternatives(w, h, x, y)
+    empty_image.squash = types.MethodType(lambda self, *args, empty_image=empty_image: self, empty_image)
+    return BuildingCylindrical.create_variants([empty_image])
+
+
+f1_empty_offset = (-31, -14)
+f1_empty_sprite = make_empty_variant(64, 48, *f1_empty_offset)
+f2_empty_offset = (-31, -34)
+f2_empty_sprite = make_empty_variant(64, 68, *f2_empty_offset)
 
 
 def get_category(internal_category, back, notes, tra):
