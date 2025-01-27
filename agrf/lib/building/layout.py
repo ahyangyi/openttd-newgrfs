@@ -196,6 +196,9 @@ class BBoxPosition:
                 y += 1
         return BBoxPosition(self.extent, (x, y, z))
 
+    def move(self, xofs, yofs):
+        return replace(self, offset=(self.offset[0] + xofs, self.offset[1] + yofs, self.offset[2]))
+
     def up(self, zdiff):
         new_offset = (self.offset[0], self.offset[1], self.offset[2] + zdiff)
         return replace(self, offset=new_offset)
@@ -258,7 +261,7 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
             return replace(
                 self, sprite=f(self.sprite), position=f(self.position), child_sprites=[f(c) for c in self.child_sprites]
             )
-        if method_name in ["demo_translate", "up"]:
+        if method_name in ["move", "demo_translate", "up"]:
             return replace(self, position=f(self.position))
         return replace(self, sprite=f(self.sprite), child_sprites=[f(c) for c in self.child_sprites])
 
