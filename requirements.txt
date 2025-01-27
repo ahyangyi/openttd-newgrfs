@@ -1,2 +1,3 @@
 grf @ git+https://github.com/ahyangyi/grf-py@018cfcf
+agrf @ git+https://github.com/ahyangyi/agrf@main
 tabulate
