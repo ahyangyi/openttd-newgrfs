@@ -1,11 +1,9 @@
-import json
 import numpy as np
+from agrf.pkg import load_json
 from PIL import ImagePalette
 from .recolour import ColourMap, ColourRange
 
-with open("files/ttd_palette.json") as f:
-    PALETTE = json.load(f)["entries"]
-
+PALETTE = load_json("resources/json/ttd_palette.json")["entries"]
 PIL_PALETTE = ImagePalette.ImagePalette(palette=[item for colour in PALETTE for item in colour])
 NUMPY_PALETTE = np.array(PALETTE, dtype="uint8")
 
