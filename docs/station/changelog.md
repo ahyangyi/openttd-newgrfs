@@ -1,11 +1,19 @@
 China Set: Stations & Platforms Addons: Wuhu Changelog
 =========================
 
-0.3.3 (Work-in-progress)
+0.3.4 (Work-in-progress)
 ------------------------
+No externally visible new features at this moment.
+
+0.3.3 (2025-01-27)
+------------------------
+Preliminary traditional Chinese support.
+
 Fix the layout for big (>= 30 rows) stations. They are still imperfect due to technical limitations, but should be slightly more pleasing than before.
 
 New parameters to choose between using company colours or pre-selected colours.
+
+Optimize the size of the newGRF (3 MiB smaller than before).
 
 0.3.2 (2024-12-18)
 ------------------------
