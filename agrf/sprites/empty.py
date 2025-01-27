@@ -30,10 +30,6 @@ class EmptySprite(grf.Sprite):
 
     def get_data_layers(self, context):
         mask = np.zeros((self.h, self.w), dtype=np.uint8)
-        mask[0, :] = 1
-        mask[-1, :] = 1
-        mask[:, 0] = 1
-        mask[:, -1] = 1
         return self.w, self.h, None, None, mask
 
     def get_image_files(self):
