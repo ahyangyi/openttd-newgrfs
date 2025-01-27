@@ -5,6 +5,7 @@ from PIL import Image
 import functools
 import numpy as np
 from agrf.lib.building.symmetry import BuildingCylindrical, BuildingSymmetrical, BuildingRotational
+from agrf.lib.building.registers import Registers
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.graphics.spritesheet import LazyAlternativeSprites
 from agrf.magic import CachedFunctorMixin, TaggedCachedFunctorMixin
@@ -86,7 +87,9 @@ class NewGraphics(CachedFunctorMixin):
 
     def __post_init__(self):
         super().__init__()
-        assert self.sprite is grf.EMPTY_SPRITE or callable(self.sprite) or isinstance(self.sprite, grf.ResourceAction)
+        assert (
+            self.sprite is grf.EMPTY_SPRITE or callable(self.sprite) or isinstance(self.sprite, grf.ResourceAction)
+        ), type(self.sprite)
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
@@ -194,6 +197,13 @@ class BBoxPosition:
                 y += 1
         return BBoxPosition(self.extent, (x, y, z))
 
+    def move(self, xofs, yofs):
+        return replace(self, offset=(self.offset[0] + xofs, self.offset[1] + yofs, self.offset[2]))
+
+    def up(self, zdiff):
+        new_offset = (self.offset[0], self.offset[1], self.offset[2] + zdiff)
+        return replace(self, offset=new_offset)
+
     def get_fingerprint(self):
         return {"extent": self.extent, "offset": self.offset}
 
@@ -252,15 +262,11 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
             return replace(
                 self, sprite=f(self.sprite), position=f(self.position), child_sprites=[f(c) for c in self.child_sprites]
             )
-        if method_name == "demo_translate":
+        if method_name in ["move", "demo_translate", "up"]:
             return replace(self, position=f(self.position))
         return replace(self, sprite=f(self.sprite), child_sprites=[f(c) for c in self.child_sprites])
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
-        # Register handling
-        # FIXME: generalize this process
-        from station.lib.registers import Registers
-
         if self.flags.get("dodraw") == Registers.SNOW and subclimate != "snow":
             return LayeredImage.empty()
         if self.flags.get("dodraw") == Registers.NOSNOW and subclimate == "snow":
@@ -370,8 +376,12 @@ def AParentSprite(sprite, extent, offset, child_sprites=None, flags=None, recolo
     )
 
 
-def AChildSprite(sprite, offset, flags=None):
-    return NewGeneralSprite(sprite=NewGraphics(sprite), position=OffsetPosition(offset=offset), flags=flags)
+def AChildSprite(sprite, offset, flags=None, recolour=True, palette=0):
+    return NewGeneralSprite(
+        sprite=NewGraphics(sprite, recolour=recolour, palette=palette),
+        position=OffsetPosition(offset=offset),
+        flags=flags,
+    )
 
 
 def overlaps(a0, a1, b0, b1):
@@ -410,9 +420,9 @@ class ALayout:
     altitude: int = 0
 
     def __post_init__(self):
-        if self.ground_sprite is None:
-            from station.stations.misc import empty_ground
+        from agrf.lib.building.default import empty_ground
 
+        if self.ground_sprite is None:
             self.ground_sprite = empty_ground
         assert isinstance(self.ground_sprite, NewGeneralSprite)
         assert all(isinstance(s, NewGeneralSprite) for s in self.parent_sprites), [type(s) for s in self.parent_sprites]
@@ -447,7 +457,7 @@ class ALayout:
         return ret
 
     def pushdown(self, steps):
-        from station.stations.misc import empty_ground
+        from agrf.lib.building.default import empty_ground
 
         return ALayout(
             empty_ground,
@@ -481,7 +491,7 @@ class ALayout:
 
     @functools.cache
     def demo_translate(self, xofs, yofs):
-        from station.stations.misc import empty_ground
+        from agrf.lib.building.default import empty_ground
 
         return replace(
             self,

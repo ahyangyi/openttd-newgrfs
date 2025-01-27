@@ -2,7 +2,7 @@ import grf
 import numpy as np
 import json
 from PIL import Image
-from station.lib import Registers
+from agrf.lib.building.registers import Registers
 from agrf.lib.building.layout import AGroundSprite, ADefaultGroundSprite, AParentSprite, AChildSprite, ALayout
 from agrf.lib.building.symmetry import BuildingSymmetrical
 from agrf.lib.building.image_sprite import image_sprite
@@ -81,6 +81,10 @@ def test_parentsprite_fingerprint():
 
 def test_parentsprite_get_resource_files():
     assert all(isinstance(file, grf.ResourceFile) for file in ps1012.get_resource_files())
+
+
+def test_parentsprite_add_none():
+    assert (ps1012 + None) is ps1012
 
 
 def test_layout():
