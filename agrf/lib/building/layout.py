@@ -86,7 +86,9 @@ class NewGraphics(CachedFunctorMixin):
 
     def __post_init__(self):
         super().__init__()
-        assert self.sprite is grf.EMPTY_SPRITE or callable(self.sprite) or isinstance(self.sprite, grf.ResourceAction)
+        assert (
+            self.sprite is grf.EMPTY_SPRITE or callable(self.sprite) or isinstance(self.sprite, grf.ResourceAction)
+        ), type(self.sprite)
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
@@ -373,8 +375,12 @@ def AParentSprite(sprite, extent, offset, child_sprites=None, flags=None, recolo
     )
 
 
-def AChildSprite(sprite, offset, flags=None):
-    return NewGeneralSprite(sprite=NewGraphics(sprite), position=OffsetPosition(offset=offset), flags=flags)
+def AChildSprite(sprite, offset, flags=None, recolour=True, palette=0):
+    return NewGeneralSprite(
+        sprite=NewGraphics(sprite, recolour=recolour, palette=palette),
+        position=OffsetPosition(offset=offset),
+        flags=flags,
+    )
 
 
 def overlaps(a0, a1, b0, b1):

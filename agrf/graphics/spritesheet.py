@@ -149,6 +149,7 @@ def spritesheet_template(
     road_mode=False,
     manual_crop=None,
     childsprite=False,
+    relative_childsprite=False,
     kwargs=None,
 ):
     guessed_dimens = []
@@ -223,8 +224,16 @@ def spritesheet_template(
                         0,
                         guessed_dimens[i][0] * scale,
                         guessed_dimens[i][1] * scale,
-                        xofs=childsprite[0] * scale if childsprite else get_rels(i, scale)[0],
-                        yofs=childsprite[1] * scale if childsprite else get_rels(i, scale)[1],
+                        xofs=(
+                            get_rels(i, scale)[0] - relative_childsprite[0] * scale
+                            if relative_childsprite
+                            else childsprite[0] * scale if childsprite else get_rels(i, scale)[0]
+                        ),
+                        yofs=(
+                            get_rels(i, scale)[1] - relative_childsprite[1] * scale
+                            if relative_childsprite
+                            else childsprite[1] * scale if childsprite else get_rels(i, scale)[1]
+                        ),
                         bpp=bpp,
                         zoom=SCALE_TO_ZOOM[scale],
                         **(
@@ -250,5 +259,5 @@ def spritesheet_template(
             ),
         )
         for idx in range(len(dimens))
-        for i in [(idx + shift) % len(dimens)]
+        if (i := (idx + shift) % len(dimens)) or True
     ]
