@@ -7,6 +7,8 @@ Fix the layout for big (>= 30 rows) stations. They are still imperfect due to te
 
 New parameters to choose between using company colours or pre-selected colours.
 
+Optimize the size of the newGRF (3 MiB smaller than before).
+
 0.3.2 (2024-12-18)
 ------------------------
 Fix a cropping issue for preview sprites.
