@@ -33,6 +33,8 @@ jobs:
         run: pip install --upgrade setuptools
       - name: Install python deps
         run: pip install -r requirements.txt && pip install pytest
+      - name: Report installed images
+        run: find /home/runner/.local/lib/python3.12/site-packages/agrf/
       - name: Test stations
         run: pytest station
       - name: Test AEGIS
