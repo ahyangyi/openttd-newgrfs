@@ -415,9 +415,16 @@ def load(
     plat_f1 = make_f1(v, "platform", broken_f1_symmetry)
     full_f1 = make_f1(v, "full", f1_symmetry)
 
+    class SquashableAlternativeSprites(grf.AlternativeSprites):
+        def __init__(self, *sprites):
+            super().__init__(*sprites)
+
+        def squash(self, ratio):
+            return SquashableAlternativeSprites(*[s.squash(ratio) for s in self.sprites])
+
     nightf1 = f1.sprite.fmap(
         lambda x: x.fmap(
-            lambda y: grf.AlternativeSprites(
+            lambda y: SquashableAlternativeSprites(
                 *[
                     NightSprite(
                         y.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp),
