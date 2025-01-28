@@ -609,10 +609,6 @@ class NightSprite(grf.Sprite):
 
         return ret.w, ret.h, ret.rgb, ret.alpha, ret.mask
 
-    @functools.cache
-    def squash(self, ratio):
-        return NightSprite(self.base_sprite.squash(ratio), self.scale, self.bpp)
-
 
 class LayoutSprite(grf.Sprite):
     def __init__(self, layout, w, h, scale, bpp, **kwargs):

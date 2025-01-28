@@ -416,18 +416,11 @@ def load(
     full_f1 = make_f1(v, "full", f1_symmetry)
 
     class SquashableAlternativeSprites(grf.AlternativeSprites):
-        def __init__(self, *sprites):
-            super().__init__(*sprites)
-
-        def squash(self, ratio):
-            return SquashableAlternativeSprites(*[s.squash(ratio) for s in self.sprites])
-
-    nightf1 = f1.sprite.fmap(
-        lambda x: x.fmap(
-            lambda y: SquashableAlternativeSprites(
+        def __init__(self, old_alt):
+            super().__init__(
                 *[
                     NightSprite(
-                        y.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp),
+                        old_alt.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp),
                         64 * scale,
                         64 * scale,
                         xofs=0,
@@ -439,8 +432,12 @@ def load(
                     for bpp in [32]
                 ]
             )
-        )
-    )
+            self.old_alt = old_alt
+
+        def squash(self, ratio):
+            return SquashableAlternativeSprites(self.old_alt.squash(ratio))
+
+    nightf1 = f1.sprite.fmap(lambda x: x.fmap(lambda y: SquashableAlternativeSprites(y)))
     import inspect
 
     f1nc = AChildSprite(nightf1, (0, 0))
