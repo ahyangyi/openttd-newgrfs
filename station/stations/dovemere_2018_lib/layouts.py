@@ -416,20 +416,22 @@ def load(
     full_f1 = make_f1(v, "full", f1_symmetry)
 
     nightf1 = f1.sprite.fmap(
-        lambda x: grf.AlternativeSprites(
-            *[
-                NightSprite(
-                    x.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp),
-                    64 * scale,
-                    64 * scale,
-                    xofs=0,
-                    yofs=0,
-                    scale=scale,
-                    bpp=bpp,
-                )
-                for scale in [1, 2, 4]
-                for bpp in [32]
-            ]
+        lambda x: x.fmap(
+            lambda y: grf.AlternativeSprites(
+                *[
+                    NightSprite(
+                        y.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp),
+                        64 * scale,
+                        64 * scale,
+                        xofs=0,
+                        yofs=0,
+                        scale=scale,
+                        bpp=bpp,
+                    )
+                    for scale in [1, 2, 4]
+                    for bpp in [32]
+                ]
+            )
         )
     )
     import inspect
