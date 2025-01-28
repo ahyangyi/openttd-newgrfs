@@ -579,6 +579,7 @@ class ALayout:
 class NightSprite(grf.Sprite):
     def __init__(self, base_sprite, w, h, scale, bpp, **kwargs):
         super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], **kwargs)
+        assert base_sprite is not None
         self.base_sprite = base_sprite
         self.scale = scale
         self.bpp = bpp
@@ -589,6 +590,7 @@ class NightSprite(grf.Sprite):
             "w": self.w,
             "h": self.h,
             "bpp": self.bpp,
+            "scale": self.scale,
             "xofs": self.xofs,
             "yofs": self.yofs,
         }
@@ -598,7 +600,9 @@ class NightSprite(grf.Sprite):
 
     def get_data_layers(self, context):
         timer = context.start_timer()
-        ret = self.base_sprite.graphics(self.scale, self.bpp)
+        sprite = self.base_sprite.get_sprite(zoom=SCALE_TO_ZOOM[self.scale], bpp=self.bpp)
+        if sprite is not None:
+            ret = LayeredImage.from_sprite(sprite).copy()
         from agrf.graphics.cv.nightmask import make_night_mask
 
         ret = make_night_mask(ret)

@@ -18,6 +18,7 @@ from station.lib import (
     Registers,
     NightSprite,
 )
+from agrf.lib.building.layout import NewGraphics
 from agrf.graphics.voxel import LazyVoxel
 from agrf.sprites import empty_alternatives
 from station.stations.platforms import (
@@ -419,25 +420,19 @@ def load(
         def __init__(self, old_alt):
             super().__init__(
                 *[
-                    NightSprite(
-                        old_alt.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp),
-                        64 * scale,
-                        64 * scale,
-                        xofs=0,
-                        yofs=0,
-                        scale=scale,
-                        bpp=bpp,
-                    )
+                    NightSprite(old_alt, 64 * scale, 64 * scale, xofs=0, yofs=0, scale=scale, bpp=bpp)
                     for scale in [1, 2, 4]
                     for bpp in [32]
+                    if (s := old_alt.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)) is not None
                 ]
             )
             self.old_alt = old_alt
 
         def squash(self, ratio):
+            x = self.old_alt.squash(ratio)
             return SquashableAlternativeSprites(self.old_alt.squash(ratio))
 
-    nightf1 = f1.sprite.fmap(lambda x: x.symmetry_fmap(lambda y: SquashableAlternativeSprites(y)))
+    nightf1 = f1.sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x))
     import inspect
 
     f1nc = AChildSprite(nightf1.sprite, (0, 0))
