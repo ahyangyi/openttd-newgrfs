@@ -437,10 +437,10 @@ def load(
         def squash(self, ratio):
             return SquashableAlternativeSprites(self.old_alt.squash(ratio))
 
-    nightf1 = f1.sprite.fmap(lambda x: x.fmap(lambda y: SquashableAlternativeSprites(y)))
+    nightf1 = f1.sprite.fmap(lambda x: x.symmetry_fmap(lambda y: SquashableAlternativeSprites(y)))
     import inspect
 
-    f1nc = AChildSprite(nightf1, (0, 0))
+    f1nc = AChildSprite(nightf1.sprite, (0, 0))
 
     for window_class in window_classes:
         window_postfix = "" if window_class == "none" else "_" + window_class

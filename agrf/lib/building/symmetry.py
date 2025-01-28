@@ -47,7 +47,7 @@ class BuildingSymmetryMixin:
     def all_variants(self):
         return self.get_all_variants(self)
 
-    def fmap(self, f):
+    def symmetry_fmap(self, f):
         mapped = list(map(f, self.all_variants))
         cls = self.__class__.__bases__[0]
         return cls.create_variants(mapped)
