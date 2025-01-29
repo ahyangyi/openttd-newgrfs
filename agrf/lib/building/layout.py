@@ -97,7 +97,6 @@ class NewGraphics(CachedFunctorMixin):
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
             return LayeredImage.empty()
-        # print(f"graphics: {type(self.sprite)}; available combos {[(scale, bpp) for scale in [1, 2, 4] for bpp in [8, 32] if self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp) is not None]}")
         ret = None
         sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
         if sprite is not None:
@@ -583,7 +582,7 @@ class ALayout:
 class NightSprite(grf.Sprite):
     def __init__(self, base_sprite, w, h, scale, bpp, **kwargs):
         super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], **kwargs)
-        assert base_sprite is not None
+        assert base_sprite is not None and "get_fingerprint" in dir(base_sprite), f"base_sprite {type(base_sprite)}"
         self.base_sprite = base_sprite
         self.scale = scale
         self.bpp = bpp

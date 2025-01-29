@@ -427,11 +427,13 @@ def load(
                 ]
             )
             self.old_alt = old_alt
-            # print(f"Squashable: available combos {[(scale, bpp) for scale in [1, 2, 4] for bpp in [8, 32] if old_alt.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp) is not None]}, {len(self.sprites)}")
 
         def squash(self, ratio):
             x = self.old_alt.squash(ratio)
             return SquashableAlternativeSprites(self.old_alt.squash(ratio))
+
+        def get_fingerprint(self):
+            return {"old_alt": self.old_alt.get_fingerrint()}
 
     nightf1 = f1.sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x))
     nightf2 = f2.sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x))
