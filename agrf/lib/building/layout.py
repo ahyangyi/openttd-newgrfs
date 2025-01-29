@@ -13,6 +13,9 @@ from agrf.utils import unique_tuple
 from agrf.pkg import load_third_party_image
 
 
+THIS_FILE = grf.PythonFile(__file__)
+
+
 @dataclass
 class DefaultGraphics:
     sprite_id: int
@@ -596,7 +599,7 @@ class NightSprite(grf.Sprite):
         }
 
     def get_resource_files(self):
-        return self.base_sprite.get_resource_files()
+        return self.base_sprite.get_resource_files() + [THIS_FILE]
 
     def get_data_layers(self, context):
         timer = context.start_timer()

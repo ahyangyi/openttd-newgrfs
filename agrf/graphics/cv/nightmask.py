@@ -1,5 +1,8 @@
+import grf
 import numpy as np
 from .. import LayeredImage
+
+THIS_FILE = grf.PythonFile(__file__)
 
 
 def make_night_mask(img: LayeredImage, darkness=0.75) -> LayeredImage:
