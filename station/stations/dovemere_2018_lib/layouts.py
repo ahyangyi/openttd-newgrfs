@@ -440,7 +440,7 @@ def load(
             return {"old_alt": self.old_alt.get_fingerrint()}
 
     nightf1 = f1.sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x))
-    nightf2 = f2.child_sprites[0].sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x))
+    nightf2 = f2.sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x))
     import inspect
 
     f1nc = AChildSprite(nightf1.sprite, (0, 0))
