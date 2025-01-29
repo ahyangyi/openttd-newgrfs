@@ -22,7 +22,14 @@ company_colour = {
     15: "GREY",
     16: "WHITE",
 }
-global_settings = [Parameter("NIGHT_MODE", 0, {0: "AUTO_DETECT", 1: "ENABLED", 2: "DISABLED"})]
+global_settings = [
+    Parameter(
+        "NIGHT_MODE",
+        0,
+        {0: "AUTO_DETECT", 1: "ENABLED", 2: "DISABLED"},
+        mapping=ParameterMapping(grf_parameter=15, first_bit=0, num_bit=3),
+    )
+]
 
 station_meta = ["E88A9CA", "E88A9C0"]
 station_settings = []
@@ -69,4 +76,9 @@ for i, s in enumerate(station_meta):
         s
     ] = f"""
 TEMP[0x05] = ({colour} > 0) * ({colour} + 0x306) + ({colour} == 0) * (0x307 + company_colour1)
+"""
+
+night = f"var(0x7F, param=15, shift=0, and=0x7)"
+extra_code = f"""
+TEMP[0x06] = ({night} == 0) + ({night} == 1)
 """
