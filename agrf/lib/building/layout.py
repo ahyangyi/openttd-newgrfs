@@ -97,6 +97,7 @@ class NewGraphics(CachedFunctorMixin):
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.sprite is grf.EMPTY_SPRITE:
             return LayeredImage.empty()
+        # print(f"graphics: {type(self.sprite)}; available combos {[(scale, bpp) for scale in [1, 2, 4] for bpp in [8, 32] if self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp) is not None]}")
         ret = None
         sprite = self.sprite.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)
         if sprite is not None:
@@ -620,6 +621,9 @@ class NightSprite(grf.Sprite):
 class LayoutSprite(grf.Sprite):
     def __init__(self, layout, w, h, scale, bpp, **kwargs):
         super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], **kwargs)
+
+        assert layout is not None
+
         self.layout = layout
         self.scale = scale
         self.bpp = bpp

@@ -7,6 +7,10 @@ THIS_FILE = grf.PythonFile(__file__)
 
 def make_night_mask(img: LayeredImage, darkness=0.75) -> LayeredImage:
     assert img.alpha is not None
+    if img.alpha is None:
+        mask = ((img.mask > 0) * 255 * darkness).astype(np.uint8)
+    else:
+        mask = (img.alpha * darkness).astype(np.uint8)
 
     return LayeredImage(
         xofs=img.xofs,
@@ -14,6 +18,6 @@ def make_night_mask(img: LayeredImage, darkness=0.75) -> LayeredImage:
         w=img.w,
         h=img.h,
         rgb=np.zeros((img.h, img.w, 3), dtype=np.uint8),
-        alpha=(img.alpha * darkness).astype(np.uint8),
+        alpha=mask,
         mask=None,
     )

@@ -422,20 +422,24 @@ def load(
                 *[
                     NightSprite(old_alt, 64 * scale, 64 * scale, xofs=0, yofs=0, scale=scale, bpp=bpp)
                     for scale in [1, 2, 4]
-                    for bpp in [32]
+                    for bpp in [8, 32]
                     if (s := old_alt.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)) is not None
                 ]
             )
             self.old_alt = old_alt
+            # print(f"Squashable: available combos {[(scale, bpp) for scale in [1, 2, 4] for bpp in [8, 32] if old_alt.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp) is not None]}, {len(self.sprites)}")
 
         def squash(self, ratio):
             x = self.old_alt.squash(ratio)
             return SquashableAlternativeSprites(self.old_alt.squash(ratio))
 
     nightf1 = f1.sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x))
+    nightf2 = f2.sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x))
     import inspect
 
     f1nc = AChildSprite(nightf1.sprite, (0, 0))
+    f2nc = AChildSprite(nightf2.sprite, (0, 0))
+    f2 = f2 + f2nc
 
     for window_class in window_classes:
         window_postfix = "" if window_class == "none" else "_" + window_class
