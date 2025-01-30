@@ -580,12 +580,18 @@ class ALayout:
 
 
 class NightSprite(grf.Sprite):
-    def __init__(self, base_sprite, w, h, scale, bpp, **kwargs):
-        super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], **kwargs)
+    def __init__(self, base_sprite, w, h, scale, bpp, xofs=0, yofs=0, darkness=0.75, **kwargs):
+        if "agrf_manual_crop" in base_sprite.voxel.config:
+            dx, dy = base_sprite.voxel.config["agrf_manual_crop"]
+            xofs -= dx * scale
+            yofs -= dy * scale
+
+        super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], xofs=xofs, yofs=yofs, **kwargs)
         assert base_sprite is not None and "get_fingerprint" in dir(base_sprite), f"base_sprite {type(base_sprite)}"
         self.base_sprite = base_sprite
         self.scale = scale
         self.bpp = bpp
+        self.darkness = darkness
 
     def get_fingerprint(self):
         return {
@@ -596,6 +602,7 @@ class NightSprite(grf.Sprite):
             "scale": self.scale,
             "xofs": self.xofs,
             "yofs": self.yofs,
+            "darkness": self.darkness,
         }
 
     def get_resource_files(self):
@@ -608,11 +615,8 @@ class NightSprite(grf.Sprite):
             ret = LayeredImage.from_sprite(sprite).copy()
         from agrf.graphics.cv.nightmask import make_night_mask
 
-        ret = make_night_mask(ret)
+        ret = make_night_mask(ret, darkness=self.darkness)
         timer.count_composing()
-
-        self.xofs += ret.xofs
-        self.yofs += ret.yofs
 
         return ret.w, ret.h, ret.rgb, ret.alpha, ret.mask
 

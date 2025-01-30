@@ -25,3 +25,4 @@ from agrf.lib.building.demo import Demo
 from .utils import AttrDict, get_1cc_remap
 from .switch import StationTileSwitch, make_horizontal_switch, make_vertical_switch
 from .registers import Registers
+from .night import add_night_masks

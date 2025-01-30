@@ -16,7 +16,7 @@ from station.lib import (
     ALayout,
     AttrDict,
     Registers,
-    NightSprite,
+    add_night_masks,
 )
 from agrf.lib.building.layout import NewGraphics
 from agrf.graphics.voxel import LazyVoxel
@@ -33,7 +33,6 @@ from station.stations.platforms import (
     two_side_tiles,
     concourse_tiles,
 )
-from station.lib.parameters import nightgfx
 from station.stations.ground import named_ps as ground_ps, named_tiles as ground_tiles, gray, gray_third
 from station.stations.misc import track_ground, track
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
@@ -421,32 +420,8 @@ def load(
     plat_f1 = make_f1(v, "platform", broken_f1_symmetry)
     full_f1 = make_f1(v, "full", f1_symmetry)
 
-    class SquashableAlternativeSprites(grf.AlternativeSprites):
-        def __init__(self, old_alt):
-            super().__init__(
-                *[
-                    NightSprite(old_alt, 64 * scale, 64 * scale, xofs=0, yofs=0, scale=scale, bpp=bpp)
-                    for scale in [1, 2, 4]
-                    for bpp in [8, 32]
-                    if (s := old_alt.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)) is not None
-                ]
-            )
-            self.old_alt = old_alt
-
-        def squash(self, ratio):
-            x = self.old_alt.squash(ratio)
-            return SquashableAlternativeSprites(self.old_alt.squash(ratio))
-
-        def get_fingerprint(self):
-            return {"old_alt": self.old_alt.get_fingerrint()}
-
-    nightf1 = f1.sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x))
-    nightf2 = f2.sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x))
-    import inspect
-
-    f1nc = AChildSprite(nightf1.sprite, (0, 0), flags={"dodraw": nightgfx})
-    f2nc = AChildSprite(nightf2.sprite, (0, 0), flags={"dodraw": nightgfx})
-    f2 = f2 + f2nc
+    f1 = add_night_masks(f1)
+    f2 = add_night_masks(f2)
 
     for window_class in window_classes:
         window_postfix = "" if window_class == "none" else "_" + window_class
