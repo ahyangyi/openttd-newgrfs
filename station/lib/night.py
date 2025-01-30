@@ -1,7 +1,14 @@
 import grf
 from dataclasses import replace
 from station.lib.parameters import nightgfx
-from agrf.lib.building.layout import ALayout, NewGeneralSprite, AChildSprite, NightSprite, OffsetPosition
+from agrf.lib.building.layout import (
+    ALayout,
+    NewGeneralSprite,
+    AChildSprite,
+    NightSprite,
+    OffsetPosition,
+    DefaultGraphics,
+)
 from agrf.graphics.misc import SCALE_TO_ZOOM
 
 
@@ -26,20 +33,24 @@ class SquashableAlternativeSprites(grf.AlternativeSprites):
         return {"old_alt": self.old_alt.get_fingerrint()}
 
 
-def make_child_night_mask(parent, darkness=0.75):
+def make_child_night_masks(parent, darkness=0.75):
+    if isinstance(parent, DefaultGraphics):
+        return []
     night = parent.sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x, darkness))
-    return AChildSprite(night, (0, 0), flags={"dodraw": nightgfx})
+    return [AChildSprite(night, (0, 0), flags={"dodraw": nightgfx})]
 
 
 def add_night_masks(thing, darkness=0.75):
     if isinstance(thing, ALayout):
-        return replace(
+        ret = replace(
             thing,
-            ground_sprite=add_night_masks(thing.ground_sprite, darkness=darkess),
-            parent_sprites=[add_night_masks(p, darkness=darkness) for p in self.parent_sprites],
+            ground_sprite=add_night_masks(thing.ground_sprite, darkness=darkness),
+            parent_sprites=[add_night_masks(p, darkness=darkness) for p in thing.parent_sprites],
         )
+        ret.__class__ = ALayout
+        return ret
     if isinstance(thing, NewGeneralSprite):
         assert not isinstance(thing.position, OffsetPosition), thing
-        return replace(thing, child_sprites=make_child_night_mask(thing.sprite) + thing.child_sprites)
+        return replace(thing, child_sprites=make_child_night_masks(thing.sprite) + thing.child_sprites)
 
     raise NotImplementedError()

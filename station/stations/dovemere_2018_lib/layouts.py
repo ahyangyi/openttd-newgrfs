@@ -228,9 +228,10 @@ def register(base_id, step_id, l, symmetry, internal_category, name, broken_near
     cnt = len(l)
     for i, layout in enumerate(l):
         layout.category = get_category(internal_category, i >= cnt // 2, layout.notes, layout.traversable)
-    layouts.extend(l)
     l = symmetry.create_variants(l)
+    l = l.symmetry_fmap(lambda x: add_night_masks(x))
     cur_entries = symmetry.get_all_entries(l)
+    layouts.extend(cur_entries)
     cnt = len(cur_entries)
     for i, entry in enumerate(cur_entries):
         if broken_near_hack:
@@ -420,9 +421,6 @@ def load(
     plat_f1 = make_f1(v, "platform", broken_f1_symmetry)
     full_f1 = make_f1(v, "full", f1_symmetry)
 
-    f1 = add_night_masks(f1)
-    f2 = add_night_masks(f2)
-
     for window_class in window_classes:
         window_postfix = "" if window_class == "none" else "_" + window_class
         if window is None:
@@ -457,7 +455,7 @@ def load(
                     0x80,
                     ALayout(
                         corridor_ground,
-                        [cur_plat, cur_plat.T, f1 + f1nc + f1_snow, f1b] + f2_component,
+                        [cur_plat, cur_plat.T, f1 + f1_snow, f1b] + f2_component,
                         True,
                         notes=common_notes + ["third"],
                     ),

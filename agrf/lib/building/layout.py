@@ -427,7 +427,7 @@ class ALayout:
 
         if self.ground_sprite is None:
             self.ground_sprite = empty_ground
-        assert isinstance(self.ground_sprite, NewGeneralSprite)
+        assert isinstance(self.ground_sprite, NewGeneralSprite), self.ground_sprite
         assert all(isinstance(s, NewGeneralSprite) for s in self.parent_sprites), [type(s) for s in self.parent_sprites]
         self.notes = self.notes or []
 
