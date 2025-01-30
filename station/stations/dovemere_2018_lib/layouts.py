@@ -33,6 +33,7 @@ from station.stations.platforms import (
     two_side_tiles,
     concourse_tiles,
 )
+from station.lib.parameters import nightgfx
 from station.stations.ground import named_ps as ground_ps, named_tiles as ground_tiles, gray, gray_third
 from station.stations.misc import track_ground, track
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
@@ -443,8 +444,8 @@ def load(
     nightf2 = f2.sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x))
     import inspect
 
-    f1nc = AChildSprite(nightf1.sprite, (0, 0))
-    f2nc = AChildSprite(nightf2.sprite, (0, 0))
+    f1nc = AChildSprite(nightf1.sprite, (0, 0), flags={"dodraw": nightgfx})
+    f2nc = AChildSprite(nightf2.sprite, (0, 0), flags={"dodraw": nightgfx})
     f2 = f2 + f2nc
 
     for window_class in window_classes:

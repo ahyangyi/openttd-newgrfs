@@ -1,3 +1,4 @@
+import grf
 from agrf.parameters import Parameter, ParameterList
 from agrf.magic import Switch
 from grf import ParameterMapping
@@ -82,3 +83,5 @@ night = f"var(0x7F, param=15, shift=0, and=0x7)"
 extra_code = f"""
 TEMP[0x06] = ({night} == 0) + ({night} == 1)
 """
+
+nightgfx = grf.Temp(6)
