@@ -81,7 +81,7 @@ TEMP[0x05] = ({colour} > 0) * ({colour} + 0x306) + ({colour} == 0) * (0x307 + co
 
 night = f"var(0x7F, param=15, shift=0, and=0x7)"
 extra_code = f"""
-TEMP[0x06] = ({night} == 0) + ({night} == 1)
+TEMP[0x06] = (({night} == 0) * var(0x7F, param=0x41, shift=0, and=0xffffffff)) + ({night} == 1)
 """
 
 nightgfx = grf.Temp(6)
