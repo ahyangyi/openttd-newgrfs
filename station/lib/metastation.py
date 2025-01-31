@@ -31,8 +31,12 @@ class AMetaStation(grf.SpriteGenerator):
 
     def get_sprites(self, g):
         sprites = self.sprites
-
-        ret = [grf.Action1(feature=grf.STATION, set_count=1, sprite_count=len(sprites))] + sprites
+        
+        if len(sprites) < 0x4000:
+            ret = [grf.Action1(feature=grf.STATION, set_count=1, sprite_count=len(sprites))] + sprites
+        else:
+            ret = []
+            sprites = None
 
         for station in self.stations:
             ret.extend(station.get_sprites(g, sprites))
