@@ -131,7 +131,7 @@ def make_central_row(l, r, suffix):
 def determine_platform_odd(t, d):
     if d > t:
         return {"f": "n", "n": "f", "d": "d"}[determine_platform_odd(d, t)]
-    if t == 15 and 13 <= d <= 15:
+    if t == 15 and d == 15:
         return "d"
     if (t + d) % 2 == 1:
         return "fn"[d % 2]
