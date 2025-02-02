@@ -27,10 +27,15 @@ def test_determine_platform_odd_huge():
 
 
 def test_determine_platform_odd_bottom_half():
-    check_platform_function(determine_platform_odd, 7, "nfnfnfd")
-    check_platform_function(determine_platform_odd, 8, "nfnfnfnf")
-    check_platform_function(determine_platform_odd, 9, "nfnfnfnfd")
-    check_platform_function(determine_platform_odd, 10, "nfnfnfnfnf")
+    check_platform_function(determine_platform_odd_bottom_half, 7, "dnfnfnf")
+    check_platform_function(determine_platform_odd_bottom_half, 8, "nfnfnfnf")
+    check_platform_function(determine_platform_odd_bottom_half, 9, "dnfnfnfnf")
+    check_platform_function(determine_platform_odd_bottom_half, 10, "nfnfnfnfnf")
+
+
+def test_determine_platform_odd_bottom_half_huge():
+    check_platform_function(determine_platform_odd_bottom_half, 31, "d" + "nf" * 15)
+    check_platform_function(determine_platform_odd_bottom_half, 32, "dd" + "nf" * 15)
 
 
 def test_determine_platform_even():
