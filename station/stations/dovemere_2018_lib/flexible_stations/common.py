@@ -87,9 +87,9 @@ def reverse(x):
     return x[:-1] + ({"f": "n", "n": "f", "d": "d"}[x[-1]],)
 
 
-def get_left_index_suffix(t, d, suffix, fallback_suffix=None):
+def get_left_index_suffix(t, d, suffix):
     if d > t:
-        return get_left_index_suffix(d, t, reverse(suffix), reverse(fallback_suffix)).T
+        return get_left_index_suffix(d, t, reverse(suffix)).T
     if t + d == 2:
         return get_tile("side_a2", suffix)
     if t + d == 3:
@@ -105,7 +105,7 @@ def get_left_index_suffix(t, d, suffix, fallback_suffix=None):
     return get_tile("side_c", suffix)
 
 
-def get_left_index_suffix_2(t, d, suffix, fallback_suffix):
+def get_left_index_suffix_2(t, d, suffix):
     if t == d == 1:
         return get_tile("side_a2_windowed", suffix)
     if d == 1:
@@ -115,13 +115,13 @@ def get_left_index_suffix_2(t, d, suffix, fallback_suffix):
     return get_tile("side_d", suffix)
 
 
-def make_central_row(l, r, suffix, fallback_suffix=None):
+def make_central_row(l, r, suffix):
     return horizontal_layout(
         l,
         r,
         make_vertical_switch(lambda t, d: get_tile("v_central", suffix)),
-        make_vertical_switch(lambda t, d: get_left_index_suffix_2(t, d, suffix, fallback_suffix)),
-        make_vertical_switch(lambda t, d: get_left_index_suffix(t, d, suffix, fallback_suffix)),
+        make_vertical_switch(lambda t, d: get_left_index_suffix_2(t, d, suffix)),
+        make_vertical_switch(lambda t, d: get_left_index_suffix(t, d, suffix)),
         make_vertical_switch(lambda t, d: get_tile("central", suffix)),
         make_vertical_switch(lambda t, d: get_tile("central_windowed", suffix)),
         make_vertical_switch(lambda t, d: get_tile("central_windowed_extender", suffix)),
