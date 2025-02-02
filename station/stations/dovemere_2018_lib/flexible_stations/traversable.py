@@ -41,7 +41,7 @@ for pclass in platform_classes:
         named_tiles[("h_gate_extender", pclass, None, "corridor")],
     )
     for sclass in shelter_classes:
-        front[pclass][sclass] = make_front_row((pclass, sclass, "third_f"), fallback_suffix=(pclass, None, "third_f"))
+        front[pclass][sclass] = make_front_row((pclass, sclass, "third_f"))
 
         h_n[pclass][sclass] = make_horizontal_switch(lambda l, r: make_central_row(l, r, (pclass, sclass, "n")))
         h_f[pclass][sclass] = make_horizontal_switch(lambda l, r: make_central_row(l, r, (pclass, sclass, "f")))
