@@ -162,7 +162,7 @@ class LayeredImage:
                     + self._crop_if_childsprite(other.mask, mask_viewport, childsprite) * opacity
                 )
 
-        if self.rgb is not None:
+        if self.rgb is not None and other.rgb is not None:
             rgb_viewport = self.rgb[y1 : y1 + other.h, x1 : x1 + other.w]
             alpha_viewport = self.alpha[y1 : y1 + other.h, x1 : x1 + other.w]
 

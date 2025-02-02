@@ -90,3 +90,7 @@ road.csv:
 profile.aegis:
 	python3 -m cProfile -o .prof/aegis_gen.prof -m industry.aegis_gen gen
 	gprof2dot -f pstats .prof/aegis_gen.prof | dot -Tpng -o .prof/aegis_gen_prof.png
+
+profile.station:
+	python3 -m cProfile -o .prof/station_gen.prof -m station.dovemere_gen gen
+	gprof2dot -f pstats .prof/station_gen.prof | dot -Tpng -o .prof/station_gen_prof.png

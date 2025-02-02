@@ -16,7 +16,7 @@ def make_night_mask(img: LayeredImage, darkness=0.75) -> LayeredImage:
         yofs=img.yofs,
         w=img.w,
         h=img.h,
-        rgb=np.zeros((img.h, img.w, 3), dtype=np.uint8),
+        rgb=None,
         alpha=mask,
-        mask=None,
+        mask=np.zeros((img.h, img.w), dtype=np.uint8),
     )
