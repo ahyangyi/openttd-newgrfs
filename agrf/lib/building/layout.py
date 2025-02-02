@@ -5,6 +5,7 @@ from PIL import Image
 import functools
 import numpy as np
 from agrf.lib.building.symmetry import BuildingCylindrical, BuildingSymmetrical, BuildingRotational
+from agrf.lib.building.registers import Registers
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.graphics.spritesheet import LazyAlternativeSprites
 from agrf.magic import CachedFunctorMixin, TaggedCachedFunctorMixin
@@ -266,10 +267,6 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
         return replace(self, sprite=f(self.sprite), child_sprites=[f(c) for c in self.child_sprites])
 
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
-        # Register handling
-        # FIXME: generalize this process
-        from station.lib.registers import Registers
-
         if self.flags.get("dodraw") == Registers.SNOW and subclimate != "snow":
             return LayeredImage.empty()
         if self.flags.get("dodraw") == Registers.NOSNOW and subclimate == "snow":
@@ -423,9 +420,9 @@ class ALayout:
     altitude: int = 0
 
     def __post_init__(self):
-        if self.ground_sprite is None:
-            from station.stations.misc import empty_ground
+        from agrf.lib.building.default import empty_ground
 
+        if self.ground_sprite is None:
             self.ground_sprite = empty_ground
         assert isinstance(self.ground_sprite, NewGeneralSprite)
         assert all(isinstance(s, NewGeneralSprite) for s in self.parent_sprites), [type(s) for s in self.parent_sprites]
@@ -460,7 +457,7 @@ class ALayout:
         return ret
 
     def pushdown(self, steps):
-        from station.stations.misc import empty_ground
+        from agrf.lib.building.default import empty_ground
 
         return ALayout(
             empty_ground,
@@ -494,7 +491,7 @@ class ALayout:
 
     @functools.cache
     def demo_translate(self, xofs, yofs):
-        from station.stations.misc import empty_ground
+        from agrf.lib.building.default import empty_ground
 
         return replace(
             self,
