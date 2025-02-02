@@ -26,6 +26,9 @@ class StationTileSwitch:
 
     @property
     def code(self):
+        if self.var == "c":
+            assert self.cb14
+            return (f"var(0x47, shift=4, and=0x0000000f)",)
         nibble = {"T": 24, "d": 12, "t": 8, "l": 4, "r": 0}[self.var]
 
         if self.cb24:
@@ -34,6 +37,7 @@ class StationTileSwitch:
             return (f"var(0x41, shift={nibble}, and=0x0000000f)",)
 
     def fmap(self, f, special_property=None):
+        assert not (special_property == "T" and self.var == "c")
         new_var = (
             {"T": {"t": "d", "d": "t"}, "R": {"l": "r", "r": "l"}}.get(special_property, {}).get(self.var, self.var)
         )
@@ -73,6 +77,8 @@ class StationTileSwitch:
             return lookup(self.ranges[min(y, 15)], w, h, x, y, t)
         elif self.var == "d":
             return lookup(self.ranges[min(h - y - 1, 15)], w, h, x, y, t)
+        elif self.var == "c":
+            return lookup(self.ranges[min(max(y - h // 2, -8), 7)], w, h, x, y, t)
         else:
             raise NotImplementedError()
 
