@@ -129,17 +129,7 @@ def make_central_row(l, r, suffix):
 
 
 def determine_platform_odd_bottom_half(t, d):
-    if t == 15 and 13 <= d <= 15:
-        return "d"
-    if (t + d) % 2 == 1:
-        return "fn"[d % 2]
-    if (t + d) % 4 == 0:
-        if d < t - 2:
-            return "fn"[d % 2]
-        return "d"
-    if d < t:
-        return "fn"[d % 2]
-    return "d"
+    return determine_platform_odd(min(15, t * 2 + d + 1), d)
 
 
 def determine_platform_odd(t, d):
