@@ -32,7 +32,7 @@ def switch_fingerprint(s):
     if isinstance(s, int):
         return s
     return {
-        "ranges": [(r.low, r.high, switch_fingerprint(r.ref)) for r in s._ranges],
+        "ranges": list(sorted([(r.low, r.high, switch_fingerprint(r.ref)) for r in s._ranges])),
         "default": switch_fingerprint(s.default),
         "code": s.code,
     }
