@@ -1,3 +1,5 @@
+import json
+import hashlib
 import functools
 from agrf.magic import Switch
 from agrf.lib.building.layout import ALayout
@@ -15,6 +17,32 @@ def calc_mode(d):
         value_count[v] = value_count.get(v, 0) + 1
     max_count = max(value_count.values())
     return [v for v, c in value_count.items() if c == max_count][0]
+
+
+switch_cache = {}
+
+
+def switch_fingerprint(s):
+    if isinstance(s, int):
+        return s
+    return {
+        "ranges": [(r.low, r.high, switch_fingerprint(r.ref)) for r in s._ranges],
+        "default": switch_fingerprint(s.default),
+        "code": s.code,
+    }
+
+
+def switch_hash(s):
+    return hashlib.sha384(json.dumps(switch_fingerprint(s), sort_keys=True).encode()).hexdigest()
+
+
+def make_switch(ranges, default, code):
+    ret = Switch(ranges=ranges, default=default, code=code)
+    h = switch_hash(ret)
+    if h in switch_cache:
+        return switch_cache[h]
+    switch_cache[h] = ret
+    return ret
 
 
 class StationTileSwitch:
@@ -58,7 +86,7 @@ class StationTileSwitch:
         if len(new_ranges) == 0:
             ret = f(mode)
         else:
-            ret = Switch(ranges=new_ranges, default=f(mode), code=self.code)
+            ret = make_switch(ranges=new_ranges, default=f(mode), code=self.code)
         self.to_index_cache[id(sprite_list)] = ret
         return ret
 
