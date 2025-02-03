@@ -74,9 +74,9 @@ class StationTileSwitch:
         new_ranges = {}
         l = None
         for k, v in sorted(ranges.items()):
-            if v == default:
+            if v is default:
                 continue
-            if l is not None and k == h + 1 and r == v:
+            if l is not None and k == h + 1 and r is v:
                 h += 1
             else:
                 if l is not None:
