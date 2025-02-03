@@ -93,7 +93,7 @@ for p, pclass in enumerate(platform_classes):
                 cargo_threshold=40,
                 disabled_platforms=0b1,
                 callbacks={
-                    "select_tile_layout": cb24.to_index(None),
+                    "select_tile_layout": cb24.to_index(),
                     "select_sprite_layout": grf.DualCallback(
                         default=cb14[pclass][sclass].to_index(layouts), purchase=layouts.index(demo_layout)
                     ),
@@ -127,7 +127,7 @@ for p, pclass in enumerate(platform_classes):
                 cargo_threshold=40,
                 disabled_platforms=0b100,
                 callbacks={
-                    "select_tile_layout": cb24.to_index(None),
+                    "select_tile_layout": cb24.to_index(),
                     "select_sprite_layout": grf.DualCallback(
                         default=cb14[pclass][sclass].to_index(layouts), purchase=layouts.index(demo_layout)
                     ),
