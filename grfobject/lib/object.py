@@ -1,6 +1,7 @@
 import grf
 from station.lib.utils import class_label_printable
 from agrf.magic import Switch
+from agrf.utils import unique
 
 
 class AObject(grf.SpriteGenerator):
@@ -75,12 +76,8 @@ view
 
     @property
     def sprites(self):
-        return [
-            *dict.fromkeys(
-                [
-                    sub
-                    for l in self.layouts + ([] if self.purchase_layouts is None else self.purchase_layouts)
-                    for sub in l.sprites
-                ]
-            )
-        ]
+        return unique(
+            sub
+            for l in self.layouts + ([] if self.purchase_layouts is None else self.purchase_layouts)
+            for sub in l.sprites
+        )

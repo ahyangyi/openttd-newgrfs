@@ -1,5 +1,6 @@
 import grf
 from .utils import class_label_printable
+from agrf.utils import unique
 
 
 class AMetaStation(grf.SpriteGenerator):
@@ -44,4 +45,4 @@ class AMetaStation(grf.SpriteGenerator):
 
     @property
     def sprites(self):
-        return [*dict.fromkeys([sub for s in self.stations for sub in s.sprites])]
+        return unique(sub for s in self.stations for sub in s.sprites)

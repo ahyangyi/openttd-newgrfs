@@ -1,5 +1,6 @@
 import grf
 from agrf.actions import FakeReferencingAction, FakeReferencedAction
+from agrf.utils import unique
 from .utils import class_label_printable
 from .registers import code
 
@@ -117,4 +118,4 @@ class AStation(grf.SpriteGenerator):
 
     @property
     def sprites(self):
-        return [*dict.fromkeys([sub for l in self.layouts for sub in l.sprites])]
+        return unique(sub for l in self.layouts for sub in l.sprites)
