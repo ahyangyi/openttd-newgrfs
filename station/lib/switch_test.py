@@ -40,3 +40,11 @@ def test_switch_compression_2():
     assert isinstance(a, grf.Switch)
     assert len(a._ranges) == 15
     assert all(isinstance(v.ref, int) for v in a._ranges)
+
+
+def test_switch_compression_3():
+    a = make_horizontal_switch(lambda l, r: l ^ r)
+    a = a.to_index(None)
+    assert isinstance(a, grf.Switch)
+    assert len(a._ranges) == 15
+    assert all(isinstance(v.ref, grf.Switch) for v in a._ranges)
