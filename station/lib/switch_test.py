@@ -2,6 +2,12 @@ import grf
 from .switch import make_horizontal_switch
 
 
+def switch_set(s):
+    if isinstance(s, int):
+        return set()
+    return set([id(s)] + [x for r in s._ranges for x in switch_set(r.ref)] + list(switch_set(s.default)))
+
+
 class MockValue:
     def __init__(self, v):
         self.v = v
@@ -31,6 +37,7 @@ def test_switch_compression_1():
     assert isinstance(a, grf.Switch)
     assert len(a._ranges) == 15
     assert all(isinstance(v.ref, int) for v in a._ranges)
+    assert len(switch_set(a)) == 1
 
 
 def test_switch_compression_2():
@@ -45,6 +52,7 @@ def test_switch_compression_3():
     assert isinstance(a, grf.Switch)
     assert len(a._ranges) == 15
     assert all(isinstance(v.ref, grf.Switch) for v in a._ranges)
+    assert len(switch_set(a)) == 17
 
 
 def test_switch_compression_4():
