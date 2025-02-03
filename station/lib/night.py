@@ -1,6 +1,6 @@
 import grf
 from dataclasses import replace
-from station.lib.parameters import nightgfx
+from station.lib.registers import Registers
 from agrf.lib.building.layout import (
     ALayout,
     NewGeneralSprite,
@@ -35,11 +35,20 @@ class SquashableAlternativeSprites(grf.AlternativeSprites):
 
 
 def make_child_night_masks(parent, darkness=0.75):
-    if isinstance(parent, DefaultGraphics):
+    graphics = parent.sprite
+    if isinstance(graphics, DefaultGraphics):
         return []
-    assert isinstance(parent, NewGraphics)
-    night = parent.sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x, darkness))
-    return [AChildSprite(night, (0, 0), flags={"dodraw": nightgfx})]
+    assert isinstance(graphics, NewGraphics)
+
+    if parent.flags.get("dodraw") is None:
+        flags = {"dodraw": Registers.NIGHTGFX}
+    elif parent.flags.get("dodraw") == Registers.SNOW:
+        flags = {"dodraw": Registers.SNOW_NIGHTGFX}
+    else:
+        raise NotImplementedError(parent.flags["dodraw"])
+
+    night = graphics.sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x, darkness))
+    return [AChildSprite(night, (0, 0), flags=flags)]
 
 
 def add_night_masks(thing, darkness=0.75):
@@ -53,10 +62,10 @@ def add_night_masks(thing, darkness=0.75):
         return ret
     if isinstance(thing, NewGeneralSprite):
         assert not isinstance(thing.position, OffsetPosition), thing
-        new_child_sprites = make_child_night_masks(thing.sprite)
+        new_child_sprites = make_child_night_masks(thing)
         for x in thing.child_sprites:
             new_child_sprites.append(x)
-            new_child_sprites.extend(make_child_night_masks(x.sprite))
+            new_child_sprites.extend(make_child_night_masks(x))
 
         return replace(thing, child_sprites=new_child_sprites)
 
