@@ -11,7 +11,7 @@ def lookup(thing, w, h, x, y, t):
     return thing.lookup(w, h, x, y, t)
 
 
-def calc_mode(d):
+def find_default_element(d):
     reverse_lookup = {}
     value_count = {}
     for v in d.values():
@@ -89,12 +89,26 @@ class StationTileSwitch:
 
         f = lambda v: v if isinstance(v, int) else v.to_index(sprite_list)
         ranges = {k: f(v) for k, v in self.ranges.items()}
-        mode = calc_mode(ranges)
-        new_ranges = {k: v for k, v in ranges.items() if v != mode}
+        default = find_default_element(ranges)
+
+        new_ranges = {}
+        l = None
+        for k, v in sorted(ranges.items()):
+            if v == default:
+                continue
+            if l is not None and k == h + 1 and r == v:
+                h += 1
+            else:
+                if l is not None:
+                    new_ranges[(l, h)] = r
+                l, h, r = k, k, v
+        if l is not None:
+            new_ranges[(l, h)] = r
+
         if len(new_ranges) == 0:
-            ret = mode
+            ret = default
         else:
-            ret = make_switch(ranges=new_ranges, default=mode, code=self.code)
+            ret = make_switch(ranges=new_ranges, default=default, code=self.code)
         self.to_index_cache[id(sprite_list)] = ret
         return ret
 

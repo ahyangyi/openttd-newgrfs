@@ -94,6 +94,7 @@ def test_switch_compression_8():
     assert isinstance(a, grf.Switch)
     assert len(a._ranges) == 1
     assert all(isinstance(v.ref, int) for v in a._ranges)
+    assert len(switch_set(a)) == 1
 
 
 def test_switch_compression_9():
@@ -101,6 +102,7 @@ def test_switch_compression_9():
     assert isinstance(a, grf.Switch)
     assert len(a._ranges) == 1
     assert all(isinstance(v.ref, int) for v in a._ranges)
+    assert len(switch_set(a)) == 1
 
 
 def test_switch_compression_10():
@@ -109,3 +111,4 @@ def test_switch_compression_10():
     assert len(a._ranges) == 1
     assert all(isinstance(v.ref, grf.Switch) for v in a._ranges)
     assert all(len(v.ref._ranges) == 1 for v in a._ranges)
+    assert len(switch_set(a)) == 3
