@@ -9,7 +9,7 @@ from agrf.lib.building.registers import Registers
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.graphics.spritesheet import LazyAlternativeSprites
 from agrf.magic import CachedFunctorMixin, TaggedCachedFunctorMixin
-from agrf.utils import unique_tuple
+from agrf.utils import unique, unique_tuple
 from agrf.pkg import load_third_party_image
 
 
@@ -567,7 +567,7 @@ class ALayout:
 
     @property
     def sprites(self):
-        return list(dict.fromkeys([sub for s in [self.ground_sprite] + self.parent_sprites for sub in s.sprites]))
+        return unique(sub for s in [self.ground_sprite] + self.parent_sprites for sub in s.sprites)
 
     def get_fingerprint(self):
         return {
