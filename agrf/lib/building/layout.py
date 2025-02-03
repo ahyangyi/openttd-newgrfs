@@ -585,6 +585,10 @@ class NightSprite(grf.Sprite):
             dx, dy = base_sprite.voxel.config["agrf_manual_crop"]
             xofs -= dx * scale
             yofs -= dy * scale
+        if "agrf_childsprite" in base_sprite.voxel.config:
+            dx, dy = base_sprite.voxel.config["agrf_childsprite"]
+            xofs += dx * scale
+            yofs += dy * scale
 
         super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], xofs=xofs, yofs=yofs, **kwargs)
         assert base_sprite is not None and "get_fingerprint" in dir(base_sprite), f"base_sprite {type(base_sprite)}"
