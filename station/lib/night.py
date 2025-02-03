@@ -8,6 +8,7 @@ from agrf.lib.building.layout import (
     NightSprite,
     OffsetPosition,
     DefaultGraphics,
+    NewGraphics,
 )
 from agrf.graphics.misc import SCALE_TO_ZOOM
 
@@ -36,6 +37,7 @@ class SquashableAlternativeSprites(grf.AlternativeSprites):
 def make_child_night_masks(parent, darkness=0.75):
     if isinstance(parent, DefaultGraphics):
         return []
+    assert isinstance(parent, NewGraphics)
     night = parent.sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x, darkness))
     return [AChildSprite(night, (0, 0), flags={"dodraw": nightgfx})]
 
@@ -51,6 +53,11 @@ def add_night_masks(thing, darkness=0.75):
         return ret
     if isinstance(thing, NewGeneralSprite):
         assert not isinstance(thing.position, OffsetPosition), thing
-        return replace(thing, child_sprites=make_child_night_masks(thing.sprite) + thing.child_sprites)
+        new_child_sprites = make_child_night_masks(thing.sprite)
+        for x in thing.child_sprites:
+            new_child_sprites.append(x)
+            new_child_sprites.extend(make_child_night_masks(x.sprite))
+
+        return replace(thing, child_sprites=new_child_sprites)
 
     raise NotImplementedError()
