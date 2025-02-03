@@ -12,11 +12,17 @@ def lookup(thing, w, h, x, y, t):
 
 
 def calc_mode(d):
+    reverse_lookup = {}
     value_count = {}
     for v in d.values():
-        value_count[v] = value_count.get(v, 0) + 1
+        if isinstance(v, int):
+            k = v
+        else:
+            k = id(v)
+            reverse_lookup[k] = v
+        value_count[k] = value_count.get(k, 0) + 1
     max_count = max(value_count.values())
-    return [v for v, c in value_count.items() if c == max_count][0]
+    return [reverse_lookup.get(v, v) for v, c in value_count.items() if c == max_count][0]
 
 
 switch_cache = {}
@@ -80,13 +86,15 @@ class StationTileSwitch:
     def to_index(self, sprite_list):
         if id(sprite_list) in self.to_index_cache:
             return self.to_index_cache[id(sprite_list)]
-        mode = calc_mode(self.ranges)
+
         f = lambda v: v if isinstance(v, int) else v.to_index(sprite_list)
-        new_ranges = {k: f(v) for k, v in self.ranges.items() if v != mode}
+        ranges = {k: f(v) for k, v in self.ranges.items()}
+        mode = calc_mode(ranges)
+        new_ranges = {k: v for k, v in ranges.items() if v != mode}
         if len(new_ranges) == 0:
-            ret = f(mode)
+            ret = mode
         else:
-            ret = make_switch(ranges=new_ranges, default=f(mode), code=self.code)
+            ret = make_switch(ranges=new_ranges, default=mode, code=self.code)
         self.to_index_cache[id(sprite_list)] = ret
         return ret
 
