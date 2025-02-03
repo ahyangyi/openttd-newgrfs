@@ -67,3 +67,33 @@ def test_switch_compression_6():
     assert len(a._ranges) == 1
     assert all(isinstance(v.ref, grf.Switch) for v in a._ranges)
     assert all(len(v.ref._ranges) == 1 for v in a._ranges)
+
+
+def test_switch_compression_7():
+    a = make_horizontal_switch(lambda l, r: int(l == 7 or r == 7)).to_index(None)
+    assert isinstance(a, grf.Switch)
+    assert len(a._ranges) == 1
+    assert all(isinstance(v.ref, grf.Switch) for v in a._ranges)
+    assert all(len(v.ref._ranges) == 1 for v in a._ranges)
+
+
+def test_switch_compression_8():
+    a = make_horizontal_switch(lambda l, r: int(3 <= l <= 13)).to_index(None)
+    assert isinstance(a, grf.Switch)
+    assert len(a._ranges) == 1
+    assert all(isinstance(v.ref, int) for v in a._ranges)
+
+
+def test_switch_compression_9():
+    a = make_horizontal_switch(lambda l, r: int(3 <= r <= 13)).to_index(None)
+    assert isinstance(a, grf.Switch)
+    assert len(a._ranges) == 1
+    assert all(isinstance(v.ref, int) for v in a._ranges)
+
+
+def test_switch_compression_10():
+    a = make_horizontal_switch(lambda l, r: int(3 <= l <= 13 ^ 3 <= r <= 13)).to_index(None)
+    assert isinstance(a, grf.Switch)
+    assert len(a._ranges) == 1
+    assert all(isinstance(v.ref, grf.Switch) for v in a._ranges)
+    assert all(len(v.ref._ranges) == 1 for v in a._ranges)
