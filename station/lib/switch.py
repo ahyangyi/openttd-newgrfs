@@ -14,13 +14,21 @@ def lookup(thing, w, h, x, y, t):
 def find_default_element(d):
     reverse_lookup = {}
     value_count = {}
-    for v in d.values():
+
+    prev_k = None
+    for k, v in sorted(d.items()):
         if isinstance(v, int):
-            k = v
+            key = v
         else:
-            k = id(v)
-            reverse_lookup[k] = v
-        value_count[k] = value_count.get(k, 0) + 1
+            key = id(v)
+            reverse_lookup[key] = v
+
+        if prev_k is None or k != prev_k + 1 or v != prev_v:
+            value_count[key] = value_count.get(key, 0) + 1
+
+        prev_k = k
+        prev_v = v
+
     max_count = max(value_count.values())
     return [reverse_lookup.get(v, v) for v, c in value_count.items() if c == max_count][0]
 
