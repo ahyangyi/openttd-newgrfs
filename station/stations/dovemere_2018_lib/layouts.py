@@ -230,8 +230,8 @@ def register(base_id, step_id, l, symmetry, internal_category, name, broken_near
         layout.category = get_category(internal_category, i >= cnt // 2, layout.notes, layout.traversable)
     l = symmetry.create_variants(l)
     l = l.symmetry_fmap(lambda x: add_night_masks(x))
+    layouts.extend(symmetry.get_all_variants(l))
     cur_entries = symmetry.get_all_entries(l)
-    layouts.extend(cur_entries)
     cnt = len(cur_entries)
     for i, entry in enumerate(cur_entries):
         if broken_near_hack:
