@@ -277,17 +277,11 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
     def get_parentsprite_offset(g, scale):
         if isinstance(g, NewGraphics):
             s = g.sprite
-            if isinstance(s, LazyAlternativeSprites):
-                cfg = s.voxel.config
-                mc = cfg.get("agrf_manual_crop", (0, 0))
-                ofs = NewGeneralSprite.estimate_offset(s, scale)
-
-                return -mc[0] * scale - ofs[0], -mc[1] * scale - ofs[1]
             if isinstance(s, grf.AlternativeSprites):
                 ofs = NewGeneralSprite.estimate_offset(s, scale)
                 assert not ofs[2], s
 
-                return -ofs[0], -ofs[1]
+                return ofs[0], ofs[1]
 
         raise NotImplementedError(g)
 
@@ -298,9 +292,8 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
             if isinstance(s, LazyAlternativeSprites):
                 cfg = s.voxel.config
                 cs = cfg.get("agrf_childsprite", (0, 0))
-                ofs = NewGeneralSprite.estimate_offset(s, scale)
 
-                return ofs[0] - cs[0] * scale, ofs[1] - cs[1] * scale
+                return cs[0] * scale, cs[1] * scale
 
         raise NotImplementedError(g)
 
@@ -319,7 +312,7 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
             childsprite_offset = NewGeneralSprite.get_childsprite_offset(c.sprite, scale)
 
             masked_sprite.move(
-                childsprite_offset[0] - parentsprite_offset[0], childsprite_offset[1] - parentsprite_offset[1]
+                parentsprite_offset[0] - childsprite_offset[0], parentsprite_offset[1] - childsprite_offset[1]
             )
 
             ret.blend_over(masked_sprite)
