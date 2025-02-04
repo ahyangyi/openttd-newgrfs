@@ -271,7 +271,7 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
         sprite = s.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=32)
         if sprite is None:
             sprite = s.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
-        return sprite.xofs, sprite.yofs
+        return sprite.xofs, sprite.yofs, sprite.crop
 
     @staticmethod
     def get_parentsprite_offset(g, scale):
@@ -283,6 +283,11 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
                 ofs = NewGeneralSprite.estimate_offset(s, scale)
 
                 return -mc[0] * scale - ofs[0], -mc[1] * scale - ofs[1]
+            if isinstance(s, grf.AlternativeSprites):
+                ofs = NewGeneralSprite.estimate_offset(s, scale)
+                assert not ofs[2], s
+
+                return -ofs[0], -ofs[1]
 
         raise NotImplementedError(g)
 
