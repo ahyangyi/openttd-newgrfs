@@ -1,5 +1,6 @@
 import grf
 from station.lib import AStation, AMetaStation
+from grfobject.lib import AObject
 from station.lib.parameters import parameter_list
 from .dovemere_2018_lib.layouts import *
 from .dovemere_2018_lib import demos, common_cb, common_code, Registers
@@ -11,8 +12,26 @@ from .dovemere_2018_lib.flexible_stations.side import side_stations
 from .dovemere_2018_lib.flexible_stations.side_third import side_third_stations
 from agrf.strings import String
 
+station_objects = []
 modular_stations = []
 for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
+    if entry.category[-1] in {ord(x) for x in [b"\xB0"]} and entry.id == 0xFB62:
+        station_objects.append(
+            AObject(
+                id=len(objects) + len(station_objects),
+                translation_name="STATION",
+                layouts=[entry, entry.M],
+                class_label=entry.category,
+                climates_available=grf.ALL_CLIMATES,
+                size=(1, 1),
+                num_views=2,
+                introduction_date=0,
+                end_of_life_date=0,
+                height=1,
+                flags=grf.Object.Flags.ONLY_IN_GAME,
+                doc_layout=entry,
+            )
+        )
     enable_if = [parameter_list.index("E88A9CA_ENABLE_MODULAR")]
     for platform_class in ["concrete", "brick"]:
         if platform_class in entry.notes:
@@ -139,4 +158,5 @@ the_stations = AMetaStation(
         "Station Square": [demos.west_plaza],
     },
     road_stops=roadstops,
+    objects=station_objects,
 )
