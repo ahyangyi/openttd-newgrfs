@@ -267,22 +267,35 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
         return replace(self, sprite=f(self.sprite), child_sprites=[f(c) for c in self.child_sprites])
 
     @staticmethod
-    def get_parentsprite_offset(g):
+    def estimate_offset(s, scale):
+        sprite = s.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=32)
+        if sprite is None:
+            sprite = s.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
+        return sprite.xofs, sprite.yofs
+
+    @staticmethod
+    def get_parentsprite_offset(g, scale):
         if isinstance(g, NewGraphics):
             s = g.sprite
             if isinstance(s, LazyAlternativeSprites):
                 cfg = s.voxel.config
-                return cfg.get("agrf_manual_crop", (0, 0))
+                mc = cfg.get("agrf_manual_crop", (0, 0))
+                ofs = NewGeneralSprite.estimate_offset(s, scale)
+
+                return -mc[0] * scale - ofs[0], -mc[1] * scale - ofs[1]
 
         raise NotImplementedError(g)
 
     @staticmethod
-    def get_childsprite_offset(g):
+    def get_childsprite_offset(g, scale):
         if isinstance(g, NewGraphics):
             s = g.sprite
             if isinstance(s, LazyAlternativeSprites):
                 cfg = s.voxel.config
-                return cfg.get("agrf_childsprite", (0, 0))
+                cs = cfg.get("agrf_childsprite", (0, 0))
+                ofs = NewGeneralSprite.estimate_offset(s, scale)
+
+                return ofs[0] - cs[0] * scale, ofs[1] - cs[1] * scale
 
         raise NotImplementedError(g)
 
@@ -297,8 +310,12 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
         for c in self.child_sprites:
             masked_sprite = c.graphics(scale, bpp, climate=climate, subclimate=subclimate)
 
-            parentsprite_offset = NewGeneralSprite.get_parentsprite_offset(self.sprite)
-            childsprite_offset = NewGeneralSprite.get_childsprite_offset(c.sprite)
+            parentsprite_offset = NewGeneralSprite.get_parentsprite_offset(self.sprite, scale)
+            childsprite_offset = NewGeneralSprite.get_childsprite_offset(c.sprite, scale)
+
+            masked_sprite.move(
+                childsprite_offset[0] - parentsprite_offset[0], childsprite_offset[1] - parentsprite_offset[1]
+            )
 
             ret.blend_over(masked_sprite)
 
