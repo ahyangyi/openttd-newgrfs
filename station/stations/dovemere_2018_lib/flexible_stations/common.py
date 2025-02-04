@@ -1,10 +1,18 @@
 import grf
-from station.lib import make_horizontal_switch, make_vertical_switch, ALayout, AParentSprite, LayoutSprite, Demo
+from station.lib import (
+    make_horizontal_switch,
+    make_vertical_switch,
+    ALayout,
+    AParentSprite,
+    LayoutSprite,
+    Demo,
+    Registers,
+)
 from ..layouts import named_tiles, layouts, flexible_entries
 
 
 def make_demo(switch, w, h, preswitch=None):
-    demo = Demo("", switch.demo(w, h, preswitch))
+    demo = Demo(switch.demo(w, h, preswitch))
     for i, var in enumerate([demo, demo.M]):
         sprite = grf.AlternativeSprites(
             *[
@@ -21,7 +29,12 @@ def make_demo(switch, w, h, preswitch=None):
                 for bpp in [32]
             ]
         )
-        layout = ALayout(None, [AParentSprite(sprite, (16, 16, 48), (0, 0, 0))], False, category=b"\xe8\x8a\x9cA")
+        layout = ALayout(
+            None,
+            [AParentSprite(sprite, (16, 16, 48), (0, 0, 0), flags={"add_palette": Registers.RECOLOUR_OFFSET})],
+            False,
+            category=b"\xe8\x8a\x9cA",
+        )
         layouts.append(layout)
         if i == 0:
             ret = layout
@@ -54,73 +67,72 @@ def make_row(onetile, twotile, lwall, general, window, window_extender, threetil
     )
 
 
-def make_front_row(suffix, fallback_suffix=None):
+def make_front_row(suffix):
     row = [
-        named_tiles[c + suffix] if c + suffix in named_tiles else named_tiles[c + fallback_suffix]
+        named_tiles[(c, *suffix)]
         for c in ["v_end_gate", "corner_gate", "corner", "front_normal", "front_gate", "front_gate_extender"]
     ]
-    row[1] = make_vertical_switch(lambda t, d: named_tiles["corner_gate_2" + suffix] if t == 1 else row[1])
-    row[2] = make_vertical_switch(lambda t, d: named_tiles["corner_2" + suffix] if t == 1 else row[2])
+    row[1] = make_vertical_switch(lambda t, d: named_tiles[("corner_gate_2", *suffix)] if t == 1 else row[1])
+    row[2] = make_vertical_switch(lambda t, d: named_tiles[("corner_2", *suffix)] if t == 1 else row[2])
     return make_row(*row)
 
 
-def get_tile(name, desc, fallback_suffix=None):
-    key = f"{name}{desc}"
-    if key not in named_tiles:
-        key = f"{name}{fallback_suffix}"
-    return named_tiles[key]
+def get_tile(name, desc):
+    return named_tiles[(name, *desc)]
 
 
 def reverse(x):
     if x is None:
         return None
-    return x[:-1] + {"f": "n", "n": "f", "d": "d"}[x[-1]]
+    return x[:-1] + ({"f": "n", "n": "f", "d": "d"}[x[-1]],)
 
 
-def get_left_index_suffix(t, d, suffix, fallback_suffix=None):
+def get_left_index_suffix(t, d, suffix):
     if d > t:
-        return get_left_index_suffix(d, t, reverse(suffix), reverse(fallback_suffix)).T
+        return get_left_index_suffix(d, t, reverse(suffix)).T
     if t + d == 2:
-        return get_tile("side_a2", suffix, fallback_suffix)
+        return get_tile("side_a2", suffix)
     if t + d == 3:
-        return get_tile("side_a3", suffix, fallback_suffix)
+        return get_tile("side_a3", suffix)
     if t + d == 4:
-        return [get_tile("side_a", suffix, fallback_suffix), get_tile("side_b2", suffix, fallback_suffix)][d - 1]
+        return [get_tile("side_a", suffix), get_tile("side_b2", suffix)][d - 1]
     if t == d:
-        return get_tile("side_c", suffix, fallback_suffix)
+        return get_tile("side_c", suffix)
     if d == 1:
-        return get_tile("side_a", suffix, fallback_suffix)
+        return get_tile("side_a", suffix)
     if d == 2:
-        return get_tile("side_b", suffix, fallback_suffix)
-    return get_tile("side_c", suffix, fallback_suffix)
+        return get_tile("side_b", suffix)
+    return get_tile("side_c", suffix)
 
 
-def get_left_index_suffix_2(t, d, suffix, fallback_suffix):
+def get_left_index_suffix_2(t, d, suffix):
     if t == d == 1:
-        return get_tile("side_a2_windowed", suffix, fallback_suffix)
+        return get_tile("side_a2_windowed", suffix)
     if d == 1:
-        return get_tile("side_a3_windowed", suffix, fallback_suffix)
+        return get_tile("side_a3_windowed", suffix)
     if t == 1:
-        return get_tile("side_a3_windowed", reverse(suffix), reverse(fallback_suffix)).T
-    return get_tile("side_d", suffix, fallback_suffix)
+        return get_tile("side_a3_windowed", reverse(suffix)).T
+    return get_tile("side_d", suffix)
 
 
-def make_central_row(l, r, suffix, fallback_suffix=None):
+def make_central_row(l, r, suffix):
     return horizontal_layout(
         l,
         r,
-        make_vertical_switch(lambda t, d: get_tile("v_central", suffix, fallback_suffix)),
-        make_vertical_switch(lambda t, d: get_left_index_suffix_2(t, d, suffix, fallback_suffix)),
-        make_vertical_switch(lambda t, d: get_left_index_suffix(t, d, suffix, fallback_suffix)),
-        make_vertical_switch(lambda t, d: get_tile("central", suffix, fallback_suffix)),
-        make_vertical_switch(lambda t, d: get_tile("central_windowed", suffix, fallback_suffix)),
-        make_vertical_switch(lambda t, d: get_tile("central_windowed_extender", suffix, fallback_suffix)),
+        make_vertical_switch(lambda t, d: get_tile("v_central", suffix)),
+        make_vertical_switch(lambda t, d: get_left_index_suffix_2(t, d, suffix)),
+        make_vertical_switch(lambda t, d: get_left_index_suffix(t, d, suffix)),
+        make_vertical_switch(lambda t, d: get_tile("central", suffix)),
+        make_vertical_switch(lambda t, d: get_tile("central_windowed", suffix)),
+        make_vertical_switch(lambda t, d: get_tile("central_windowed_extender", suffix)),
     )
 
 
 def determine_platform_odd(t, d):
     if d > t:
         return {"f": "n", "n": "f", "d": "d"}[determine_platform_odd(d, t)]
+    if t == 15 and 13 <= d <= 15:
+        return "d"
     if (t + d) % 2 == 1:
         return "fn"[d % 2]
     if (t + d) % 4 == 0:
@@ -135,6 +147,8 @@ def determine_platform_odd(t, d):
 def determine_platform_even(t, d):
     if d > t:
         return {"f": "n", "n": "f", "d": "d"}[determine_platform_even(d, t)]
+    if t == 15 and 14 <= d <= 15:
+        return "d"
     if (t + d) % 2 == 1:
         return "nf"[d % 2]
     if (t + d) % 4 == 0:

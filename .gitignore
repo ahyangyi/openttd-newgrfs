@@ -5,3 +5,5 @@ gopath
 /*.vox
 .cache
 render
+*.code-workspace
+.directory

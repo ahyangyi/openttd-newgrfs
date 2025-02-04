@@ -1,17 +1,32 @@
 import grf
 from station.lib.utils import class_label_printable
 from agrf.magic import Switch
+from agrf.utils import unique
 
 
 class ARoadStop(grf.SpriteGenerator):
-    def __init__(self, *, id, translation_name, layouts, callbacks=None, **props):
+    def __init__(
+        self,
+        *,
+        id,
+        translation_name,
+        graphics,
+        callbacks=None,
+        doc_layout=None,
+        is_waypoint=False,
+        enable_if=None,
+        **props,
+    ):
         super().__init__()
         self.id = id
         self.translation_name = translation_name
-        self.layouts = layouts
+        self.graphics = graphics
         if callbacks is None:
             callbacks = {}
         self.callbacks = grf.make_callback_manager(grf.ROAD_STOP, callbacks)
+        self.doc_layout = doc_layout
+        self.is_waypoint = is_waypoint
+        self.enable_if = enable_if
         self._props = props
 
     @property
@@ -35,21 +50,40 @@ class ARoadStop(grf.SpriteGenerator):
             for s in self.sprites:
                 res.append(s)
 
-        layouts = []
-        for i, layout in enumerate(self.layouts):
-            layouts.append(layout.to_action2(feature=grf.ROAD_STOP, sprite_list=sprites))
+        graphics = self.graphics.to_action2(feature=grf.ROAD_STOP, sprite_list=sprites)
         self.callbacks.graphics = Switch(
-            ranges={i: layouts[i] for i in range(len(layouts))}, default=layouts[0], code="view"
+            ranges={0: graphics},
+            default=graphics,
+            code="""
+TEMP[0x03] = (terrain_type & 0x4) == 0x4
+""",
         )
         self.callbacks.set_flag_props(self._props)
+
+        if self.is_waypoint:
+            class_label = b"\xFF" + self._props["class_label"][1:]
+        else:
+            class_label = self._props["class_label"]
+
+        res.append(grf.If(is_static=True, variable=0xA1, condition=0x04, value=0x1E000000, skip=255, varsize=4))
+        if self.is_waypoint:
+            res.append(grf.If(is_static=True, variable=0xA1, condition=0x04, value=0x1F000000, skip=255, varsize=4))
+        if self.enable_if:
+            for cond in self.enable_if:
+                res.append(grf.If(is_static=False, variable=cond, condition=0x02, value=0x0, skip=255, varsize=4))
 
         res.append(
             definition := grf.Define(
                 feature=grf.ROAD_STOP,
                 id=self.id,
-                props={"class_label": self._props["class_label"], **self._props, **extra_props},
+                props={
+                    "class_label": class_label,
+                    **{k: v for k, v in self._props.items() if k != "class_label"},
+                    **extra_props,
+                },
             )
         )
+        res.append(grf.Label(255, bytes()))
 
         res.extend(self.callbacks.make_map_action(definition))
 
@@ -57,4 +91,5 @@ class ARoadStop(grf.SpriteGenerator):
 
     @property
     def sprites(self):
-        return [*dict.fromkeys([sub for l in self.layouts for sub in l.sprites])]
+        # FIXME recursive
+        return unique(sub for l in self.graphics._ranges for sub in l.ref.sprites)

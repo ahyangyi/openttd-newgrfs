@@ -1,13 +1,43 @@
 China Set: Stations & Platforms Addons: Wuhu Changelog
 =========================
 
-0.3.0 (work-in-progress)
+0.3.4 (Work-in-progress)
+------------------------
+Make parameters stable -- future changes to parameters should no longer mess up your existing settings. The functionality was introduced in 0.3.3 but the stability was accidentally broken in the same version, so 0.3.4 will be the first version to actually support this.
+
+0.3.3 (2025-01-27)
+------------------------
+Preliminary traditional Chinese support.
+
+Fix the layout for big (>= 30 rows) stations. They are still imperfect due to technical limitations, but should be slightly more pleasing than before.
+
+New parameters to choose between using company colours or pre-selected colours.
+
+Optimize the size of the newGRF (3 MiB smaller than before).
+
+0.3.2 (2024-12-18)
+------------------------
+Fix a cropping issue for preview sprites.
+
+0.3.1 (2024-10-13)
+------------------------
+Platform and shelter parameters now also control the availability of platform tiles.
+
+Make the modern Wuhu Station preview images shorter, so they fit in the preview window.
+
+0.3.0 (2024-10-02)
 ------------------------
 Add the 1934 Wuhu Station.
 
 Add snow and escalator graphics for station buildings.
 
 Designate station tiles without platforms as waypoints.
+
+Add bus stops, road waypoints and objects (not included in 0.3.0 release) to use alongside the station.
+
+Support older versions of OpenTTD.
+
+Add more parameters to control what's available, and also reduce the UI clutter.
 
 Bugfix: station templates with shelter type 2 sometimes included wrong shelter graphics.
 

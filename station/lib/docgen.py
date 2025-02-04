@@ -9,8 +9,8 @@ def gen_docs(string_manager, metastations):
     for i, metastation in enumerate(metastations):
         metastation_label = metastation.class_label_plain
         translation = get_translation(string_manager[f"STR_METASTATION_CLASS_{metastation_label}"], 0x7F)
-        os.makedirs(os.path.join(prefix, "img", metastation_label, "layouts"), exist_ok=True)
-        os.makedirs(os.path.join(prefix, "img", metastation_label, "tiles"), exist_ok=True)
+        for kind in ["layouts", "stations", "waypoints", "road_stops", "objects"]:
+            os.makedirs(os.path.join(prefix, "img", metastation_label, kind), exist_ok=True)
 
         with open(os.path.join(prefix, f"{metastation_label}.md"), "w") as f:
             print(
@@ -25,28 +25,48 @@ has_children: True
                 file=f,
             )
 
-        for waypoint in [False, True]:
+        for kind in ["waypoints", "stations", "road_stops", "objects"]:
+            if kind == "road_stops":
+                pool = [x for x in metastation.road_stops if not x.is_waypoint]
+            elif kind == "objects":
+                pool = metastation.objects
+            else:
+                pool = metastation.stations
+
             if metastation.categories is None:
-                subsections = {None: [x for x in metastation.doc_layouts if ("waypoint" not in x.notes) ^ waypoint]}
+                subsections = {
+                    None: [
+                        x
+                        for x in pool
+                        if (("waypoint" not in x.doc_layout.notes) ^ (kind == "waypoints"))
+                        and "noshow" not in x.doc_layout.notes
+                    ]
+                }
             else:
                 subsections = {k: [] for k in metastation.categories}
-                for layout in metastation.doc_layouts:
-                    if ("waypoint" not in layout.notes) ^ waypoint:
-                        subsections[layout.category].append(layout)
+                for layout in pool:
+                    if (
+                        ("waypoint" not in layout.doc_layout.notes) ^ (kind == "waypoints")
+                    ) and "noshow" not in layout.doc_layout.notes:
+                        subsections[layout.doc_layout.category].append(layout)
 
             if all(len(v) == 0 for v in subsections.values()):
                 continue
 
-            with open(
-                os.path.join(prefix, f"{metastation_label}_{'waypoints' if waypoint else 'building_blocks'}.md"), "w"
-            ) as f:
+            with open(os.path.join(prefix, f"{metastation_label}_{kind}.md"), "w") as f:
+                title, nav_order = {
+                    "stations": ("Building Blocks", 0),
+                    "waypoints": ("Waypoints", 1),
+                    "road_stops": ("Road Stops", 2),
+                    "objects": ("Objects", 4),
+                }[kind]
                 print(
                     f"""---
 layout: default
-title: {"Waypoints" if waypoint else "Building Blocks"}
+title: {title}
 parent: {translation}
 grand_parent: "CNS Addon: Wuhu"
-nav_order: {2 if waypoint else 1}
+nav_order: {nav_order}
 ---
 """,
                     file=f,
@@ -61,34 +81,39 @@ nav_order: {2 if waypoint else 1}
                             cat_name = cat_name.split("-")[-1].strip()
                         cat_name = remove_control_letters(cat_name)
                         print(f"## {cat_name}", file=f)
-                    for layout in sorted(subsections[sub], key=lambda x: x.station_id):
-                        img = layout.graphics(4, 32, remap=get_1cc_remap(CompanyColour.BLUE)).crop().to_pil_image()
-                        if "station_id" in dir(layout):
-                            idstr = f"{layout.station_id:04X}"
-                        img.save(os.path.join(prefix, "img", f"{metastation_label}/tiles/{idstr}.png"))
+                    for layout in sorted(subsections[sub], key=lambda x: x.id):
+                        img = (
+                            layout.doc_layout.graphics(4, 32, remap=get_1cc_remap(CompanyColour.BLUE))
+                            .crop()
+                            .to_pil_image()
+                        )
+                        idstr = f"{layout.id:04X}"
+                        img.save(os.path.join(prefix, "img", f"{metastation_label}/{kind}/{idstr}.png"))
                         print(
                             f"""
 <figure style="display:inline-block">
-  <img src="img/{metastation_label}/tiles/{idstr}.png" alt="{idstr}" width="64"/>
+  <img src="img/{metastation_label}/{kind}/{idstr}.png" alt="{idstr}" width="64"/>
   <figcaption style="text-align:center">{idstr}</figcaption>
 </figure>
 """,
                             file=f,
                         )
 
-        with open(os.path.join(prefix, f"{metastation_label}_layouts.md"), "w") as f:
-            print(
-                f"""---
+        for demoi, (demok, demov) in enumerate(metastation.demos.items()):
+            os.makedirs(os.path.join(prefix, "img", metastation_label, "layouts", demok), exist_ok=True)
+            with open(os.path.join(prefix, f"{metastation_label}_{demok}.md"), "w") as f:
+                print(
+                    f"""---
 layout: default
-title: Sample Layouts
+title: {demok}
 parent: {translation}
 grand_parent: "CNS Addon: Wuhu"
-nav_order: 3
+nav_order: {5+demoi}
 ---
 """,
-                file=f,
-            )
-            for i, demo in enumerate(metastation.demos):
-                img = demo.graphics(4, 32).crop().resize(1920, 1080).to_pil_image()
-                img.save(os.path.join(prefix, "img", f"{metastation_label}/layouts/{i}.png"))
-                print(f"## {demo.title}\n\n![](img/{metastation_label}/layouts/{i}.png)", file=f)
+                    file=f,
+                )
+                for i, demo in enumerate(demov):
+                    img = demo.graphics(4, 32).crop().resize(1920, 1080).to_pil_image()
+                    img.save(os.path.join(prefix, "img", f"{metastation_label}/layouts/{demok}/{i}.png"))
+                    print(f"## {demo.title}\n\n![](img/{metastation_label}/layouts/{demok}/{i}.png)", file=f)
