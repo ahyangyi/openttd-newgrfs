@@ -9,7 +9,7 @@ from agrf.lib.building.registers import Registers
 from agrf.graphics import LayeredImage, SCALE_TO_ZOOM
 from agrf.graphics.spritesheet import LazyAlternativeSprites
 from agrf.magic import CachedFunctorMixin, TaggedCachedFunctorMixin
-from agrf.utils import unique_tuple
+from agrf.utils import unique, unique_tuple
 from agrf.pkg import load_third_party_image
 
 
@@ -266,6 +266,39 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
             return replace(self, position=f(self.position))
         return replace(self, sprite=f(self.sprite), child_sprites=[f(c) for c in self.child_sprites])
 
+    @staticmethod
+    def estimate_offset(s, scale):
+        sprite = s.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=32)
+        if sprite is None:
+            sprite = s.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
+        return sprite.xofs, sprite.yofs
+
+    @staticmethod
+    def get_parentsprite_offset(g, scale):
+        if isinstance(g, NewGraphics):
+            s = g.sprite
+            if isinstance(s, LazyAlternativeSprites):
+                cfg = s.voxel.config
+                mc = cfg.get("agrf_manual_crop", (0, 0))
+                ofs = NewGeneralSprite.estimate_offset(s, scale)
+
+                return -mc[0] * scale - ofs[0], -mc[1] * scale - ofs[1]
+
+        raise NotImplementedError(g)
+
+    @staticmethod
+    def get_childsprite_offset(g, scale):
+        if isinstance(g, NewGraphics):
+            s = g.sprite
+            if isinstance(s, LazyAlternativeSprites):
+                cfg = s.voxel.config
+                cs = cfg.get("agrf_childsprite", (0, 0))
+                ofs = NewGeneralSprite.estimate_offset(s, scale)
+
+                return ofs[0] - cs[0] * scale, ofs[1] - cs[1] * scale
+
+        raise NotImplementedError(g)
+
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.flags.get("dodraw") == Registers.SNOW and subclimate != "snow":
             return LayeredImage.empty()
@@ -276,7 +309,15 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
 
         for c in self.child_sprites:
             masked_sprite = c.graphics(scale, bpp, climate=climate, subclimate=subclimate)
-            ret.blend_over(masked_sprite, childsprite=isinstance(self.position, BBoxPosition))
+
+            parentsprite_offset = NewGeneralSprite.get_parentsprite_offset(self.sprite, scale)
+            childsprite_offset = NewGeneralSprite.get_childsprite_offset(c.sprite, scale)
+
+            masked_sprite.move(
+                childsprite_offset[0] - parentsprite_offset[0], childsprite_offset[1] - parentsprite_offset[1]
+            )
+
+            ret.blend_over(masked_sprite)
 
         return ret
 
@@ -564,7 +605,7 @@ class ALayout:
 
     @property
     def sprites(self):
-        return list(dict.fromkeys([sub for s in [self.ground_sprite] + self.parent_sprites for sub in s.sprites]))
+        return unique(sub for s in [self.ground_sprite] + self.parent_sprites for sub in s.sprites)
 
     def get_fingerprint(self):
         return {
