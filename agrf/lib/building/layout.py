@@ -298,6 +298,8 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
                 cs = cfg.get("agrf_childsprite", (0, 0))
 
                 return cs[0] * scale, cs[1] * scale
+            elif isinstance(s, grf.AlternativeSprites):
+                return 0, 0
 
         raise NotImplementedError(g)
 
