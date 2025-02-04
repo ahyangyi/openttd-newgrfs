@@ -41,7 +41,7 @@ for pclass in platform_classes:
         named_tiles[("h_gate_extender", pclass, None, "corridor")],
     )
     for sclass in shelter_classes:
-        front[pclass][sclass] = make_front_row((pclass, sclass, "third_f"), fallback_suffix=(pclass, None, "third_f"))
+        front[pclass][sclass] = make_front_row((pclass, sclass, "third_f"))
 
         h_n[pclass][sclass] = make_horizontal_switch(lambda l, r: make_central_row(l, r, (pclass, sclass, "n")))
         h_f[pclass][sclass] = make_horizontal_switch(lambda l, r: make_central_row(l, r, (pclass, sclass, "f")))
@@ -93,7 +93,7 @@ for p, pclass in enumerate(platform_classes):
                 cargo_threshold=40,
                 disabled_platforms=0b1,
                 callbacks={
-                    "select_tile_layout": cb24.to_index(None),
+                    "select_tile_layout": cb24.to_index(),
                     "select_sprite_layout": grf.DualCallback(
                         default=cb14[pclass][sclass].to_index(layouts), purchase=layouts.index(demo_layout)
                     ),
@@ -127,7 +127,7 @@ for p, pclass in enumerate(platform_classes):
                 cargo_threshold=40,
                 disabled_platforms=0b100,
                 callbacks={
-                    "select_tile_layout": cb24.to_index(None),
+                    "select_tile_layout": cb24.to_index(),
                     "select_sprite_layout": grf.DualCallback(
                         default=cb14[pclass][sclass].to_index(layouts), purchase=layouts.index(demo_layout)
                     ),

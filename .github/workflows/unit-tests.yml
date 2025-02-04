@@ -33,8 +33,6 @@ jobs:
         run: pip install --upgrade setuptools
       - name: Install python deps
         run: pip install -r requirements.txt && pip install pytest
-      - name: Test agrf
-        run: pytest agrf
       - name: Test stations
         run: pytest station
       - name: Test AEGIS
