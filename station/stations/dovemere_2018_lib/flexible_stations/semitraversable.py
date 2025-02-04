@@ -15,9 +15,7 @@ single = make_row(tiny_untraversable, h_end_gate_untraversable, h_end_untraversa
 
 semitraversable_stations = []
 for p, pclass in enumerate(platform_classes):
-    pclass_desc = "_" + pclass
     for s, sclass in enumerate(shelter_classes):
-        sclass_desc = "" if sclass == "shelter_1" else "_" + sclass
         front = make_front_row((pclass, sclass, "platform"))
         cb24 = make_vertical_switch(
             lambda t, d: 0 if t == 0 or d == 0 else {"n": 2, "f": 4, "d": 6}[determine_platform_odd(t, d)], cb24=True
@@ -43,7 +41,7 @@ for p, pclass in enumerate(platform_classes):
                 non_traversable_tiles=0b11,
                 disabled_platforms=0b11,
                 callbacks={
-                    "select_tile_layout": cb24.to_index(None),
+                    "select_tile_layout": cb24.to_index(),
                     "select_sprite_layout": grf.DualCallback(
                         default=cb14.to_index(layouts), purchase=layouts.index(demo_layout)
                     ),
@@ -88,7 +86,7 @@ for p, pclass in enumerate(platform_classes):
                 non_traversable_tiles=0b11,
                 disabled_platforms=0b111,
                 callbacks={
-                    "select_tile_layout": cb24.to_index(None),
+                    "select_tile_layout": cb24.to_index(),
                     "select_sprite_layout": grf.DualCallback(
                         default=cb14.to_index(layouts), purchase=layouts.index(demo_layout)
                     ),
