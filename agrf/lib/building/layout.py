@@ -269,6 +269,43 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
             return replace(self, position=f(self.position))
         return replace(self, sprite=f(self.sprite), child_sprites=[f(c) for c in self.child_sprites])
 
+    @staticmethod
+    def estimate_offset(s, scale):
+        sprite = s.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=32)
+        if sprite is None:
+            sprite = s.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
+        return sprite.xofs, sprite.yofs, sprite.crop
+
+    @staticmethod
+    def get_parentsprite_offset(g, scale):
+        if isinstance(g, NewGraphics):
+            s = g.sprite
+            if isinstance(s, grf.AlternativeSprites):
+                ofs = NewGeneralSprite.estimate_offset(s, scale)
+
+                if isinstance(s, LazyAlternativeSprites):
+                    assert "agrf_manual_crop" in s.voxel.config
+                else:
+                    assert not ofs[2], s
+
+                return ofs[0], ofs[1]
+
+        raise NotImplementedError(g)
+
+    @staticmethod
+    def get_childsprite_offset(g, scale):
+        if isinstance(g, NewGraphics):
+            s = g.sprite
+            if isinstance(s, LazyAlternativeSprites):
+                cfg = s.voxel.config
+                cs = cfg.get("agrf_childsprite", (0, 0))
+
+                return cs[0] * scale, cs[1] * scale
+            elif isinstance(s, grf.AlternativeSprites):
+                return 0, 0
+
+        raise NotImplementedError(g)
+
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.flags.get("dodraw") == Registers.SNOW and subclimate != "snow":
             return LayeredImage.empty()
@@ -279,7 +316,17 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
 
         for c in self.child_sprites:
             masked_sprite = c.graphics(scale, bpp, climate=climate, subclimate=subclimate)
-            ret.blend_over(masked_sprite, childsprite=isinstance(self.position, BBoxPosition))
+
+            parentsprite_offset = NewGeneralSprite.get_parentsprite_offset(self.sprite, scale)
+            childsprite_offset = NewGeneralSprite.get_childsprite_offset(c.sprite, scale)
+
+            print(parentsprite_offset, childsprite_offset)
+
+            masked_sprite.move(
+                parentsprite_offset[0] - childsprite_offset[0], parentsprite_offset[1] - childsprite_offset[1]
+            )
+
+            ret.blend_over(masked_sprite)
 
         return ret
 

@@ -161,15 +161,13 @@ f2_empty_sprite = make_empty_variant(64, 68, *f2_empty_offset)
 def make_f2(v, sym):
     v = v.discard_layers(all_f1_layers + all_f2_layers + snow_layers, "f2")
     v.in_place_subset(sym.render_indices())
-    v.config["agrf_manual_crop"] = (0, 10)
-    # v.config["agrf_relative_childsprite"] = f2_empty_offset
+    v.config["agrf_relative_childsprite"] = f2_empty_offset
     s = sym.create_variants(v.spritesheet(zdiff=base_height + 0.5))
 
-    return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height))
-    # empty_parent = AParentSprite(f2_empty_sprite, (16, 16, overpass_height), (0, 0, base_height + platform_height))
-    # f2_child = AChildSprite(s, (0, 0), palette=0, flags={"add_palette": Registers.RECOLOUR_OFFSET})
+    empty_parent = AParentSprite(f2_empty_sprite, (16, 16, overpass_height), (0, 0, base_height + platform_height))
+    f2_child = AChildSprite(s, (0, 0), palette=0, flags={"add_palette": Registers.RECOLOUR_OFFSET})
 
-    # return empty_parent + f2_child
+    return empty_parent + f2_child
 
 
 def make_extra(v, sym, name, floor="f2"):
@@ -187,10 +185,8 @@ def make_extra(v, sym, name, floor="f2"):
     else:
         v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
     if floor == "f2":
-        # v.config["agrf_relative_childsprite"] = f2_empty_offset
-        v.config["agrf_childsprite"] = (0, -10)
-        # zdiff = base_height + 0.5
-        zdiff = 0.5
+        v.config["agrf_relative_childsprite"] = f2_empty_offset
+        zdiff = base_height + 0.5
     else:
         v.config["agrf_childsprite"] = (0, -40)
         zdiff = 0.5  # FIXME: unused with absolute offset
