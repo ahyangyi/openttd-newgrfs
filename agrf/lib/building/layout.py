@@ -13,6 +13,9 @@ from agrf.utils import unique, unique_tuple
 from agrf.pkg import load_third_party_image
 
 
+THIS_FILE = grf.PythonFile(__file__)
+
+
 @dataclass
 class DefaultGraphics:
     sprite_id: int
@@ -471,7 +474,7 @@ class ALayout:
 
         if self.ground_sprite is None:
             self.ground_sprite = empty_ground
-        assert isinstance(self.ground_sprite, NewGeneralSprite)
+        assert isinstance(self.ground_sprite, NewGeneralSprite), self.ground_sprite
         assert all(isinstance(s, NewGeneralSprite) for s in self.parent_sprites), [type(s) for s in self.parent_sprites]
         self.notes = self.notes or []
 
@@ -623,9 +626,58 @@ class ALayout:
         return unique_tuple(f for x in [self.ground_sprite] + self.parent_sprites for f in x.get_resource_files())
 
 
+class NightSprite(grf.Sprite):
+    def __init__(self, base_sprite, w, h, scale, bpp, xofs=0, yofs=0, darkness=0.75, **kwargs):
+        if "agrf_manual_crop" in base_sprite.voxel.config:
+            dx, dy = base_sprite.voxel.config["agrf_manual_crop"]
+            xofs -= dx * scale
+            yofs -= dy * scale
+        if "agrf_childsprite" in base_sprite.voxel.config:
+            dx, dy = base_sprite.voxel.config["agrf_childsprite"]
+            xofs += dx * scale
+            yofs += dy * scale
+
+        super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], xofs=xofs, yofs=yofs, **kwargs)
+        assert base_sprite is not None and "get_fingerprint" in dir(base_sprite), f"base_sprite {type(base_sprite)}"
+        self.base_sprite = base_sprite
+        self.scale = scale
+        self.bpp = bpp
+        self.darkness = darkness
+
+    def get_fingerprint(self):
+        return {
+            "base_sprite": self.base_sprite.get_fingerprint(),
+            "w": self.w,
+            "h": self.h,
+            "bpp": self.bpp,
+            "scale": self.scale,
+            "xofs": self.xofs,
+            "yofs": self.yofs,
+            "darkness": self.darkness,
+        }
+
+    def get_resource_files(self):
+        return self.base_sprite.get_resource_files() + [THIS_FILE]
+
+    def get_data_layers(self, context):
+        timer = context.start_timer()
+        sprite = self.base_sprite.get_sprite(zoom=SCALE_TO_ZOOM[self.scale], bpp=self.bpp)
+        if sprite is not None:
+            ret = LayeredImage.from_sprite(sprite).copy()
+        from agrf.graphics.cv.nightmask import make_night_mask
+
+        ret = make_night_mask(ret, darkness=self.darkness)
+        timer.count_composing()
+
+        return ret.w, ret.h, ret.rgb, ret.alpha, ret.mask
+
+
 class LayoutSprite(grf.Sprite):
     def __init__(self, layout, w, h, scale, bpp, **kwargs):
         super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], **kwargs)
+
+        assert layout is not None
+
         self.layout = layout
         self.scale = scale
         self.bpp = bpp
