@@ -11,6 +11,7 @@ def quickload(name, type):
         load_from="station/files/gorender.json",
         subset=type.render_indices(),
     )
+    v.config["agrf_manual_crop"] = (0, 0)
 
     sprite = type.create_variants(v.spritesheet())
     ps = AGroundSprite(sprite, flags={"add": Registers.ZERO})
