@@ -15,3 +15,4 @@ from .special_cn import special_demo_cn
 from .special_sa import special_demo_sa
 from .special_cp import special_demo_cp
 from .special_aq import special_demo_aq
+from .west_plaza import west_plaza

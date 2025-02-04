@@ -1,5 +1,6 @@
 import grf
 from agrf.actions import FakeReferencingAction, FakeReferencedAction
+from agrf.utils import unique
 from .utils import class_label_printable
 from .registers import code
 
@@ -16,6 +17,7 @@ class AStation(grf.SpriteGenerator):
         is_waypoint=False,
         doc_layout=None,
         enable_if=None,
+        extra_code="",
         **props,
     ):
         super().__init__()
@@ -28,6 +30,7 @@ class AStation(grf.SpriteGenerator):
         self.is_waypoint = is_waypoint
         self.doc_layout = doc_layout
         self.enable_if = enable_if
+        self.extra_code = extra_code
         self._props = {
             **props,
             "non_traversable_tiles": non_traversable_tiles,
@@ -53,7 +56,7 @@ class AStation(grf.SpriteGenerator):
             ).get_persistent_id()
 
         graphics = grf.GenericSpriteLayout(ent1=[0], ent2=[0], feature=grf.STATION)
-        self.callbacks.graphics = grf.Switch(ranges={0: graphics}, code=code, default=graphics)
+        self.callbacks.graphics = grf.Switch(ranges={0: graphics}, code=code + self.extra_code, default=graphics)
 
         cb_props = {}
         self.callbacks.set_flag_props(cb_props)
@@ -115,4 +118,4 @@ class AStation(grf.SpriteGenerator):
 
     @property
     def sprites(self):
-        return [*dict.fromkeys([sub for l in self.layouts for sub in l.sprites])]
+        return unique(sub for l in self.layouts for sub in l.sprites)

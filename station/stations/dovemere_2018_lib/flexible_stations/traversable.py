@@ -1,7 +1,7 @@
 import grf
 from station.lib import AStation, StationTileSwitch, make_vertical_switch, make_horizontal_switch
 from ..layouts import named_tiles, layouts
-from .. import common_cb
+from .. import common_cb, common_code
 from .common import (
     determine_platform_odd,
     determine_platform_even,
@@ -41,7 +41,7 @@ for pclass in platform_classes:
         named_tiles[("h_gate_extender", pclass, None, "corridor")],
     )
     for sclass in shelter_classes:
-        front[pclass][sclass] = make_front_row((pclass, sclass, "third_f"), fallback_suffix=(pclass, None, "third_f"))
+        front[pclass][sclass] = make_front_row((pclass, sclass, "third_f"))
 
         h_n[pclass][sclass] = make_horizontal_switch(lambda l, r: make_central_row(l, r, (pclass, sclass, "n")))
         h_f[pclass][sclass] = make_horizontal_switch(lambda l, r: make_central_row(l, r, (pclass, sclass, "f")))
@@ -93,12 +93,13 @@ for p, pclass in enumerate(platform_classes):
                 cargo_threshold=40,
                 disabled_platforms=0b1,
                 callbacks={
-                    "select_tile_layout": cb24.to_index(None),
+                    "select_tile_layout": cb24.to_index(),
                     "select_sprite_layout": grf.DualCallback(
                         default=cb14[pclass][sclass].to_index(layouts), purchase=layouts.index(demo_layout)
                     ),
                     **common_cb,
                 },
+                extra_code=common_code,
                 enable_if=[
                     parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
                     parameter_list.index(f"PLATFORM_{pclass.upper()}"),
@@ -126,12 +127,13 @@ for p, pclass in enumerate(platform_classes):
                 cargo_threshold=40,
                 disabled_platforms=0b100,
                 callbacks={
-                    "select_tile_layout": cb24.to_index(None),
+                    "select_tile_layout": cb24.to_index(),
                     "select_sprite_layout": grf.DualCallback(
                         default=cb14[pclass][sclass].to_index(layouts), purchase=layouts.index(demo_layout)
                     ),
                     **common_cb,
                 },
+                extra_code=common_code,
                 enable_if=[
                     parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
                     parameter_list.index(f"PLATFORM_{pclass.upper()}"),
