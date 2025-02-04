@@ -13,6 +13,9 @@ from agrf.utils import unique, unique_tuple
 from agrf.pkg import load_third_party_image
 
 
+THIS_FILE = grf.PythonFile(__file__)
+
+
 @dataclass
 class DefaultGraphics:
     sprite_id: int
@@ -266,6 +269,43 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
             return replace(self, position=f(self.position))
         return replace(self, sprite=f(self.sprite), child_sprites=[f(c) for c in self.child_sprites])
 
+    @staticmethod
+    def estimate_offset(s, scale):
+        sprite = s.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=32)
+        if sprite is None:
+            sprite = s.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=8)
+        return sprite.xofs, sprite.yofs, sprite.crop
+
+    @staticmethod
+    def get_parentsprite_offset(g, scale):
+        if isinstance(g, NewGraphics):
+            s = g.sprite
+            if isinstance(s, grf.AlternativeSprites):
+                ofs = NewGeneralSprite.estimate_offset(s, scale)
+
+                if isinstance(s, LazyAlternativeSprites):
+                    assert "agrf_manual_crop" in s.voxel.config
+                else:
+                    assert not ofs[2], s
+
+                return ofs[0], ofs[1]
+
+        raise NotImplementedError(g)
+
+    @staticmethod
+    def get_childsprite_offset(g, scale):
+        if isinstance(g, NewGraphics):
+            s = g.sprite
+            if isinstance(s, LazyAlternativeSprites):
+                cfg = s.voxel.config
+                cs = cfg.get("agrf_childsprite", (0, 0))
+
+                return cs[0] * scale, cs[1] * scale
+            elif isinstance(s, grf.AlternativeSprites):
+                return 0, 0
+
+        raise NotImplementedError(g)
+
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.flags.get("dodraw") == Registers.SNOW and subclimate != "snow":
             return LayeredImage.empty()
@@ -276,7 +316,17 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
 
         for c in self.child_sprites:
             masked_sprite = c.graphics(scale, bpp, climate=climate, subclimate=subclimate)
-            ret.blend_over(masked_sprite, childsprite=isinstance(self.position, BBoxPosition))
+
+            parentsprite_offset = NewGeneralSprite.get_parentsprite_offset(self.sprite, scale)
+            childsprite_offset = NewGeneralSprite.get_childsprite_offset(c.sprite, scale)
+
+            print(parentsprite_offset, childsprite_offset)
+
+            masked_sprite.move(
+                parentsprite_offset[0] - childsprite_offset[0], parentsprite_offset[1] - childsprite_offset[1]
+            )
+
+            ret.blend_over(masked_sprite)
 
         return ret
 
@@ -424,7 +474,7 @@ class ALayout:
 
         if self.ground_sprite is None:
             self.ground_sprite = empty_ground
-        assert isinstance(self.ground_sprite, NewGeneralSprite)
+        assert isinstance(self.ground_sprite, NewGeneralSprite), self.ground_sprite
         assert all(isinstance(s, NewGeneralSprite) for s in self.parent_sprites), [type(s) for s in self.parent_sprites]
         self.notes = self.notes or []
 
@@ -576,9 +626,58 @@ class ALayout:
         return unique_tuple(f for x in [self.ground_sprite] + self.parent_sprites for f in x.get_resource_files())
 
 
+class NightSprite(grf.Sprite):
+    def __init__(self, base_sprite, w, h, scale, bpp, xofs=0, yofs=0, darkness=0.75, **kwargs):
+        if "agrf_manual_crop" in base_sprite.voxel.config:
+            dx, dy = base_sprite.voxel.config["agrf_manual_crop"]
+            xofs -= dx * scale
+            yofs -= dy * scale
+        if "agrf_childsprite" in base_sprite.voxel.config:
+            dx, dy = base_sprite.voxel.config["agrf_childsprite"]
+            xofs += dx * scale
+            yofs += dy * scale
+
+        super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], xofs=xofs, yofs=yofs, **kwargs)
+        assert base_sprite is not None and "get_fingerprint" in dir(base_sprite), f"base_sprite {type(base_sprite)}"
+        self.base_sprite = base_sprite
+        self.scale = scale
+        self.bpp = bpp
+        self.darkness = darkness
+
+    def get_fingerprint(self):
+        return {
+            "base_sprite": self.base_sprite.get_fingerprint(),
+            "w": self.w,
+            "h": self.h,
+            "bpp": self.bpp,
+            "scale": self.scale,
+            "xofs": self.xofs,
+            "yofs": self.yofs,
+            "darkness": self.darkness,
+        }
+
+    def get_resource_files(self):
+        return self.base_sprite.get_resource_files() + [THIS_FILE]
+
+    def get_data_layers(self, context):
+        timer = context.start_timer()
+        sprite = self.base_sprite.get_sprite(zoom=SCALE_TO_ZOOM[self.scale], bpp=self.bpp)
+        if sprite is not None:
+            ret = LayeredImage.from_sprite(sprite).copy()
+        from agrf.graphics.cv.nightmask import make_night_mask
+
+        ret = make_night_mask(ret, darkness=self.darkness)
+        timer.count_composing()
+
+        return ret.w, ret.h, ret.rgb, ret.alpha, ret.mask
+
+
 class LayoutSprite(grf.Sprite):
     def __init__(self, layout, w, h, scale, bpp, **kwargs):
         super().__init__(w, h, zoom=SCALE_TO_ZOOM[scale], **kwargs)
+
+        assert layout is not None
+
         self.layout = layout
         self.scale = scale
         self.bpp = bpp
