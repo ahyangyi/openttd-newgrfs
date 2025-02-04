@@ -11,6 +11,7 @@ from agrf.lib.building.layout import (
     NewGraphics,
 )
 from agrf.graphics.misc import SCALE_TO_ZOOM
+from agrf.sprites.empty import EmptyAlternativeSprites
 
 
 class SquashableAlternativeSprites(grf.AlternativeSprites):
@@ -39,6 +40,9 @@ def make_child_night_masks(parent, darkness=0.75):
     if isinstance(graphics, DefaultGraphics):
         return []
     assert isinstance(graphics, NewGraphics)
+
+    if isinstance(graphics.sprite, EmptyAlternativeSprites):
+        return []
 
     if parent.flags.get("dodraw") is None:
         flags = {"dodraw": Registers.NIGHTGFX}
