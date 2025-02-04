@@ -276,7 +276,7 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
 
         for c in self.child_sprites:
             masked_sprite = c.graphics(scale, bpp, climate=climate, subclimate=subclimate)
-            ret.blend_over(masked_sprite, childsprite=isinstance(self.position, BBoxPosition))
+            ret.blend_over(masked_sprite)
 
         return ret
 
