@@ -298,6 +298,8 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
                 cs = cfg.get("agrf_childsprite", (0, 0))
 
                 return cs[0] * scale, cs[1] * scale
+            elif isinstance(s, grf.AlternativeSprites):
+                return 0, 0
 
         raise NotImplementedError(g)
 
@@ -314,6 +316,8 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
 
             parentsprite_offset = NewGeneralSprite.get_parentsprite_offset(self.sprite, scale)
             childsprite_offset = NewGeneralSprite.get_childsprite_offset(c.sprite, scale)
+
+            print(parentsprite_offset, childsprite_offset)
 
             masked_sprite.move(
                 parentsprite_offset[0] - childsprite_offset[0], parentsprite_offset[1] - childsprite_offset[1]
