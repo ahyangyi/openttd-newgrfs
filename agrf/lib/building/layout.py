@@ -266,6 +266,26 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
             return replace(self, position=f(self.position))
         return replace(self, sprite=f(self.sprite), child_sprites=[f(c) for c in self.child_sprites])
 
+    @staticmethod
+    def get_parentsprite_offset(g):
+        if isinstance(g, NewGraphics):
+            s = g.sprite
+            if isinstance(s, LazyAlternativeSprites):
+                cfg = s.voxel.config
+                return cfg.get("agrf_manual_crop", (0, 0))
+
+        raise NotImplementedError(g)
+
+    @staticmethod
+    def get_childsprite_offset(g):
+        if isinstance(g, NewGraphics):
+            s = g.sprite
+            if isinstance(s, LazyAlternativeSprites):
+                cfg = s.voxel.config
+                return cfg.get("agrf_childsprite", (0, 0))
+
+        raise NotImplementedError(g)
+
     def graphics(self, scale, bpp, climate="temperate", subclimate="default"):
         if self.flags.get("dodraw") == Registers.SNOW and subclimate != "snow":
             return LayeredImage.empty()
@@ -276,6 +296,10 @@ class NewGeneralSprite(TaggedCachedFunctorMixin):
 
         for c in self.child_sprites:
             masked_sprite = c.graphics(scale, bpp, climate=climate, subclimate=subclimate)
+
+            parentsprite_offset = NewGeneralSprite.get_parentsprite_offset(self.sprite)
+            childsprite_offset = NewGeneralSprite.get_childsprite_offset(c.sprite)
+
             ret.blend_over(masked_sprite)
 
         return ret
