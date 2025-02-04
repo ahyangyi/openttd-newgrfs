@@ -1,6 +1,7 @@
 import grf
 from station.lib.utils import class_label_printable
 from agrf.magic import Switch
+from agrf.utils import unique
 
 
 class ARoadStop(grf.SpriteGenerator):
@@ -91,4 +92,4 @@ TEMP[0x03] = (terrain_type & 0x4) == 0x4
     @property
     def sprites(self):
         # FIXME recursive
-        return [*dict.fromkeys([sub for l in self.graphics._ranges for sub in l.ref.sprites])]
+        return unique(sub for l in self.graphics._ranges for sub in l.ref.sprites)
