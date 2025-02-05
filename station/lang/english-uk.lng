@@ -51,6 +51,17 @@ STR_PARAM_STATION_COLOUR_BROWN              :Brown
 STR_PARAM_STATION_COLOUR_GREY               :Grey
 STR_PARAM_STATION_COLOUR_WHITE              :White
 
+STR_PARAM_E88A9Ca_ENABLE_MODULAR            :Wuhu Station (1992) - Enable
+STR_PARAM_E88A9Ca_ENABLE_MODULAR_DESC       :Whether or not to enable Wuhu Station (1992)
+STR_PARAM_E88A9Ca_ENABLE_MODULAR_ENABLED    :Enabled
+STR_PARAM_E88A9Ca_ENABLE_MODULAR_DISABLED   :Disabled
+
+STR_PARAM_E88A9Ca_INTRODUCTION_YEAR         :Wuhu Station (1992) - Available Year
+STR_PARAM_E88A9Ca_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1992) becomes available.{}{}For a realistic experience, set this to somewhere between 1980 and 1990.
+
+STR_PARAM_E88A9Ca_COLOUR                    :Wuhu Station (1992) - Decoration Colour
+STR_PARAM_E88A9Ca_COLOUR_DESC               :Choose what colour to use for the decoration of Wuhu Station (1992).
+
 STR_PARAM_E88A9C0_ENABLE_MODULAR            :Wuhu Station (1934) - Enable
 STR_PARAM_E88A9C0_ENABLE_MODULAR_DESC       :Whether or not to enable Wuhu Station (1934)
 STR_PARAM_E88A9C0_ENABLE_MODULAR_ENABLED    :Enabled
