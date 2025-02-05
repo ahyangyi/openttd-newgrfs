@@ -92,14 +92,10 @@ station_meta = ["E88A9CA", "E88A9C0"]
 station_cb = {}
 station_code = {}
 for i, s in enumerate(station_meta):
-    year = parameter_list.index(f"{s}_INTRODUCTION_YEAR")
-    station_cb[s] = {
-        "availability": Switch(
-            ranges={0: 0}, default=1, code=f"current_year >= var(0x7F, param={year}, shift=0, and=0xffffffff)"
-        )
-    }
+    year = parameter_list[f"{s}_INTRODUCTION_YEAR"].code
+    station_cb[s] = {"availability": Switch(ranges={0: 0}, default=1, code=f"current_year >= {year}")}
 
-    colour = f"var(0x7F, param={i+16}, shift=0, and=0x1f)"
+    colour = parameter_list[f"{s}_COLOUR"].code
     station_code[
         s
     ] = f"""
