@@ -69,17 +69,17 @@ settings.append(
 )
 
 settings.append(
-    Parameter(f"PLATFORM_CONCRETE", 1, booldict, mapping=ParameterMapping(grf_parameter=0x9, first_bit=0, num_bit=1))
+    Parameter("PLATFORM_CONCRETE", 1, booldict, mapping=ParameterMapping(grf_parameter=0x9, first_bit=0, num_bit=1))
 )
 settings.append(
-    Parameter(f"PLATFORM_BRICK", 0, booldict, mapping=ParameterMapping(grf_parameter=0xA, first_bit=0, num_bit=1))
+    Parameter("PLATFORM_BRICK", 0, booldict, mapping=ParameterMapping(grf_parameter=0xA, first_bit=0, num_bit=1))
 )
 
 settings.append(
-    Parameter(f"SHELTER_SHELTER_1", 0, booldict, mapping=ParameterMapping(grf_parameter=0xB, first_bit=0, num_bit=1))
+    Parameter("SHELTER_SHELTER_1", 0, booldict, mapping=ParameterMapping(grf_parameter=0xB, first_bit=0, num_bit=1))
 )
 settings.append(
-    Parameter(f"SHELTER_SHELTER_2", 1, booldict, mapping=ParameterMapping(grf_parameter=0xC, first_bit=0, num_bit=1))
+    Parameter("SHELTER_SHELTER_2", 1, booldict, mapping=ParameterMapping(grf_parameter=0xC, first_bit=0, num_bit=1))
 )
 
 parameter_list = ParameterList(settings)
