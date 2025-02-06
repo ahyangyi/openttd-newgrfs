@@ -60,7 +60,7 @@ for i, entry in enumerate(entries):
             id=0x1000 + i,
             translation_name="PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE",
             layouts=[entry, entry.M],
-            class_label=b"\xe8\x8a\x9ca",
+            class_label=b"\xe8\x8a\x9c4",
             cargo_threshold=40,
             callbacks={"select_tile_layout": 0, **station_cb["E88A9C4"]},
             extra_code=station_code["E88A9C4"],
@@ -71,7 +71,7 @@ for i, entry in enumerate(entries):
 
 the_stations = AMetaStation(
     station_tiles,
-    b"\xe8\x8a\x9c0",
+    b"\xe8\x8a\x9c4",
     None,
     [
         Demo([[named_tiles.main]], "The building"),
