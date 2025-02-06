@@ -38,7 +38,7 @@ def register_road_stop(layout, sym):
             graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
             general_flags=0x8,
             class_label=b"\xe8\x8a\x9cR",
-            enable_if=[parameter_list.index("E88A9CA_ENABLE_ROADSTOP")],
+            enable_if=[parameter_list["E88A9CA_ENABLE_ROADSTOP"]],
             doc_layout=cur,
         )
         roadstops.append(cur_roadstop)
@@ -48,7 +48,7 @@ def register_road_stop(layout, sym):
             graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
             general_flags=0x8,
             class_label=b"\xe8\x8a\x9cR",
-            enable_if=[parameter_list.index("E88A9CA_ENABLE_ROADSTOP")],
+            enable_if=[parameter_list["E88A9CA_ENABLE_ROADSTOP"]],
             doc_layout=cur,
             is_waypoint=True,
         )
