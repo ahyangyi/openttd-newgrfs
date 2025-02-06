@@ -64,7 +64,7 @@ for i, entry in enumerate(entries):
             cargo_threshold=40,
             callbacks={"select_tile_layout": 0, **station_cb["E88A9C0"]},
             extra_code=station_code["E88A9C0"],
-            enable_if=[parameter_list.index("E88A9C0_ENABLE_MODULAR")],
+            enable_if=[parameter_list["E88A9C0_ENABLE_MODULAR"]],
             doc_layout=entry,
         )
     )
