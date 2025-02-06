@@ -87,7 +87,7 @@ parameter_list = ParameterList(settings)
 station_meta = ["E88A9CA", "E88A9C0"]
 station_cb = {}
 station_code = {}
-for i, s in enumerate(station_meta):
+for s in station_meta:
     year = parameter_list[f"{s}_INTRODUCTION_YEAR"].code
     station_cb[s] = {"availability": Switch(ranges={0: 0}, default=1, code=f"current_year >= {year}")}
 
