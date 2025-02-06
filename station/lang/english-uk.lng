@@ -45,6 +45,17 @@ STR_PARAM_STATION_COLOUR_BROWN              :Brown
 STR_PARAM_STATION_COLOUR_GREY               :Grey
 STR_PARAM_STATION_COLOUR_WHITE              :White
 
+STR_PARAM_E88A9Ca_ENABLE_MODULAR            :Wuhu Station (1992) - Enable
+STR_PARAM_E88A9Ca_ENABLE_MODULAR_DESC       :Whether or not to enable Wuhu Station (1992)
+STR_PARAM_E88A9Ca_ENABLE_MODULAR_ENABLED    :Enabled
+STR_PARAM_E88A9Ca_ENABLE_MODULAR_DISABLED   :Disabled
+
+STR_PARAM_E88A9Ca_INTRODUCTION_YEAR         :Wuhu Station (1992) - Available Year
+STR_PARAM_E88A9Ca_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1992) becomes available.{}{}For a realistic experience, set this to somewhere between 1980 and 1990.
+
+STR_PARAM_E88A9Ca_COLOUR                    :Wuhu Station (1992) - Decoration Colour
+STR_PARAM_E88A9Ca_COLOUR_DESC               :Choose what colour to use for the decoration of Wuhu Station (1992).
+
 STR_PARAM_E88A9C0_ENABLE_MODULAR            :Wuhu Station (1934) - Enable
 STR_PARAM_E88A9C0_ENABLE_MODULAR_DESC       :Whether or not to enable Wuhu Station (1934)
 STR_PARAM_E88A9C0_ENABLE_MODULAR_ENABLED    :Enabled
@@ -167,6 +178,7 @@ STR_STATION_CLASS_E88A9CZ       :{PUSH_COLOUR}{WHITE}CNS: Wuhu{POP_COLOUR} Objec
 STR_STATION_CLASS_E88A9CR       :{PUSH_COLOUR}{WHITE}CNS: Wuhu{POP_COLOUR} Road Stops
 
 STR_OBJECT_WEST_PLAZA           :West square
+STR_OBJECT_STATION              :Station Building
 STR_ROADSTOP_WEST_PLAZA_BUS     :West square bus stop
 
 STR_STATION_CLASS_E88A9Ca       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu (1992)
@@ -187,6 +199,7 @@ STR_STATION_CLASS_E7B981W       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Fanchang W
 
 STR_STATION_CLASS_E88A9CP       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu - Extra Platforms
 
+STR_OBJECT_CLASS_E88A9CB0       :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} Station Building
 STR_OBJECT_CLASS_E88A9CG        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} West Square - Ground
 STR_OBJECT_CLASS_E88A9CF        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} West Square - Topiary
 STR_OBJECT_CLASS_E88A9Cl        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} West Square - Lawn
