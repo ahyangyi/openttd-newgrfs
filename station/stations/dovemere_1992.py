@@ -50,8 +50,8 @@ def quickload(name, symmetry):
 
 entries = []
 named_tiles = AttrDict()
-for name, symmetry in [("main", BuildingSymmetricalX)]:
-    quickload(name, symmetry)
+quickload("main", BuildingSymmetricalX)
+quickload("extender", BuildingSymmetricalX)
 
 station_tiles = []
 for i, entry in enumerate(entries):
@@ -76,7 +76,7 @@ the_stations = AMetaStation(
     [
         Demo([[named_tiles.main]], "The building"),
         Demo(
-            [[named_tiles.main]],
+            [[named_tiles.main, named_tiles.extender, named_tiles.main, named_tiles.extender, named_tiles.main]],
             "With snow",
             remap=get_1cc_remap(CompanyColour.PINK),
             climate="arctic",

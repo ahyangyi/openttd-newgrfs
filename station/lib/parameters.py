@@ -53,7 +53,7 @@ make_introduction_year("E88A9CA", mapping=ParameterMapping(grf_parameter=0x3, fi
 make_colour("E88A9CA", mapping=ParameterMapping(grf_parameter=0x10, first_bit=0, num_bit=5))
 
 # E88A9Ca: Wuhu (1992)
-station_settings.append(
+settings.append(
     Parameter("E88A9Ca_ENABLE_MODULAR", 1, booldict, mapping=ParameterMapping(grf_parameter=4, first_bit=0, num_bit=1))
 )
 make_introduction_year("E88A9Ca", mapping=ParameterMapping(grf_parameter=7, first_bit=0, num_bit=13))
