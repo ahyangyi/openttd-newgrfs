@@ -1,52 +1,86 @@
-import grf
 from station.lib import (
     AStation,
     AMetaStation,
     BuildingSymmetricalX,
+    BuildingSymmetrical,
     Demo,
     ADefaultGroundSprite,
+    AGroundSprite,
     AParentSprite,
+    AChildSprite,
     ALayout,
-    LayoutSprite,
+    AttrDict,
+    Registers,
+    get_1cc_remap,
 )
+from station.lib.parameters import parameter_list, station_cb, station_code
 from agrf.graphics.voxel import LazyVoxel
-from agrf.magic import Switch
+from .misc import building_ground
+from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
+from agrf.graphics.palette import CompanyColour
 
 
-def quickload(name, sym, traversable):
+def quickload(name, symmetry):
     v = LazyVoxel(
         name,
-        prefix="station/voxels/render/dovemere_1992",
+        prefix=".cache/render/station/dovemere_1992",
         voxel_getter=lambda path=f"station/voxels/dovemere_1992/{name}.vox": path,
         load_from="station/files/gorender.json",
+        config={"z_scale": 1.0},
+        subset=symmetry.render_indices(),
     )
-    v.in_place_subset(sym.render_indices())
-    sprite = sym.create_variants(v.spritesheet())
-    ground = ADefaultGroundSprite(1012 if traversable else 1420)
-    parent = AParentSprite(sprite, (16, 16, 48), (0, 0, 0))
-    candidates = [ALayout(ground, [parent], False)]
-    ret = []
-    for l in candidates:
-        l = sym.get_all_variants(l)
-        layouts.extend(l)
-        l = sym.create_variants(l)
-        ret.append(l)
-        entries.extend(sym.get_all_entries(l))
+    building = v.discard_layers(("snow",), "building")
+    snow = v.discard_layers(("building",), "snow")
+    snow = snow.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
 
-    if len(ret) == 1:
-        return ret[0]
-    return ret
+    building.config["agrf_manual_crop"] = (0, 10)
+    snow.config["agrf_childsprite"] = (0, -10)
+
+    sprite = symmetry.create_variants(building.spritesheet())
+    ps = AParentSprite(sprite, (16, 16, 16), (0, 0, 0), flags={"add_palette": Registers.RECOLOUR_OFFSET})
+    snow_sprite = symmetry.create_variants(snow.spritesheet())
+    cs = AChildSprite(snow_sprite, (0, 0), flags={"dodraw": Registers.SNOW})
+
+    l = ALayout(building_ground, [ps + cs], False)
+    var = symmetry.get_all_variants(l)
+    ret = symmetry.create_variants(var)
+    entries.extend(symmetry.get_all_entries(ret))
+    named_tiles[name] = ret
 
 
-layouts = []
 entries = []
-(main,) = [quickload(name, sym, traversable) for name, sym, traversable in [("main", BuildingSymmetricalX, False)]]
+named_tiles = AttrDict()
+for name, symmetry in [("main", BuildingSymmetricalX)]:
+    quickload(name, symmetry)
 
-the_station = AStation(
-    id=0x1000,
-    translation_name="PLATFORM_UNTRAVERSABLE",
-    layouts=layouts,
-    class_label=b"\xe8\x8a\x9ca",
-    cargo_threshold=40,
+station_tiles = []
+for i, entry in enumerate(entries):
+    station_tiles.append(
+        AStation(
+            id=0x1000 + i,
+            translation_name="PLATFORM" if entry.traversable else "PLATFORM_UNTRAVERSABLE",
+            layouts=[entry, entry.M],
+            class_label=b"\xe8\x8a\x9ca",
+            cargo_threshold=40,
+            callbacks={"select_tile_layout": 0, **station_cb["E88A9Ca"]},
+            extra_code=station_code["E88A9Ca"],
+            enable_if=[parameter_list["E88A9Ca_ENABLE_MODULAR"]],
+            doc_layout=entry,
+        )
+    )
+
+the_stations = AMetaStation(
+    station_tiles,
+    b"\xe8\x8a\x9c0",
+    None,
+    [
+        Demo([[named_tiles.main]], "The building"),
+        Demo(
+            [[named_tiles.main]],
+            "With snow",
+            remap=get_1cc_remap(CompanyColour.PINK),
+            climate="arctic",
+            subclimate="snow",
+        ),
+    ],
 )
-the_stations = AMetaStation([the_station], b"\xe8\x8a\x9ca", None, [Demo("Station", [[main]])])
