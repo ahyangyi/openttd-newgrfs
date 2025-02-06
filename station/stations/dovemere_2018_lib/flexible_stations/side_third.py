@@ -57,9 +57,9 @@ for p, pclass in enumerate(platform_classes):
                 },
                 extra_code=common_code,
                 enable_if=[
-                    parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
-                    parameter_list.index(f"PLATFORM_{pclass.upper()}"),
-                    parameter_list.index(f"SHELTER_{sclass.upper()}"),
+                    parameter_list["E88A9CA_ENABLE_TEMPLATE"],
+                    parameter_list[f"PLATFORM_{pclass.upper()}"],
+                    parameter_list[f"SHELTER_{sclass.upper()}"],
                 ],
                 doc_layout=demo_layout,
             )
@@ -89,9 +89,9 @@ for p, pclass in enumerate(platform_classes):
                 },
                 extra_code=common_code,
                 enable_if=[
-                    parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
-                    parameter_list.index(f"PLATFORM_{pclass.upper()}"),
-                    parameter_list.index(f"SHELTER_{sclass.upper()}"),
+                    parameter_list["E88A9CA_ENABLE_TEMPLATE"],
+                    parameter_list[f"PLATFORM_{pclass.upper()}"],
+                    parameter_list[f"SHELTER_{sclass.upper()}"],
                 ],
                 doc_layout=demo_layout,
             )
@@ -140,10 +140,7 @@ for p, pclass in enumerate(platform_classes):
                 **common_cb,
             },
             extra_code=common_code,
-            enable_if=[
-                parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
-                parameter_list.index(f"PLATFORM_{pclass.upper()}"),
-            ],
+            enable_if=[parameter_list["E88A9CA_ENABLE_TEMPLATE"], parameter_list[f"PLATFORM_{pclass.upper()}"]],
             doc_layout=demo_layout,
         )
     )
@@ -171,10 +168,7 @@ for p, pclass in enumerate(platform_classes):
                 **common_cb,
             },
             extra_code=common_code,
-            enable_if=[
-                parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
-                parameter_list.index(f"PLATFORM_{pclass.upper()}"),
-            ],
+            enable_if=[parameter_list["E88A9CA_ENABLE_TEMPLATE"], parameter_list[f"PLATFORM_{pclass.upper()}"]],
             doc_layout=demo_layout,
         )
     )
