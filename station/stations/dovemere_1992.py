@@ -62,9 +62,9 @@ for i, entry in enumerate(entries):
             layouts=[entry, entry.M],
             class_label=b"\xe8\x8a\x9ca",
             cargo_threshold=40,
-            callbacks={"select_tile_layout": 0, **station_cb["E88A9Ca"]},
-            extra_code=station_code["E88A9Ca"],
-            enable_if=[parameter_list["E88A9Ca_ENABLE_MODULAR"]],
+            callbacks={"select_tile_layout": 0, **station_cb["E88A9C4"]},
+            extra_code=station_code["E88A9C4"],
+            enable_if=[parameter_list["E88A9C4_ENABLE_MODULAR"]],
             doc_layout=entry,
         )
     )
