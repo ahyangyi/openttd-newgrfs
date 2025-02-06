@@ -67,6 +67,17 @@ STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1934)
 STR_PARAM_E88A9C0_COLOUR                    :Wuhu Station (1934) - Decoration Colour
 STR_PARAM_E88A9C0_COLOUR_DESC               :Choose what colour to use for the windows and door of Wuhu Station (1934).
 
+STR_PARAM_E9B8A0A_ENABLE_MODULAR            :Wuhu North Station - Enable
+STR_PARAM_E9B8A0A_ENABLE_MODULAR_DESC       :Whether or not to enable Wuhu North Station
+STR_PARAM_E9B8A0A_ENABLE_MODULAR_ENABLED    :Enabled
+STR_PARAM_E9B8A0A_ENABLE_MODULAR_DISABLED   :Disabled
+
+STR_PARAM_E9B8A0A_INTRODUCTION_YEAR         :Wuhu North Station - Available Year
+STR_PARAM_E9B8A0A_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu North Station becomes available.{}{}For a realistic experience, set this to somewhere near 2005.
+
+STR_PARAM_E9B8A0A_COLOUR                    :Wuhu North Station - Decoration Colour
+STR_PARAM_E9B8A0A_COLOUR_DESC               :Choose what colour to use for the decoration of Wuhu North Station.
+
 STR_PARAM_E88A9CP_ENABLE_MODULAR            :Platform Tiles - Enable
 STR_PARAM_E88A9CP_ENABLE_MODULAR_DESC       :Whether or not to enable buildable platform tiles
 STR_PARAM_E88A9CP_ENABLE_MODULAR_ENABLED    :Enabled
