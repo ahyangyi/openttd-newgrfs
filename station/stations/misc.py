@@ -1,7 +1,5 @@
-import grf
-from station.lib import ADefaultGroundSprite, AGroundSprite, ALayout
+from station.lib import ADefaultGroundSprite, ALayout
 from station.lib.registers import Registers
-from agrf.lib.building.default import empty_ground
 
 track_ground = ADefaultGroundSprite(1012, flags={"add": Registers.CLIMATE_RAIL_OFFSET})
 road_ground = ADefaultGroundSprite(1314)
