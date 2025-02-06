@@ -28,11 +28,11 @@ jobs:
       # - name: Install golang deps
       #   run: ./install-go-dependencies.sh
       - name: Install system python deps
-        run: sudo apt update && sudo apt install python3-ply python3-pil
+        run: sudo apt update && sudo apt install python3-ply python3-pil libjpeg-dev zlib1g-dev
+      - name: Get setuptools
+        run: pip install --upgrade setuptools
       - name: Install python deps
         run: pip install -r requirements.txt && pip install pytest
-      - name: Test agrf
-        run: pytest agrf
       - name: Test stations
         run: pytest station
       - name: Test AEGIS

@@ -2,7 +2,7 @@ import grf
 from station.lib import AStation, AMetaStation
 from station.lib.parameters import parameter_list
 from .dovemere_2018_lib.layouts import *
-from .dovemere_2018_lib import demos, common_cb, Registers
+from .dovemere_2018_lib import demos, common_cb, common_code, Registers
 from .dovemere_2018_lib.objects import objects
 from .dovemere_2018_lib.roadstops import roadstops
 from .dovemere_2018_lib.flexible_stations.semitraversable import semitraversable_stations
@@ -13,13 +13,13 @@ from agrf.strings import String
 
 modular_stations = []
 for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
-    enable_if = [parameter_list.index("E88A9CA_ENABLE_MODULAR")]
+    enable_if = [parameter_list["E88A9CA_ENABLE_MODULAR"]]
     for platform_class in ["concrete", "brick"]:
         if platform_class in entry.notes:
-            enable_if.append(parameter_list.index(f"PLATFORM_{platform_class.upper()}"))
+            enable_if.append(parameter_list[f"PLATFORM_{platform_class.upper()}"])
     for shelter_class in ["shelter_1", "shelter_2"]:
         if shelter_class in entry.notes:
-            enable_if.append(parameter_list.index(f"SHELTER_{shelter_class.upper()}"))
+            enable_if.append(parameter_list[f"SHELTER_{shelter_class.upper()}"])
 
     has_track = entry.traversable
     far_platform = entry.category[-1] in {
@@ -97,6 +97,7 @@ for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
             is_waypoint="waypoint" in entry.notes,
             enable_if=enable_if,
             doc_layout=entry,
+            extra_code=common_code,
         )
     )
 
