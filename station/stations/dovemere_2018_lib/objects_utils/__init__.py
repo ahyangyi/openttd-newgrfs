@@ -18,7 +18,6 @@ from station.lib import (
 from grfobject.lib import AObject, GraphicalSwitch, PositionSwitch
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 from agrf.lib.building.slope import make_slopes, slope_types
-from grfobject.lib import AObject, GraphicalSwitch
 from station.lib import AttrDict
 import grf
 from agrf.lib.building.slope import slope_types
