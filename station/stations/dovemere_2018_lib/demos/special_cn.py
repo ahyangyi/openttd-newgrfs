@@ -21,8 +21,8 @@ top_half = [
 ]
 
 special_demo_cn = Demo(
-    "Irregular 7×7 station layout",
     top_half + [[i and i.T.R for i in row[::-1]] for row in top_half[2::-1]],
+    "Irregular 7×7 station layout",
     remap=get_1cc_remap(CompanyColour.MAUVE),
     climate="temperate",
 )

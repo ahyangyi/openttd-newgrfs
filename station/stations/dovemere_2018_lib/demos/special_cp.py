@@ -7,7 +7,6 @@ from agrf.graphics.palette import CompanyColour
 globalize_all(platform_class="concrete", shelter_class="shelter_2")
 
 special_demo_cp = Demo(
-    "Irregular 7×7 station layout",
     [
         [h_end_corridor, tee.T, h_normal_corridor, turn.T.R, default, default, default],
         [cns, v_central_n, cns, v_central_n, cns_d, cns_d, cns_d],
@@ -25,6 +24,7 @@ special_demo_cp = Demo(
         [concourse_none, concourse_none, concourse_none, concourse_none, v_funnel, front_normal, corner.R],
         [default, default, default, default, v_end_gate, default, default],
     ],
+    "Irregular 7×7 station layout",
     remap=get_1cc_remap(CompanyColour.CREAM),
     climate="toyland",
 )

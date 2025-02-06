@@ -1,5 +1,6 @@
 import os
 import inspect
+import types
 from station.lib import (
     BuildingFull,
     BuildingSymmetrical,
@@ -7,6 +8,7 @@ from station.lib import (
     BuildingSymmetricalY,
     BuildingRotational,
     BuildingDiagonal,
+    BuildingCylindrical,
     AGroundSprite,
     AParentSprite,
     AChildSprite,
@@ -15,6 +17,7 @@ from station.lib import (
     Registers,
 )
 from agrf.graphics.voxel import LazyVoxel
+from agrf.sprites import empty_alternatives
 from station.stations.platforms import (
     platform_ps,
     concourse_ps,
@@ -40,8 +43,12 @@ overpass_height = building_height - base_height
 gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
 concourse = concourse_ps.none
-third = AChildSprite(gray_third, (0, 0))
-third_T = AChildSprite(gray_third.T, (0, 0))
+
+
+def make_empty_variant(w, h, x, y):
+    empty_image = empty_alternatives(w, h, x, y)
+    empty_image.squash = types.MethodType(lambda self, *args, empty_image=empty_image: self, empty_image)
+    return BuildingCylindrical.create_variants([empty_image])
 
 
 def get_category(internal_category, back, notes, tra):
@@ -113,7 +120,7 @@ VNarrow = HPos("", "", "building_v", True, True)
 TinyAsym = HPos("central", "pillar", "central", False)
 
 
-snow_layers = ("snow", "snow-window", "snow-window-extender")
+snow_layers = tuple(y for x in ("snow", "snow-window", "snow-window-extender") for y in (x, x + "-boundary"))
 all_f2_layers = ("window", "window-extender")
 all_f2_layers_set = set(all_f2_layers + snow_layers)
 
@@ -138,18 +145,31 @@ f1_subsets = {
     "full": ({"ground level", "entrance", "pillar", "entrance - t", "pillar - t"}, 0, 16),
 }
 
+f1_empty_offset = {}
+f1_empty_sprite = {}
+for k, (_, offset, _) in f1_subsets.items():
+    f1_empty_offset[k] = (-31 - offset * 2, -14 - offset)
+    f1_empty_sprite[k] = make_empty_variant(64, 48, *f1_empty_offset[k])
+f2_empty_offset = (-31, -34)
+f2_empty_sprite = make_empty_variant(64, 68, *f2_empty_offset)
+
 
 def make_f2(v, sym):
     v = v.discard_layers(all_f1_layers + all_f2_layers + snow_layers, "f2")
     v.in_place_subset(sym.render_indices())
-    v.config["agrf_manual_crop"] = (0, 10)
+    v.config["agrf_relative_childsprite"] = f2_empty_offset
     s = sym.create_variants(v.spritesheet(zdiff=base_height + 0.5))
-    return AParentSprite(s, (16, 16, overpass_height), (0, 0, base_height + platform_height))
+
+    empty_parent = AParentSprite(f2_empty_sprite, (16, 16, overpass_height), (0, 0, base_height + platform_height))
+    f2_child = AChildSprite(s, (0, 0), palette=0, flags={"add_palette": Registers.RECOLOUR_OFFSET})
+
+    return empty_parent + f2_child
 
 
 def make_extra(v, sym, name, floor="f2"):
     vd = v.discard_layers(
-        all_f1_layers + tuple(all_f2_layers_set - {name}) + ("overpass", "foundation", "circle"), name
+        all_f1_layers + tuple(all_f2_layers_set - {name, name + "-boundary"}) + ("overpass", "foundation", "circle"),
+        name,
     )
     if floor == "f2":
         vd = vd.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
@@ -161,11 +181,13 @@ def make_extra(v, sym, name, floor="f2"):
     else:
         v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
     if floor == "f2":
-        v.config["agrf_childsprite"] = (0, -10)
+        v.config["agrf_relative_childsprite"] = f2_empty_offset
+        zdiff = base_height + 0.5
     else:
         v.config["agrf_childsprite"] = (0, -40)
+        zdiff = 0.5  # FIXME: unused with absolute offset
     v.in_place_subset(sym.render_indices())
-    s = sym.create_variants(v.spritesheet())
+    s = sym.create_variants(v.spritesheet(zdiff=zdiff))
     if "snow" in name:
         return AChildSprite(s, (0, 0), flags={"dodraw": Registers.SNOW})
     else:
@@ -182,8 +204,12 @@ def make_f1(v, subset, sym):
         V = V.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         V.in_place_subset(sym.render_indices())
         V.config["agrf_manual_crop"] = (0, 40)
+        # V.config["agrf_relative_childsprite"] = f1_empty_offset[subset]
         s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan, zdiff=0.5))
         f1_cache[(v, subset)] = AParentSprite(s, (16, xspan, base_height), (0, xdiff, platform_height)), sym
+        # empty_parent = AParentSprite(f1_empty_sprite[subset], (16, xspan, base_height), (0, xdiff, platform_height))
+        # f1_child = AChildSprite(s, (0, 0))
+        # f1_cache[(v, subset)] = empty_parent + f1_child, sym
     ret, ret_sym = f1_cache[(v, subset)]
     assert sym is ret_sym
     return ret
@@ -208,9 +234,10 @@ def register(base_id, step_id, l, symmetry, internal_category, name, broken_near
 
 
 solid_ground = gray_ps
-corridor_ground = track_ground + third + third_T
-one_side_ground = track_ground + third
-one_side_ground_t = track_ground + third_T
+# FIME merge these since the groundchildsprite is no longer used here
+corridor_ground = track_ground
+one_side_ground = track_ground
+one_side_ground_t = track_ground
 empty_ground = track_ground
 
 voxel_cache = {}

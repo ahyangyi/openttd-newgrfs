@@ -10,7 +10,7 @@ west_square = [[objects[0].doc_layout.lower_tile()] * 5]
 
 
 normal_demo = Demo(
-    "5×7 station layout (roughly 1 tile = 40m)",
     semitraversable.demo_1(5, 7) + roadstops + west_square,
+    "5×7 station layout (1 tile ≈ 40m)",
     remap=get_1cc_remap(CompanyColour.WHITE),
 )

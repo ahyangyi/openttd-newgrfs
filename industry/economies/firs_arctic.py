@@ -30,6 +30,7 @@ from industry.cargos import (
     zinc,
 )
 from industry.industries import (
+    ashery,
     ammonia_plant,
     chemical_plant,
     clay_pit,
@@ -43,7 +44,6 @@ from industry.industries import (
     peatlands,
     phosphate_mine,
     port,
-    potash_mine,
     power_station,
     pyrite_mine,
     pyrite_smelter,
@@ -63,21 +63,21 @@ class TheEconomy(MetaEconomy):
     def get_economy(self, parameters):
         ret = Economy(
             {
-                ammonia_plant: PrimaryIndustry(ammonia),
                 clay_pit: PrimaryIndustry(china_clay),
                 peatlands: PrimaryIndustry(peat),
                 phosphate_mine: PrimaryIndustry(phosphate),
-                potash_mine: PrimaryIndustry(potash),
                 pyrite_mine: PrimaryIndustry(pyrite_ore),
                 fish_farm: PrimaryIndustry(fish),
                 fishing_grounds: PrimaryIndustry(fish),
                 forest: PrimaryIndustry(wood),
                 herding_coop: PrimaryIndustry(food),
-                pyrite_smelter: SecondaryIndustry(pyrite_ore, (sulphur, zinc)),
-                sawmill: SecondaryIndustry(wood, timber),
+                ammonia_plant: SecondaryIndustry(peat, ammonia),
+                ashery: SecondaryIndustry(wood, potash),
                 chemical_plant: SecondaryIndustry((phosphate, sulphur, ammonia, potash), (explosives, fertiliser)),
                 fishing_harbor: SecondaryIndustry(fish, food),
                 paper_mill: SecondaryIndustry((wood, sulphur, china_clay), paper),
+                pyrite_smelter: SecondaryIndustry(pyrite_ore, (sulphur, zinc)),
+                sawmill: SecondaryIndustry(wood, timber),
                 power_station: TertiaryIndustry(peat),
                 general_store: TertiaryIndustry((explosives, fertiliser, zinc, timber)),
                 towns: Town(passengers, mail, food, paper),
@@ -92,17 +92,13 @@ class TheEconomy(MetaEconomy):
             ret.graph[port] = FreePort((zinc, fertiliser, paper), (china_clay, ammonia))
             ret.graph[wharf] = FreePort((peat, timber, explosives), potash)
             del ret.graph[general_store]  # FIXME
-            del ret.graph[potash_mine]
+            del ret.graph[ashery]
             del ret.graph[ammonia_plant]
             del ret.graph[clay_pit]
 
         if parameters["PRIMARY_INDUSTRY_GROWTH"] == "UNIVERSAL_SUPPLIES":
-            if ammonia_plant in ret.graph:
-                ret.graph[ammonia_plant].boosters = engineering_supplies
             if clay_pit in ret.graph:
                 ret.graph[clay_pit].boosters = engineering_supplies
-            if potash_mine in ret.graph:
-                ret.graph[potash_mine].boosters = engineering_supplies
             ret.graph[peatlands].boosters = engineering_supplies
             ret.graph[phosphate_mine].boosters = engineering_supplies
             ret.graph[pyrite_mine].boosters = engineering_supplies
@@ -118,12 +114,8 @@ class TheEconomy(MetaEconomy):
                 ret.graph[paper_mill].produces += (engineering_supplies,)
 
         elif parameters["PRIMARY_INDUSTRY_GROWTH"] == "GENERIC_SUPPLIES":
-            if ammonia_plant in ret.graph:
-                ret.graph[ammonia_plant].boosters = engineering_supplies
             if clay_pit in ret.graph:
                 ret.graph[clay_pit].boosters = engineering_supplies
-            if potash_mine in ret.graph:
-                ret.graph[potash_mine].boosters = engineering_supplies
             ret.graph[peatlands].boosters = engineering_supplies
             ret.graph[phosphate_mine].boosters = engineering_supplies
             ret.graph[pyrite_mine].boosters = engineering_supplies
@@ -143,18 +135,8 @@ class TheEconomy(MetaEconomy):
             ret,
             (paper, zinc),
             (fishing_grounds,),
-            (
-                ammonia_plant,
-                clay_pit,
-                potash_mine,
-                peatlands,
-                phosphate_mine,
-                pyrite_mine,
-                fish_farm,
-                forest,
-                herding_coop,
-            ),
-            (chemical_plant, fishing_harbor, paper_mill, pyrite_smelter, sawmill),
+            (clay_pit, peatlands, phosphate_mine, pyrite_mine, fish_farm, forest, herding_coop),
+            (ammonia_plant, ashery, chemical_plant, fishing_harbor, paper_mill, pyrite_smelter, sawmill),
         )
 
         if port in ret.graph:
