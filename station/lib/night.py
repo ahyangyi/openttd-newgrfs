@@ -15,45 +15,31 @@ from agrf.sprites.empty import EmptyAlternativeSprites
 
 
 class SquashableAlternativeSprites(grf.AlternativeSprites):
-    def __init__(self, old_alt, darkness=0.75):
+    def __init__(self, old_alt, automatic_offset_mode, darkness):
         sprites = []
         for scale in [1, 2, 4]:
-            for bpp in [8, 32]:
+            for bpp in [8]:
                 if (s := old_alt.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)) is not None:
-                    if (
-                        "agrf_childsprite" in old_alt.voxel.config
-                        or "agrf_relative_childsprite" in old_alt.voxel.config
-                    ):
-                        xofs, yofs = s.xofs, s.yofs
-                    else:
-                        xofs, yofs = 0, 0
                     sprites.append(
                         NightSprite(
                             old_alt,
-                            64 * scale,
-                            64 * scale,
-                            xofs=xofs,
-                            yofs=yofs,
+                            s.w,
+                            s.h,
                             scale=scale,
                             bpp=bpp,
+                            automatic_offset_mode=automatic_offset_mode,
                             darkness=darkness,
                         )
                     )
 
-        super().__init__(
-            *[
-                NightSprite(old_alt, 64 * scale, 64 * scale, xofs=0, yofs=0, scale=scale, bpp=bpp, darkness=darkness)
-                for scale in [1, 2, 4]
-                for bpp in [8, 32]
-                if (s := old_alt.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)) is not None
-            ]
-        )
-        self.darkness = darkness
+        super().__init__(*sprites)
         self.old_alt = old_alt
+        self.automatic_offset_mode = automatic_offset_mode
+        self.darkness = darkness
 
     def squash(self, ratio):
         x = self.old_alt.squash(ratio)
-        return SquashableAlternativeSprites(self.old_alt.squash(ratio), self.darkness)
+        return SquashableAlternativeSprites(self.old_alt.squash(ratio), self.automatic_offset_mode, self.darkness)
 
     def get_fingerprint(self):
         return {"old_alt": self.old_alt.get_fingerrint()}
@@ -62,9 +48,9 @@ class SquashableAlternativeSprites(grf.AlternativeSprites):
 NIGHT_CACHE = {}
 
 
-def make_child_night_masks(parent, darkness=0.75):
-    if parent in NIGHT_CACHE:
-        return NIGHT_CACHE[parent]
+def make_child_night_masks(parent, automatic_offset_mode, darkness):
+    if id(parent) in NIGHT_CACHE:
+        return NIGHT_CACHE[id(parent)]
     graphics = parent.sprite
     if isinstance(graphics, DefaultGraphics):
         return []
@@ -80,8 +66,11 @@ def make_child_night_masks(parent, darkness=0.75):
     else:
         raise NotImplementedError(parent.flags["dodraw"])
 
-    night = graphics.sprite.symmetry_fmap(lambda x: SquashableAlternativeSprites(x, darkness))
-    return (NIGHT_CACHE[parent] := [AChildSprite(night, (0, 0), flags=flags)])
+    night = graphics.sprite.symmetry_fmap(
+        lambda x: SquashableAlternativeSprites(x, automatic_offset_mode, darkness=darkness)
+    )
+    NIGHT_CACHE[id(parent)] = [AChildSprite(night, (0, 0), flags=flags)]
+    return NIGHT_CACHE[id(parent)]
 
 
 def add_night_masks(thing, darkness=0.75):
@@ -95,10 +84,11 @@ def add_night_masks(thing, darkness=0.75):
         return ret
     if isinstance(thing, NewGeneralSprite):
         assert not isinstance(thing.position, OffsetPosition), thing
-        new_child_sprites = make_child_night_masks(thing)
+        assert not any(isinstance(x.sprite, SquashableAlternativeSprites) for x in thing.child_sprites)
+        new_child_sprites = make_child_night_masks(thing, "parent", darkness=darkness).copy()
         for x in thing.child_sprites:
             new_child_sprites.append(x)
-            new_child_sprites.extend(make_child_night_masks(x))
+            new_child_sprites.extend(make_child_night_masks(x, "child", darkness=darkness))
 
         return replace(thing, child_sprites=new_child_sprites)
 
