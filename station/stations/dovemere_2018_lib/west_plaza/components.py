@@ -21,14 +21,14 @@ from .topiary import make_topiaries
 from ..objects_utils import objects, register_slopes, DEFAULT_FLAGS, named_layouts, register
 
 
-components = AttrDict(schema=("name",))
+components = AttrDict(schema=("type", "name"))
 
 
-def make_component(name, sym, span, offset, has_nosnow=False):
+def make_component(dirname, name, sym, span, offset, has_nosnow=False):
     v = LazyVoxel(
         name,
-        prefix=".cache/render/station/dovemere_2018/plaza",
-        voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
+        prefix=f".cache/render/station/dovemere_2018/west_plaza/{dirname}",
+        voxel_getter=lambda path=f"station/voxels/dovemere_2018/west_plaza/{dirname}/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
     )
 
@@ -57,18 +57,18 @@ def make_component(name, sym, span, offset, has_nosnow=False):
         nosnowcs = AChildSprite(nosnowsprite, (0, 0), flags={"dodraw": Registers.NOSNOW})
         gs = gs + nosnowcs
 
-    components[(name.replace("west_plaza_", ""),)] = gs
+    components[(dirname, name)] = gs
 
 
 def make_components():
-    make_component("west_plaza_planter_1", BuildingFull, (4, 3, 1), (2, 11, 0))
-    make_component("west_plaza_planter_2", BuildingFull, (7, 3, 1), (2, 11, 0))
-    make_component("west_plaza_pole", BuildingCylindrical, (2, 2, 8), (7, 7, 0))
-    make_component("west_plaza_underground_entrance", BuildingFull, (4, 4, 8), (6, 6, 0))
-    make_component("corner_lawn", BuildingFull, (6, 6, 1), (10, 0, 0))
-    make_component("corner_lawn_2", BuildingDiagonalAlt, (6, 6, 1), (10, 0, 0))
-    make_component("edge_lawn", BuildingSymmetricalX, (16, 6, 1), (0, 0, 0))
-    make_component("split_lawn", BuildingFull, (16, 6, 1), (0, 10, 0))
-    make_component("west_plaza_tree_bench", BuildingFull, (2, 2, 16), (7, 7, 0), has_nosnow=True)
-    make_component("west_plaza_tree_bush", BuildingFull, (2, 2, 16), (7, 7, 0), has_nosnow=True)
-    make_component("west_plaza_glass_pyramid", BuildingCylindrical, (2, 2, 2), (7, 7, 0))
+    make_component("planter", "1", BuildingFull, (4, 3, 1), (2, 11, 0))
+    make_component("planter", "2", BuildingFull, (7, 3, 1), (2, 11, 0))
+    make_component("object", "pole", BuildingCylindrical, (2, 2, 8), (7, 7, 0))
+    make_component("object", "underground_entrance", BuildingFull, (4, 4, 8), (6, 6, 0))
+    make_component("object", "glass_pyramid", BuildingCylindrical, (2, 2, 2), (7, 7, 0))
+    make_component("lawn", "corner", BuildingFull, (6, 6, 1), (10, 0, 0))
+    make_component("lawn", "corner_2", BuildingDiagonalAlt, (6, 6, 1), (10, 0, 0))
+    make_component("lawn", "edge", BuildingSymmetricalX, (16, 6, 1), (0, 0, 0))
+    make_component("lawn", "split", BuildingFull, (16, 6, 1), (0, 10, 0))
+    make_component("tree", "bench", BuildingFull, (2, 2, 16), (7, 7, 0), has_nosnow=True)
+    make_component("tree", "bush", BuildingFull, (2, 2, 16), (7, 7, 0), has_nosnow=True)

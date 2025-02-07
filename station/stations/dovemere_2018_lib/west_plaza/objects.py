@@ -24,7 +24,7 @@ from ..objects_utils import objects, register_slopes, DEFAULT_FLAGS, named_layou
 
 def make_lightposts():
     gs = named_grounds[("west_plaza_offcenter_A", "")]
-    ps = [pole.move(-2, 4), pole.move(2, 4), pole.move(-2, 8), pole.move(2, 8)]
+    ps = [object_pole.move(-2, 4), object_pole.move(2, 4), object_pole.move(-2, 8), object_pole.move(2, 8)]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_offcenter_A", "decorated")] = layout
     register([[layout]], BuildingFull, b"L", starting_id=0x0200)
@@ -32,13 +32,13 @@ def make_lightposts():
 
 def make_lawns():
     gs = named_grounds[("west_plaza_offcenter_A", "")]
-    ps = [corner_lawn]
+    ps = [lawn_corner]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_offcenter_A", "corner_lawn")] = layout
     register([[layout]], BuildingFull, b"l", starting_id=0x0300)
 
     gs = named_grounds[("west_plaza_offcenter_A", "")]
-    ps = [corner_lawn_2]
+    ps = [lawn_corner_2]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_offcenter_A", "corner_lawn_2")] = layout
     register([[layout]], BuildingFull, b"l", starting_id=0x0302)
@@ -49,52 +49,58 @@ def make_mixed_objects():
     ps = [
         planter_1.move(-4, 0),
         planter_2,
-        pole.move(-2, 0),
-        pole.move(2, 0),
-        pole.move(-2, -4),
-        pole.move(2, -4),
-        underground_entrance.move(6, -6),
+        object_pole.move(-2, 0),
+        object_pole.move(2, 0),
+        object_pole.move(-2, -4),
+        object_pole.move(2, -4),
+        object_underground_entrance.move(6, -6),
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_offcenter_B", "decorated")] = layout
     register([[layout]], BuildingFull, b"M", starting_id=0x0700)
 
     gs = named_grounds[("west_plaza_offcenter_A", "")]
-    ps = [pole.move(-2, 4), pole.move(2, 4), pole.move(-2, 8), pole.move(2, 8), corner_lawn]
+    ps = [object_pole.move(-2, 4), object_pole.move(2, 4), object_pole.move(-2, 8), object_pole.move(2, 8), lawn_corner]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_offcenter_A", "decorated_lawn")] = layout
     register([[layout]], BuildingFull, b"M", starting_id=0x0702)
 
     gs = named_grounds[("west_plaza_offcenter_A", "")]
-    ps = [pole.move(-2, 0), pole.move(2, 0), pole.move(-2, 4), pole.move(2, 4), underground_entrance.move(6, 2)]
+    ps = [
+        object_pole.move(-2, 0),
+        object_pole.move(2, 0),
+        object_pole.move(-2, 4),
+        object_pole.move(2, 4),
+        object_underground_entrance.move(6, 2),
+    ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_offcenter_B", "oneliner")] = layout
     register([[layout]], BuildingFull, b"M", starting_id=0x0704)
 
     gs = named_grounds[("west_plaza_center", "")]
     ps = [
-        edge_lawn,
+        lawn_edge,
         tree_bush.R.M.move(-3, 5),
         tree_bench.M.move(0, 5),
         tree_bush.T.R.move(3, 5),
         tree_bench.R.move(-3, 7),
         tree_bush.move(0, 7),
         tree_bench.T.R.M.move(3, 7),
-        glass_pyramid.move(-5, 6),
+        object_glass_pyramid.move(-5, 6),
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_center", "lawn")] = layout
     register([[layout]], BuildingFull, b"M", starting_id=0x0706)
 
     gs = named_grounds[("west_plaza_center", "")]
-    ps = [edge_lawn, underground_entrance.move(0, 6)]
+    ps = [lawn_edge, object_underground_entrance.move(0, 6)]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_center", "toilet_lawn")] = layout
     register([[layout]], BuildingSymmetricalX, b"M", starting_id=0x0708)
 
     gs = named_grounds[("west_plaza_center", "")]
     ps = [
-        split_lawn,
+        lawn_split,
         tree_bench.R.M.move(-3, -5),
         tree_bush.M.move(0, -5),
         tree_bench.T.R.move(3, -5),
