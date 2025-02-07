@@ -33,7 +33,7 @@ from station.stations.platforms import (
     two_side_tiles,
     concourse_tiles,
 )
-from station.stations.ground import named_ps as ground_ps, named_tiles as ground_tiles, gray, gray_third
+from station.stations.ground import named_ps as ground_ps, named_tiles as ground_tiles
 from station.stations.misc import track_ground, track
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 from agrf.graphics.misc import SCALE_TO_ZOOM
