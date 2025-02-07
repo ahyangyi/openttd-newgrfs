@@ -12,6 +12,6 @@ v = LazyVoxel(
 symmetry = BuildingFull
 v.in_place_subset(symmetry.render_indices())
 s = symmetry.create_variants(v.spritesheet(xspan=6, xdiff=10, yspan=6, ydiff=5))
-ps = AParentSprite(s, (6, 6, 4), (10, 5, 0))
+ps = AParentSprite(s, (6, 6, 4), (5, 10, 0)).M.R
 
 aux_ps[("bufferstop",)] = bufferstop = ps

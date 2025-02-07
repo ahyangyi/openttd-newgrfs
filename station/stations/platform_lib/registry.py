@@ -96,7 +96,10 @@ def register(pf: PlatformFamily):
 
                         var = cur_symmetry.get_all_variants(
                             ALayout(
-                                track_ground, [bufferstop] + l, True, notes=make_notes(platform_class, shelter_class)
+                                track_ground,
+                                [bufferstop, bufferstop.R] + l,
+                                True,
+                                notes=make_notes(platform_class, shelter_class),
                             )
                         )
                         l = cur_symmetry.create_variants(var)
@@ -121,7 +124,12 @@ def register(pf: PlatformFamily):
                             var = cur_symmetry.get_all_variants(
                                 ALayout(
                                     track_ground,
-                                    [platform_ps[(name, *suffix, "")], platform_ps[(name, *suffix2, "")].T],
+                                    [
+                                        bufferstop,
+                                        bufferstop.R,
+                                        platform_ps[(name, *suffix, "")],
+                                        platform_ps[(name, *suffix2, "")].T,
+                                    ],
                                     True,
                                     notes=make_notes(platform_class, shelter_class, shelter_class_2),
                                 )
