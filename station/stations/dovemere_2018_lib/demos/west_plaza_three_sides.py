@@ -13,10 +13,10 @@ roadstop_layouts.globalize()
 object_layouts.globalize()
 
 # Road Stops
-west_stair_end = west_stair_end.lower_tile()
+stair_end = stair_end.lower_tile()
 overpass = overpass.lower_tile()
-west_stair = west_stair_narrow.lower_tile()
-west_stair_extender = west_stair_extender_narrow.lower_tile()
+stair = stair_narrow.lower_tile()
+stair_extender = stair_extender_narrow.lower_tile()
 
 # Objects
 diagonal = west_plaza_diagonal.lower_tile()
@@ -55,9 +55,9 @@ station = [
         center_ground.M,
         edge.M,
         road_ground_n_layout.lower_tile(),
-        west_stair,
-        west_stair_extender,
-        west_stair.R,
+        stair,
+        stair_extender,
+        stair.R,
         road_ground_w_layout.lower_tile(),
         edge.T.M,
         center_ground.T.M,

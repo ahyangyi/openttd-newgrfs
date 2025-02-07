@@ -17,11 +17,11 @@ object_layouts.globalize()
 station = h_merge([[[]] * 2, semitraversable.demo_1(5, 7)[5:], [[]] * 2], [[cns], [default]])
 
 # Road Stops
-west_stair_end = west_stair_end.lower_tile()
+stair_end = stair_end.lower_tile()
 overpass = overpass.lower_tile()
-west_stair = west_stair_narrow.lower_tile()
-west_stair_extender = west_stair_extender_narrow.lower_tile()
-roadstops = [[west_stair_end, overpass, west_stair, west_stair_extender, west_stair.R, overpass, west_stair_end.R]]
+stair = stair_narrow.lower_tile()
+stair_extender = stair_extender_narrow.lower_tile()
+roadstops = [[stair_end, overpass, stair, stair_extender, stair.R, overpass, stair_end.R]]
 
 
 # Objects
@@ -41,7 +41,7 @@ west_square = [
 
 west_plaza_vast = Demo(
     station + roadstops + west_square,
-    "West plaza (with VAST square tiles)",
+    "West plaza (with VAST Objects tiles)",
     remap=get_1cc_remap(CompanyColour.MAUVE),
     merge_bbox=True,
 )

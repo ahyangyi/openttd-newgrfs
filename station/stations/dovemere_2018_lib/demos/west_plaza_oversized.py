@@ -15,19 +15,11 @@ object_layouts.globalize()
 station = h_merge([[[]] * 2, semitraversable.demo_1(14, 22)[20:], [[]] * 2], [[cns], [default]])
 
 # Road Stops
-west_stair_end = west_stair_end.lower_tile()
+stair_end = stair_end.lower_tile()
 overpass = overpass.lower_tile()
-west_stair = west_stair.lower_tile()
-west_stair_extender = west_stair_extender.lower_tile()
-roadstops = [
-    [west_stair_end]
-    + [overpass] * 4
-    + [west_stair]
-    + [west_stair_extender] * 4
-    + [west_stair.R]
-    + [overpass] * 4
-    + [west_stair_end.R]
-]
+stair = stair.lower_tile()
+stair_extender = stair_extender.lower_tile()
+roadstops = [[stair_end] + [overpass] * 4 + [stair] + [stair_extender] * 4 + [stair.R] + [overpass] * 4 + [stair_end.R]]
 
 # Objects
 center_ground = west_plaza_center.lower_tile()
