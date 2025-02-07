@@ -10,6 +10,7 @@ from agrf.lib.building.layout import (
     DefaultGraphics,
     NewGraphics,
 )
+from agrf.lib.building.symmetry import BuildingSymmetryMixin
 from agrf.graphics.misc import SCALE_TO_ZOOM
 from agrf.sprites.empty import EmptyAlternativeSprites
 
@@ -18,7 +19,7 @@ class SquashableAlternativeSprites(grf.AlternativeSprites):
     def __init__(self, old_alt, automatic_offset_mode, darkness):
         sprites = []
         for scale in [1, 2, 4]:
-            for bpp in [8]:
+            for bpp in [32]:
                 if (s := old_alt.get_sprite(zoom=SCALE_TO_ZOOM[scale], bpp=bpp)) is not None:
                     sprites.append(
                         NightSprite(
@@ -26,7 +27,7 @@ class SquashableAlternativeSprites(grf.AlternativeSprites):
                             s.w,
                             s.h,
                             scale=scale,
-                            bpp=bpp,
+                            base_bpp=bpp,
                             automatic_offset_mode=automatic_offset_mode,
                             darkness=darkness,
                         )
@@ -58,6 +59,8 @@ def make_child_night_masks(parent, automatic_offset_mode, darkness):
 
     if isinstance(graphics.sprite, EmptyAlternativeSprites):
         return []
+    if graphics.sprite is grf.EMPTY_SPRITE:
+        return []
 
     if parent.flags.get("dodraw") is None:
         flags = {"dodraw": Registers.NIGHTGFX}
@@ -66,9 +69,12 @@ def make_child_night_masks(parent, automatic_offset_mode, darkness):
     else:
         raise NotImplementedError(parent.flags["dodraw"])
 
-    night = graphics.sprite.symmetry_fmap(
-        lambda x: SquashableAlternativeSprites(x, automatic_offset_mode, darkness=darkness)
-    )
+    f = lambda x: SquashableAlternativeSprites(x, automatic_offset_mode, darkness=darkness)
+    if isinstance(graphics.sprite, BuildingSymmetryMixin):
+        night = graphics.sprite.symmetry_fmap(f)
+    else:
+        night = f(graphics.sprite)
+
     NIGHT_CACHE[id(parent)] = [AChildSprite(night, (0, 0), flags=flags)]
     return NIGHT_CACHE[id(parent)]
 

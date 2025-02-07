@@ -7,14 +7,23 @@ from station.lib import (
     LayoutSprite,
     Demo,
     Registers,
+    add_night_masks,
 )
 from ..layouts import named_tiles, layouts, flexible_entries
+
+
+class FingerprintAlternativeSprites(grf.AlternativeSprites):
+    def __init__(self, *sprites):
+        super().__init__(*sprites)
+
+    def get_fingerprint(self):
+        return {f"{s.scale}_{s.bpp}": s.get_fingerprint() for s in self.sprites}
 
 
 def make_demo(switch, w, h, preswitch=None):
     demo = Demo(switch.demo(w, h, preswitch))
     for i, var in enumerate([demo, demo.M]):
-        sprite = grf.AlternativeSprites(
+        sprite = FingerprintAlternativeSprites(
             *[
                 LayoutSprite(
                     var,
@@ -24,6 +33,7 @@ def make_demo(switch, w, h, preswitch=None):
                     yofs=0,
                     scale=scale,
                     bpp=bpp,
+                    crop=False,
                 )
                 for scale in [1, 2, 4]
                 for bpp in [32]
@@ -35,6 +45,7 @@ def make_demo(switch, w, h, preswitch=None):
             False,
             category=b"\xe8\x8a\x9cA",
         )
+        layout = add_night_masks(layout)
         layouts.append(layout)
         if i == 0:
             ret = layout
