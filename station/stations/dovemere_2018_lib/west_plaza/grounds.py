@@ -18,16 +18,16 @@ DEFAULT_SLOPE_FLAGS = DEFAULT_FLAGS | grf.Object.Flags.AUTOREMOVE | grf.Object.F
 named_grounds = AttrDict(schema=("name", "slope"))
 
 for name, sym in [
-    ("west_plaza_center", BuildingSymmetrical),
-    ("west_plaza_offcenter_A", BuildingFull),
-    ("west_plaza_offcenter_B", BuildingFull),
-    ("west_plaza_diagonal", BuildingDiamond),
-    ("west_plaza_checkerboard", BuildingCylindrical),
+    ("center", BuildingSymmetrical),
+    ("offcenter_A", BuildingFull),
+    ("offcenter_B", BuildingFull),
+    ("diagonal", BuildingDiamond),
+    ("checkerboard", BuildingCylindrical),
 ]:
     v = LazyVoxel(
         name,
-        prefix=".cache/render/station/dovemere_2018/plaza",
-        voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
+        prefix=".cache/render/station/dovemere_2018/west_plaza/ground",
+        voxel_getter=lambda path=f"station/voxels/dovemere_2018/west_plaza/ground/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
     )
     v.config["agrf_palette"] = "station/files/cns-palette-ground.json"
@@ -56,13 +56,13 @@ def make_ground_layout(name, sym, starting_id):
         sym,
     )
 
-    named_layouts[(name, "")] = layout
+    named_layouts[("west_plaza_" + name, "")] = layout
     register_slopes(slopes, sym, starting_id)
 
 
 def make_ground_layouts():
-    make_ground_layout("west_plaza_center", BuildingSymmetrical, 0x0)
-    make_ground_layout("west_plaza_offcenter_A", BuildingFull, 0x2)
-    make_ground_layout("west_plaza_offcenter_B", BuildingFull, 0x4)
-    make_ground_layout("west_plaza_diagonal", BuildingDiamond, 0x6)
-    make_ground_layout("west_plaza_checkerboard", BuildingCylindrical, 0x8)
+    make_ground_layout("center", BuildingSymmetrical, 0x0)
+    make_ground_layout("offcenter_A", BuildingFull, 0x2)
+    make_ground_layout("offcenter_B", BuildingFull, 0x4)
+    make_ground_layout("diagonal", BuildingDiamond, 0x6)
+    make_ground_layout("checkerboard", BuildingCylindrical, 0x8)

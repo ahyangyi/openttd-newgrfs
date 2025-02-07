@@ -24,7 +24,7 @@ def make_object_layout(name, starting_id, sym, Xspan, Yspan, xspan, yspan, heigh
     if osym is None:
         osym = sym
 
-    gs = named_grounds[("west_plaza_center", "")]
+    gs = named_grounds[("center", "")]
     v = LazyVoxel(
         name,
         prefix=".cache/render/station/dovemere_2018/west_plaza/topiary",
