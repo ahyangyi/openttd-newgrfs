@@ -27,10 +27,13 @@ def make_object_layout(name, starting_id, sym, Xspan, Yspan, xspan, yspan, heigh
     gs = named_grounds[("west_plaza_center", "")]
     v = LazyVoxel(
         name,
-        prefix=".cache/render/station/dovemere_2018/plaza",
-        voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
+        prefix=".cache/render/station/dovemere_2018/west_plaza/topiary",
+        voxel_getter=lambda path=f"station/voxels/dovemere_2018/west_plaza/topiary/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
     )
+
+    name = "west_plaza_topiary_" + name
+
     snow = v.keep_layers(("snow",), "snow")
     snow = snow.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
     snow.config["agrf_childsprite"] = (0, -11)
@@ -122,9 +125,9 @@ def make_object_layout(name, starting_id, sym, Xspan, Yspan, xspan, yspan, heigh
 
 
 def make_topiaries():
-    make_object_layout("west_plaza_topiary_2021", 0x0100, BuildingSymmetrical, 8, 10, 4, 8, 6)
-    make_object_layout("west_plaza_topiary_2022", 0x0110, BuildingSymmetrical, 8, 10, 4, 8, 6)
-    make_object_layout("west_plaza_topiary_2023", 0x0120, BuildingSymmetrical, 6, 16, 2, 10, 10)
-    make_object_layout("west_plaza_topiary_2024a", 0x0130, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
-    make_object_layout("west_plaza_topiary_2024b", 0x0140, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
-    make_object_layout("west_plaza_topiary_2025a", 0x0150, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
+    make_object_layout("2021", 0x0100, BuildingSymmetrical, 8, 10, 4, 8, 6)
+    make_object_layout("2022", 0x0110, BuildingSymmetrical, 8, 10, 4, 8, 6)
+    make_object_layout("2023", 0x0120, BuildingSymmetrical, 6, 16, 2, 10, 10)
+    make_object_layout("2024a", 0x0130, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
+    make_object_layout("2024b", 0x0140, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
+    make_object_layout("2025a", 0x0150, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
