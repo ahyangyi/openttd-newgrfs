@@ -1,4 +1,5 @@
 from station.lib import AttrDict, AParentSprite, BuildingFull
+from agrf.graphics.voxel import LazyVoxel
 
 aux_ps = AttrDict(schema=("name",))
 
@@ -10,7 +11,7 @@ v = LazyVoxel(
 )
 symmetry = BuildingFull
 v.in_place_subset(symmetry.render_indices())
-s = symmetry.create_variants(v.spritesheet())
-ps = AParentSprite(s, (5, 5, 0), (6, 6, 4))
+s = symmetry.create_variants(v.spritesheet(xspan=6, xdiff=10, yspan=6, ydiff=5))
+ps = AParentSprite(s, (6, 6, 4), (10, 5, 0))
 
-aux_ps[("bufferstop",)] = ps
+aux_ps[("bufferstop",)] = bufferstop = ps

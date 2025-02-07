@@ -2,6 +2,7 @@ from station.lib import AttrDict, ALayout, BuildingSymmetricalX, BuildingSymmetr
 from abc import ABC, abstractmethod
 from ..misc import track_ground
 from ..ground import named_ps as ground_ps
+from .aux import bufferstop
 
 gray_ps = ground_ps.gray
 
@@ -94,7 +95,9 @@ def register(pf: PlatformFamily):
                             cur_symmetry = ps.sprite.symmetry
 
                         var = cur_symmetry.get_all_variants(
-                            ALayout(track_ground, l, True, notes=make_notes(platform_class, shelter_class))
+                            ALayout(
+                                track_ground, [bufferstop] + l, True, notes=make_notes(platform_class, shelter_class)
+                            )
                         )
                         l = cur_symmetry.create_variants(var)
                         if platform_class not in ["np", "cut"] and shelter_class != "pillar" and location == "":
