@@ -18,9 +18,6 @@ from station.lib import (
 from grfobject.lib import AObject, GraphicalSwitch, PositionSwitch
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 from agrf.lib.building.slope import make_slopes, slope_types
-from station.lib import AttrDict
-import grf
-from agrf.lib.building.slope import slope_types
 
 DEFAULT_FLAGS = grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.ALLOW_UNDER_BRIDGE
 DEFAULT_SLOPE_FLAGS = DEFAULT_FLAGS | grf.Object.Flags.AUTOREMOVE | grf.Object.Flags.HAS_NO_FOUNDATION
