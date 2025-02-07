@@ -4,8 +4,13 @@ STR_GRF_DESC                    :{}{PUSH_COLOUR}{GOLD}China{RED} Set{POP_COLOUR}
 
 STR_PARAM_INTRODUCTION_YEAR             :Global - Station Availability
 STR_PARAM_INTRODUCTION_YEAR_DESC        :Choose whether each station in this NewGRF can only be built after a certain year
-STR_PARAM_INTRODUCTION_YEAR_DISABLED    :Always available
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :Only available after set year
+STR_PARAM_INTRODUCTION_YEAR_DISABLED    :Always available
+
+STR_PARAM_BUFFER_STOP                   :Global - Buffer Stop
+STR_PARAM_BUFFER_STOP_DESC              :Choose whether to automatically place buffer stops on track ends within stations
+STR_PARAM_BUFFER_STOP_ENABLED           :Enabled
+STR_PARAM_BUFFER_STOP_DISABLED          :Disabled
 
 STR_PARAM_SNOW_TRACK                    :Global - Snow
 STR_PARAM_SNOW_TRACK_DESC               :Choose whether to keep the snow on the ground when beneath a station building.
