@@ -1,14 +1,18 @@
 import grf
 from station.lib.utils import class_label_printable
 from agrf.magic import Switch
+from agrf.utils import unique
 
 
 class AObject(grf.SpriteGenerator):
-    def __init__(self, *, id, translation_name, layouts, callbacks=None, doc_layout=None, **props):
+    def __init__(
+        self, *, id, translation_name, layouts, purchase_layouts=None, callbacks=None, doc_layout=None, **props
+    ):
         super().__init__()
         self.id = id
         self.translation_name = translation_name
         self.layouts = layouts
+        self.purchase_layouts = purchase_layouts
         if callbacks is None:
             callbacks = {}
         self.callbacks = grf.make_callback_manager(grf.OBJECT, callbacks)
@@ -37,9 +41,27 @@ class AObject(grf.SpriteGenerator):
         layouts = []
         for i, layout in enumerate(self.layouts):
             layouts.append(layout.to_action2(feature=grf.OBJECT, sprite_list=sprites))
-        self.callbacks.graphics = Switch(
-            ranges={i: layouts[i] for i in range(len(layouts))}, default=layouts[0], code="view"
+
+        if self.purchase_layouts is None:
+            purchase_layouts = layouts
+        else:
+            purchase_layouts = []
+            for i, layout in enumerate(self.purchase_layouts):
+                purchase_layouts.append(layout.to_action2(feature=grf.OBJECT, sprite_list=sprites))
+
+        default_graphics = Switch(
+            ranges={i: layouts[i] for i in range(len(layouts))},
+            default=layouts[0],
+            code="""
+TEMP[0x03] = (terrain_type & 0x4) == 0x4
+TEMP[0x04] = (terrain_type & 0x4) != 0x4
+view
+""",
         )
+        purchase_graphics = Switch(
+            ranges={i: purchase_layouts[i] for i in range(len(layouts))}, default=layouts[0], code="view"
+        )
+        self.callbacks.graphics = grf.GraphicsCallback(default=default_graphics, purchase=purchase_graphics)
         self.callbacks.set_flag_props(self._props)
 
         res.append(
@@ -54,4 +76,8 @@ class AObject(grf.SpriteGenerator):
 
     @property
     def sprites(self):
-        return [*dict.fromkeys([sub for l in self.layouts for sub in l.sprites])]
+        return unique(
+            sub
+            for l in self.layouts + ([] if self.purchase_layouts is None else self.purchase_layouts)
+            for sub in l.sprites
+        )

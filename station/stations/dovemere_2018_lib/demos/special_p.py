@@ -7,7 +7,7 @@ from agrf.graphics.palette import CompanyColour
 globalize_all(platform_class="concrete", shelter_class="shelter_2")
 
 top_half = [
-    [default, h_end_asym_gate.T, turn_gate.T.R, concourse, turn_gate.T, h_end_asym_gate.T.R, default],
+    [default, h_end_asym_gate.T, turn_gate.T.R, concourse_none, turn_gate.T, h_end_asym_gate.T.R, default],
     [cns, cns, v_central_n, cns, v_central_n, cns, cns],
     [cns.T, cns.T, v_central_n.T, cns.T, v_central_n.T, cns.T, cns.T],
     [
@@ -22,8 +22,8 @@ top_half = [
 ]
 
 special_demo_p = Demo(
-    "Irregular 7×7 station layout",
     top_half + [[i and i.T for i in row] for row in top_half[2::-1]],
+    "Irregular 7×7 station layout",
     remap=get_1cc_remap(CompanyColour.PALE_GREEN),
     climate="tropical",
 )

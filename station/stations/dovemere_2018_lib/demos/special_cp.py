@@ -5,19 +5,26 @@ from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 
 globalize_all(platform_class="concrete", shelter_class="shelter_2")
-nt = concourse
 
 special_demo_cp = Demo(
-    "Irregular 7×7 station layout",
     [
         [h_end_corridor, tee.T, h_normal_corridor, turn.T.R, default, default, default],
         [cns, v_central_n, cns, v_central_n, cns_d, cns_d, cns_d],
         [cns.T, v_central_n.T, cns.T, v_central_n.T, cns_d, cns_d, cns_d],
         [cns, v_central_n, cns, v_central_n, corner.T, front_normal.T, corner.T.R],
-        [nt.T, v_end_platform, nt.T, turn, double_inner_corner, central_windowed_extender_d, side_a2_windowed_d.R],
-        [concourse, concourse, concourse, concourse, v_funnel, front_normal, corner.R],
+        [
+            concourse.T,
+            v_end_platform,
+            concourse.T,
+            turn,
+            double_inner_corner,
+            central_windowed_extender_d,
+            side_a2_windowed_d.R,
+        ],
+        [concourse_none, concourse_none, concourse_none, concourse_none, v_funnel, front_normal, corner.R],
         [default, default, default, default, v_end_gate, default, default],
     ],
+    "Irregular 7×7 station layout",
     remap=get_1cc_remap(CompanyColour.CREAM),
     climate="toyland",
 )

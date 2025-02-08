@@ -3,9 +3,10 @@
     "lighting_elevation": 65,
     "depth_influence": 0,
     "tiled_normals": true,
+    "tiling_mode": "repeat",
     "hard_edge_threshold": 0.25,
     "pad_to_full_length": false,
-    "solid_base": true,
+    "solid_base": false,
     "soften_edges": 0.5,
     "fade_to_black": false,
     "sampler": "square",
@@ -63,11 +64,13 @@
             "width": 64
         }
     ],
-    "agrf_bpps": [8, 32],
+    "agrf_bpps": [32],
     "agrf_scales": [1, 2, 4],
     "agrf_palette": "station/files/ttd_palette.json",
     "agrf_deltas": [[-2, -1], [2, -1], [-2, -1], [2, -1], [2, 1], [-2, 1], [2, 1], [-2, 1]],
     "agrf_offsets": [[0, 0], [0, 0], [0, 0], [0, 0], [-2, -1], [2, -1], [-2, -1], [2, -1]],
+    "agrf_ydeltas": [[2, -1], [-2, -1], [-2, 1], [2, 1], [2, -1], [-2, -1], [-2, 1], [2, 1]],
+    "agrf_yoffsets": [[0, 0], [0, 0], [2, -1], [-2, -1], [0, 0], [0, 0], [2, -1], [-2, -1]],
     "agrf_road_mode": true,
     "z_scale": 1.25
 }

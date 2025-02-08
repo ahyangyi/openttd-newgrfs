@@ -1,11 +1,8 @@
 from station.lib import (
     AStation,
     AMetaStation,
-    BuildingSpriteSheetSymmetricalX,
-    BuildingSpriteSheetSymmetrical,
+    BuildingSymmetricalX,
     Demo,
-    ADefaultGroundSprite,
-    AGroundSprite,
     AParentSprite,
     AChildSprite,
     ALayout,
@@ -13,18 +10,18 @@ from station.lib import (
     Registers,
     get_1cc_remap,
 )
-from station.lib.parameters import parameter_list
+from station.lib.parameters import parameter_list, station_cb, station_code
 from agrf.graphics.voxel import LazyVoxel
-from station.lib.parameters import station_cb
 from .misc import building_ground
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 from agrf.graphics.palette import CompanyColour
+from station.stations.platforms import platform_tiles
 
 
 def quickload(name, symmetry):
     v = LazyVoxel(
         name,
-        prefix="station/voxels/render/dovemere_1934",
+        prefix=".cache/render/station/dovemere_1934",
         voxel_getter=lambda path=f"station/voxels/dovemere_1934/{name}.vox": path,
         load_from="station/files/gorender.json",
         config={"agrf_palette": "station/files/dovemere_1934_palette.json", "z_scale": 1.0},
@@ -38,7 +35,7 @@ def quickload(name, symmetry):
     snow.config["agrf_childsprite"] = (0, -10)
 
     sprite = symmetry.create_variants(building.spritesheet(xdiff=1, xspan=8))
-    ps = AParentSprite(sprite, (16, 8, 16), (0, 0, 0))
+    ps = AParentSprite(sprite, (16, 8, 16), (0, 0, 0), flags={"add_palette": Registers.RECOLOUR_OFFSET})
     snow_sprite = symmetry.create_variants(snow.spritesheet())
     cs = AChildSprite(snow_sprite, (0, 0), flags={"dodraw": Registers.SNOW})
 
@@ -51,7 +48,7 @@ def quickload(name, symmetry):
 
 entries = []
 named_tiles = AttrDict()
-for name, symmetry in [("regular", BuildingSpriteSheetSymmetricalX)]:
+for name, symmetry in [("regular", BuildingSymmetricalX)]:
     quickload(name, symmetry)
 
 station_tiles = []
@@ -64,23 +61,34 @@ for i, entry in enumerate(entries):
             class_label=b"\xe8\x8a\x9c0",
             cargo_threshold=40,
             callbacks={"select_tile_layout": 0, **station_cb["E88A9C0"]},
-            enable_if=[parameter_list.index("E88A9C0_ENABLE_MODULAR")],
+            extra_code=station_code["E88A9C0"],
+            enable_if=[parameter_list["E88A9C0_ENABLE_MODULAR"]],
             doc_layout=entry,
         )
     )
+
+simple_demo_layout = [[platform_tiles.cns_brick_shelter_1], [named_tiles.regular]]
 
 the_stations = AMetaStation(
     station_tiles,
     b"\xe8\x8a\x9c0",
     None,
     [
-        Demo("The building", [[named_tiles.regular]]),
+        Demo(simple_demo_layout, "The building"),
+        Demo(simple_demo_layout, "The building (back side)").T,
         Demo(
+            simple_demo_layout,
             "With snow",
-            [[named_tiles.regular]],
             remap=get_1cc_remap(CompanyColour.PINK),
             climate="arctic",
             subclimate="snow",
         ),
+        Demo(
+            simple_demo_layout,
+            "With snow (back side)",
+            remap=get_1cc_remap(CompanyColour.PINK),
+            climate="arctic",
+            subclimate="snow",
+        ).T,
     ],
 )
