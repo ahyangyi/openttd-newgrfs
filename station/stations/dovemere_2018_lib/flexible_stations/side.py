@@ -105,11 +105,11 @@ for p, pclass in enumerate(platform_classes):
         )
 
 
-def get_side_index(l, r):
+def get_side_index_np(l, r):
     return horizontal_layout(l, r, tiny_asym, h_end_asym_gate, h_end_asym, h_normal, h_gate_1, h_gate_extender_1)
 
 
-cb14 = make_horizontal_switch(get_side_index)
+cb14 = make_horizontal_switch(get_side_index_np)
 
 side_station_np_demo = lambda r, c, cb14=cb14: cb14.demo(r, c)
 demo_layout = make_demo(cb14, 4, 1)
