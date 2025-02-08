@@ -44,6 +44,8 @@ gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
 concourse = concourse_ps.none
 
+JOGGLE_AMOUNT = 16 * 2**0.5 - 22
+
 
 def make_empty_variant(w, h, x, y):
     empty_image = empty_alternatives(w, h, x, y)
@@ -158,7 +160,7 @@ def make_f2(v, sym):
     v = v.discard_layers(all_f1_layers + all_f2_layers + snow_layers, "f2")
     v.in_place_subset(sym.render_indices())
     v.config["agrf_relative_childsprite"] = f2_empty_offset
-    s = sym.create_variants(v.spritesheet(zdiff=base_height + 0.5))
+    s = sym.create_variants(v.spritesheet(zdiff=base_height))
 
     empty_parent = AParentSprite(f2_empty_sprite, (16, 16, overpass_height), (0, 0, base_height + platform_height))
     f2_child = AChildSprite(s, (0, 0), palette=0, flags={"add_palette": Registers.RECOLOUR_OFFSET})
@@ -182,10 +184,10 @@ def make_extra(v, sym, name, floor="f2"):
         v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
     if floor == "f2":
         v.config["agrf_relative_childsprite"] = f2_empty_offset
-        zdiff = base_height + 0.5
+        zdiff = base_height
     else:
         v.config["agrf_childsprite"] = (0, -40)
-        zdiff = 0.5  # FIXME: unused with absolute offset
+        zdiff = 0  # FIXME: unused with absolute offset
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet(zdiff=zdiff))
     if "snow" in name:
@@ -205,7 +207,7 @@ def make_f1(v, subset, sym):
         V.in_place_subset(sym.render_indices())
         V.config["agrf_manual_crop"] = (0, 40)
         # V.config["agrf_relative_childsprite"] = f1_empty_offset[subset]
-        s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan, zdiff=0.5))
+        s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan))
         f1_cache[(v, subset)] = AParentSprite(s, (16, xspan, base_height), (0, xdiff, platform_height)), sym
         # empty_parent = AParentSprite(f1_empty_sprite[subset], (16, xspan, base_height), (0, xdiff, platform_height))
         # f1_child = AChildSprite(s, (0, 0))
@@ -251,6 +253,7 @@ def make_voxel(source):
             voxel_getter=lambda path=f"station/voxels/dovemere_2018/{source}.vox": path,
             load_from="station/files/gorender.json",
         )
+        voxel_cache[source].config["joggle"] = JOGGLE_AMOUNT
     return voxel_cache[source]
 
 
