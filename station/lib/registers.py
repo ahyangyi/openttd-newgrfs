@@ -1,8 +1,8 @@
 import grf
-from agrf.lib.building.registers import Registers as AgrfRegisters, code as agrf_code
+from agrf.lib.building.registers import Registers as AGRFRegisters, code as agrf_code
 
 
-class Registers(AgrfRegisters):
+class Registers(AGRFRegisters):
     NIGHTGFX = grf.Temp(0x10)
     SNOW_NIGHTGFX = grf.Temp(0x11)
 
