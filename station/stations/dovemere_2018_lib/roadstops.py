@@ -7,6 +7,7 @@ from station.lib import (
     AChildSprite,
     AttrDict,
     Registers,
+    add_night_masks,
 )
 from station.lib.parameters import parameter_list
 from agrf.graphics.voxel import LazyVoxel
@@ -31,7 +32,11 @@ JOGGLE_AMOUNT = 45 - 32 * 2**0.5
 
 def register_road_stop(layout, sym):
     global cnt
-    for cur in sym.get_all_variants(layout)[::2]:
+
+    l = sym.create_variants(sym.get_all_variants(layout))
+    l = l.symmetry_fmap(lambda x: add_night_masks(x))
+    l = sym.get_all_variants(l)
+    for cur in l[::2]:
         cur_roadstop = ARoadStop(
             id=0x8000 + cnt,
             translation_name="WEST_PLAZA_BUS",
