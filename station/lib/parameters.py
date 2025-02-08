@@ -22,7 +22,7 @@ company_colour = {
     15: "GREY",
     16: "WHITE",
 }
-settings = []
+settings = [Parameter("SNOW_TRACK", 0, {0: "ENABLED", 1: "DISABLED"})]
 
 
 def make_introduction_year(station_id, mapping):
