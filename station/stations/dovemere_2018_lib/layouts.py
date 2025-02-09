@@ -44,7 +44,8 @@ gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
 concourse = concourse_ps.none
 
-JOGGLE_AMOUNT = 16 * 2**0.5 - 22
+# FIXME: technically should be 21 instead of 20, but in reality that results in bad effects
+JOGGLE_AMOUNT = (16 * 2**0.5 - 20) / 1.25
 
 
 def make_empty_variant(w, h, x, y):
