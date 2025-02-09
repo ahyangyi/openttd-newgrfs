@@ -7,6 +7,11 @@ STR_PARAM_INTRODUCTION_YEAR_DESC        :选择本 NewGRF 内每个车站是否�
 STR_PARAM_INTRODUCTION_YEAR_DISABLED    :任何年份都可以建造任何车站
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :指定年份后才可以建造车站
 
+STR_PARAM_BUFFER_STOP                   :全局设置 - 挡车器
+STR_PARAM_BUFFER_STOP_DESC              :决定是否在车站内的铁路末端上绘制挡车器
+STR_PARAM_BUFFER_STOP_ENABLED           :启用
+STR_PARAM_BUFFER_STOP_DISABLED          :禁用
+
 STR_PARAM_SNOW_TRACK                    :全局设置 - 积雪
 STR_PARAM_SNOW_TRACK_DESC               :决定在原本是雪地的地方建造线上式站房时，是否保留地上的积雪。
 STR_PARAM_SNOW_TRACK_ENABLED            :保留积雪
