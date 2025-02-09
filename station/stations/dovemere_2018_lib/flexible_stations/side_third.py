@@ -98,7 +98,7 @@ for p, pclass in enumerate(platform_classes):
         )
 
 
-def get_side_index(l, r, pclass):
+def get_side_index_np(l, r, pclass):
     suffix = "_" + pclass
     return horizontal_layout(
         l,
@@ -113,7 +113,7 @@ def get_side_index(l, r, pclass):
 
 
 cb14 = {
-    pclass: make_horizontal_switch(lambda l, r, pclass=pclass: get_side_index(l, r, pclass))
+    pclass: make_horizontal_switch(lambda l, r, pclass=pclass: get_side_index_np(l, r, pclass))
     for pclass in platform_classes
 }
 
