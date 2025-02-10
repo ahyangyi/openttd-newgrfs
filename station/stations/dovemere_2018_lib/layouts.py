@@ -156,7 +156,7 @@ f1_empty_offset = {}
 f1_empty_sprite = {}
 for k, (_, offset, _) in f1_subsets.items():
     f1_empty_offset[k] = (-31 - offset * 2, -14 - offset)
-    f1_empty_sprite[k] = make_empty_variant(64, 48, *f1_empty_offset[k])
+    f1_empty_sprite[k] = make_empty_variant(33 - f1_empty_offset[k][0], 34 - f1_empty_offset[k][1], *f1_empty_offset[k])
 f2_empty_offset = (-31, -34)
 f2_empty_sprite = make_empty_variant(64, 68, *f2_empty_offset)
 
@@ -191,8 +191,8 @@ def make_extra(v, sym, name, floor="f2"):
         v.config["agrf_relative_childsprite"] = f2_empty_offset
         zdiff = base_height
     else:
-        v.config["agrf_childsprite"] = (0, -40)
-        zdiff = 0  # FIXME: unused with absolute offset
+        v.config["agrf_relative_childsprite"] = f1_empty_offset["full"]
+        zdiff = 0
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet(zdiff=zdiff))
     if "snow" in name:
@@ -210,13 +210,11 @@ def make_f1(v, subset, sym):
         V = v.discard_layers(tuple(all_f1_layers_set - keep_layers), subset)
         V = V.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         V.in_place_subset(sym.render_indices())
-        V.config["agrf_manual_crop"] = (0, 40)
-        # V.config["agrf_relative_childsprite"] = f1_empty_offset[subset]
+        V.config["agrf_relative_childsprite"] = f1_empty_offset[subset]
         s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan))
-        f1_cache[(v, subset)] = AParentSprite(s, (16, xspan, base_height), (0, xdiff, platform_height)), sym
-        # empty_parent = AParentSprite(f1_empty_sprite[subset], (16, xspan, base_height), (0, xdiff, platform_height))
-        # f1_child = AChildSprite(s, (0, 0))
-        # f1_cache[(v, subset)] = empty_parent + f1_child, sym
+        empty_parent = AParentSprite(f1_empty_sprite[subset], (16, xspan, base_height), (0, xdiff, platform_height))
+        f1_child = AChildSprite(s, (0, 0))
+        f1_cache[(v, subset)] = empty_parent + f1_child, sym
     ret, ret_sym = f1_cache[(v, subset)]
     assert sym is ret_sym
     return ret
