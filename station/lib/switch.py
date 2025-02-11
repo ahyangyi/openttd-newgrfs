@@ -13,7 +13,7 @@ def find_default_element(d):
     reverse_lookup = {}
     value_count = {}
 
-    prev_k = None
+    prev_k = prev_v = None
     for k, v in sorted(d.items()):
         if isinstance(v, int):
             key = v

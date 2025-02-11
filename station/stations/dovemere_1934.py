@@ -2,10 +2,7 @@ from station.lib import (
     AStation,
     AMetaStation,
     BuildingSymmetricalX,
-    BuildingSymmetrical,
     Demo,
-    ADefaultGroundSprite,
-    AGroundSprite,
     AParentSprite,
     AChildSprite,
     ALayout,
@@ -18,6 +15,7 @@ from agrf.graphics.voxel import LazyVoxel
 from .misc import building_ground
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 from agrf.graphics.palette import CompanyColour
+from station.stations.platforms import platform_tiles
 
 
 def quickload(name, symmetry):
@@ -69,18 +67,28 @@ for i, entry in enumerate(entries):
         )
     )
 
+simple_demo_layout = [[platform_tiles.cns_brick_shelter_1], [named_tiles.regular]]
+
 the_stations = AMetaStation(
     station_tiles,
     b"\xe8\x8a\x9c0",
     None,
     [
-        Demo([[named_tiles.regular]], "The building"),
+        Demo(simple_demo_layout, "The building"),
+        Demo(simple_demo_layout, "The building (back side)").T,
         Demo(
-            [[named_tiles.regular]],
+            simple_demo_layout,
             "With snow",
             remap=get_1cc_remap(CompanyColour.PINK),
             climate="arctic",
             subclimate="snow",
         ),
+        Demo(
+            simple_demo_layout,
+            "With snow (back side)",
+            remap=get_1cc_remap(CompanyColour.PINK),
+            climate="arctic",
+            subclimate="snow",
+        ).T,
     ],
 )
