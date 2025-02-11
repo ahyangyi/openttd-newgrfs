@@ -2,6 +2,7 @@ import os
 from agrf.strings import get_translation, remove_control_letters
 from agrf.graphics.palette import CompanyColour
 from .utils import get_1cc_remap, class_label_printable
+from station.lib.idmap import station_idmap
 
 
 def gen_docs(string_manager, metastations):
@@ -88,11 +89,14 @@ nav_order: {nav_order}
                             .to_pil_image()
                         )
                         idstr = f"{layout.id:04X}"
-                        img.save(os.path.join(prefix, "img", f"{metastation_label}/{kind}/{idstr}.png"))
+                        idpath = idstr
+                        if kind in ["waypoints", "stations"] and layout.id in station_idmap:
+                            idstr += f" ({station_idmap[layout.id]:04X})"
+                        img.save(os.path.join(prefix, "img", f"{metastation_label}/{kind}/{idpath}.png"))
                         print(
                             f"""
 <figure style="display:inline-block">
-  <img src="img/{metastation_label}/{kind}/{idstr}.png" alt="{idstr}" width="64"/>
+  <img src="img/{metastation_label}/{kind}/{idpath}.png" width="64"/>
   <figcaption style="text-align:center">{idstr}</figcaption>
 </figure>
 """,
