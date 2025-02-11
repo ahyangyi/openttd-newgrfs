@@ -174,10 +174,7 @@ def make_f2(v, sym):
 
 
 def make_extra(v, sym, name, floor="f2"):
-    vd = v.discard_layers(
-        all_f1_layers + tuple(all_f2_layers_set - {name, name + "-boundary"}) + ("overpass", "foundation", "circle"),
-        name,
-    )
+    vd = v.keep_layers((name, name + "-boundary"), name)
     if floor == "f2":
         vd = vd.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
     else:
