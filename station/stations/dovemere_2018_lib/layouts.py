@@ -182,6 +182,8 @@ def make_extra(v, sym, name, floor="f2"):
     v = vd.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
     if "snow" in name:
         v.config["overlap"] = 1.3
+    elif "night" in name:
+        v.config["agrf_bpps"] = [8]
     else:
         v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
     if floor == "f2":
@@ -267,6 +269,8 @@ def load_central(f2_ids, source, symmetry, internal_category, name=None, h_pos=N
     f2_snow = make_extra(v, symmetry, "snow")
     f2_snow_window = make_extra(v, symmetry.break_x_symmetry() if window_asym else symmetry, "snow-window")
     f2_snow_window_extender = make_extra(v, symmetry, "snow-window-extender")
+
+    f2_night = make_extra(v, symmetry, "night")
 
     cur_np = h_pos.non_platform
     if window is None:
