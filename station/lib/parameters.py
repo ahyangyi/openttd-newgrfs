@@ -52,6 +52,13 @@ settings.append(
 make_introduction_year("E88A9CA", mapping=ParameterMapping(grf_parameter=0x3, first_bit=0, num_bit=13))
 make_colour("E88A9CA", mapping=ParameterMapping(grf_parameter=0x10, first_bit=0, num_bit=5))
 
+# E88A9C4: Wuhu (1992)
+settings.append(
+    Parameter("E88A9C4_ENABLE_MODULAR", 1, booldict, mapping=ParameterMapping(grf_parameter=4, first_bit=0, num_bit=1))
+)
+make_introduction_year("E88A9C4", mapping=ParameterMapping(grf_parameter=7, first_bit=0, num_bit=13))
+make_colour("E88A9C4", mapping=ParameterMapping(grf_parameter=0x12, first_bit=0, num_bit=5))
+
 # E88A9C0: Wuhu (1934)
 settings.append(
     Parameter(
@@ -84,7 +91,7 @@ settings.append(
 
 parameter_list = ParameterList(settings)
 
-station_meta = ["E88A9CA", "E88A9C0"]
+station_meta = ["E88A9CA", "E88A9C4", "E88A9C0"]
 station_cb = {}
 station_code = {}
 for s in station_meta:
