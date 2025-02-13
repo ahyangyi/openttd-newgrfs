@@ -61,7 +61,7 @@ def register_slopes(slopes, sym, starting_id, flags=DEFAULT_SLOPE_FLAGS):
         objects.append(cur_object)
 
 
-def register(layouts, sym, label, starting_id, flags=DEFAULT_FLAGS):
+def register(layouts, sym, label, starting_id, flags=DEFAULT_FLAGS, allow_flip=True):
     rows = len(layouts)
     columns = len(layouts[0])
     layout = PositionSwitch(
@@ -71,7 +71,7 @@ def register(layouts, sym, label, starting_id, flags=DEFAULT_FLAGS):
         rows=rows,
         columns=columns,
     )
-    for cur in sym.chiralities(layout):
+    for cur in sym.chiralities(layout)[: 2 if allow_flip else 1]:
         demo = Demo(cur.to_lists())
         doc_layout = demo.to_layout()
         doc_layout.category = b"\xe8\x8a\x9cZ"  # FIXME doc category?

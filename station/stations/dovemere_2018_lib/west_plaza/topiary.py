@@ -81,7 +81,7 @@ def make_object_layout(name, starting_id, sym, Xspan, Yspan, xspan, yspan, heigh
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "")] = layout
-    register([[layout]], sym, b"F", starting_id=starting_id)
+    register([[layout]], sym, b"F", starting_id=starting_id, allow_flip=False)
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs, Xofs - 4, 0)) + ground_snowcs,
@@ -89,7 +89,16 @@ def make_object_layout(name, starting_id, sym, Xspan, Yspan, xspan, yspan, heigh
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "half")] = layout
-    register([[layout]], sym.break_y_symmetry(), b"F", starting_id=starting_id + 2)
+    register([[layout]], sym.break_y_symmetry(), b"F", starting_id=starting_id + 1, allow_flip=False)
+
+    if sym is BuildingFull:
+        ps = [
+            AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs, Xofs + 4, 0)) + ground_snowcs,
+            AParentSprite(sprite, (yspan, xspan, height - 1), (yofs, xofs + 4, 1)) + snowcs,
+        ]
+        layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+        named_layouts[(name, "lower_half")] = layout
+        register([[layout]], sym.break_y_symmetry(), b"F", starting_id=starting_id + 2, allow_flip=False)
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs, Xofs - 8, 0)) + ground_snowcs,
@@ -97,7 +106,7 @@ def make_object_layout(name, starting_id, sym, Xspan, Yspan, xspan, yspan, heigh
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "vertical")] = layout
-    register([[gl], [layout]], sym, b"F", starting_id=starting_id + 4)
+    register([[gl], [layout]], sym, b"F", starting_id=starting_id + 3, allow_flip=False)
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs, 0)) + ground_snowcs,
@@ -105,7 +114,7 @@ def make_object_layout(name, starting_id, sym, Xspan, Yspan, xspan, yspan, heigh
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "horizontal")] = layout
-    register([[gl, layout]], sym, b"F", starting_id=starting_id + 6)
+    register([[gl, layout]], sym, b"F", starting_id=starting_id + 4, allow_flip=False)
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs - 4, 0)) + ground_snowcs,
@@ -113,7 +122,16 @@ def make_object_layout(name, starting_id, sym, Xspan, Yspan, xspan, yspan, heigh
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "half_horizontal")] = layout
-    register([[gl, layout]], sym.break_y_symmetry(), b"F", starting_id=starting_id + 8)
+    register([[gl, layout]], sym.break_y_symmetry(), b"F", starting_id=starting_id + 5, allow_flip=False)
+
+    if sym is BuildingFull:
+        ps = [
+            AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs + 4, 0)) + ground_snowcs,
+            AParentSprite(sprite, (yspan, xspan, height - 1), (yofs - 8, xofs + 4, 1)) + snowcs,
+        ]
+        layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+        named_layouts[(name, "half_horizontal")] = layout
+        register([[gl, layout]], sym.break_y_symmetry(), b"F", starting_id=starting_id + 6, allow_flip=False)
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs - 8, 0)) + ground_snowcs,
@@ -121,14 +139,14 @@ def make_object_layout(name, starting_id, sym, Xspan, Yspan, xspan, yspan, heigh
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "corner")] = layout
-    register([[gl, gl], [gl, layout]], sym, b"F", starting_id=starting_id + 10)
+    register([[gl, gl], [gl, layout]], sym, b"F", starting_id=starting_id + 7, allow_flip=False)
 
 
 def make_topiaries():
     make_object_layout("2021a", 0x0100, BuildingFull, 8, 10, 4, 8, 6)
-    make_object_layout("2021b", 0x0110, BuildingFull, 8, 10, 4, 8, 6)
-    make_object_layout("2022a", 0x0120, BuildingSymmetrical, 8, 10, 4, 8, 6)
-    make_object_layout("2023b", 0x0150, BuildingSymmetrical, 6, 16, 2, 10, 10)
-    make_object_layout("2024a", 0x0160, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
-    make_object_layout("2024b", 0x0170, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
-    make_object_layout("2025a", 0x0180, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
+    make_object_layout("2021b", 0x0108, BuildingFull, 8, 10, 4, 8, 6)
+    make_object_layout("2022a", 0x0110, BuildingSymmetrical, 8, 10, 4, 8, 6)
+    make_object_layout("2023b", 0x0128, BuildingSymmetrical, 6, 16, 2, 10, 10)
+    make_object_layout("2024a", 0x0130, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
+    make_object_layout("2024b", 0x0138, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
+    make_object_layout("2025a", 0x0140, BuildingSymmetrical, 8, 12, 2, 2, 6, BuildingCylindrical)
