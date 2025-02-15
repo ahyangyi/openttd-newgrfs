@@ -137,6 +137,7 @@ the_stations = AMetaStation(
             demos.special_demo_aq,
         ],
         "Station Square": [demos.west_plaza],
+        "With Other NewGRF": [demos.cztr_demo],
     },
     road_stops=roadstops,
 )
