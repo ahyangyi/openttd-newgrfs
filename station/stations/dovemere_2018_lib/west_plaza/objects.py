@@ -81,7 +81,7 @@ def make_trees():
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_center", "tree_formation")] = layout
     # FIXME: cannot register this
-    # too many bboxes
+    # too many bboxes (24 * 3, will be 24 * 6 with night)
     # register([[layout]], BuildingFull, b"M", starting_id=0x0400)
 
 
