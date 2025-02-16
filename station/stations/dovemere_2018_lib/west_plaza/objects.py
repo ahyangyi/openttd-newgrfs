@@ -80,7 +80,9 @@ def make_trees():
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_center", "tree_formation")] = layout
-    register([[layout]], BuildingFull, b"M", starting_id=0x0400)
+    # FIXME: cannot register this
+    # too many bboxes
+    # register([[layout]], BuildingFull, b"M", starting_id=0x0400)
 
 
 def make_mixed_objects():

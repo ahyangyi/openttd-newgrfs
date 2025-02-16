@@ -10,7 +10,7 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from agrf.lib.building.slope import make_slopes, slope_types
-from ..objects_utils import register_slopes, named_layouts
+from ..objects_utils import register, register_slopes, named_layouts
 
 DEFAULT_FLAGS = grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.ALLOW_UNDER_BRIDGE
 DEFAULT_SLOPE_FLAGS = DEFAULT_FLAGS | grf.Object.Flags.AUTOREMOVE | grf.Object.Flags.HAS_NO_FOUNDATION
@@ -58,6 +58,7 @@ def make_ground_layout(name, sym, starting_id):
 
     named_layouts[("west_plaza_" + name, "")] = layout
     register_slopes(slopes, sym, starting_id)
+    register([[layout]], sym, b"g", starting_id + 0x80)
 
 
 def make_ground_layouts():
