@@ -1,5 +1,5 @@
 from station.lib import Demo
-from .normal import normal_demo
+from ..realistic.normal import normal_demo
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
 from agrf.lib.building.layout import DefaultGraphics

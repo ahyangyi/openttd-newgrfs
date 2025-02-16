@@ -1,12 +1,14 @@
-from station.lib import Demo
+import grf
+from station.lib import Demo, AGroundSprite, ALayout
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
+from agrf.lib.building.image_sprite import image_sprite
 from station.stations.dovemere_2018_lib.flexible_stations import semitraversable
 from station.stations.dovemere_2018_lib.roadstops import named_layouts as roadstop_layouts
 from station.stations.dovemere_2018_lib.objects import named_layouts as object_layouts
 from station.stations.dovemere_2018_lib.layouts import globalize_all
 from station.stations.misc import default
-from .utils import h_merge
+from ..utils import h_merge
 
 globalize_all(platform_class="concrete", shelter_class="shelter_2")
 roadstop_layouts.globalize()
@@ -21,25 +23,25 @@ stair = stair_narrow.lower_tile()
 stair_extender = stair_extender_narrow.lower_tile()
 roadstops = [[stair_end, overpass, stair, stair_extender, stair.R, overpass, stair_end.R]]
 
+
 # Objects
-center_ground = west_plaza_center.lower_tile()
-offcenter_A = west_plaza_offcenter_A_decorated_lawn.lower_tile()
-flower = west_plaza_topiary_2024a_half.lower_tile()
-offcenter_B = west_plaza_offcenter_B_decorated.lower_tile()
-edge = west_plaza_center_lawn.lower_tile()
-edge_2 = west_plaza_center_toilet_lawn.lower_tile()
-split_lawn = west_plaza_center_split_lawn.lower_tile()
+def vast(x):
+    return ALayout(AGroundSprite(image_sprite(f"third_party/vast/vast_{x}.png")), [], True)
+
+
+ground = vast(26).lower_tile()
+symbol = vast(47).lower_tile()
+grassy = vast(70).lower_tile()
 west_square = [
-    [center_ground, edge, offcenter_A, center_ground, offcenter_A.R, edge.R, center_ground],
-    [edge_2.T, split_lawn, offcenter_B, flower, offcenter_B.R, split_lawn.R, edge_2.T.R],
+    [ground, grassy, ground, ground, ground, grassy, ground],
+    [grassy, grassy, ground, symbol, ground, grassy, grassy],
+    [grassy, ground, ground, ground, ground, ground, grassy],
 ]
 
 
-west_plaza_snow = Demo(
+west_plaza_vast = Demo(
     station + roadstops + west_square,
-    "West plaza (snow)",
-    remap=get_1cc_remap(CompanyColour.PINK),
+    "West plaza (with VAST Objects tiles)",
+    remap=get_1cc_remap(CompanyColour.MAUVE),
     merge_bbox=True,
-    climate="arctic",
-    subclimate="snow",
 )

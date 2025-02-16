@@ -6,28 +6,34 @@ from station.stations.dovemere_2018_lib.roadstops import named_layouts as roadst
 from station.stations.dovemere_2018_lib.objects import named_layouts as object_layouts
 from station.stations.dovemere_2018_lib.layouts import globalize_all
 from station.stations.misc import default
-from .utils import h_merge
+from ..utils import h_merge
 
 globalize_all(platform_class="concrete", shelter_class="shelter_2")
 roadstop_layouts.globalize()
 object_layouts.globalize()
 
-station = h_merge([[[]] * 2, semitraversable.demo_1(1, 7)[5:], [[]] * 2], [[cns], [default]])
+station = h_merge([[[]] * 2, semitraversable.demo_1(4, 6)[4:], [[]] * 2], [[cns], [default]])
 
 # Road Stops
 stair_end = stair_end.lower_tile()
 overpass = overpass.lower_tile()
-roadstops = [[stair_end, overpass, stair_end.R]]
+stair = stair_wide.lower_tile()
+roadstops = [[stair_end, overpass, stair, stair.R, overpass, stair_end.R]]
 
 # Objects
 center_ground = west_plaza_center.lower_tile()
-flower = west_plaza_topiary_2024a_half.lower_tile()
-west_square = [[center_ground, center_ground, center_ground], [center_ground, flower, center_ground]]
+offcenter_A = west_plaza_offcenter_A_decorated.lower_tile()
+flower = west_plaza_topiary_2024a_half_horizontal.lower_tile()
+offcenter_B = west_plaza_offcenter_B.lower_tile()
+west_square = [
+    [center_ground, offcenter_A, center_ground, center_ground, offcenter_A.R, center_ground],
+    [center_ground, offcenter_B, flower, center_ground, offcenter_B.R, center_ground],
+]
 
 
-west_plaza_one_tile = Demo(
+west_plaza_4 = Demo(
     station + roadstops + west_square,
-    "West plaza (extremely narrow station)",
+    "West plaza (4 tiles version)",
     remap=get_1cc_remap(CompanyColour.WHITE),
     merge_bbox=True,
 )

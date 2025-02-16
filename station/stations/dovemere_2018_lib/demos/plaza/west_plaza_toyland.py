@@ -6,34 +6,36 @@ from station.stations.dovemere_2018_lib.roadstops import named_layouts as roadst
 from station.stations.dovemere_2018_lib.objects import named_layouts as object_layouts
 from station.stations.dovemere_2018_lib.layouts import globalize_all
 from station.stations.misc import default
-from .utils import h_merge
+from ..utils import h_merge
 
-globalize_all(platform_class="concrete", shelter_class="shelter_2")
+globalize_all(platform_class="brick", shelter_class="shelter_2")
 roadstop_layouts.globalize()
 object_layouts.globalize()
 
-station = h_merge([[[]] * 2, semitraversable.demo_1(3, 6)[4:], [[]] * 2], [[cns], [default]])
+station = h_merge([[[]] * 2, semitraversable.demo_1(5, 7)[5:], [[]] * 2], [[cns], [default]])
 
 # Road Stops
 stair_end = stair_end.lower_tile()
+overpass = overpass.lower_tile()
 stair = stair_narrow.lower_tile()
 stair_extender = stair_extender_narrow.lower_tile()
-roadstops = [[stair_end, stair, stair_extender, stair.R, stair_end.R]]
+roadstops = [[stair_end, overpass, stair, stair_extender, stair.R, overpass, stair_end.R]]
 
 # Objects
 center_ground = west_plaza_center.lower_tile()
-offcenter_A = west_plaza_offcenter_A_decorated.lower_tile()
+offcenter_A = west_plaza_offcenter_A_decorated_lawn.lower_tile()
 flower = west_plaza_topiary_2024a_half.lower_tile()
-offcenter_B = west_plaza_offcenter_B.lower_tile()
-west_square = [
-    [center_ground, offcenter_A, center_ground, offcenter_A.R, center_ground],
-    [center_ground, offcenter_B, flower, offcenter_B.R, center_ground],
-]
+offcenter_B = west_plaza_offcenter_B_decorated.lower_tile()
+edge = west_plaza_center_lawn.lower_tile()
+edge_2 = west_plaza_center_toilet_lawn.lower_tile()
+split_lawn = west_plaza_center_split_lawn.lower_tile()
+west_square = [[center_ground] * 7, [center_ground] * 7]
 
 
-west_plaza_3 = Demo(
+west_plaza_toyland = Demo(
     station + roadstops + west_square,
-    "West plaza (3 tiles version)",
-    remap=get_1cc_remap(CompanyColour.WHITE),
+    "West plaza (toyland)",
+    remap=get_1cc_remap(CompanyColour.GREEN),
     merge_bbox=True,
+    climate="toyland",
 )

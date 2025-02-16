@@ -6,7 +6,7 @@ from station.stations.dovemere_2018_lib.roadstops import named_layouts as roadst
 from station.stations.dovemere_2018_lib.objects import named_layouts as object_layouts
 from station.stations.dovemere_2018_lib.layouts import globalize_all
 from station.stations.misc import default
-from .utils import h_merge
+from ..utils import h_merge
 
 globalize_all(platform_class="concrete", shelter_class="shelter_2")
 roadstop_layouts.globalize()
