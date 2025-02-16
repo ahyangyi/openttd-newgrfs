@@ -25,9 +25,8 @@ roadstops = [[stair_end, overpass, stair, stair_extender, stair.R, overpass, sta
 center_ground = west_plaza_center.lower_tile()
 offcenter_ground_B = west_plaza_offcenter_B_oneliner.lower_tile()
 flower = west_plaza_topiary_2024a_half.T.lower_tile()
-west_square = [
-    [center_ground, center_ground, offcenter_ground_B, flower, offcenter_ground_B.R, center_ground, center_ground]
-]
+trees = west_plaza_center_trees.lower_tile()
+west_square = [[center_ground, trees, offcenter_ground_B, flower, offcenter_ground_B.R, trees.R, center_ground]]
 
 
 west_plaza_oneliner = Demo(

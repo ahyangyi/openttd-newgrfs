@@ -53,6 +53,20 @@ def make_lawns():
 def make_trees():
     gs = named_grounds[("center", "")]
     ps = [
+        tree_bush.R.M.move(-3, -1),
+        tree_bench.M.move(0, -1),
+        tree_bush.T.R.move(3, -1),
+        tree_bench.R.move(-3, 1),
+        tree_bush.move(0, 1),
+        tree_bench.T.R.M.move(3, 1),
+        object_glass_pyramid.move(-5, 0),
+    ]
+    layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+    named_layouts[("west_plaza_center", "trees")] = layout
+    register([[layout]], BuildingFull, b"M", starting_id=0x0400)
+
+    gs = named_grounds[("center", "")]
+    ps = [
         tree_bush.R.M.move(-3, -7),
         tree_bench.M.move(0, -7),
         tree_bush.T.R.move(3, -7),
@@ -82,7 +96,7 @@ def make_trees():
     named_layouts[("west_plaza_center", "tree_formation")] = layout
     # FIXME: cannot register this
     # too many bboxes (24 * 3, will be 24 * 6 with night)
-    # register([[layout]], BuildingFull, b"M", starting_id=0x0400)
+    # register([[layout]], BuildingFull, b"M", starting_id=0x0402)
 
 
 def make_mixed_objects():
