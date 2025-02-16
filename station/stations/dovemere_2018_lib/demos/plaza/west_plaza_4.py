@@ -24,10 +24,11 @@ roadstops = [[stair_end, overpass, stair, stair.R, overpass, stair_end.R]]
 center_ground = west_plaza_center.lower_tile()
 offcenter_A = west_plaza_offcenter_A_decorated.lower_tile()
 flower = west_plaza_topiary_2024a_half_horizontal.lower_tile()
-offcenter_B = west_plaza_offcenter_B.lower_tile()
+offcenter_B = west_plaza_offcenter_B_decorated.lower_tile()
+split_lawn = west_plaza_center_split_lawn.lower_tile()
 west_square = [
     [center_ground, offcenter_A, center_ground, center_ground, offcenter_A.R, center_ground],
-    [center_ground, offcenter_B, flower, center_ground, offcenter_B.R, center_ground],
+    [split_lawn, offcenter_B, flower, center_ground, offcenter_B.R, split_lawn.R],
 ]
 
 
