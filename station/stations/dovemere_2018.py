@@ -149,6 +149,7 @@ the_stations = AMetaStation(
             demos.west_plaza_snow,
             demos.west_plaza_toyland,
         ],
+        "With Other NewGRF": [demos.cztr_demo],
     },
     road_stops=roadstops,
     objects=objects,

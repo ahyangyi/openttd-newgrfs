@@ -26,3 +26,4 @@ from .west_plaza_default import west_plaza_default
 from .west_plaza_three_sides import west_plaza_three_sides
 from .west_plaza_snow import west_plaza_snow
 from .west_plaza_toyland import west_plaza_toyland
+from .cztr import cztr_demo
