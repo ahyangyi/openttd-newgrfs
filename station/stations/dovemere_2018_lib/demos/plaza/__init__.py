@@ -12,7 +12,6 @@ from .west_plaza_toyland import west_plaza_toyland
 
 plaza_demos = [
     west_plaza,
-    west_plaza,
     west_plaza_4,
     west_plaza_3,
     west_plaza_oneliner,
