@@ -11,6 +11,7 @@ def quickload(name, symmetry):
         load_from="station/files/gorender.json",
         subset=symmetry.render_indices(),
     )
+    v.config["agrf_manual_crop"] = (0, 0)
 
     sprite = symmetry.create_variants(v.spritesheet())
     ps = AGroundSprite(sprite, flags={"add": Registers.ZERO})

@@ -49,6 +49,9 @@ class CNSPlatformFamily(PlatformFamily):
             voxel_getter=lambda path="station/voxels/cns/concourse.vox": path,
             load_from="station/files/cns-gorender.json",
         )
+        # FIXME use empty sprites instead?
+        self.v.config["agrf_manual_crop"] = (0, 0)
+        self.concourse.config["agrf_manual_crop"] = (0, 0)
         self.snow_sprites = {}
 
     @property

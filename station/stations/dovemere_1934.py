@@ -9,6 +9,7 @@ from station.lib import (
     AttrDict,
     Registers,
     get_1cc_remap,
+    add_night_masks,
 )
 from station.lib.parameters import parameter_list, station_cb, station_code
 from agrf.graphics.voxel import LazyVoxel
@@ -42,6 +43,7 @@ def quickload(name, symmetry):
     l = ALayout(building_ground, [ps + cs], False)
     var = symmetry.get_all_variants(l)
     ret = symmetry.create_variants(var)
+    ret = ret.symmetry_fmap(lambda x: add_night_masks(x))
     entries.extend(symmetry.get_all_entries(ret))
     named_tiles[name] = ret
 

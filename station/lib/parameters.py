@@ -1,3 +1,4 @@
+import grf
 from agrf.parameters import Parameter, ParameterList
 from agrf.magic import Switch
 from grf import ParameterMapping
@@ -22,7 +23,14 @@ company_colour = {
     15: "GREY",
     16: "WHITE",
 }
-settings = []
+settings = [
+    Parameter(
+        "NIGHT_MODE",
+        0,
+        {0: "AUTO_DETECT", 1: "ENABLED", 2: "DISABLED"},
+        mapping=ParameterMapping(grf_parameter=0xF, first_bit=0, num_bit=3),
+    )
+]
 
 
 def make_introduction_year(station_id, mapping):
