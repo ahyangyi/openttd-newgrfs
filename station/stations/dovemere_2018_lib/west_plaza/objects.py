@@ -29,6 +29,12 @@ def make_lightposts():
     named_layouts[("west_plaza_offcenter_A", "decorated")] = layout
     register([[layout]], BuildingFull, b"L", starting_id=0x0200)
 
+    gs = named_grounds[("offcenter_A", "")]
+    ps = [object_pole.move(x, y) for x in [-2, 2] for y in [-4, 0, 4, 8]]
+    layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+    named_layouts[("west_plaza_offcenter_A", "lightposts")] = layout
+    register([[layout]], BuildingFull, b"L", starting_id=0x0202)
+
 
 def make_lawns():
     gs = named_grounds[("offcenter_A", "")]
@@ -74,6 +80,7 @@ def make_trees():
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[("west_plaza_center", "tree_formation")] = layout
+    register([[layout]], BuildingFull, b"M", starting_id=0x0400)
 
 
 def make_mixed_objects():
