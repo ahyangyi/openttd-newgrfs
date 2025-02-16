@@ -44,6 +44,38 @@ def make_lawns():
     register([[layout]], BuildingFull, b"l", starting_id=0x0302)
 
 
+def make_trees():
+    gs = named_grounds[("center", "")]
+    ps = [
+        tree_bush.R.M.move(-3, -7),
+        tree_bench.M.move(0, -7),
+        tree_bush.T.R.move(3, -7),
+        tree_bench.R.move(-3, -5),
+        tree_bush.move(0, -5),
+        tree_bench.T.R.M.move(3, -5),
+        tree_bush.R.M.move(-3, -3),
+        tree_bench.M.move(0, -3),
+        tree_bush.T.R.move(3, -3),
+        tree_bench.R.move(-3, -1),
+        tree_bush.move(0, -1),
+        tree_bench.T.R.M.move(3, -1),
+        tree_bush.R.M.move(-3, 1),
+        tree_bench.M.move(0, 1),
+        tree_bush.T.R.move(3, 1),
+        tree_bench.R.move(-3, 3),
+        tree_bush.move(0, 3),
+        tree_bench.T.R.M.move(3, 3),
+        tree_bush.R.M.move(-3, 5),
+        tree_bench.M.move(0, 5),
+        tree_bush.T.R.move(3, 5),
+        tree_bench.R.move(-3, 7),
+        tree_bush.move(0, 7),
+        tree_bench.T.R.M.move(3, 7),
+    ]
+    layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+    named_layouts[("west_plaza_center", "tree_formation")] = layout
+
+
 def make_mixed_objects():
     gs = named_grounds[("offcenter_B", "")]
     ps = [
@@ -117,4 +149,5 @@ def make_objects():
     components.globalize()
     make_lightposts()
     make_lawns()
+    make_trees()
     make_mixed_objects()

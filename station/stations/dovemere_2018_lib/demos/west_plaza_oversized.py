@@ -26,19 +26,20 @@ center_ground = west_plaza_center.lower_tile()
 offcenter_A = west_plaza_offcenter_A_decorated.lower_tile()
 flower = west_plaza_topiary_2024a_corner.lower_tile()
 offcenter_B = west_plaza_offcenter_B_decorated.lower_tile()
+trees = west_plaza_center_tree_formation.lower_tile()
 west_square = [
     [center_ground] * 5
     + [offcenter_A, center_ground, center_ground, center_ground, center_ground, offcenter_A.R]
     + [center_ground] * 5,
-    [center_ground] * 5
-    + [offcenter_A, center_ground, center_ground, center_ground, center_ground, offcenter_A.R]
-    + [center_ground] * 5,
-    [center_ground] * 5
-    + [offcenter_B, center_ground, flower, center_ground, center_ground, offcenter_B.R]
-    + [center_ground] * 5,
-    [center_ground] * 5
-    + [offcenter_B, center_ground, center_ground, center_ground, center_ground, offcenter_B.R]
-    + [center_ground] * 5,
+    [center_ground] * 4
+    + [trees, offcenter_A, center_ground, center_ground, center_ground, center_ground, offcenter_A.R, trees]
+    + [center_ground] * 4,
+    [center_ground] * 4
+    + [trees, offcenter_B, center_ground, flower, center_ground, center_ground, offcenter_B.R, trees]
+    + [center_ground] * 4,
+    [center_ground] * 4
+    + [trees, offcenter_B, center_ground, center_ground, center_ground, center_ground, offcenter_B.R, trees]
+    + [center_ground] * 4,
 ]
 
 
