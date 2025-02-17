@@ -1,9 +1,11 @@
-China Set: Stations & Platforms Addons: Wuhu Changelog
+China Set: Stations - Wuhu Changelog
 =========================
 
 0.3.4 (Work-in-progress)
 ------------------------
 Make parameters stable -- future changes to parameters should no longer mess up your existing settings. The functionality was introduced in 0.3.3 but the stability was accidentally broken in the same version, so 0.3.4 will be the first version to actually support this.
+
+Removed 8bpp graphics and applied other optmization techniques to reduce NewGRF size.
 
 0.3.3 (2025-01-27)
 ------------------------

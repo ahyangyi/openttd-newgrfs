@@ -7,6 +7,17 @@ STR_PARAM_INTRODUCTION_YEAR_DESC        :Choose whether each station in this New
 STR_PARAM_INTRODUCTION_YEAR_DISABLED    :Always available
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :Only available after set year
 
+STR_PARAM_SNOW_TRACK                    :Global - Snow
+STR_PARAM_SNOW_TRACK_DESC               :Choose whether to keep the snow on the ground when beneath a station building.
+STR_PARAM_SNOW_TRACK_ENABLED            :Keep snow
+STR_PARAM_SNOW_TRACK_DISABLED           :Remove snow
+
+STR_PARAM_NIGHT_MODE            :Global - Night mode
+STR_PARAM_NIGHT_MODE_DESC       :Use night graphics suitable for NightGFX
+STR_PARAM_NIGHT_MODE_AUTO_DETECT:Auto Detect
+STR_PARAM_NIGHT_MODE_DISABLED   :Disabled
+STR_PARAM_NIGHT_MODE_ENABLED    :Enabled
+
 STR_PARAM_E88A9CA_ENABLE_TEMPLATE           :Wuhu Station - Enable Templates
 STR_PARAM_E88A9CA_ENABLE_TEMPLATE_DESC      :Whether or not to enable flexible templates for Wuhu Station (Modern)
 STR_PARAM_E88A9CA_ENABLE_TEMPLATE_ENABLED   :Enabled
@@ -45,6 +56,17 @@ STR_PARAM_STATION_COLOUR_BROWN              :Brown
 STR_PARAM_STATION_COLOUR_GREY               :Grey
 STR_PARAM_STATION_COLOUR_WHITE              :White
 
+STR_PARAM_E88A9C4_ENABLE_MODULAR            :Wuhu Station (1992) - Enable
+STR_PARAM_E88A9C4_ENABLE_MODULAR_DESC       :Whether or not to enable Wuhu Station (1992)
+STR_PARAM_E88A9C4_ENABLE_MODULAR_ENABLED    :Enabled
+STR_PARAM_E88A9C4_ENABLE_MODULAR_DISABLED   :Disabled
+
+STR_PARAM_E88A9C4_INTRODUCTION_YEAR         :Wuhu Station (1992) - Available Year
+STR_PARAM_E88A9C4_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1992) becomes available.{}{}For a realistic experience, set this to somewhere between 1980 and 1990.
+
+STR_PARAM_E88A9C4_COLOUR                    :Wuhu Station (1992) - Decoration Colour
+STR_PARAM_E88A9C4_COLOUR_DESC               :Choose what colour to use for the decoration of Wuhu Station (1992).
+
 STR_PARAM_E88A9C0_ENABLE_MODULAR            :Wuhu Station (1934) - Enable
 STR_PARAM_E88A9C0_ENABLE_MODULAR_DESC       :Whether or not to enable Wuhu Station (1934)
 STR_PARAM_E88A9C0_ENABLE_MODULAR_ENABLED    :Enabled
@@ -55,6 +77,17 @@ STR_PARAM_E88A9C0_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu Station (1934)
 
 STR_PARAM_E88A9C0_COLOUR                    :Wuhu Station (1934) - Decoration Colour
 STR_PARAM_E88A9C0_COLOUR_DESC               :Choose what colour to use for the windows and door of Wuhu Station (1934).
+
+STR_PARAM_E9B8A0A_ENABLE_MODULAR            :Wuhu North Station - Enable
+STR_PARAM_E9B8A0A_ENABLE_MODULAR_DESC       :Whether or not to enable Wuhu North Station
+STR_PARAM_E9B8A0A_ENABLE_MODULAR_ENABLED    :Enabled
+STR_PARAM_E9B8A0A_ENABLE_MODULAR_DISABLED   :Disabled
+
+STR_PARAM_E9B8A0A_INTRODUCTION_YEAR         :Wuhu North Station - Available Year
+STR_PARAM_E9B8A0A_INTRODUCTION_YEAR_DESC    :Choose the year Wuhu North Station becomes available.{}{}For a realistic experience, set this to somewhere near 2005.
+
+STR_PARAM_E9B8A0A_COLOUR                    :Wuhu North Station - Decoration Colour
+STR_PARAM_E9B8A0A_COLOUR_DESC               :Choose what colour to use for the decoration of Wuhu North Station.
 
 STR_PARAM_E88A9CP_ENABLE_MODULAR            :Platform Tiles - Enable
 STR_PARAM_E88A9CP_ENABLE_MODULAR_DESC       :Whether or not to enable buildable platform tiles
@@ -89,6 +122,7 @@ STR_PART_SPLAT_TRUE                         :{PUSH_COLOUR}{GREEN}Sou{POP_COLOUR}
 STR_PART_SPLAT_FALSE                        :{PUSH_COLOUR}{RED}Sou{POP_COLOUR}
 
 STR_STATION_TEMPLATE                        :Station Building ({0:STRING}{1:STRING}{2:STRING})
+STR_STATION_BUILDING                        :Station Building
 
 STR_STATION_PLATFORM                            :Platform
 STR_STATION_PLATFORM_UNTRAVERSABLE              :Platform (No Track)
@@ -170,7 +204,7 @@ STR_OBJECT_WEST_PLAZA           :West square
 STR_OBJECT_STATION              :Station Building
 STR_ROADSTOP_WEST_PLAZA_BUS     :West square bus stop
 
-STR_STATION_CLASS_E88A9Ca       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu (1992)
+STR_STATION_CLASS_E88A9C4       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu (1992)
 
 STR_STATION_CLASS_E88A9C0       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu (1934)
 
@@ -197,7 +231,7 @@ STR_OBJECT_CLASS_E88A9CM        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} West Square 
 STR_ROADSTOP_CLASS_E88A9CR      :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu
 
 STR_METASTATION_CLASS_E88A9CA   :Wuhu Station (2015)
-STR_METASTATION_CLASS_E88A9Ca   :Wuhu Station (1992)
+STR_METASTATION_CLASS_E88A9C4   :Wuhu Station (1992)
 STR_METASTATION_CLASS_E88A9C0   :Wuhu Station (1934)
 STR_METASTATION_CLASS_E9B8A0A   :Wuhu North Station (2018)
 STR_METASTATION_CLASS_E88A9CP   :Platforms

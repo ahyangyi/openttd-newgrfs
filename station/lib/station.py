@@ -74,7 +74,7 @@ class AStation(grf.SpriteGenerator):
             res.append(grf.If(is_static=False, variable=0xA1, condition=0x04, value=0x1E000000, skip=255, varsize=4))
         if self.enable_if:
             for cond in self.enable_if:
-                res.append(grf.If(is_static=False, variable=cond, condition=0x02, value=0x0, skip=255, varsize=4))
+                res.append(cond.make_if(is_static=False, skip=255))
         res.append(
             definition := grf.Define(
                 feature=grf.STATION,

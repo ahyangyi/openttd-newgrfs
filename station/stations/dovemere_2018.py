@@ -13,13 +13,13 @@ from agrf.strings import String
 
 modular_stations = []
 for i, entry in enumerate(sorted(entries, key=lambda x: x.category)):
-    enable_if = [parameter_list.index("E88A9CA_ENABLE_MODULAR")]
+    enable_if = [parameter_list["E88A9CA_ENABLE_MODULAR"]]
     for platform_class in ["concrete", "brick"]:
         if platform_class in entry.notes:
-            enable_if.append(parameter_list.index(f"PLATFORM_{platform_class.upper()}"))
+            enable_if.append(parameter_list[f"PLATFORM_{platform_class.upper()}"])
     for shelter_class in ["shelter_1", "shelter_2"]:
         if shelter_class in entry.notes:
-            enable_if.append(parameter_list.index(f"SHELTER_{shelter_class.upper()}"))
+            enable_if.append(parameter_list[f"SHELTER_{shelter_class.upper()}"])
 
     has_track = entry.traversable
     far_platform = entry.category[-1] in {
@@ -117,26 +117,11 @@ the_stations = AMetaStation(
         + [b"R", b"Z"]
     ],
     {
-        "Realistic Layouts": [demos.normal_demo, demos.big_demo, demos.big_half_demo, demos.real_yard_demo],
-        "Template Showcases": [
-            demos.semi_auto_demo,
-            demos.semi_np_auto_demo,
-            demos.full_auto_demo,
-            demos.full_np_auto_demo,
-            demos.side_auto_demo,
-            demos.side_np_auto_demo,
-            demos.side_third_auto_demo,
-            demos.side_third_np_auto_demo,
-        ],
-        "Diverse Designs": [
-            demos.special_demo_g,
-            demos.special_demo_p,
-            demos.special_demo_cn,
-            demos.special_demo_sa,
-            demos.special_demo_cp,
-            demos.special_demo_aq,
-        ],
-        "Station Square": [demos.west_plaza],
+        "Realistic Layouts": demos.realistic_demos,
+        "Template Showcases": demos.template_demos,
+        "Diverse Designs": demos.special_demos,
+        "Station Square": demos.plaza_demos,
+        "With Other NewGRF": demos.third_party_demos,
     },
     road_stops=roadstops,
 )
