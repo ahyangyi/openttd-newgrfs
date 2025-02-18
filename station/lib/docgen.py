@@ -119,5 +119,5 @@ nav_order: {5+demoi}
                 )
                 for i, demo in enumerate(demov):
                     img = demo.graphics(4, 32).crop().resize(1920, 1080).to_pil_image()
-                    img.save(os.path.join(prefix, "img", f"{metastation_label}/layouts/{demok}/{i}.png"))
-                    print(f"## {demo.title}\n\n![](img/{metastation_label}/layouts/{demok}/{i}.png)", file=f)
+                    img.save(os.path.join(prefix, "img", f"{metastation_label}/layouts/{demok}/{i:04X}.png"))
+                    print(f"## {demo.title}\n\n![](img/{metastation_label}/layouts/{demok}/{i:04X}.png)", file=f)
