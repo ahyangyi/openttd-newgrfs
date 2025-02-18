@@ -5,7 +5,7 @@ def get_spritesheet(name):
     voxels = [
         LazyVoxel(
             k,
-            prefix=f"road/voxels/render/{name}",
+            prefix=f".cache/render/road/{name}",
             voxel_getter=lambda k=k: f"road/voxels/{name}/{k}.vox",
             load_from="road/render_templates/gorender.json",
         )

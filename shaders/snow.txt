@@ -3,17 +3,24 @@
 // xs_begin
 // author : '@lachlanmcdonald'
 // arg : { name = 'Size'  var = 'm_size'  range = '0 31'  value = '13'  step = '1'  precision = '0' }
-// arg : { name = 'Style'  var = 'm_symmetry'  range = '0 1'  value = '1'  step = '1'  precision = '0' }
-// arg : { name = 'Inner Seed'  var = 'm_inner_seed' range = '0 2147483647'  value = '0'  step = '1'  precision = '0' }
-// arg : { name = 'Intensity'  var = 'm_intensity'  range = '0 255'  value = '100'  step = '1'  precision = '0' }
+// arg : { name = 'Tiling Mode'  var = 'm_symmetry'  range = '0 2'  value = '1'  step = '1'  precision = '0' }
+// arg : { name = 'Seed'  var = 'm_inner_seed' range = '0 2147483647'  value = '0'  step = '1'  precision = '0' }
+// arg : { name = 'Intensity'  var = 'm_intensity'  range = '0 4'  value = '1'  step = '0.1'  precision = '2' }
 // arg : { name = 'Color'  var = 'm_color'  range = '0 255'  value = '156'  step = '1'  precision = '0' }
 // arg : { name = 'Color Range'  var = 'm_colors'  range = '0 255'  value = '8'  step = '1'  precision = '0' }
-// arg : { name = 'Seed'  var = 'm_seed' range = '0 2147483647'  value = '42'  step = '1'  precision = '0' }
+// arg : { name = 'Color Offset'  var = 'm_offset'  range = '-255 255'  value = '0'  step = '0.01'  precision = '2' }
+// arg : { name = 'Kernel Type'  var = 'm_kernel' range = '0 1'  value = '0'  step = '1'  precision = '0' }
+// arg : { name = 'Grid Type'  var = 'm_grid' range = '0 2'  value = '0'  step = '1'  precision = '0' }
+// arg : { name = 'Grid Size'  var = 'm_grid_size' range = '1 16'  value = '8'  step = '1'  precision = '0' }
+// arg : { name = 'Grid Intensity'  var = 'm_grid_intensity' range = '0 10'  value = '0'  step = '0.1'  precision = '2' }
+// arg : { name = 'Margin Seed'  var = 'm_seed' range = '0 2147483647'  value = '42'  step = '1'  precision = '0' }
 // arg : { name = 'Noise'  var = 'm_noise' range = '0 1000'  value = '10'  step = '1'  precision = '0' }
 // xs_end
 
 int size = int(m_size);
-float intensity = m_intensity / 100;
+int xsize = m_grid_intensity == 0? size : m_grid == 1? max(size, m_grid_size * 2) : max(size, m_grid_size);
+int ysize = m_grid_intensity == 0? size : m_grid == 2? max(size, m_grid_size * 2) : max(size, m_grid_size);
+int zsize = m_grid_intensity == 0? size : max(size, m_grid_size);
 
 float hash(vec2 p, float seed) {
 	p += seed;
@@ -21,26 +28,17 @@ float hash(vec2 p, float seed) {
 }
 
 float get_colour(int x, int y, int z) {
+    // Tiling mode 0: no tiling
     if (m_symmetry == 0)
     {
-        if (x >= 128)
-        {
-            x = 255 - x;
-            y = 255 - y;
-        }
-        if (y >= 128)
-        {
-            int t = x;
-            x = 255 - y;
-            y = t;
-        }
-        float j = hash(vec2(x, y), m_seed);
-        float k = hash(vec2(j, z), int(m_seed) ^ 0x1357);
+        float j = hash(vec2(x, y), m_inner_seed);
+        float k = hash(vec2(j, z), int(m_inner_seed) ^ 0x1357);
         return k;
     }
-    else
+    else if (m_symmetry == 1)
+    // Symmetry mode 1: general tiling
     {
-        if (x < m_size || y < m_size || 255 - x < m_size || 255 - y < m_size)
+        if (x < xsize || y < ysize || 255 - x < xsize || 255 - y < ysize)
         {
             if (x >= 128)
             {
@@ -64,10 +62,28 @@ float get_colour(int x, int y, int z) {
             return k;
         }
     }
+    else
+    // Symmetry mode 2: fixed-direction tiling
+    {
+        if (x < xsize || y < ysize || 255 - x < xsize || 255 - y < ysize)
+        {
+            float j = hash(vec2(x, y), m_seed);
+            float k = hash(vec2(j, z), int(m_seed) ^ 0x1357);
+            return k;
+        }
+        else
+        {
+            float j = hash(vec2(x, y), m_inner_seed);
+            float k = hash(vec2(j, z), int(m_inner_seed) ^ 0x1357);
+            return k;
+        }
+    }
 }
 
 float map(vec3 v) {
 	float index = voxel(v);
+    if (index == 0)
+        return 0;
 
 	int x = v.x;
 	int y = v.y;
@@ -77,16 +93,48 @@ float map(vec3 v) {
     float total_weight = 0;
     float total_var = 0;
     float ss = pow(size, 2);
-    for (int dx = -size; dx <= size; ++dx)
-        for (int dy = -size; dy <= size; ++dy)
-            for (int dz = -size; dz <= size; ++dz) {
+    int grid_parts = int(256 / m_grid_size);
+
+    for (int dx = -xsize; dx <= xsize; ++dx)
+        for (int dy = -ysize; dy <= ysize; ++dy)
+            for (int dz = -zsize; dz <= zsize; ++dz) {
                 float dd = dx * dx + dy * dy + dz * dz;
-                if (dd > ss) continue;
                 int new_x = (x + dx + 256) % 256;
                 int new_y = (y + dy + 256) % 256;
                 int new_z = (z + dz + 256) % 256;
                 float k = get_colour(new_x, new_y, new_z);
-                float weight = (ss - dd) / (dd + ss);
+                float weight;
+                if (m_kernel == 0) {
+                    if (dd > ss)
+                        weight = 0;
+                    else
+                        weight = (ss - dd) / (dd + ss);
+                } else {
+                    if (-size <= dx && dx <= size &&
+                        -size <= dy && dy <= size &&
+                        -size <= dz && dz <= size)
+                        weight = 1.0;
+                    else
+                        weight = 0.0;
+                }
+
+                if (m_grid_intensity > 0)
+                {
+                    int xg = ((x + 256) * grid_parts + 128) / 256;
+                    int yg = ((y + 256) * grid_parts + 128) / 256;
+                    int zg = ((z + 256) * grid_parts + 128) / 256;
+                    int xdg = ((x + 256 + dx) * grid_parts + 128) / 256;
+                    int ydg = ((y + 256 + dy) * grid_parts + 128) / 256;
+                    int zdg = ((z + 256 + dz) * grid_parts + 128) / 256;
+
+                    if (m_grid == 0 && xdg == xg && ydg == yg && zdg == zg)
+                        weight += m_grid_intensity;
+                    if (m_grid == 1 && (xdg + yg % 2) / 2 == (xg + yg % 2) / 2 && ydg == yg && zdg == zg)
+                        weight += m_grid_intensity;
+                    if (m_grid == 2 && xdg == xg && (ydg + xg % 2) / 2 == (yg + xg % 2) / 2 && zdg == zg)
+                        weight += m_grid_intensity;
+                }
+
                 if (dx == 0 && dy == 0 && dz == 0)
                 {
                     weight += m_noise;
@@ -99,15 +147,12 @@ float map(vec3 v) {
     total /= total_weight;
     total_var /= pow(total_weight, 2);
 
-	if (index != 0) {
-        total = int(((total - 0.5) / sqrt(total_var) * 0.31 * intensity + 0.5) * m_colors);
-        if (total < 0) {
-            total = 0;
-        }
-        if (total >= m_colors) {
-            total = m_colors - 1;
-        }
-        return m_color + total;
-	}
-	return index;
+    total = int(((total - 0.5) / sqrt(total_var) * 0.31 * m_intensity + 0.5) * m_colors + m_offset);
+    if (total < 0) {
+        total = 0;
+    }
+    if (total >= m_colors) {
+        total = m_colors - 1;
+    }
+    return int(m_color + total) % 256;
 }

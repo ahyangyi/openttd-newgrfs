@@ -1,2 +1,2 @@
-grf @ git+https://github.com/citymania-org/grf-py@f320d9a5
+agrf @ git+https://github.com/ahyangyi/agrf@main
 tabulate

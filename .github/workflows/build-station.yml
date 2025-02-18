@@ -15,7 +15,9 @@ jobs:
       - name: Install golang deps
         run: ./install-go-dependencies.sh
       - name: Install system python deps
-        run: sudo apt update && sudo apt install python3-ply python3-pil
+        run: sudo apt update && sudo apt install python3-ply python3-pil libjpeg-dev zlib1g-dev
+      - name: Get setuptools
+        run: pip install --upgrade setuptools
       - name: Install python deps
         run: pip install -r requirements.txt
       - name: Generate station
@@ -23,6 +25,8 @@ jobs:
       - name: Pack documentation
         run: cp docs/station/changelog.md release/changelog.txt; cp docs/station/readme.md release/readme.txt
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@main
+        uses: actions/upload-artifact@v4
         with:
+          name: china-set-stations-wuhu
           path: release
+          retention-days: 7

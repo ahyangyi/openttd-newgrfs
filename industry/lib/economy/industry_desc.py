@@ -64,10 +64,18 @@ class SecondaryIndustry(Industry):
         self.consumes = make_tuple(consumes)
         self.produces = make_tuple(produces)
         self.extra_accepts = make_tuple(extra_accepts)
-        self.boosters = make_tuple(boosters)
+        self._boosters = make_tuple(boosters)
 
     def copy(self):
         return SecondaryIndustry(self.consumes, self.produces, self.extra_accepts, self.boosters)
+
+    @property
+    def boosters(self):
+        return self._boosters
+
+    @boosters.setter
+    def boosters(self, new_boosters):
+        self._boosters = make_tuple(new_boosters)
 
     @property
     def accepts(self):
