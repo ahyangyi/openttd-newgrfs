@@ -31,7 +31,8 @@ def real(x, y):
 
 ground = real(315, 129).lower_tile()
 crossroads = real(680, 129).lower_tile()
-grassy = real(475, 143).lower_tile()
+grassy = real(490, 185).lower_tile()
+long_grassy = real(475, 143).lower_tile()
 yard = real(576, 129).lower_tile()
 path = real(560, 129).lower_tile()
 pavilion_L = real(626, 157).lower_tile()
