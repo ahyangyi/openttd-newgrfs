@@ -35,7 +35,7 @@ west_square = [[center_ground] * 7, [center_ground] * 7]
 west_plaza_toyland = Demo(
     station + roadstops + west_square,
     "West plaza (toyland)",
-    remap=get_1cc_remap(CompanyColour.GREEN),
+    remap=get_1cc_remap(CompanyColour.YELLOW),
     merge_bbox=True,
     climate="toyland",
 )

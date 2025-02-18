@@ -67,6 +67,7 @@ west_square = [
 west_plaza_realgardens = Demo(
     station + roadstops + west_square,
     "West plaza (with RealGarden)",
-    remap=get_1cc_remap(CompanyColour.MAUVE),
+    remap=get_1cc_remap(CompanyColour.GREEN),
     merge_bbox=True,
+    climate="tropical",
 )
