@@ -8,7 +8,6 @@ globalize_all(platform_class="concrete", shelter_class="shelter_1")
 nt = concourse
 
 special_demo_sa = Demo(
-    "Irregular 7×7 station layout",
     [
         [
             v_end_platform.M,
@@ -26,6 +25,7 @@ special_demo_sa = Demo(
         [corner_gate.R.M, double_corner_2, corner.R, cns, cns, cns, v_central_n],
         [front_gate_extender_corner, corner_gate.R, nt.T, nt.T, nt.T, nt.T, v_end_platform],
     ],
+    "Irregular 7×7 station layout",
     remap=get_1cc_remap(CompanyColour.PURPLE),
     climate="tropical",
     subclimate="desert",

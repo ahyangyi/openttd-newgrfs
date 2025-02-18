@@ -31,5 +31,5 @@ near_lines = [
 far_lines = [[el.T for el in line] for line in near_lines[::-1]]
 
 real_yard_demo = Demo(
-    "14×22 track yard, including pass-through tracks", far_lines + near_lines, remap=get_1cc_remap(CompanyColour.WHITE)
+    far_lines + near_lines, "14×22 track yard, including pass-through tracks", remap=get_1cc_remap(CompanyColour.WHITE)
 )

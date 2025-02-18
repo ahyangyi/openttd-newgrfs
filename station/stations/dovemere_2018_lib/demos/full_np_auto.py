@@ -14,7 +14,7 @@ row_4 = h_merge([traversable.demo_2(i, 4) for i in range(1, 5)], [[cns.T], [cns]
 row_5 = h_merge([traversable.demo_2(i, 5) for i in range(1, 5)], [[cns.T], [cns], [cns_d], [cns.T], [cns]])
 
 full_np_auto_demo = Demo(
-    "Fully traversable automatic stations (no platform at ends)",
     row_1 + v_sep + row_2 + v_sep + row_4 + v_sep + row_5,
+    "Fully traversable automatic stations (no platform at ends)",
     remap=get_1cc_remap(CompanyColour.BLUE),
 )
