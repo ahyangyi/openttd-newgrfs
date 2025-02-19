@@ -52,4 +52,14 @@ def make_component(dirname, name, sym, span, offset, has_nosnow=False):
 
 
 def make_components():
-    pass
+    make_component("planter", "1", BuildingFull, (4, 3, 1), (2, 11, 0))
+    make_component("planter", "2", BuildingFull, (7, 3, 1), (2, 11, 0))
+    make_component("object", "pole", BuildingCylindrical, (2, 2, 8), (7, 7, 0))
+    make_component("object", "underground_entrance", BuildingFull, (4, 4, 8), (6, 6, 0))
+    make_component("object", "glass_pyramid", BuildingCylindrical, (2, 2, 2), (7, 7, 0))
+    make_component("lawn", "corner", BuildingFull, (6, 6, 1), (10, 0, 0))
+    make_component("lawn", "corner_2", BuildingDiagonalAlt, (6, 6, 1), (10, 0, 0))
+    make_component("lawn", "edge", BuildingSymmetricalX, (16, 6, 1), (0, 0, 0))
+    make_component("lawn", "split", BuildingFull, (16, 6, 1), (0, 10, 0))
+    make_component("tree", "bench", BuildingFull, (2, 2, 16), (7, 7, 0), has_nosnow=True)
+    make_component("tree", "bush", BuildingFull, (2, 2, 16), (7, 7, 0), has_nosnow=True)
