@@ -5,7 +5,7 @@ from station.stations.dovemere_2018_lib.flexible_stations import semitraversable
 from station.stations.dovemere_2018_lib.roadstops import named_layouts as roadstop_layouts
 from station.stations.dovemere_2018_lib.objects import named_layouts as object_layouts
 from station.stations.dovemere_2018_lib.layouts import globalize_all
-from station.stations.misc import slope_2
+from station.stations.misc import slope_2, building_ground_layout
 from ..utils import h_merge
 
 globalize_all(platform_class="concrete", shelter_class="shelter_2")
@@ -21,10 +21,13 @@ overpass = overpass.lower_tile()
 roadstops = [[None] + [overpass] * 5 + [None]]
 
 # Objects
-center_ground = west_plaza_center.lower_tile()
-west_square = [[center_ground] * 7] * 2
+building_ground_layout = building_ground_layout.lower_tile()
+west_square = [[building_ground_layout] * 7, [building_ground_layout] * 7]
 
 
-west_plaza = Demo(
-    station + roadstops + west_square, "West plaza", remap=get_1cc_remap(CompanyColour.WHITE), merge_bbox=True
+west_plaza_default = Demo(
+    station + roadstops + west_square,
+    "West plaza (vanilla ground)",
+    remap=get_1cc_remap(CompanyColour.YELLOW),
+    merge_bbox=True,
 )

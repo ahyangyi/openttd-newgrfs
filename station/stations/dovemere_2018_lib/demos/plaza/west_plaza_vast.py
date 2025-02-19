@@ -1,6 +1,7 @@
-from station.lib import Demo
+from station.lib import Demo, AGroundSprite, ALayout
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
+from agrf.lib.building.image_sprite import image_sprite
 from station.stations.dovemere_2018_lib.flexible_stations import semitraversable
 from station.stations.dovemere_2018_lib.roadstops import named_layouts as roadstop_layouts
 from station.stations.dovemere_2018_lib.objects import named_layouts as object_layouts
@@ -20,11 +21,25 @@ station = h_merge(
 overpass = overpass.lower_tile()
 roadstops = [[None] + [overpass] * 5 + [None]]
 
+
 # Objects
-center_ground = west_plaza_center.lower_tile()
-west_square = [[center_ground] * 7] * 2
+def vast(x):
+    return ALayout(AGroundSprite(image_sprite(f"third_party/vast/vast_{x}.png")), [], True)
 
 
-west_plaza = Demo(
-    station + roadstops + west_square, "West plaza", remap=get_1cc_remap(CompanyColour.WHITE), merge_bbox=True
+ground = vast(26).lower_tile()
+symbol = vast(47).lower_tile()
+grassy = vast(70).lower_tile()
+west_square = [
+    [ground, grassy, ground, ground, ground, grassy, ground],
+    [grassy, grassy, ground, symbol, ground, grassy, grassy],
+    [grassy, ground, ground, ground, ground, ground, grassy],
+]
+
+
+west_plaza_vast = Demo(
+    station + roadstops + west_square,
+    "West plaza (with VAST Objects tiles)",
+    remap=get_1cc_remap(CompanyColour.MAUVE),
+    merge_bbox=True,
 )
