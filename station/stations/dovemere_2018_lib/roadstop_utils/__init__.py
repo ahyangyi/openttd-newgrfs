@@ -20,13 +20,6 @@ named_layouts = AttrDict(schema=("name",))
 
 cnt = 0
 roadstops = []
-WIDTH = 3
-TOTAL_HEIGHT = 12
-OVERPASS_HEIGHT = 11
-OVERHANG_WIDTH = 1
-EXTENDED_WIDTH = 9
-
-JOGGLE_AMOUNT = 45 - 32 * 2**0.5
 
 
 def register_road_stop(layout, sym):
