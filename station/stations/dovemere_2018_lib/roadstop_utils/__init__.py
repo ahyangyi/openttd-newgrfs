@@ -18,15 +18,14 @@ from ...misc import road_ground
 named_parts = AttrDict(schema=("name", "part"))
 named_layouts = AttrDict(schema=("name",))
 
-cnt = 0
 roadstops = []
 
 
-def register_road_stop(layout, sym):
-    global cnt
-    for cur in sym.get_all_variants(layout)[::2]:
+def register_road_stop(layout, sym, starting_id):
+    assert 0x8000 <= starting_id < 0xC000
+    for i, cur in enumerate(sym.get_all_variants(layout)[::2]):
         cur_roadstop = ARoadStop(
-            id=0x8000 + cnt,
+            id=starting_id + i,
             translation_name="WEST_PLAZA_BUS",
             graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
             general_flags=0x8,
@@ -36,7 +35,7 @@ def register_road_stop(layout, sym):
         )
         roadstops.append(cur_roadstop)
         cur_roadstop = ARoadStop(
-            id=0xC000 + cnt,
+            id=0x4000 + starting_id + i,
             translation_name="WEST_PLAZA_BUS",
             graphics=Switch(ranges={4: cur, 5: cur.M}, default=cur, code="view"),
             general_flags=0x8,
@@ -46,10 +45,9 @@ def register_road_stop(layout, sym):
             is_waypoint=True,
         )
         roadstops.append(cur_roadstop)
-        cnt += 1
 
 
-def make_road_stop(name, sym, far, overpass, near, extended, floating, joggle=0):
+def make_road_stop(name, sym, starting_id, far, overpass, near, extended, floating, joggle=0):
     v = LazyVoxel(
         name,
         prefix=".cache/render/station/dovemere_2018/west_plaza/road_stop",
@@ -104,4 +102,4 @@ def make_road_stop(name, sym, far, overpass, near, extended, floating, joggle=0)
     layout = ALayout(road_ground, ps, True, category=b"\xe8\x8a\x9cR")
     named_layouts[(name,)] = layout
 
-    register_road_stop(layout, sym)
+    register_road_stop(layout, sym, starting_id)

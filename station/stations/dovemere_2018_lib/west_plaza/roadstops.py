@@ -30,6 +30,7 @@ def make_road_stops():
     make_road_stop(
         "overpass",
         BuildingSymmetricalX,
+        0x8000,
         ((16, WIDTH, TOTAL_HEIGHT), (0, 0, 0)),
         ((16, OVERHANG_WIDTH, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
         None,
@@ -47,10 +48,12 @@ def make_road_stops():
         category=b"\xe8\x8a\x9cR",
     )
     named_layouts[("double_overpass",)] = layout
-    register_road_stop(layout, BuildingSymmetrical)
+    register_road_stop(layout, BuildingSymmetrical, 0x8002)
+
     make_road_stop(
         "stair",
         BuildingFull,
+        0x8100,
         ((16, WIDTH, TOTAL_HEIGHT), (0, 0, 0)),
         ((16, 16 - WIDTH * 2, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
         ((11, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
@@ -61,6 +64,7 @@ def make_road_stops():
     make_road_stop(
         "stair_wide",
         BuildingFull,
+        0x8104,
         ((16, WIDTH, TOTAL_HEIGHT), (0, 0, 0)),
         ((16, 16 - WIDTH * 2, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
         ((15, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
@@ -71,6 +75,7 @@ def make_road_stops():
     make_road_stop(
         "stair_wide_simple",
         BuildingFull,
+        0x8108,
         ((16, WIDTH, TOTAL_HEIGHT), (0, 0, 0)),
         ((16, 16 - WIDTH * 2, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
         ((15, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
@@ -81,6 +86,7 @@ def make_road_stops():
     make_road_stop(
         "stair_narrow",
         BuildingFull,
+        0x810C,
         ((16, WIDTH, TOTAL_HEIGHT), (0, 0, 0)),
         ((16, 16 - WIDTH * 2, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
         ((7, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
@@ -91,6 +97,7 @@ def make_road_stops():
     make_road_stop(
         "stair_extender",
         BuildingSymmetricalX,
+        0x8110,
         ((16, WIDTH, TOTAL_HEIGHT), (0, 0, 0)),
         ((16, 16 - WIDTH * 2, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
         ((16, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
@@ -101,6 +108,7 @@ def make_road_stops():
     make_road_stop(
         "stair_extender_narrow",
         BuildingSymmetricalX,
+        0x8112,
         ((16, WIDTH, TOTAL_HEIGHT), (0, 0, 0)),
         ((16, 16 - WIDTH * 2, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
         ((16, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
@@ -111,6 +119,7 @@ def make_road_stops():
     make_road_stop(
         "stair_end",
         BuildingFull,
+        0x8114,
         ((16, WIDTH, TOTAL_HEIGHT), (0, 0, 0)),
         ((16, 16 - WIDTH * 2, TOTAL_HEIGHT - OVERPASS_HEIGHT), (0, WIDTH, OVERPASS_HEIGHT)),
         ((16, EXTENDED_WIDTH, TOTAL_HEIGHT), (0, 16 - WIDTH, 0)),
