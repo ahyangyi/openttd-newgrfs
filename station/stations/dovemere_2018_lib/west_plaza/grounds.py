@@ -17,13 +17,7 @@ DEFAULT_SLOPE_FLAGS = DEFAULT_FLAGS | grf.Object.Flags.AUTOREMOVE | grf.Object.F
 
 named_grounds = AttrDict(schema=("name", "slope"))
 
-for name, sym in [
-    ("center", BuildingSymmetrical),
-    ("offcenter_A", BuildingFull),
-    ("offcenter_B", BuildingFull),
-    ("diagonal", BuildingDiamond),
-    ("checkerboard", BuildingCylindrical),
-]:
+for name, sym in [("center", BuildingSymmetrical)]:
     v = LazyVoxel(
         name,
         prefix=".cache/render/station/dovemere_2018/west_plaza/ground",
@@ -63,7 +57,3 @@ def make_ground_layout(name, sym, starting_id):
 
 def make_ground_layouts():
     make_ground_layout("center", BuildingSymmetrical, 0x0)
-    make_ground_layout("offcenter_A", BuildingFull, 0x2)
-    make_ground_layout("offcenter_B", BuildingFull, 0x4)
-    make_ground_layout("diagonal", BuildingDiamond, 0x6)
-    make_ground_layout("checkerboard", BuildingCylindrical, 0x8)
