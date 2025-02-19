@@ -10,24 +10,18 @@ from station.lib import (
 )
 from agrf.graphics.voxel import LazyVoxel
 from agrf.lib.building.slope import make_slopes, slope_types
-from ..objects_utils import register_slopes, named_layouts
+from ..objects_utils import register, register_slopes, named_layouts
 
 DEFAULT_FLAGS = grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.ALLOW_UNDER_BRIDGE
 DEFAULT_SLOPE_FLAGS = DEFAULT_FLAGS | grf.Object.Flags.AUTOREMOVE | grf.Object.Flags.HAS_NO_FOUNDATION
 
 named_grounds = AttrDict(schema=("name", "slope"))
 
-for name, sym in [
-    ("west_plaza_center", BuildingSymmetrical),
-    ("west_plaza_offcenter_A", BuildingFull),
-    ("west_plaza_offcenter_B", BuildingFull),
-    ("west_plaza_diagonal", BuildingDiamond),
-    ("west_plaza_checkerboard", BuildingCylindrical),
-]:
+for name, sym in [("center", BuildingSymmetrical)]:
     v = LazyVoxel(
         name,
-        prefix=".cache/render/station/dovemere_2018/plaza",
-        voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
+        prefix=".cache/render/station/dovemere_2018/west_plaza/ground",
+        voxel_getter=lambda path=f"station/voxels/dovemere_2018/west_plaza/ground/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
     )
     v.config["agrf_palette"] = "station/files/cns-palette-ground.json"
@@ -44,7 +38,7 @@ for name, sym in [
         named_grounds[(name, str(slope_type))] = AGroundSprite(sprite2)
 
 
-def make_ground_layout(name, sym):
+def make_ground_layout(name, sym, starting_id):
     gs = named_grounds[(name, "")]
     layout = ALayout(gs, [], True, category=b"\xe8\x8a\x9cZ")
 
@@ -56,9 +50,10 @@ def make_ground_layout(name, sym):
         sym,
     )
 
-    named_layouts[(name, "")] = layout
-    register_slopes(slopes, sym)
+    named_layouts[("west_plaza_" + name, "")] = layout
+    register_slopes(slopes, sym, starting_id)
+    register([[layout]], sym, b"g", starting_id + 0x80)
 
 
 def make_ground_layouts():
-    make_ground_layout("west_plaza_center", BuildingSymmetrical)
+    make_ground_layout("center", BuildingSymmetrical, 0x0)
