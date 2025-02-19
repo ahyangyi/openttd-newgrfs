@@ -1,4 +1,3 @@
-import grf
 from station.lib import Demo, AGroundSprite, ALayout
 from station.lib.utils import get_1cc_remap
 from agrf.graphics.palette import CompanyColour
