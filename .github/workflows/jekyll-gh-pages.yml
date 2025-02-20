@@ -44,8 +44,6 @@ jobs:
         run: PATH=${PWD}/gopath/bin:${PATH} make doc.rt
       - name: Generate docs (AEGIS)
         run: PATH=${PWD}/gopath/bin:${PATH} make doc.aegis
-      - name: Generate docs (Station)
-        run: PATH=${PWD}/gopath/bin:${PATH} make doc.station
       - name: Generate docs (Bridge)
         run: PATH=${PWD}/gopath/bin:${PATH} make doc.bridge
       - name: Setup Pages
