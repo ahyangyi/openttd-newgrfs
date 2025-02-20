@@ -33,3 +33,8 @@ Warning: only released versions are guaranteed to contain only GPLv2 compatible 
 Contribution is welcome; contributed code must also be licensed GPLv2+.
 
 If a subproject has more than one contributors, I will change its name to a recursive acronym. For example, "Ahyangyi’s Road Vehicles" becomes "ARV Road Vehicles".
+
+# Other NewGRFs I Make
+**China Set: Stations - Wuhu** used to belong to this repo, and the older releases are still listed here. However, it is now moved to a [new place](https://github.com/OpenTTD-China-Set/China-Set-Stations-Wuhu).
+
+I also created a Finnish town name NewGRF, which is available [here](https://github.com/ahyangyi/openttd-finnish-town-names).
