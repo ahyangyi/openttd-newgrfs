@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Changelog
-parent: "CNS Addon: Wuhu"
+parent: "China Set: Stations - Wuhu"
 nav_order: 1
 ---
 

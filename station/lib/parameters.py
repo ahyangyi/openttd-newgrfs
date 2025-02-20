@@ -22,76 +22,76 @@ company_colour = {
     15: "GREY",
     16: "WHITE",
 }
-global_settings = []
-
-station_settings = []
+settings = []
 
 
 def make_introduction_year(station_id, mapping):
-    station_settings.append(Parameter(f"{station_id}_INTRODUCTION_YEAR", 0, limits=(0, 9999), mapping=mapping))
+    settings.append(Parameter(f"{station_id}_INTRODUCTION_YEAR", 0, limits=(0, 9999), mapping=mapping))
 
 
 def make_colour(station_id, mapping):
-    station_settings.append(
-        Parameter(f"{station_id}_COLOUR", 0, company_colour, option_name="STATION_COLOUR", mapping=mapping)
-    )
+    settings.append(Parameter(f"{station_id}_COLOUR", 0, company_colour, option_name="STATION_COLOUR", mapping=mapping))
 
 
 # E88A9CA: Wuhu (2015)
-station_settings.append(
-    Parameter("E88A9CA_ENABLE_TEMPLATE", 1, booldict, mapping=ParameterMapping(grf_parameter=0, first_bit=0, num_bit=1))
+settings.append(
+    Parameter(
+        "E88A9CA_ENABLE_TEMPLATE", 1, booldict, mapping=ParameterMapping(grf_parameter=0x0, first_bit=0, num_bit=1)
+    )
 )
-station_settings.append(
-    Parameter("E88A9CA_ENABLE_MODULAR", 1, booldict, mapping=ParameterMapping(grf_parameter=1, first_bit=0, num_bit=1))
+settings.append(
+    Parameter(
+        "E88A9CA_ENABLE_MODULAR", 1, booldict, mapping=ParameterMapping(grf_parameter=0x1, first_bit=0, num_bit=1)
+    )
 )
-station_settings.append(
-    Parameter("E88A9CA_ENABLE_ROADSTOP", 1, booldict, mapping=ParameterMapping(grf_parameter=2, first_bit=0, num_bit=1))
+settings.append(
+    Parameter(
+        "E88A9CA_ENABLE_ROADSTOP", 1, booldict, mapping=ParameterMapping(grf_parameter=0x2, first_bit=0, num_bit=1)
+    )
 )
-make_introduction_year("E88A9CA", mapping=ParameterMapping(grf_parameter=3, first_bit=0, num_bit=13))
-make_colour("E88A9CA", mapping=ParameterMapping(grf_parameter=16, first_bit=0, num_bit=5))
+make_introduction_year("E88A9CA", mapping=ParameterMapping(grf_parameter=0x3, first_bit=0, num_bit=13))
+make_colour("E88A9CA", mapping=ParameterMapping(grf_parameter=0x10, first_bit=0, num_bit=5))
 
 # E88A9C0: Wuhu (1934)
-station_settings.append(
-    Parameter("E88A9C0_ENABLE_MODULAR", 1, booldict, mapping=ParameterMapping(grf_parameter=5, first_bit=0, num_bit=1))
+settings.append(
+    Parameter(
+        "E88A9C0_ENABLE_MODULAR", 1, booldict, mapping=ParameterMapping(grf_parameter=0x5, first_bit=0, num_bit=1)
+    )
 )
-make_introduction_year("E88A9C0", mapping=ParameterMapping(grf_parameter=6, first_bit=0, num_bit=13))
-make_colour("E88A9C0", mapping=ParameterMapping(grf_parameter=17, first_bit=0, num_bit=5))
+make_introduction_year("E88A9C0", mapping=ParameterMapping(grf_parameter=0x6, first_bit=0, num_bit=13))
+make_colour("E88A9C0", mapping=ParameterMapping(grf_parameter=0x11, first_bit=0, num_bit=5))
 
 # E88A9CP: Platforms
-station_settings.append(
-    Parameter("E88A9CP_ENABLE_MODULAR", 1, booldict, mapping=ParameterMapping(grf_parameter=8, first_bit=0, num_bit=1))
+settings.append(
+    Parameter(
+        "E88A9CP_ENABLE_MODULAR", 1, booldict, mapping=ParameterMapping(grf_parameter=0x8, first_bit=0, num_bit=1)
+    )
 )
 
-platform_settings = []
-platform_settings.append(
-    Parameter(f"PLATFORM_CONCRETE", 1, booldict, mapping=ParameterMapping(grf_parameter=9, first_bit=0, num_bit=1))
+settings.append(
+    Parameter("PLATFORM_CONCRETE", 1, booldict, mapping=ParameterMapping(grf_parameter=0x9, first_bit=0, num_bit=1))
 )
-platform_settings.append(
-    Parameter(f"PLATFORM_BRICK", 0, booldict, mapping=ParameterMapping(grf_parameter=0xA, first_bit=0, num_bit=1))
-)
-
-shelter_settings = []
-shelter_settings.append(
-    Parameter(f"SHELTER_SHELTER_1", 0, booldict, mapping=ParameterMapping(grf_parameter=0xB, first_bit=0, num_bit=1))
-)
-shelter_settings.append(
-    Parameter(f"SHELTER_SHELTER_2", 1, booldict, mapping=ParameterMapping(grf_parameter=0xC, first_bit=0, num_bit=1))
+settings.append(
+    Parameter("PLATFORM_BRICK", 0, booldict, mapping=ParameterMapping(grf_parameter=0xA, first_bit=0, num_bit=1))
 )
 
-parameter_list = ParameterList(global_settings + station_settings + platform_settings + shelter_settings)
+settings.append(
+    Parameter("SHELTER_SHELTER_1", 0, booldict, mapping=ParameterMapping(grf_parameter=0xB, first_bit=0, num_bit=1))
+)
+settings.append(
+    Parameter("SHELTER_SHELTER_2", 1, booldict, mapping=ParameterMapping(grf_parameter=0xC, first_bit=0, num_bit=1))
+)
+
+parameter_list = ParameterList(settings)
 
 station_meta = ["E88A9CA", "E88A9C0"]
 station_cb = {}
 station_code = {}
-for i, s in enumerate(station_meta):
-    year = parameter_list.index(f"{s}_INTRODUCTION_YEAR")
-    station_cb[s] = {
-        "availability": Switch(
-            ranges={0: 0}, default=1, code=f"current_year >= var(0x7F, param={year}, shift=0, and=0xffffffff)"
-        )
-    }
+for s in station_meta:
+    year = parameter_list[f"{s}_INTRODUCTION_YEAR"].code
+    station_cb[s] = {"availability": Switch(ranges={0: 0}, default=1, code=f"current_year >= {year}")}
 
-    colour = f"var(0x7F, param={i+16}, shift=0, and=0x1f)"
+    colour = parameter_list[f"{s}_COLOUR"].code
     station_code[
         s
     ] = f"""

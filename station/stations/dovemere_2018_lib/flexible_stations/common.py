@@ -25,7 +25,7 @@ def make_demo(switch, w, h, preswitch=None):
                     scale=scale,
                     bpp=bpp,
                 )
-                for scale in [1, 2, 4]
+                for scale in [1, 2]
                 for bpp in [32]
             ]
         )

@@ -1,10 +1,9 @@
 from station.lib import Demo
 from station.lib.utils import get_1cc_remap
-from station.stations.platforms import two_side_tiles
 from agrf.graphics.palette import CompanyColour
 from station.stations.dovemere_2018_lib.layouts import globalize_all, concourse_tiles
 from station.stations.dovemere_2018_lib.flexible_stations import traversable
-from .utils import h_merge
+from ..utils import h_merge
 
 globalize_all(platform_class="concrete", shelter_class="shelter_2")
 
