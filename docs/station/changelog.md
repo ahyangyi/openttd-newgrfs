@@ -1,4 +1,4 @@
-China Set: Stations & Platforms Addons: Wuhu Changelog
+China Set: Stations - Wuhu Changelog
 =========================
 
 0.3.4 (Work-in-progress)

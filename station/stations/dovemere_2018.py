@@ -117,26 +117,11 @@ the_stations = AMetaStation(
         + [b"R", b"Z"]
     ],
     {
-        "Realistic Layouts": [demos.normal_demo, demos.big_demo, demos.big_half_demo, demos.real_yard_demo],
-        "Template Showcases": [
-            demos.semi_auto_demo,
-            demos.semi_np_auto_demo,
-            demos.full_auto_demo,
-            demos.full_np_auto_demo,
-            demos.side_auto_demo,
-            demos.side_np_auto_demo,
-            demos.side_third_auto_demo,
-            demos.side_third_np_auto_demo,
-        ],
-        "Diverse Designs": [
-            demos.special_demo_g,
-            demos.special_demo_p,
-            demos.special_demo_cn,
-            demos.special_demo_sa,
-            demos.special_demo_cp,
-            demos.special_demo_aq,
-        ],
-        "Station Square": [demos.west_plaza],
+        "Realistic Layouts": demos.realistic_demos,
+        "Template Showcases": demos.template_demos,
+        "Diverse Designs": demos.special_demos,
+        "Station Square": demos.plaza_demos,
+        "With Other NewGRF": demos.third_party_demos,
     },
     road_stops=roadstops,
 )
