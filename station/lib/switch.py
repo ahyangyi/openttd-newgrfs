@@ -1,5 +1,5 @@
 import functools
-from agrf.magic import Switch
+from agrf.global_cache import make_switch
 from agrf.lib.building.layout import ALayout
 
 
@@ -9,12 +9,26 @@ def lookup(thing, w, h, x, y, t):
     return thing.lookup(w, h, x, y, t)
 
 
-def calc_mode(d):
+def find_default_element(d):
+    reverse_lookup = {}
     value_count = {}
-    for v in d.values():
-        value_count[v] = value_count.get(v, 0) + 1
+
+    prev_k = prev_v = None
+    for k, v in sorted(d.items()):
+        if isinstance(v, int):
+            key = v
+        else:
+            key = id(v)
+            reverse_lookup[key] = v
+
+        if prev_k is None or k != prev_k + 1 or v != prev_v:
+            value_count[key] = value_count.get(key, 0) + 1
+
+        prev_k = k
+        prev_v = v
+
     max_count = max(value_count.values())
-    return [v for v, c in value_count.items() if c == max_count][0]
+    return [reverse_lookup.get(v, v) for v, c in value_count.items() if c == max_count][0]
 
 
 class StationTileSwitch:
@@ -49,16 +63,32 @@ class StationTileSwitch:
     def R(self):
         return self.fmap(lambda x: x.R, special_property="R")
 
-    def to_index(self, sprite_list):
+    def to_index(self, sprite_list=None):
         if id(sprite_list) in self.to_index_cache:
             return self.to_index_cache[id(sprite_list)]
-        mode = calc_mode(self.ranges)
+
         f = lambda v: v if isinstance(v, int) else v.to_index(sprite_list)
-        new_ranges = {k: f(v) for k, v in self.ranges.items() if v != mode}
+        ranges = {k: f(v) for k, v in self.ranges.items()}
+        default = find_default_element(ranges)
+
+        new_ranges = {}
+        l = None
+        for k, v in sorted(ranges.items()):
+            if v is default:
+                continue
+            if l is not None and k == h + 1 and r is v:
+                h += 1
+            else:
+                if l is not None:
+                    new_ranges[(l, h)] = r
+                l, h, r = k, k, v
+        if l is not None:
+            new_ranges[(l, h)] = r
+
         if len(new_ranges) == 0:
-            ret = f(mode)
+            ret = default
         else:
-            ret = Switch(ranges=new_ranges, default=f(mode), code=self.code)
+            ret = make_switch(ranges=new_ranges, default=default, code=self.code)
         self.to_index_cache[id(sprite_list)] = ret
         return ret
 

@@ -2,6 +2,7 @@ import os
 from agrf.strings import get_translation, remove_control_letters
 from agrf.graphics.palette import CompanyColour
 from .utils import get_1cc_remap, class_label_printable
+from station.lib.idmap import station_idmap
 
 
 def gen_docs(string_manager, metastations):
@@ -17,7 +18,7 @@ def gen_docs(string_manager, metastations):
                 f"""---
 layout: default
 title: {translation}
-parent: "CNS Addon: Wuhu"
+parent: "China Set: Stations - Wuhu"
 nav_order: {i+2}
 has_children: True
 ---
@@ -65,7 +66,7 @@ has_children: True
 layout: default
 title: {title}
 parent: {translation}
-grand_parent: "CNS Addon: Wuhu"
+grand_parent: "China Set: Stations - Wuhu"
 nav_order: {nav_order}
 ---
 """,
@@ -88,11 +89,14 @@ nav_order: {nav_order}
                             .to_pil_image()
                         )
                         idstr = f"{layout.id:04X}"
-                        img.save(os.path.join(prefix, "img", f"{metastation_label}/{kind}/{idstr}.png"))
+                        idpath = idstr
+                        if kind in ["waypoints", "stations"] and layout.id in station_idmap:
+                            idstr += f" ({station_idmap[layout.id]:04X})"
+                        img.save(os.path.join(prefix, "img", f"{metastation_label}/{kind}/{idpath}.png"))
                         print(
                             f"""
 <figure style="display:inline-block">
-  <img src="img/{metastation_label}/{kind}/{idstr}.png" alt="{idstr}" width="64"/>
+  <img src="img/{metastation_label}/{kind}/{idpath}.png" width="64"/>
   <figcaption style="text-align:center">{idstr}</figcaption>
 </figure>
 """,
@@ -107,7 +111,7 @@ nav_order: {nav_order}
 layout: default
 title: {demok}
 parent: {translation}
-grand_parent: "CNS Addon: Wuhu"
+grand_parent: "China Set: Stations - Wuhu"
 nav_order: {5+demoi}
 ---
 """,
@@ -115,5 +119,5 @@ nav_order: {5+demoi}
                 )
                 for i, demo in enumerate(demov):
                     img = demo.graphics(4, 32).crop().resize(1920, 1080).to_pil_image()
-                    img.save(os.path.join(prefix, "img", f"{metastation_label}/layouts/{demok}/{i}.png"))
-                    print(f"## {demo.title}\n\n![](img/{metastation_label}/layouts/{demok}/{i}.png)", file=f)
+                    img.save(os.path.join(prefix, "img", f"{metastation_label}/layouts/{demok}/{i:04X}.png"))
+                    print(f"## {demo.title}\n\n![](img/{metastation_label}/layouts/{demok}/{i:04X}.png)", file=f)

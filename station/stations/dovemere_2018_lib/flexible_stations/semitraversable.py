@@ -41,7 +41,7 @@ for p, pclass in enumerate(platform_classes):
                 non_traversable_tiles=0b11,
                 disabled_platforms=0b11,
                 callbacks={
-                    "select_tile_layout": cb24.to_index(None),
+                    "select_tile_layout": cb24.to_index(),
                     "select_sprite_layout": grf.DualCallback(
                         default=cb14.to_index(layouts), purchase=layouts.index(demo_layout)
                     ),
@@ -49,9 +49,9 @@ for p, pclass in enumerate(platform_classes):
                 },
                 extra_code=common_code,
                 enable_if=[
-                    parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
-                    parameter_list.index(f"PLATFORM_{pclass.upper()}"),
-                    parameter_list.index(f"SHELTER_{sclass.upper()}"),
+                    parameter_list["E88A9CA_ENABLE_TEMPLATE"],
+                    parameter_list[f"PLATFORM_{pclass.upper()}"],
+                    parameter_list[f"SHELTER_{sclass.upper()}"],
                 ],
                 doc_layout=demo_layout,
             )
@@ -86,7 +86,7 @@ for p, pclass in enumerate(platform_classes):
                 non_traversable_tiles=0b11,
                 disabled_platforms=0b111,
                 callbacks={
-                    "select_tile_layout": cb24.to_index(None),
+                    "select_tile_layout": cb24.to_index(),
                     "select_sprite_layout": grf.DualCallback(
                         default=cb14.to_index(layouts), purchase=layouts.index(demo_layout)
                     ),
@@ -94,9 +94,9 @@ for p, pclass in enumerate(platform_classes):
                 },
                 extra_code=common_code,
                 enable_if=[
-                    parameter_list.index("E88A9CA_ENABLE_TEMPLATE"),
-                    parameter_list.index(f"PLATFORM_{pclass.upper()}"),
-                    parameter_list.index(f"SHELTER_{sclass.upper()}"),
+                    parameter_list["E88A9CA_ENABLE_TEMPLATE"],
+                    parameter_list[f"PLATFORM_{pclass.upper()}"],
+                    parameter_list[f"SHELTER_{sclass.upper()}"],
                 ],
                 doc_layout=demo_layout,
             )

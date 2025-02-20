@@ -1,5 +1,6 @@
 import grf
 from .utils import class_label_printable
+from agrf.utils import unique
 
 
 class AMetaStation(grf.SpriteGenerator):
@@ -30,12 +31,28 @@ class AMetaStation(grf.SpriteGenerator):
                 station.id = station_idmap[station.id]
 
     def get_sprites(self, g):
-        sprites = self.sprites
+        ret = []
 
-        ret = [grf.Action1(feature=grf.STATION, set_count=1, sprite_count=len(sprites))] + sprites
+        i = 0
+        while i < len(self.stations):
+            l = i + 1
+            r = len(self.stations)
+            while l < r:
+                m = (l + r + 1) // 2
+                candidates = self.stations[i:m]
+                sprites = unique(sub for s in candidates for sub in s.sprites)
+                if len(sprites) < 0x4000 - 0x42D:
+                    l = m
+                else:
+                    r = m - 1
 
-        for station in self.stations:
-            ret.extend(station.get_sprites(g, sprites))
+            candidates = self.stations[i:l]
+            sprites = unique(sub for s in candidates for sub in s.sprites)
+            ret += [grf.Action1(feature=grf.STATION, set_count=1, sprite_count=len(sprites))] + sprites
+            for station in candidates:
+                ret.extend(station.get_sprites(g, sprites))
+            i = l
+
         for road_stop in self.road_stops:
             ret.extend(road_stop.get_sprites(g))
         for obj in self.objects:
@@ -44,4 +61,4 @@ class AMetaStation(grf.SpriteGenerator):
 
     @property
     def sprites(self):
-        return [*dict.fromkeys([sub for s in self.stations for sub in s.sprites])]
+        return unique(sub for s in self.stations for sub in s.sprites)
