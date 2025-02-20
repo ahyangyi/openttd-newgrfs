@@ -18,9 +18,6 @@ from station.lib import (
 from grfobject.lib import AObject, GraphicalSwitch, PositionSwitch
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
 from agrf.lib.building.slope import make_slopes, slope_types
-from station.lib import AttrDict
-import grf
-from agrf.lib.building.slope import slope_types
 
 DEFAULT_FLAGS = grf.Object.Flags.ONLY_IN_GAME | grf.Object.Flags.ALLOW_UNDER_BRIDGE
 DEFAULT_SLOPE_FLAGS = DEFAULT_FLAGS | grf.Object.Flags.AUTOREMOVE | grf.Object.Flags.HAS_NO_FOUNDATION
@@ -29,7 +26,7 @@ named_layouts = AttrDict(schema=("name", "offset"))
 objects = []
 
 
-def register_slopes(slopes, sym, flags=DEFAULT_SLOPE_FLAGS):
+def register_slopes(slopes, sym, starting_id, flags=DEFAULT_SLOPE_FLAGS):
     for chi_ind in sym.chirality_indices():
         layouts = []
         purchase_layouts = []
@@ -45,7 +42,7 @@ def register_slopes(slopes, sym, flags=DEFAULT_SLOPE_FLAGS):
             purchase_layouts.append(default)
 
         cur_object = AObject(
-            id=len(objects),
+            id=starting_id,
             translation_name="WEST_PLAZA",
             layouts=layouts,
             purchase_layouts=purchase_layouts,
@@ -60,10 +57,11 @@ def register_slopes(slopes, sym, flags=DEFAULT_SLOPE_FLAGS):
             doc_layout=purchase_layouts[0],
             callbacks={"tile_check": 0x400},
         )
+        starting_id += 1
         objects.append(cur_object)
 
 
-def register(layouts, sym, label, flags=DEFAULT_FLAGS):
+def register(layouts, sym, label, starting_id, flags=DEFAULT_FLAGS, allow_flip=True):
     rows = len(layouts)
     columns = len(layouts[0])
     layout = PositionSwitch(
@@ -73,14 +71,14 @@ def register(layouts, sym, label, flags=DEFAULT_FLAGS):
         rows=rows,
         columns=columns,
     )
-    for cur in sym.chiralities(layout):
+    for cur in sym.chiralities(layout)[: 2 if allow_flip else 1]:
         demo = Demo(cur.to_lists())
         doc_layout = demo.to_layout()
         doc_layout.category = b"\xe8\x8a\x9cZ"  # FIXME doc category?
         layouts = sym.rotational_views(cur)
         num_views = len(layouts)
         cur_object = AObject(
-            id=len(objects),
+            id=starting_id,
             translation_name="WEST_PLAZA",
             layouts=layouts,
             purchase_layouts=sym.rotational_views(doc_layout),
@@ -95,4 +93,5 @@ def register(layouts, sym, label, flags=DEFAULT_FLAGS):
             doc_layout=doc_layout,
             callbacks={"tile_check": 0x400},
         )
+        starting_id += 1
         objects.append(cur_object)

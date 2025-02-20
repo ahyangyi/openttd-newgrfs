@@ -1,36 +1,32 @@
 from agrf.graphics.voxel import LazyVoxel
 from station.lib import (
     BuildingFull,
-    BuildingSymmetricalX,
     BuildingSymmetrical,
     BuildingCylindrical,
-    BuildingDiamond,
-    BuildingDiagonalAlt,
-    BuildingRotational4,
-    AGroundSprite,
     AParentSprite,
     AChildSprite,
     ALayout,
-    AttrDict,
     Registers,
-    Demo,
 )
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
-from .grounds import named_grounds, make_ground_layouts
-from ..objects_utils import objects, register_slopes, DEFAULT_FLAGS, named_layouts, register
+from .grounds import named_grounds
+from ..objects_utils import named_layouts, register
 
 
-def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None):
+def make_object_layout(name, starting_id, sym, Xspan, Yspan, xspan, yspan, height, osym=None):
     if osym is None:
         osym = sym
 
-    gs = named_grounds[("west_plaza_center", "")]
+    gs = named_grounds[("center", "")]
     v = LazyVoxel(
         name,
-        prefix=".cache/render/station/dovemere_2018/plaza",
-        voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
+        prefix=".cache/render/station/dovemere_2018/west_plaza/topiary",
+        voxel_getter=lambda path=f"station/voxels/dovemere_2018/west_plaza/topiary/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
     )
+
+    name = "west_plaza_topiary_" + name
+
     snow = v.keep_layers(("snow",), "snow")
     snow = snow.compose(v, "merge", ignore_mask=True, colour_map=NON_RENDERABLE_COLOUR)
     snow.config["agrf_childsprite"] = (0, -11)
@@ -78,7 +74,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "")] = layout
-    register([[layout]], sym, b"F")
+    register([[layout]], sym, b"F", starting_id=starting_id, allow_flip=False)
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs, Xofs - 4, 0)) + ground_snowcs,
@@ -86,7 +82,16 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "half")] = layout
-    register([[layout]], sym.break_y_symmetry(), b"F")
+    register([[layout]], sym.break_y_symmetry(), b"F", starting_id=starting_id + 1, allow_flip=False)
+
+    if sym is BuildingFull:
+        ps = [
+            AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs, Xofs + 4, 0)) + ground_snowcs,
+            AParentSprite(sprite, (yspan, xspan, height - 1), (yofs, xofs + 4, 1)) + snowcs,
+        ]
+        layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+        named_layouts[(name, "lower_half")] = layout
+        register([[layout]], sym.break_y_symmetry(), b"F", starting_id=starting_id + 2, allow_flip=False)
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs, Xofs - 8, 0)) + ground_snowcs,
@@ -94,7 +99,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "vertical")] = layout
-    register([[gl], [layout]], sym, b"F")
+    register([[gl], [layout]], sym, b"F", starting_id=starting_id + 3, allow_flip=False)
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs, 0)) + ground_snowcs,
@@ -102,7 +107,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "horizontal")] = layout
-    register([[gl, layout]], sym, b"F")
+    register([[gl, layout]], sym, b"F", starting_id=starting_id + 4, allow_flip=False)
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs - 4, 0)) + ground_snowcs,
@@ -110,7 +115,16 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "half_horizontal")] = layout
-    register([[gl, layout]], sym.break_y_symmetry(), b"F")
+    register([[gl, layout]], sym.break_y_symmetry(), b"F", starting_id=starting_id + 5, allow_flip=False)
+
+    if sym is BuildingFull:
+        ps = [
+            AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs + 4, 0)) + ground_snowcs,
+            AParentSprite(sprite, (yspan, xspan, height - 1), (yofs - 8, xofs + 4, 1)) + snowcs,
+        ]
+        layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
+        named_layouts[(name, "half_horizontal")] = layout
+        register([[gl, layout]], sym.break_y_symmetry(), b"F", starting_id=starting_id + 6, allow_flip=False)
 
     ps = [
         AParentSprite(groundsprite2, (Yspan, Xspan, 1), (Yofs - 8, Xofs - 8, 0)) + ground_snowcs,
@@ -118,7 +132,7 @@ def make_object_layout(name, sym, Xspan, Yspan, xspan, yspan, height, osym=None)
     ]
     layout = ALayout(gs, ps, True, category=b"\xe8\x8a\x9cZ")
     named_layouts[(name, "corner")] = layout
-    register([[gl, gl], [gl, layout]], sym, b"F")
+    register([[gl, gl], [gl, layout]], sym, b"F", starting_id=starting_id + 7, allow_flip=False)
 
 
 def make_topiaries():

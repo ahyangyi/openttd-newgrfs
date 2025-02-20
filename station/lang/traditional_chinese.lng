@@ -7,6 +7,17 @@ STR_PARAM_INTRODUCTION_YEAR_DESC        :選擇本 NewGRF 內每個車站是否�
 STR_PARAM_INTRODUCTION_YEAR_DISABLED    :任何年份都可以建造任何車站
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :指定年份後纔可以建造車站
 
+STR_PARAM_SNOW_TRACK                    :全局設置 - 積雪
+STR_PARAM_SNOW_TRACK_DESC               :決定在原本是雪地的地方建造線上式站房時，是否保留地上的積雪。
+STR_PARAM_SNOW_TRACK_ENABLED            :保留積雪
+STR_PARAM_SNOW_TRACK_DISABLED           :不保留積雪
+
+STR_PARAM_NIGHT_MODE            :全局設置 - 夜景模式
+STR_PARAM_NIGHT_MODE_DESC       :使用適配 NightGFX 的夜景圖像
+STR_PARAM_NIGHT_MODE_AUTO_DETECT:自動檢測
+STR_PARAM_NIGHT_MODE_DISABLED   :不使用
+STR_PARAM_NIGHT_MODE_ENABLED    :使用
+
 STR_PARAM_E88A9CA_ENABLE_TEMPLATE           :蕪湖站 - 啓用車站模板
 STR_PARAM_E88A9CA_ENABLE_TEMPLATE_DESC      :選擇是否啓用現代蕪湖站的車站模板
 STR_PARAM_E88A9CA_ENABLE_TEMPLATE_ENABLED   :啓用
@@ -210,7 +221,8 @@ STR_STATION_CLASS_E7B981W       :{PUSH_COLOUR}{WHITE}CNS：{POP_COLOUR}繁昌西
 STR_STATION_CLASS_E88A9CP       :{PUSH_COLOUR}{WHITE}CNS：{POP_COLOUR}蕪湖包 - 月台
 
 STR_OBJECT_CLASS_E88A9CB0       :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} 蕪湖站 - 站房
-STR_OBJECT_CLASS_E88A9CG        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} 蕪湖站 - 西廣場 - 地面
+STR_OBJECT_CLASS_E88A9CG        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} 蕪湖站 - 西廣場 - 地面 (斜坡)
+STR_OBJECT_CLASS_E88A9Cg        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} 蕪湖站 - 西廣場 - 地面 (無斜坡)
 STR_OBJECT_CLASS_E88A9CF        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} 蕪湖站 - 西廣場 - 綠雕
 STR_OBJECT_CLASS_E88A9Cl        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} 蕪湖站 - 西廣場 - 草坪
 STR_OBJECT_CLASS_E88A9CL        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} 蕪湖站 - 西廣場 - 路燈

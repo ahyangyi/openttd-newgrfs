@@ -7,6 +7,17 @@ STR_PARAM_INTRODUCTION_YEAR_DESC        :Choose whether each station in this New
 STR_PARAM_INTRODUCTION_YEAR_DISABLED    :Always available
 STR_PARAM_INTRODUCTION_YEAR_ENABLED     :Only available after set year
 
+STR_PARAM_SNOW_TRACK                    :Global - Snow
+STR_PARAM_SNOW_TRACK_DESC               :Choose whether to keep the snow on the ground when beneath a station building.
+STR_PARAM_SNOW_TRACK_ENABLED            :Keep snow
+STR_PARAM_SNOW_TRACK_DISABLED           :Remove snow
+
+STR_PARAM_NIGHT_MODE            :Global - Night mode
+STR_PARAM_NIGHT_MODE_DESC       :Use night graphics suitable for NightGFX
+STR_PARAM_NIGHT_MODE_AUTO_DETECT:Auto Detect
+STR_PARAM_NIGHT_MODE_DISABLED   :Disabled
+STR_PARAM_NIGHT_MODE_ENABLED    :Enabled
+
 STR_PARAM_E88A9CA_ENABLE_TEMPLATE           :Wuhu Station - Enable Templates
 STR_PARAM_E88A9CA_ENABLE_TEMPLATE_DESC      :Whether or not to enable flexible templates for Wuhu Station (Modern)
 STR_PARAM_E88A9CA_ENABLE_TEMPLATE_ENABLED   :Enabled
@@ -212,7 +223,8 @@ STR_STATION_CLASS_E7B981W       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Fanchang W
 STR_STATION_CLASS_E88A9CP       :{PUSH_COLOUR}{WHITE}CNS:{POP_COLOUR} Wuhu - Extra Platforms
 
 STR_OBJECT_CLASS_E88A9CB0       :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} Station Building
-STR_OBJECT_CLASS_E88A9CG        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} West Square - Ground
+STR_OBJECT_CLASS_E88A9CG        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} West Square - Ground (w/ slopes)
+STR_OBJECT_CLASS_E88A9Cg        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} West Square - Ground (w/o slopes)
 STR_OBJECT_CLASS_E88A9CF        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} West Square - Topiary
 STR_OBJECT_CLASS_E88A9Cl        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} West Square - Lawn
 STR_OBJECT_CLASS_E88A9CL        :{PUSH_COLOUR}{WHITE}|>{POP_COLOUR} West Square - Light Post
