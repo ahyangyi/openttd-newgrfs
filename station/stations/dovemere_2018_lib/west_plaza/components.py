@@ -2,33 +2,24 @@ from agrf.graphics.voxel import LazyVoxel
 from station.lib import (
     BuildingFull,
     BuildingSymmetricalX,
-    BuildingSymmetrical,
     BuildingCylindrical,
-    BuildingDiamond,
     BuildingDiagonalAlt,
-    BuildingRotational4,
-    AGroundSprite,
     AParentSprite,
     AChildSprite,
-    ALayout,
     AttrDict,
     Registers,
-    Demo,
 )
 from agrf.graphics.recolour import NON_RENDERABLE_COLOUR
-from .grounds import named_grounds, make_ground_layouts
-from .topiary import make_topiaries
-from ..objects_utils import objects, register_slopes, DEFAULT_FLAGS, named_layouts, register
 
 
-components = AttrDict(schema=("name",))
+components = AttrDict(schema=("type", "name"))
 
 
-def make_component(name, sym, span, offset, has_nosnow=False):
+def make_component(dirname, name, sym, span, offset, has_nosnow=False):
     v = LazyVoxel(
         name,
-        prefix=".cache/render/station/dovemere_2018/plaza",
-        voxel_getter=lambda path=f"station/voxels/dovemere_2018/plaza/{name}.vox": path,
+        prefix=f".cache/render/station/dovemere_2018/west_plaza/{dirname}",
+        voxel_getter=lambda path=f"station/voxels/dovemere_2018/west_plaza/{dirname}/{name}.vox": path,
         load_from="station/files/cns-gorender.json",
     )
 
@@ -57,7 +48,7 @@ def make_component(name, sym, span, offset, has_nosnow=False):
         nosnowcs = AChildSprite(nosnowsprite, (0, 0), flags={"dodraw": Registers.NOSNOW})
         gs = gs + nosnowcs
 
-    components[(name.replace("west_plaza_", ""),)] = gs
+    components[(dirname, name)] = gs
 
 
 def make_components():

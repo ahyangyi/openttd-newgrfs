@@ -44,11 +44,27 @@ gray_layout = ground_tiles.gray
 gray_ps = ground_ps.gray
 concourse = concourse_ps.none
 
+# FIXME: technically should be 21 instead of 20, but in reality that results in bad effects
+JOGGLE_AMOUNT = (16 * 2**0.5 - 20) / 1.25
 
-def make_empty_variant(w, h, x, y):
-    empty_image = empty_alternatives(w, h, x, y)
-    empty_image.squash = types.MethodType(lambda self, *args, empty_image=empty_image: self, empty_image)
-    return BuildingCylindrical.create_variants([empty_image])
+
+def make_empty_variant(w, h, x, y, offset=0, span=16):
+    if offset == 0 and span == 16:
+        empty_image = empty_alternatives(w, h, x, y)
+        empty_image.squash = types.MethodType(lambda self, *args, empty_image=empty_image: self, empty_image)
+        return BuildingCylindrical.create_variants([empty_image])
+    deltas = [[-2, -1], [2, -1], [-2, -1], [2, -1], [2, 1], [-2, 1], [2, 1], [-2, 1]]
+    offsets = [[0, 0], [0, 0], [0, 0], [0, 0], [-2, -1], [2, -1], [-2, -1], [2, -1]]
+
+    empty_images = []
+    for i in range(8):
+        x1 = x + deltas[i][0] * offset + offsets[i][0] * (16 - span)
+        y1 = y + deltas[i][1] * offset + offsets[i][1] * (16 - span)
+
+        empty_image = empty_alternatives(w, h, x1, y1)
+        empty_image.squash = types.MethodType(lambda self, *args, empty_image=empty_image: self, empty_image)
+        empty_images.append(empty_image)
+    return BuildingFull.create_variants(empty_images)
 
 
 def get_category(internal_category, back, notes, tra):
@@ -145,11 +161,10 @@ f1_subsets = {
     "full": ({"ground level", "entrance", "pillar", "entrance - t", "pillar - t"}, 0, 16),
 }
 
-f1_empty_offset = {}
+f1_empty_offset = (-31, -14)
 f1_empty_sprite = {}
-for k, (_, offset, _) in f1_subsets.items():
-    f1_empty_offset[k] = (-31 - offset * 2, -14 - offset)
-    f1_empty_sprite[k] = make_empty_variant(64, 48, *f1_empty_offset[k])
+for k, (_, offset, span) in f1_subsets.items():
+    f1_empty_sprite[k] = make_empty_variant(64, 48, *f1_empty_offset, offset, span)
 f2_empty_offset = (-31, -34)
 f2_empty_sprite = make_empty_variant(64, 68, *f2_empty_offset)
 
@@ -158,7 +173,7 @@ def make_f2(v, sym):
     v = v.discard_layers(all_f1_layers + all_f2_layers + snow_layers, "f2")
     v.in_place_subset(sym.render_indices())
     v.config["agrf_relative_childsprite"] = f2_empty_offset
-    s = sym.create_variants(v.spritesheet(zdiff=base_height + 0.5))
+    s = sym.create_variants(v.spritesheet(zdiff=base_height))
 
     empty_parent = AParentSprite(f2_empty_sprite, (16, 16, overpass_height), (0, 0, base_height + platform_height))
     f2_child = AChildSprite(s, (0, 0), palette=0, flags={"add_palette": Registers.RECOLOUR_OFFSET})
@@ -167,10 +182,7 @@ def make_f2(v, sym):
 
 
 def make_extra(v, sym, name, floor="f2"):
-    vd = v.discard_layers(
-        all_f1_layers + tuple(all_f2_layers_set - {name, name + "-boundary"}) + ("overpass", "foundation", "circle"),
-        name,
-    )
+    vd = v.keep_layers((name, name + "-boundary"), name)
     if floor == "f2":
         vd = vd.mask_clip_away("station/voxels/dovemere_2018/masks/ground_level.vox", "f2")
     else:
@@ -182,10 +194,10 @@ def make_extra(v, sym, name, floor="f2"):
         v.config["agrf_palette"] = "station/files/ttd_palette_window.json"
     if floor == "f2":
         v.config["agrf_relative_childsprite"] = f2_empty_offset
-        zdiff = base_height + 0.5
+        zdiff = base_height
     else:
-        v.config["agrf_childsprite"] = (0, -40)
-        zdiff = 0.5  # FIXME: unused with absolute offset
+        v.config["agrf_relative_childsprite"] = f1_empty_offset
+        zdiff = 0
     v.in_place_subset(sym.render_indices())
     s = sym.create_variants(v.spritesheet(zdiff=zdiff))
     if "snow" in name:
@@ -203,13 +215,11 @@ def make_f1(v, subset, sym):
         V = v.discard_layers(tuple(all_f1_layers_set - keep_layers), subset)
         V = V.mask_clip_away("station/voxels/dovemere_2018/masks/overpass.vox", "f1")
         V.in_place_subset(sym.render_indices())
-        V.config["agrf_manual_crop"] = (0, 40)
-        # V.config["agrf_relative_childsprite"] = f1_empty_offset[subset]
-        s = sym.create_variants(V.spritesheet(xdiff=xdiff, xspan=xspan, zdiff=0.5))
-        f1_cache[(v, subset)] = AParentSprite(s, (16, xspan, base_height), (0, xdiff, platform_height)), sym
-        # empty_parent = AParentSprite(f1_empty_sprite[subset], (16, xspan, base_height), (0, xdiff, platform_height))
-        # f1_child = AChildSprite(s, (0, 0))
-        # f1_cache[(v, subset)] = empty_parent + f1_child, sym
+        V.config["agrf_relative_childsprite"] = f1_empty_offset
+        s = sym.create_variants(V.spritesheet())
+        empty_parent = AParentSprite(f1_empty_sprite[subset], (16, xspan, base_height), (0, xdiff, platform_height))
+        f1_child = AChildSprite(s, (0, 0))
+        f1_cache[(v, subset)] = empty_parent + f1_child, sym
     ret, ret_sym = f1_cache[(v, subset)]
     assert sym is ret_sym
     return ret
@@ -251,6 +261,7 @@ def make_voxel(source):
             voxel_getter=lambda path=f"station/voxels/dovemere_2018/{source}.vox": path,
             load_from="station/files/gorender.json",
         )
+        voxel_cache[source].config["joggle"] = JOGGLE_AMOUNT
     return voxel_cache[source]
 
 
