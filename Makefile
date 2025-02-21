@@ -1,6 +1,6 @@
 rebuild: clean all
 
-all: road_vehicle.grf aegis.grf bridge.grf house.grf road.grf
+all: road_vehicle.grf aegis.grf bridge.grf house.grf road.grf csl.grf
 
 rv: clean_rv road_vehicle.grf
 
@@ -19,6 +19,8 @@ bridge: clean_bridge bridge.grf
 
 aegis: clean_aegis aegis.grf
 
+csl: clean_csl csl.grf
+
 clean_rv:
 	rm -f road_vehicle.grf
 
@@ -33,6 +35,9 @@ clean_bridge:
 
 clean_aegis:
 	rm -f aegis.grf
+
+clean_csl:
+	rm -f csl.grf
 
 clean:
 	rm -f *.grf
@@ -75,6 +80,9 @@ road.grf:
 
 road.csv:
 	python3 -m road.dovemere_gen csv
+
+csl.grf:
+	python3 -m csl.gen gen
 
 profile.aegis:
 	python3 -m cProfile -o .prof/aegis_gen.prof -m industry.aegis_gen gen
