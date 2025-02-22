@@ -1,0 +1,76 @@
+{
+  "lighting_angle": 60,
+  "lighting_elevation": 65,
+  "depth_influence": 0,
+  "tiled_normals": true,
+  "tiling_mode": "repeat",
+  "hard_edge_threshold": 0.25,
+  "pad_to_full_length": false,
+  "solid_base": false,
+  "soften_edges": 0.5,
+  "fade_to_black": false,
+  "sampler": "square",
+  "accuracy": 7,
+  "overlap": 0,
+  "joggle": 0,
+  "detail_boost": 15.0,
+  "falloff_adjustment": 0.25,
+  "max_colour_push": 0,
+  "fosterise": false,
+  "suppress_edge_fosterisation": true,
+  "shadow_threshold": 0.1,
+  "soft_shadow": true,
+  "contrast": 0.1,
+  "size": {
+    "x": 256,
+    "y": 256,
+    "z": 128
+  },
+  "render_elevation": 30,
+  "sprites": [
+      {
+          "angle": 45,
+          "width": 64,
+          "flip": true
+      },
+      {
+          "angle": 315,
+          "width": 64
+      },
+      {
+          "angle": 225,
+          "width": 64
+      },
+      {
+          "angle": 135,
+          "width": 64,
+          "flip": true
+      },
+      {
+          "angle": 45,
+          "width": 64
+      },
+      {
+          "angle": 315,
+          "width": 64,
+          "flip": true
+      },
+      {
+          "angle": 225,
+          "width": 64,
+          "flip": true
+      },
+      {
+          "angle": 135,
+          "width": 64
+      }
+  ],
+  "agrf_bpps": [32],
+  "agrf_scales": [1, 2, 4],
+  "agrf_palette": "station/files/cns-palette.json",
+  "agrf_deltas": [[-2, -1], [2, -1], [-2, -1], [2, -1], [2, 1], [-2, 1], [2, 1], [-2, 1]],
+  "agrf_offsets": [[0, 0], [0, 0], [0, 0], [0, 0], [-2, -1], [2, -1], [-2, -1], [2, -1]],
+  "agrf_ydeltas": [[2, -1], [-2, -1], [-2, 1], [2, 1], [2, -1], [-2, -1], [-2, 1], [2, 1]],
+  "agrf_yoffsets": [[0, 0], [0, 0], [2, -1], [-2, -1], [0, 0], [0, 0], [2, -1], [-2, -1]],
+  "agrf_road_mode": true
+}
