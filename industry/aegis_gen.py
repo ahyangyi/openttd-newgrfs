@@ -124,7 +124,7 @@ def get_string_manager():
 def gen():
     s = get_string_manager()
     g = grf.NewGRF(
-        grfid=b"\xE5\xBC\x8Bi",
+        grfid=b"\xe5\xbc\x8bi",
         name=s["STR_GRF_NAME"],
         description=s["STR_GRF_DESC"],
         id_map_file="industry/id_map.json",

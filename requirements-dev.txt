@@ -1,2 +1,2 @@
-black
+black==25.1.0
 pytest

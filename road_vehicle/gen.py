@@ -16,7 +16,7 @@ def gen(fast):
     s = get_string_manager()
 
     g = grf.NewGRF(
-        grfid=b"\xE5\xBC\x8B0",
+        grfid=b"\xe5\xbc\x8b0",
         name=s["STR_GRF_NAME"],
         description=s["STR_GRF_DESC"],
         id_map_file="road_vehicle/id_map.json",

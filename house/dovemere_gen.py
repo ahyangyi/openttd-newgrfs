@@ -18,7 +18,7 @@ def gen():
     s = get_string_manager()
 
     g = grf.NewGRF(
-        grfid=b"\xE5\xBC\x8Bh",
+        grfid=b"\xe5\xbc\x8bh",
         name=s["STR_GRF_NAME"],
         description=s["STR_GRF_DESC"],
         id_map_file="house/id_map.json",

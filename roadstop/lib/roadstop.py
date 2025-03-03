@@ -61,7 +61,7 @@ TEMP[0x03] = (terrain_type & 0x4) == 0x4
         self.callbacks.set_flag_props(self._props)
 
         if self.is_waypoint:
-            class_label = b"\xFF" + self._props["class_label"][1:]
+            class_label = b"\xff" + self._props["class_label"][1:]
         else:
             class_label = self._props["class_label"]
 

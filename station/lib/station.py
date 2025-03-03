@@ -93,7 +93,7 @@ class AStation(grf.SpriteGenerator):
 
         if self.is_waypoint:
             openttd_15_props = {
-                "class_label": b"\xfF" + self._props["class_label"][1:],
+                "class_label": b"\xff" + self._props["class_label"][1:],
                 "station_class_name": g.strings.add(
                     g.strings[f"STR_STATION_CLASS_{self.class_label_plain}"]
                 ).get_persistent_id(),
