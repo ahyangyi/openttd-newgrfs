@@ -61,6 +61,7 @@ class ACargo(Cargo, MetaSpriteMixin):
                 voxel_getter=lambda: f"cargos/voxels/{voxel_name}.vox",
                 load_from="cargos/files/gorender.json",
             )
+
             vox.render()
 
         return super().get_sprites(g)
