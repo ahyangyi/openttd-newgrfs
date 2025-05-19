@@ -25,7 +25,15 @@ def gen_cargo_doc(all_cargos, string_manager):
                     .crop()
                     .to_pil_image()
                 )
-                img.save(os.path.join(prefix, f"images/{name}.png"))
+                img_path = os.path.join(prefix, f"images/{name}.png")
+                img.save(img_path)
+                img_clause = f"""
+<figure style="display:inline-block">
+  <img src="{img_path}" width="40"/>
+  <figcaption style="text-align:center">cargo icon</figcaption>
+</figure>"""
+            else:
+                img_clause = ""
 
             print(
                 f"""---
