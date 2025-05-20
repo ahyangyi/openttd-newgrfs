@@ -36,6 +36,8 @@ class ACargo(Cargo, MetaSpriteMixin):
                 voxel_getter=lambda: f"cargos/voxels/{voxel_name}.vox",
                 load_from="cargos/files/gorender.json",
             )
+            vox.config["size"]["x"] = 152
+            vox.config["size"]["y"] = 152
             graphics = vox.spritesheet()[0]
 
         super().__init__(

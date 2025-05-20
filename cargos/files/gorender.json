@@ -24,5 +24,6 @@
         }
     ],
     "agrf_bpps": [32],
-    "agrf_scales": [1, 2, 4]
+    "agrf_scales": [1, 2, 4],
+    "agrf_cargo_mode": true
 }
