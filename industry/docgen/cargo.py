@@ -43,7 +43,10 @@ parent: Cargos
 grand_parent: AEGIS - Ahyangyi's Extended Generic Industry Set
 nav_order: {i+1}
 ---
+{img_clause}
+
 # Datasheet
+
 **Cargo Class**: {cargo_class(cargo.cargo_class)}
 
 **Capacity Multiplier**: {cargo.capacity_multiplier / 0x100}
