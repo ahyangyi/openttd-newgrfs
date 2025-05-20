@@ -165,6 +165,8 @@ cargo_info = {
     "TRWK": {},
 }
 
+voxel_map = {"COAL": "coal"}
+
 cargo_info = {k.encode(): v for k, v in cargo_info.items()}
 cargos = list(cargo_info.keys())
 

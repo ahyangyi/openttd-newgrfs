@@ -1,0 +1,30 @@
+{
+    "lighting_angle": 60,
+    "lighting_elevation": 65,
+    "depth_influence": 0,
+    "tiled_normals": true,
+    "tiling_mode": "repeat",
+    "solid_base": false,
+    "soften_edges": 0.5,
+    "fade_to_black": false,
+    "sampler": "square",
+    "accuracy": 5,
+    "overlap": 0,
+    "size": {
+        "x": 256,
+        "y": 256,
+        "z": 256
+    },
+    "render_elevation": 30,
+    "sprites": [
+        {
+            "angle": 45,
+            "width": 10,
+            "flip": true
+        }
+    ],
+    "agrf_bpps": [32],
+    "agrf_scales": [1, 2, 4],
+    "agrf_palette": "cargos/files/ttd_palette.json",
+    "agrf_cargo_mode": true
+}
