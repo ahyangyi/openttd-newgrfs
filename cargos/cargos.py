@@ -167,6 +167,18 @@ cargo_info = {
 
 voxel_map = {"COAL": "coal"}
 
+
+def make_voxel_remap():
+    voxel_remap = {}
+    for k, v in cargo_info.items():
+        for source, remap in v.items():
+            if source in voxel_map:
+                voxel_remap[k] = (source, remap)
+    return voxel_remap
+
+
+voxel_remap = make_voxel_remap()
+
 cargo_info = {k.encode(): v for k, v in cargo_info.items()}
 cargos = list(cargo_info.keys())
 
