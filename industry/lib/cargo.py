@@ -2,7 +2,7 @@ import grf
 import struct
 from industry.lib.parameters import parameter_list
 from agrf.lib.cargo import Cargo
-from cargos import cargos as cargo_table, voxel_map
+from cargos import cargos as cargo_table, voxel_map, voxel_remap
 from agrf.strings import get_translation
 from agrf.split_action import MetaSpriteMixin
 from agrf.graphics.voxel import LazyVoxel
@@ -25,19 +25,30 @@ def props_hash(parameters):
     return hash(tuple(ret))
 
 
+def get_voxel(name):
+    voxel_name = voxel_map[name]
+    vox = LazyVoxel(
+        voxel_name,
+        prefix=".cache/render/cargo/",
+        voxel_getter=lambda: f"cargos/voxels/{voxel_name}.vox",
+        load_from="cargos/files/gorender.json",
+    )
+    vox.config["size"]["x"] = 152
+    vox.config["size"]["y"] = 152
+    return vox
+
+
 class ACargo(Cargo, MetaSpriteMixin):
     def __init__(self, id, label, cargo_class, capacity_multiplier=0x100, weight=16, **props):
         graphics = None
-        if label.decode() in voxel_map:
-            voxel_name = voxel_map[label.decode()]
-            vox = LazyVoxel(
-                voxel_name,
-                prefix=".cache/render/cargo/",
-                voxel_getter=lambda: f"cargos/voxels/{voxel_name}.vox",
-                load_from="cargos/files/gorender.json",
-            )
-            vox.config["size"]["x"] = 152
-            vox.config["size"]["y"] = 152
+
+        decoded_label = label.decode()
+        if decoded_label in voxel_map:
+            vox = get_voxel(decoded_label)
+            graphics = vox.spritesheet()[0]
+        elif decoded_label in voxel_remap:
+            source, remap = voxel_remap[decoded_label]
+            vox = get_voxel(source).self_compose(decoded_label, colour_map=remap)
             graphics = vox.spritesheet()[0]
 
         super().__init__(
