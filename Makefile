@@ -1,6 +1,6 @@
 rebuild: clean all
 
-all: road_vehicle.grf aegis.grf bridge.grf house.grf road.grf
+all: road_vehicle.grf aegis.grf bridge.grf house.grf road.grf athena.grf
 
 rv: clean_rv road_vehicle.grf
 
@@ -19,6 +19,8 @@ bridge: clean_bridge bridge.grf
 
 aegis: clean_aegis aegis.grf
 
+athena: clean_athena athena.grf
+
 clean_rv:
 	rm -f road_vehicle.grf
 
@@ -33,6 +35,9 @@ clean_bridge:
 
 clean_aegis:
 	rm -f aegis.grf
+
+clean_athena:
+	rm -f athena.grf
 
 clean:
 	rm -f *.grf
@@ -63,6 +68,9 @@ test.aegis:
 
 aegis.grf:
 	python3 -m industry.aegis_gen gen
+
+athena.grf:
+	python3 -m station.athena_gen gen
 
 bridge.grf:
 	python3 -m bridge.dovemere_gen gen
