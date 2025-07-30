@@ -38,7 +38,7 @@ cargo_info = {
     "BEER": {},
     "BDMT": {},
     "MNSP": {},
-    "PAPR": {},
+    "PAPR": {"STEL": ColourMap("paper", [(ColourRange(23), ColourRange(16))])},
     "WDPR": {},
     "COPR": {},
     "DYES": {},
@@ -124,7 +124,7 @@ cargo_info = {
     "STST": {},
     "CSTI": {},
     "PEAT": {},
-    "ZINC": {},
+    "ZINC": {"STEL": ColourMap("zinc", [(ColourRange(23), ColourRange(22))])},
     "TYRE": {},
     "VBOD": {},
     "VENG": {},
@@ -165,7 +165,7 @@ cargo_info = {
     "TRWK": {},
 }
 
-voxel_map = {"COAL": "coal"}
+voxel_map = {"COAL": "coal", "STEL": "steel"}
 
 
 def make_voxel_remap():
