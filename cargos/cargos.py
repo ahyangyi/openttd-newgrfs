@@ -40,7 +40,7 @@ cargo_info = {
     "MNSP": {},
     "PAPR": {"STEL": ColourMap("paper", [(ColourRange(23), ColourRange(16))])},
     "WDPR": {},
-    "COPR": {},
+    "COPR": {"STEL": ColourMap("copper", [(ColourRange(23), ColourRange(78))])},
     "DYES": {},
     "OIL_": {},
     "RFPR": {},
