@@ -30,8 +30,6 @@ jobs:
         uses: actions/checkout@main
         with:
           lfs: true
-      - name: Install golang deps
-        run: ./install-go-dependencies.sh
       - name: Install system python deps
         run: sudo apt update && sudo apt install python3-ply python3-pil libjpeg-dev zlib1g-dev
       - name: Get setuptools
@@ -39,13 +37,13 @@ jobs:
       - name: Install python deps
         run: pip install -r requirements.txt
       - name: Generate docs (RV)
-        run: PATH=${PWD}/gopath/bin:${PATH} make doc.rv
+        run: make doc.rv
       - name: Generate docs (RT)
-        run: PATH=${PWD}/gopath/bin:${PATH} make doc.rt
+        run: make doc.rt
       - name: Generate docs (AEGIS)
-        run: PATH=${PWD}/gopath/bin:${PATH} make doc.aegis
+        run: make doc.aegis
       - name: Generate docs (Bridge)
-        run: PATH=${PWD}/gopath/bin:${PATH} make doc.bridge
+        run: make doc.bridge
       - name: Setup Pages
         uses: actions/configure-pages@main
       - name: Install ruby deps
