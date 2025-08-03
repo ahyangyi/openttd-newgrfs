@@ -5,8 +5,7 @@ from station.lib.docgen import gen_docs
 from station.lib.parameters import parameter_list
 from station.lib.idmap import station_idmap
 
-metastations = [
-]
+metastations = []
 
 
 def get_string_manager():
