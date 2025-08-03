@@ -4,4 +4,4 @@ STR_GRF_DESC                    :一个高清工业车站包。
 
 STR_STATION_CLASS_E5BC8Bf       :{PUSH_COLOUR}{WHITE}ATHENA{POP_COLOUR}
 
-STR_CONCRETE_GROUND             :混凝土地面
+STR_STATION_CONCRETE_GROUND     :混凝土地面

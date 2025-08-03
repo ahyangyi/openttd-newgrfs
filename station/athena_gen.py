@@ -4,8 +4,9 @@ import argparse
 from station.lib.docgen import gen_docs
 from station.lib.parameters import parameter_list
 from station.lib.idmap import station_idmap
+from station.stations.ground import ground_stations
 
-metastations = []
+metastations = [ground_stations]
 
 
 def get_string_manager():
