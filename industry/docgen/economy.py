@@ -6,6 +6,13 @@ default_variation = "0" * len(parameter_choices.choices)
 
 
 def gen_economy_doc(all_economies, string_manager):
+    def cargolink(x):
+        name = x.name(string_manager)
+        ret = f"[{name}](../cargos/{x.label.decode()}.html)"
+        if cargo.graphics:
+            ret = f"![{name}](images/{name})" + ret
+        return ret
+
     prefix = "docs/industry/economies"
     for i, meta_economy in enumerate(all_economies):
         for variation in docs_parameter_choices.iterate_variations():
@@ -69,7 +76,6 @@ classDef cargo fill:none,stroke:none;""",
                     file=f,
                 )
                 industrylink = lambda x: f"[{x.name(string_manager)}](../industries/{x.translation_name}.html)"
-                cargolink = lambda x: f"[{x.name(string_manager)}](../cargos/{x.label.decode()}.html)"
                 for industry, flow in economy.graph.items():
                     accepts = ", ".join(cargolink(x) for x in flow.accepts)
                     produces = ", ".join(cargolink(x) for x in flow.produces)
@@ -86,8 +92,6 @@ classDef cargo fill:none,stroke:none;""",
                 )
                 for cargo in economy.cargos:
                     from .cargo import cargo_class
-
-                    cargolink = lambda x: f"[{x.name(string_manager)}](../cargos/{x.label.decode()}.html)"
 
                     print(
                         f"| {cargolink(cargo)} | {cargo_class(cargo.cargo_class)} | {cargo.capacity_multiplier / 0x100} | {cargo.weight / 16} | {cargo.base_price} \\| {cargo.penalty1} \\| {cargo.penalty2} |",
