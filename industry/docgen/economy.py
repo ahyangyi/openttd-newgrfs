@@ -10,7 +10,7 @@ def gen_economy_doc(all_economies, string_manager):
         name = x.name(string_manager)
         ret = f"[{name}](../cargos/{x.label.decode()}.html)"
         if cargo.graphics:
-            ret = f"![{name}](../cargos/images/{name})" + ret
+            ret = f"![{name}](../cargos/images/{name}.png)" + ret
         return ret
 
     prefix = "docs/industry/economies"
