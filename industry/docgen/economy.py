@@ -9,7 +9,7 @@ def gen_economy_doc(all_economies, string_manager):
     def cargolink(x):
         name = x.name(string_manager)
         ret = f"[{name}](../cargos/{x.label.decode()}.html)"
-        if cargo.graphics:
+        if x.graphics:
             ret = f"![{name}](../cargos/images/{name}.png)" + ret
         return ret
 
