@@ -1,7 +1,7 @@
 from agrf.graphics.recolour import ColourRange, ColourMap
 
 # Cargo list forked from polar_fox
-# Colour maps from TimberWolf
+# Some colour maps from TimberWolf:
 cargo_info = {
     "PASS": {},
     "TOUR": {},
@@ -20,7 +20,7 @@ cargo_info = {
             ],
         )
     },
-    "SAND": {},
+    "SAND": {"COAL": ColourMap("sand", [(ColourRange(3, 8), ColourRange(55, 60))])},
     "AORE": {},
     "CORE": {"COAL": ColourMap("copper", [(ColourRange(3, 8), ColourRange(72, 77))])},
     "CLAY": {},
