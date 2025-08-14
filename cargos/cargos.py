@@ -1,7 +1,7 @@
 from agrf.graphics.recolour import ColourRange, ColourMap
 
 # Cargo list forked from polar_fox
-# Colour maps from TimberWolf
+# Some colour maps from TimberWolf:
 cargo_info = {
     "PASS": {},
     "TOUR": {},
@@ -20,7 +20,7 @@ cargo_info = {
             ],
         )
     },
-    "SAND": {},
+    "SAND": {"COAL": ColourMap("sand", [(ColourRange(3, 8), ColourRange(55, 60))])},
     "AORE": {},
     "CORE": {"COAL": ColourMap("copper", [(ColourRange(3, 8), ColourRange(72, 77))])},
     "CLAY": {},
@@ -71,16 +71,21 @@ cargo_info = {
     "NUTS": {},
     "CASS": {},
     "MNO2": {},
-    "PHOS": {},
-    "POTA": {},
-    "PORE": {},
+    "PHOS": {"COAL": ColourMap("phosphate", [(ColourRange(3, 8), ColourRange(194, 199))])},
+    "POTA": {"COAL": ColourMap("potash", [(ColourRange(3, 8), ColourRange(45, 50))])},
+    "PORE": {
+        "COAL": ColourMap(
+            "pyrite ore",
+            [(ColourRange(4), ColourRange(38)), (ColourRange(6), ColourRange(55)), (ColourRange(8), ColourRange(53))],
+        )
+    },
     "IRON": {},
     "NICK": {},
     "SLAG": {},
     "QLME": {},
     "BOOM": {},
     "METL": {},
-    "SULP": {},
+    "SULP": {"COAL": ColourMap("sulphur", [(ColourRange(3, 8), ColourRange(68, 73))])},
     "SASH": {},
     "CMNT": {},
     "COKE": {},

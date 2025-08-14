@@ -12,8 +12,6 @@ A monorepo is used to increase the chance of code sharing. The possibility of re
 ## Preparation
 This depends on an up-to-date version of grf-py. When in doubt, use the SHA1 specified in `requirements.txt`, which is known to work.
 
-Install the Go dependencies with `./install-go-dependencies.sh`. Then add `gopath/bin` to your `PATH` variable.
-
 ## Make
 After installing dependencies, run `make` to get the newGRFs. Read the makefile to find other options.
 
