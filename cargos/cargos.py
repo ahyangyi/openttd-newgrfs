@@ -80,7 +80,7 @@ cargo_info = {
     "QLME": {},
     "BOOM": {},
     "METL": {},
-    "SULP": {},
+    "SULP": {"COAL": ColourMap("sulphur", [(ColourRange(3, 8), ColourRange(68, 73))])},
     "SASH": {},
     "CMNT": {},
     "COKE": {},
