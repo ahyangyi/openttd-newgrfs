@@ -73,7 +73,12 @@ cargo_info = {
     "MNO2": {},
     "PHOS": {},
     "POTA": {"COAL": ColourMap("potash", [(ColourRange(3, 8), ColourRange(45, 50))])},
-    "PORE": {},
+    "PORE": {
+        "COAL": ColourMap(
+            "pyrite ore",
+            [(ColourRange(4), ColourRange(38)), (ColourRange(6), ColourRange(55)), (ColourRange(8), ColourRange(53))],
+        )
+    },
     "IRON": {},
     "NICK": {},
     "SLAG": {},
