@@ -72,7 +72,7 @@ cargo_info = {
     "CASS": {},
     "MNO2": {},
     "PHOS": {},
-    "POTA": {},
+    "POTA": {"COAL": ColourMap("potash", [(ColourRange(3, 8), ColourRange(45, 50))])},
     "PORE": {},
     "IRON": {},
     "NICK": {},
