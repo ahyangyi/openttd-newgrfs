@@ -71,7 +71,7 @@ cargo_info = {
     "NUTS": {},
     "CASS": {},
     "MNO2": {},
-    "PHOS": {},
+    "PHOS": {"COAL": ColourMap("phosphate", [(ColourRange(3, 8), ColourRange(194, 199))])},
     "POTA": {"COAL": ColourMap("potash", [(ColourRange(3, 8), ColourRange(45, 50))])},
     "PORE": {
         "COAL": ColourMap(
