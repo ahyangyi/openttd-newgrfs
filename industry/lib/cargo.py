@@ -35,6 +35,8 @@ def get_voxel(name):
     )
     vox.config["size"]["x"] = 152
     vox.config["size"]["y"] = 152
+    vox.config["agrf_manual_crop"] = [0, 7]
+    vox.config["agrf_manual_crop_keep_br_space"] = True
     return vox
 
 
