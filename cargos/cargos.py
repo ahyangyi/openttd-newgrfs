@@ -22,7 +22,18 @@ cargo_info = {
     },
     "SAND": {"COAL": ColourMap("sand", [(ColourRange(3, 8), ColourRange(55, 60))])},
     "AORE": {},
-    "CORE": {"COAL": ColourMap("copper", [(ColourRange(3, 8), ColourRange(72, 77))])},
+    "CORE": {
+        "COAL": ColourMap(
+            "copper",
+            [
+                (ColourRange(3, 4), ColourRange(90, 91)),
+                (ColourRange(5), ColourRange(113)),
+                (ColourRange(6), ColourRange(92)),
+                (ColourRange(7), ColourRange(77)),
+                (ColourRange(8), ColourRange(94)),
+            ],
+        )
+    },
     "CLAY": {},
     "SCMT": {},
     "WOOD": {},
