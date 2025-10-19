@@ -7,8 +7,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "Ahyangyi's OpenTTD NewGRFs"
-copyright = '2025, Yi Yang'
-author = 'Yi Yang'
+copyright = '2025, Yi Yang (ahyangyi)'
+author = 'Yi Yang (ahyangyi)'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -16,7 +16,7 @@ author = 'Yi Yang'
 extensions = []
 
 templates_path = ['_templates']
-exclude_patterns = []
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 
 
