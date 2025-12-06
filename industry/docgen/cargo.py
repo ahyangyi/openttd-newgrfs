@@ -36,13 +36,8 @@ def gen_cargo_doc(all_cargos, string_manager):
                 img_clause = ""
 
             print(
-                f"""---
-layout: default
-title: {name}
-parent: Cargos
-grand_parent: AEGIS - Ahyangyi's Extended Generic Industry Set
-nav_order: {i+1}
----
+                f"""# {name}
+
 {img_clause}
 
 # Datasheet

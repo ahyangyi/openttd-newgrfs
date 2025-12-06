@@ -8,7 +8,7 @@ default_variation = "0" * len(parameter_choices.choices)
 def gen_economy_doc(all_economies, string_manager):
     def cargolink(x):
         name = x.name(string_manager)
-        ret = f"[{name}](../cargos/{x.label.decode()}.html)"
+        ret = f"[{name}](../cargos/{x.label.decode()})"
         if x.graphics:
             ret = f"![{name}](../cargos/images/{name}.png)" + ret
         return ret
@@ -19,26 +19,20 @@ def gen_economy_doc(all_economies, string_manager):
             economy = meta_economy.get_economy(variation)
             variation_desc = economy.parameter_desc
             if variation_desc == default_variation:
-                header = f"""---
-layout: default
-title: {meta_economy.name(string_manager)}
-parent: Economies
-grand_parent: AEGIS - Ahyangyi's Extended Generic Industry Set
-nav_order: {i+1}"""
+                header = f"""# {meta_economy.name(string_manager)}
+
+"""
             else:
-                header = f"""---
-layout: default
-title: {meta_economy.name(string_manager)}
-nav_exclude: true
-search_exclude: true"""
+                header = f"""# {meta_economy.name(string_manager)} ({variation_desc})
+
+"""
 
             with open(os.path.join(prefix, f"{meta_economy.translation_name}_{variation_desc}.md"), "w") as f:
                 # Flowchart
                 print(
-                    f"""{header}
----
-# Flowchart
-```mermaid
+                    f"""{header}# Flowchart
+
+```{{mermaid}}
 flowchart LR;
 classDef cargo fill:none,stroke:none;""",
                     file=f,
@@ -75,7 +69,7 @@ classDef cargo fill:none,stroke:none;""",
 |----------|---------|----------|""",
                     file=f,
                 )
-                industrylink = lambda x: f"[{x.name(string_manager)}](../industries/{x.translation_name}.html)"
+                industrylink = lambda x: f"[{x.name(string_manager)}](../industries/{x.translation_name})"
                 for industry, flow in economy.graph.items():
                     accepts = ", ".join(cargolink(x) for x in flow.accepts)
                     produces = ", ".join(cargolink(x) for x in flow.produces)
@@ -112,7 +106,7 @@ classDef cargo fill:none,stroke:none;""",
                     if preset_desc == variation_desc:
                         choices_text.append(f"{preset}")
                     else:
-                        choices_text.append(f"[{preset}]({meta_economy.translation_name}_{preset_desc}.html)")
+                        choices_text.append(f"[{preset}]({meta_economy.translation_name}_{preset_desc})")
                 choices_text = " \\| ".join(choices_text)
                 print(
                     f"""{choices_text}
@@ -130,6 +124,6 @@ classDef cargo fill:none,stroke:none;""",
                             choices_text.append(f"{choice}")
                         else:
                             choices_text.append(
-                                f"[{choice}]({meta_economy.translation_name}_{parameter_choices.desc({**variation, param: choice})}.html)"
+                                f"[{choice}]({meta_economy.translation_name}_{parameter_choices.desc({**variation, param: choice})})"
                             )
                     print(f"{param}: " + " \\| ".join(choices_text) + "\n", file=f)

@@ -1,10 +1,3 @@
----
-layout: default
-title: AEGIS - Ahyangyi's Extended Generic Industry Set
-has_children: True
-nav_order: 2
----
-
 # AEGIS - Ahyangyi's Extended Generic Industry Set
 AEGIS is a modular industry set with options to support various playstyles.
 
@@ -21,3 +14,12 @@ AEGIS owns lots of inspiration to the base OpenTTD game as well as the following
 * Lumberjack Industries
 * ITI 2
 * OTIS
+
+```{toctree}
+:maxdepth: 2
+:caption: Contents:
+
+cargos/index
+industries/index
+economies/index
+```

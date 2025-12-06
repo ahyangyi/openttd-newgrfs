@@ -15,13 +15,7 @@ def gen_docs(string_manager, metastations):
 
         with open(os.path.join(prefix, f"{metastation_label}.md"), "w") as f:
             print(
-                f"""---
-layout: default
-title: {translation}
-parent: "China Set: Stations - Wuhu"
-nav_order: {i+2}
-has_children: True
----
+                f"""# {translation}
 """,
                 file=f,
             )
@@ -62,13 +56,7 @@ has_children: True
                     "objects": ("Objects", 4),
                 }[kind]
                 print(
-                    f"""---
-layout: default
-title: {title}
-parent: {translation}
-grand_parent: "China Set: Stations - Wuhu"
-nav_order: {nav_order}
----
+                    f"""# {title}
 """,
                     file=f,
                 )
@@ -107,13 +95,7 @@ nav_order: {nav_order}
             os.makedirs(os.path.join(prefix, "img", metastation_label, "layouts", demok), exist_ok=True)
             with open(os.path.join(prefix, f"{metastation_label}_{demok}.md"), "w") as f:
                 print(
-                    f"""---
-layout: default
-title: {demok}
-parent: {translation}
-grand_parent: "China Set: Stations - Wuhu"
-nav_order: {5+demoi}
----
+                    f"""# {demok}
 """,
                     file=f,
                 )

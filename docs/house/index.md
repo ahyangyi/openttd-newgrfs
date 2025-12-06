@@ -1,6 +1,9 @@
----
-layout: default
-title: AWHS - Ahyangyi's Wuhu House Set
-has_children: True
-nav_order: 6
----
+# AWHS - Ahyangyi's Wuhu House Set
+
+```{toctree}
+:maxdepth: 1
+:glob:
+
+*.md
+!index.md
+```

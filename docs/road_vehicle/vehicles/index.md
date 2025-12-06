@@ -1,7 +1,9 @@
----
-layout: default
-title: Vehicles
-parent: ACRVS - Ahyangyi's Chinese Road Vehicle Set
-has_children: True
-nav_order: 1
----
+# Vehicles
+
+```{toctree}
+:maxdepth: 1
+:glob:
+
+*.md
+!index.md
+```

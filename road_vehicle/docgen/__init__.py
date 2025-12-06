@@ -40,14 +40,10 @@ def gen_docs(string_manager, rosters, everything):
         prefix = f"docs/road_vehicle/rosters"
         with open(os.path.join(prefix, f"{roster.translation_name}.md"), "w") as f:
             print(
-                f"""---
-layout: default
-title: {roster.name(string_manager)}
-parent: Rosters
-grand_parent: ACRVS - Ahyangyi's Chinese Road Vehicle Set
-nav_order: {i+1}
----
-{{% translate_file road_vehicle/rosters/{roster.translation_name}.md %}}
+                f"""# {roster.name(string_manager)}
+
+```{{include}} _i18n/en-GB/road_vehicle/rosters/{roster.translation_name}.md
+```
 """,
                 file=f,
             )
@@ -73,7 +69,7 @@ nav_order: {i+1}
                                 string_manager["STR_VEHICLE_" + entry.translation_name + "_NAME"], 0x7F
                             )
                             print(
-                                f"| ![](../vehicles/img/{entry.translation_name}_cc2.png) | {entry._props['introduction_date'].year} | [{name}](../vehicles/{entry.translation_name}.html)",
+                                f"| ![](../vehicles/img/{entry.translation_name}_cc2.png) | {entry._props['introduction_date'].year} | [{name}](../vehicles/{entry.translation_name})",
                                 file=f,
                             )
 
@@ -90,15 +86,10 @@ nav_order: {i+1}
         # Dump template
         with open(os.path.join(prefix, f"{v.translation_name}.md"), "w") as f:
             print(
-                f"""---
-layout: default
-title: {translation}
-parent: Vehicles
-grand_parent: ACRVS - Ahyangyi's Chinese Road Vehicle Set
-nav_order: {i+1}
----
+                f"""# {translation}
 
-{{% translate_file road_vehicle/vehicles/{v.translation_name}.md %}}
+```{{include}} _i18n/en-GB/road_vehicle/vehicles/{v.translation_name}.md
+```
 """,
                 file=f,
             )

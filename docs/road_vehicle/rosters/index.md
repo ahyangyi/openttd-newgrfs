@@ -1,7 +1,9 @@
----
-layout: default
-title: Rosters
-parent: ACRVS - Ahyangyi's Chinese Road Vehicle Set
-has_children: True
-nav_order: 2
----
+# Rosters
+
+```{toctree}
+:maxdepth: 1
+:glob:
+
+*.md
+!index.md
+```

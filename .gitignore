@@ -7,3 +7,4 @@ gopath
 render
 *.code-workspace
 .directory
+_build
